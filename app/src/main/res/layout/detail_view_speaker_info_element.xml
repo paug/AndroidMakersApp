@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:orientation="horizontal"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:divider="@drawable/divider15dip"
+  android:showDividers="middle|beginning"
+>
+
+  <ImageView
+    android:id="@+id/speakerAvatar"
+    android:layout_width="@dimen/avatar_size"
+    android:layout_height="@dimen/avatar_size"
+    android:contentDescription="@string/ImageDesc_speaker_avatar"
+    tools:src="@color/colorAccent"
+  />
+
+  <LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+  >
+    <TextView
+      android:id="@+id/speakerName"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      tools:text="FirstName Name, Company"
+    />
+    <TextView
+      android:id="@+id/speakerBio"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      tools:text="Bio"
+    />
+  </LinearLayout>
+
+</LinearLayout>

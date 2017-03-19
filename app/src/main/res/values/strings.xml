@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">AndroidMakers</string>
+  <string name="ImageDesc_speaker_avatar">speaker picture</string>
+  <string name="Detail_sessionNotFound">Impossible de récuperer les informations sur cette session.</string>
 </resources>
