@@ -107,7 +107,7 @@ public class AgendaView extends ScrollView {
                 textView.setTextColor(Color.WHITE);
                 textView.getPaint().setFakeBoldText(true);
                 textView.setBackgroundResource(
-                        sBackgrounds[Math.abs(agendaItem.getRoomColorIndex()) % sBackgrounds.length]
+                        sBackgrounds[Math.abs(agendaItem.getRoomId()) % sBackgrounds.length]
                 );
                 textView.setOnClickListener(new ViewClickListener(listener, agendaItem));
 
@@ -245,7 +245,7 @@ public class AgendaView extends ScrollView {
             return mTitle;
         }
 
-        public int getRoomColorIndex() {
+        public int getRoomId() {
             return mScheduleSlot.room;
         }
 

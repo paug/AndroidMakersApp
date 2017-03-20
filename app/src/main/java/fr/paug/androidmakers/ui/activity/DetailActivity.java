@@ -2,7 +2,6 @@ package fr.paug.androidmakers.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,14 +9,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-
-import com.bumptech.glide.Glide;
 
 import fr.paug.androidmakers.R;
 import fr.paug.androidmakers.databinding.ActivityDetailBinding;
 import fr.paug.androidmakers.databinding.DetailViewSpeakerInfoElementBinding;
 import fr.paug.androidmakers.manager.AgendaRepository;
+import fr.paug.androidmakers.model.Room;
 import fr.paug.androidmakers.model.Session;
 import fr.paug.androidmakers.model.Speaker;
 import fr.paug.androidmakers.ui.view.AgendaView;
@@ -33,6 +30,7 @@ public class DetailActivity
   private static final String PARAM_SESSION_ID = "param_session_id";
   private static final String PARAM_SESSION_START_DATE = "param_session_start_date";
   private static final String PARAM_SESSION_END_DATE = "param_session_end_date";
+  private static final String PARAM_SESSION_ROOM = "param_session_room";
 
   public static void startActivity(Context context, AgendaView.Item item)
   {
@@ -40,6 +38,7 @@ public class DetailActivity
     intent.putExtra(PARAM_SESSION_ID, item.getSessionId());
     intent.putExtra(PARAM_SESSION_START_DATE, item.getStartTimestamp());
     intent.putExtra(PARAM_SESSION_END_DATE, item.getEndTimestamp());
+    intent.putExtra(PARAM_SESSION_ROOM, item.getRoomId());
     context.startActivity(intent);
   }
 
@@ -51,6 +50,14 @@ public class DetailActivity
     final Session session = AgendaRepository.getInstance().getSession(
         getIntent().getIntExtra(PARAM_SESSION_ID, -1)
     );
+
+    getIntent().getIntExtra(PARAM_SESSION_START_DATE, -1);
+    getIntent().getIntExtra(PARAM_SESSION_END_DATE, -1);
+
+    final Room sessionRoom = AgendaRepository.getInstance().getRoom(
+            getIntent().getIntExtra(PARAM_SESSION_ROOM, -1)
+    );
+
 
     if (session == null)
     {

@@ -33,6 +33,7 @@ dependencies {
     compile "com.google.firebase:firebase-database:${google_play_services_client_library_version}"
 
     compile "com.github.bumptech.glide:glide:3.7.0"
+    compile 'jp.wasabeef:glide-transformations:2.0.2'
 
     testCompile 'junit:junit:4.12'
 }

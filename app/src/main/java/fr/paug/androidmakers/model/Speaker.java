@@ -1,10 +1,14 @@
 package fr.paug.androidmakers.model;
 
+import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+
+import fr.paug.androidmakers.R;
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 /**
  * Created by stan on 18/03/2017.
@@ -31,6 +35,12 @@ public class Speaker {
 
     @BindingAdapter("imageUrl")
     public static void setSpeakerImageUrl(ImageView imageView, String url) {
-        Glide.with(imageView.getContext()).load("http://androidmakers.fr/img/people/" + url).into(imageView);
+        final Context context = imageView.getContext();
+        Glide.with(context)
+                .load("http://androidmakers.fr/img/people/" + url)
+                .centerCrop()
+                .bitmapTransform(new CropCircleTransformation(context))
+                .placeholder(R.drawable.ic_person_black_24dp)
+                .into(imageView);
     }
 }
