@@ -29,7 +29,7 @@ import fr.paug.androidmakers.model.ScheduleSlot;
  */
 public class AgendaView extends ScrollView {
 
-    private static final long OFFSET_MS = DateUtils.HOUR_IN_MILLIS;
+    private static final long OFFSET_MS = DateUtils.HOUR_IN_MILLIS / 2;
 
     private static int[] sBackgrounds = {
             R.drawable.bg_box_blue_selector,
@@ -39,7 +39,7 @@ public class AgendaView extends ScrollView {
     private Calendar mCalendar = Calendar.getInstance();
     private SparseArray<String> mTimeLabel = new SparseArray<>();
     private int mTimeWidth;
-    private long mFirstHour;
+    private long mInitialTime;
     private Paint mLinePaint;
     private TextPaint mTextPaint;
 
@@ -82,7 +82,7 @@ public class AgendaView extends ScrollView {
 
         removeAllViews();
         if (end - start > DateUtils.DAY_IN_MILLIS) {
-            mFirstHour = 0;
+            mInitialTime = 0;
             return; // more than a day? It's a bug
         }
 
@@ -90,7 +90,7 @@ public class AgendaView extends ScrollView {
         LinearLayout rootView = new LinearLayout(context);
         rootView.setOrientation(LinearLayout.HORIZONTAL);
 
-        mFirstHour = getClosestHourTimestamp(start - OFFSET_MS);
+        mInitialTime = start - OFFSET_MS;
 
         // add all agenda items
 
@@ -99,9 +99,8 @@ public class AgendaView extends ScrollView {
             // for track 1
             FrameLayout frameLayout = new FrameLayout(context);
             for (Item agendaItem : agendaPerTrack) {
-                long startDiffWithBegin = agendaItem.getStartTimestamp() - mFirstHour;
-                long endDiffWithBegin = agendaItem.getEndTimestamp() - mFirstHour;
-                long duration = endDiffWithBegin - startDiffWithBegin;
+                long startDiffWithBegin = agendaItem.getStartTimestamp() - mInitialTime;
+                long duration = agendaItem.getEndTimestamp() - agendaItem.getStartTimestamp();
 
                 TextView textView = new TextView(context);
                 textView.setText(agendaItem.getTitle());
@@ -128,12 +127,13 @@ public class AgendaView extends ScrollView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if (mFirstHour > 0) {
+        if (mInitialTime > 0) {
             int y = 0;
-            for (long timestamp = mFirstHour + DateUtils.HOUR_IN_MILLIS;
+            long timestampFirstHour = getHourBeforeTimestamp(mInitialTime);
+            for (long timestamp = timestampFirstHour;
                  y < getScrollY() + getHeight(); timestamp += DateUtils.HOUR_IN_MILLIS) {
 
-                y = getPxFromDurationMs(timestamp - mFirstHour);
+                y = getPxFromDurationMs(timestamp - mInitialTime) + getPaddingTop();
                 String label = getTimeLabel(timestamp);
                 drawLineHour(canvas, y, label);
             }
@@ -163,10 +163,9 @@ public class AgendaView extends ScrollView {
                 mTextPaint);
     }
 
-    private long getClosestHourTimestamp(long timestamp) {
+    private long getHourBeforeTimestamp(long timestamp) {
         Calendar instance = Calendar.getInstance();
         instance.setTimeInMillis(timestamp);
-        instance.add(Calendar.HOUR, 1);
         instance.set(Calendar.MINUTE, 0);
         instance.set(Calendar.SECOND, 0);
         return instance.getTimeInMillis();
@@ -186,6 +185,7 @@ public class AgendaView extends ScrollView {
         setWillNotDraw(false);
         setFillViewport(true);
         setClipChildren(false);
+        setClipToPadding(false);
 
         mLinePaint = new Paint();
         mLinePaint.setColor(Color.GRAY);
