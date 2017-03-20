@@ -15,6 +15,7 @@ import fr.paug.androidmakers.R;
 import fr.paug.androidmakers.manager.AgendaRepository;
 import fr.paug.androidmakers.model.Session;
 import fr.paug.androidmakers.model.Speaker;
+import fr.paug.androidmakers.ui.view.AgendaView;
 
 /**
  * Created by stan on 19/03/2017.
@@ -25,11 +26,15 @@ public class DetailActivity
 {
 
   private static final String PARAM_SESSION_ID = "param_session_id";
+  private static final String PARAM_SESSION_START_DATE = "param_session_start_date";
+  private static final String PARAM_SESSION_END_DATE = "param_session_end_date";
 
-  public static void startActivity(Context context, int sessionId)
+  public static void startActivity(Context context, AgendaView.Item item)
   {
     Intent intent = new Intent(context, DetailActivity.class);
-    intent.putExtra(PARAM_SESSION_ID, sessionId);
+    intent.putExtra(PARAM_SESSION_ID, item.getSessionId());
+    intent.putExtra(PARAM_SESSION_START_DATE, item.getStartTimestamp());
+    intent.putExtra(PARAM_SESSION_END_DATE, item.getEndTimestamp());
     context.startActivity(intent);
   }
 

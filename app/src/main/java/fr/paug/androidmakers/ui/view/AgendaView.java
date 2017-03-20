@@ -20,10 +20,9 @@ import android.widget.TextView;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
 
 import fr.paug.androidmakers.R;
-import fr.paug.androidmakers.model.AgendaItem;
+import fr.paug.androidmakers.model.ScheduleSlot;
 
 /**
  * Created by stan on 18/03/2017.
@@ -65,16 +64,17 @@ public class AgendaView extends ScrollView {
         init();
     }
 
-    public void setAgenda(SparseArray<List<AgendaItem>> agenda, AgendaClickListener listener) {
+    public void setAgenda(Items items, AgendaClickListener listener) {
         long start = Long.MAX_VALUE;
         long end = Long.MIN_VALUE;
 
+        SparseArray<List<Item>> agenda = items.getItems();
         int[] keys = new int[agenda.size()];
         for (int i = 0; i < agenda.size(); i++) {
             keys[i] = agenda.keyAt(i);
 
-            List<AgendaItem> agendaPerTrack = agenda.get(keys[i]);
-            for (AgendaItem agendaItem : agendaPerTrack) {
+            List<Item> agendaPerTrack = agenda.get(keys[i]);
+            for (Item agendaItem : agendaPerTrack) {
                 start = Math.min(start, agendaItem.getStartTimestamp());
                 end = Math.max(end, agendaItem.getEndTimestamp());
             }
@@ -95,10 +95,10 @@ public class AgendaView extends ScrollView {
         // add all agenda items
 
         for (int i = 0; i < agenda.size(); i++) {
-            List<AgendaItem> agendaPerTrack = agenda.get(keys[i]);
+            List<Item> agendaPerTrack = agenda.get(keys[i]);
             // for track 1
             FrameLayout frameLayout = new FrameLayout(context);
-            for (AgendaItem agendaItem : agendaPerTrack) {
+            for (Item agendaItem : agendaPerTrack) {
                 long startDiffWithBegin = agendaItem.getStartTimestamp() - mFirstHour;
                 long endDiffWithBegin = agendaItem.getEndTimestamp() - mFirstHour;
                 long duration = endDiffWithBegin - startDiffWithBegin;
@@ -124,7 +124,6 @@ public class AgendaView extends ScrollView {
             rootView.addView(frameLayout);
         }
         addView(rootView);
-        setPadding(mTimeWidth, 0, 0, 0);
     }
 
     @Override
@@ -132,7 +131,7 @@ public class AgendaView extends ScrollView {
         if (mFirstHour > 0) {
             int y = 0;
             for (long timestamp = mFirstHour + DateUtils.HOUR_IN_MILLIS;
-                 y < getHeight(); timestamp += DateUtils.HOUR_IN_MILLIS) {
+                 y < getScrollY() + getHeight(); timestamp += DateUtils.HOUR_IN_MILLIS) {
 
                 y = getPxFromDurationMs(timestamp - mFirstHour);
                 String label = getTimeLabel(timestamp);
@@ -186,6 +185,7 @@ public class AgendaView extends ScrollView {
     private void init() {
         setWillNotDraw(false);
         setFillViewport(true);
+        setClipChildren(false);
 
         mLinePaint = new Paint();
         mLinePaint.setColor(Color.GRAY);
@@ -196,18 +196,71 @@ public class AgendaView extends ScrollView {
         mTextPaint.setTextSize(getPixelFromSp(14));
 
         mTimeWidth = getPixelFromSp(50);
+
+        int paddingBottom = getResources().getDimensionPixelSize(R.dimen.padding);
+        setPadding(mTimeWidth, paddingBottom, 0, paddingBottom);
     }
 
     public interface AgendaClickListener {
-        void onClick(AgendaItem agendaItem);
+        void onClick(Item agendaItem);
     }
+
+    public static class Items {
+        private final String mTitle;
+        private final SparseArray<List<AgendaView.Item>> mItems;
+
+        public Items(String title, SparseArray<List<Item>> items) {
+            mTitle = title;
+            mItems = items;
+        }
+
+        public String getTitle() {
+            return mTitle;
+        }
+
+        public SparseArray<List<Item>> getItems() {
+            return mItems;
+        }
+    }
+
+    public static class Item {
+
+        private ScheduleSlot mScheduleSlot;
+        private String mTitle;
+
+        public Item(ScheduleSlot scheduleSlot, String title) {
+            mScheduleSlot = scheduleSlot;
+            mTitle = title;
+        }
+
+        public long getStartTimestamp() {
+            return mScheduleSlot.startDate;
+        }
+
+        public long getEndTimestamp() {
+            return mScheduleSlot.endDate;
+        }
+
+        public String getTitle() {
+            return mTitle;
+        }
+
+        public int getRoomColorIndex() {
+            return mScheduleSlot.room;
+        }
+
+        public int getSessionId() {
+            return mScheduleSlot.sessionId;
+        }
+    }
+
 
     private static class ViewClickListener implements OnClickListener {
 
         private AgendaClickListener mAgendaClickListener;
-        private AgendaItem mAgendaItem;
+        private Item mAgendaItem;
 
-        public ViewClickListener(AgendaClickListener agendaClickListener, AgendaItem agendaItem) {
+        public ViewClickListener(AgendaClickListener agendaClickListener, Item agendaItem) {
             mAgendaClickListener = agendaClickListener;
             mAgendaItem = agendaItem;
         }
