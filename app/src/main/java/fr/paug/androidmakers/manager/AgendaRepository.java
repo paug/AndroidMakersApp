@@ -42,6 +42,7 @@ public class AgendaRepository {
                 if(mOnLoadListener != null) {
                     mOnLoadListener.onAgendaLoaded();
                 }
+                mLoaded = true;
             }
 
             @Override
