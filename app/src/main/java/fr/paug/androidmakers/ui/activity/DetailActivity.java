@@ -2,6 +2,8 @@ package fr.paug.androidmakers.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.databinding.BindingAdapter;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -9,9 +11,12 @@ import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import fr.paug.androidmakers.R;
+import fr.paug.androidmakers.databinding.ActivityDetailBinding;
+import fr.paug.androidmakers.databinding.DetailViewSpeakerInfoElementBinding;
 import fr.paug.androidmakers.manager.AgendaRepository;
 import fr.paug.androidmakers.model.Session;
 import fr.paug.androidmakers.model.Speaker;
@@ -42,8 +47,7 @@ public class DetailActivity
   protected void onCreate(@Nullable Bundle savedInstanceState)
   {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_detail);
-
+    final ActivityDetailBinding activityDetailBinding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
     final Session session = AgendaRepository.getInstance().getSession(
         getIntent().getIntExtra(PARAM_SESSION_ID, -1)
     );
@@ -51,22 +55,15 @@ public class DetailActivity
     if (session == null)
     {
       // We have a problem !
-      final TextView errorMessage = (TextView) findViewById(R.id.errorMessage);
-      final View sessionInformations = findViewById(R.id.sessionInformations);
-      sessionInformations.setVisibility(View.GONE);
-      errorMessage.setVisibility(View.VISIBLE);
+      activityDetailBinding.sessionInformations.setVisibility(View.GONE);
+      activityDetailBinding.errorMessage.setVisibility(View.VISIBLE);
       return;
     }
 
-    final TextView sessionTitle = (TextView) findViewById(R.id.sessionTitle);
-    final TextView sessionDescription = (TextView) findViewById(R.id.sessionDescription);
-    final TextView sessionLanguage = (TextView) findViewById(R.id.sessionLanguage);
-    final TextView sessionType = (TextView) findViewById(R.id.sessionType);
-
-    sessionTitle.setText(session.title);
-    sessionDescription.setText(Html.fromHtml(session.description));
-    sessionLanguage.setText(session.language);
-    sessionType.setText(session.subtype);
+    activityDetailBinding.sessionTitle.setText(session.title);
+    activityDetailBinding.sessionDescription.setText(Html.fromHtml(session.description));
+    activityDetailBinding.sessionLanguage.setText(session.language);
+    activityDetailBinding.sessionType.setText(session.subtype);
 
     final ViewGroup sessionSpeakerLayout = (ViewGroup) findViewById(R.id.sessionSpeakerLayout);
     if (session.speakers != null && session.speakers.length > 0)
@@ -76,16 +73,12 @@ public class DetailActivity
         final Speaker speaker = AgendaRepository.getInstance().getSpeaker(speakerID);
         if (speaker != null)
         {
-          final View speakerView = getLayoutInflater().inflate(R.layout.detail_view_speaker_info_element, null, false);
-          final ImageView speakerAvatar = (ImageView) speakerView.findViewById(R.id.speakerAvatar);
-          final TextView speakerNameAndCompany = (TextView) speakerView.findViewById(R.id.speakerName);
-          final TextView speakerBio = (TextView) speakerView.findViewById(R.id.speakerBio);
-
-          speakerNameAndCompany.setText(speaker.name + " " + speaker.surname + ", " + speaker.company);
-          speakerBio.setText(Html.fromHtml(speaker.bio));
-          sessionSpeakerLayout.addView(speakerView);
+          final DetailViewSpeakerInfoElementBinding speakerInfoElementBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.detail_view_speaker_info_element, null, false);
+          speakerInfoElementBinding.setSpeaker(speaker);
+          sessionSpeakerLayout.addView(speakerInfoElementBinding.getRoot());
         }
       }
     }
   }
+
 }
