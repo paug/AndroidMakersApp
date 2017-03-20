@@ -1,12 +1,11 @@
 package fr.paug.androidmakers.ui.activity;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.SparseArray;
-import android.view.View;
-import android.view.ViewGroup;
 
 import java.lang.ref.WeakReference;
 import java.text.DateFormat;
@@ -19,6 +18,7 @@ import fr.paug.androidmakers.R;
 import fr.paug.androidmakers.manager.AgendaRepository;
 import fr.paug.androidmakers.model.ScheduleSlot;
 import fr.paug.androidmakers.model.Session;
+import fr.paug.androidmakers.ui.adapter.AgendaPagerAdapter;
 import fr.paug.androidmakers.ui.view.AgendaView;
 
 public class AgendaActivity extends AppCompatActivity implements AgendaView.AgendaClickListener {
@@ -47,26 +47,51 @@ public class AgendaActivity extends AppCompatActivity implements AgendaView.Agen
 
         Calendar calendar = Calendar.getInstance();
         for (ScheduleSlot scheduleSlot : scheduleSlots) {
-            calendar.setTimeInMillis(scheduleSlot.startDate);
-            int dayIndex = calendar.get(Calendar.DAY_OF_YEAR) + calendar.get(Calendar.YEAR) * 1000;
-            AgendaView.Items items = itemByDayOfTheYear.get(dayIndex);
-            SparseArray<List<AgendaView.Item>> itemsSparseArray;
-            if (items == null) {
-                itemsSparseArray = new SparseArray<>();
-                String title = DateFormat.getDateInstance().format(calendar.getTime());
-                items = new AgendaView.Items(title, itemsSparseArray);
-                itemByDayOfTheYear.put(dayIndex, items);
-            } else {
-                itemsSparseArray = items.getItems();
-            }
-            List<AgendaView.Item> agendaItems = itemsSparseArray.get(scheduleSlot.room);
-            if (agendaItems == null) {
-                agendaItems = new ArrayList<>();
-                itemsSparseArray.put(scheduleSlot.room, agendaItems);
-            }
+            List<AgendaView.Item> agendaItems = getAgendaItems(
+                    itemByDayOfTheYear, calendar, scheduleSlot);
             agendaItems.add(new AgendaView.Item(scheduleSlot, getTitle(scheduleSlot.sessionId)));
         }
 
+        List<AgendaView.Items> items = getItemsOrdered(itemByDayOfTheYear);
+        PagerAdapter adapter = new AgendaPagerAdapter(items, this);
+        mViewPager.setAdapter(adapter);
+    }
+
+    @NonNull
+    private List<AgendaView.Item> getAgendaItems(SparseArray<AgendaView.Items> itemByDayOfTheYear,
+                                                 Calendar calendar, ScheduleSlot scheduleSlot) {
+        SparseArray<List<AgendaView.Item>> itemsSparseArray =
+                getItemsByRoomList(itemByDayOfTheYear, calendar, scheduleSlot);
+        List<AgendaView.Item> agendaItems = itemsSparseArray.get(scheduleSlot.room);
+        if (agendaItems == null) {
+            agendaItems = new ArrayList<>();
+            itemsSparseArray.put(scheduleSlot.room, agendaItems);
+        }
+        return agendaItems;
+    }
+
+    private SparseArray<List<AgendaView.Item>> getItemsByRoomList(
+            SparseArray<AgendaView.Items> itemByDayOfTheYear,
+            Calendar calendar, ScheduleSlot scheduleSlot) {
+
+        calendar.setTimeInMillis(scheduleSlot.startDate);
+        int dayIndex = calendar.get(Calendar.DAY_OF_YEAR) + calendar.get(Calendar.YEAR) * 1000;
+        AgendaView.Items items = itemByDayOfTheYear.get(dayIndex);
+        SparseArray<List<AgendaView.Item>> itemsSparseArray;
+        if (items == null) {
+            itemsSparseArray = new SparseArray<>();
+            String title = DateFormat.getDateInstance().format(calendar.getTime());
+            items = new AgendaView.Items(title, itemsSparseArray);
+            itemByDayOfTheYear.put(dayIndex, items);
+            return itemsSparseArray;
+        } else {
+            return items.getItems();
+        }
+    }
+
+    @NonNull
+    private List<AgendaView.Items> getItemsOrdered(
+            SparseArray<AgendaView.Items> itemByDayOfTheYear) {
         int size = itemByDayOfTheYear.size();
         int[] keysSorted = new int[size];
         for (int i = 0; i < size; i++) {
@@ -77,8 +102,7 @@ public class AgendaActivity extends AppCompatActivity implements AgendaView.Agen
         for (int key : keysSorted) {
             items.add(itemByDayOfTheYear.get(key));
         }
-        PagerAdapter adapter = new AgendaPagerAdapter(items, this);
-        mViewPager.setAdapter(adapter);
+        return items;
     }
 
     private String getTitle(int sessionId) {
@@ -101,50 +125,5 @@ public class AgendaActivity extends AppCompatActivity implements AgendaView.Agen
             }
             agendaActivity.onAgendaLoaded();
         }
-    }
-
-    private static class AgendaPagerAdapter extends PagerAdapter {
-
-        private AgendaView.AgendaClickListener mAgendaClickListener;
-        private List<AgendaView.Items> mAgenda;
-
-        public AgendaPagerAdapter(List<AgendaView.Items> agenda,
-                                  AgendaView.AgendaClickListener listener) {
-            mAgenda = agenda;
-            mAgendaClickListener = listener;
-        }
-
-        @Override
-        public Object instantiateItem(ViewGroup collection, int position) {
-            AgendaView agendaView = new AgendaView(collection.getContext());
-            agendaView.setAgenda(getItems(position), mAgendaClickListener);
-            collection.addView(agendaView);
-            return agendaView;
-        }
-
-        @Override
-        public void destroyItem(ViewGroup collection, int position, Object view) {
-            collection.removeView((View) view);
-        }
-
-        @Override
-        public int getCount() {
-            return mAgenda.size();
-        }
-
-        @Override
-        public boolean isViewFromObject(View view, Object object) {
-            return view == object;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return getItems(position).getTitle();
-        }
-
-        private AgendaView.Items getItems(int position) {
-            return mAgenda.get(position);
-        }
-
     }
 }
