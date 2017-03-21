@@ -1,13 +1,27 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="fr.paug.androidmakers.ui.fragment.VenueFragment">
+    android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Venue" />
+        android:layout_height="250dp"
+        android:src="@drawable/venue" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/conference_venue_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="@dimen/padding"
+        android:text="@string/venue_name"
+        android:textColor="@color/colorAccent"
+        android:textSize="18sp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/locate_on_map" />
+
+</LinearLayout>
