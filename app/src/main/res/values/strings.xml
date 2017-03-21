@@ -2,4 +2,11 @@
     <string name="app_name">Android Makers Paris 2017</string>
     <string name="ImageDesc_speaker_avatar">Speaker picture</string>
     <string name="Detail_sessionNotFound">Impossible de récuperer les informations sur cette session.</string>
+
+    <string name="title_agenda">Agenda</string>
+    <string name="title_venue">Venue</string>
+    <string name="title_about">About</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
