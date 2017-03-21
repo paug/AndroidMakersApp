@@ -26,18 +26,11 @@ import fr.paug.androidmakers.ui.view.AgendaView;
 
 public class AgendaFragment extends Fragment implements AgendaView.AgendaClickListener {
 
-//    @BindView(R.id.viewpager)
     ViewPager mViewPager;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-         View view = inflater.inflate(R.layout.activity_agenda, container, false);
-//        ButterKnife.bind(view);
-
+        View view = inflater.inflate(R.layout.activity_agenda, container, false);
         mViewPager = (ViewPager) view.findViewById(R.id.viewpager);
-
-//       setContentView(R.layout.activity_agenda);
-//        ButterKnife.bind(this);
 
         AgendaRepository.getInstance().load(new AgendaLoadListener(this));
 
