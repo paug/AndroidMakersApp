@@ -2,10 +2,13 @@ package fr.paug.androidmakers.ui.activity;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.util.SparseArray;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import java.lang.ref.WeakReference;
 import java.text.DateFormat;
@@ -14,8 +17,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import fr.paug.androidmakers.R;
 import fr.paug.androidmakers.manager.AgendaRepository;
 import fr.paug.androidmakers.model.ScheduleSlot;
@@ -23,22 +24,29 @@ import fr.paug.androidmakers.model.Session;
 import fr.paug.androidmakers.ui.adapter.AgendaPagerAdapter;
 import fr.paug.androidmakers.ui.view.AgendaView;
 
-public class AgendaActivity extends AppCompatActivity implements AgendaView.AgendaClickListener {
+public class AgendaFragment extends Fragment implements AgendaView.AgendaClickListener {
 
-    @BindView(R.id.viewpager) ViewPager mViewPager;
+//    @BindView(R.id.viewpager)
+    ViewPager mViewPager;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_agenda);
-        ButterKnife.bind(this);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+         View view = inflater.inflate(R.layout.activity_agenda, container, false);
+//        ButterKnife.bind(view);
+
+        mViewPager = (ViewPager) view.findViewById(R.id.viewpager);
+
+//       setContentView(R.layout.activity_agenda);
+//        ButterKnife.bind(this);
 
         AgendaRepository.getInstance().load(new AgendaLoadListener(this));
+
+        return view;
     }
 
     @Override
     public void onClick(AgendaView.Item agendaItem) {
-        DetailActivity.startActivity(this, agendaItem);
+        DetailActivity.startActivity(getActivity(), agendaItem);
     }
 
     private void onAgendaLoaded() {
@@ -112,19 +120,19 @@ public class AgendaActivity extends AppCompatActivity implements AgendaView.Agen
     }
 
     private static class AgendaLoadListener implements AgendaRepository.OnLoadListener {
-        private WeakReference<AgendaActivity> mAgendaActivity;
+        private WeakReference<AgendaFragment> mAgendaActivity;
 
-        private AgendaLoadListener(AgendaActivity agendaActivity) {
-            mAgendaActivity = new WeakReference<>(agendaActivity);
+        private AgendaLoadListener(AgendaFragment agendaFragment) {
+            mAgendaActivity = new WeakReference<>(agendaFragment);
         }
 
         @Override
         public void onAgendaLoaded() {
-            AgendaActivity agendaActivity = mAgendaActivity.get();
-            if (agendaActivity == null) {
+            AgendaFragment agendaFragment = mAgendaActivity.get();
+            if (agendaFragment == null) {
                 return;
             }
-            agendaActivity.onAgendaLoaded();
+            agendaFragment.onAgendaLoaded();
         }
     }
 }

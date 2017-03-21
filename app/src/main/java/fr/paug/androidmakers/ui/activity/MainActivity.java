@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
     VenueFragment venueFragment = new VenueFragment();
     AboutFragment aboutFragment = new AboutFragment();
+    AgendaFragment agendaFragment = new AgendaFragment();
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -38,24 +39,20 @@ public class MainActivity extends AppCompatActivity {
     };
 
     private void agenda() {
-
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, agendaFragment);
+        transaction.commit();
     }
 
     private void venue() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
         transaction.replace(R.id.fragment_container, venueFragment);
-        transaction.addToBackStack(null);
-
         transaction.commit();
     }
 
     private void about() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
         transaction.replace(R.id.fragment_container, aboutFragment);
-        transaction.addToBackStack(null);
-
         transaction.commit();
     }
 
@@ -66,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        agenda();
     }
 
 }
