@@ -1,5 +1,7 @@
 <resources>
-    <string name="app_name">Android Makers Paris 2017</string>
-    <string name="ImageDesc_speaker_avatar">Speaker picture</string>
-    <string name="Detail_sessionNotFound">Impossible de récuperer les informations sur cette session.</string>
+    <string name="app_name" translatable="false">Android Makers Paris 2017</string>
+    <string name="ImageDesc_speaker_avatar" translatable="false">Speaker picture</string>
+    <string name="Detail_sessionNotFound">Unable to retrieve this session informations.</string>
+    <string name="Detail_speakerLayoutHeaderTitle" translatable="false">Speakers</string>
+    <string name="sessionDateWithRoomPlaceholder" translatable="false">%1$s, %2$s</string>
 </resources>

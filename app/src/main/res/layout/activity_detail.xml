@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <RelativeLayout
@@ -19,43 +19,73 @@
                 android:orientation="vertical"
                 android:padding="15dp">
 
-                <TextView
-                    android:id="@+id/sessionTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-condensed"
-                    android:paddingBottom="2dp"
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    tools:text="Title"/>
-
-                <TextView
-                    android:id="@+id/sessionDescription"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="2dp"
-                    tools:text="Description"/>
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:divider="@drawable/divider5dip"
-                    android:orientation="horizontal"
-                    android:paddingBottom="2dp"
-                    android:showDividers="middle">
+                    android:layout_marginLeft="65dip"
+                    android:layout_marginStart="65dip"
+                    android:orientation="vertical">
+
 
                     <TextView
-                        android:id="@+id/sessionType"
+                        android:id="@+id/sessionTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:text="Description"/>
+                        android:fontFamily="sans-serif-condensed"
+                        android:paddingBottom="2dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        tools:text="Title" />
 
                     <TextView
-                        android:id="@+id/sessionLanguage"
+                        android:id="@+id/sessionDateAndRoom"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:text="Description"/>
+                        android:paddingBottom="2dp"
+                        tools:text="Description" />
+
+                    <TextView
+                        android:id="@+id/sessionDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="2dp"
+                        tools:text="Description" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@drawable/divider5dip"
+                        android:orientation="horizontal"
+                        android:paddingBottom="2dp"
+                        android:showDividers="middle">
+
+                        <com.robertlevonyan.views.chip.Chip
+                            android:id="@+id/sessionType"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <com.robertlevonyan.views.chip.Chip
+                            android:id="@+id/sessionLanguage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dip"
+                        android:layout_marginBottom="5dip"
+                        android:layout_marginTop="5dip"
+                        android:background="@color/grey" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/Detail_speakerLayoutHeaderTitle"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
@@ -65,7 +95,7 @@
                     android:layout_height="wrap_content"
                     android:divider="@drawable/divider15dip"
                     android:orientation="vertical"
-                    android:showDividers="beginning|middle|end"/>
+                    android:showDividers="beginning|middle|end" />
 
             </LinearLayout>
 
@@ -80,7 +110,7 @@
             android:padding="20dp"
             android:text="@string/Detail_sessionNotFound"
             android:visibility="gone"
-            tools:visibility="visible"/>
+            tools:visibility="gone" />
 
     </RelativeLayout>
 
