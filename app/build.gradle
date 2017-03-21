@@ -24,18 +24,26 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile 'com.android.support:appcompat-v7:25.3.0'
 
+    // Support
+    compile "com.android.support:appcompat-v7:${support_version}"
+    compile "com.android.support:design:${support_version}"
+
+    // Firebase
     compile "com.google.firebase:firebase-core:${google_play_services_client_library_version}"
     compile "com.google.firebase:firebase-database:${google_play_services_client_library_version}"
 
     compile "com.github.bumptech.glide:glide:3.7.0"
     compile 'jp.wasabeef:glide-transformations:2.0.2'
 
+    compile 'com.jakewharton:butterknife:8.5.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+
     testCompile 'junit:junit:4.12'
+
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
 }
 
 apply plugin: 'com.google.gms.google-services'

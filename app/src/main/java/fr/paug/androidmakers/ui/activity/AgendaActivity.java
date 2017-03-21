@@ -14,6 +14,8 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import fr.paug.androidmakers.R;
 import fr.paug.androidmakers.manager.AgendaRepository;
 import fr.paug.androidmakers.model.ScheduleSlot;
@@ -23,14 +25,13 @@ import fr.paug.androidmakers.ui.view.AgendaView;
 
 public class AgendaActivity extends AppCompatActivity implements AgendaView.AgendaClickListener {
 
-    private ViewPager mViewPager;
+    @BindView(R.id.viewpager) ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agenda);
-
-        mViewPager = (ViewPager) findViewById(R.id.viewpager);
+        ButterKnife.bind(this);
 
         AgendaRepository.getInstance().load(new AgendaLoadListener(this));
     }
