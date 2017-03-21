@@ -1,55 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-  <data>
-    <variable
-      name="speaker"
-      type="fr.paug.androidmakers.model.Speaker"
-    />
-    <!--<import type="android.text.Html"/>-->
-  </data>
-
-  <LinearLayout
-    android:orientation="horizontal"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:divider="@drawable/divider15dip"
-    android:showDividers="middle"
-  >
-
-    <ImageView
-      android:id="@+id/speakerAvatar"
-      android:layout_width="@dimen/avatar_size"
-      android:layout_height="@dimen/avatar_size"
-      android:contentDescription="@string/ImageDesc_speaker_avatar"
-      tools:src="@color/colorAccent"
-      app:imageUrl="@{speaker.thumbnailUrl}"
-    />
+    <data>
+        <variable
+            name="speaker"
+            type="fr.paug.androidmakers.model.Speaker"/>
+        <!--<import type="android.text.Html"/>-->
+    </data>
 
     <LinearLayout
-      android:orientation="vertical"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:divider="@drawable/divider15dip"
-      android:showDividers="middle"
-    >
-      <TextView
-        android:id="@+id/speakerName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="FirstName Name, Company"
-        android:text="@{speaker.fullNameAndCompany}"
-      />
-      <TextView
-        android:id="@+id/speakerBio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="Bio"
-        android:text="@{speaker.bio}"
-      />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@drawable/divider15dip"
+        android:orientation="horizontal"
+        android:showDividers="middle">
+
+        <ImageView
+            android:id="@+id/speakerAvatar"
+            android:layout_width="@dimen/avatar_size"
+            android:layout_height="@dimen/avatar_size"
+            android:contentDescription="@string/ImageDesc_speaker_avatar"
+            app:imageUrl="@{speaker.thumbnailUrl}"
+            tools:src="@color/colorAccent"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@drawable/divider15dip"
+            android:orientation="vertical"
+            android:showDividers="middle">
+
+            <TextView
+                android:id="@+id/speakerName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{speaker.fullNameAndCompany}"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="FirstName Name, Company"/>
+
+            <TextView
+                android:id="@+id/speakerBio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{speaker.bio}"
+                android:textSize="14sp"
+                tools:text="Bio"/>
+
+        </LinearLayout>
+
     </LinearLayout>
 
-  </LinearLayout>
 </layout>
