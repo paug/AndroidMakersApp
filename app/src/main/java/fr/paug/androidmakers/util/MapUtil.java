@@ -38,19 +38,18 @@ public class MapUtil {
     }
 
     public static List<SocialNetworkHandle> getSocialItems(Map map, String key) {
-        Object object = map.get(key);
-        if (object != null && object instanceof List) {
+        final Object object = map.get(key);
+        if (object instanceof List) {
             List<SocialNetworkHandle> socialNetworkHandles = null;
             for (Object socialItem : ((List) object)) {
                 if (socialItem instanceof Map) {
-                    final Object name = ((Map) socialItem).get("name");
-                    final Object link = ((Map) socialItem).get("link");
-                    if (name instanceof String && !TextUtils.isEmpty((String) name)
-                            && link instanceof String && !TextUtils.isEmpty((String) link)) {
+                    final String name = getString((Map) socialItem, "name");
+                    final String link = getString((Map) socialItem, "link");
+                    if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(link)) {
                         if (socialNetworkHandles == null) {
                             socialNetworkHandles = new ArrayList<>();
                         }
-                        socialNetworkHandles.add(new SocialNetworkHandle(((String) name), (String) link));
+                        socialNetworkHandles.add(new SocialNetworkHandle(name, link));
                     }
                 }
             }
