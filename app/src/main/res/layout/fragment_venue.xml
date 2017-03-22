@@ -1,4 +1,7 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -8,9 +11,13 @@
         android:orientation="vertical">
 
         <ImageView
+            android:id="@+id/venue_image"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:src="@drawable/venue" />
+            android:layout_height="wrap_content"
+            android:contentDescription="@null"
+            android:scaleType="fitXY"
+            android:src="@drawable/venue"
+            tools:layout_height="180dp"/>
 
         <TextView
             android:id="@+id/conference_venue_name"
@@ -22,28 +29,37 @@
             android:text="@string/venue_name"
             android:textColor="@color/colorAccent"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/conference_venue_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="17 Rue de l'Aubrac, 75012 Paris, France" />
+            android:gravity="center"
+            android:padding="4dp"
+            android:text="@string/venue_location"/>
 
         <TextView
             android:id="@+id/conference_venue_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="TODO description" />
+            android:gravity="center"
+            android:padding="4dp"
+            android:text="@string/directions"/>
 
-        <Button
-            android:id="@+id/locate_button"
-            android:layout_width="wrap_content"
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/venue_locate"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/locate_on_map" />
+            android:layout_marginBottom="@dimen/padding_double"
+            android:layout_marginLeft="@dimen/padding_double"
+            android:layout_marginRight="@dimen/padding_double"
+            android:layout_marginTop="@dimen/padding"
+            android:text="@string/locate_on_map"
+            android:textColor="@android:color/white"
+            app:backgroundTint="?attr/colorAccent"/>
 
     </LinearLayout>
 

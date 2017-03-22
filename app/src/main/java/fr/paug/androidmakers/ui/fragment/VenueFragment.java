@@ -3,17 +3,22 @@ package fr.paug.androidmakers.ui.fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import fr.paug.androidmakers.R;
 
 public class VenueFragment extends Fragment {
 
+    private ImageView photo;
+    private static final float PHOTO_RATIO = 0.539f;
     private static final String COORDINATES_URI = "geo:48.834851, 2.386445?q=" + Uri.encode("Les Salons De L'aveyron");
 
     public VenueFragment() {
@@ -26,7 +31,8 @@ public class VenueFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_venue, container, false);
 
-        Button locateOnMapButton = (Button) view.findViewById(R.id.locate_button);
+        photo = (ImageView) view.findViewById(R.id.venue_image);
+        Button locateOnMapButton = (Button) view.findViewById(R.id.venue_locate);
         locateOnMapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -35,6 +41,12 @@ public class VenueFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initPhotoSize();
     }
 
     void openMapsLocation() {
@@ -47,6 +59,19 @@ public class VenueFragment extends Fragment {
                 Snackbar.make(view, "Error opening maps", Snackbar.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private void initPhotoSize() {
+        photo.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                int width = photo.getWidth();
+                if (width != 0) {
+                    photo.getLayoutParams().height = Math.round(width * PHOTO_RATIO);
+                    photo.requestLayout();
+                }
+            }
+        });
     }
 
 }
