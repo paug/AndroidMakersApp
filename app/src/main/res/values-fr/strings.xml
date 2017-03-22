@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="Detail_sessionNotFound">Impossible de récuperer les informations sur cette session.</string>
+    <string name="Detail_sessionNotFound">Impossible de récuperer les informations sur cette
+        session.
+    </string>
+
+    <string name="title_agenda">Agenda</string>
+    <string name="title_venue">Lieu</string>
+    <string name="title_about">À propos</string>
+
+    <string name="directions">- Voiture : sortie Porte de Bercy, direction Paris centre, sortie
+        Bercy Cour Saint-Emilion\n- Métro : Ligne 14, Cour Saint-Emilion\n- Bus : ligne 24 ou 64,
+        Arrêt Dijon Lachambaudie
+    </string>
+    <string name="locate_on_map">Localiser sur la carte</string>
+
 </resources>
