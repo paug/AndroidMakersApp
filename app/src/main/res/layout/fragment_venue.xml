@@ -1,7 +1,6 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -13,11 +12,10 @@
         <ImageView
             android:id="@+id/venue_image"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="180dp"
             android:contentDescription="@null"
             android:scaleType="fitXY"
-            android:src="@drawable/venue"
-            tools:layout_height="180dp"/>
+            android:src="@drawable/venue"/>
 
         <TextView
             android:id="@+id/conference_venue_name"
