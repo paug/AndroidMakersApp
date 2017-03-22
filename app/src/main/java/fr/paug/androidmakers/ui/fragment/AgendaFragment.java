@@ -1,6 +1,7 @@
 package fr.paug.androidmakers.ui.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
@@ -27,11 +28,18 @@ import fr.paug.androidmakers.ui.view.AgendaView;
 
 public class AgendaFragment extends Fragment implements AgendaView.AgendaClickListener {
 
-    ViewPager mViewPager;
+    private View mProgressView;
+    private View mEmptyView;
+    private ViewPager mViewPager;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_agenda, container, false);
         mViewPager = (ViewPager) view.findViewById(R.id.viewpager);
+        mProgressView = view.findViewById(R.id.progressbar);
+        mEmptyView = view.findViewById(R.id.empty_view);
+
+        // auto dismiss loading
+        new Handler().postDelayed(new RefreshRunnable(this), 3000);
 
         AgendaRepository.getInstance().load(new AgendaLoadListener(this));
 
@@ -62,6 +70,19 @@ public class AgendaFragment extends Fragment implements AgendaView.AgendaClickLi
         int indexOfToday = getTodayIndex(items);
         if (indexOfToday > 0) {
             mViewPager.setCurrentItem(indexOfToday, true);
+        }
+        refreshViewsDisplay();
+    }
+
+    private void refreshViewsDisplay() {
+        mProgressView.setVisibility(View.GONE);
+        PagerAdapter adapter = mViewPager.getAdapter();
+        if (adapter == null || adapter.getCount() == 0) {
+            mEmptyView.setVisibility(View.VISIBLE);
+            mViewPager.setVisibility(View.GONE);
+        } else {
+            mEmptyView.setVisibility(View.GONE);
+            mViewPager.setVisibility(View.VISIBLE);
         }
     }
 
@@ -141,6 +162,23 @@ public class AgendaFragment extends Fragment implements AgendaView.AgendaClickLi
     private String getTitle(int sessionId) {
         Session session = AgendaRepository.getInstance().getSession(sessionId);
         return session == null ? "?" : session.title;
+    }
+
+    private static class RefreshRunnable implements Runnable {
+
+        private WeakReference<AgendaFragment> mAgendaActivity;
+
+        private RefreshRunnable(AgendaFragment agendaFragment) {
+            mAgendaActivity = new WeakReference<>(agendaFragment);
+        }
+
+        @Override
+        public void run() {
+            AgendaFragment agendaFragment = mAgendaActivity.get();
+            if (agendaFragment != null) {
+                agendaFragment.refreshViewsDisplay();
+            }
+        }
     }
 
     private static class AgendaLoadListener implements AgendaRepository.OnLoadListener {

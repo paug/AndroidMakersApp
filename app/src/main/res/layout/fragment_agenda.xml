@@ -1,15 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.view.ViewPager
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/viewpager"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipToPadding="false">
+    >
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/viewpager_title"
-        android:layout_width="match_parent"
+    <ProgressBar
+        android:id="@+id/progressbar"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="top" />
+        android:layout_gravity="center"/>
 
-</android.support.v4.view.ViewPager>
+    <TextView
+        android:id="@+id/empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:padding="@dimen/padding_double"
+        android:text="@string/agenda_empty_screen"
+        android:visibility="gone"/>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:visibility="gone">
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/viewpager_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"/>
+
+    </android.support.v4.view.ViewPager>
+</FrameLayout>
