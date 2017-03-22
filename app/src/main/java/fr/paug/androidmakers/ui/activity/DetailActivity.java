@@ -3,6 +3,7 @@ package fr.paug.androidmakers.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -14,19 +15,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.robertlevonyan.views.chip.Chip;
 import com.robertlevonyan.views.chip.OnChipClickListener;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Formatter;
 
 import fr.paug.androidmakers.BuildConfig;
 import fr.paug.androidmakers.R;
 import fr.paug.androidmakers.databinding.ActivityDetailBinding;
 import fr.paug.androidmakers.databinding.DetailViewSpeakerInfoElementBinding;
+import fr.paug.androidmakers.databinding.SimpleTagBinding;
 import fr.paug.androidmakers.manager.AgendaRepository;
 import fr.paug.androidmakers.model.Room;
 import fr.paug.androidmakers.model.Session;
+import fr.paug.androidmakers.model.SocialNetworkHandle;
 import fr.paug.androidmakers.model.Speaker;
 import fr.paug.androidmakers.ui.view.AgendaView;
 
@@ -111,6 +114,25 @@ public class DetailActivity
                 if (speaker != null) {
                     final DetailViewSpeakerInfoElementBinding speakerInfoElementBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.detail_view_speaker_info_element, null, false);
                     speakerInfoElementBinding.setSpeaker(speaker);
+                    if (speaker.socialNetworkHandles != null && speaker.socialNetworkHandles.size() > 0) {
+                        for (final SocialNetworkHandle socialNetworkHandle : speaker.socialNetworkHandles) {
+                            final SimpleTagBinding simpleTagElementBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.simple_tag, null, false);
+                            //TODO: Change with icons
+                            simpleTagElementBinding.simpleTag.setChipText(socialNetworkHandle.name);
+                            simpleTagElementBinding.simpleTag.setOnChipClickListener(new OnChipClickListener() {
+                                @Override
+                                public void onChipClick(View view) {
+                                    if (BuildConfig.DEBUG) {
+                                        Log.d(DetailActivity.class.getName(), "User clicked on social handle with name=" + socialNetworkHandle.name);
+                                    }
+                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(socialNetworkHandle.link)));
+                                }
+                            });
+                            speakerInfoElementBinding.speakerSocialNetworkHandleLayout.addView(simpleTagElementBinding.getRoot());
+                        }
+                    } else {
+                        speakerInfoElementBinding.speakerSocialNetworkHandleLayout.setVisibility(View.GONE);
+                    }
                     sessionSpeakerLayout.addView(speakerInfoElementBinding.getRoot());
                 }
             }

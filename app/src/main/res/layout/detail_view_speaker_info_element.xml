@@ -50,6 +50,17 @@
                 android:textSize="14sp"
                 tools:text="Bio"/>
 
+            <LinearLayout
+                android:id="@+id/speakerSocialNetworkHandleLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@drawable/divider5dip"
+                android:orientation="horizontal"
+                android:paddingBottom="2dp"
+                android:showDividers="middle">
+
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>
