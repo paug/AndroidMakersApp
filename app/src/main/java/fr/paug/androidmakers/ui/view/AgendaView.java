@@ -131,6 +131,11 @@ public class AgendaView extends ScrollView {
             lp.leftMargin = mTimeWidth;
         }
         addView(rootView, lp);
+
+        long now = System.currentTimeMillis();
+        if (start < now && now < end) {
+            scrollToSee(now - DateUtils.HOUR_IN_MILLIS);
+        }
     }
 
     @Override
@@ -187,6 +192,16 @@ public class AgendaView extends ScrollView {
     private int getPixelFromSp(float sp) {
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp,
                 getResources().getDisplayMetrics()));
+    }
+
+    private void scrollToSee(long timestamp) {
+        final int pxFromDurationMs = getPxFromDurationMs(timestamp - mInitialTime);
+        post(new Runnable() {
+            @Override
+            public void run() {
+                setScrollY(pxFromDurationMs);
+            }
+        });
     }
 
     private void init() {

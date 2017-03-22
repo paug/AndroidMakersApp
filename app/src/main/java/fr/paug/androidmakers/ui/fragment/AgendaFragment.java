@@ -58,6 +58,36 @@ public class AgendaFragment extends Fragment implements AgendaView.AgendaClickLi
         List<AgendaView.Items> items = getItemsOrdered(itemByDayOfTheYear);
         PagerAdapter adapter = new AgendaPagerAdapter(items, this);
         mViewPager.setAdapter(adapter);
+
+        int indexOfToday = getTodayIndex(items);
+        if (indexOfToday > 0) {
+            mViewPager.setCurrentItem(indexOfToday, true);
+        }
+    }
+
+    private int getTodayIndex(List<AgendaView.Items> items) {
+        if (items == null || items.size() < 2) {
+            return -1;
+        }
+        Calendar calendar = Calendar.getInstance();
+        int dayOfYear = calendar.get(Calendar.DAY_OF_YEAR);
+        int year = calendar.get(Calendar.YEAR);
+        for (int i = 1; i < items.size(); i++) {
+            AgendaView.Items agendaItems = items.get(i);
+            SparseArray<List<AgendaView.Item>> agendaItemByRoom = agendaItems.getItems();
+            if (agendaItemByRoom != null && agendaItemByRoom.size() > 0) {
+                List<AgendaView.Item> list = agendaItemByRoom.get(agendaItemByRoom.keyAt(0));
+                if (list != null && !list.isEmpty()) {
+                    AgendaView.Item item = list.get(0);
+                    calendar.setTimeInMillis(item.getStartTimestamp());
+                    if (calendar.get(Calendar.YEAR) == year
+                            && calendar.get(Calendar.DAY_OF_YEAR) == dayOfYear) {
+                        return i;
+                    }
+                }
+            }
+        }
+        return -1;
     }
 
     @NonNull
