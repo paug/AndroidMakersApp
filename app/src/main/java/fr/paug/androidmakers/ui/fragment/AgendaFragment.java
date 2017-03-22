@@ -1,4 +1,4 @@
-package fr.paug.androidmakers.ui.activity;
+package fr.paug.androidmakers.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,6 +21,7 @@ import fr.paug.androidmakers.R;
 import fr.paug.androidmakers.manager.AgendaRepository;
 import fr.paug.androidmakers.model.ScheduleSlot;
 import fr.paug.androidmakers.model.Session;
+import fr.paug.androidmakers.ui.activity.DetailActivity;
 import fr.paug.androidmakers.ui.adapter.AgendaPagerAdapter;
 import fr.paug.androidmakers.ui.view.AgendaView;
 

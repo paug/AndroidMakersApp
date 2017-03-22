@@ -3,19 +3,21 @@ package fr.paug.androidmakers.ui.activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import fr.paug.androidmakers.R;
 import fr.paug.androidmakers.ui.fragment.AboutFragment;
+import fr.paug.androidmakers.ui.fragment.AgendaFragment;
 import fr.paug.androidmakers.ui.fragment.VenueFragment;
 
 public class MainActivity extends AppCompatActivity {
 
-    VenueFragment venueFragment = new VenueFragment();
-    AboutFragment aboutFragment = new AboutFragment();
-    AgendaFragment agendaFragment = new AgendaFragment();
+    private Fragment fragment;
+    private FragmentManager fragmentManager;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -23,46 +25,38 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_agenda:
-                    agenda();
-                    return true;
+                    fragment = new AgendaFragment();
+                    break;
                 case R.id.navigation_venue:
-                    venue();
-                    return true;
+                    fragment = new VenueFragment();
+                    break;
                 case R.id.navigation_about:
-                    about();
-                    return true;
+                    fragment = new AboutFragment();
+                    break;
             }
-            return false;
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.replace(R.id.fragment_container, fragment);
+            transaction.commit();
+            return true;
         }
     };
-
-    private void agenda() {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, agendaFragment);
-        transaction.commit();
-    }
-
-    private void venue() {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, venueFragment);
-        transaction.commit();
-    }
-
-    private void about() {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, aboutFragment);
-        transaction.commit();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        addAgenda();
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+    }
 
-        agenda();
+    private void addAgenda() {
+        fragmentManager = getSupportFragmentManager();
+        fragment = new AgendaFragment();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.add(R.id.fragment_container, fragment).commit();
     }
 
 }
