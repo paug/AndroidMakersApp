@@ -120,9 +120,17 @@ public class AgendaView extends ScrollView {
             frameLayout.setLayoutParams(new LinearLayout.LayoutParams(0,
                     LinearLayout.LayoutParams.MATCH_PARENT, 1
             ));
+
             rootView.addView(frameLayout);
         }
-        addView(rootView);
+
+        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT
+        );
+        if (getChildCount() == 0) {
+            lp.leftMargin = mTimeWidth;
+        }
+        addView(rootView, lp);
     }
 
     @Override
@@ -198,7 +206,7 @@ public class AgendaView extends ScrollView {
         mTimeWidth = getPixelFromSp(50);
 
         int paddingBottom = getResources().getDimensionPixelSize(R.dimen.padding);
-        setPadding(mTimeWidth, paddingBottom, 0, paddingBottom);
+        setPadding(0, paddingBottom, 0, paddingBottom);
     }
 
     public interface AgendaClickListener {
