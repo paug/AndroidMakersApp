@@ -14,8 +14,7 @@ import fr.paug.androidmakers.R;
 
 public class VenueFragment extends Fragment {
 
-    Button locateOnMapButton;
-    private static final String COORDINATES_URI = "geo:48.834851, 2.386445?q=" + Uri.encode("Les salons de l'aveyron");
+    private static final String COORDINATES_URI = "geo:48.834851, 2.386445?q=" + Uri.encode("Les Salons De L'aveyron");
 
     public VenueFragment() {
         // Required empty public constructor
@@ -27,7 +26,7 @@ public class VenueFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_venue, container, false);
 
-        locateOnMapButton = (Button) view.findViewById(R.id.locate_button);
+        Button locateOnMapButton = (Button) view.findViewById(R.id.locate_button);
         locateOnMapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -43,13 +42,11 @@ public class VenueFragment extends Fragment {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(COORDINATES_URI));
             startActivity(intent);
         } catch (Exception e) {
-            e.printStackTrace();
             View view = getView();
             if (view != null) {
-                Snackbar.make(view, "Error", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(view, "Error opening maps", Snackbar.LENGTH_SHORT).show();
             }
         }
     }
-
 
 }
