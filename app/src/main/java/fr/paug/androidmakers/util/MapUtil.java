@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import fr.paug.androidmakers.model.Partners;
 import fr.paug.androidmakers.model.SocialNetworkHandle;
 
 /**
@@ -54,6 +55,30 @@ public class MapUtil {
                 }
             }
             return socialNetworkHandles;
+        } else {
+            return null;
+        }
+    }
+
+    public static List<Partners> getPartnerList(Map map, String key) {
+        final Object object = map.get(key);
+        if (object instanceof List) {
+            List<Partners> partnersList = null;
+            for (Object partner : ((List) object)) {
+                if (partner instanceof Map) {
+                    final String name = getString((Map) partner, "name");
+                    final String link = getString((Map) partner, "link");
+                    final String imageUrl = getString((Map) partner, "imageUrl");
+                    final String description = getString((Map) partner, "description");
+                    if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(imageUrl)) {
+                        if (partnersList == null) {
+                            partnersList = new ArrayList<>();
+                        }
+                        partnersList.add(new Partners(name, imageUrl, link, description));
+                    }
+                }
+            }
+            return partnersList;
         } else {
             return null;
         }

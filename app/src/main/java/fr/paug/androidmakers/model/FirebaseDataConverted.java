@@ -5,6 +5,7 @@ import android.util.SparseArray;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -24,6 +25,7 @@ public class FirebaseDataConverted {
     private final SparseArray<Session> mSessions = new SparseArray<>();
     private final SparseArray<Speaker> mSpeakers = new SparseArray<>();
     private final List<ScheduleSlot> mScheduleSlots = new ArrayList<>();
+    private final Map<PartnerGroup.PartnerType, PartnerGroup> mPartners = new HashMap<>();
 
     public SparseArray<Room> getRooms() {
         return mRooms;
@@ -51,6 +53,7 @@ public class FirebaseDataConverted {
         loadSpeakersFromFirebase(root.get("speakers"));
         loadSessionsFromFirebase(root.get("sessions"));
         loadScheduleFromFirebase(root.get("schedule"));
+        loadPartnersFromFirebase(root.get("partners"));
     }
 
     private void loadRoomsFromFirebase(Object object) {
@@ -132,6 +135,23 @@ public class FirebaseDataConverted {
                     ScheduleSlot schedule = new ScheduleSlot(
                             roomId, sessionId, startDate, endDate);
                     mScheduleSlots.add(schedule);
+                }
+            }
+        }
+    }
+
+    private void loadPartnersFromFirebase(Object object) {
+        if (!(object instanceof List)) {
+            return;
+        }
+        List values = (List) object;
+        for (Object value : values) {
+            if (value instanceof Map) {
+                Map map = (Map) value;
+                final PartnerGroup.PartnerType partnerGroup = PartnerGroup.getPartnerTypeFromString(getString(map, "group"));
+                final List<Partners> partnersList = getPartnerList(map, "elements");
+                if (partnerGroup != PartnerGroup.PartnerType.Unknown && partnersList != null && partnersList.size() > 0) {
+                    mPartners.put(partnerGroup, new PartnerGroup(partnerGroup, partnersList));
                 }
             }
         }
