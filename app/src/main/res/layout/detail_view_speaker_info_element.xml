@@ -5,10 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.text.Html"/>
         <variable
             name="speaker"
             type="fr.paug.androidmakers.model.Speaker"/>
-        <!--<import type="android.text.Html"/>-->
     </data>
 
     <LinearLayout
@@ -46,7 +46,7 @@
                 android:id="@+id/speakerBio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{speaker.bio}"
+                android:text="@{Html.fromHtml(speaker.bio)}"
                 android:textSize="14sp"
                 tools:text="Bio"/>
 
