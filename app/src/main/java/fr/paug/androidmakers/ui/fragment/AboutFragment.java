@@ -1,14 +1,21 @@
 package fr.paug.androidmakers.ui.fragment;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 import fr.paug.androidmakers.R;
 
 public class AboutFragment extends Fragment {
+
+    private Unbinder unbinder;
 
     public AboutFragment() {
         // Required empty public constructor
@@ -23,9 +30,42 @@ public class AboutFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_about, container, false);
+        View view = inflater.inflate(R.layout.fragment_about, container, false);
+        unbinder = ButterKnife.bind(this, view);
+        return view;
+    }
 
-        // TODO: 22/03/2017 Sponsors, Wifi, ...
+    @OnClick(R.id.twitter_chip)
+    void openTwitter() {
+        Intent twitterIntent;
+        try {
+            // get the Twitter app if possible
+            getActivity().getPackageManager().getPackageInfo("com.twitter.android", 0);
+            twitterIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("twitter://user?screen_name=AndroidMakersFR"));
+            twitterIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        } catch (Exception e) {
+            // no Twitter app, revert to browser
+            twitterIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/AndroidMakersFR"));
+        }
+        startActivity(twitterIntent);
+    }
+
+    @OnClick(R.id.google_plus_chip)
+    void openGPlus() {
+        Intent gplusIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.gplus)));
+        startActivity(gplusIntent);
+    }
+
+    @OnClick(R.id.fb_chip)
+    void openFacebookEvent() {
+        Intent facebookIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.fbevent)));
+        startActivity(facebookIntent);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
 }
