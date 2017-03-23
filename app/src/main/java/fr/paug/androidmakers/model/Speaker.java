@@ -49,4 +49,5 @@ public class Speaker {
                 .placeholder(R.drawable.ic_person_black_24dp)
                 .into(imageView);
     }
+
 }

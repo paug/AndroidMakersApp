@@ -3,23 +3,32 @@ package fr.paug.androidmakers.ui.fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+
+import com.bumptech.glide.Glide;
 
 import java.util.Map;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import fr.paug.androidmakers.R;
 import fr.paug.androidmakers.manager.AgendaRepository;
 import fr.paug.androidmakers.model.PartnerGroup;
+import fr.paug.androidmakers.model.Partners;
 
 public class AboutFragment extends Fragment {
 
+    @BindView(R.id.silver_partners_layout) LinearLayout silverPartnersLayout;
     private Unbinder unbinder;
 
     public AboutFragment() {
@@ -40,7 +49,29 @@ public class AboutFragment extends Fragment {
 
         Map<PartnerGroup.PartnerType, PartnerGroup> partners = AgendaRepository.getInstance().getPartners();
         for (PartnerGroup.PartnerType partnerType : partners.keySet()) {
-            Log.d("AboutFragment", partnerType.toString()+", "+partners.get(partnerType).getPartnersList().toString());
+            Log.d("AboutFragment", partnerType.toString() + ", " + partners.get(partnerType).getPartnersList().toString());
+
+            for (final Partners partner : partners.get(partnerType).getPartnersList()) {
+                ImageView imageView = new ImageView(getContext());
+                imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                //imageView.setAdjustViewBounds(true);
+                //imageView.setPadding(12,12,12,12);
+                silverPartnersLayout.addView(imageView);
+
+                Glide.with(getContext())
+                        .load("http://androidmakers.fr/img/partners/" + partner.getImageUrl())
+                        .into(imageView);
+
+                imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                        builder.setToolbarColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+                        CustomTabsIntent customTabsIntent = builder.build();
+                        customTabsIntent.launchUrl(getContext(), Uri.parse(partner.getLink()));
+                    }
+                });
+            }
         }
 
         return view;
