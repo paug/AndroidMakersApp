@@ -15,11 +15,9 @@ import static fr.paug.androidmakers.util.MapUtil.*;
 /**
  * Created by stan on 18/03/2017.
  */
-
 public class FirebaseDataConverted {
     private static final SimpleDateFormat ISO_8601_DATEFORMAT =
             new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.ENGLISH);
-
 
     private final SparseArray<Room> mRooms = new SparseArray<>();
     private final SparseArray<Session> mSessions = new SparseArray<>();
@@ -41,6 +39,10 @@ public class FirebaseDataConverted {
 
     public List<ScheduleSlot> getScheduleSlots() {
         return mScheduleSlots;
+    }
+
+    public Map<PartnerGroup.PartnerType, PartnerGroup> getPartners() {
+        return mPartners;
     }
 
     public void loadAllFromFirebase(Object value) {
@@ -174,4 +176,5 @@ public class FirebaseDataConverted {
             return 0;
         }
     }
+
 }

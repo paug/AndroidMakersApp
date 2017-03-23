@@ -4,14 +4,19 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import fr.paug.androidmakers.R;
+import fr.paug.androidmakers.manager.AgendaRepository;
+import fr.paug.androidmakers.model.PartnerGroup;
 
 public class AboutFragment extends Fragment {
 
@@ -32,6 +37,12 @@ public class AboutFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_about, container, false);
         unbinder = ButterKnife.bind(this, view);
+
+        Map<PartnerGroup.PartnerType, PartnerGroup> partners = AgendaRepository.getInstance().getPartners();
+        for (PartnerGroup.PartnerType partnerType : partners.keySet()) {
+            Log.d("AboutFragment", partnerType.toString()+", "+partners.get(partnerType).getPartnersList().toString());
+        }
+
         return view;
     }
 

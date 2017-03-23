@@ -11,8 +11,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import fr.paug.androidmakers.model.FirebaseDataConverted;
+import fr.paug.androidmakers.model.PartnerGroup;
 import fr.paug.androidmakers.model.Room;
 import fr.paug.androidmakers.model.ScheduleSlot;
 import fr.paug.androidmakers.model.Session;
@@ -21,7 +23,6 @@ import fr.paug.androidmakers.model.Speaker;
 /**
  * Created by stan on 18/03/2017.
  */
-
 public class AgendaRepository {
 
     private final FirebaseDatabase mDatabase;
@@ -82,6 +83,10 @@ public class AgendaRepository {
     @NonNull
     public List<ScheduleSlot> getScheduleSlots() {
         return new ArrayList<>(mFirebaseDataConverted.getScheduleSlots());
+    }
+
+    public Map<PartnerGroup.PartnerType, PartnerGroup> getPartners() {
+        return mFirebaseDataConverted.getPartners();
     }
 
     public interface OnLoadListener {

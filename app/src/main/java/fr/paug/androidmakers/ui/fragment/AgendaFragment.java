@@ -182,15 +182,15 @@ public class AgendaFragment extends Fragment implements AgendaView.AgendaClickLi
     }
 
     private static class AgendaLoadListener implements AgendaRepository.OnLoadListener {
-        private WeakReference<AgendaFragment> mAgendaActivity;
+        private WeakReference<AgendaFragment> reference;
 
         private AgendaLoadListener(AgendaFragment agendaFragment) {
-            mAgendaActivity = new WeakReference<>(agendaFragment);
+            reference = new WeakReference<>(agendaFragment);
         }
 
         @Override
         public void onAgendaLoaded() {
-            AgendaFragment agendaFragment = mAgendaActivity.get();
+            AgendaFragment agendaFragment = reference.get();
             if (agendaFragment == null) {
                 return;
             }
