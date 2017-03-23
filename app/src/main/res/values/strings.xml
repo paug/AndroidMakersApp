@@ -15,9 +15,9 @@
     <string name="venue_name" translatable="false">Les salons de l\'aveyron</string>
     <string name="venue_location" translatable="false">17 Rue de l\'Aubrac\n75012 Paris, France
     </string>
-    <string name="directions">- By car: at the Porte de Bercy exit, head towards Paris Centre,
-        taking the first exit, Bercy Cour Saint-Emilion.\n- By metro : Cour Saint-Emilion station on
-        line 14.\n- By bus : line 24 or 64, Dijon Lachambaudie stop.
+    <string name="directions"><b>By car</b>: at the Porte de Bercy exit, head towards Paris Centre,
+        taking the first exit, Bercy Cour Saint-Emilion.\n\n<b>By metro</b>: Cour Saint-Emilion station on
+        line 14.\n\n<b>By bus</b>: line 24 or 64, Dijon Lachambaudie stop.
     </string>
     <string name="locate_on_map">Locate on map</string>
 
