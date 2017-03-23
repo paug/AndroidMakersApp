@@ -56,7 +56,7 @@ public class AboutFragment extends Fragment {
         try {
             // get the Twitter app if possible
             getActivity().getPackageManager().getPackageInfo("com.twitter.android", 0);
-            twitterIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("witter://search?query=%23AndroidMakersFR"));
+            twitterIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("twitter://search?query=%23AndroidMakersFR"));
             twitterIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         } catch (Exception e) {
             // no Twitter app, revert to browser
