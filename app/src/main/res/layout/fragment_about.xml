@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     tools:context="fr.paug.androidmakers.ui.fragment.AboutFragment">
 
     <LinearLayout
@@ -28,14 +29,17 @@
             android:paddingLeft="@dimen/padding_double"
             android:paddingRight="@dimen/padding_double"
             android:paddingTop="4dp"
+            android:textColor="@color/colorPrimaryDark"
             android:text="@string/about_android_makers"/>
 
-        <LinearLayout
+        <org.apmem.tools.layouts.FlowLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:paddingBottom="4dp"
             android:paddingLeft="@dimen/padding_double"
-            android:paddingRight="@dimen/padding_double">
+            android:paddingRight="@dimen/padding_double"
+            android:paddingTop="4dp">
 
             <com.robertlevonyan.views.chip.Chip
                 android:id="@+id/twitter_chip"
@@ -44,17 +48,24 @@
                 android:layout_gravity="center"
                 android:layout_margin="2dp"
                 android:clickable="true"
-                android:gravity="center">
+                android:elevation="2dp"
+                android:gravity="center"
+                app:backgroundColor="#03A9F4"
+                app:chipText="@string/twitter"
+                app:textColor="@android:color/white"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:padding="4dp"
-                    android:text="@string/twitter"/>
-
-            </com.robertlevonyan.views.chip.Chip>
+            <com.robertlevonyan.views.chip.Chip
+                android:id="@+id/twitter_hashtag_chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="2dp"
+                android:clickable="true"
+                android:elevation="2dp"
+                android:gravity="center"
+                app:backgroundColor="#03A9F4"
+                app:chipText="@string/twitter_hashtag"
+                app:textColor="@android:color/white"/>
 
             <com.robertlevonyan.views.chip.Chip
                 android:id="@+id/google_plus_chip"
@@ -63,17 +74,11 @@
                 android:layout_gravity="center"
                 android:layout_margin="2dp"
                 android:clickable="true"
-                android:gravity="center">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:padding="4dp"
-                    android:text="Google+"/>
-
-            </com.robertlevonyan.views.chip.Chip>
+                android:elevation="2dp"
+                android:gravity="center"
+                app:backgroundColor="#F44336"
+                app:chipText="Google+"
+                app:textColor="@android:color/white"/>
 
             <com.robertlevonyan.views.chip.Chip
                 android:id="@+id/fb_chip"
@@ -82,19 +87,26 @@
                 android:layout_gravity="center"
                 android:layout_margin="2dp"
                 android:clickable="true"
-                android:gravity="center">
+                android:elevation="2dp"
+                android:gravity="center"
+                app:backgroundColor="#3F51B5"
+                app:chipText="Facebook"
+                app:textColor="@android:color/white"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:padding="4dp"
-                    android:text="Facebook"/>
+            <com.robertlevonyan.views.chip.Chip
+                android:id="@+id/yt_chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="2dp"
+                android:clickable="true"
+                android:elevation="2dp"
+                android:gravity="center"
+                app:backgroundColor="#F1F1F1"
+                app:chipText="Youtube"
+                app:textColor="@android:color/holo_red_dark"/>
 
-            </com.robertlevonyan.views.chip.Chip>
-
-        </LinearLayout>
+        </org.apmem.tools.layouts.FlowLayout>
 
         <View
             android:layout_width="match_parent"
@@ -118,6 +130,7 @@
             android:paddingLeft="@dimen/padding_double"
             android:paddingRight="@dimen/padding_double"
             android:paddingTop="4dp"
+            android:textColor="@color/colorPrimaryDark"
             android:text="@string/wifi_network"/>
 
         <TextView
@@ -127,6 +140,8 @@
             android:paddingLeft="@dimen/padding_double"
             android:paddingRight="@dimen/padding_double"
             android:paddingTop="4dp"
+            android:textIsSelectable="true"
+            android:textColor="@color/colorPrimaryDark"
             android:text="@string/wifi_password"/>
 
         <View

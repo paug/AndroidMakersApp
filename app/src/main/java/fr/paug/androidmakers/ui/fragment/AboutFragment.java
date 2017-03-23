@@ -36,7 +36,7 @@ public class AboutFragment extends Fragment {
     }
 
     @OnClick(R.id.twitter_chip)
-    void openTwitter() {
+    void openTwitterUser() {
         Intent twitterIntent;
         try {
             // get the Twitter app if possible
@@ -46,6 +46,21 @@ public class AboutFragment extends Fragment {
         } catch (Exception e) {
             // no Twitter app, revert to browser
             twitterIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/AndroidMakersFR"));
+        }
+        startActivity(twitterIntent);
+    }
+
+    @OnClick(R.id.twitter_hashtag_chip)
+    void openTwitterHashtag() {
+        Intent twitterIntent;
+        try {
+            // get the Twitter app if possible
+            getActivity().getPackageManager().getPackageInfo("com.twitter.android", 0);
+            twitterIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("witter://search?query=%23AndroidMakersFR"));
+            twitterIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        } catch (Exception e) {
+            // no Twitter app, revert to browser
+            twitterIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/search?q=%23AndroidMakersFR"));
         }
         startActivity(twitterIntent);
     }
@@ -60,6 +75,12 @@ public class AboutFragment extends Fragment {
     void openFacebookEvent() {
         Intent facebookIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.fbevent)));
         startActivity(facebookIntent);
+    }
+
+    @OnClick(R.id.yt_chip)
+    void openYoutube() {
+        Intent ytIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.ytchannel)));
+        startActivity(ytIntent);
     }
 
     @Override
