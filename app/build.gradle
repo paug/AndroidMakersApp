@@ -30,6 +30,7 @@ dependencies {
     compile "com.android.support:design:$support_version"
     compile "com.android.support:support-vector-drawable:$support_version"
     compile "com.android.support:customtabs:$support_version"
+    compile "com.android.support:percent:$support_version"
 
     // Firebase
     compile "com.google.firebase:firebase-core:$google_play_services_client_library_version"

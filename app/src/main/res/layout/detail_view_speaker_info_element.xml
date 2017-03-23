@@ -53,10 +53,9 @@
             <LinearLayout
                 android:id="@+id/speakerSocialNetworkHandleLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dip"
                 android:divider="@drawable/divider5dip"
                 android:orientation="horizontal"
-                android:paddingBottom="2dp"
                 android:showDividers="middle">
 
             </LinearLayout>
