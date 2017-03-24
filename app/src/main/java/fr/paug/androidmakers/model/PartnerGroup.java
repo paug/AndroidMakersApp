@@ -10,6 +10,7 @@ import java.util.List;
  */
 public class PartnerGroup {
 
+    // TODO: 24/03/2017 main organizers ?
     public enum PartnerType {Unknown, GoldSponsor, SilverSponsor, Media, Location}
 
     private final PartnerType type;
@@ -22,12 +23,12 @@ public class PartnerGroup {
 
     static PartnerType getPartnerTypeFromString(String typeName) {
         if (!TextUtils.isEmpty(typeName)) {
-            if ("media".equalsIgnoreCase(typeName)) {
-                return PartnerType.Media;
+            if ("gold sponsor".equalsIgnoreCase(typeName)) {
+                return PartnerType.GoldSponsor;
             } else if ("silver sponsor".equalsIgnoreCase(typeName)) {
                 return PartnerType.SilverSponsor;
-            } else if ("gold sponsor".equalsIgnoreCase(typeName)) {
-                return PartnerType.GoldSponsor;
+            } else if ("media".equalsIgnoreCase(typeName)) {
+                return PartnerType.Media;
             } else if ("location".equalsIgnoreCase(typeName)) {
                 return PartnerType.Location;
             }
