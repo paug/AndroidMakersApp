@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
@@ -28,7 +29,7 @@ import fr.paug.androidmakers.model.Partners;
 
 public class AboutFragment extends Fragment {
 
-    @BindView(R.id.silver_partners_layout) LinearLayout silverPartnersLayout;
+    @BindView(R.id.about_layout) LinearLayout aboutLayout;
     private Unbinder unbinder;
 
     public AboutFragment() {
@@ -51,17 +52,16 @@ public class AboutFragment extends Fragment {
         for (PartnerGroup.PartnerType partnerType : partners.keySet()) {
             Log.d("AboutFragment", partnerType.toString() + ", " + partners.get(partnerType).getPartnersList().toString());
 
-            for (final Partners partner : partners.get(partnerType).getPartnersList()) {
-                ImageView imageView = new ImageView(getContext());
-                imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                //imageView.setAdjustViewBounds(true);
-                //imageView.setPadding(12,12,12,12);
-                silverPartnersLayout.addView(imageView);
+            LinearLayout partnersGroupLinearLayout = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.partners_group, null);
+            TextView textView = (TextView) partnersGroupLinearLayout.findViewById(R.id.partners_title);
+            textView.setText(partnerType.name());
+            aboutLayout.addView(partnersGroupLinearLayout);
 
+            for (final Partners partner : partners.get(partnerType).getPartnersList()) {
+                ImageView imageView = (ImageView) LayoutInflater.from(getContext()).inflate(R.layout.partner, null);
                 Glide.with(getContext())
                         .load("http://androidmakers.fr/img/partners/" + partner.getImageUrl())
                         .into(imageView);
-
                 imageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -71,6 +71,7 @@ public class AboutFragment extends Fragment {
                         customTabsIntent.launchUrl(getContext(), Uri.parse(partner.getLink()));
                     }
                 });
+                partnersGroupLinearLayout.addView(imageView);
             }
         }
 

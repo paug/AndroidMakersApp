@@ -8,6 +8,7 @@
     tools:context="fr.paug.androidmakers.ui.fragment.AboutFragment">
 
     <LinearLayout
+        android:id="@+id/about_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -124,74 +125,6 @@
             android:text="@string/wifi_password"
             android:textColor="@color/colorPrimaryDark"
             android:textIsSelectable="true"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorAccent"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-light"
-            android:padding="@dimen/padding"
-            android:text="Silver sponsors"
-            android:textColor="@color/colorAccent"
-            android:textSize="18sp"
-            android:textStyle="italic"/>
-
-        <LinearLayout
-            android:id="@+id/silver_partners_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center">
-
-            <!--<ImageView-->
-                <!--android:id="@+id/sponsor_google"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_weight="1"-->
-                <!--android:adjustViewBounds="true"-->
-                <!--android:contentDescription="Google"-->
-                <!--android:padding="12dp"-->
-                <!--android:scaleType="fitXY"-->
-                <!--android:tag="https://d.android.com"-->
-                <!--app:srcCompat="@drawable/google"/>-->
-
-            <!--<ImageView-->
-                <!--android:id="@+id/sponsor_xebia"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_weight="1"-->
-                <!--android:adjustViewBounds="true"-->
-                <!--android:contentDescription="Xebia"-->
-                <!--android:padding="12dp"-->
-                <!--android:scaleType="fitXY"-->
-                <!--android:tag="https://xebia.fr"-->
-                <!--app:srcCompat="@drawable/xebia"/>-->
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorAccent"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-light"
-            android:padding="@dimen/padding"
-            android:text="Media"
-            android:textColor="@color/colorAccent"
-            android:textSize="18sp"
-            android:textStyle="italic"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorAccent"/>
 
     </LinearLayout>
 

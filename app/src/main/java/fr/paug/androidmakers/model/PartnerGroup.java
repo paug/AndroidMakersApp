@@ -8,14 +8,12 @@ import java.util.List;
  * @author Adrien Vitti
  * @since 2017.03.23
  */
-
 public class PartnerGroup {
 
-    public enum PartnerType {Unknown, SilverSponsor, Media}
-    // TODO: 23/03/2017 Google is Gold
+    public enum PartnerType {Unknown, GoldSponsor, SilverSponsor, Media, Location}
 
-    public final PartnerType type;
-    public final List<Partners> partnersList;
+    private final PartnerType type;
+    private final List<Partners> partnersList;
 
     public PartnerGroup(PartnerType type, List<Partners> partnersList) {
         this.type = type;
@@ -28,6 +26,10 @@ public class PartnerGroup {
                 return PartnerType.Media;
             } else if ("silver sponsor".equalsIgnoreCase(typeName)) {
                 return PartnerType.SilverSponsor;
+            } else if ("gold sponsor".equalsIgnoreCase(typeName)) {
+                return PartnerType.GoldSponsor;
+            } else if ("location".equalsIgnoreCase(typeName)) {
+                return PartnerType.Location;
             }
         }
         return PartnerType.Unknown;
