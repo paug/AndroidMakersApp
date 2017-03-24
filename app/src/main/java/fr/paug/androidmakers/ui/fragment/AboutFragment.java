@@ -77,7 +77,7 @@ public class AboutFragment extends Fragment {
         return view;
     }
 
-    @OnClick(R.id.twitter_chip)
+    @OnClick(R.id.twitter_user_button)
     void openTwitterUser() {
         Intent twitterIntent;
         try {
@@ -92,7 +92,7 @@ public class AboutFragment extends Fragment {
         startActivity(twitterIntent);
     }
 
-    @OnClick(R.id.twitter_hashtag_chip)
+    @OnClick(R.id.twitter_hashtag_button)
     void openTwitterHashtag() {
         Intent twitterIntent;
         try {
@@ -107,19 +107,19 @@ public class AboutFragment extends Fragment {
         startActivity(twitterIntent);
     }
 
-    @OnClick(R.id.google_plus_chip)
+    @OnClick(R.id.google_plus_button)
     void openGPlus() {
         Intent gplusIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.gplus)));
         startActivity(gplusIntent);
     }
 
-    @OnClick(R.id.fb_chip)
+    @OnClick(R.id.facebook_button)
     void openFacebookEvent() {
         Intent facebookIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.fbevent)));
         startActivity(facebookIntent);
     }
 
-    @OnClick(R.id.yt_chip)
+    @OnClick(R.id.youtube_button)
     void openYoutube() {
         Intent ytIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.ytchannel)));
         startActivity(ytIntent);

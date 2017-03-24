@@ -42,76 +42,50 @@
             android:paddingRight="@dimen/padding_double"
             android:paddingTop="4dp">
 
-            <com.robertlevonyan.views.chip.Chip
-                android:id="@+id/twitter_chip"
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/twitter_user_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="2dp"
-                android:clickable="true"
-                android:elevation="2dp"
-                android:gravity="center"
-                android:padding="@dimen/padding"
-                app:backgroundColor="#03A9F4"
-                app:chipText="@string/twitter"
-                app:textColor="@android:color/white"/>
+                android:text="@string/twitter"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                app:backgroundTint="#03A9F4"/>
 
-            <com.robertlevonyan.views.chip.Chip
-                android:id="@+id/twitter_hashtag_chip"
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/twitter_hashtag_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="2dp"
-                android:clickable="true"
-                android:elevation="2dp"
-                android:gravity="center"
-                android:padding="@dimen/padding"
-                app:backgroundColor="#03A9F4"
-                app:chipText="@string/twitter_hashtag"
-                app:textColor="@android:color/white"/>
+                android:text="@string/twitter_hashtag"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                app:backgroundTint="#03A9F4"/>
 
-            <com.robertlevonyan.views.chip.Chip
-                android:id="@+id/google_plus_chip"
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/google_plus_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="2dp"
-                android:clickable="true"
-                android:clipToPadding="false"
-                android:elevation="2dp"
-                android:gravity="center"
-                android:padding="@dimen/padding"
-                app:backgroundColor="#F44336"
-                app:chipText="Google+"
-                app:textColor="@android:color/white"/>
+                android:text="@string/google_plus"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                app:backgroundTint="#F44336"/>
 
-            <com.robertlevonyan.views.chip.Chip
-                android:id="@+id/fb_chip"
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/facebook_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="2dp"
-                android:clickable="true"
-                android:elevation="2dp"
-                android:gravity="center"
-                android:padding="@dimen/padding"
-                app:backgroundColor="#3F51B5"
-                app:chipText="Facebook"
-                app:textColor="@android:color/white"/>
+                android:text="@string/facebook"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                app:backgroundTint="#3F51B5"/>
 
-            <com.robertlevonyan.views.chip.Chip
-                android:id="@+id/yt_chip"
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/youtube_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="2dp"
-                android:clickable="true"
-                android:elevation="2dp"
-                android:gravity="center"
-                android:padding="@dimen/padding"
-                app:backgroundColor="#F1F1F1"
-                app:chipText="Youtube"
-                app:textColor="@android:color/holo_red_dark"/>
+                android:text="@string/youtube"
+                android:textAllCaps="false"
+                android:textColor="@android:color/holo_red_dark"
+                app:backgroundTint="#F1F1F1"/>
 
         </org.apmem.tools.layouts.FlowLayout>
 
