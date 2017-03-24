@@ -1,5 +1,6 @@
 package fr.paug.androidmakers.ui.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import fr.paug.androidmakers.R;
 import fr.paug.androidmakers.manager.AgendaRepository;
 import fr.paug.androidmakers.model.PartnerGroup;
 import fr.paug.androidmakers.model.Partners;
+import fr.paug.androidmakers.util.WifiUtil;
 
 public class AboutFragment extends Fragment {
 
@@ -124,6 +126,15 @@ public class AboutFragment extends Fragment {
     void openYoutube() {
         Intent ytIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.ytchannel)));
         startActivity(ytIntent);
+    }
+
+    @OnClick({R.id.wifi_connect_img, R.id.wifi_connect_text})
+    void connectToVenuesWifi() {
+        final Context context = getContext();
+        final int networkId = WifiUtil.getVenuesWifiNetworkId(context);
+        if (networkId != -1) {
+            WifiUtil.connectToWifi(context, networkId);
+        }
     }
 
     @Override
