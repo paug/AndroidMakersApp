@@ -137,11 +137,13 @@
                     android:textIsSelectable="true"/>
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/wifi_autoconnect_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:gravity="center">
+                android:gravity="center"
+                android:visibility="invisible">
                 <ImageButton
                     android:id="@+id/wifi_connect_img"
                     android:layout_width="wrap_content"
@@ -161,6 +163,14 @@
                     android:paddingTop="4dp"
                     android:textColor="@color/colorPrimaryDark"/>
             </LinearLayout>
+            <ProgressBar
+                android:id="@+id/wifi_autoconnect_progress"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/colorPrimary"
+                android:visibility="gone"/>
         </LinearLayout>
 
 

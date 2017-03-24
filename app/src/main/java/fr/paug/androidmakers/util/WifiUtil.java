@@ -2,6 +2,7 @@ package fr.paug.androidmakers.util;
 
 import android.content.Context;
 import android.net.wifi.WifiConfiguration;
+import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -61,6 +62,22 @@ public class WifiUtil {
         final WifiManager wifiManager = (WifiManager)context.getApplicationContext()
                 .getSystemService(Context.WIFI_SERVICE);
         return wifiManager.enableNetwork(networkId, false);
+    }
+
+    /**
+     * Gets whether or not the currently connected wifi network is the one of the venue.
+     *
+     * Identification of the network is done on the SSID.
+     *
+     * @param context a context
+     * @return true if the current network has been identified as the one of the venue,
+     *         false otherwise
+     */
+    public static boolean isCurrentlyConnectedToVenuesWifi(@NonNull Context context) {
+        final WifiManager wifiManager = (WifiManager)context.getApplicationContext()
+                .getSystemService(Context.WIFI_SERVICE);
+        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+        return wifiInfo != null && wifiInfo.getSSID().equals(SSID);
     }
 
     /**
