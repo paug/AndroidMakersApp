@@ -42,5 +42,7 @@
     <string name="google_plus">Google+</string>
     <string name="facebook">Facebook</string>
     <string name="youtube">Youtube</string>
+    <string name="wifi_connect_description">Directly connect to the venue\'s wifi</string>
+    <string name="wifi_connect">Connect</string>
 
 </resources>
