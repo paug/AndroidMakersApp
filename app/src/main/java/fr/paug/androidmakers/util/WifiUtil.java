@@ -10,11 +10,10 @@ import android.util.Log;
 import java.util.List;
 
 public class WifiUtil {
-    private static final String TAG = "WifiUtil";
 
+    private static final String TAG = "WifiUtil";
     private static final String SSID = "\"AndroidMakers\"";
     private static final String PASSKEY = "\"makers2017\"";
-
 
     /**
      * Gets the wifi network id of the venue. If not found, tries to configure it.
@@ -85,4 +84,5 @@ public class WifiUtil {
      */
     private WifiUtil() {
     }
+
 }

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,13 +36,9 @@ import fr.paug.androidmakers.util.WifiUtil;
 public class AboutFragment extends Fragment {
 
     @BindView(R.id.about_layout) LinearLayout aboutLayout;
+    @BindView(R.id.wifi_autoconnect_progress) View wifiConnectionProgress;
+    @BindView(R.id.wifi_connect_button) AppCompatButton wifiConnectButton;
     private Unbinder unbinder;
-
-    @BindView(R.id.wifi_autoconnect_progress)
-    View wifiConnectionProgress;
-
-    @BindView(R.id.wifi_autoconnect_view)
-    View wifiConnectionView;
 
     public AboutFragment() {
         // Required empty public constructor
@@ -94,20 +91,6 @@ public class AboutFragment extends Fragment {
         return view;
     }
 
-    private void onConnectivityChanged() {
-        if (WifiUtil.isCurrentlyConnectedToVenuesWifi(getContext())) {
-            wifiConnectionView.setVisibility(View.INVISIBLE);
-            wifiConnectionProgress.setVisibility(View.GONE);
-        } else if (wifiConnectionProgress.getVisibility() == View.GONE) {
-            // case where we are not currently trying to connect to the venue's wifi
-            wifiConnectionView.setVisibility(View.VISIBLE);
-            wifiConnectionProgress.setVisibility(View.GONE);
-        } else {
-            wifiConnectionView.setVisibility(View.GONE);
-            wifiConnectionProgress.setVisibility(View.VISIBLE);
-        }
-    }
-
     @OnClick(R.id.twitter_user_button)
     void openTwitterUser() {
         Intent twitterIntent;
@@ -156,14 +139,16 @@ public class AboutFragment extends Fragment {
         startActivity(ytIntent);
     }
 
-    @OnClick({R.id.wifi_connect_img, R.id.wifi_connect_text})
+    @OnClick(R.id.wifi_connect_button)
     void connectToVenuesWifi() {
+        wifiConnectButton.setVisibility(View.GONE);
+        wifiConnectionProgress.setVisibility(View.VISIBLE);
         final Context context = getContext();
         final int networkId = WifiUtil.getVenuesWifiNetworkId(context);
         if (networkId != -1) {
-            wifiConnectionView.setVisibility(View.GONE);
-            wifiConnectionProgress.setVisibility(View.VISIBLE);
-            WifiUtil.connectToWifi(context, networkId);
+            if (WifiUtil.connectToWifi(context, networkId)) {
+                wifiConnectionProgress.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -180,4 +165,19 @@ public class AboutFragment extends Fragment {
             onConnectivityChanged();
         }
     };
+
+    private void onConnectivityChanged() {
+        if (WifiUtil.isCurrentlyConnectedToVenuesWifi(getContext())) {
+            wifiConnectButton.setVisibility(View.INVISIBLE);
+            wifiConnectionProgress.setVisibility(View.GONE);
+        } else if (wifiConnectionProgress.getVisibility() == View.GONE) {
+            // case where we are not currently trying to connect to the venue's wifi
+            wifiConnectButton.setVisibility(View.VISIBLE);
+            wifiConnectionProgress.setVisibility(View.GONE);
+        } else {
+            wifiConnectButton.setVisibility(View.GONE);
+            wifiConnectionProgress.setVisibility(View.VISIBLE);
+        }
+    }
+
 }
