@@ -23,7 +23,7 @@ public class PartnerGroup {
 
     static PartnerType getPartnerTypeFromString(String typeName) {
         if (!TextUtils.isEmpty(typeName)) {
-            if ("gold sponsor".equalsIgnoreCase(typeName)) {
+            if ("gold+ sponsor".equalsIgnoreCase(typeName)) {
                 return PartnerType.GoldSponsor;
             } else if ("silver sponsor".equalsIgnoreCase(typeName)) {
                 return PartnerType.SilverSponsor;
