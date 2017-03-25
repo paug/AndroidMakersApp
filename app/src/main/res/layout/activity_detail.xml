@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
     <RelativeLayout
@@ -35,21 +34,23 @@
                         android:textColor="@android:color/black"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        tools:text="Title"/>
+                        tools:text="Title" />
 
                     <TextView
                         android:id="@+id/sessionDateAndRoom"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingBottom="2dp"
-                        tools:text="Description"/>
+                        tools:text="Description" />
 
                     <TextView
                         android:id="@+id/sessionDescription"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:autoLink="all"
+                        android:linksClickable="true"
                         android:paddingBottom="2dp"
-                        tools:text="Description"/>
+                        tools:text="Description" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -59,15 +60,17 @@
                         android:paddingBottom="2dp"
                         android:showDividers="middle">
 
+                        <!--TODO: remove the gone visibility when session type will be properly available-->
                         <com.robertlevonyan.views.chip.Chip
                             android:id="@+id/sessionType"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:visibility="gone" />
 
                         <com.robertlevonyan.views.chip.Chip
                             android:id="@+id/sessionLanguage"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content" />
 
                     </LinearLayout>
 
@@ -76,14 +79,14 @@
                         android:layout_height="1dip"
                         android:layout_marginBottom="15dip"
                         android:layout_marginTop="15dip"
-                        android:background="@color/grey"/>
+                        android:background="@color/grey" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/Detail_speakerLayoutHeaderTitle"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="16sp"/>
+                        android:textSize="16sp" />
 
                 </LinearLayout>
 
@@ -93,7 +96,7 @@
                     android:layout_height="wrap_content"
                     android:divider="@drawable/divider15dip"
                     android:orientation="vertical"
-                    android:showDividers="beginning|middle|end"/>
+                    android:showDividers="beginning|middle|end" />
 
             </LinearLayout>
 
@@ -108,7 +111,7 @@
             android:padding="20dp"
             android:text="@string/Detail_sessionNotFound"
             android:visibility="gone"
-            tools:visibility="gone"/>
+            tools:visibility="gone" />
 
     </RelativeLayout>
 

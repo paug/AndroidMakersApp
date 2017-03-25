@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="android.text.Html"/>
+
+        <import type="android.text.Html" />
+
         <variable
             name="speaker"
-            type="fr.paug.androidmakers.model.Speaker"/>
+            type="fr.paug.androidmakers.model.Speaker" />
     </data>
 
     <LinearLayout
@@ -24,7 +25,7 @@
             android:layout_height="@dimen/avatar_size"
             android:contentDescription="@string/ImageDesc_speaker_avatar"
             app:imageUrl="@{speaker.thumbnailUrl}"
-            tools:src="@color/colorAccent"/>
+            tools:src="@color/colorAccent" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,15 +41,17 @@
                 android:text="@{speaker.fullNameAndCompany}"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                tools:text="FirstName Name, Company"/>
+                tools:text="FirstName Name, Company" />
 
             <TextView
                 android:id="@+id/speakerBio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:autoLink="all"
+                android:linksClickable="true"
                 android:text="@{Html.fromHtml(speaker.bio)}"
                 android:textSize="14sp"
-                tools:text="Bio"/>
+                tools:text="Bio" />
 
             <LinearLayout
                 android:id="@+id/speakerSocialNetworkHandleLayout"

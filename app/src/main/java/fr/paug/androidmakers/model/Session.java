@@ -1,5 +1,10 @@
 package fr.paug.androidmakers.model;
 
+import android.support.annotation.StringRes;
+import android.text.TextUtils;
+
+import fr.paug.androidmakers.R;
+
 /**
  * Created by stan on 18/03/2017.
  */
@@ -18,5 +23,17 @@ public class Session {
         this.language = language;
         this.speakers = speakers;
         this.subtype = subtype;
+    }
+
+    @StringRes
+    public int getLanguageName() {
+        if (!TextUtils.isEmpty(language)) {
+            if ("en".equalsIgnoreCase(language)) {
+                return R.string.english;
+            }else if ("fr".equalsIgnoreCase(language)) {
+                return R.string.french;
+            }
+        }
+        return 0;
     }
 }

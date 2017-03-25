@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 
 import com.robertlevonyan.views.chip.OnChipClickListener;
 
-import java.text.SimpleDateFormat;
 import java.util.Formatter;
 
 import fr.paug.androidmakers.BuildConfig;
@@ -81,16 +80,23 @@ public class DetailActivity
         activityDetailBinding.sessionTitle.setText(session.title);
         activityDetailBinding.sessionDateAndRoom.setText(sessionDateAndRoom);
         activityDetailBinding.sessionDescription.setText(Html.fromHtml(session.description));
-        activityDetailBinding.sessionLanguage.setChipText(session.language);
-        activityDetailBinding.sessionLanguage.setOnChipClickListener(new OnChipClickListener() {
-            @Override
-            public void onChipClick(View view) {
-                if (BuildConfig.DEBUG) {
-                    Log.d(DetailActivity.class.getName(), "User clicked on tag with content=" + session.language);
+
+        final int languageFullNameRes = session.getLanguageName();
+        if (languageFullNameRes != 0) {
+            activityDetailBinding.sessionLanguage.setChipText(getString(languageFullNameRes));
+            activityDetailBinding.sessionLanguage.setOnChipClickListener(new OnChipClickListener() {
+                @Override
+                public void onChipClick(View view) {
+                    if (BuildConfig.DEBUG) {
+                        Log.d(DetailActivity.class.getName(), "User clicked on tag with content=" + session.language);
+                    }
+                    // TODO: Use this for future filter feature
                 }
-                // TODO: Use this for future filter feature
-            }
-        });
+            });
+        } else {
+            activityDetailBinding.sessionLanguage.setVisibility(View.GONE);
+        }
+
         activityDetailBinding.sessionType.setChipText(session.subtype);
         activityDetailBinding.sessionType.setOnChipClickListener(new OnChipClickListener() {
             @Override
@@ -104,34 +110,38 @@ public class DetailActivity
 
         final ViewGroup sessionSpeakerLayout = (ViewGroup) findViewById(R.id.sessionSpeakerLayout);
         if (session.speakers != null && session.speakers.length > 0) {
-            for (int speakerID : session.speakers) {
+            for (final int speakerID : session.speakers) {
                 final Speaker speaker = AgendaRepository.getInstance().getSpeaker(speakerID);
-                if (speaker != null) {
-                    final DetailViewSpeakerInfoElementBinding speakerInfoElementBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.detail_view_speaker_info_element, null, false);
-                    speakerInfoElementBinding.setSpeaker(speaker);
-                    if (speaker.socialNetworkHandles != null && speaker.socialNetworkHandles.size() > 0) {
-                        for (final SocialNetworkHandle socialNetworkHandle : speaker.socialNetworkHandles) {
-                            if (socialNetworkHandle.networkType != SocialNetworkHandle.SocialNetworkType.Unknown) {
-                                final SmallSocialImageBinding smallSocialImageBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.small_social_image, null, false);
-                                //TODO: Change with icons
-                                smallSocialImageBinding.image.setImageResource(socialNetworkHandle.networkType.getSocialNetworkIcon());
-                                smallSocialImageBinding.image.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        if (BuildConfig.DEBUG) {
-                                            Log.d(DetailActivity.class.getName(), "User clicked on social handle with name=" + socialNetworkHandle.networkType.name());
-                                        }
-                                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(socialNetworkHandle.link)));
-                                    }
-                                });
-                                speakerInfoElementBinding.speakerSocialNetworkHandleLayout.addView(smallSocialImageBinding.getRoot());
-                            }
-                        }
-                    } else {
-                        speakerInfoElementBinding.speakerSocialNetworkHandleLayout.setVisibility(View.GONE);
-                    }
-                    sessionSpeakerLayout.addView(speakerInfoElementBinding.getRoot());
+
+                if (speaker == null) {
+                    continue;
                 }
+
+                final DetailViewSpeakerInfoElementBinding speakerInfoElementBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.detail_view_speaker_info_element, null, false);
+                speakerInfoElementBinding.setSpeaker(speaker);
+
+                if (speaker.socialNetworkHandles != null && speaker.socialNetworkHandles.size() > 0) {
+                    for (final SocialNetworkHandle socialNetworkHandle : speaker.socialNetworkHandles) {
+                        if (socialNetworkHandle.networkType != SocialNetworkHandle.SocialNetworkType.Unknown) {
+                            final SmallSocialImageBinding smallSocialImageBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.small_social_image, null, false);
+                            smallSocialImageBinding.image.setImageResource(socialNetworkHandle.networkType.getSocialNetworkIcon());
+                            smallSocialImageBinding.image.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    if (BuildConfig.DEBUG) {
+                                        Log.d(DetailActivity.class.getName(), "User clicked on social handle with name=" + socialNetworkHandle.networkType.name());
+                                    }
+                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(socialNetworkHandle.link)));
+                                }
+                            });
+                            speakerInfoElementBinding.speakerSocialNetworkHandleLayout.addView(smallSocialImageBinding.getRoot());
+                        }
+                    }
+                } else {
+                    speakerInfoElementBinding.speakerSocialNetworkHandleLayout.setVisibility(View.GONE);
+                }
+
+                sessionSpeakerLayout.addView(speakerInfoElementBinding.getRoot());
             }
         }
 

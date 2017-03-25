@@ -48,5 +48,7 @@
     <string name="wifi_connect">Connect</string>
 
     <string name="sponsors">Sponsors</string>
+    <string name="english">English</string>
+    <string name="french">French</string>
 
 </resources>
