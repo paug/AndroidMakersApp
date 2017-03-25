@@ -24,8 +24,10 @@
     </string>
 
     <string name="wifi">Wifi</string>
-    <string name="wifi_network">Réseau: AndroidMakers</string>
-    <string name="wifi_password">Mot de passe : makers2017</string>
+    <string name="wifi_network">Réseau: <b>AndroidMakers</b></string>
+    <string name="wifi_password">Mot de passe : <b>makers2017</b></string>
+
     <string name="wifi_connect_description">Se connecter directement au Wifi du lieu</string>
     <string name="wifi_connect">Se connecter</string>
+
 </resources>

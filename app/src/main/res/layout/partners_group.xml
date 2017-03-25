@@ -4,22 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/colorAccent"/>
+    android:orientation="vertical"
+    android:paddingTop="@dimen/padding">
 
     <TextView
         android:id="@+id/partners_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:fontFamily="sans-serif-light"
         android:padding="@dimen/padding"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/grey"
         android:textSize="18sp"
-        android:textStyle="italic"
+        android:textStyle="normal"
         tools:text="Partners Group"/>
 
     <LinearLayout
@@ -27,13 +24,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:orientation="vertical">
-
-        <!--<ProgressBar-->
-            <!--android:id="@+id/progressbar"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"/>-->
-
-    </LinearLayout>
+        android:orientation="vertical"/>
 
 </LinearLayout>

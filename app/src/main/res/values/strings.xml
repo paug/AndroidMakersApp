@@ -33,16 +33,20 @@
     <string name="twitter_hashtag">#AndroidMakersFR</string>
     <string name="gplus">https://plus.google.com/+DroidconParis</string>
     <string name="fbevent">https://www.facebook.com/events/700985966748191/</string>
+    <string name="ytchannel">https://www.youtube.com/channel/UCkatLlah5weIpN23LqMgdTg</string>
 
     <string name="wifi">Wifi</string>
-    <string name="wifi_network">Network: AndroidMakers</string>
-    <string name="wifi_password">Password : makers2017</string>
-    <string name="ytchannel">https://www.youtube.com/channel/UCkatLlah5weIpN23LqMgdTg</string>
+    <string name="wifi_network">Network: <b>AndroidMakers</b></string>
+    <string name="wifi_password">Password : <b>makers2017</b></string>
+
     <string name="ImageDesc_social_network_image">social network image</string>
     <string name="google_plus">Google+</string>
     <string name="facebook">Facebook</string>
     <string name="youtube">Youtube</string>
+
     <string name="wifi_connect_description">Directly connect to the venue\'s wifi</string>
     <string name="wifi_connect">Connect</string>
+
+    <string name="sponsors">Sponsors</string>
 
 </resources>
