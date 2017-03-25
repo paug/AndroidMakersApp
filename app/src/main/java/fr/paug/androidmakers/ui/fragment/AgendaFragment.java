@@ -16,10 +16,13 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import fr.paug.androidmakers.R;
 import fr.paug.androidmakers.manager.AgendaRepository;
+import fr.paug.androidmakers.model.Room;
 import fr.paug.androidmakers.model.ScheduleSlot;
 import fr.paug.androidmakers.model.Session;
 import fr.paug.androidmakers.ui.activity.DetailActivity;
@@ -54,7 +57,7 @@ public class AgendaFragment extends Fragment implements AgendaView.AgendaClickLi
     private void onAgendaLoaded() {
         List<ScheduleSlot> scheduleSlots = AgendaRepository.getInstance().getScheduleSlots();
 
-        SparseArray<AgendaView.Items> itemByDayOfTheYear = new SparseArray<>();
+        SparseArray<AgendaView.DaySchedule> itemByDayOfTheYear = new SparseArray<>();
 
         Calendar calendar = Calendar.getInstance();
         for (ScheduleSlot scheduleSlot : scheduleSlots) {
@@ -63,7 +66,7 @@ public class AgendaFragment extends Fragment implements AgendaView.AgendaClickLi
             agendaItems.add(new AgendaView.Item(scheduleSlot, getTitle(scheduleSlot.sessionId)));
         }
 
-        List<AgendaView.Items> items = getItemsOrdered(itemByDayOfTheYear);
+        List<AgendaView.DaySchedule> items = getItemsOrdered(itemByDayOfTheYear);
         PagerAdapter adapter = new AgendaPagerAdapter(items, this);
         mViewPager.setAdapter(adapter);
 
@@ -86,7 +89,7 @@ public class AgendaFragment extends Fragment implements AgendaView.AgendaClickLi
         }
     }
 
-    private int getTodayIndex(List<AgendaView.Items> items) {
+    private int getTodayIndex(List<AgendaView.DaySchedule> items) {
         if (items == null || items.size() < 2) {
             return -1;
         }
@@ -94,12 +97,12 @@ public class AgendaFragment extends Fragment implements AgendaView.AgendaClickLi
         int dayOfYear = calendar.get(Calendar.DAY_OF_YEAR);
         int year = calendar.get(Calendar.YEAR);
         for (int i = 1; i < items.size(); i++) {
-            AgendaView.Items agendaItems = items.get(i);
-            SparseArray<List<AgendaView.Item>> agendaItemByRoom = agendaItems.getItems();
-            if (agendaItemByRoom != null && agendaItemByRoom.size() > 0) {
-                List<AgendaView.Item> list = agendaItemByRoom.get(agendaItemByRoom.keyAt(0));
-                if (list != null && !list.isEmpty()) {
-                    AgendaView.Item item = list.get(0);
+            AgendaView.DaySchedule agendaDaySchedule = items.get(i);
+            List<AgendaView.RoomSchedule> roomSchedules = agendaDaySchedule.getRoomSchedules();
+            if(!roomSchedules.isEmpty()) {
+                List<AgendaView.Item> itemList = roomSchedules.get(0).getItems();
+                if(!itemList.isEmpty()) {
+                    AgendaView.Item item = itemList.get(0);
                     calendar.setTimeInMillis(item.getStartTimestamp());
                     if (calendar.get(Calendar.YEAR) == year
                             && calendar.get(Calendar.DAY_OF_YEAR) == dayOfYear) {
@@ -112,47 +115,59 @@ public class AgendaFragment extends Fragment implements AgendaView.AgendaClickLi
     }
 
     @NonNull
-    private List<AgendaView.Item> getAgendaItems(SparseArray<AgendaView.Items> itemByDayOfTheYear,
+    private List<AgendaView.Item> getAgendaItems(SparseArray<AgendaView.DaySchedule> itemByDayOfTheYear,
                                                  Calendar calendar, ScheduleSlot scheduleSlot) {
-        SparseArray<List<AgendaView.Item>> itemsSparseArray =
-                getItemsByRoomList(itemByDayOfTheYear, calendar, scheduleSlot);
-        List<AgendaView.Item> agendaItems = itemsSparseArray.get(scheduleSlot.room);
-        if (agendaItems == null) {
-            agendaItems = new ArrayList<>();
-            itemsSparseArray.put(scheduleSlot.room, agendaItems);
+        List<AgendaView.RoomSchedule> roomSchedules =
+                getRoomScheduleForDay(itemByDayOfTheYear, calendar, scheduleSlot);
+        AgendaView.RoomSchedule roomScheduleForThis = null;
+        for (AgendaView.RoomSchedule roomSchedule : roomSchedules) {
+            if (roomSchedule.getRoomId() == scheduleSlot.room) {
+                roomScheduleForThis = roomSchedule;
+                break;
+            }
         }
-        return agendaItems;
+        if (roomScheduleForThis == null) {
+            List<AgendaView.Item> agendaItems = new ArrayList<>();
+            Room room = AgendaRepository.getInstance().getRoom(scheduleSlot.room);
+            String titleRoom = (room == null) ? null : room.name;
+            roomScheduleForThis = new AgendaView.RoomSchedule(
+                    scheduleSlot.room, titleRoom, agendaItems);
+            roomSchedules.add(roomScheduleForThis);
+            Collections.sort(roomSchedules);
+            return agendaItems;
+        } else {
+            return roomScheduleForThis.getItems();
+        }
     }
 
-    private SparseArray<List<AgendaView.Item>> getItemsByRoomList(
-            SparseArray<AgendaView.Items> itemByDayOfTheYear,
+    private List<AgendaView.RoomSchedule> getRoomScheduleForDay(
+            SparseArray<AgendaView.DaySchedule> itemByDayOfTheYear,
             Calendar calendar, ScheduleSlot scheduleSlot) {
 
         calendar.setTimeInMillis(scheduleSlot.startDate);
         int dayIndex = calendar.get(Calendar.DAY_OF_YEAR) + calendar.get(Calendar.YEAR) * 1000;
-        AgendaView.Items items = itemByDayOfTheYear.get(dayIndex);
-        SparseArray<List<AgendaView.Item>> itemsSparseArray;
-        if (items == null) {
-            itemsSparseArray = new SparseArray<>();
+        AgendaView.DaySchedule daySchedule = itemByDayOfTheYear.get(dayIndex);
+        if (daySchedule == null) {
+            List<AgendaView.RoomSchedule> roomSchedule = new ArrayList<>();
             String title = DateFormat.getDateInstance().format(calendar.getTime());
-            items = new AgendaView.Items(title, itemsSparseArray);
-            itemByDayOfTheYear.put(dayIndex, items);
-            return itemsSparseArray;
+            daySchedule = new AgendaView.DaySchedule(title, roomSchedule);
+            itemByDayOfTheYear.put(dayIndex, daySchedule);
+            return roomSchedule;
         } else {
-            return items.getItems();
+            return daySchedule.getRoomSchedules();
         }
     }
 
     @NonNull
-    private List<AgendaView.Items> getItemsOrdered(
-            SparseArray<AgendaView.Items> itemByDayOfTheYear) {
+    private List<AgendaView.DaySchedule> getItemsOrdered(
+            SparseArray<AgendaView.DaySchedule> itemByDayOfTheYear) {
         int size = itemByDayOfTheYear.size();
         int[] keysSorted = new int[size];
         for (int i = 0; i < size; i++) {
             keysSorted[i] = itemByDayOfTheYear.keyAt(i);
         }
         Arrays.sort(keysSorted);
-        List<AgendaView.Items> items = new ArrayList<>(size);
+        List<AgendaView.DaySchedule> items = new ArrayList<>(size);
         for (int key : keysSorted) {
             items.add(itemByDayOfTheYear.get(key));
         }

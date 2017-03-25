@@ -5,13 +5,16 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.text.TextPaint;
 import android.text.format.DateUtils;
 import android.util.AttributeSet;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -41,7 +44,11 @@ public class AgendaView extends ScrollView {
     private int mTimeWidth;
     private long mInitialTime;
     private Paint mLinePaint;
+    private Paint mLabelBackgroundPaint;
     private TextPaint mTextPaint;
+    private int mPadding;
+
+    private RectF mRectF = new RectF();
 
     public AgendaView(Context context) {
         super(context);
@@ -64,16 +71,13 @@ public class AgendaView extends ScrollView {
         init();
     }
 
-    public void setAgenda(Items items, AgendaClickListener listener) {
+    public void setAgenda(DaySchedule daySchedule, AgendaClickListener listener) {
         long start = Long.MAX_VALUE;
         long end = Long.MIN_VALUE;
 
-        SparseArray<List<Item>> agenda = items.getItems();
-        int[] keys = new int[agenda.size()];
+        List<RoomSchedule> agenda = daySchedule.getRoomSchedules();
         for (int i = 0; i < agenda.size(); i++) {
-            keys[i] = agenda.keyAt(i);
-
-            List<Item> agendaPerTrack = agenda.get(keys[i]);
+            List<Item> agendaPerTrack = agenda.get(i).getItems();
             for (Item agendaItem : agendaPerTrack) {
                 start = Math.min(start, agendaItem.getStartTimestamp());
                 end = Math.max(end, agendaItem.getEndTimestamp());
@@ -95,7 +99,8 @@ public class AgendaView extends ScrollView {
         // add all agenda items
 
         for (int i = 0; i < agenda.size(); i++) {
-            List<Item> agendaPerTrack = agenda.get(keys[i]);
+            RoomSchedule roomSchedule = agenda.get(i);
+            List<Item> agendaPerTrack = roomSchedule.getItems();
             // for track 1
             FrameLayout frameLayout = new FrameLayout(context);
             for (Item agendaItem : agendaPerTrack) {
@@ -120,7 +125,7 @@ public class AgendaView extends ScrollView {
             frameLayout.setLayoutParams(new LinearLayout.LayoutParams(0,
                     LinearLayout.LayoutParams.MATCH_PARENT, 1
             ));
-
+            frameLayout.setTag(roomSchedule.mTitle);
             rootView.addView(frameLayout);
         }
 
@@ -139,7 +144,7 @@ public class AgendaView extends ScrollView {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    public void draw(Canvas canvas) {
         if (mInitialTime > 0) {
             int y = 0;
             long timestampFirstHour = getHourBeforeTimestamp(mInitialTime);
@@ -151,7 +156,41 @@ public class AgendaView extends ScrollView {
                 drawLineHour(canvas, y, label);
             }
         }
-        super.onDraw(canvas);
+
+        super.draw(canvas);
+
+        drawRoomName(canvas);
+    }
+
+    private void drawRoomName(Canvas canvas) {
+        if (getChildCount() != 1) {
+            return;
+        }
+        ViewGroup rootView = (ViewGroup) getChildAt(0);
+
+        float offsetY = getScrollY();
+
+        int x = mTimeWidth;
+        int childCount = rootView.getChildCount();
+        int widthPerItem = (getWidth() - mTimeWidth) / childCount;
+        for (int i = 0; i < childCount; i++) {
+            View view = rootView.getChildAt(i);
+            Object tag = view.getTag();
+            if (tag instanceof String) {
+                String roomName = (String) tag;
+
+                float measureText = mTextPaint.measureText(roomName);
+                float xText = x + widthPerItem / 2 - measureText / 2f;
+                float yText = offsetY + mTextPaint.getTextSize() + mPadding;
+
+                mRectF.set(xText - mPadding, offsetY + mPadding / 2,
+                        xText + measureText + mPadding, yText + mPadding);
+
+                canvas.drawRoundRect(mRectF, mPadding / 2, mPadding / 2, mLabelBackgroundPaint);
+                canvas.drawText(roomName, xText, yText, mTextPaint);
+            }
+            x += widthPerItem;
+        }
     }
 
     private String getTimeLabel(long timestamp) {
@@ -214,35 +253,73 @@ public class AgendaView extends ScrollView {
         mLinePaint.setColor(Color.GRAY);
         mLinePaint.setStrokeWidth(1f);
 
+        mLabelBackgroundPaint = new Paint();
+        mLabelBackgroundPaint.setColor(Color.argb(220, 250, 250, 250));
+        mLabelBackgroundPaint.setAntiAlias(true);
+
         mTextPaint = new TextPaint();
         mTextPaint.setAntiAlias(true);
+        mTextPaint.setColor(Color.DKGRAY);
         mTextPaint.setTextSize(getPixelFromSp(14));
 
         mTimeWidth = getPixelFromSp(50);
 
-        int paddingBottom = getResources().getDimensionPixelSize(R.dimen.padding);
-        setPadding(0, paddingBottom, 0, paddingBottom);
+        mPadding = getResources().getDimensionPixelSize(R.dimen.padding);
+        setPadding(0, mPadding, 0, mPadding);
     }
 
     public interface AgendaClickListener {
         void onClick(Item agendaItem);
     }
 
-    public static class Items {
+    public static class DaySchedule {
         private final String mTitle;
-        private final SparseArray<List<AgendaView.Item>> mItems;
+        @NonNull
+        private final List<RoomSchedule> mRoomSchedules;
 
-        public Items(String title, SparseArray<List<Item>> items) {
+        public DaySchedule(String title, @NonNull List<RoomSchedule> roomSchedules) {
             mTitle = title;
-            mItems = items;
+            mRoomSchedules = roomSchedules;
         }
 
         public String getTitle() {
             return mTitle;
         }
 
-        public SparseArray<List<Item>> getItems() {
+        @NonNull
+        public List<RoomSchedule> getRoomSchedules() {
+            return mRoomSchedules;
+        }
+    }
+
+    public static class RoomSchedule implements Comparable<RoomSchedule> {
+        private final int mRoomId;
+        private final String mTitle;
+        @NonNull
+        private final List<AgendaView.Item> mItems;
+
+        public RoomSchedule(int roomId, String title, @NonNull List<Item> items) {
+            mRoomId = roomId;
+            mTitle = title;
+            mItems = items;
+        }
+
+        public int getRoomId() {
+            return mRoomId;
+        }
+
+        public String getTitle() {
+            return mTitle;
+        }
+
+        @NonNull
+        public List<Item> getItems() {
             return mItems;
+        }
+
+        @Override
+        public int compareTo(@NonNull RoomSchedule o) {
+            return mRoomId - o.mRoomId;
         }
     }
 

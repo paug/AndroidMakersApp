@@ -15,9 +15,9 @@ import fr.paug.androidmakers.ui.view.AgendaView;
 public class AgendaPagerAdapter extends PagerAdapter {
 
     private AgendaView.AgendaClickListener mAgendaClickListener;
-    private List<AgendaView.Items> mAgenda;
+    private List<AgendaView.DaySchedule> mAgenda;
 
-    public AgendaPagerAdapter(List<AgendaView.Items> agenda,
+    public AgendaPagerAdapter(List<AgendaView.DaySchedule> agenda,
                               AgendaView.AgendaClickListener listener) {
         mAgenda = agenda;
         mAgendaClickListener = listener;
@@ -51,7 +51,7 @@ public class AgendaPagerAdapter extends PagerAdapter {
         return getItems(position).getTitle();
     }
 
-    private AgendaView.Items getItems(int position) {
+    private AgendaView.DaySchedule getItems(int position) {
         return mAgenda.get(position);
     }
 
