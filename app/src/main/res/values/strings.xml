@@ -50,5 +50,10 @@
     <string name="sponsors">Sponsors</string>
     <string name="english">English</string>
     <string name="french">French</string>
+    <string name="gold_sponsor">Gold Sponsor</string>
+    <string name="silver_sponsor">Silver Sponsor</string>
+    <string name="media_sponsor">Media</string>
+    <string name="location_sponsor">Location</string>
+    <string name="social">Social</string>
 
 </resources>

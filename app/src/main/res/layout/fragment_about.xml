@@ -1,109 +1,99 @@
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="@color/white"
     tools:context="fr.paug.androidmakers.ui.fragment.AboutFragment">
 
     <LinearLayout
         android:id="@+id/about_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:divider="@drawable/divider15dip"
+        android:orientation="vertical"
+        android:padding="@dimen/padding"
+        android:showDividers="middle">
+
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:fontFamily="sans-serif-condensed"-->
+        <!--android:padding="@dimen/padding"-->
+        <!--android:text="@string/app_name"-->
+        <!--android:textColor="@color/colorAccent"-->
+        <!--android:textSize="18sp"-->
+        <!--android:textStyle="bold" />-->
 
         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/about_android_makers"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-condensed"
-            android:padding="@dimen/padding"
-            android:text="@string/app_name"
-            android:textColor="@color/colorAccent"
-            android:textSize="18sp"
-            android:textStyle="bold"/>
+            android:text="@string/social"
+            style="@style/About_section_title"
+            />
 
         <TextView
-            android:layout_width="match_parent"
+            android:id="@+id/twitter_hashtag_button"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="4dp"
-            android:paddingLeft="@dimen/padding_double"
-            android:paddingRight="@dimen/padding_double"
-            android:paddingTop="4dp"
-            android:text="@string/about_android_makers"
-            android:textColor="@android:color/black"/>
+            android:layout_gravity="center_horizontal"
+            android:text="@string/twitter_hashtag"
+            android:textAllCaps="false"
+            android:textColor="#03A9F4"
+            android:textSize="18sp" />
 
-        <org.apmem.tools.layouts.FlowLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dip"
             android:gravity="center"
             android:orientation="horizontal"
-            android:paddingBottom="4dp"
-            android:paddingLeft="@dimen/padding_double"
-            android:paddingRight="@dimen/padding_double"
-            android:paddingTop="4dp">
+            android:showDividers="middle"
+            android:weightSum="4">
 
-            <android.support.v7.widget.AppCompatButton
+            <ImageView
                 android:id="@+id/twitter_user_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/twitter"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                app:backgroundTint="#03A9F4"/>
+                android:layout_width="0dip"
+                android:layout_height="50dip"
+                android:layout_weight="1"
+                android:src="@drawable/ic_twitter_logo_white_on_blue" />
 
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/twitter_hashtag_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/twitter_hashtag"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                app:backgroundTint="#03A9F4"/>
-
-            <android.support.v7.widget.AppCompatButton
+            <ImageView
                 android:id="@+id/google_plus_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/google_plus"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                app:backgroundTint="#F44336"/>
+                android:layout_width="0dip"
+                android:layout_height="50dip"
+                android:layout_weight="1"
+                android:src="@drawable/google_plus" />
 
-            <android.support.v7.widget.AppCompatButton
+            <ImageView
                 android:id="@+id/facebook_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/facebook"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                app:backgroundTint="#3F51B5"/>
+                android:layout_width="0dip"
+                android:layout_height="50dip"
+                android:layout_weight="1"
+                android:src="@drawable/fb_logo_blue" />
 
-            <android.support.v7.widget.AppCompatButton
+            <ImageView
                 android:id="@+id/youtube_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/youtube"
-                android:textAllCaps="false"
-                android:textColor="@android:color/holo_red_dark"
-                app:backgroundTint="#F1F1F1"/>
+                android:layout_width="0dip"
+                android:layout_height="50dip"
+                android:layout_weight="1"
+                android:src="@drawable/youtube_social" />
 
-        </org.apmem.tools.layouts.FlowLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorAccent"/>
+        </LinearLayout>
 
         <TextView
+            android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-condensed"
-            android:padding="@dimen/padding"
             android:text="@string/wifi"
-            android:textColor="@color/colorAccent"
-            android:textSize="18sp"
-            android:textStyle="bold"/>
+            style="@style/About_section_title"
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -121,23 +111,15 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="4dp"
-                    android:paddingLeft="@dimen/padding_double"
-                    android:paddingRight="@dimen/padding_double"
-                    android:paddingTop="4dp"
                     android:text="@string/wifi_network"
-                    android:textColor="@android:color/black"/>
+                    android:textColor="@color/black" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="4dp"
-                    android:paddingLeft="@dimen/padding_double"
-                    android:paddingRight="@dimen/padding_double"
-                    android:paddingTop="4dp"
                     android:text="@string/wifi_password"
-                    android:textColor="@android:color/black"
-                    android:textIsSelectable="true"/>
+                    android:textColor="@color/black"
+                    android:textIsSelectable="true" />
 
             </LinearLayout>
 
@@ -145,13 +127,12 @@
                 android:id="@+id/wifi_connect_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawablePadding="@dimen/padding"
                 android:drawableTop="@drawable/ic_network_wifi_white_24dp"
                 android:text="@string/wifi_connect"
-                android:textColor="@android:color/white"
+                android:textColor="@color/white"
                 android:visibility="invisible"
                 app:backgroundTint="?attr/colorPrimary"
-                tools:visibility="visible"/>
+                tools:visibility="visible" />
 
             <ProgressBar
                 android:id="@+id/wifi_autoconnect_progress"
@@ -161,24 +142,16 @@
                 android:layout_weight="1"
                 android:indeterminate="true"
                 android:visibility="gone"
-                tools:visibility="visible"/>
+                tools:visibility="visible" />
 
         </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorAccent"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-condensed"
-            android:padding="@dimen/padding"
             android:text="@string/sponsors"
-            android:textColor="@color/colorAccent"
-            android:textSize="18sp"
-            android:textStyle="bold"/>
+            style="@style/About_section_title"
+            />
 
     </LinearLayout>
 

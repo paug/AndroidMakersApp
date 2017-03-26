@@ -10,4 +10,4 @@
     android:minHeight="80dp"
     android:padding="@dimen/padding_double"
     android:scaleType="center"
-    tools:src="@drawable/ic_info_outline_black_24dp"/>
+    tools:src="@drawable/google_plus"/>

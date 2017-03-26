@@ -11,7 +11,6 @@ import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +20,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -35,9 +35,12 @@ import fr.paug.androidmakers.util.WifiUtil;
 
 public class AboutFragment extends Fragment {
 
-    @BindView(R.id.about_layout) LinearLayout aboutLayout;
-    @BindView(R.id.wifi_autoconnect_progress) View wifiConnectionProgress;
-    @BindView(R.id.wifi_connect_button) AppCompatButton wifiConnectButton;
+    @BindView(R.id.about_layout)
+    LinearLayout aboutLayout;
+    @BindView(R.id.wifi_autoconnect_progress)
+    View wifiConnectionProgress;
+    @BindView(R.id.wifi_connect_button)
+    AppCompatButton wifiConnectButton;
     private Unbinder unbinder;
 
     public AboutFragment() {
@@ -56,31 +59,17 @@ public class AboutFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_about, container, false);
         unbinder = ButterKnife.bind(this, view);
 
-        Map<PartnerGroup.PartnerType, PartnerGroup> partners = AgendaRepository.getInstance().getPartners();
-        for (PartnerGroup.PartnerType partnerType : partners.keySet()) {
-            Log.d("AboutFragment", partnerType.toString() + ", " + partners.get(partnerType).getPartnersList().toString());
+        final Map<PartnerGroup.PartnerType, PartnerGroup> partners = AgendaRepository.getInstance().getPartners();
 
-            LinearLayout partnersGroupLinearLayout = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.partners_group, null);
-            TextView textView = (TextView) partnersGroupLinearLayout.findViewById(R.id.partners_title);
-            textView.setText(partnerType.name());
-            aboutLayout.addView(partnersGroupLinearLayout);
-
-            for (final Partners partner : partners.get(partnerType).getPartnersList()) {
-                ImageView imageView = (ImageView) LayoutInflater.from(getContext()).inflate(R.layout.partner, null);
-                Glide.with(getContext())
-                        .load("http://androidmakers.fr/img/partners/" + partner.getImageUrl())
-                        .into(imageView);
-                imageView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-                        builder.setToolbarColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
-                        CustomTabsIntent customTabsIntent = builder.build();
-                        customTabsIntent.launchUrl(getContext(), Uri.parse(partner.getLink()));
-                    }
-                });
-                partnersGroupLinearLayout.addView(imageView);
-            }
+        if (partners != null) {
+            final PartnerGroup goldSponsorGroup = partners.get(PartnerGroup.PartnerType.GoldSponsor);
+            addPartnerTypeToView(goldSponsorGroup);
+            final PartnerGroup silverSponsorGroup = partners.get(PartnerGroup.PartnerType.SilverSponsor);
+            addPartnerTypeToView(silverSponsorGroup);
+            final PartnerGroup mediaSponsorGroup = partners.get(PartnerGroup.PartnerType.Media);
+            addPartnerTypeToView(mediaSponsorGroup);
+            final PartnerGroup locationGroup = partners.get(PartnerGroup.PartnerType.Location);
+            addPartnerTypeToView(locationGroup);
         }
 
         // listen to network state change
@@ -177,6 +166,36 @@ public class AboutFragment extends Fragment {
         } else {
             wifiConnectButton.setVisibility(View.GONE);
             wifiConnectionProgress.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void addPartnerTypeToView(final PartnerGroup partnerGroup) {
+        if (partnerGroup == null) {
+            return;
+        }
+        final List<Partners> partnersList = partnerGroup.getPartnersList();
+        if (partnersList != null && partnersList.size() > 0) {
+            final LinearLayout partnersGroupLinearLayout = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.partners_group, null);
+            final TextView partnerGroupHeader = (TextView) partnersGroupLinearLayout.findViewById(R.id.partners_title);
+            partnerGroupHeader.setText(partnerGroup.getPartnerType().getName());
+            aboutLayout.addView(partnersGroupLinearLayout);
+
+            for (final Partners partner : partnersList) {
+                final ImageView imageView = (ImageView) LayoutInflater.from(getContext()).inflate(R.layout.partner, null);
+                Glide.with(getContext())
+                        .load("http://androidmakers.fr/img/partners/" + partner.getImageUrl())
+                        .into(imageView);
+                imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                        builder.setToolbarColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+                        CustomTabsIntent customTabsIntent = builder.build();
+                        customTabsIntent.launchUrl(getContext(), Uri.parse(partner.getLink()));
+                    }
+                });
+                partnersGroupLinearLayout.addView(imageView);
+            }
         }
     }
 

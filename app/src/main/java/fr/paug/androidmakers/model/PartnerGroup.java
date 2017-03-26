@@ -1,8 +1,12 @@
 package fr.paug.androidmakers.model;
 
+import android.support.annotation.DrawableRes;
+import android.support.annotation.StringRes;
 import android.text.TextUtils;
 
 import java.util.List;
+
+import fr.paug.androidmakers.R;
 
 /**
  * @author Adrien Vitti
@@ -11,7 +15,25 @@ import java.util.List;
 public class PartnerGroup {
 
     // TODO: 24/03/2017 main organizers ?
-    public enum PartnerType {Unknown, GoldSponsor, SilverSponsor, Media, Location}
+    public enum PartnerType {
+        Unknown, GoldSponsor, SilverSponsor, Media, Location;
+
+        @StringRes
+        public int getName() {
+            switch (this) {
+                case GoldSponsor:
+                    return R.string.gold_sponsor;
+                case SilverSponsor:
+                    return R.string.silver_sponsor;
+                case Media:
+                    return R.string.media_sponsor;
+                case Location:
+                    return R.string.location_sponsor;
+                default:
+                    return 0;
+            }
+        }
+    }
 
     private final PartnerType type;
     private final List<Partners> partnersList;
@@ -38,6 +60,10 @@ public class PartnerGroup {
 
     public List<Partners> getPartnersList() {
         return partnersList;
+    }
+
+    public PartnerType getPartnerType() {
+        return type;
     }
 
 }

@@ -31,5 +31,6 @@
     <string name="wifi_connect">Se connecter</string>
     <string name="english">Anglais</string>
     <string name="french">Français</string>
+    <string name="location_sponsor">Salle</string>
 
 </resources>
