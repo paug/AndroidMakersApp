@@ -130,13 +130,12 @@ public class AboutFragment extends Fragment {
 
     @OnClick(R.id.wifi_connect_button)
     void connectToVenuesWifi() {
-        wifiConnectButton.setVisibility(View.GONE);
-        wifiConnectionProgress.setVisibility(View.VISIBLE);
         final Context context = getContext();
         final int networkId = WifiUtil.getVenuesWifiNetworkId(context);
         if (networkId != -1) {
             if (WifiUtil.connectToWifi(context, networkId)) {
-                wifiConnectionProgress.setVisibility(View.GONE);
+                wifiConnectButton.setVisibility(View.GONE);
+                wifiConnectionProgress.setVisibility(View.VISIBLE);
             }
         }
     }
