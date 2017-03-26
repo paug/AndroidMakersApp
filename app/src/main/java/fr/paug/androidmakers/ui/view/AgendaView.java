@@ -253,8 +253,19 @@ public class AgendaView extends ScrollView {
         mLinePaint.setColor(Color.GRAY);
         mLinePaint.setStrokeWidth(1f);
 
+        TypedValue a = new TypedValue();
+        getContext().getTheme().resolveAttribute(android.R.attr.windowBackground, a, true);
+        int labelBackgroundColor;
+        if (a.type >= TypedValue.TYPE_FIRST_COLOR_INT && a.type <= TypedValue.TYPE_LAST_COLOR_INT) {
+            // windowBackground is a color
+            labelBackgroundColor = Color.argb(220,
+                    Color.red(a.data), Color.green(a.data), Color.blue(a.data));
+        } else {
+            labelBackgroundColor = Color.argb(220, 250, 250, 250);
+        }
+
         mLabelBackgroundPaint = new Paint();
-        mLabelBackgroundPaint.setColor(Color.argb(220, 250, 250, 250));
+        mLabelBackgroundPaint.setColor(labelBackgroundColor);
         mLabelBackgroundPaint.setAntiAlias(true);
 
         mTextPaint = new TextPaint();
