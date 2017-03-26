@@ -6,9 +6,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import static fr.paug.androidmakers.util.MapUtil.*;
 
@@ -19,6 +21,7 @@ public class FirebaseDataConverted {
     private static final SimpleDateFormat ISO_8601_DATEFORMAT =
             new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.ENGLISH);
 
+    private final Set<String> mAllLanguages = new HashSet<>();
     private final SparseArray<Room> mRooms = new SparseArray<>();
     private final SparseArray<Session> mSessions = new SparseArray<>();
     private final SparseArray<Speaker> mSpeakers = new SparseArray<>();
@@ -43,6 +46,10 @@ public class FirebaseDataConverted {
 
     public Map<PartnerGroup.PartnerType, PartnerGroup> getPartners() {
         return mPartners;
+    }
+
+    public Set<String> getAllLanguages() {
+        return mAllLanguages;
     }
 
     public void loadAllFromFirebase(Object value) {
@@ -108,10 +115,14 @@ public class FirebaseDataConverted {
                 Map map = (Map) value;
                 int id = getId(map);
                 if (id >= 0) {
+                    String language = getString(map, "language");
+                    if (language != null) {
+                        mAllLanguages.add(language);
+                    }
                     mSessions.put(id, new Session(
                             getString(map, "title"),
                             getString(map, "description"),
-                            getString(map, "language"),
+                            language,
                             getIntArray(map, "speakers"),
                             getString(map, "subtype")
                     ));

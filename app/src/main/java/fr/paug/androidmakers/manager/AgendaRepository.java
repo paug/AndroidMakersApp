@@ -12,6 +12,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import fr.paug.androidmakers.model.FirebaseDataConverted;
 import fr.paug.androidmakers.model.PartnerGroup;
@@ -57,6 +58,10 @@ public class AgendaRepository {
         return SingletonHolder.instance;
     }
 
+    public boolean isLoaded() {
+        return mLoaded;
+    }
+
     public void load(OnLoadListener listener) {
         if (mLoaded) {
             listener.onAgendaLoaded();
@@ -87,6 +92,10 @@ public class AgendaRepository {
 
     public Map<PartnerGroup.PartnerType, PartnerGroup> getPartners() {
         return mFirebaseDataConverted.getPartners();
+    }
+
+    public Set<String> getAllLanguages() {
+        return mFirebaseDataConverted.getAllLanguages();
     }
 
     public interface OnLoadListener {

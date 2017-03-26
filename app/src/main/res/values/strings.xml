@@ -56,4 +56,7 @@
     <string name="location_sponsor">Location</string>
     <string name="social">Social</string>
 
+    <string name="filter_language_header">Language</string>
+    <string name="filter_language_all">All</string>
+
 </resources>

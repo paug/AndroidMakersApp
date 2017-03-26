@@ -33,4 +33,7 @@
     <string name="french">Français</string>
     <string name="location_sponsor">Salle</string>
 
+    <string name="filter_language_header">Langues</string>
+    <string name="filter_language_all">Toutes</string>
+
 </resources>
