@@ -59,4 +59,6 @@
     <string name="filter_language_header">Language</string>
     <string name="filter_language_all">All</string>
 
+    <string name="star_session">Star session</string>
+    <string name="unstar_session">Unstar session</string>
 </resources>

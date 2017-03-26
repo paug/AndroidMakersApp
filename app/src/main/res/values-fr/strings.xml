@@ -44,4 +44,6 @@
     <string name="sponsors">Sponsors</string>
     <string name="gold_sponsor">Sponsor Gold</string>
 
+    <string name="star_session">Mettre en favori</string>
+    <string name="unstar_session">Enlever des favoris</string>
 </resources>

@@ -42,16 +42,10 @@ public class SessionSelector {
     }
 
     public boolean hasSelected() {
-        if(true) {
-            return true;
-        }
         return !mSessionsSelected.isEmpty();
     }
 
     public boolean isSelected(int id) {
-        if(true) {
-            return id % 3 == 0;
-        }
         return mSessionsSelected.contains(Integer.toString(id));
     }
 

@@ -11,6 +11,7 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ import fr.paug.androidmakers.model.Session;
 import fr.paug.androidmakers.model.SocialNetworkHandle;
 import fr.paug.androidmakers.model.Speaker;
 import fr.paug.androidmakers.ui.view.AgendaView;
+import fr.paug.androidmakers.util.SessionSelector;
 
 /**
  * Created by stan on 19/03/2017.
@@ -42,6 +44,8 @@ public class DetailActivity
     private static final String PARAM_SESSION_START_DATE = "param_session_start_date";
     private static final String PARAM_SESSION_END_DATE = "param_session_end_date";
     private static final String PARAM_SESSION_ROOM = "param_session_room";
+
+    private int sessionId;
 
     public static void startActivity(Context context, AgendaView.Item item) {
         Intent intent = new Intent(context, DetailActivity.class);
@@ -56,9 +60,8 @@ public class DetailActivity
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final ActivityDetailBinding activityDetailBinding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
-        final Session session = AgendaRepository.getInstance().getSession(
-                getIntent().getIntExtra(PARAM_SESSION_ID, -1)
-        );
+        sessionId = getIntent().getIntExtra(PARAM_SESSION_ID, -1);
+        final Session session = AgendaRepository.getInstance().getSession(sessionId);
 
         final long sessionStartDateInMillis = getIntent().getLongExtra(PARAM_SESSION_START_DATE, -1);
         final long sessionEndDateInMillis = getIntent().getLongExtra(PARAM_SESSION_END_DATE, -1);
@@ -155,13 +158,43 @@ public class DetailActivity
         }
     }
 
+    private void changeSessionSelection(boolean select) {
+        SessionSelector.getInstance().setSessionSelected(sessionId, select);
+        invalidateOptionsMenu();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.star, menu);
+        final MenuItem selectItem = menu.findItem(R.id.select);
+        final MenuItem unselectItem = menu.findItem(R.id.unselect);
+        if (selectItem != null && unselectItem != null) {
+            if (SessionSelector.getInstance().isSelected(sessionId)) {
+                selectItem.setVisible(false);
+                unselectItem.setVisible(true);
+            } else {
+                unselectItem.setVisible(false);
+                selectItem.setVisible(true);
+            }
+        }
+        return true;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
-            return true;
-        } else {
-            return super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            case R.id.select:
+                changeSessionSelection(true);
+                return true;
+            case R.id.unselect:
+                changeSessionSelection(false);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }
