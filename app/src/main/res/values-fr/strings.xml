@@ -35,5 +35,13 @@
 
     <string name="filter_language_header">Langues</string>
     <string name="filter_language_all">Toutes</string>
+    <string name="Detail_speakerLayoutHeaderTitle" translatable="false">Speakers</string>
+    <string name="ImageDesc_speaker_avatar" translatable="false">Photo du speaker</string>
+    <string name="ImageDesc_social_network_image">réseau social</string>
+    <string name="media_sponsor">Média</string>
+    <string name="silver_sponsor">Sponsor Silver</string>
+    <string name="social">Social</string>
+    <string name="sponsors">Sponsors</string>
+    <string name="gold_sponsor">Sponsor Gold</string>
 
 </resources>
