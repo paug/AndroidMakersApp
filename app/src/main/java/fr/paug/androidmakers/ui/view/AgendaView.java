@@ -109,6 +109,7 @@ public class AgendaView extends ScrollView {
 
                 TextView textView = new TextView(context);
                 textView.setText(agendaItem.getTitle());
+                textView.setTag(agendaItem.getSessionId());
                 textView.setTextColor(Color.WHITE);
                 textView.getPaint().setFakeBoldText(true);
                 textView.setBackgroundResource(
@@ -140,6 +141,25 @@ public class AgendaView extends ScrollView {
         long now = System.currentTimeMillis();
         if (start < now && now < end) {
             scrollToSee(now - DateUtils.HOUR_IN_MILLIS);
+        }
+    }
+
+    public void refreshSessionsSelected(@NonNull AgendaSelector agendaSelector) {
+        if (getChildCount() != 1) {
+            return;
+        }
+        boolean hasSelected = agendaSelector.hasSelected();
+        ViewGroup rootView = (ViewGroup) getChildAt(0);
+        for (int i = 0; i < rootView.getChildCount(); i++) {
+            ViewGroup roomLayout = (ViewGroup) rootView.getChildAt(i);
+            for (int j = 0; j < roomLayout.getChildCount(); j++) {
+                TextView textView = (TextView) roomLayout.getChildAt(j);
+                Object tag = textView.getTag();
+                if (tag instanceof Integer) {
+                    boolean isSelected = !hasSelected || agendaSelector.isSelected((Integer) tag);
+                    textView.setAlpha(isSelected ? 1 : 0.6f);
+                }
+            }
         }
     }
 
@@ -281,6 +301,11 @@ public class AgendaView extends ScrollView {
 
     public interface AgendaClickListener {
         void onClick(Item agendaItem);
+    }
+
+    public interface AgendaSelector {
+        boolean isSelected(int sessionId);
+        boolean hasSelected();
     }
 
     public static class DaySchedule {

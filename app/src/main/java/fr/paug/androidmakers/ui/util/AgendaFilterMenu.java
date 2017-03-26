@@ -14,7 +14,7 @@ import fr.paug.androidmakers.R;
  * Created by stan on 26/03/2017.
  */
 public class AgendaFilterMenu implements MenuItem.OnMenuItemClickListener {
-    public static final String PREF_FILTER_LANGUAGE_SELECTED = "filter_language_selected";
+    private static final String PREF_FILTER_LANGUAGE_SELECTED = "filter_language_selected";
     private final SharedPreferences mSharedPreferences;
     private MenuFilterListener mMenuFilterListener;
     private String mTitleAll;

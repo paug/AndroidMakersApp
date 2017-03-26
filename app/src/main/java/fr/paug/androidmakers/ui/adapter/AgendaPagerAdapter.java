@@ -1,6 +1,7 @@
 package fr.paug.androidmakers.ui.adapter;
 
 import android.support.v4.view.PagerAdapter;
+import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -14,26 +15,40 @@ import fr.paug.androidmakers.ui.view.AgendaView;
 
 public class AgendaPagerAdapter extends PagerAdapter {
 
-    private AgendaView.AgendaClickListener mAgendaClickListener;
-    private List<AgendaView.DaySchedule> mAgenda;
+    private final AgendaView.AgendaClickListener mAgendaClickListener;
+    private final List<AgendaView.DaySchedule> mAgenda;
+    private final SparseArray<AgendaView> mAgendaViews = new SparseArray<>();
+    private final AgendaView.AgendaSelector mAgendaSelector;
 
     public AgendaPagerAdapter(List<AgendaView.DaySchedule> agenda,
+                              AgendaView.AgendaSelector agendaSelector,
                               AgendaView.AgendaClickListener listener) {
         mAgenda = agenda;
         mAgendaClickListener = listener;
+        mAgendaSelector = agendaSelector;
+    }
+
+    public void refreshSessionsSelected() {
+        for (int i = 0; i < mAgendaViews.size(); i++) {
+            AgendaView agendaView = mAgendaViews.get(mAgendaViews.keyAt(i));
+            agendaView.refreshSessionsSelected(mAgendaSelector);
+        }
     }
 
     @Override
     public Object instantiateItem(ViewGroup collection, int position) {
         AgendaView agendaView = new AgendaView(collection.getContext());
         agendaView.setAgenda(getItems(position), mAgendaClickListener);
+        agendaView.refreshSessionsSelected(mAgendaSelector);
         collection.addView(agendaView);
+        mAgendaViews.put(position, agendaView);
         return agendaView;
     }
 
     @Override
     public void destroyItem(ViewGroup collection, int position, Object view) {
         collection.removeView((View) view);
+        mAgendaViews.remove(position);
     }
 
     @Override

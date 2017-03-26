@@ -31,6 +31,7 @@ import fr.paug.androidmakers.ui.activity.DetailActivity;
 import fr.paug.androidmakers.ui.adapter.AgendaPagerAdapter;
 import fr.paug.androidmakers.ui.util.AgendaFilterMenu;
 import fr.paug.androidmakers.ui.view.AgendaView;
+import fr.paug.androidmakers.util.SessionSelector;
 
 public class AgendaFragment extends Fragment implements AgendaView.AgendaClickListener,
         AgendaFilterMenu.MenuFilterListener {
@@ -39,6 +40,17 @@ public class AgendaFragment extends Fragment implements AgendaView.AgendaClickLi
     private View mProgressView;
     private View mEmptyView;
     private ViewPager mViewPager;
+    private AgendaView.AgendaSelector mAgendaSelector = new AgendaView.AgendaSelector() {
+        @Override
+        public boolean isSelected(int sessionId) {
+            return SessionSelector.getInstance().isSelected(sessionId);
+        }
+
+        @Override
+        public boolean hasSelected() {
+            return SessionSelector.getInstance().hasSelected();
+        }
+    };
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_agenda, container, false);
@@ -63,6 +75,16 @@ public class AgendaFragment extends Fragment implements AgendaView.AgendaClickLi
 
         if (AgendaRepository.getInstance().isLoaded()) {
             onAgendaLoaded(); // reload agenda
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        PagerAdapter adapter = mViewPager.getAdapter();
+        if (adapter instanceof AgendaPagerAdapter) {
+            ((AgendaPagerAdapter) adapter).refreshSessionsSelected();
         }
     }
 
@@ -105,7 +127,7 @@ public class AgendaFragment extends Fragment implements AgendaView.AgendaClickLi
         }
 
         List<AgendaView.DaySchedule> items = getItemsOrdered(itemByDayOfTheYear);
-        PagerAdapter adapter = new AgendaPagerAdapter(items, this);
+        AgendaPagerAdapter adapter = new AgendaPagerAdapter(items, mAgendaSelector, this);
         mViewPager.setAdapter(adapter);
 
         int indexOfToday = getTodayIndex(items);
@@ -113,7 +135,7 @@ public class AgendaFragment extends Fragment implements AgendaView.AgendaClickLi
             mViewPager.setCurrentItem(indexOfToday, true);
         }
         refreshViewsDisplay();
-
+        adapter.refreshSessionsSelected();
     }
 
     private void refreshViewsDisplay() {
