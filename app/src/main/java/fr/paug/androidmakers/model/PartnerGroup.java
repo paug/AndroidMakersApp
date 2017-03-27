@@ -1,6 +1,5 @@
 package fr.paug.androidmakers.model;
 
-import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
 import android.text.TextUtils;
 
@@ -14,9 +13,8 @@ import fr.paug.androidmakers.R;
  */
 public class PartnerGroup {
 
-    // TODO: 24/03/2017 main organizers ?
     public enum PartnerType {
-        Unknown, GoldSponsor, SilverSponsor, Media, Location;
+        Unknown, GoldSponsor, SilverSponsor, OtherSponsor, Media, Location;
 
         @StringRes
         public int getName() {
@@ -25,6 +23,8 @@ public class PartnerGroup {
                     return R.string.gold_sponsor;
                 case SilverSponsor:
                     return R.string.silver_sponsor;
+                case OtherSponsor:
+                    return R.string.other_sponsor;
                 case Media:
                     return R.string.media_sponsor;
                 case Location:
@@ -49,6 +49,8 @@ public class PartnerGroup {
                 return PartnerType.GoldSponsor;
             } else if ("silver sponsor".equalsIgnoreCase(typeName)) {
                 return PartnerType.SilverSponsor;
+            } else if ("other sponsor".equalsIgnoreCase(typeName)) {
+                return PartnerType.OtherSponsor;
             } else if ("media".equalsIgnoreCase(typeName)) {
                 return PartnerType.Media;
             } else if ("location".equalsIgnoreCase(typeName)) {

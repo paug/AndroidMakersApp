@@ -47,13 +47,16 @@
     <string name="wifi_connect_description">Directly connect to the venue\'s wifi</string>
     <string name="wifi_connect">Connect</string>
 
-    <string name="sponsors">Sponsors</string>
     <string name="english">English</string>
     <string name="french">French</string>
-    <string name="gold_sponsor">Gold Sponsor</string>
+
+    <string name="sponsors">Sponsors</string>
+    <string name="gold_sponsor">Gold+ Sponsor</string>
     <string name="silver_sponsor">Silver Sponsor</string>
+    <string name="other_sponsor">Other Sponsor</string>
     <string name="media_sponsor">Media</string>
     <string name="location_sponsor">Location</string>
+
     <string name="social">Social</string>
 
     <string name="filter_language_header">Language</string>
@@ -61,4 +64,5 @@
 
     <string name="star_session">Star session</string>
     <string name="unstar_session">Unstar session</string>
+
 </resources>

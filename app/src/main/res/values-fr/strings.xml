@@ -38,12 +38,16 @@
     <string name="Detail_speakerLayoutHeaderTitle">Speakers</string>
     <string name="ImageDesc_speaker_avatar">Photo du speaker</string>
     <string name="ImageDesc_social_network_image">réseau social</string>
-    <string name="media_sponsor">Média</string>
-    <string name="silver_sponsor">Sponsor Silver</string>
+
     <string name="social">Social</string>
+
     <string name="sponsors">Sponsors</string>
-    <string name="gold_sponsor">Sponsor Gold</string>
+    <string name="gold_sponsor">Sponsor Gold+</string>
+    <string name="silver_sponsor">Sponsor Silver</string>
+    <string name="media_sponsor">Média</string>
+    <string name="other_sponsor">Autre Sponsor</string>
 
     <string name="star_session">Mettre en favori</string>
     <string name="unstar_session">Enlever des favoris</string>
+
 </resources>

@@ -66,6 +66,8 @@ public class AboutFragment extends Fragment {
             addPartnerTypeToView(goldSponsorGroup);
             final PartnerGroup silverSponsorGroup = partners.get(PartnerGroup.PartnerType.SilverSponsor);
             addPartnerTypeToView(silverSponsorGroup);
+            final PartnerGroup otherSponsorGroup = partners.get(PartnerGroup.PartnerType.OtherSponsor);
+            addPartnerTypeToView(otherSponsorGroup);
             final PartnerGroup mediaSponsorGroup = partners.get(PartnerGroup.PartnerType.Media);
             addPartnerTypeToView(mediaSponsorGroup);
             final PartnerGroup locationGroup = partners.get(PartnerGroup.PartnerType.Location);
