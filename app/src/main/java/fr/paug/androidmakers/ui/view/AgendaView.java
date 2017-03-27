@@ -48,8 +48,6 @@ public class AgendaView extends ScrollView {
     private TextPaint mTextPaint;
     private int mPadding;
 
-    private RectF mRectF = new RectF();
-
     public AgendaView(Context context) {
         super(context);
         init();
@@ -190,6 +188,12 @@ public class AgendaView extends ScrollView {
 
         float offsetY = getScrollY();
 
+        if(offsetY > 5) {
+            canvas.drawRect(mTimeWidth, offsetY,
+                    getWidth(), offsetY + mTextPaint.getTextSize() + mPadding * 2,
+                    mLabelBackgroundPaint);
+        }
+
         int x = mTimeWidth;
         int childCount = rootView.getChildCount();
         int widthPerItem = (getWidth() - mTimeWidth) / childCount;
@@ -203,10 +207,6 @@ public class AgendaView extends ScrollView {
                 float xText = x + widthPerItem / 2 - measureText / 2f;
                 float yText = offsetY + mTextPaint.getTextSize() + mPadding;
 
-                mRectF.set(xText - mPadding, offsetY + mPadding / 2,
-                        xText + measureText + mPadding, yText + mPadding);
-
-                canvas.drawRoundRect(mRectF, mPadding / 2, mPadding / 2, mLabelBackgroundPaint);
                 canvas.drawText(roomName, xText, yText, mTextPaint);
             }
             x += widthPerItem;
@@ -278,10 +278,10 @@ public class AgendaView extends ScrollView {
         int labelBackgroundColor;
         if (a.type >= TypedValue.TYPE_FIRST_COLOR_INT && a.type <= TypedValue.TYPE_LAST_COLOR_INT) {
             // windowBackground is a color
-            labelBackgroundColor = Color.argb(220,
+            labelBackgroundColor = Color.argb(240,
                     Color.red(a.data), Color.green(a.data), Color.blue(a.data));
         } else {
-            labelBackgroundColor = Color.argb(220, 250, 250, 250);
+            labelBackgroundColor = Color.argb(240, 250, 250, 250);
         }
 
         mLabelBackgroundPaint = new Paint();
