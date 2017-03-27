@@ -35,12 +35,9 @@ import fr.paug.androidmakers.util.WifiUtil;
 
 public class AboutFragment extends Fragment {
 
-    @BindView(R.id.about_layout)
-    LinearLayout aboutLayout;
-    @BindView(R.id.wifi_autoconnect_progress)
-    View wifiConnectionProgress;
-    @BindView(R.id.wifi_connect_button)
-    AppCompatButton wifiConnectButton;
+    @BindView(R.id.about_layout) LinearLayout aboutLayout;
+    @BindView(R.id.wifi_autoconnect_progress) View wifiConnectionProgress;
+    @BindView(R.id.wifi_connect_button) AppCompatButton wifiConnectButton;
     private Unbinder unbinder;
 
     public AboutFragment() {

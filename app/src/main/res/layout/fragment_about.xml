@@ -1,4 +1,5 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -14,29 +15,18 @@
         android:padding="@dimen/padding"
         android:showDividers="middle">
 
-        <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:fontFamily="sans-serif-condensed"-->
-        <!--android:padding="@dimen/padding"-->
-        <!--android:text="@string/app_name"-->
-        <!--android:textColor="@color/colorAccent"-->
-        <!--android:textSize="18sp"-->
-        <!--android:textStyle="bold" />-->
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/about_android_makers"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"/>
 
         <TextView
             android:id="@+id/textView"
+            style="@style/section_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/social"
-            style="@style/About_section_title"
-            />
+            android:text="@string/social"/>
 
         <TextView
             android:id="@+id/twitter_hashtag_button"
@@ -46,7 +36,7 @@
             android:text="@string/twitter_hashtag"
             android:textAllCaps="false"
             android:textColor="#03A9F4"
-            android:textSize="18sp" />
+            android:textSize="18sp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -61,38 +51,36 @@
                 android:layout_width="0dip"
                 android:layout_height="50dip"
                 android:layout_weight="1"
-                android:src="@drawable/ic_twitter_logo_white_on_blue" />
+                android:src="@drawable/ic_twitter_logo_white_on_blue"/>
 
             <ImageView
                 android:id="@+id/google_plus_button"
                 android:layout_width="0dip"
                 android:layout_height="50dip"
                 android:layout_weight="1"
-                android:src="@drawable/google_plus" />
+                android:src="@drawable/google_plus"/>
 
             <ImageView
                 android:id="@+id/facebook_button"
                 android:layout_width="0dip"
                 android:layout_height="50dip"
                 android:layout_weight="1"
-                android:src="@drawable/fb_logo_blue" />
+                android:src="@drawable/fb_logo_blue"/>
 
             <ImageView
                 android:id="@+id/youtube_button"
                 android:layout_width="0dip"
                 android:layout_height="50dip"
                 android:layout_weight="1"
-                android:src="@drawable/youtube_social" />
+                android:src="@drawable/youtube_icon"/>
 
         </LinearLayout>
 
         <TextView
-            android:id="@+id/textView2"
+            style="@style/section_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/wifi"
-            style="@style/About_section_title"
-            />
+            android:text="@string/wifi"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -111,14 +99,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/wifi_network"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/wifi_password"
                     android:textColor="@color/black"
-                    android:textIsSelectable="true" />
+                    android:textIsSelectable="true"/>
 
             </LinearLayout>
 
@@ -131,7 +119,7 @@
                 android:textColor="@color/white"
                 android:visibility="invisible"
                 app:backgroundTint="?attr/colorPrimary"
-                tools:visibility="visible" />
+                tools:visibility="visible"/>
 
             <ProgressBar
                 android:id="@+id/wifi_autoconnect_progress"
@@ -139,19 +127,18 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:indeterminateTint="@color/colorPrimary"
                 android:indeterminate="true"
+                android:indeterminateTint="@color/colorPrimary"
                 android:visibility="gone"
-                tools:visibility="visible" />
+                tools:visibility="visible"/>
 
         </LinearLayout>
 
         <TextView
+            style="@style/section_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/sponsors"
-            style="@style/About_section_title"
-            />
+            android:text="@string/sponsors"/>
 
     </LinearLayout>
 

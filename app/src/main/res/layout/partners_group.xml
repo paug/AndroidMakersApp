@@ -12,8 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         tools:text="Partners Group"
-        style="@style/About_sponsor_group_title"
-        />
+        style="@style/sponsor_group_title"/>
 
     <LinearLayout
         android:id="@+id/partners_layout"

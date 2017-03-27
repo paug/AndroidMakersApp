@@ -28,11 +28,8 @@
                         android:id="@+id/sessionTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif-condensed"
                         android:paddingBottom="2dp"
-                        android:textColor="@android:color/black"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
+                        style="@style/section_title"
                         tools:text="Title" />
 
                     <TextView
@@ -84,8 +81,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/Detail_speakerLayoutHeaderTitle"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="16sp" />
+                        style="@style/section_title" />
 
                 </LinearLayout>
 
