@@ -37,8 +37,7 @@ import fr.paug.androidmakers.util.SessionSelector;
  * Created by stan on 19/03/2017.
  */
 
-public class DetailActivity
-        extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity {
 
     private static final String PARAM_SESSION_ID = "param_session_id";
     private static final String PARAM_SESSION_START_DATE = "param_session_start_date";

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -10,11 +11,13 @@
 
         <ImageView
             android:id="@+id/image"
+            android:background="?selectableItemBackgroundBorderless"
+            android:clickable="true"
             android:contentDescription="@string/ImageDesc_social_network_image"
             android:scaleType="fitCenter"
             app:layout_aspectRatio="100%"
             app:layout_heightPercent="100%"
-            tools:src="@drawable/google_plus" />
+            tools:src="@drawable/google_plus"/>
 
     </android.support.percent.PercentRelativeLayout>
 

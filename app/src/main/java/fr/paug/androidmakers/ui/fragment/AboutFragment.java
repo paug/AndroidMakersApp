@@ -7,9 +7,7 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +29,7 @@ import fr.paug.androidmakers.R;
 import fr.paug.androidmakers.manager.AgendaRepository;
 import fr.paug.androidmakers.model.PartnerGroup;
 import fr.paug.androidmakers.model.Partners;
+import fr.paug.androidmakers.util.CustomTabUtil;
 import fr.paug.androidmakers.util.WifiUtil;
 
 public class AboutFragment extends Fragment {
@@ -186,10 +185,7 @@ public class AboutFragment extends Fragment {
                 imageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-                        builder.setToolbarColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
-                        CustomTabsIntent customTabsIntent = builder.build();
-                        customTabsIntent.launchUrl(getContext(), Uri.parse(partner.getLink()));
+                        CustomTabUtil.openChromeTab(getContext(), partner.getLink());
                     }
                 });
                 partnersGroupLinearLayout.addView(imageView);
