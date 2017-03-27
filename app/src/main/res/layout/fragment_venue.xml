@@ -6,7 +6,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <ImageView
@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="180dp"
             android:contentDescription="@null"
-            android:scaleType="fitXY"
+            android:scaleType="centerCrop"
             android:src="@drawable/venue"/>
 
         <TextView
@@ -36,7 +36,8 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:padding="4dp"
-            android:text="@string/venue_location"/>
+            android:text="@string/venue_location"
+            android:textColor="@color/black"/>
 
         <TextView
             android:id="@+id/conference_venue_desc"
