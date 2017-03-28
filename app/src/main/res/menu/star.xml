@@ -7,17 +7,11 @@
         android:icon="@drawable/ic_star_border_24dp"
         app:showAsAction="always"
         android:title="@string/star_session">
-        <menu>
-
-        </menu>
     </item>
     <item
         android:id="@+id/unselect"
         android:icon="@drawable/ic_star_24dp"
         app:showAsAction="always"
         android:title="@string/unstar_session">
-        <menu>
-
-        </menu>
     </item>
 </menu>
