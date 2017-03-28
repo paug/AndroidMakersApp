@@ -46,6 +46,9 @@ public class AboutFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Keeps this Fragment alive during configuration changes
+        setRetainInstance(true);
     }
 
     @Override

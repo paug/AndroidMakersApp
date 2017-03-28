@@ -3,6 +3,7 @@ package fr.paug.androidmakers.ui.fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -40,6 +41,7 @@ public class AgendaFragment extends Fragment implements AgendaView.AgendaClickLi
     private View mProgressView;
     private View mEmptyView;
     private ViewPager mViewPager;
+
     private AgendaView.AgendaSelector mAgendaSelector = new AgendaView.AgendaSelector() {
         @Override
         public boolean isSelected(int sessionId) {
@@ -51,6 +53,14 @@ public class AgendaFragment extends Fragment implements AgendaView.AgendaClickLi
             return SessionSelector.getInstance().hasSelected();
         }
     };
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Keeps this Fragment alive during configuration changes
+        setRetainInstance(true);
+    }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_agenda, container, false);

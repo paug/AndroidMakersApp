@@ -10,9 +10,10 @@
         android:id="@+id/about_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:clipToPadding="false"
         android:divider="@drawable/divider15dip"
         android:orientation="vertical"
-        android:padding="@dimen/padding"
+        android:padding="@dimen/padding_double"
         android:showDividers="middle">
 
         <TextView
@@ -33,8 +34,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:background="?selectableItemBackgroundBorderless"
+            android:clickable="true"
             android:text="@string/twitter_hashtag"
-            android:textAllCaps="false"
             android:textColor="#03A9F4"
             android:textSize="18sp"/>
 
