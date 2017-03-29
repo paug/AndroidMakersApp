@@ -5,13 +5,31 @@
     <string name="title_venue">Lieu</string>
     <string name="title_about">À propos</string>
 
+    <string name="english">Anglais</string>
+    <string name="french">Français</string>
+
+    <!--Agenda-->
     <string name="Detail_sessionNotFound">Impossible de récuperer les informations sur cette
         session.
     </string>
     <string name="agenda_empty_screen">Impossible de charger l\'agenda.\nVérifiez votre connexion et
         attendez que cette vue se rafraîchise.
     </string>
+    <string name="filter_language_header">Langues</string>
+    <string name="filter_language_all">Toutes</string>
+    <string name="Detail_speakerLayoutHeaderTitle">Orateur(s)</string>
+    <plurals name="session_details_speakers">
+        <item quantity="one">Orateur</item>
+        <item quantity="other">Orateurs</item>
+    </plurals>
+    <string name="ImageDesc_speaker_avatar">Photo du speaker</string>
+    <string name="ImageDesc_social_network_image">réseau social</string>
 
+
+    <string name="star_session">Mettre en favori</string>
+    <string name="unstar_session">Enlever des favoris</string>
+
+    <!--Venue-->
     <string name="directions"><b>Voiture</b>: sortie Porte de Bercy, direction Paris centre, sortie
         Bercy Cour Saint-Emilion\n\n<b>Métro</b> : Ligne 14, Cour Saint-Emilion\n\n<b>Bus</b> :
         ligne 24 ou 64,
@@ -23,25 +41,13 @@
         Salons de l\'Aveyron
     </string>
 
+    <!--About-->
     <string name="wifi">Wifi</string>
     <string name="wifi_network">Réseau: <b>AndroidMakers</b></string>
     <string name="wifi_password">Mot de passe : <b>makers2017</b></string>
 
     <string name="wifi_connect_description">Se connecter directement au Wifi du lieu</string>
     <string name="wifi_connect">Se connecter</string>
-    <string name="english">Anglais</string>
-    <string name="french">Français</string>
-    <string name="location_sponsor">Salle</string>
-
-    <string name="filter_language_header">Langues</string>
-    <string name="filter_language_all">Toutes</string>
-    <string name="Detail_speakerLayoutHeaderTitle">Orateur(s)</string>
-    <plurals name="session_details_speakers">
-        <item quantity="one">Orateur</item>
-        <item quantity="other">Orateurs</item>
-    </plurals>
-    <string name="ImageDesc_speaker_avatar">Photo du speaker</string>
-    <string name="ImageDesc_social_network_image">réseau social</string>
 
     <string name="social">Social</string>
 
@@ -50,8 +56,6 @@
     <string name="silver_sponsor">Sponsor Silver</string>
     <string name="media_sponsor">Média</string>
     <string name="other_sponsor">Autre Sponsor</string>
-
-    <string name="star_session">Mettre en favori</string>
-    <string name="unstar_session">Enlever des favoris</string>
+    <string name="location_sponsor">Salle</string>
 
 </resources>

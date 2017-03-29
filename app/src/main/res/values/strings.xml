@@ -1,12 +1,17 @@
 <resources>
 
+    <string name="app_name" translatable="false">Android Makers Paris 2017</string>
+
     <string name="title_agenda">Agenda</string>
     <string name="title_venue">Venue</string>
     <string name="title_about">About</string>
 
-    <string name="app_name" translatable="false">Android Makers Paris 2017</string>
+    <string name="english">English</string>
+    <string name="french">French</string>
 
+    <!--Agenda-->
     <string name="ImageDesc_speaker_avatar">Speaker picture</string>
+    <string name="ImageDesc_social_network_image">social network image</string>
     <string name="Detail_sessionNotFound">Unable to retrieve this session informations.</string>
     <string name="Detail_speakerLayoutHeaderTitle">Speaker(s)</string>
     <plurals name="session_details_speakers">
@@ -17,6 +22,12 @@
     <string name="agenda_empty_screen">We cannot load the agenda.\nPlease check your network
         connection and wait for this view to refresh
     </string>
+
+    <string name="filter_language_header">Language</string>
+    <string name="filter_language_all">All</string>
+
+    <string name="star_session">Star session</string>
+    <string name="unstar_session">Unstar session</string>
 
     <!--Venue-->
     <string name="venue_name" translatable="false">Les Salons de l\'Aveyron</string>
@@ -33,7 +44,9 @@
     <string name="about_android_makers">Android Makers Paris 2017 is from 10 to 11 April at Les
         Salons de l\'Aveyron
     </string>
-    <string name="twitter" translatable="false">"@AndroidMakersFR"</string>
+
+    <string name="social">Social</string>
+
     <string name="twitter_hashtag" translatable="false">#AndroidMakersFR</string>
     <string name="gplus" translatable="false">https://plus.google.com/+DroidconParis</string>
     <string name="fbevent" translatable="false">https://www.facebook.com/events/700985966748191/</string>
@@ -43,16 +56,8 @@
     <string name="wifi_network">Network: <b>AndroidMakers</b></string>
     <string name="wifi_password">Password : <b>makers2017</b></string>
 
-    <string name="ImageDesc_social_network_image">social network image</string>
-    <string name="google_plus" translatable="false">Google+</string>
-    <string name="facebook" translatable="false">Facebook</string>
-    <string name="youtube" translatable="false">Youtube</string>
-
     <string name="wifi_connect_description">Directly connect to the venue\'s wifi</string>
     <string name="wifi_connect">Connect</string>
-
-    <string name="english">English</string>
-    <string name="french">French</string>
 
     <string name="sponsors">Sponsors</string>
     <string name="gold_sponsor">Gold+ Sponsor</string>
@@ -60,13 +65,5 @@
     <string name="other_sponsor">Other Sponsor</string>
     <string name="media_sponsor">Media</string>
     <string name="location_sponsor">Location</string>
-
-    <string name="social">Social</string>
-
-    <string name="filter_language_header">Language</string>
-    <string name="filter_language_all">All</string>
-
-    <string name="star_session">Star session</string>
-    <string name="unstar_session">Unstar session</string>
 
 </resources>
