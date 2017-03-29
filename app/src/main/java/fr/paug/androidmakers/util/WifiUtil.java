@@ -29,7 +29,7 @@ public class WifiUtil {
         final List<WifiConfiguration> configuredNetworks = wifiManager.getConfiguredNetworks();
         if (configuredNetworks != null) {
             for (WifiConfiguration config : configuredNetworks) {
-                if (config.SSID.equals(SSID)) {
+                if (config != null && SSID.equals(config.SSID)) {
                     Log.i(TAG, "Venue's wifi network already configured.");
                     return config.networkId;
                 }
@@ -76,7 +76,7 @@ public class WifiUtil {
         final WifiManager wifiManager = (WifiManager)context.getApplicationContext()
                 .getSystemService(Context.WIFI_SERVICE);
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-        return wifiInfo != null && wifiInfo.getSSID().equals(SSID);
+        return wifiInfo != null && SSID.equals(wifiInfo.getSSID());
     }
 
     /**
