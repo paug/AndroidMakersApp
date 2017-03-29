@@ -78,6 +78,7 @@
                         android:background="@color/grey" />
 
                     <TextView
+                        android:id="@+id/speakersTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/Detail_speakerLayoutHeaderTitle"

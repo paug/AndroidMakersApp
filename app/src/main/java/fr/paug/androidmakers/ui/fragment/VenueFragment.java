@@ -11,11 +11,13 @@ import android.view.ViewGroup;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import fr.paug.androidmakers.R;
 
 // TODO: 28/03/2017 Afterparty location (Le Frog ?)
 public class VenueFragment extends Fragment {
 
+    Unbinder unbinder;
     private static final String COORDINATES_URI = "geo:48.834851, 2.386445?q=" + Uri.encode("Les Salons De L'aveyron");
 
     public VenueFragment() {
@@ -30,8 +32,14 @@ public class VenueFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_venue, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     @OnClick(R.id.venue_locate_button)

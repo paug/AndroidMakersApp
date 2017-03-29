@@ -92,7 +92,6 @@ public class DetailActivity extends AppCompatActivity {
                     if (BuildConfig.DEBUG) {
                         Log.d(DetailActivity.class.getName(), "User clicked on tag with content=" + session.language);
                     }
-                    // TODO: Use this for future filter feature
                 }
             });
         } else {
@@ -112,6 +111,7 @@ public class DetailActivity extends AppCompatActivity {
 
         final ViewGroup sessionSpeakerLayout = (ViewGroup) findViewById(R.id.sessionSpeakerLayout);
         if (session.speakers != null && session.speakers.length > 0) {
+            activityDetailBinding.speakersTitle.setText(getResources().getQuantityString(R.plurals.session_details_speakers, session.speakers.length));
             for (final int speakerID : session.speakers) {
                 final Speaker speaker = AgendaRepository.getInstance().getSpeaker(speakerID);
 

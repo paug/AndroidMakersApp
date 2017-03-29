@@ -9,6 +9,10 @@
     <string name="ImageDesc_speaker_avatar">Speaker picture</string>
     <string name="Detail_sessionNotFound">Unable to retrieve this session informations.</string>
     <string name="Detail_speakerLayoutHeaderTitle">Speaker(s)</string>
+    <plurals name="session_details_speakers">
+        <item quantity="one">Speaker</item>
+        <item quantity="other">Speakers</item>
+    </plurals>
     <string name="sessionDateWithRoomPlaceholder" translatable="false">%1$s, %2$s</string>
     <string name="agenda_empty_screen">We cannot load the agenda.\nPlease check your network
         connection and wait for this view to refresh
