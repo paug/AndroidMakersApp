@@ -27,6 +27,9 @@
             android:name=".ui.activity.DetailActivity"
             android:configChanges="orientation|screenSize"/>
 
+        <service
+            android:name=".service.SessionAlarmService"
+            android:exported="false" />
     </application>
 
 </manifest>

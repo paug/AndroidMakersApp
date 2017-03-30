@@ -121,7 +121,6 @@ public class AgendaFragment extends Fragment implements AgendaView.AgendaClickLi
         Calendar calendar = Calendar.getInstance();
         List<ScheduleSlot> scheduleSlots = AgendaRepository.getInstance().getScheduleSlots();
         for (ScheduleSlot scheduleSlot : scheduleSlots) {
-
             if (languageFilter != null) {
                 int sessionId = scheduleSlot.sessionId;
                 Session session = AgendaRepository.getInstance().getSession(sessionId);

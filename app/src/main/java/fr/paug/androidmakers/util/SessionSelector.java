@@ -49,6 +49,14 @@ public class SessionSelector {
         return mSessionsSelected.contains(Integer.toString(id));
     }
 
+    public Set<String> getSessionsSelected() {
+        return mSessionsSelected;
+    }
+
+    public void setSessionsSelected(Set<String> sessionsSelected) {
+        mSessionsSelected = sessionsSelected;
+    }
+
     private void save() {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putStringSet(PREF_SELECTED_SESSIONS, mSessionsSelected);
