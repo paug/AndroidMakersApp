@@ -30,15 +30,22 @@
     <string name="unstar_session">Unstar session</string>
 
     <!--Venue-->
-    <string name="venue_name" translatable="false">Les Salons de l\'Aveyron</string>
-    <string name="venue_location" translatable="false">17 Rue de l\'Aubrac\n75012 Paris, France
+    <string name="venue_conference_title" translatable="false">Les Salons de l\'Aveyron</string>
+    <string name="venue_conference_address" translatable="false">17 Rue de l\'Aubrac\n75012 Paris, France
     </string>
-    <string name="directions"><b>By car</b>: at the Porte de Bercy exit, head towards Paris Centre,
+    <string name="venue_conference_directions"><b>By car</b>: at the Porte de Bercy exit, head towards Paris Centre,
         taking the first exit, Bercy Cour Saint-Emilion.\n\n<b>By metro</b>: Cour Saint-Emilion
         station on
         line 14.\n\n<b>By bus</b>: line 24 or 64, Dijon Lachambaudie stop.
     </string>
     <string name="locate_on_map">Locate on map</string>
+
+    <string name="venue_afterparty_title" translatable="false">The Frog at Bercy Village</string>
+    <string name="venue_afterparty_address" translatable="false">Bercy Village, 25 Cour Saint-Emilion, 75012 Paris</string>
+    <string name="venue_afterparty_info">Pub and microbrewery in an old cellar with beams and stone walls, with 2 terraces.</string>
+
+    <string name="venue_conference_tab">Conference</string>
+    <string name="venue_afterparty_tab">Afterparty</string>
 
     <!--About-->
     <string name="about_android_makers">Android Makers Paris 2017 is from 10 to 11 April at Les

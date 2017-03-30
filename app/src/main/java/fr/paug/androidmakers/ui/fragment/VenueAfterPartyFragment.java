@@ -14,13 +14,16 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import fr.paug.androidmakers.R;
 
-// TODO: 28/03/2017 Afterparty location (Le Frog ?)
-public class VenueFragment extends Fragment {
+/**
+ * Created by benju on 30/03/2017.
+ */
+
+public class VenueAfterPartyFragment extends Fragment {
 
     Unbinder unbinder;
-    private static final String COORDINATES_URI = "geo:48.834851, 2.386445?q=" + Uri.encode("Les Salons De L'aveyron");
+    private static final String COORDINATES_URI = "geo:48.833057, 2.386048?q=" + Uri.encode("The Frog at Bercy Village");
 
-    public VenueFragment() {
+    public VenueAfterPartyFragment() {
         // Required empty public constructor
 
         // Keeps this Fragment alive during configuration changes
@@ -31,7 +34,7 @@ public class VenueFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_venue, container, false);
+        View view = inflater.inflate(R.layout.venue_afterparty, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
     }
@@ -42,7 +45,7 @@ public class VenueFragment extends Fragment {
         unbinder.unbind();
     }
 
-    @OnClick(R.id.venue_locate_button)
+    @OnClick(R.id.venue_afterparty_locate)
     void openMapsLocation() {
         try {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(COORDINATES_URI));

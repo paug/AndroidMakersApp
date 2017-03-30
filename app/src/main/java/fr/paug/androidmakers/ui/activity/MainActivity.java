@@ -12,7 +12,7 @@ import android.view.MenuItem;
 import fr.paug.androidmakers.R;
 import fr.paug.androidmakers.ui.fragment.AboutFragment;
 import fr.paug.androidmakers.ui.fragment.AgendaFragment;
-import fr.paug.androidmakers.ui.fragment.VenueFragment;
+import fr.paug.androidmakers.ui.fragment.VenuePagerFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
                     fragment = new AgendaFragment();
                     break;
                 case R.id.navigation_venue:
-                    fragment = new VenueFragment();
+                    fragment = new VenuePagerFragment();
                     break;
                 case R.id.navigation_about:
                     fragment = new AboutFragment();
