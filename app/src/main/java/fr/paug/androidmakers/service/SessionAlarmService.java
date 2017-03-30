@@ -7,7 +7,11 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 
+import fr.paug.androidmakers.BuildConfig;
+import fr.paug.androidmakers.manager.AgendaRepository;
+import fr.paug.androidmakers.model.Session;
 import fr.paug.androidmakers.util.SessionSelector;
 
 /**
@@ -37,14 +41,16 @@ public class SessionAlarmService extends IntentService {
     }
 
     void scheduleAllStarredSessions() {
-        for (String s : SessionSelector.getInstance().getSessionsSelected()) {
+        for (String id : SessionSelector.getInstance().getSessionsSelected()) {
+            Session session = AgendaRepository.getInstance().getSession(Integer.getInteger(id));
+            if (BuildConfig.DEBUG) Log.d("SessionAlarmService", session.toString());
 
+            // TODO: 30/03/2017 schedule alarm
         }
     }
 
     private void scheduleAlarm(final long sessionStart,
                                final long sessionEnd, final long alarmOffset) {
-
         NotificationManager nm =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         nm.cancel(NOTIFICATION_ID);

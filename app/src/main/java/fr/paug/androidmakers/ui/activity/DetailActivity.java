@@ -160,6 +160,9 @@ public class DetailActivity extends AppCompatActivity {
     private void changeSessionSelection(boolean select) {
         SessionSelector.getInstance().setSessionSelected(sessionId, select);
         invalidateOptionsMenu();
+
+//        Intent msgIntent = new Intent(this, SessionAlarmService.class);
+//        startService(msgIntent);
     }
 
     @Override
