@@ -27,9 +27,17 @@
             android:name=".ui.activity.DetailActivity"
             android:configChanges="orientation|screenSize"/>
 
+        <receiver android:name=".receiver.SessionAlarmReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="${applicationId}.action.UPDATE_CALENDAR_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
         <service
             android:name=".service.SessionAlarmService"
             android:exported="false" />
+
     </application>
 
 </manifest>

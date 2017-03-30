@@ -6,12 +6,13 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.util.Log;
+
+import java.util.List;
 
 import fr.paug.androidmakers.BuildConfig;
 import fr.paug.androidmakers.manager.AgendaRepository;
-import fr.paug.androidmakers.model.Session;
+import fr.paug.androidmakers.model.ScheduleSlot;
 import fr.paug.androidmakers.util.SessionSelector;
 
 /**
@@ -19,7 +20,13 @@ import fr.paug.androidmakers.util.SessionSelector;
  */
 
 public class SessionAlarmService extends IntentService {
+
     public static final String ACTION_NOTIFY_SESSION = "notify";
+
+    public static final String ACTION_SCHEDULE_STARRED_BLOCK =
+            BuildConfig.APPLICATION_ID + ".action.SCHEDULE_STARRED_BLOCK";
+    public static final String ACTION_SCHEDULE_ALL_STARRED_BLOCKS =
+            BuildConfig.APPLICATION_ID + ".action.SCHEDULE_ALL_STARRED_BLOCKS";
 
     public static final int NOTIFICATION_ID = 100;
 
@@ -37,15 +44,21 @@ public class SessionAlarmService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         final String action = intent.getAction();
 
+        // TODO: 31/03/2017 handle actions
+
         scheduleAllStarredSessions();
     }
 
     void scheduleAllStarredSessions() {
-        for (String id : SessionSelector.getInstance().getSessionsSelected()) {
-            Session session = AgendaRepository.getInstance().getSession(Integer.getInteger(id));
-            if (BuildConfig.DEBUG) Log.d("SessionAlarmService", session.toString());
+        List<ScheduleSlot> scheduleSlots = AgendaRepository.getInstance().getScheduleSlots();
 
-            // TODO: 30/03/2017 schedule alarm
+        for (String id : SessionSelector.getInstance().getSessionsSelected()) {
+            for (ScheduleSlot scheduleSlot : scheduleSlots) {
+                if (String.valueOf(scheduleSlot.sessionId) == id) {
+                    Log.i("SessionAlarmService", scheduleSlot.toString());
+                    scheduleAlarm(scheduleSlot.startDate, scheduleSlot.endDate, MILLI_FIVE_MINUTES);
+                }
+            }
         }
     }
 
@@ -57,7 +70,6 @@ public class SessionAlarmService extends IntentService {
         final long currentTime = System.currentTimeMillis();
         // If the session is already started, do not schedule system notification.
         if (currentTime > sessionStart) {
-//            LOGD(TAG, "Not scheduling alarm because target time is in the past: " + sessionStart);
             return;
         }
 
@@ -70,31 +82,20 @@ public class SessionAlarmService extends IntentService {
             alarmTime = currentTime + alarmOffset;
         }
 
-//        LOGD(TAG, "Scheduling alarm for " + alarmTime + " = " + (new Date(alarmTime)).toString());
-
         final Intent notifIntent = new Intent(
                 ACTION_NOTIFY_SESSION,
                 null,
                 this,
                 SessionAlarmService.class);
-        // Setting data to ensure intent's uniqueness for different session start times.
-        notifIntent.setData(
-                new Uri.Builder().authority("com.google.samples.apps.iosched")
-                        .path(String.valueOf(sessionStart)).build()
-        );
         notifIntent.putExtra("EXTRA_SESSION_START", sessionStart);
-//        LOGD(TAG, "-> Intent extra: session start " + sessionStart);
         notifIntent.putExtra("EXTRA_SESSION_END", sessionEnd);
-//        LOGD(TAG, "-> Intent extra: session end " + sessionEnd);
         notifIntent.putExtra("EXTRA_SESSION_ALARM_OFFSET", alarmOffset);
-//        LOGD(TAG, "-> Intent extra: session alarm offset " + alarmOffset);
         PendingIntent pi = PendingIntent.getService(this,
                 0,
                 notifIntent,
                 PendingIntent.FLAG_CANCEL_CURRENT);
         final AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         // Schedule an alarm to be fired to notify user of added sessions are about to begin.
-//        LOGD(TAG, "-> Scheduling RTC_WAKEUP alarm at " + alarmTime);
         am.set(AlarmManager.RTC_WAKEUP, alarmTime, pi);
     }
 }

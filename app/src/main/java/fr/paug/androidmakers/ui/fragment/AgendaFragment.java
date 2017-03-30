@@ -213,7 +213,6 @@ public class AgendaFragment extends Fragment implements AgendaView.AgendaClickLi
     private List<AgendaView.RoomSchedule> getRoomScheduleForDay(
             SparseArray<AgendaView.DaySchedule> itemByDayOfTheYear,
             Calendar calendar, ScheduleSlot scheduleSlot) {
-
         calendar.setTimeInMillis(scheduleSlot.startDate);
         int dayIndex = calendar.get(Calendar.DAY_OF_YEAR) + calendar.get(Calendar.YEAR) * 1000;
         AgendaView.DaySchedule daySchedule = itemByDayOfTheYear.get(dayIndex);

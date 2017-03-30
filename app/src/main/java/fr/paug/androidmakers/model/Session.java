@@ -30,10 +30,11 @@ public class Session {
         if (!TextUtils.isEmpty(language)) {
             if ("en".equalsIgnoreCase(language)) {
                 return R.string.english;
-            }else if ("fr".equalsIgnoreCase(language)) {
+            } else if ("fr".equalsIgnoreCase(language)) {
                 return R.string.french;
             }
         }
         return 0;
     }
+
 }
