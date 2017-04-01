@@ -2,36 +2,34 @@ package fr.paug.androidmakers.service;
 
 import android.app.AlarmManager;
 import android.app.IntentService;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import java.util.Date;
 import java.util.List;
 
-import fr.paug.androidmakers.BuildConfig;
+import fr.paug.androidmakers.R;
 import fr.paug.androidmakers.manager.AgendaRepository;
 import fr.paug.androidmakers.model.ScheduleSlot;
+import fr.paug.androidmakers.ui.activity.MainActivity;
 import fr.paug.androidmakers.util.SessionSelector;
-
-/**
- * Created by benjamin on 30/03/2017.
- */
 
 public class SessionAlarmService extends IntentService {
 
+    private static final String TAG = "sessionAlarm";
+
     public static final String ACTION_NOTIFY_SESSION = "notify";
 
-    public static final String ACTION_SCHEDULE_STARRED_BLOCK =
-            BuildConfig.APPLICATION_ID + ".action.SCHEDULE_STARRED_BLOCK";
-    public static final String ACTION_SCHEDULE_ALL_STARRED_BLOCKS =
-            BuildConfig.APPLICATION_ID + ".action.SCHEDULE_ALL_STARRED_BLOCKS";
+    public static final String ACTION_SCHEDULE_STARRED_BLOCK = "SCHEDULE_STARRED_BLOCK";
+    public static final String ACTION_SCHEDULE_ALL_STARRED_BLOCKS = "SCHEDULE_ALL_STARRED_BLOCKS";
 
-    public static final String EXTRA_SESSION_START =
-            BuildConfig.APPLICATION_ID + ".extra.SESSION_START";
-    public static final String EXTRA_SESSION_END =
-            BuildConfig.APPLICATION_ID + ".extra.SESSION_END";
+    public static final String EXTRA_SESSION_START = "SESSION_START";
+    public static final String EXTRA_SESSION_END = "SESSION_END";
 
     public static final int NOTIFICATION_ID = 100;
 
@@ -49,8 +47,7 @@ public class SessionAlarmService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         final String action = intent.getAction();
-
-        // TODO: 31/03/2017 handle actions
+        LOGD(TAG, "Session alarm : " + action);
 
         if (ACTION_SCHEDULE_ALL_STARRED_BLOCKS.equals(action)) {
             //Scheduling all starred blocks.
@@ -60,27 +57,19 @@ public class SessionAlarmService extends IntentService {
 
         final long sessionEnd = intent.getLongExtra(SessionAlarmService.EXTRA_SESSION_END,
                 UNDEFINED_VALUE);
-        if (sessionEnd == UNDEFINED_VALUE) {
-            return;
-        }
 
         final long sessionStart =
                 intent.getLongExtra(SessionAlarmService.EXTRA_SESSION_START, UNDEFINED_VALUE);
-        if (sessionStart == UNDEFINED_VALUE) {
-            return;
-        }
 
         if (ACTION_NOTIFY_SESSION.equals(action)) {
-//            LOGD(TAG, "Notifying about sessions starting at " +
-//                    sessionStart + " = " + (new Date(sessionStart)).toString());
-//            LOGD(TAG, "-> Alarm offset: " + sessionAlarmOffset);
+            LOGD(TAG, "Notifying about sessions starting at " +
+                    sessionStart + " = " + (new Date(sessionStart)).toString());
             notifySession(sessionStart, MILLI_FIVE_MINUTES);
         } else if (ACTION_SCHEDULE_STARRED_BLOCK.equals(action)) {
-//            LOGD(TAG, "Scheduling session alarm.");
-//            LOGD(TAG, "-> Session start: " + sessionStart + " = " + (new Date(sessionStart))
-//                    .toString());
-//            LOGD(TAG, "-> Session end: " + sessionEnd + " = " + (new Date(sessionEnd)).toString());
-//            LOGD(TAG, "-> Alarm offset: " + sessionAlarmOffset);
+            LOGD(TAG, "Scheduling session alarm.");
+            LOGD(TAG, "-> Session start: " + sessionStart + " = " + (new Date(sessionStart))
+                    .toString());
+            LOGD(TAG, "-> Session end: " + sessionEnd + " = " + (new Date(sessionEnd)).toString());
             scheduleAlarm(sessionStart, sessionEnd, MILLI_FIVE_MINUTES);
         }
     }
@@ -105,7 +94,7 @@ public class SessionAlarmService extends IntentService {
         nm.cancel(NOTIFICATION_ID);
         final long currentTime = System.currentTimeMillis();
 
-        Log.i("Time", "current: "+currentTime+", session start: "+sessionStart);
+        Log.i("Time", "current: " + currentTime + ", session start: " + sessionStart);
 
         // If the session is already started, do not schedule system notification.
         if (currentTime > sessionStart) {
@@ -140,33 +129,32 @@ public class SessionAlarmService extends IntentService {
 
     // Starred sessions are about to begin.  Constructs and triggers system notification.
     private void notifySession(final long sessionStart, final long alarmOffset) {
-////        long currentTime = TimeUtils.getCurrentTime(this);
-//        long currentTime = System.currentTimeMillis();
-//        final long intervalEnd = sessionStart + MILLI_TEN_MINUTES;
-//        LOGD(TAG, "Considering notifying for time interval.");
-//        LOGD(TAG, "    Interval start: " + sessionStart + "=" + (new Date(sessionStart)).toString());
-//        LOGD(TAG, "    Interval end: " + intervalEnd + "=" + (new Date(intervalEnd)).toString());
-//        LOGD(TAG, "    Current time is: " + currentTime + "=" + (new Date(currentTime)).toString());
+        long currentTime = System.currentTimeMillis();
+        final long intervalEnd = sessionStart + MILLI_TEN_MINUTES;
+        LOGD(TAG, "Considering notifying for time interval.");
+        LOGD(TAG, "    Interval start: " + sessionStart + "=" + (new Date(sessionStart)).toString());
+        LOGD(TAG, "    Interval end: " + intervalEnd + "=" + (new Date(intervalEnd)).toString());
+        LOGD(TAG, "    Current time is: " + currentTime + "=" + (new Date(currentTime)).toString());
 //        if (sessionStart < currentTime) {
 //            LOGD(TAG, "Skipping session notification (too late -- time interval already started)");
 //            return;
 //        }
-//
+
 //        if (!SettingsUtils.shouldShowSessionReminders(this)) {
-//            // skip if disabled in settings
+              // skip if disabled in settings
 //            LOGD(TAG, "Skipping session notification for sessions. Disabled in settings.");
 //            return;
 //        }
-//
-//        // Avoid repeated notifications.
+
+        // Avoid repeated notifications.
 //        if (alarmOffset == UNDEFINED_ALARM_OFFSET && UIUtils.isNotificationFiredForBlock(
 //                this, ScheduleContract.Blocks.generateBlockId(sessionStart, intervalEnd))) {
 //            LOGD(TAG, "Skipping session notification (already notified)");
 //            return;
 //        }
-//
+
 //        final ContentResolver cr = getContentResolver();
-//
+
 //        LOGD(TAG, "Looking for sessions in interval " + sessionStart + " - " + intervalEnd);
 //        Cursor c = null;
 //        try {
@@ -190,23 +178,23 @@ public class SessionAlarmService extends IntentService {
 //            if (starredCount < 1) {
 //                return;
 //            }
-//
-//            // Generates the pending intent which gets fired when the user taps on the notification.
-//            // NOTE: Use TaskStackBuilder to comply with Android's design guidelines
-//            // related to navigation from notifications.
-//            Intent baseIntent = new Intent(this, MyScheduleActivity.class);
-//            baseIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+            // Generates the pending intent which gets fired when the user taps on the notification.
+            // NOTE: Use TaskStackBuilder to comply with Android's design guidelines
+            // related to navigation from notifications.
+            Intent baseIntent = new Intent(this, MainActivity.class);
+            baseIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 //            TaskStackBuilder taskBuilder = TaskStackBuilder.create(this)
 //                    .addNextIntent(baseIntent);
-//
-//            // For a single session, tapping the notification should open the session details (b/15350787)
+
+            // For a single session, tapping the notification should open the session details (b/15350787)
 //            if (starredCount == 1) {
 //                taskBuilder.addNextIntent(new Intent(Intent.ACTION_VIEW,
 //                        ScheduleContract.Sessions.buildSessionUri(singleSessionId)));
 //            }
-//
+
 //            PendingIntent pi = taskBuilder.getPendingIntent(0, PendingIntent.FLAG_CANCEL_CURRENT);
-//
+
 //            final Resources res = getResources();
 //            String contentText;
 //            int minutesLeft = (int) (sessionStart - currentTime + 59000) / 60000;
@@ -222,11 +210,11 @@ public class SessionAlarmService extends IntentService {
 //                        minutesLeft,
 //                        starredCount - 1);
 //            }
-//
-//            NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(this)
-//                    .setContentTitle(starredSessionTitles.get(0))
-//                    .setContentText(contentText)
-//                    .setColor(getResources().getColor(R.color.theme_primary))
+
+            NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(this)
+                    .setContentTitle("Session bla")//starredSessionTitles.get(0))
+                    .setContentText("session is about to start")//contentText)
+                    .setColor(getResources().getColor(R.color.colorPrimary))
 //                    .setTicker(res.getQuantityString(R.plurals.session_notification_ticker,
 //                            starredCount,
 //                            starredCount))
@@ -235,10 +223,10 @@ public class SessionAlarmService extends IntentService {
 //                            SessionAlarmService.NOTIFICATION_ARGB_COLOR,
 //                            SessionAlarmService.NOTIFICATION_LED_ON_MS,
 //                            SessionAlarmService.NOTIFICATION_LED_OFF_MS)
-//                    .setSmallIcon(R.drawable.ic_stat_notification)
+                    .setSmallIcon(R.drawable.ic_event_note_black_24dp)
 //                    .setContentIntent(pi)
-//                    .setPriority(Notification.PRIORITY_MAX)
-//                    .setAutoCancel(true);
+                    .setPriority(Notification.PRIORITY_MAX)
+                    .setAutoCancel(true);
 //            if (minutesLeft > 5) {
 //                notifBuilder.addAction(R.drawable.ic_stat_alarm,
 //                        String.format(res.getString(R.string.snooze_x_min), 5),
@@ -266,13 +254,18 @@ public class SessionAlarmService extends IntentService {
 //            for (int i = 0; i < starredCount; i++) {
 //                richNotification.addLine(starredSessionTitles.get(i));
 //            }
-//            NotificationManager nm = (NotificationManager) getSystemService(
-//                    Context.NOTIFICATION_SERVICE);
-//            LOGD(TAG, "Now showing notification.");
-//            nm.notify(NOTIFICATION_ID, richNotification.build());
+            NotificationManager nm = (NotificationManager) getSystemService(
+                    Context.NOTIFICATION_SERVICE);
+            LOGD(TAG, "Now showing notification.");
+            nm.notify(NOTIFICATION_ID, notifBuilder.build());
 //        } finally {
 //            if (c != null) { try { c.close(); } catch (Exception ignored) { } }
 //        }
+    }
+
+
+    public static void LOGD(final String tag, String message) {
+        Log.d(tag, message);
     }
 
 }
