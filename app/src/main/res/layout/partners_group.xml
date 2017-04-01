@@ -1,24 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:divider="@drawable/divider15dip"
+    android:showDividers="middle"
+    android:padding="5dip"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/partners_title"
+        style="@style/sponsor_group_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        tools:text="Partners Group"
-        style="@style/sponsor_group_title"/>
+        android:textSize="18sp"
+        tools:text="Partners Group" />
 
     <LinearLayout
         android:id="@+id/partners_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"/>
+        android:gravity="center_horizontal"
+        android:divider="@drawable/divider15dip"
+        android:showDividers="middle"
+        android:orientation="vertical">
+    </LinearLayout>
 
 </LinearLayout>

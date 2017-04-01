@@ -33,6 +33,21 @@ public class PartnerGroup {
                     return 0;
             }
         }
+
+        public int getPartnerLogoSizePriority() {
+            switch (this) {
+                case GoldSponsor:
+                    return 1;
+                case SilverSponsor:
+                case OtherSponsor:
+                case Location:
+                    return 2;
+                case Media:
+                    return 3;
+                default:
+                    return 0;
+            }
+        }
     }
 
     private final PartnerType type;

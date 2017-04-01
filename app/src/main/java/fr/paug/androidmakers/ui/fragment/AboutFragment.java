@@ -34,9 +34,12 @@ import fr.paug.androidmakers.util.WifiUtil;
 
 public class AboutFragment extends Fragment {
 
-    @BindView(R.id.about_layout) LinearLayout aboutLayout;
-    @BindView(R.id.wifi_autoconnect_progress) View wifiConnectionProgress;
-    @BindView(R.id.wifi_connect_button) AppCompatButton wifiConnectButton;
+    @BindView(R.id.about_layout)
+    LinearLayout aboutLayout;
+    @BindView(R.id.wifi_autoconnect_progress)
+    View wifiConnectionProgress;
+    @BindView(R.id.wifi_connect_button)
+    AppCompatButton wifiConnectButton;
     private Unbinder unbinder;
 
     public AboutFragment() {
@@ -178,22 +181,45 @@ public class AboutFragment extends Fragment {
             final LinearLayout partnersGroupLinearLayout = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.partners_group, null);
             final TextView partnerGroupHeader = (TextView) partnersGroupLinearLayout.findViewById(R.id.partners_title);
             partnerGroupHeader.setText(partnerGroup.getPartnerType().getName());
-            aboutLayout.addView(partnersGroupLinearLayout);
 
-            for (final Partners partner : partnersList) {
-                final ImageView imageView = (ImageView) LayoutInflater.from(getContext()).inflate(R.layout.partner, null);
-                Glide.with(getContext())
-                        .load("http://androidmakers.fr/img/partners/" + partner.getImageUrl())
-                        .into(imageView);
-                imageView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        CustomTabUtil.openChromeTab(getContext(), partner.getLink());
-                    }
-                });
-                partnersGroupLinearLayout.addView(imageView);
+            final LinearLayout partnerLogoLayout = (LinearLayout) partnersGroupLinearLayout.findViewById(R.id.partners_layout);
+            final int partnerLogoSizePriority = partnerGroup.getPartnerType().getPartnerLogoSizePriority();
+            for (int index = 0; index < partnersList.size(); index += partnerLogoSizePriority) {
+                final LinearLayout partnerRow = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.partner_row, null);
+                partnerRow.setWeightSum(partnerLogoSizePriority);
+
+                if (partnerLogoSizePriority > 0) {
+                    final ImageView partner1 = (ImageView) partnerRow.findViewById(R.id.partner1);
+                    setLogoInfo(partner1, partnersList.get(index));
+                }
+
+                if (partnerLogoSizePriority > 1 && partnersList.size() > index + 1) {
+                    final ImageView partner2 = (ImageView) partnerRow.findViewById(R.id.partner2);
+                    setLogoInfo(partner2, partnersList.get(index + 1));
+                }
+
+                if (partnerLogoSizePriority > 2 && partnersList.size() > index + 2) {
+                    final ImageView partner3 = (ImageView) partnerRow.findViewById(R.id.partner3);
+                    setLogoInfo(partner3, partnersList.get(index + 2));
+                }
+
+                partnerLogoLayout.addView(partnerRow);
             }
+            aboutLayout.addView(partnersGroupLinearLayout);
         }
+    }
+
+    private void setLogoInfo(final ImageView partnerLogo, final Partners partner) {
+        partnerLogo.setVisibility(View.VISIBLE);
+        Glide.with(getContext())
+                .load("http://androidmakers.fr/img/partners/" + partner.getImageUrl())
+                .into(partnerLogo);
+        partnerLogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomTabUtil.openChromeTab(getContext(), partner.getLink());
+            }
+        });
     }
 
 }
