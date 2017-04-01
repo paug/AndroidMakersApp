@@ -164,7 +164,7 @@ public class DetailActivity extends AppCompatActivity {
         SessionSelector.getInstance().setSessionSelected(sessionId, select);
         invalidateOptionsMenu();
 
-        Log.d("Detail", "Scheduling notification about session start.");
+        Log.d("Detail", "Scheduling notification about session start. start time : " + mSessionStartDateInMillis + ", end time : " + mSessionEndDateInMillis);
         Intent scheduleIntent;
         scheduleIntent = new Intent(
                 SessionAlarmService.ACTION_SCHEDULE_STARRED_BLOCK,

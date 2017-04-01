@@ -8,14 +8,17 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
+import android.text.format.DateUtils;
 import android.util.Log;
 
 import java.util.Date;
+import java.util.Formatter;
 import java.util.List;
 
 import fr.paug.androidmakers.R;
 import fr.paug.androidmakers.manager.AgendaRepository;
 import fr.paug.androidmakers.model.ScheduleSlot;
+import fr.paug.androidmakers.model.Session;
 import fr.paug.androidmakers.ui.activity.MainActivity;
 import fr.paug.androidmakers.util.SessionSelector;
 
@@ -30,12 +33,12 @@ public class SessionAlarmService extends IntentService {
 
     public static final String EXTRA_SESSION_START = "SESSION_START";
     public static final String EXTRA_SESSION_END = "SESSION_END";
+    public static final String EXTRA_SESSION_ALARM_OFFSET = "SESSION_ALARM_OFFSET";
 
     public static final int NOTIFICATION_ID = 100;
 
     private static final long MILLI_TEN_MINUTES = 600000;
     private static final long MILLI_FIVE_MINUTES = 300000;
-    private static final long MILLI_ONE_MINUTE = 60000;
 
     private static final long UNDEFINED_ALARM_OFFSET = -1;
     private static final long UNDEFINED_VALUE = -1;
@@ -64,7 +67,7 @@ public class SessionAlarmService extends IntentService {
         if (ACTION_NOTIFY_SESSION.equals(action)) {
             LOGD(TAG, "Notifying about sessions starting at " +
                     sessionStart + " = " + (new Date(sessionStart)).toString());
-            notifySession(sessionStart, MILLI_FIVE_MINUTES);
+            notifySession(sessionStart);
         } else if (ACTION_SCHEDULE_STARRED_BLOCK.equals(action)) {
             LOGD(TAG, "Scheduling session alarm.");
             LOGD(TAG, "-> Session start: " + sessionStart + " = " + (new Date(sessionStart))
@@ -115,9 +118,9 @@ public class SessionAlarmService extends IntentService {
                 null,
                 this,
                 SessionAlarmService.class);
-        notifIntent.putExtra("EXTRA_SESSION_START", sessionStart);
-        notifIntent.putExtra("EXTRA_SESSION_END", sessionEnd);
-        notifIntent.putExtra("EXTRA_SESSION_ALARM_OFFSET", alarmOffset);
+        notifIntent.putExtra(EXTRA_SESSION_START, sessionStart);
+        notifIntent.putExtra(EXTRA_SESSION_END, sessionEnd);
+        notifIntent.putExtra(EXTRA_SESSION_ALARM_OFFSET, alarmOffset);
         PendingIntent pi = PendingIntent.getService(this,
                 0,
                 notifIntent,
@@ -128,56 +131,38 @@ public class SessionAlarmService extends IntentService {
     }
 
     // Starred sessions are about to begin.  Constructs and triggers system notification.
-    private void notifySession(final long sessionStart, final long alarmOffset) {
+    private void notifySession(final long sessionStart) {
         long currentTime = System.currentTimeMillis();
         final long intervalEnd = sessionStart + MILLI_TEN_MINUTES;
         LOGD(TAG, "Considering notifying for time interval.");
         LOGD(TAG, "    Interval start: " + sessionStart + "=" + (new Date(sessionStart)).toString());
         LOGD(TAG, "    Interval end: " + intervalEnd + "=" + (new Date(intervalEnd)).toString());
         LOGD(TAG, "    Current time is: " + currentTime + "=" + (new Date(currentTime)).toString());
-//        if (sessionStart < currentTime) {
-//            LOGD(TAG, "Skipping session notification (too late -- time interval already started)");
-//            return;
-//        }
 
-//        if (!SettingsUtils.shouldShowSessionReminders(this)) {
-              // skip if disabled in settings
-//            LOGD(TAG, "Skipping session notification for sessions. Disabled in settings.");
-//            return;
-//        }
+        // Find sessions details
+        LOGD(TAG, "Looking for sessions in interval " + sessionStart + " - " + intervalEnd);
 
-        // Avoid repeated notifications.
-//        if (alarmOffset == UNDEFINED_ALARM_OFFSET && UIUtils.isNotificationFiredForBlock(
-//                this, ScheduleContract.Blocks.generateBlockId(sessionStart, intervalEnd))) {
-//            LOGD(TAG, "Skipping session notification (already notified)");
-//            return;
-//        }
+        List<ScheduleSlot> scheduleSlots = AgendaRepository.getInstance().getScheduleSlots();
 
-//        final ContentResolver cr = getContentResolver();
+        ScheduleSlot slotToNotify = null;
+        for (ScheduleSlot scheduleSlot : scheduleSlots) {
+            if (scheduleSlot.startDate == sessionStart) {
+                Log.d(TAG, "schedule to start: " + scheduleSlot.toString());
+                if (SessionSelector.getInstance().getSessionsSelected().contains(String.valueOf(scheduleSlot.sessionId))) {
+                    Log.d(TAG, "starred schedule slot:" + scheduleSlot.sessionId);
+                    slotToNotify = scheduleSlot;
+                }
+            }
+        }
 
-//        LOGD(TAG, "Looking for sessions in interval " + sessionStart + " - " + intervalEnd);
-//        Cursor c = null;
-//        try {
-//            c = cr.query(
-//                    ScheduleContract.Sessions.CONTENT_MY_SCHEDULE_URI,
-//                    SessionDetailQuery.PROJECTION,
-//                    ScheduleContract.Sessions.STARTING_AT_TIME_INTERVAL_SELECTION,
-//                    ScheduleContract.Sessions.buildAtTimeIntervalArgs(sessionStart, intervalEnd),
-//                    null);
-//            int starredCount = c.getCount();
-//            LOGD(TAG, "# starred sessions in that interval: " + c.getCount());
-//            String singleSessionId = null;
-//            String singleSessionRoomId = null;
-//            ArrayList<String> starredSessionTitles = new ArrayList<String>();
-//            while (c.moveToNext()) {
-//                singleSessionId = c.getString(SessionDetailQuery.SESSION_ID);
-//                singleSessionRoomId = c.getString(SessionDetailQuery.ROOM_ID);
-//                starredSessionTitles.add(c.getString(SessionDetailQuery.SESSION_TITLE));
-//                LOGD(TAG, "-> Title: " + c.getString(SessionDetailQuery.SESSION_TITLE));
-//            }
-//            if (starredCount < 1) {
-//                return;
-//            }
+        Session sessionToNotify = AgendaRepository.getInstance().getSession(slotToNotify.sessionId);
+        final String sessionDate = DateUtils.formatDateRange(this, new Formatter(getResources().getConfiguration().locale),
+                slotToNotify.startDate,
+                slotToNotify.endDate,
+                DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_ABBREV_WEEKDAY | DateUtils.FORMAT_SHOW_TIME,
+                null).toString();
+        //final String sessionDateAndRoom = sessionRoom != null && !TextUtils.isEmpty(sessionRoom.name) ?
+        // getString(R.string.sessionDateWithRoomPlaceholder, sessionDate, sessionRoom.name) : sessionDate;
 
             // Generates the pending intent which gets fired when the user taps on the notification.
             // NOTE: Use TaskStackBuilder to comply with Android's design guidelines
@@ -187,7 +172,8 @@ public class SessionAlarmService extends IntentService {
 //            TaskStackBuilder taskBuilder = TaskStackBuilder.create(this)
 //                    .addNextIntent(baseIntent);
 
-            // For a single session, tapping the notification should open the session details (b/15350787)
+            // For a single session, tapping the notification should open the session details 
+        // TODO: 01/04/2017  tap : open detail activity
 //            if (starredCount == 1) {
 //                taskBuilder.addNextIntent(new Intent(Intent.ACTION_VIEW,
 //                        ScheduleContract.Sessions.buildSessionUri(singleSessionId)));
@@ -212,17 +198,10 @@ public class SessionAlarmService extends IntentService {
 //            }
 
             NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(this)
-                    .setContentTitle("Session bla")//starredSessionTitles.get(0))
-                    .setContentText("session is about to start")//contentText)
+                    .setContentTitle(sessionToNotify.title)
+                    .setContentText(sessionDate)
                     .setColor(getResources().getColor(R.color.colorPrimary))
-//                    .setTicker(res.getQuantityString(R.plurals.session_notification_ticker,
-//                            starredCount,
-//                            starredCount))
-//                    .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE)
-//                    .setLights(
-//                            SessionAlarmService.NOTIFICATION_ARGB_COLOR,
-//                            SessionAlarmService.NOTIFICATION_LED_ON_MS,
-//                            SessionAlarmService.NOTIFICATION_LED_OFF_MS)
+                    .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE)
                     .setSmallIcon(R.drawable.ic_event_note_black_24dp)
 //                    .setContentIntent(pi)
                     .setPriority(Notification.PRIORITY_MAX)
