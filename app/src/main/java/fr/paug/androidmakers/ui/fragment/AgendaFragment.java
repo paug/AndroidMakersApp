@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -112,35 +113,44 @@ public class AgendaFragment extends Fragment implements AgendaView.AgendaClickLi
         if (mAgendaFilterMenu == null) {
             return;
         }
-        String languageFilter = mAgendaFilterMenu.getLanguageFilter();
-        Set<String> allLanguages = AgendaRepository.getInstance().getAllLanguages();
-        mAgendaFilterMenu.setLanguages(allLanguages.toArray(new String[allLanguages.size()]));
+        final String languageFilter = mAgendaFilterMenu.getLanguageFilter();
+        final Set<String> allLanguageAbreviated = AgendaRepository.getInstance().getAllLanguages();
+        final Set<String> fullLengthLanguageName = new HashSet<>();
 
-        SparseArray<AgendaView.DaySchedule> itemByDayOfTheYear = new SparseArray<>();
+        for (final String languageAbbreviated : allLanguageAbreviated) {
+            final int languageStringRes = Session.getLanguageFullName(languageAbbreviated);
+            if (languageStringRes != 0) {
+                fullLengthLanguageName.add(getString(languageStringRes));
+            }
+        }
 
-        Calendar calendar = Calendar.getInstance();
-        List<ScheduleSlot> scheduleSlots = AgendaRepository.getInstance().getScheduleSlots();
-        for (ScheduleSlot scheduleSlot : scheduleSlots) {
+        mAgendaFilterMenu.setLanguages(fullLengthLanguageName.toArray(new String[fullLengthLanguageName.size()]));
+
+        final SparseArray<AgendaView.DaySchedule> itemByDayOfTheYear = new SparseArray<>();
+
+        final Calendar calendar = Calendar.getInstance();
+        final List<ScheduleSlot> scheduleSlots = AgendaRepository.getInstance().getScheduleSlots();
+        for (final ScheduleSlot scheduleSlot : scheduleSlots) {
 
             if (languageFilter != null) {
-                int sessionId = scheduleSlot.sessionId;
-                Session session = AgendaRepository.getInstance().getSession(sessionId);
-                if (session == null || !languageFilter.equals(session.language)) {
+                final int sessionId = scheduleSlot.sessionId;
+                final Session session = AgendaRepository.getInstance().getSession(sessionId);
+                if (session == null || session.getLanguageName() == 0 || !languageFilter.equals(getString(session.getLanguageName()))) {
                     // skip this session
                     continue;
                 }
             }
 
-            List<AgendaView.Item> agendaItems = getAgendaItems(
+            final List<AgendaView.Item> agendaItems = getAgendaItems(
                     itemByDayOfTheYear, calendar, scheduleSlot);
             agendaItems.add(new AgendaView.Item(scheduleSlot, getTitle(scheduleSlot.sessionId)));
         }
 
-        List<AgendaView.DaySchedule> items = getItemsOrdered(itemByDayOfTheYear);
-        AgendaPagerAdapter adapter = new AgendaPagerAdapter(items, mAgendaSelector, this);
+        final List<AgendaView.DaySchedule> items = getItemsOrdered(itemByDayOfTheYear);
+        final AgendaPagerAdapter adapter = new AgendaPagerAdapter(items, mAgendaSelector, this);
         mViewPager.setAdapter(adapter);
 
-        int indexOfToday = getTodayIndex(items);
+        final int indexOfToday = getTodayIndex(items);
         if (indexOfToday > 0) {
             mViewPager.setCurrentItem(indexOfToday, true);
         }

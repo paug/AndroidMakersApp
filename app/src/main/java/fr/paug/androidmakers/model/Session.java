@@ -27,10 +27,15 @@ public class Session {
 
     @StringRes
     public int getLanguageName() {
-        if (!TextUtils.isEmpty(language)) {
-            if ("en".equalsIgnoreCase(language)) {
+        return Session.getLanguageFullName(this.language);
+    }
+
+    @StringRes
+    public static int getLanguageFullName(String abbreviatedVersion) {
+        if (!TextUtils.isEmpty(abbreviatedVersion)) {
+            if ("en".equalsIgnoreCase(abbreviatedVersion)) {
                 return R.string.english;
-            }else if ("fr".equalsIgnoreCase(language)) {
+            } else if ("fr".equalsIgnoreCase(abbreviatedVersion)) {
                 return R.string.french;
             }
         }
