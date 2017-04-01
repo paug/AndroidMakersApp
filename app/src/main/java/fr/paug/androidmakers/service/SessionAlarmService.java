@@ -164,84 +164,39 @@ public class SessionAlarmService extends IntentService {
         //final String sessionDateAndRoom = sessionRoom != null && !TextUtils.isEmpty(sessionRoom.name) ?
         // getString(R.string.sessionDateWithRoomPlaceholder, sessionDate, sessionRoom.name) : sessionDate;
 
-            // Generates the pending intent which gets fired when the user taps on the notification.
-            // NOTE: Use TaskStackBuilder to comply with Android's design guidelines
-            // related to navigation from notifications.
-            Intent baseIntent = new Intent(this, MainActivity.class);
-            baseIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//            TaskStackBuilder taskBuilder = TaskStackBuilder.create(this)
-//                    .addNextIntent(baseIntent);
+        // Generates the pending intent which gets fired when the user taps on the notification.
+        // NOTE: Use TaskStackBuilder to comply with Android's design guidelines
+        // related to navigation from notifications.
+        Intent baseIntent = new Intent(this, MainActivity.class);
+        baseIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-            // For a single session, tapping the notification should open the session details 
-        // TODO: 01/04/2017  tap : open detail activity
-//            if (starredCount == 1) {
-//                taskBuilder.addNextIntent(new Intent(Intent.ACTION_VIEW,
-//                        ScheduleContract.Sessions.buildSessionUri(singleSessionId)));
-//            }
+        // For a single session, tapping the notification should open the session details
+        // TODO: 01/04/2017  tap : open detail activity ? or just main activity
+        Intent resultIntent = new Intent(this, MainActivity.class);
 
-//            PendingIntent pi = taskBuilder.getPendingIntent(0, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent resultPendingIntent =
+                PendingIntent.getActivity(
+                        this,
+                        0,
+                        resultIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
 
-//            final Resources res = getResources();
-//            String contentText;
-//            int minutesLeft = (int) (sessionStart - currentTime + 59000) / 60000;
-//            if (minutesLeft < 1) {
-//                minutesLeft = 1;
-//            }
-//
-//            if (starredCount == 1) {
-//                contentText = res.getString(R.string.session_notification_text_1, minutesLeft);
-//            } else {
-//                contentText = res.getQuantityString(R.plurals.session_notification_text,
-//                        starredCount - 1,
-//                        minutesLeft,
-//                        starredCount - 1);
-//            }
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                .setContentTitle(sessionToNotify.title)
+                .setContentText(sessionDate)
+                .setColor(getResources().getColor(R.color.colorPrimary))
+                .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE)
+                .setSmallIcon(R.drawable.ic_event_note_black_24dp)
+                .setContentIntent(resultPendingIntent)
+                .setPriority(Notification.PRIORITY_MAX)
+                .setAutoCancel(true);
 
-            NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(this)
-                    .setContentTitle(sessionToNotify.title)
-                    .setContentText(sessionDate)
-                    .setColor(getResources().getColor(R.color.colorPrimary))
-                    .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE)
-                    .setSmallIcon(R.drawable.ic_event_note_black_24dp)
-//                    .setContentIntent(pi)
-                    .setPriority(Notification.PRIORITY_MAX)
-                    .setAutoCancel(true);
-//            if (minutesLeft > 5) {
-//                notifBuilder.addAction(R.drawable.ic_stat_alarm,
-//                        String.format(res.getString(R.string.snooze_x_min), 5),
-//                        createSnoozeIntent(sessionStart, intervalEnd, 5));
-//            }
-//            if (starredCount == 1 && SettingsUtils.isAttendeeAtVenue(this)) {
-//                notifBuilder.addAction(R.drawable.ic_stat_map,
-//                        res.getString(R.string.title_map),
-//                        createRoomMapIntent(singleSessionRoomId));
-//            }
-//            String bigContentTitle;
-//            if (starredCount == 1 && starredSessionTitles.size() > 0) {
-//                bigContentTitle = starredSessionTitles.get(0);
-//            } else {
-//                bigContentTitle = res.getQuantityString(R.plurals.session_notification_title,
-//                        starredCount,
-//                        minutesLeft,
-//                        starredCount);
-//            }
-//            NotificationCompat.InboxStyle richNotification = new NotificationCompat.InboxStyle(
-//                    notifBuilder)
-//                    .setBigContentTitle(bigContentTitle);
-//
-//            // Adds starred sessions starting at this time block to the notification.
-//            for (int i = 0; i < starredCount; i++) {
-//                richNotification.addLine(starredSessionTitles.get(i));
-//            }
-            NotificationManager nm = (NotificationManager) getSystemService(
-                    Context.NOTIFICATION_SERVICE);
-            LOGD(TAG, "Now showing notification.");
-            nm.notify(NOTIFICATION_ID, notifBuilder.build());
-//        } finally {
-//            if (c != null) { try { c.close(); } catch (Exception ignored) { } }
-//        }
+        NotificationManager nm = (NotificationManager) getSystemService(
+                Context.NOTIFICATION_SERVICE);
+        LOGD(TAG, "Now showing notification.");
+        nm.notify(NOTIFICATION_ID, notificationBuilder.build());
     }
-
 
     public static void LOGD(final String tag, String message) {
         Log.d(tag, message);
