@@ -26,7 +26,7 @@ public class SessionAlarmService extends IntentService {
 
     private static final String TAG = "sessionAlarm";
 
-    public static final String ACTION_NOTIFY_SESSION = "notify";
+    public static final String ACTION_NOTIFY_SESSION = "NOTIFY_SESSION";
 
     public static final String ACTION_SCHEDULE_STARRED_BLOCK = "SCHEDULE_STARRED_BLOCK";
     public static final String ACTION_SCHEDULE_ALL_STARRED_BLOCKS = "SCHEDULE_ALL_STARRED_BLOCKS";
@@ -36,6 +36,10 @@ public class SessionAlarmService extends IntentService {
     public static final String EXTRA_SESSION_ALARM_OFFSET = "SESSION_ALARM_OFFSET";
 
     public static final int NOTIFICATION_ID = 100;
+
+    private static final int NOTIFICATION_LED_ON_MS = 100;
+    private static final int NOTIFICATION_LED_OFF_MS = 1000;
+    private static final int NOTIFICATION_ARGB_COLOR = 0xff1EB6E1;
 
     private static final long MILLI_TEN_MINUTES = 600000;
     private static final long MILLI_FIVE_MINUTES = 300000;
@@ -104,11 +108,9 @@ public class SessionAlarmService extends IntentService {
             return;
         }
 
-        // By default, sets alarm to go off at 10 minutes before session start time.  If alarm
-        // offset is provided, alarm is set to go off by that much time from now.
         long alarmTime;
         if (alarmOffset == UNDEFINED_ALARM_OFFSET) {
-            alarmTime = sessionStart - MILLI_TEN_MINUTES;
+            alarmTime = sessionStart - MILLI_FIVE_MINUTES;
         } else {
             alarmTime = currentTime + alarmOffset;
         }
@@ -161,19 +163,12 @@ public class SessionAlarmService extends IntentService {
                 slotToNotify.endDate,
                 DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_ABBREV_WEEKDAY | DateUtils.FORMAT_SHOW_TIME,
                 null).toString();
-        //final String sessionDateAndRoom = sessionRoom != null && !TextUtils.isEmpty(sessionRoom.name) ?
-        // getString(R.string.sessionDateWithRoomPlaceholder, sessionDate, sessionRoom.name) : sessionDate;
 
         // Generates the pending intent which gets fired when the user taps on the notification.
-        // NOTE: Use TaskStackBuilder to comply with Android's design guidelines
-        // related to navigation from notifications.
         Intent baseIntent = new Intent(this, MainActivity.class);
         baseIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-        // For a single session, tapping the notification should open the session details
-        // TODO: 01/04/2017  tap : open detail activity ? or just main activity
         Intent resultIntent = new Intent(this, MainActivity.class);
-
         PendingIntent resultPendingIntent =
                 PendingIntent.getActivity(
                         this,
@@ -187,15 +182,19 @@ public class SessionAlarmService extends IntentService {
                 .setContentText(sessionDate)
                 .setColor(getResources().getColor(R.color.colorPrimary))
                 .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE)
+                .setLights(
+                        SessionAlarmService.NOTIFICATION_ARGB_COLOR,
+                        SessionAlarmService.NOTIFICATION_LED_ON_MS,
+                        SessionAlarmService.NOTIFICATION_LED_OFF_MS)
                 .setSmallIcon(R.drawable.ic_event_note_black_24dp)
                 .setContentIntent(resultPendingIntent)
                 .setPriority(Notification.PRIORITY_MAX)
                 .setAutoCancel(true);
 
-        NotificationManager nm = (NotificationManager) getSystemService(
+        NotificationManager notificationManager = (NotificationManager) getSystemService(
                 Context.NOTIFICATION_SERVICE);
         LOGD(TAG, "Now showing notification.");
-        nm.notify(NOTIFICATION_ID, notificationBuilder.build());
+        notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
     }
 
     public static void LOGD(final String tag, String message) {
