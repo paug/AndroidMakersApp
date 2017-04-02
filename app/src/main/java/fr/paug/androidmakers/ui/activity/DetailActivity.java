@@ -30,6 +30,7 @@ import fr.paug.androidmakers.model.Room;
 import fr.paug.androidmakers.model.Session;
 import fr.paug.androidmakers.model.SocialNetworkHandle;
 import fr.paug.androidmakers.model.Speaker;
+import fr.paug.androidmakers.service.SessionAlarmService;
 import fr.paug.androidmakers.ui.view.AgendaView;
 import fr.paug.androidmakers.util.SessionSelector;
 
@@ -45,6 +46,8 @@ public class DetailActivity extends AppCompatActivity {
     private static final String PARAM_SESSION_ROOM = "param_session_room";
 
     private int sessionId;
+    private long mSessionStartDateInMillis;
+    private long mSessionEndDateInMillis;
 
     public static void startActivity(Context context, AgendaView.Item item) {
         Intent intent = new Intent(context, DetailActivity.class);
@@ -62,8 +65,8 @@ public class DetailActivity extends AppCompatActivity {
         sessionId = getIntent().getIntExtra(PARAM_SESSION_ID, -1);
         final Session session = AgendaRepository.getInstance().getSession(sessionId);
 
-        final long sessionStartDateInMillis = getIntent().getLongExtra(PARAM_SESSION_START_DATE, -1);
-        final long sessionEndDateInMillis = getIntent().getLongExtra(PARAM_SESSION_END_DATE, -1);
+        mSessionStartDateInMillis = getIntent().getLongExtra(PARAM_SESSION_START_DATE, -1);
+        mSessionEndDateInMillis = getIntent().getLongExtra(PARAM_SESSION_END_DATE, -1);
 
         final Room sessionRoom = AgendaRepository.getInstance().getRoom(
                 getIntent().getIntExtra(PARAM_SESSION_ROOM, -1)
@@ -76,7 +79,7 @@ public class DetailActivity extends AppCompatActivity {
             return;
         }
 
-        final String sessionDate = DateUtils.formatDateRange(this, new Formatter(getResources().getConfiguration().locale), sessionStartDateInMillis, sessionEndDateInMillis, DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_ABBREV_WEEKDAY | DateUtils.FORMAT_SHOW_TIME, null).toString();
+        final String sessionDate = DateUtils.formatDateRange(this, new Formatter(getResources().getConfiguration().locale), mSessionStartDateInMillis, mSessionEndDateInMillis, DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_ABBREV_WEEKDAY | DateUtils.FORMAT_SHOW_TIME, null).toString();
         final String sessionDateAndRoom = sessionRoom != null && !TextUtils.isEmpty(sessionRoom.name) ? getString(R.string.sessionDateWithRoomPlaceholder, sessionDate, sessionRoom.name) : sessionDate;
 
         activityDetailBinding.sessionTitle.setText(session.title);
@@ -160,6 +163,15 @@ public class DetailActivity extends AppCompatActivity {
     private void changeSessionSelection(boolean select) {
         SessionSelector.getInstance().setSessionSelected(sessionId, select);
         invalidateOptionsMenu();
+
+        Log.d("Detail", "Scheduling notification about session start. start time : " + mSessionStartDateInMillis + ", end time : " + mSessionEndDateInMillis);
+        Intent scheduleIntent;
+        scheduleIntent = new Intent(
+                SessionAlarmService.ACTION_SCHEDULE_STARRED_BLOCK,
+                null, this, SessionAlarmService.class);
+        scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_START, mSessionStartDateInMillis);
+        scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_END, mSessionEndDateInMillis);
+        startService(scheduleIntent);
     }
 
     @Override

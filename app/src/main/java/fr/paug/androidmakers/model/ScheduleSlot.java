@@ -16,4 +16,15 @@ public class ScheduleSlot {
         this.startDate = startDate;
         this.endDate = endDate;
     }
+
+    @Override
+    public String toString() {
+        return "ScheduleSlot{" +
+                "room=" + room +
+                ", sessionId=" + sessionId +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                '}';
+    }
+
 }
