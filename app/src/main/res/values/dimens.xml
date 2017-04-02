@@ -4,8 +4,5 @@
     <dimen name="padding_double">16dp</dimen>
     <dimen name="avatar_size">50dip</dimen>
 
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="section_title_text_size">18sp</dimen>
 </resources>
