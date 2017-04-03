@@ -27,6 +27,7 @@ public class SessionAlarmService extends IntentService {
     private static final String TAG = "sessionAlarm";
 
     public static final String ACTION_NOTIFY_SESSION = "NOTIFY_SESSION";
+    public static final String ACTION_REMOVE_NOTIFY_SESSION = "REMOVE_NOTIFY_SESSION";
 
     public static final String ACTION_SCHEDULE_STARRED_BLOCK = "SCHEDULE_STARRED_BLOCK";
     public static final String ACTION_SCHEDULE_ALL_STARRED_BLOCKS = "SCHEDULE_ALL_STARRED_BLOCKS";
@@ -34,6 +35,8 @@ public class SessionAlarmService extends IntentService {
     public static final String EXTRA_SESSION_START = "SESSION_START";
     public static final String EXTRA_SESSION_END = "SESSION_END";
     public static final String EXTRA_SESSION_ALARM_OFFSET = "SESSION_ALARM_OFFSET";
+    public static final String EXTRA_SESSION_ADD = "SESSION_ADD";
+    public static final String EXTRA_SESSION_REMOVE = "SESSION_REMOVE";
 
     public static final int NOTIFICATION_ID = 100;
 
@@ -105,15 +108,13 @@ public class SessionAlarmService extends IntentService {
 
         // If the session is already started, do not schedule system notification.
         if (currentTime > sessionStart) {
+            LOGD(TAG, "Not scheduling alarm because target time is in the past: " + sessionStart);
             return;
         }
 
-        long alarmTime;
-        if (alarmOffset == UNDEFINED_ALARM_OFFSET) {
-            alarmTime = sessionStart - MILLI_FIVE_MINUTES;
-        } else {
-            alarmTime = currentTime + alarmOffset;
-        }
+        long alarmTime = sessionStart - MILLI_FIVE_MINUTES;
+
+        LOGD(TAG, "Scheduling alarm for " + alarmTime + " = " + (new Date(alarmTime)).toString());
 
         final Intent notifIntent = new Intent(
                 ACTION_NOTIFY_SESSION,
@@ -121,14 +122,18 @@ public class SessionAlarmService extends IntentService {
                 this,
                 SessionAlarmService.class);
         notifIntent.putExtra(EXTRA_SESSION_START, sessionStart);
+        LOGD(TAG, "-> Intent extra: session start " + sessionStart);
         notifIntent.putExtra(EXTRA_SESSION_END, sessionEnd);
+        LOGD(TAG, "-> Intent extra: session end " + sessionEnd);
         notifIntent.putExtra(EXTRA_SESSION_ALARM_OFFSET, alarmOffset);
+        LOGD(TAG, "-> Intent extra: session alarm offset " + alarmOffset);
         PendingIntent pi = PendingIntent.getService(this,
                 0,
                 notifIntent,
                 PendingIntent.FLAG_CANCEL_CURRENT);
         final AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         // Schedule an alarm to be fired to notify user of added sessions are about to begin.
+        LOGD(TAG, "-> Scheduling RTC_WAKEUP alarm at " + alarmTime);
         am.set(AlarmManager.RTC_WAKEUP, alarmTime, pi);
     }
 
