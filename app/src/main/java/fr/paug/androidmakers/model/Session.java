@@ -1,5 +1,6 @@
 package fr.paug.androidmakers.model;
 
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.text.TextUtils;
 
@@ -11,12 +12,12 @@ import fr.paug.androidmakers.R;
 public class Session {
 
     public final String title;
-    public final String description;
+    public final @Nullable String description;
     public final String language;
     public final int[] speakers;
     public final String subtype;
 
-    public Session(String title, String description, String language,
+    public Session(String title, @Nullable String description, String language,
                    int[] speakers, String subtype) {
         this.title = title;
         this.description = description;

@@ -85,7 +85,8 @@ public class DetailActivity extends AppCompatActivity {
 
         activityDetailBinding.sessionTitle.setText(session.title);
         activityDetailBinding.sessionDateAndRoom.setText(sessionDateAndRoom);
-        activityDetailBinding.sessionDescription.setText(Html.fromHtml(session.description));
+        activityDetailBinding.sessionDescription.setText(session.description != null ?
+                Html.fromHtml(session.description) : "");
 
         final int languageFullNameRes = session.getLanguageName();
         if (languageFullNameRes != 0) {
