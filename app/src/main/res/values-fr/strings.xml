@@ -28,6 +28,9 @@
     <string name="star_session">Mettre en favori</string>
     <string name="unstar_session">Enlever des favoris</string>
 
+    <string name="session_selected">Session ajoutée en favori</string>
+    <string name="session_deselected">Session enlevée des favoris</string>
+
     <!--Venue-->
     <string name="venue_conference_directions"><b>Voiture</b>: sortie Porte de Bercy, direction Paris centre, sortie
         Bercy Cour Saint-Emilion\n\n<b>Métro</b> : Ligne 14, Cour Saint-Emilion\n\n<b>Bus</b> :

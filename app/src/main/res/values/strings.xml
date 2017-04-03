@@ -29,6 +29,9 @@
     <string name="star_session">Star session</string>
     <string name="unstar_session">Unstar session</string>
 
+    <string name="session_selected">Session added to favorites</string>
+    <string name="session_deselected">Session removed of favorites</string>
+
     <!--Venue-->
     <string name="venue_conference_title" translatable="false">Les Salons de l\'Aveyron</string>
     <string name="venue_conference_address" translatable="false">17 Rue de l\'Aubrac\n75012 Paris, France

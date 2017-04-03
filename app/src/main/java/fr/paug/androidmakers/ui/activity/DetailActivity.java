@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.robertlevonyan.views.chip.OnChipClickListener;
 
@@ -164,14 +165,22 @@ public class DetailActivity extends AppCompatActivity {
         SessionSelector.getInstance().setSessionSelected(sessionId, select);
         invalidateOptionsMenu();
 
-        Log.d("Detail", "Scheduling notification about session start. start time : " + mSessionStartDateInMillis + ", end time : " + mSessionEndDateInMillis);
-        Intent scheduleIntent;
-        scheduleIntent = new Intent(
-                SessionAlarmService.ACTION_SCHEDULE_STARRED_BLOCK,
-                null, this, SessionAlarmService.class);
-        scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_START, mSessionStartDateInMillis);
-        scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_END, mSessionEndDateInMillis);
-        startService(scheduleIntent);
+        if(select) {
+            Toast.makeText(this, R.string.session_selected, Toast.LENGTH_SHORT).show();
+
+            Log.d("Detail", "Scheduling notification about session start. start time : " + mSessionStartDateInMillis + ", end time : " + mSessionEndDateInMillis);
+            Intent scheduleIntent;
+            scheduleIntent = new Intent(
+                    SessionAlarmService.ACTION_SCHEDULE_STARRED_BLOCK,
+                    null, this, SessionAlarmService.class);
+            scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_START, mSessionStartDateInMillis);
+            scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_END, mSessionEndDateInMillis);
+            startService(scheduleIntent);
+        } else {
+            Toast.makeText(this, R.string.session_deselected, Toast.LENGTH_SHORT).show();
+
+            // TODO: 03/04/2017 remove notification
+        }
     }
 
     @Override
