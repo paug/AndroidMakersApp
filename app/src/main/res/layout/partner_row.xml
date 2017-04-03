@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -13,8 +14,9 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:background="?attr/selectableItemBackground"
+        android:minHeight="80dp"
         android:scaleType="fitCenter"
-        tools:src="@drawable/venue_afterparty" />
+        tools:src="@drawable/google_plus"/>
 
     <ImageView
         android:id="@+id/partner2"
@@ -24,10 +26,11 @@
         android:layout_marginStart="15dp"
         android:layout_weight="1"
         android:background="?attr/selectableItemBackground"
+        android:minHeight="80dp"
         android:scaleType="fitCenter"
         android:visibility="gone"
-        tools:src="@drawable/venue_afterparty"
-        tools:visibility="visible" />
+        tools:src="@drawable/google_plus"
+        tools:visibility="visible"/>
 
     <ImageView
         android:id="@+id/partner3"
@@ -37,9 +40,10 @@
         android:layout_marginStart="15dp"
         android:layout_weight="1"
         android:background="?attr/selectableItemBackground"
+        android:minHeight="80dp"
         android:scaleType="fitCenter"
         android:visibility="gone"
-        tools:src="@drawable/venue_afterparty"
-        tools:visibility="visible" />
+        tools:src="@drawable/google_plus"
+        tools:visibility="visible"/>
 
 </LinearLayout>
