@@ -16,6 +16,10 @@ import fr.paug.androidmakers.ui.fragment.VenuePagerFragment;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG_FRAGMENT_AGENDA = "TAG_FRAGMENT_AGENDA";
+    private static final String TAG_FRAGMENT_VENUE = "TAG_FRAGMENT_VENUE";
+    private static final String TAG_FRAGMENT_ABOUT = "TAG_FRAGMENT_ABOUT";
+
     private Fragment fragment;
     private FragmentManager fragmentManager;
 
@@ -23,19 +27,29 @@ public class MainActivity extends AppCompatActivity {
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            String tag;
+
             switch (item.getItemId()) {
                 case R.id.navigation_agenda:
-                    fragment = new AgendaFragment();
+                    tag = TAG_FRAGMENT_AGENDA;
                     break;
                 case R.id.navigation_venue:
-                    fragment = new VenuePagerFragment();
+                    tag = TAG_FRAGMENT_VENUE;
                     break;
                 case R.id.navigation_about:
-                    fragment = new AboutFragment();
+                    tag = TAG_FRAGMENT_ABOUT;
                     break;
+                default:
+                    return false;
             }
+
+            fragment = fragmentManager.findFragmentByTag(tag);
+
+            if (fragment == null)
+                fragment = newFragmentByTag(tag);
+
             FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.replace(R.id.fragment_container, fragment);
+            transaction.replace(R.id.fragment_container, fragment, tag);
             transaction.commit();
             return true;
         }
@@ -59,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
     private void addAgenda() {
         fragment = new AgendaFragment();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.fragment_container, fragment).commit();
+        transaction.add(R.id.fragment_container, fragment, TAG_FRAGMENT_AGENDA).commit();
     }
 
     @Override
@@ -67,4 +81,16 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
     }
 
+    @NonNull
+    private Fragment newFragmentByTag(@NonNull String tag) {
+        switch (tag) {
+            case TAG_FRAGMENT_VENUE:
+                return new VenuePagerFragment();
+            case TAG_FRAGMENT_ABOUT:
+                return new AboutFragment();
+            case TAG_FRAGMENT_AGENDA:
+            default:
+                return new AgendaFragment();
+        }
+    }
 }
