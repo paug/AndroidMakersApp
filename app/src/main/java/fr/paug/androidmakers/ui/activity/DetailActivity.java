@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -85,6 +86,7 @@ public class DetailActivity extends AppCompatActivity {
 
         activityDetailBinding.sessionTitle.setText(session.title);
         activityDetailBinding.sessionDateAndRoom.setText(sessionDateAndRoom);
+        activityDetailBinding.sessionDescription.setMovementMethod(LinkMovementMethod.getInstance());
         activityDetailBinding.sessionDescription.setText(session.description != null ?
                 Html.fromHtml(session.description) : "");
 
@@ -125,6 +127,7 @@ public class DetailActivity extends AppCompatActivity {
                 }
 
                 final DetailViewSpeakerInfoElementBinding speakerInfoElementBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.detail_view_speaker_info_element, null, false);
+                speakerInfoElementBinding.speakerBio.setMovementMethod(LinkMovementMethod.getInstance());
                 speakerInfoElementBinding.setSpeaker(speaker);
 
                 if (speaker.socialNetworkHandles != null && speaker.socialNetworkHandles.size() > 0) {
