@@ -27,8 +27,11 @@ public class SessionSelector {
 
     public void init(Context context) {
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        mSessionsSelected = mSharedPreferences.getStringSet(PREF_SELECTED_SESSIONS,
-                new HashSet<String>());
+        mSessionsSelected = new HashSet<>();
+        Set<String> prefSet = mSharedPreferences.getStringSet(PREF_SELECTED_SESSIONS, null);
+        if (prefSet != null) {
+            mSessionsSelected.addAll(prefSet);
+        }
     }
 
     public void setSessionSelected(int id, boolean selected) {
