@@ -32,9 +32,12 @@ public class SessionAlarmService extends IntentService {
     public static final String ACTION_SCHEDULE_STARRED_BLOCK = "SCHEDULE_STARRED_BLOCK";
     public static final String ACTION_SCHEDULE_ALL_STARRED_BLOCKS = "SCHEDULE_ALL_STARRED_BLOCKS";
 
+    public static final String EXTRA_SESSION_ID = "SESSION_ID";
     public static final String EXTRA_SESSION_START = "SESSION_START";
     public static final String EXTRA_SESSION_END = "SESSION_END";
+
     public static final String EXTRA_SESSION_ALARM_OFFSET = "SESSION_ALARM_OFFSET";
+
     public static final String EXTRA_SESSION_ADD = "SESSION_ADD";
     public static final String EXTRA_SESSION_REMOVE = "SESSION_REMOVE";
 
@@ -65,11 +68,9 @@ public class SessionAlarmService extends IntentService {
             return;
         }
 
-        final long sessionEnd = intent.getLongExtra(SessionAlarmService.EXTRA_SESSION_END,
-                UNDEFINED_VALUE);
-
-        final long sessionStart =
-                intent.getLongExtra(SessionAlarmService.EXTRA_SESSION_START, UNDEFINED_VALUE);
+        final long sessionEnd = intent.getLongExtra(SessionAlarmService.EXTRA_SESSION_END, UNDEFINED_VALUE);
+        final long sessionStart = intent.getLongExtra(SessionAlarmService.EXTRA_SESSION_START, UNDEFINED_VALUE);
+        final int sessionId = intent.getIntExtra(SessionAlarmService.EXTRA_SESSION_ID, 0);
 
         if (ACTION_NOTIFY_SESSION.equals(action)) {
             LOGD(TAG, "Notifying about sessions starting at " +
@@ -80,7 +81,7 @@ public class SessionAlarmService extends IntentService {
             LOGD(TAG, "-> Session start: " + sessionStart + " = " + (new Date(sessionStart))
                     .toString());
             LOGD(TAG, "-> Session end: " + sessionEnd + " = " + (new Date(sessionEnd)).toString());
-            scheduleAlarm(sessionStart, sessionEnd, MILLI_FIVE_MINUTES);
+            scheduleAlarm(sessionStart, sessionEnd, sessionId, MILLI_FIVE_MINUTES);
         }
     }
 
@@ -91,14 +92,13 @@ public class SessionAlarmService extends IntentService {
             for (ScheduleSlot scheduleSlot : scheduleSlots) {
                 if (String.valueOf(scheduleSlot.sessionId) == id) {
                     Log.i("SessionAlarmService", scheduleSlot.toString());
-                    scheduleAlarm(scheduleSlot.startDate, scheduleSlot.endDate, MILLI_FIVE_MINUTES);
+                    scheduleAlarm(scheduleSlot.startDate, scheduleSlot.endDate, scheduleSlot.sessionId, MILLI_FIVE_MINUTES);
                 }
             }
         }
     }
 
-    private void scheduleAlarm(final long sessionStart,
-                               final long sessionEnd, final long alarmOffset) {
+    private void scheduleAlarm(final long sessionStart, final long sessionEnd, int sessionId, final long alarmOffset) {
         NotificationManager nm =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         nm.cancel(NOTIFICATION_ID);
@@ -127,10 +127,9 @@ public class SessionAlarmService extends IntentService {
         LOGD(TAG, "-> Intent extra: session end " + sessionEnd);
         notifIntent.putExtra(EXTRA_SESSION_ALARM_OFFSET, alarmOffset);
         LOGD(TAG, "-> Intent extra: session alarm offset " + alarmOffset);
-        PendingIntent pi = PendingIntent.getService(this,
-                0,
-                notifIntent,
-                PendingIntent.FLAG_CANCEL_CURRENT);
+
+        PendingIntent pi = PendingIntent.getService(this, sessionId, notifIntent, PendingIntent.FLAG_ONE_SHOT);
+
         final AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         // Schedule an alarm to be fired to notify user of added sessions are about to begin.
         LOGD(TAG, "-> Scheduling RTC_WAKEUP alarm at " + alarmTime);
