@@ -61,5 +61,7 @@
     <string name="media_sponsor">Média</string>
     <string name="other_sponsor">Autre Sponsor</string>
     <string name="location_sponsor">Salle</string>
+    <string name="venue_afterparty_tab">After Party</string>
+    <string name="venue_conference_tab">Conférence</string>
 
 </resources>
