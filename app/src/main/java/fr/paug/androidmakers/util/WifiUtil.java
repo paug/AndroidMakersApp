@@ -13,7 +13,7 @@ public class WifiUtil {
 
     private static final String TAG = "WifiUtil";
     private static final String SSID = "\"AndroidMakers\"";
-    private static final String PASSKEY = "\"makers2017\"";
+    private static final String PASSKEY = "\"Makers2017\"";
 
     /**
      * Gets the wifi network id of the venue. If not found, tries to configure it.
@@ -28,27 +28,25 @@ public class WifiUtil {
         }
         final List<WifiConfiguration> configuredNetworks = wifiManager.getConfiguredNetworks();
         if (configuredNetworks != null) {
+            // look for an existing network with the same SSID to remove it
+            // this is because we changed the network passkey after releasing the app.
             for (WifiConfiguration config : configuredNetworks) {
                 if (config != null && SSID.equals(config.SSID)) {
-                    Log.i(TAG, "Venue's wifi network already configured.");
-                    return config.networkId;
+                    wifiManager.removeNetwork(config.networkId);
+                    Log.i(TAG, "Existing network removed.");
+                    // look only for the first network to save time (if another network exists,
+                    // it is not a big deal).
+                    break;
                 }
             }
         }
 
         // if the network could not be found, configure it.
-        WifiConfiguration conferenceConfig = new WifiConfiguration();
+        final WifiConfiguration conferenceConfig = new WifiConfiguration();
         conferenceConfig.SSID = SSID;
         conferenceConfig.preSharedKey = PASSKEY;
 
-        final int networkId = wifiManager.addNetwork(conferenceConfig);
-        if (networkId != -1) {
-            wifiManager.saveConfiguration();
-        } else {
-            Log.i(TAG, "Venue's wifi network could not be configured.");
-        }
-
-        return networkId;
+        return wifiManager.addNetwork(conferenceConfig);
     }
 
     /**

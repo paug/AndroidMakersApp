@@ -64,7 +64,7 @@
 
     <string name="wifi">Wifi</string>
     <string name="wifi_network">Network: <b>AndroidMakers</b></string>
-    <string name="wifi_password">Password : <b>makers2017</b></string>
+    <string name="wifi_password">Password : <b>Makers2017</b></string>
 
     <string name="wifi_connect_description">Directly connect to the venue\'s wifi</string>
     <string name="wifi_connect">Connect</string>
