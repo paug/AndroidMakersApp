@@ -286,7 +286,7 @@ public class AgendaFragment extends Fragment implements AgendaView.AgendaClickLi
         }
 
         @Override
-        public void onAgendaLoaded(boolean newData) {
+        public void onAgendaLoaded() {
             AgendaFragment agendaFragment = reference.get();
             if (agendaFragment == null) {
                 return;
@@ -294,7 +294,7 @@ public class AgendaFragment extends Fragment implements AgendaView.AgendaClickLi
             agendaFragment.onAgendaLoaded();
 
             final AgendaFragment fragment = reference.get();
-            if (newData && fragment != null) {
+            if (fragment != null) {
                 // reschedule all starred blocks in case one session start or stop time has changed
                 final Context ctx = fragment.getContext();
                 Intent scheduleIntent = new Intent(

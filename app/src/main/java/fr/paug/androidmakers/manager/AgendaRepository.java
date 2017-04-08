@@ -48,7 +48,7 @@ public class AgendaRepository {
                 mFirebaseDataConverted.loadAllFromFirebase(dataSnapshot.getValue());
                 List<OnLoadListener> listenersCpy = new ArrayList<>(mOnLoadListeners);
                 for (OnLoadListener listener : listenersCpy) {
-                    listener.onAgendaLoaded(true);
+                    listener.onAgendaLoaded();
                 }
                 mLoaded = true;
                 Log.e(TAG, "AgendaRepo loaded");
@@ -71,7 +71,7 @@ public class AgendaRepository {
 
     public void load(OnLoadListener listener) {
         if (mLoaded) {
-            listener.onAgendaLoaded(false);
+            listener.onAgendaLoaded();
             return;
         }
         mOnLoadListeners.add(listener);
@@ -131,7 +131,7 @@ public class AgendaRepository {
     }
 
     public interface OnLoadListener {
-        void onAgendaLoaded(boolean newData);
+        void onAgendaLoaded();
     }
 
     private static class SingletonHolder {

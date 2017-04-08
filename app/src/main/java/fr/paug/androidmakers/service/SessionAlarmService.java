@@ -253,7 +253,7 @@ public class SessionAlarmService extends IntentService {
         }
 
         @Override
-        public void onAgendaLoaded(boolean newData) {
+        public void onAgendaLoaded() {
             runnable.run();
             AgendaRepository.getInstance().removeListener(this);
         }
