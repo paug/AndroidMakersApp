@@ -57,7 +57,7 @@
 
     <string name="social">Social</string>
 
-    <string name="twitter_hashtag" translatable="false">#AndroidMakersFR</string>
+    <string name="twitter_hashtag" translatable="false">#AndroidMakers</string>
     <string name="gplus" translatable="false">https://plus.google.com/+DroidconParis</string>
     <string name="fbevent" translatable="false">https://www.facebook.com/events/700985966748191/</string>
     <string name="ytchannel" translatable="false">https://www.youtube.com/channel/UCkatLlah5weIpN23LqMgdTg</string>
