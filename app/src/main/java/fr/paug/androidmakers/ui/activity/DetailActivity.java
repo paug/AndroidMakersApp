@@ -174,17 +174,30 @@ public class DetailActivity extends AppCompatActivity {
             scheduleStarredSession();
         } else {
             Toast.makeText(this, R.string.session_deselected, Toast.LENGTH_SHORT).show();
-            // TODO: 03/04/2017 remove notification
+            unscheduleSession();
         }
     }
 
     private void scheduleStarredSession() {
-        Log.d("Detail", "Scheduling notification about session start. start time : " + sessionStartDateInMillis + ", end time : " + sessionEndDateInMillis);
-        Intent scheduleIntent = new Intent(
+        Log.d("Detail", "Scheduling notification about session start. " +
+                "start time : " + sessionStartDateInMillis + ", " +
+                "end time : " + sessionEndDateInMillis);
+        final Intent scheduleIntent = new Intent(
                 SessionAlarmService.ACTION_SCHEDULE_STARRED_BLOCK,
                 null, this, SessionAlarmService.class);
         scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_START, sessionStartDateInMillis);
         scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_END, sessionEndDateInMillis);
+        scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_ID, sessionId);
+        startService(scheduleIntent);
+    }
+
+    private void unscheduleSession() {
+        Log.d("Detail", "Unscheduling notification about session start. " +
+                "start time : " + sessionStartDateInMillis + ", " +
+                "end time : " + sessionEndDateInMillis);
+        final Intent scheduleIntent = new Intent(
+                SessionAlarmService.ACTION_UNSCHEDULE_UNSTARRED_BLOCK,
+                null, this, SessionAlarmService.class);
         scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_ID, sessionId);
         startService(scheduleIntent);
     }

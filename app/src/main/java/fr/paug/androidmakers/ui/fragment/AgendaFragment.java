@@ -1,5 +1,7 @@
 package fr.paug.androidmakers.ui.fragment;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -29,6 +31,7 @@ import fr.paug.androidmakers.manager.AgendaRepository;
 import fr.paug.androidmakers.model.Room;
 import fr.paug.androidmakers.model.ScheduleSlot;
 import fr.paug.androidmakers.model.Session;
+import fr.paug.androidmakers.service.SessionAlarmService;
 import fr.paug.androidmakers.ui.activity.DetailActivity;
 import fr.paug.androidmakers.ui.adapter.AgendaPagerAdapter;
 import fr.paug.androidmakers.ui.util.AgendaFilterMenu;
@@ -289,6 +292,16 @@ public class AgendaFragment extends Fragment implements AgendaView.AgendaClickLi
                 return;
             }
             agendaFragment.onAgendaLoaded();
+
+            final AgendaFragment fragment = reference.get();
+            if (fragment != null) {
+                // reschedule all starred blocks in case one session start or stop time has changed
+                final Context ctx = fragment.getContext();
+                Intent scheduleIntent = new Intent(
+                        SessionAlarmService.ACTION_SCHEDULE_ALL_STARRED_BLOCKS,
+                        null, ctx, SessionAlarmService.class);
+                ctx.startService(scheduleIntent);
+            }
         }
     }
 }

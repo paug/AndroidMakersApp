@@ -2,6 +2,7 @@ package fr.paug.androidmakers.manager;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,15 +26,19 @@ import fr.paug.androidmakers.model.Speaker;
  * Created by stan on 18/03/2017.
  */
 public class AgendaRepository {
+    private static final String TAG = "AgendaRepository";
 
     private final FirebaseDatabase mDatabase;
     private final DatabaseReference mDatabaseReference;
 
-    private OnLoadListener mOnLoadListener;
+    @NonNull
+    private final List<OnLoadListener> mOnLoadListeners;
     private boolean mLoaded;
     private FirebaseDataConverted mFirebaseDataConverted = new FirebaseDataConverted();
 
     private AgendaRepository() {
+        Log.e(TAG, "AgendaRepo created");
+        mOnLoadListeners = new ArrayList<>();
         mDatabase = FirebaseDatabase.getInstance();
         mDatabaseReference = mDatabase.getReference();
 
@@ -41,10 +46,12 @@ public class AgendaRepository {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mFirebaseDataConverted.loadAllFromFirebase(dataSnapshot.getValue());
-                if(mOnLoadListener != null) {
-                    mOnLoadListener.onAgendaLoaded();
+                List<OnLoadListener> listenersCpy = new ArrayList<>(mOnLoadListeners);
+                for (OnLoadListener listener : listenersCpy) {
+                    listener.onAgendaLoaded();
                 }
                 mLoaded = true;
+                Log.e(TAG, "AgendaRepo loaded");
             }
 
             @Override
@@ -67,7 +74,7 @@ public class AgendaRepository {
             listener.onAgendaLoaded();
             return;
         }
-        mOnLoadListener = listener;
+        mOnLoadListeners.add(listener);
     }
 
     @Nullable
@@ -90,12 +97,37 @@ public class AgendaRepository {
         return new ArrayList<>(mFirebaseDataConverted.getScheduleSlots());
     }
 
+    @Nullable
+    public ScheduleSlot getScheduleSlot(int id) {
+        for (ScheduleSlot slot : mFirebaseDataConverted.getScheduleSlots()) {
+            if (slot.sessionId == id) {
+                return slot;
+            }
+        }
+        return null;
+    }
+
+    @Nullable
+    public ScheduleSlot getScheduleSlot(@NonNull String id) {
+        try {
+            int idAsInt = Integer.parseInt(id);
+            return getScheduleSlot(idAsInt);
+        } catch (NumberFormatException e) {
+            Log.e(TAG, "Cannot format " + id + "into an int: ", e);
+        }
+        return null;
+    }
+
     public Map<PartnerGroup.PartnerType, PartnerGroup> getPartners() {
         return mFirebaseDataConverted.getPartners();
     }
 
     public Set<String> getAllLanguages() {
         return mFirebaseDataConverted.getAllLanguages();
+    }
+
+    public void removeListener(@NonNull OnLoadListener listener) {
+        mOnLoadListeners.remove(listener);
     }
 
     public interface OnLoadListener {
