@@ -17,7 +17,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AndroidMakersTheme"
+        android:theme="@style/Theme.AndroidMakers"
         tools:replace="android:theme">
 
         <activity
