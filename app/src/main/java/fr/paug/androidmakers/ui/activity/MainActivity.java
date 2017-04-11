@@ -14,7 +14,7 @@ import fr.paug.androidmakers.ui.fragment.AboutFragment;
 import fr.paug.androidmakers.ui.fragment.AgendaFragment;
 import fr.paug.androidmakers.ui.fragment.VenuePagerFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private static final String TAG_FRAGMENT_AGENDA = "TAG_FRAGMENT_AGENDA";
     private static final String TAG_FRAGMENT_VENUE = "TAG_FRAGMENT_VENUE";
