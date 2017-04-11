@@ -9,7 +9,7 @@ import android.util.Log;
 
 import java.util.List;
 
-public class WifiUtil {
+public final class WifiUtil {
 
     private static final String TAG = "WifiUtil";
     private static final String SSID = "\"AndroidMakers\"";

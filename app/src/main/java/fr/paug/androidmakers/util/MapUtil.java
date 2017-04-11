@@ -13,7 +13,11 @@ import fr.paug.androidmakers.model.SocialNetworkHandle;
  * Created by stan on 18/03/2017.
  */
 
-public class MapUtil {
+public final class MapUtil {
+
+    private MapUtil() {
+        //no instance
+    }
 
     public static int getInt(Map map, String key, int defaultValue) {
         return getInt(map.get(key), defaultValue);

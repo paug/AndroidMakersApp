@@ -7,10 +7,11 @@ import android.support.v4.content.ContextCompat;
 
 import fr.paug.androidmakers.R;
 
-/**
- * Created by benjamin on 27/03/2017.
- */
-public class CustomTabUtil {
+public final class CustomTabUtil {
+
+    private CustomTabUtil() {
+        //no instance
+    }
 
     public static void openChromeTab(Context context, String url) {
         CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();

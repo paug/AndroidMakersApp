@@ -7,11 +7,7 @@ import android.preference.PreferenceManager;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Created by stan on 26/03/2017.
- */
-
-public class SessionSelector {
+public final class SessionSelector {
 
     private static final String PREF_SELECTED_SESSIONS = "selected_sessions";
     private SharedPreferences mSharedPreferences;
