@@ -1,0 +1,8 @@
+<resources>
+
+    <style name="PreviewWidget.ActionBar" parent="android:Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/colorPrimary</item> 
+        <item name="android:displayOptions">none</item>
+    </style>
+
+</resources>
