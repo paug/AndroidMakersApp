@@ -16,6 +16,13 @@ public final class WifiUtil {
     private static final String PASSKEY = "\"Makers2017\"";
 
     /**
+     * Private constructor for static utility class.
+     */
+    private WifiUtil() {
+        // no instance
+    }
+
+    /**
      * Gets the wifi network id of the venue. If not found, tries to configure it.
      * @param context a context
      * @return the network id if found or created, otherwise -1
@@ -75,12 +82,6 @@ public final class WifiUtil {
                 .getSystemService(Context.WIFI_SERVICE);
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
         return wifiInfo != null && SSID.equals(wifiInfo.getSSID());
-    }
-
-    /**
-     * Private constructor for static utility class.
-     */
-    private WifiUtil() {
     }
 
 }

@@ -10,7 +10,7 @@ import fr.paug.androidmakers.R;
 public final class CustomTabUtil {
 
     private CustomTabUtil() {
-        //no instance
+        // no instance
     }
 
     public static void openChromeTab(Context context, String url) {

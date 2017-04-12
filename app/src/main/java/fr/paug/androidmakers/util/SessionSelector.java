@@ -15,6 +15,7 @@ public final class SessionSelector {
     private Set<String> mSessionsSelected;
 
     private SessionSelector() {
+        // no instance
     }
 
     public static SessionSelector getInstance() {
@@ -65,4 +66,5 @@ public final class SessionSelector {
     private static class SingletonHolder {
         private final static SessionSelector instance = new SessionSelector();
     }
+
 }

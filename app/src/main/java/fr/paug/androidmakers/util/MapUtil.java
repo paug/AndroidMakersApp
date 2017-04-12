@@ -9,14 +9,10 @@ import java.util.Map;
 import fr.paug.androidmakers.model.Partners;
 import fr.paug.androidmakers.model.SocialNetworkHandle;
 
-/**
- * Created by stan on 18/03/2017.
- */
-
 public final class MapUtil {
 
     private MapUtil() {
-        //no instance
+        // no instance
     }
 
     public static int getInt(Map map, String key, int defaultValue) {
@@ -105,4 +101,5 @@ public final class MapUtil {
             return null;
         }
     }
+
 }
