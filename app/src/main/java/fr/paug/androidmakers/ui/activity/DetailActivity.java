@@ -6,7 +6,6 @@ import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
@@ -112,7 +111,7 @@ public class DetailActivity extends BaseActivity {
             }
         });
 
-        final ViewGroup sessionSpeakerLayout = (ViewGroup) findViewById(R.id.sessionSpeakerLayout);
+        final ViewGroup sessionSpeakerLayout = findViewById(R.id.sessionSpeakerLayout);
         if (session.speakers != null && session.speakers.length > 0) {
             activityDetailBinding.speakersTitle.setText(getResources().getQuantityString(R.plurals.session_details_speakers, session.speakers.length));
             for (final int speakerID : session.speakers) {
@@ -165,7 +164,7 @@ public class DetailActivity extends BaseActivity {
         SessionSelector.getInstance().setSessionSelected(sessionId, select);
         invalidateOptionsMenu();
 
-        if(select) {
+        if (select) {
             Toast.makeText(this, R.string.session_selected, Toast.LENGTH_SHORT).show();
             scheduleStarredSession();
         } else {

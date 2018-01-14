@@ -68,7 +68,7 @@ public class AgendaFragment extends Fragment implements AgendaView.AgendaClickLi
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_agenda, container, false);
-        mViewPager = (ViewPager) view.findViewById(R.id.viewpager);
+        mViewPager = view.findViewById(R.id.viewpager);
         mProgressView = view.findViewById(R.id.progressbar);
         mEmptyView = view.findViewById(R.id.empty_view);
 

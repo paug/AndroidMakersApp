@@ -10,12 +10,32 @@ android {
         versionName "1.0.7"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    flavorDimensions 'environment'
+
+    productFlavors
+    {
+        prod
+        {
+            dimension 'environment'
+        }
+
+        preprod
+        {
+            dimension 'environment'
+            applicationIdSuffix ".preprod"
+        }
+    }
+
+
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+
     dataBinding {
         enabled = true
     }
@@ -37,15 +57,11 @@ dependencies {
     compile "com.google.firebase:firebase-crash:$google_play_services_client_library_version"
 
     // Image management
-    compile "com.github.bumptech.glide:glide:3.7.0"
+    compile "com.github.bumptech.glide:glide:3.8.0"
     compile 'jp.wasabeef:glide-transformations:2.0.2'
 
     // Used for tags
     compile "com.robertlevonyan.view:MaterialChipView:1.0.1"
-
-    // Butterknife
-    compile 'com.jakewharton:butterknife:8.5.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
 
     testCompile 'junit:junit:4.12'
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
