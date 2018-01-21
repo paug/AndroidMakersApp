@@ -42,7 +42,6 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
 
     // Support
     compile "com.android.support:appcompat-v7:$support_version"
@@ -50,6 +49,7 @@ dependencies {
     compile "com.android.support:support-vector-drawable:$support_version"
     compile "com.android.support:customtabs:$support_version"
     compile "com.android.support:percent:$support_version"
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
     // Firebase
     compile "com.google.firebase:firebase-core:$google_play_services_client_library_version"

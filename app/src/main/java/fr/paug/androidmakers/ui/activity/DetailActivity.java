@@ -25,8 +25,10 @@ import fr.paug.androidmakers.BuildConfig;
 import fr.paug.androidmakers.R;
 import fr.paug.androidmakers.databinding.ActivityDetailBinding;
 import fr.paug.androidmakers.databinding.DetailViewSpeakerInfoElementBinding;
+import fr.paug.androidmakers.databinding.SmallRibbonImageBinding;
 import fr.paug.androidmakers.databinding.SmallSocialImageBinding;
 import fr.paug.androidmakers.manager.AgendaRepository;
+import fr.paug.androidmakers.model.Ribbon;
 import fr.paug.androidmakers.model.Room;
 import fr.paug.androidmakers.model.Session;
 import fr.paug.androidmakers.model.SocialNetworkHandle;
@@ -125,32 +127,60 @@ public class DetailActivity extends BaseActivity {
                 speakerInfoElementBinding.speakerBio.setMovementMethod(LinkMovementMethod.getInstance());
                 speakerInfoElementBinding.setSpeaker(speaker);
 
-                if (speaker.socialNetworkHandles != null && speaker.socialNetworkHandles.size() > 0) {
-                    for (final SocialNetworkHandle socialNetworkHandle : speaker.socialNetworkHandles) {
-                        if (socialNetworkHandle.networkType != SocialNetworkHandle.SocialNetworkType.Unknown) {
-                            final SmallSocialImageBinding smallSocialImageBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.small_social_image, null, false);
-                            smallSocialImageBinding.image.setImageResource(socialNetworkHandle.networkType.getSocialNetworkIcon());
-                            smallSocialImageBinding.image.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    if (BuildConfig.DEBUG) {
-                                        Log.d(DetailActivity.class.getName(), "User clicked on social handle with name=" + socialNetworkHandle.networkType.name());
-                                    }
-                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(socialNetworkHandle.link)));
-                                }
-                            });
-                            speakerInfoElementBinding.speakerSocialNetworkHandleLayout.addView(smallSocialImageBinding.getRoot());
-                        }
-                    }
-                } else {
-                    speakerInfoElementBinding.speakerSocialNetworkHandleLayout.setVisibility(View.GONE);
-                }
+                setSpeakerSocialNetworkHandle(speaker, speakerInfoElementBinding);
+                setSpeakerRibbons(speaker, speakerInfoElementBinding);
 
                 sessionSpeakerLayout.addView(speakerInfoElementBinding.getRoot());
             }
         }
 
         setActionBar(session);
+    }
+
+    private void setSpeakerSocialNetworkHandle(Speaker speaker, DetailViewSpeakerInfoElementBinding speakerInfoElementBinding) {
+        if (speaker.socialNetworkHandles != null && speaker.socialNetworkHandles.size() > 0) {
+            for (final SocialNetworkHandle socialNetworkHandle : speaker.socialNetworkHandles) {
+                if (socialNetworkHandle.networkType != SocialNetworkHandle.SocialNetworkType.Unknown) {
+                    final SmallSocialImageBinding smallSocialImageBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.small_social_image, null, false);
+                    smallSocialImageBinding.setSocialHandle(socialNetworkHandle);
+                    smallSocialImageBinding.image.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (BuildConfig.DEBUG) {
+                                Log.d(DetailActivity.class.getName(), "User clicked on social handle with name=" + socialNetworkHandle.networkType.name());
+                            }
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(socialNetworkHandle.link)));
+                        }
+                    });
+                    speakerInfoElementBinding.speakerSocialNetworkHandleLayout.addView(smallSocialImageBinding.getRoot());
+                }
+            }
+        } else {
+            speakerInfoElementBinding.speakerSocialNetworkHandleLayout.setVisibility(View.GONE);
+        }
+    }
+
+    private void setSpeakerRibbons(Speaker speaker, DetailViewSpeakerInfoElementBinding speakerInfoElementBinding) {
+        if (speaker.ribbonList != null && speaker.ribbonList.size() > 0) {
+            for (final Ribbon ribbon : speaker.ribbonList) {
+                if (ribbon.ribbonType != Ribbon.RibbonType.NONE) {
+                    final SmallRibbonImageBinding smallRibbonImageBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.small_ribbon_image, null, false);
+                    smallRibbonImageBinding.setRibbon(ribbon);
+                    smallRibbonImageBinding.image.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (BuildConfig.DEBUG) {
+                                Log.d(DetailActivity.class.getName(), "User clicked on ribbon with name=" + ribbon.ribbonType.name());
+                            }
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(ribbon.link)));
+                        }
+                    });
+                    speakerInfoElementBinding.speakerRibbonLayout.addView(smallRibbonImageBinding.getRoot());
+                }
+            }
+        } else {
+            speakerInfoElementBinding.speakerRibbonLayout.setVisibility(View.GONE);
+        }
     }
 
     private void setActionBar(Session session) {

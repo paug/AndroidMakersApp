@@ -41,7 +41,7 @@ public class SocialNetworkHandle {
         this.link = link;
     }
 
-    static SocialNetworkType getSocialNetworkType(String networkName) {
+    private static SocialNetworkType getSocialNetworkType(String networkName) {
         if (!TextUtils.isEmpty(networkName)) {
             if (networkName.equalsIgnoreCase("twitter")) {
                 return SocialNetworkType.Twitter;

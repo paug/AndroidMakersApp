@@ -98,7 +98,8 @@ public class FirebaseDataConverted {
                             getString(map, "surname"),
                             getString(map, "thumbnailUrl"),
                             getString(map, "rockstar"),
-                            getSocialItems(map, "social")
+                            getSocialItems(map, "social"),
+                            getRibbonItems(map, "ribbon")
                     ));
                 }
             }
