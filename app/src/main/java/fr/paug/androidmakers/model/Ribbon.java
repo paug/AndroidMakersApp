@@ -28,6 +28,18 @@ public class Ribbon {
                     return -1;
             }
         }
+
+        @DrawableRes
+        public int getBadgeIcon() {
+            switch (this) {
+                case GDE:
+                    return R.drawable.gde_badge;
+                case GDG:
+                    return R.drawable.gdg_badge;
+                default:
+                    return -1;
+            }
+        }
     }
 
     public final RibbonType ribbonType;
