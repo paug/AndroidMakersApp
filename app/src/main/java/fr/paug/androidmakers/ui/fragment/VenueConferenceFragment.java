@@ -17,11 +17,6 @@ public class VenueConferenceFragment extends AbstractVenueFragment {
     @Override
     protected Venue getVenueInformations() {
         return AgendaRepository.getInstance().getVenue(1);
-        /*return new Venue(getString(R.string.venue_conference_title),
-                getString(R.string.venue_conference_address),
-                getString(R.string.venue_conference_directions),
-                null);*/
-        //TODO Clean strings
     }
 
 }

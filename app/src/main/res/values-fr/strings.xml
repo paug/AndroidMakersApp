@@ -32,19 +32,10 @@
     <string name="session_deselected">Session enlevée des favoris</string>
 
     <!--Venue-->
-    <string name="venue_conference_directions"><b>Voiture</b>: sortie Porte de Bercy, direction Paris centre, sortie
-        Bercy Cour Saint-Emilion\n\n<b>Métro</b> : Ligne 14, Cour Saint-Emilion\n\n<b>Bus</b> :
-        ligne 24 ou 64,
-        Arrêt Dijon Lachambaudie
-    </string>
     <string name="locate_on_map">Localiser sur la carte</string>
 
-    <string name="venue_afterparty_info">Pub et microbrasserie artisanale dans un ancien chai aux poutres et pierres apparentes, avec 2 terrasses.</string>
-
     <!--About-->
-    <string name="about_android_makers">Android Makers Paris 2017 c\'est les 10 et 11 Avril aux
-        Salons de l\'Aveyron
-    </string>
+    <string name="about_android_makers">Android Makers Paris 2018 c\'est les 23 et 24 Avril au Beffroi de Montrouge</string>
 
     <string name="social">Social</string>
 

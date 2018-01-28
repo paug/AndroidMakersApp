@@ -26,7 +26,7 @@
                 android:layout_height="180dp"
                 android:contentDescription="@null"
                 android:scaleType="centerCrop"
-                app:venueCoverUrl="@{venue.image}"
+                app:venueCoverUrl="@{venue.imageUrl}"
                 tools:src="@color/colorAccent"/>
 
             <LinearLayout

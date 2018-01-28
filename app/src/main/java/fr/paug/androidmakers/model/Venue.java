@@ -21,14 +21,14 @@ public class Venue {
     public String address;
     public String coordinates;
     public String description;
-    public String image;
+    public String imageUrl;
     public String name;
 
-    public Venue(String address, String coordinates, String description, String image, String name) {
+    public Venue(String address, String coordinates, String description, String imageUrl, String name) {
         this.address = address;
         this.coordinates = coordinates;
         this.description = description;
-        this.image = image;
+        this.imageUrl = imageUrl;
         this.name = name;
     }
 
