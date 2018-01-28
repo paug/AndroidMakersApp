@@ -11,12 +11,9 @@ import fr.paug.androidmakers.R;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 /**
- * The class description here.
- *
  * @author Adrien Vitti
  * @since 2018.01.21
  */
-
 public final class DataBindingAdapters {
 
     @BindingAdapter("img_src")
@@ -40,10 +37,11 @@ public final class DataBindingAdapters {
         final Context context = imageView.getContext();
         if (TextUtils.isEmpty(venueImageURL) == false) {
             Glide.with(context)
-                    .load("http://androidmakers.fr/img/people/" + venueImageURL)
+                    .load("http://androidmakers.fr/img/venue/" + venueImageURL)
                     .into(imageView);
-        } else
+        } else {
             imageView.setImageDrawable(null);
+        }
     }
 
 }

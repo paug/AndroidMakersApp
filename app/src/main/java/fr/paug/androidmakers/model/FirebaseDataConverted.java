@@ -18,6 +18,7 @@ import static fr.paug.androidmakers.util.MapUtil.*;
  * Created by stan on 18/03/2017.
  */
 public class FirebaseDataConverted {
+
     private static final SimpleDateFormat ISO_8601_DATEFORMAT =
             new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.ENGLISH);
 
@@ -27,6 +28,7 @@ public class FirebaseDataConverted {
     private final SparseArray<Speaker> mSpeakers = new SparseArray<>();
     private final List<ScheduleSlot> mScheduleSlots = new ArrayList<>();
     private final Map<PartnerGroup.PartnerType, PartnerGroup> mPartners = new HashMap<>();
+    private final SparseArray<Venue> mVenues = new SparseArray<>();
 
     public SparseArray<Room> getRooms() {
         return mRooms;
@@ -48,6 +50,8 @@ public class FirebaseDataConverted {
         return mPartners;
     }
 
+    public SparseArray<Venue> getVenues() { return mVenues; }
+
     public Set<String> getAllLanguages() {
         return mAllLanguages;
     }
@@ -63,6 +67,7 @@ public class FirebaseDataConverted {
         loadSessionsFromFirebase(root.get("sessions"));
         loadScheduleFromFirebase(root.get("schedule"));
         loadPartnersFromFirebase(root.get("partners"));
+        loadVenuesFromFirebase(root.get("venues"));
     }
 
     private void loadRoomsFromFirebase(Object object) {
@@ -166,6 +171,26 @@ public class FirebaseDataConverted {
                 final List<Partners> partnersList = getPartnerList(map, "elements");
                 if (partnerGroup != PartnerGroup.PartnerType.Unknown && partnersList != null && partnersList.size() > 0) {
                     mPartners.put(partnerGroup, new PartnerGroup(partnerGroup, partnersList));
+                }
+            }
+        }
+    }
+
+    private void loadVenuesFromFirebase(Object object) {
+        if (!(object instanceof List)) {
+            return;
+        }
+        List values = (List) object;
+        for (Object value : values) {
+            if (value instanceof Map) {
+                Map map = (Map) value;
+                int id = getId(map);
+                if (id >= 0) {
+                    mVenues.put(id, new Venue(getString(map, "address"),
+                            getString(map, "coordinates"),
+                            getString(map, "description"),
+                            getString(map, "image"),
+                            getString(map, "name")));
                 }
             }
         }

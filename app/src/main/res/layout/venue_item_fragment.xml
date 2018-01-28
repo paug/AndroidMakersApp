@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.text.Html"/>
         <variable
             name="venue"
-            type="fr.paug.androidmakers.model.VenueInformations" />
+            type="fr.paug.androidmakers.model.Venue"/>
     </data>
 
     <ScrollView
@@ -25,8 +26,8 @@
                 android:layout_height="180dp"
                 android:contentDescription="@null"
                 android:scaleType="centerCrop"
-                app:venueCoverUrl="@{venue.venueImageURL}"
-                />
+                app:venueCoverUrl="@{venue.image}"
+                tools:src="@color/colorAccent"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -42,10 +43,11 @@
                     android:layout_height="wrap_content"
                     android:paddingBottom="@dimen/padding"
                     android:paddingTop="@dimen/padding"
-                    android:text="@{venue.venueName}"
+                    android:text="@{venue.name}"
                     android:textColor="@color/colorAccent"
                     android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:text="name"/>
 
                 <TextView
                     android:id="@+id/venue_address"
@@ -53,10 +55,11 @@
                     android:layout_height="wrap_content"
                     android:paddingBottom="4dp"
                     android:paddingTop="4dp"
-                    android:text="@{venue.venueAddress}"
+                    android:text="@{venue.address}"
                     android:textColor="@color/black"
                     android:textIsSelectable="true"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    tools:text="address"/>
 
                 <TextView
                     android:id="@+id/venue_directions"
@@ -64,7 +67,9 @@
                     android:layout_height="wrap_content"
                     android:paddingBottom="4dp"
                     android:paddingTop="4dp"
-                    android:text="@{venue.venueDirections}" />
+                    android:text="@{Html.fromHtml(venue.description)}"
+                    tools:maxLines="10"
+                    tools:text="@tools:sample/lorem/random"/>
 
             </LinearLayout>
 
@@ -77,9 +82,10 @@
                 android:layout_marginRight="@dimen/padding_double"
                 android:text="@string/locate_on_map"
                 android:textColor="@android:color/white"
-                app:backgroundTint="?attr/colorAccent" />
+                app:backgroundTint="?attr/colorAccent"/>
 
         </LinearLayout>
 
     </ScrollView>
+
 </layout>

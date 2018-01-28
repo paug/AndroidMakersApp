@@ -123,7 +123,7 @@ public class AgendaFragment extends Fragment implements AgendaView.AgendaClickLi
         for (final String languageAbbreviated : allLanguageAbreviated) {
             final int languageStringRes = Session.getLanguageFullName(languageAbbreviated);
             if (languageStringRes != 0) {
-                fullLengthLanguageName.add(getString(languageStringRes));
+                fullLengthLanguageName.add(getString(languageStringRes)); //FIXME Fragment AgendaFragment{7ca9acc} not attached to Activity (when changing data in firebase db x) )
             }
         }
 

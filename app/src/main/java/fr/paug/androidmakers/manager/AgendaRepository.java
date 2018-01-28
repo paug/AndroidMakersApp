@@ -21,6 +21,7 @@ import fr.paug.androidmakers.model.Room;
 import fr.paug.androidmakers.model.ScheduleSlot;
 import fr.paug.androidmakers.model.Session;
 import fr.paug.androidmakers.model.Speaker;
+import fr.paug.androidmakers.model.Venue;
 
 /**
  * Created by stan on 18/03/2017.
@@ -90,6 +91,11 @@ public class AgendaRepository {
     @Nullable
     public Speaker getSpeaker(int id) {
         return mFirebaseDataConverted.getSpeakers().get(id);
+    }
+
+    @Nullable
+    public Venue getVenue(int id) {
+        return mFirebaseDataConverted.getVenues().get(id);
     }
 
     @NonNull
