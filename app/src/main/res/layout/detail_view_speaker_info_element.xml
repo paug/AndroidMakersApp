@@ -10,9 +10,6 @@
         <variable
             name="speaker"
             type="fr.paug.androidmakers.model.Speaker" />
-        <variable
-            name="ribbon"
-            type="fr.paug.androidmakers.model.Ribbon" />
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -35,8 +32,8 @@
             android:id="@+id/speakerRibbon"
             android:layout_width="@dimen/avatar_size"
             android:layout_height="@dimen/avatar_size"
-            android:contentDescription="@{ribbon.title}"
-            app:img_src="@{ribbon.ribbonType.badgeIcon}"
+            android:contentDescription="@{speaker.mainRibbon.title}"
+            app:img_src="@{speaker.mainRibbon.ribbonType.badgeIcon}"
             app:layout_constraintLeft_toLeftOf="@+id/speakerAvatar"
             app:layout_constraintTop_toTopOf="@+id/speakerAvatar"
             tools:src="@drawable/gdg_badge" />

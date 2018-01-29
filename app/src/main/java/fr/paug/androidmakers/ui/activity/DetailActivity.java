@@ -126,9 +126,6 @@ public class DetailActivity extends BaseActivity {
                 final DetailViewSpeakerInfoElementBinding speakerInfoElementBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.detail_view_speaker_info_element, null, false);
                 speakerInfoElementBinding.speakerBio.setMovementMethod(LinkMovementMethod.getInstance());
                 speakerInfoElementBinding.setSpeaker(speaker);
-                if (speaker.ribbonList != null && !speaker.ribbonList.isEmpty()) {
-                    speakerInfoElementBinding.setRibbon(speaker.ribbonList.get(0));
-                }
 
                 setSpeakerSocialNetworkHandle(speaker, speakerInfoElementBinding);
                 setSpeakerRibbons(speaker, speakerInfoElementBinding);
