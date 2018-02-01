@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:padding="@dimen/padding_double"
+        android:padding="@dimen/large_padding"
         android:text="@string/agenda_empty_screen"
         android:visibility="gone"/>
 

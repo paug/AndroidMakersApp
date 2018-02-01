@@ -38,13 +38,21 @@
     <string name="venue_afterparty_tab">Afterparty</string>
 
     <!--About-->
-    <string name="about_android_makers">Android Makers Paris 2018 is 23 and 24 April at Beffroi de Montrouge</string>
+    <string name="about_android_makers">Android Makers Paris is a two day event held on April 23rd and 24th, 2018 at Beffroi de Montrouge, in Paris, France.
+        \n\nJoin us in tackling the future of Android with the hottest experts of the domain.
+        There\'ll be technical sessions, workshops, debates, networking, plus a chance to demo your project in the Makers Area.
+        The 2nd edition of Android Makers gathers 4 events in 1.
+        \n\nConferences : 40min Tech Talks by awesome speakers and 20min Lightning Talks on the future of Android.
+        \nWorkshop : Get trained on new methods, discover and build your app during the workshops.
+        \nMakers Area : Walk around, play and discover the latest innovation in hardware and software developed by the makers.
+        \nParty! : Let’s meet, talk, drink and party!
+        \n\nAll the Talks will be recorded, on uploaded on the youtube channel.</string>
 
     <string name="social">Social</string>
 
     <string name="twitter_hashtag" translatable="false">#AndroidMakers</string>
     <string name="gplus" translatable="false">https://plus.google.com/+DroidconParis</string>
-    <string name="fbevent" translatable="false">https://www.facebook.com/events/700985966748191/</string>
+    <string name="fbevent" translatable="false">https://www.facebook.com/events/392002394567921//</string>
     <string name="ytchannel" translatable="false">https://www.youtube.com/channel/UCkatLlah5weIpN23LqMgdTg</string>
 
     <string name="wifi">Wifi</string>

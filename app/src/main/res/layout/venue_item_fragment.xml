@@ -32,8 +32,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginLeft="@dimen/padding_double"
-                android:layout_marginRight="@dimen/padding_double"
+                android:layout_marginLeft="@dimen/large_padding"
+                android:layout_marginRight="@dimen/large_padding"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
@@ -41,8 +41,8 @@
                     android:id="@+id/venue_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/padding"
-                    android:paddingTop="@dimen/padding"
+                    android:paddingBottom="@dimen/default_padding"
+                    android:paddingTop="@dimen/default_padding"
                     android:text="@{venue.name}"
                     android:textColor="@color/colorAccent"
                     android:textSize="18sp"
@@ -77,9 +77,9 @@
                 android:id="@+id/venue_locate_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/padding_double"
-                android:layout_marginLeft="@dimen/padding_double"
-                android:layout_marginRight="@dimen/padding_double"
+                android:layout_marginBottom="@dimen/large_padding"
+                android:layout_marginLeft="@dimen/large_padding"
+                android:layout_marginRight="@dimen/large_padding"
                 android:text="@string/locate_on_map"
                 android:textColor="@android:color/white"
                 app:backgroundTint="?attr/colorAccent"/>

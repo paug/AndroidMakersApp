@@ -29,6 +29,7 @@ import fr.paug.androidmakers.model.Partners;
 import fr.paug.androidmakers.util.CustomTabUtil;
 import fr.paug.androidmakers.util.WifiUtil;
 
+//TODO change social icons? change wifi?
 public class AboutFragment extends Fragment implements View.OnClickListener {
 
     private FragmentAboutBinding fragmentAboutBinding;
@@ -179,6 +180,7 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
         if (partnerGroup == null) {
             return;
         }
+
         final List<Partners> partnersList = partnerGroup.getPartnersList();
         if (partnersList != null && partnersList.size() > 0) {
             final LinearLayout partnersGroupLinearLayout = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.partners_group, null);
@@ -208,7 +210,7 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
 
                 partnerLogoLayout.addView(partnerRow);
             }
-            fragmentAboutBinding.aboutLayout.addView(partnersGroupLinearLayout);
+            fragmentAboutBinding.sponsorsLayout.addView(partnersGroupLinearLayout);
         }
     }
 
@@ -224,4 +226,5 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
             }
         });
     }
+
 }
