@@ -8,6 +8,6 @@
     android:layout_gravity="center"
     android:background="?attr/selectableItemBackground"
     android:minHeight="80dp"
-    android:padding="@dimen/padding_double"
+    android:padding="@dimen/large_padding"
     android:scaleType="center"
     tools:src="@drawable/google_plus"/>

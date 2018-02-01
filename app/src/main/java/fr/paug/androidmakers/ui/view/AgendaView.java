@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.RectF;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.text.TextPaint;
@@ -295,7 +294,7 @@ public class AgendaView extends ScrollView {
 
         mTimeWidth = getPixelFromSp(50);
 
-        mPadding = getResources().getDimensionPixelSize(R.dimen.padding);
+        mPadding = getResources().getDimensionPixelSize(R.dimen.default_padding);
         setPadding(0, mPadding, 0, mPadding);
     }
 
