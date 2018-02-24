@@ -189,6 +189,7 @@ public class FirebaseDataConverted {
                     mVenues.put(id, new Venue(getString(map, "address"),
                             getString(map, "coordinates"),
                             getString(map, "description"),
+                            getString(map, "descriptionFr"),
                             getString(map, "imageUrl"),
                             getString(map, "name")));
                 }

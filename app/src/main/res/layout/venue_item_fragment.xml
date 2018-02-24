@@ -67,7 +67,6 @@
                     android:layout_height="wrap_content"
                     android:paddingBottom="4dp"
                     android:paddingTop="4dp"
-                    android:text="@{Html.fromHtml(venue.description)}"
                     tools:maxLines="10"
                     tools:text="@tools:sample/lorem/random"/>
 

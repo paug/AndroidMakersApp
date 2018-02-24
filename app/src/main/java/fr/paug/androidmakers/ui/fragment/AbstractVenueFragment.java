@@ -6,9 +6,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.Locale;
 
 import fr.paug.androidmakers.R;
 import fr.paug.androidmakers.databinding.VenueItemFragmentBinding;
@@ -36,6 +39,7 @@ abstract class AbstractVenueFragment extends Fragment implements View.OnClickLis
         venueItemFragmentBinding = DataBindingUtil.inflate(
                 inflater, R.layout.venue_item_fragment, container, false);
         venueItemFragmentBinding.setVenue(getVenueInformations());
+        venueItemFragmentBinding.venueDirections.setText(Html.fromHtml(getVenueDescription()));
         venueItemFragmentBinding.venueLocateButton.setOnClickListener(this);
         return venueItemFragmentBinding.getRoot();
     }
@@ -58,5 +62,14 @@ abstract class AbstractVenueFragment extends Fragment implements View.OnClickLis
     protected abstract Uri getVenueCoordinatesUri();
 
     protected abstract Venue getVenueInformations();
+
+    protected String getVenueDescription() {
+        Locale fr = Locale.FRENCH;
+        if (Locale.getDefault().getLanguage() == fr.getLanguage()) {
+            return getVenueInformations().descriptionFr;
+        } else {
+            return getVenueInformations().description;
+        }
+    }
 
 }
