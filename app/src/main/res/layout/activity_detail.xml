@@ -90,7 +90,8 @@
                     android:layout_height="wrap_content"
                     android:divider="@drawable/divider15dip"
                     android:orientation="vertical"
-                    android:showDividers="beginning|middle|end" />
+                    android:showDividers="beginning|middle|end"
+                    tools:layout_height="48dp"/>
 
             </LinearLayout>
 
