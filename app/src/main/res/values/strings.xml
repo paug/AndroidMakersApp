@@ -32,6 +32,8 @@
     <string name="session_selected">Session added to favorites</string>
     <string name="session_deselected">Session removed of favorites</string>
 
+    <string name="share">Share the session</string>
+
     <!--Venue-->
     <string name="locate_on_map">Locate on map</string>
     <string name="venue_conference_tab">Conference</string>

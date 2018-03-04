@@ -199,7 +199,7 @@ public class DetailActivity extends BaseActivity {
             scheduleStarredSession();
         } else {
             Toast.makeText(this, R.string.session_deselected, Toast.LENGTH_SHORT).show();
-            unscheduleSession();
+            unScheduleSession();
         }
     }
 
@@ -216,7 +216,7 @@ public class DetailActivity extends BaseActivity {
         startService(scheduleIntent);
     }
 
-    private void unscheduleSession() {
+    private void unScheduleSession() {
         Log.d("Detail", "Unscheduling notification about session start. " +
                 "start time : " + sessionStartDateInMillis + ", " +
                 "end time : " + sessionEndDateInMillis);
@@ -230,15 +230,15 @@ public class DetailActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.star, menu);
+        getMenuInflater().inflate(R.menu.detail, menu);
         final MenuItem selectItem = menu.findItem(R.id.select);
-        final MenuItem unselectItem = menu.findItem(R.id.unselect);
-        if (selectItem != null && unselectItem != null) {
+        final MenuItem unSelectItem = menu.findItem(R.id.unSelect);
+        if (selectItem != null && unSelectItem != null) {
             if (SessionSelector.getInstance().isSelected(sessionId)) {
                 selectItem.setVisible(false);
-                unselectItem.setVisible(true);
+                unSelectItem.setVisible(true);
             } else {
-                unselectItem.setVisible(false);
+                unSelectItem.setVisible(false);
                 selectItem.setVisible(true);
             }
         }
@@ -254,11 +254,25 @@ public class DetailActivity extends BaseActivity {
             case R.id.select:
                 changeSessionSelection(true);
                 return true;
-            case R.id.unselect:
+            case R.id.unSelect:
                 changeSessionSelection(false);
+                return true;
+            case R.id.share:
+                shareSession();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    void shareSession() {
+        Session session = AgendaRepository.getInstance().getSession(sessionId);
+
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, session.title);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, session.title + " (" + session.language + ") : " + session.description);// TODO speaker, rooms, date
+        shareIntent.setType("text/plain");
+        startActivity(shareIntent);
+    }
+
 }
