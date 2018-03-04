@@ -19,7 +19,9 @@ import android.widget.Toast;
 
 import com.robertlevonyan.views.chip.OnChipClickListener;
 
+import java.util.ArrayList;
 import java.util.Formatter;
+import java.util.List;
 
 import fr.paug.androidmakers.BuildConfig;
 import fr.paug.androidmakers.R;
@@ -48,6 +50,10 @@ public class DetailActivity extends BaseActivity {
     private long sessionStartDateInMillis;
     private long sessionEndDateInMillis;
 
+    private Session session;
+    private String sessionDateAndRoom;
+    private List<String> speakersList = new ArrayList<>();
+
     public static void startActivity(Context context, AgendaView.Item item) {
         Intent intent = new Intent(context, DetailActivity.class);
         intent.putExtra(PARAM_SESSION_ID, item.getSessionId());
@@ -62,7 +68,7 @@ public class DetailActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         final ActivityDetailBinding activityDetailBinding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
         sessionId = getIntent().getIntExtra(PARAM_SESSION_ID, -1);
-        final Session session = AgendaRepository.getInstance().getSession(sessionId);
+        session = AgendaRepository.getInstance().getSession(sessionId);
 
         sessionStartDateInMillis = getIntent().getLongExtra(PARAM_SESSION_START_DATE, -1);
         sessionEndDateInMillis = getIntent().getLongExtra(PARAM_SESSION_END_DATE, -1);
@@ -79,7 +85,7 @@ public class DetailActivity extends BaseActivity {
         }
 
         final String sessionDate = DateUtils.formatDateRange(this, new Formatter(getResources().getConfiguration().locale), sessionStartDateInMillis, sessionEndDateInMillis, DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_ABBREV_WEEKDAY | DateUtils.FORMAT_SHOW_TIME, null).toString();
-        final String sessionDateAndRoom = sessionRoom != null && !TextUtils.isEmpty(sessionRoom.name) ? getString(R.string.sessionDateWithRoomPlaceholder, sessionDate, sessionRoom.name) : sessionDate;
+        sessionDateAndRoom = sessionRoom != null && !TextUtils.isEmpty(sessionRoom.name) ? getString(R.string.sessionDateWithRoomPlaceholder, sessionDate, sessionRoom.name) : sessionDate;
 
         activityDetailBinding.sessionTitle.setText(session.title);
         activityDetailBinding.sessionDateAndRoom.setText(sessionDateAndRoom);
@@ -118,6 +124,7 @@ public class DetailActivity extends BaseActivity {
             activityDetailBinding.speakersTitle.setText(getResources().getQuantityString(R.plurals.session_details_speakers, session.speakers.length));
             for (final int speakerID : session.speakers) {
                 final Speaker speaker = AgendaRepository.getInstance().getSpeaker(speakerID);
+                speakersList.add(speaker.getFullNameAndCompany());
 
                 if (speaker == null) {
                     continue;
@@ -265,12 +272,13 @@ public class DetailActivity extends BaseActivity {
         }
     }
 
-    void shareSession() {
-        Session session = AgendaRepository.getInstance().getSession(sessionId);
+    private void shareSession() {
+        String speakers = TextUtils.join(", ", speakersList);
 
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.putExtra(Intent.EXTRA_SUBJECT, session.title);
-        shareIntent.putExtra(Intent.EXTRA_TEXT, session.title + " (" + session.language + ") : " + session.description);// TODO speaker, rooms, date
+        shareIntent.putExtra(Intent.EXTRA_TEXT,
+                String.format("%s (%s, %s, %s, %s)", session.title, speakers, sessionDateAndRoom, session.subtype, getString(session.getLanguageName())));
         shareIntent.setType("text/plain");
         startActivity(shareIntent);
     }
