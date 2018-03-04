@@ -31,6 +31,8 @@
     <string name="session_selected">Session ajoutée en favori</string>
     <string name="session_deselected">Session enlevée des favoris</string>
 
+    <string name="share">Partager la session</string>
+
     <!--Venue-->
     <string name="locate_on_map">Localiser sur la carte</string>
 
