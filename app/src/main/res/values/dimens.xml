@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="small_padding">4dp</dimen>
     <dimen name="default_padding">8dp</dimen>
     <dimen name="large_padding">16dp</dimen>
-    <dimen name="avatar_size">50dip</dimen>
+    <dimen name="avatar_size">56dp</dimen>
 
     <dimen name="section_title_text_size">18sp</dimen>
 </resources>

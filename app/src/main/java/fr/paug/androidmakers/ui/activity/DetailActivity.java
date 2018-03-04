@@ -39,6 +39,9 @@ import fr.paug.androidmakers.service.SessionAlarmService;
 import fr.paug.androidmakers.ui.view.AgendaView;
 import fr.paug.androidmakers.util.SessionSelector;
 
+/**
+ * Details of a session
+ */
 public class DetailActivity extends BaseActivity {
 
     private static final String PARAM_SESSION_ID = "param_session_id";
@@ -79,24 +82,24 @@ public class DetailActivity extends BaseActivity {
 
         if (session == null) {
             // We have a problem !
-            activityDetailBinding.sessionInformations.setVisibility(View.GONE);
-            activityDetailBinding.errorMessage.setVisibility(View.VISIBLE);
+            activityDetailBinding.sessionInformationsScrollView.setVisibility(View.GONE);
+            activityDetailBinding.errorMessageTextView.setVisibility(View.VISIBLE);
             return;
         }
 
         final String sessionDate = DateUtils.formatDateRange(this, new Formatter(getResources().getConfiguration().locale), sessionStartDateInMillis, sessionEndDateInMillis, DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_ABBREV_WEEKDAY | DateUtils.FORMAT_SHOW_TIME, null).toString();
         sessionDateAndRoom = sessionRoom != null && !TextUtils.isEmpty(sessionRoom.name) ? getString(R.string.sessionDateWithRoomPlaceholder, sessionDate, sessionRoom.name) : sessionDate;
 
-        activityDetailBinding.sessionTitle.setText(session.title);
-        activityDetailBinding.sessionDateAndRoom.setText(sessionDateAndRoom);
-        activityDetailBinding.sessionDescription.setMovementMethod(LinkMovementMethod.getInstance());
-        activityDetailBinding.sessionDescription.setText(session.description != null ?
+        activityDetailBinding.sessionTitleTextView.setText(session.title);
+        activityDetailBinding.sessionDateAndRoomTextView.setText(sessionDateAndRoom);
+        activityDetailBinding.sessionDescriptionTextView.setMovementMethod(LinkMovementMethod.getInstance());
+        activityDetailBinding.sessionDescriptionTextView.setText(session.description != null ?
                 Html.fromHtml(session.description) : "");
 
         final int languageFullNameRes = session.getLanguageName();
         if (languageFullNameRes != 0) {
-            activityDetailBinding.sessionLanguage.setChipText(getString(languageFullNameRes));
-            activityDetailBinding.sessionLanguage.setOnChipClickListener(new OnChipClickListener() {
+            activityDetailBinding.sessionLanguageChip.setChipText(getString(languageFullNameRes));
+            activityDetailBinding.sessionLanguageChip.setOnChipClickListener(new OnChipClickListener() {
                 @Override
                 public void onChipClick(View view) {
                     if (BuildConfig.DEBUG) {
@@ -105,11 +108,12 @@ public class DetailActivity extends BaseActivity {
                 }
             });
         } else {
-            activityDetailBinding.sessionLanguage.setVisibility(View.GONE);
+            activityDetailBinding.sessionLanguageChip.setVisibility(View.GONE);
         }
 
-        activityDetailBinding.sessionType.setChipText(session.subtype);
-        activityDetailBinding.sessionType.setOnChipClickListener(new OnChipClickListener() {
+        //TODO type of session
+        activityDetailBinding.sessionTypeChip.setChipText(session.subtype);
+        activityDetailBinding.sessionTypeChip.setOnChipClickListener(new OnChipClickListener() {
             @Override
             public void onChipClick(View view) {
                 if (BuildConfig.DEBUG) {
@@ -121,7 +125,7 @@ public class DetailActivity extends BaseActivity {
 
         final ViewGroup sessionSpeakerLayout = findViewById(R.id.sessionSpeakerLayout);
         if (session.speakers != null && session.speakers.length > 0) {
-            activityDetailBinding.speakersTitle.setText(getResources().getQuantityString(R.plurals.session_details_speakers, session.speakers.length));
+            activityDetailBinding.speakersTitleTextView.setText(getResources().getQuantityString(R.plurals.session_details_speakers, session.speakers.length));
             for (final int speakerID : session.speakers) {
                 final Speaker speaker = AgendaRepository.getInstance().getSpeaker(speakerID);
                 speakersList.add(speaker.getFullNameAndCompany());
@@ -236,7 +240,6 @@ public class DetailActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.detail, menu);
         final MenuItem selectItem = menu.findItem(R.id.select);
         final MenuItem unSelectItem = menu.findItem(R.id.unSelect);
@@ -275,12 +278,12 @@ public class DetailActivity extends BaseActivity {
     private void shareSession() {
         String speakers = TextUtils.join(", ", speakersList);
 
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_SUBJECT, session.title);
-        shareIntent.putExtra(Intent.EXTRA_TEXT,
-                String.format("%s (%s, %s, %s, %s)", session.title, speakers, sessionDateAndRoom, session.subtype, getString(session.getLanguageName())));
-        shareIntent.setType("text/plain");
-        startActivity(shareIntent);
+        Intent shareSessionIntent = new Intent(Intent.ACTION_SEND);
+        shareSessionIntent.putExtra(Intent.EXTRA_SUBJECT, session.title);
+        shareSessionIntent.putExtra(Intent.EXTRA_TEXT,
+                String.format("%s (%s, %s, %s)", session.title, speakers, sessionDateAndRoom, getString(session.getLanguageName())));
+        shareSessionIntent.setType("text/plain");
+        startActivity(shareSessionIntent);
     }
 
 }
