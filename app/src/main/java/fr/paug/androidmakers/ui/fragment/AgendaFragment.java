@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -32,31 +33,31 @@ import fr.paug.androidmakers.model.Room;
 import fr.paug.androidmakers.model.ScheduleSlot;
 import fr.paug.androidmakers.model.Session;
 import fr.paug.androidmakers.service.SessionAlarmService;
-import fr.paug.androidmakers.ui.activity.DetailActivity;
 import fr.paug.androidmakers.ui.adapter.AgendaPagerAdapter;
+import fr.paug.androidmakers.ui.adapter.DaySchedule;
+import fr.paug.androidmakers.ui.adapter.Item;
+import fr.paug.androidmakers.ui.adapter.RoomSchedule;
 import fr.paug.androidmakers.ui.util.AgendaFilterMenu;
-import fr.paug.androidmakers.ui.view.AgendaView;
-import fr.paug.androidmakers.util.SessionSelector;
 
-public class AgendaFragment extends Fragment implements AgendaView.AgendaClickListener,
-        AgendaFilterMenu.MenuFilterListener {
+public class AgendaFragment extends Fragment { //implements AgendaClickListener,
+        //AgendaFilterMenu.MenuFilterListener {
 
     private AgendaFilterMenu mAgendaFilterMenu;
     private View mProgressView;
     private View mEmptyView;
     private ViewPager mViewPager;
 
-    private AgendaView.AgendaSelector mAgendaSelector = new AgendaView.AgendaSelector() {
-        @Override
-        public boolean isSelected(int sessionId) {
-            return SessionSelector.getInstance().isSelected(sessionId);
-        }
-
-        @Override
-        public boolean hasSelected() {
-            return SessionSelector.getInstance().hasSelected();
-        }
-    };
+//    private AgendaSelector mAgendaSelector = new AgendaSelector() {
+//        @Override
+//        public boolean isSelected(int sessionId) {
+//            return SessionSelector.getInstance().isSelected(sessionId);
+//        }
+//
+//        @Override
+//        public boolean hasSelected() {
+//            return SessionSelector.getInstance().hasSelected();
+//        }
+//    };
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,7 +74,7 @@ public class AgendaFragment extends Fragment implements AgendaView.AgendaClickLi
         mEmptyView = view.findViewById(R.id.empty_view);
 
         // auto dismiss loading
-        new Handler().postDelayed(new RefreshRunnable(this), 3000);
+        new Handler().postDelayed(new RefreshRunnable(this), 3000); 
 
         AgendaRepository.getInstance().load(new AgendaLoadListener(this));
 
@@ -85,7 +86,7 @@ public class AgendaFragment extends Fragment implements AgendaView.AgendaClickLi
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         mAgendaFilterMenu = new AgendaFilterMenu(getContext(), menu, inflater);
-        mAgendaFilterMenu.setMenuFilterListener(this);
+//        mAgendaFilterMenu.setMenuFilterListener(this);
 
         if (AgendaRepository.getInstance().isLoaded()) {
             onAgendaLoaded(); // reload agenda
@@ -96,21 +97,21 @@ public class AgendaFragment extends Fragment implements AgendaView.AgendaClickLi
     public void onResume() {
         super.onResume();
 
-        PagerAdapter adapter = mViewPager.getAdapter();
-        if (adapter instanceof AgendaPagerAdapter) {
-            ((AgendaPagerAdapter) adapter).refreshSessionsSelected();
-        }
+//        PagerAdapter adapter = mViewPager.getAdapter();
+//        if (adapter instanceof AgendaPagerAdapter) {
+//            ((AgendaPagerAdapter) adapter).refreshSessionsSelected();
+//        }
     }
 
-    @Override
-    public void onClick(AgendaView.Item agendaItem) {
-        DetailActivity.startActivity(getActivity(), agendaItem);
-    }
+//    @Override
+//    public void onClick(Item agendaItem) {
+//        DetailActivity.startActivity(getActivity(), agendaItem);
+//    }
 
-    @Override
-    public void onFilterChanged() {
-        onAgendaLoaded();
-    }
+//    @Override
+//    public void onFilterChanged() {
+//        onAgendaLoaded();
+//    }
 
     private void onAgendaLoaded() {
         if (mAgendaFilterMenu == null) {
@@ -129,7 +130,7 @@ public class AgendaFragment extends Fragment implements AgendaView.AgendaClickLi
 
         mAgendaFilterMenu.setLanguages(fullLengthLanguageName.toArray(new String[fullLengthLanguageName.size()]));
 
-        final SparseArray<AgendaView.DaySchedule> itemByDayOfTheYear = new SparseArray<>();
+        final SparseArray<DaySchedule> itemByDayOfTheYear = new SparseArray<>();
 
         final Calendar calendar = Calendar.getInstance();
         final List<ScheduleSlot> scheduleSlots = AgendaRepository.getInstance().getScheduleSlots();
@@ -143,21 +144,26 @@ public class AgendaFragment extends Fragment implements AgendaView.AgendaClickLi
                 }
             }
 
-            final List<AgendaView.Item> agendaItems = getAgendaItems(
+            final List<Item> agendaItems = getAgendaItems(
                     itemByDayOfTheYear, calendar, scheduleSlot);
-            agendaItems.add(new AgendaView.Item(scheduleSlot, getTitle(scheduleSlot.sessionId)));
+            agendaItems.add(new Item(scheduleSlot, getTitle(scheduleSlot.sessionId)));
         }
 
-        final List<AgendaView.DaySchedule> items = getItemsOrdered(itemByDayOfTheYear);
-        final AgendaPagerAdapter adapter = new AgendaPagerAdapter(items, mAgendaSelector, this);
+        final List<DaySchedule> days = getItemsOrdered(itemByDayOfTheYear);
+
+        Log.d("days items", days.toString());
+//        final AgendaPagerAdapter adapter = new AgendaPagerAdapter(items, mAgendaSelector, this);
+//        mViewPager.setAdapter(adapter);
+
+        final AgendaPagerAdapter adapter = new AgendaPagerAdapter(days);
         mViewPager.setAdapter(adapter);
 
-        final int indexOfToday = getTodayIndex(items);
-        if (indexOfToday > 0) {
-            mViewPager.setCurrentItem(indexOfToday, true);
-        }
-        refreshViewsDisplay();
-        adapter.refreshSessionsSelected();
+//        final int indexOfToday = getTodayIndex(items);
+//        if (indexOfToday > 0) {
+//            mViewPager.setCurrentItem(indexOfToday, true);
+//        }
+//        refreshViewsDisplay();
+//        adapter.refreshSessionsSelected();
     }
 
     private void refreshViewsDisplay() {
@@ -172,7 +178,7 @@ public class AgendaFragment extends Fragment implements AgendaView.AgendaClickLi
         }
     }
 
-    private int getTodayIndex(List<AgendaView.DaySchedule> items) {
+    private int getTodayIndex(List<DaySchedule> items) {
         if (items == null || items.size() < 2) {
             return -1;
         }
@@ -180,12 +186,12 @@ public class AgendaFragment extends Fragment implements AgendaView.AgendaClickLi
         int dayOfYear = calendar.get(Calendar.DAY_OF_YEAR);
         int year = calendar.get(Calendar.YEAR);
         for (int i = 1; i < items.size(); i++) {
-            AgendaView.DaySchedule agendaDaySchedule = items.get(i);
-            List<AgendaView.RoomSchedule> roomSchedules = agendaDaySchedule.getRoomSchedules();
+            DaySchedule agendaDaySchedule = items.get(i);
+            List<RoomSchedule> roomSchedules = agendaDaySchedule.getRoomSchedules();
             if (!roomSchedules.isEmpty()) {
-                List<AgendaView.Item> itemList = roomSchedules.get(0).getItems();
+                List<Item> itemList = roomSchedules.get(0).getItems();
                 if (!itemList.isEmpty()) {
-                    AgendaView.Item item = itemList.get(0);
+                    Item item = itemList.get(0);
                     calendar.setTimeInMillis(item.getStartTimestamp());
                     if (calendar.get(Calendar.YEAR) == year
                             && calendar.get(Calendar.DAY_OF_YEAR) == dayOfYear) {
@@ -198,22 +204,22 @@ public class AgendaFragment extends Fragment implements AgendaView.AgendaClickLi
     }
 
     @NonNull
-    private List<AgendaView.Item> getAgendaItems(SparseArray<AgendaView.DaySchedule> itemByDayOfTheYear,
+    private List<Item> getAgendaItems(SparseArray<DaySchedule> itemByDayOfTheYear,
                                                  Calendar calendar, ScheduleSlot scheduleSlot) {
-        List<AgendaView.RoomSchedule> roomSchedules =
+        List<RoomSchedule> roomSchedules =
                 getRoomScheduleForDay(itemByDayOfTheYear, calendar, scheduleSlot);
-        AgendaView.RoomSchedule roomScheduleForThis = null;
-        for (AgendaView.RoomSchedule roomSchedule : roomSchedules) {
+        RoomSchedule roomScheduleForThis = null;
+        for (RoomSchedule roomSchedule : roomSchedules) {
             if (roomSchedule.getRoomId() == scheduleSlot.room) {
                 roomScheduleForThis = roomSchedule;
                 break;
             }
         }
         if (roomScheduleForThis == null) {
-            List<AgendaView.Item> agendaItems = new ArrayList<>();
+            List<Item> agendaItems = new ArrayList<>();
             Room room = AgendaRepository.getInstance().getRoom(scheduleSlot.room);
             String titleRoom = (room == null) ? null : room.name;
-            roomScheduleForThis = new AgendaView.RoomSchedule(
+            roomScheduleForThis = new RoomSchedule(
                     scheduleSlot.room, titleRoom, agendaItems);
             roomSchedules.add(roomScheduleForThis);
             Collections.sort(roomSchedules);
@@ -223,16 +229,16 @@ public class AgendaFragment extends Fragment implements AgendaView.AgendaClickLi
         }
     }
 
-    private List<AgendaView.RoomSchedule> getRoomScheduleForDay(
-            SparseArray<AgendaView.DaySchedule> itemByDayOfTheYear,
+    private List<RoomSchedule> getRoomScheduleForDay(
+            SparseArray<DaySchedule> itemByDayOfTheYear,
             Calendar calendar, ScheduleSlot scheduleSlot) {
         calendar.setTimeInMillis(scheduleSlot.startDate);
         int dayIndex = calendar.get(Calendar.DAY_OF_YEAR) + calendar.get(Calendar.YEAR) * 1000;
-        AgendaView.DaySchedule daySchedule = itemByDayOfTheYear.get(dayIndex);
+        DaySchedule daySchedule = itemByDayOfTheYear.get(dayIndex);
         if (daySchedule == null) {
-            List<AgendaView.RoomSchedule> roomSchedule = new ArrayList<>();
+            List<RoomSchedule> roomSchedule = new ArrayList<>();
             String title = DateFormat.getDateInstance().format(calendar.getTime());
-            daySchedule = new AgendaView.DaySchedule(title, roomSchedule);
+            daySchedule = new DaySchedule(title, roomSchedule);
             itemByDayOfTheYear.put(dayIndex, daySchedule);
             return roomSchedule;
         } else {
@@ -241,15 +247,15 @@ public class AgendaFragment extends Fragment implements AgendaView.AgendaClickLi
     }
 
     @NonNull
-    private List<AgendaView.DaySchedule> getItemsOrdered(
-            SparseArray<AgendaView.DaySchedule> itemByDayOfTheYear) {
+    private List<DaySchedule> getItemsOrdered(
+            SparseArray<DaySchedule> itemByDayOfTheYear) {
         int size = itemByDayOfTheYear.size();
         int[] keysSorted = new int[size];
         for (int i = 0; i < size; i++) {
             keysSorted[i] = itemByDayOfTheYear.keyAt(i);
         }
         Arrays.sort(keysSorted);
-        List<AgendaView.DaySchedule> items = new ArrayList<>(size);
+        List<DaySchedule> items = new ArrayList<>(size);
         for (int key : keysSorted) {
             items.add(itemByDayOfTheYear.get(key));
         }
@@ -262,7 +268,6 @@ public class AgendaFragment extends Fragment implements AgendaView.AgendaClickLi
     }
 
     private static class RefreshRunnable implements Runnable {
-
         private WeakReference<AgendaFragment> mAgendaActivity;
 
         private RefreshRunnable(AgendaFragment agendaFragment) {
