@@ -35,7 +35,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="64dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/am_logo"/>
+                        android:layout_marginTop="@dimen/default_padding"
+                        android:src="@drawable/logo_android_makers"/>
 
                     <TextView
                         android:layout_width="match_parent"

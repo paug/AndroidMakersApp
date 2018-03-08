@@ -44,10 +44,10 @@
         \n\nJoin us in tackling the future of Android with the hottest experts of the domain.
         There\'ll be technical sessions, workshops, debates, networking, plus a chance to demo your project in the Makers Area.
         The 2nd edition of Android Makers gathers 4 events in 1.
-        \n\nConferences : 40min Tech Talks by awesome speakers and 20min Lightning Talks on the future of Android.
-        \nWorkshop : Get trained on new methods, discover and build your app during the workshops.
-        \nMakers Area : Walk around, play and discover the latest innovation in hardware and software developed by the makers.
-        \nParty! : Let’s meet, talk, drink and party!
+        \n\n∙ Conferences : 40min Tech Talks by awesome speakers and 20min Lightning Talks on the future of Android.
+        \n∙ Workshop : Get trained on new methods, discover and build your app during the workshops.
+        \n∙ Makers Area : Walk around, play and discover the latest innovation in hardware and software developed by the makers.
+        \n∙ Party! : Let’s meet, talk, drink and party!
         \n\nAll the Talks will be recorded, on uploaded on the youtube channel.</string>
 
     <string name="social">Social</string>
@@ -59,7 +59,7 @@
 
     <string name="wifi">Wifi</string>
     <string name="wifi_network">Network: <b>AndroidMakers</b></string>
-    <string name="wifi_password">Password : <b>Makers2017</b></string>
+    <string name="wifi_password">Password : <b>Makers2018</b></string>
 
     <string name="wifi_connect_description">Directly connect to the venue\'s wifi</string>
     <string name="wifi_connect">Connect</string>
