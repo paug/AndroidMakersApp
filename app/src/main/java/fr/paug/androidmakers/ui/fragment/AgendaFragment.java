@@ -39,7 +39,7 @@ import fr.paug.androidmakers.ui.adapter.Item;
 import fr.paug.androidmakers.ui.adapter.RoomSchedule;
 import fr.paug.androidmakers.ui.util.AgendaFilterMenu;
 
-public class AgendaFragment extends Fragment { //implements AgendaClickListener,
+public class AgendaFragment extends Fragment {
         //AgendaFilterMenu.MenuFilterListener {
 
     private AgendaFilterMenu mAgendaFilterMenu;
@@ -104,11 +104,6 @@ public class AgendaFragment extends Fragment { //implements AgendaClickListener,
     }
 
 //    @Override
-//    public void onClick(Item agendaItem) {
-//        DetailActivity.startActivity(getActivity(), agendaItem);
-//    }
-
-//    @Override
 //    public void onFilterChanged() {
 //        onAgendaLoaded();
 //    }
@@ -150,12 +145,11 @@ public class AgendaFragment extends Fragment { //implements AgendaClickListener,
         }
 
         final List<DaySchedule> days = getItemsOrdered(itemByDayOfTheYear);
-
         Log.d("days items", days.toString());
 //        final AgendaPagerAdapter adapter = new AgendaPagerAdapter(items, mAgendaSelector, this);
 //        mViewPager.setAdapter(adapter);
 
-        final AgendaPagerAdapter adapter = new AgendaPagerAdapter(days);
+        final AgendaPagerAdapter adapter = new AgendaPagerAdapter(days, getActivity());
         mViewPager.setAdapter(adapter);
 
 //        final int indexOfToday = getTodayIndex(items);

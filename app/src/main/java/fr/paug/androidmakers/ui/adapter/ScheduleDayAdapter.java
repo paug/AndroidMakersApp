@@ -1,6 +1,7 @@
 package fr.paug.androidmakers.ui.adapter;
 
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,27 +16,29 @@ import fr.paug.androidmakers.R;
 //TODO Kotlin ?
 public class ScheduleDayAdapter extends RecyclerView.Adapter<ScheduleDayAdapter.ViewHolder> {
 
+    DaySchedule daySchedule;
+
+    public interface OnItemClickListener {
+        void onItemClick(Item item);
+    }
+
+    private final OnItemClickListener listener;
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        // each data item is just a string in this case
+        public ConstraintLayout sessionLayout;
         public TextView sessionTitle;
         public TextView sessionDescription;
         public ViewHolder(View itemView) {
             super(itemView);
+            sessionLayout = itemView.findViewById(R.id.sessionItemLayout);
             sessionTitle = itemView.findViewById(R.id.sessionTitleTextView);
             sessionDescription = itemView.findViewById(R.id.sessionDescriptionTextView);
-
-            this.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //TODO
-                }
-            });
         }
     }
 
-    DaySchedule daySchedule;
-    public ScheduleDayAdapter(DaySchedule daySchedule) {
+    public ScheduleDayAdapter(DaySchedule daySchedule, OnItemClickListener listener) {
         this.daySchedule = daySchedule;
+        this.listener = listener;
     }
 
     @NonNull
@@ -49,9 +52,15 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<ScheduleDayAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Item item = daySchedule.getRoomSchedules().get(0).getItems().get(position);
+        final Item item = daySchedule.getRoomSchedules().get(0).getItems().get(position);
         holder.sessionTitle.setText(item.getTitle());
         holder.sessionDescription.setText("" + item.getRoomId() + "/" + item.getStartTimestamp());
+
+        holder.sessionLayout.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                listener.onItemClick(item);
+            }
+        });
     }
 
     @Override

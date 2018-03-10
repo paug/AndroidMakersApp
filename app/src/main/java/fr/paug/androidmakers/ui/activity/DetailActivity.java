@@ -1,5 +1,6 @@
 package fr.paug.androidmakers.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
@@ -35,6 +36,7 @@ import fr.paug.androidmakers.model.Session;
 import fr.paug.androidmakers.model.SocialNetworkHandle;
 import fr.paug.androidmakers.model.Speaker;
 import fr.paug.androidmakers.service.SessionAlarmService;
+import fr.paug.androidmakers.ui.adapter.Item;
 import fr.paug.androidmakers.util.SessionSelector;
 
 /**
@@ -55,14 +57,14 @@ public class DetailActivity extends BaseActivity {
     private String sessionDateAndRoom;
     private List<String> speakersList = new ArrayList<>();
 
-//    public static void startActivity(Context context, AgendaView.Item item) {
-//        Intent intent = new Intent(context, DetailActivity.class);
-//        intent.putExtra(PARAM_SESSION_ID, item.getSessionId());
-//        intent.putExtra(PARAM_SESSION_START_DATE, item.getStartTimestamp());
-//        intent.putExtra(PARAM_SESSION_END_DATE, item.getEndTimestamp());
-//        intent.putExtra(PARAM_SESSION_ROOM, item.getRoomId());
-//        context.startActivity(intent);
-//    }
+    public static void startActivity(Context context, Item item) {
+        Intent intent = new Intent(context, DetailActivity.class);
+        intent.putExtra(PARAM_SESSION_ID, item.getSessionId());
+        intent.putExtra(PARAM_SESSION_START_DATE, item.getStartTimestamp());
+        intent.putExtra(PARAM_SESSION_END_DATE, item.getEndTimestamp());
+        intent.putExtra(PARAM_SESSION_ROOM, item.getRoomId());
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
