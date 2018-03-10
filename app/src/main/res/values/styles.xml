@@ -1,6 +1,9 @@
 <resources>
 
+    <!--TODO refacto names-->
+
     <style name="section_title">
+        <!--TODO change style-->
         <item name="android:fontFamily">sans-serif-condensed</item>
         <item name="android:textSize">@dimen/section_title_text_size</item>
         <item name="android:textColor">@color/colorPrimaryDark</item>

@@ -17,10 +17,19 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<ScheduleDayAdapter.
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        public TextView sessionTV;
-        public ViewHolder(View v) {
-            super(v);
-            sessionTV = v.findViewById(R.id.sessionTextView);
+        public TextView sessionTitle;
+        public TextView sessionDescription;
+        public ViewHolder(View itemView) {
+            super(itemView);
+            sessionTitle = itemView.findViewById(R.id.sessionTitleTextView);
+            sessionDescription = itemView.findViewById(R.id.sessionDescriptionTextView);
+
+            this.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //TODO
+                }
+            });
         }
     }
 
@@ -33,7 +42,7 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<ScheduleDayAdapter.
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_schedule, parent, false);
+                .inflate(R.layout.item_schedule_session, parent, false);
         ViewHolder vh = new ViewHolder(v);
         return vh;
     }
@@ -41,7 +50,8 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<ScheduleDayAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Item item = daySchedule.getRoomSchedules().get(0).getItems().get(position);
-        holder.sessionTV.setText(item.getTitle());
+        holder.sessionTitle.setText(item.getTitle());
+        holder.sessionDescription.setText("" + item.getRoomId() + "/" + item.getStartTimestamp());
     }
 
     @Override
