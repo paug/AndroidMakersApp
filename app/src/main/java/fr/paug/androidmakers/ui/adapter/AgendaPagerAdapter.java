@@ -1,6 +1,9 @@
 package fr.paug.androidmakers.ui.adapter;
 
+import android.app.Activity;
 import android.support.v4.view.PagerAdapter;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
@@ -11,28 +14,21 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import fr.paug.androidmakers.R;
+import fr.paug.androidmakers.ui.activity.DetailActivity;
 
 public class AgendaPagerAdapter extends PagerAdapter {
 
-//    private final AgendaView.AgendaClickListener mAgendaClickListener;
     private final List<DaySchedule> mAgenda;
     private final SparseArray<View> mAgendaViews = new SparseArray<>();
+    private Activity activity;
 //    private final AgendaView.AgendaSelector mAgendaSelector;
-
 
     private RecyclerView recyclerView;
 
-    public AgendaPagerAdapter(List<DaySchedule> mAgenda) {
+    public AgendaPagerAdapter(List<DaySchedule> mAgenda, Activity activity) {
         this.mAgenda = mAgenda;
+        this.activity = activity;
     }
-
-    //    public AgendaPagerAdapter(List<AgendaView.DaySchedule> agenda,
-//                              AgendaView.AgendaSelector agendaSelector,
-//                              AgendaView.AgendaClickListener listener) {
-//        mAgenda = agenda;
-//        mAgendaClickListener = listener;
-//        mAgendaSelector = agendaSelector;
-//    }
 
 //    public void refreshSessionsSelected() {
 //        for (int i = 0; i < mAgendaViews.size(); i++) {
@@ -43,17 +39,21 @@ public class AgendaPagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup collection, int position) {
-        //TODO Recyclerviews
-
         View view = LayoutInflater.from(collection.getContext()).inflate(R.layout.schedule_single_day_list, null, false);
 
         recyclerView = view.findViewById(android.R.id.list);//new RecyclerView(collection.getContext());
         recyclerView.setHasFixedSize(true);
+        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(collection.getContext());
         recyclerView.setLayoutManager(mLayoutManager);
 
-        ScheduleDayAdapter adapter = new ScheduleDayAdapter(getItems(position));
+        ScheduleDayAdapter adapter = new ScheduleDayAdapter(getItems(position), new ScheduleDayAdapter.OnItemClickListener() {
+            @Override public void onItemClick(Item agendaItem) {
+                DetailActivity.startActivity(activity, agendaItem);
+            }
+        });
         recyclerView.setAdapter(adapter);
 
         collection.addView(view);

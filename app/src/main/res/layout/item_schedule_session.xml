@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
+    android:id="@+id/sessionItemLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -19,6 +20,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="What's new in Android ?"/>
 
+    <!--Contains the room and the duration of the session-->
     <TextView
         android:id="@+id/sessionDescriptionTextView"
         android:layout_width="match_parent"
@@ -29,5 +31,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sessionTitleTextView"
         tools:text="45 min / Room machin"/>
+
+    <!--TODO : Language, Speakers ?, Favorite button ?-->
 
 </android.support.constraint.ConstraintLayout>
