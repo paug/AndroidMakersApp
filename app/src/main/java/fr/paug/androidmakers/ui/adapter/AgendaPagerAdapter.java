@@ -50,7 +50,7 @@ public class AgendaPagerAdapter extends PagerAdapter {
         recyclerView.setLayoutManager(mLayoutManager);
 
         ScheduleDayAdapter adapter = new ScheduleDayAdapter(getItems(position), new ScheduleDayAdapter.OnItemClickListener() {
-            @Override public void onItemClick(Item agendaItem) {
+            @Override public void onItemClick(ScheduleSession agendaItem) {
                 DetailActivity.startActivity(activity, agendaItem);
             }
         });

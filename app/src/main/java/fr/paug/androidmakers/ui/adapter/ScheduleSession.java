@@ -2,13 +2,12 @@ package fr.paug.androidmakers.ui.adapter;
 
 import fr.paug.androidmakers.model.ScheduleSlot;
 
-//TODO rename in slot, session,..
-public class Item {
+public class ScheduleSession {
 
     private ScheduleSlot mScheduleSlot;
     private String mTitle;
 
-    public Item(ScheduleSlot scheduleSlot, String title) {
+    public ScheduleSession(ScheduleSlot scheduleSlot, String title) {
         mScheduleSlot = scheduleSlot;
         mTitle = title;
     }
@@ -35,7 +34,7 @@ public class Item {
 
     @Override
     public String toString() {
-        return "Item{" +
+        return "ScheduleSession{" +
                 "mScheduleSlot=" + mScheduleSlot +
                 ", mTitle='" + mTitle + '\'' +
                 '}';
