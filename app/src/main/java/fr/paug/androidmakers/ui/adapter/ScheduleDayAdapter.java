@@ -19,7 +19,7 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<ScheduleDayAdapter.
     DaySchedule daySchedule;
 
     public interface OnItemClickListener {
-        void onItemClick(Item item);
+        void onItemClick(ScheduleSession scheduleSession);
     }
 
     private final OnItemClickListener listener;
@@ -52,13 +52,13 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<ScheduleDayAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final Item item = daySchedule.getRoomSchedules().get(0).getItems().get(position);
-        holder.sessionTitle.setText(item.getTitle());
-        holder.sessionDescription.setText("" + item.getRoomId() + "/" + item.getStartTimestamp());
+        final ScheduleSession scheduleSession = daySchedule.getRoomSchedules().get(0).getItems().get(position);
+        holder.sessionTitle.setText(scheduleSession.getTitle());
+        holder.sessionDescription.setText("" + scheduleSession.getRoomId() + "/" + scheduleSession.getStartTimestamp());
 
         holder.sessionLayout.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                listener.onItemClick(item);
+                listener.onItemClick(scheduleSession);
             }
         });
     }

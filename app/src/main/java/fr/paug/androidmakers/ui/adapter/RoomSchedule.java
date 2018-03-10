@@ -8,12 +8,12 @@ public class RoomSchedule implements Comparable<RoomSchedule> {
     private final int mRoomId;
     private final String mTitle;
     @NonNull
-    private final List<Item> mItems;
+    private final List<ScheduleSession> mScheduleSessions;
 
-    public RoomSchedule(int roomId, String title, @NonNull List<Item> items) {
+    public RoomSchedule(int roomId, String title, @NonNull List<ScheduleSession> scheduleSessions) {
         mRoomId = roomId;
         mTitle = title;
-        mItems = items;
+        mScheduleSessions = scheduleSessions;
     }
 
     public int getRoomId() {
@@ -25,8 +25,8 @@ public class RoomSchedule implements Comparable<RoomSchedule> {
     }
 
     @NonNull
-    public List<Item> getItems() {
-        return mItems;
+    public List<ScheduleSession> getItems() {
+        return mScheduleSessions;
     }
 
     @Override
@@ -39,7 +39,7 @@ public class RoomSchedule implements Comparable<RoomSchedule> {
         return "RoomSchedule{" +
                 "mRoomId=" + mRoomId +
                 ", mTitle='" + mTitle + '\'' +
-                ", mItems=" + mItems +
+                ", mItems=" + mScheduleSessions +
                 '}';
     }
 

@@ -35,7 +35,7 @@ import fr.paug.androidmakers.model.Session;
 import fr.paug.androidmakers.service.SessionAlarmService;
 import fr.paug.androidmakers.ui.adapter.AgendaPagerAdapter;
 import fr.paug.androidmakers.ui.adapter.DaySchedule;
-import fr.paug.androidmakers.ui.adapter.Item;
+import fr.paug.androidmakers.ui.adapter.ScheduleSession;
 import fr.paug.androidmakers.ui.adapter.RoomSchedule;
 import fr.paug.androidmakers.ui.util.AgendaFilterMenu;
 
@@ -139,9 +139,9 @@ public class AgendaFragment extends Fragment {
                 }
             }
 
-            final List<Item> agendaItems = getAgendaItems(
+            final List<ScheduleSession> agendaScheduleSessions = getAgendaItems(
                     itemByDayOfTheYear, calendar, scheduleSlot);
-            agendaItems.add(new Item(scheduleSlot, getTitle(scheduleSlot.sessionId)));
+            agendaScheduleSessions.add(new ScheduleSession(scheduleSlot, getTitle(scheduleSlot.sessionId)));
         }
 
         final List<DaySchedule> days = getItemsOrdered(itemByDayOfTheYear);
@@ -183,10 +183,10 @@ public class AgendaFragment extends Fragment {
             DaySchedule agendaDaySchedule = items.get(i);
             List<RoomSchedule> roomSchedules = agendaDaySchedule.getRoomSchedules();
             if (!roomSchedules.isEmpty()) {
-                List<Item> itemList = roomSchedules.get(0).getItems();
-                if (!itemList.isEmpty()) {
-                    Item item = itemList.get(0);
-                    calendar.setTimeInMillis(item.getStartTimestamp());
+                List<ScheduleSession> scheduleSessionList = roomSchedules.get(0).getItems();
+                if (!scheduleSessionList.isEmpty()) {
+                    ScheduleSession scheduleSession = scheduleSessionList.get(0);
+                    calendar.setTimeInMillis(scheduleSession.getStartTimestamp());
                     if (calendar.get(Calendar.YEAR) == year
                             && calendar.get(Calendar.DAY_OF_YEAR) == dayOfYear) {
                         return i;
@@ -198,7 +198,7 @@ public class AgendaFragment extends Fragment {
     }
 
     @NonNull
-    private List<Item> getAgendaItems(SparseArray<DaySchedule> itemByDayOfTheYear,
+    private List<ScheduleSession> getAgendaItems(SparseArray<DaySchedule> itemByDayOfTheYear,
                                                  Calendar calendar, ScheduleSlot scheduleSlot) {
         List<RoomSchedule> roomSchedules =
                 getRoomScheduleForDay(itemByDayOfTheYear, calendar, scheduleSlot);
@@ -210,14 +210,14 @@ public class AgendaFragment extends Fragment {
             }
         }
         if (roomScheduleForThis == null) {
-            List<Item> agendaItems = new ArrayList<>();
+            List<ScheduleSession> agendaScheduleSessions = new ArrayList<>();
             Room room = AgendaRepository.getInstance().getRoom(scheduleSlot.room);
             String titleRoom = (room == null) ? null : room.name;
             roomScheduleForThis = new RoomSchedule(
-                    scheduleSlot.room, titleRoom, agendaItems);
+                    scheduleSlot.room, titleRoom, agendaScheduleSessions);
             roomSchedules.add(roomScheduleForThis);
             Collections.sort(roomSchedules);
-            return agendaItems;
+            return agendaScheduleSessions;
         } else {
             return roomScheduleForThis.getItems();
         }
