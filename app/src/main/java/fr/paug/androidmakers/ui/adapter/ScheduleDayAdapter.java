@@ -209,10 +209,7 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 return false;
             }
             final TimeSeparatorItem that = (TimeSeparatorItem) o;
-            if (startTime != that.startTime) {
-                return false;
-            }
-            return true;
+            return startTime == that.startTime;
         }
 
         @Override
@@ -247,8 +244,6 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         void bind(@NonNull final ScheduleSession scheduleSession, DaySchedule daySchedule) {
             // Session title
             sessionTitle.setText(scheduleSession.getTitle());
-
-            //TODO Session type
 
             final StringBuilder description = mTmpStringBuilder;
             mTmpStringBuilder.setLength(0); // clear the builder

@@ -13,6 +13,4 @@
     android:paddingEnd="@dimen/large_padding"
     android:paddingStart="@dimen/large_padding"
     android:paddingTop="@dimen/small_padding"
-    android:fontFamily="@font/gill_sans_light"
-    android:textStyle="bold"
     tools:text="10:00"/>

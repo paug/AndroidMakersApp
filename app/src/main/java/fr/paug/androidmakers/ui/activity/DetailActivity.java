@@ -125,7 +125,6 @@ public class DetailActivity extends BaseActivity {
 
         final ViewGroup sessionSpeakerLayout = findViewById(R.id.sessionSpeakerLayout);
         if (session.speakers != null && session.speakers.length > 0) {
-            activityDetailBinding.speakersTitleTextView.setText(getResources().getQuantityString(R.plurals.session_details_speakers, session.speakers.length));
             for (final int speakerID : session.speakers) {
                 final Speaker speaker = AgendaRepository.getInstance().getSpeaker(speakerID);
                 speakersList.add(speaker.getFullNameAndCompany());
