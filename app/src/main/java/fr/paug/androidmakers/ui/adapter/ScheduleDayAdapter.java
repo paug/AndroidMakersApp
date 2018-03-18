@@ -1,71 +1,284 @@
 package fr.paug.androidmakers.ui.adapter;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import fr.paug.androidmakers.R;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
-/**
- * Created by benju on 09/03/2018.
- */
-//TODO Kotlin ?
-public class ScheduleDayAdapter extends RecyclerView.Adapter<ScheduleDayAdapter.ViewHolder> {
+import fr.paug.androidmakers.R;
+import fr.paug.androidmakers.util.ScheduleSessionHelper;
+import fr.paug.androidmakers.util.TimeUtils;
+import fr.paug.androidmakers.util.sticky_headers.StickyHeaders;
+
+public class ScheduleDayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+        implements StickyHeaders, StickyHeaders.ViewSetup {
 
     DaySchedule daySchedule;
+
+    private static final long[] ID_ARRAY = new long[4];
+    private static final int ITEM_TYPE_SESSION = 0;
+    private static final int ITEM_TYPE_BREAK = 1;
+    private static final int ITEM_TYPE_TIME_HEADER = 2;
+
+    private final List<Object> mItems = new ArrayList<>();
+
+    private final boolean mShowTimeSeparators;
+    private final float stuckHeaderElevation;
+
+    private final OnItemClickListener listener;
+
+    //region Constructor
+    public ScheduleDayAdapter(Context context, DaySchedule daySchedule, boolean showTimeSeparators, OnItemClickListener listener) {
+        this.daySchedule = daySchedule;
+        this.listener = listener;
+
+        mShowTimeSeparators = showTimeSeparators;
+        stuckHeaderElevation = context.getResources().getDimension(R.dimen.card_elevation);
+
+        List<ScheduleSession> sessions = new ArrayList<>();
+        for (RoomSchedule roomSchedule : daySchedule.getRoomSchedules()) {
+            sessions.addAll(roomSchedule.getItems());
+        }
+
+        Collections.sort(sessions);
+        updateItems(sessions);
+    }
+    //endregion
+
+    //region RecyclerView Override
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
+        switch (viewType) {
+            case ITEM_TYPE_SESSION:
+                return new SessionItemViewHolder(LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_schedule_session, parent, false), listener);
+//            case ITEM_TYPE_BREAK:
+//                return NonSessionItemViewHolder.newInstance(parent);
+            case ITEM_TYPE_TIME_HEADER:
+                return new TimeSeparatorViewHolder(
+                        LayoutInflater.from(parent.getContext())
+                                .inflate(R.layout.schedule_item_time_separator, parent, false));
+        }
+        return null;
+    }
+
+    @Override
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+        final Object item = mItems.get(position);
+        switch (holder.getItemViewType()) {
+            case ITEM_TYPE_SESSION:
+                ((SessionItemViewHolder) holder).bind((ScheduleSession) item, daySchedule);
+                break;
+//            case ITEM_TYPE_BREAK:
+//                ((NonSessionItemViewHolder) holder).bind((ScheduleItem) item);
+//                break;
+            case ITEM_TYPE_TIME_HEADER:
+            default:
+                ((TimeSeparatorViewHolder) holder).bind((TimeSeparatorItem) item);
+                break;
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        return mItems.size();
+    }
+
+    @Override
+    public long getItemId(int position) {
+        final Object item = mItems.get(position);
+        if (item instanceof ScheduleSession) {
+            return generateIdForScheduleItem((ScheduleSession) item);
+        } else if (item instanceof TimeSeparatorItem) {
+            return item.hashCode();
+        }
+        return position;
+    }
+
+    private static long generateIdForScheduleItem(@NonNull ScheduleSession item) {
+        final long[] array = ID_ARRAY;
+        // This code may look complex but its pretty simple. We need to use stable ids so that
+        // any user interaction animations are run correctly (such as ripples). This means that
+        // we need to generate a stable id. Not all items have sessionIds so we generate one
+        // using the sessionId, title, start time and end time.
+        array[0] = item.getSessionId();
+        array[1] = !TextUtils.isEmpty(item.getTitle()) ? item.getTitle().hashCode() : 0;
+        array[2] = item.getStartTimestamp();
+        array[3] = item.getEndTimestamp();
+        return Arrays.hashCode(array);
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        final Object item = mItems.get(position);
+        if (item instanceof ScheduleSession) {
+            //if (((ScheduleSession) item).type == ScheduleSession.BREAK) {
+            //    return ITEM_TYPE_BREAK;
+            //}
+            return ITEM_TYPE_SESSION;
+        } else if (item instanceof TimeSeparatorItem) {
+            return ITEM_TYPE_TIME_HEADER;
+        }
+        return RecyclerView.INVALID_TYPE;
+    }
+    //endregion
+
+    //region Sticky headers Override
+    @Override
+    public boolean isStickyHeader(int position) {
+        return getItemViewType(position) == ITEM_TYPE_TIME_HEADER;
+    }
+
+    @SuppressLint("NewApi")
+    @Override
+    public void setupStickyHeaderView(View stickyHeader) {
+        stickyHeader.setTranslationZ(stuckHeaderElevation);
+    }
+
+    @SuppressLint("NewApi")
+    @Override
+    public void teardownStickyHeaderView(View stickyHeader) {
+        stickyHeader.setTranslationZ(0f);
+    }
+    //endregion
+
+    public void updateItems(final List<ScheduleSession> items) {
+        mItems.clear();
+        if (items == null) {
+            notifyDataSetChanged();
+            return;
+        }
+
+        if (!mShowTimeSeparators) {
+            mItems.addAll(items);
+        } else {
+            for (int i = 0, size = items.size(); i < size; i++) {
+                final ScheduleSession prev = i > 0 ? items.get(i - 1) : null;
+                final ScheduleSession item = items.get(i);
+
+                if (prev == null || !ScheduleSessionHelper.sameStartTime(prev, item, true)) {
+                    mItems.add(new TimeSeparatorItem(item));
+                }
+                mItems.add(item);
+            }
+        }
+
+        // TODO use DiffUtil
+        notifyDataSetChanged();
+    }
+
+    //region Time Separator
+    private static class TimeSeparatorViewHolder extends RecyclerView.ViewHolder {
+        private final TextView mStartTime;
+
+        TimeSeparatorViewHolder(final View itemView) {
+            super(itemView);
+            mStartTime = (TextView) itemView;
+        }
+
+        void bind(@NonNull final TimeSeparatorItem item) {
+            mStartTime.setText(TimeUtils.formatShortTime(itemView.getContext(), new Date(item.startTime)));
+        }
+    }
+
+    private static class TimeSeparatorItem {
+        private final long startTime;
+
+        TimeSeparatorItem(ScheduleSession item) {
+            this.startTime = item.getStartTimestamp();
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            final TimeSeparatorItem that = (TimeSeparatorItem) o;
+            if (startTime != that.startTime) {
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            return (int) (startTime ^ (startTime >>> 32));
+        }
+    }
+    //endregion
 
     public interface OnItemClickListener {
         void onItemClick(ScheduleSession scheduleSession);
     }
 
-    private final OnItemClickListener listener;
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    //region Session
+    public static class SessionItemViewHolder extends RecyclerView.ViewHolder {
         public ConstraintLayout sessionLayout;
         public TextView sessionTitle;
         public TextView sessionDescription;
-        public ViewHolder(View itemView) {
+
+        private final OnItemClickListener listener;
+
+        private static final StringBuilder mTmpStringBuilder = new StringBuilder();
+
+        public SessionItemViewHolder(View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
             sessionLayout = itemView.findViewById(R.id.sessionItemLayout);
             sessionTitle = itemView.findViewById(R.id.sessionTitleTextView);
             sessionDescription = itemView.findViewById(R.id.sessionDescriptionTextView);
+            listener = onItemClickListener;
         }
-    }
 
-    public ScheduleDayAdapter(DaySchedule daySchedule, OnItemClickListener listener) {
-        this.daySchedule = daySchedule;
-        this.listener = listener;
-    }
+        void bind(@NonNull final ScheduleSession scheduleSession, DaySchedule daySchedule) {
+            // Session title
+            sessionTitle.setText(scheduleSession.getTitle());
 
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_schedule_session, parent, false);
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
-    }
+            //TODO Session type
 
-    @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final ScheduleSession scheduleSession = daySchedule.getRoomSchedules().get(0).getItems().get(position);
-        holder.sessionTitle.setText(scheduleSession.getTitle());
-        holder.sessionDescription.setText("" + scheduleSession.getRoomId() + "/" + scheduleSession.getStartTimestamp());
+            final StringBuilder description = mTmpStringBuilder;
+            mTmpStringBuilder.setLength(0); // clear the builder
 
-        holder.sessionLayout.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                listener.onItemClick(scheduleSession);
+            // Session duration
+            description.append(TimeUtils.formatDuration(itemView.getContext(),
+                    scheduleSession.getStartTimestamp(), scheduleSession.getEndTimestamp()));
+
+            description.append(" / ");
+
+            // Session room title
+            //TODO improve or move this
+            String roomTitle = "";
+            for (RoomSchedule roomSchedule : daySchedule.getRoomSchedules()) {
+                if (roomSchedule.getRoomId() == scheduleSession.getRoomId()) {
+                    roomTitle = roomSchedule.getTitle();
+                }
             }
-        });
-    }
+            description.append(roomTitle);
 
-    @Override
-    public int getItemCount() {
-        //return 0;
-        return daySchedule.getRoomSchedules().get(0).getItems().size();
+            sessionDescription.setText(description.toString());
+
+            sessionLayout.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    listener.onItemClick(scheduleSession);
+                }
+            });
+        }
+
     }
+    //endregion
+
 }

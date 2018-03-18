@@ -1,8 +1,10 @@
 package fr.paug.androidmakers.ui.adapter;
 
+import android.support.annotation.NonNull;
+
 import fr.paug.androidmakers.model.ScheduleSlot;
 
-public class ScheduleSession {
+public class ScheduleSession implements Comparable<ScheduleSession> {
 
     private ScheduleSlot mScheduleSlot;
     private String mTitle;
@@ -38,6 +40,11 @@ public class ScheduleSession {
                 "mScheduleSlot=" + mScheduleSlot +
                 ", mTitle='" + mTitle + '\'' +
                 '}';
+    }
+
+    @Override
+    public int compareTo(@NonNull ScheduleSession o) {
+        return Long.valueOf(this.mScheduleSlot.startDate).compareTo(o.mScheduleSlot.startDate);
     }
 
 }

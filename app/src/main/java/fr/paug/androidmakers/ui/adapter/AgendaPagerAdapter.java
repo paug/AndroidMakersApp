@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -15,6 +14,7 @@ import java.util.List;
 
 import fr.paug.androidmakers.R;
 import fr.paug.androidmakers.ui.activity.DetailActivity;
+import fr.paug.androidmakers.util.sticky_headers.StickyHeadersLinearLayoutManager;
 
 public class AgendaPagerAdapter extends PagerAdapter {
 
@@ -46,14 +46,17 @@ public class AgendaPagerAdapter extends PagerAdapter {
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(collection.getContext());
-        recyclerView.setLayoutManager(mLayoutManager);
+//        LinearLayoutManager mLayoutManager = new LinearLayoutManager(collection.getContext());
+//        recyclerView.setLayoutManager(mLayoutManager);
 
-        ScheduleDayAdapter adapter = new ScheduleDayAdapter(getItems(position), new ScheduleDayAdapter.OnItemClickListener() {
+        recyclerView.setLayoutManager(new StickyHeadersLinearLayoutManager<ScheduleDayAdapter>(activity));
+
+        ScheduleDayAdapter adapter = new ScheduleDayAdapter(activity, getItems(position), true, new ScheduleDayAdapter.OnItemClickListener() {
             @Override public void onItemClick(ScheduleSession agendaItem) {
                 DetailActivity.startActivity(activity, agendaItem);
             }
         });
+
         recyclerView.setAdapter(adapter);
 
         collection.addView(view);

@@ -65,4 +65,14 @@
     <string name="venue_afterparty_tab">After Party</string>
     <string name="venue_conference_tab">Conférence</string>
 
+    <plurals name="duration_hours">
+        <item quantity="one">%s heure</item>
+        <item quantity="other">%s heures</item>
+    </plurals>
+
+    <plurals name="duration_minutes">
+        <item quantity="one">%s minute</item>
+        <item quantity="other">%s minutes</item>
+    </plurals>
+
 </resources>

@@ -71,4 +71,14 @@
     <string name="media_sponsor">Media</string>
     <string name="location_sponsor">Location</string>
 
+    <plurals name="duration_hours">
+        <item quantity="one">%s hour</item>
+        <item quantity="other">%s hours</item>
+    </plurals>
+
+    <plurals name="duration_minutes">
+        <item quantity="one">%s minute</item>
+        <item quantity="other">%s minutes</item>
+    </plurals>
+
 </resources>
