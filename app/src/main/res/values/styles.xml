@@ -1,25 +1,21 @@
 <resources>
 
-    <!--TODO refacto names-->
-
-    <style name="section_title">
-        <!--TODO change style-->
-        <item name="android:fontFamily">sans-serif-condensed</item>
-        <item name="android:textSize">@dimen/section_title_text_size</item>
-        <item name="android:textColor">@color/colorPrimaryDark</item>
+    <style name="SessionTitle" parent="@style/TextAppearance.AppCompat.Large">
+        <item name="android:textColor">@color/colorAccent</item>
         <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="sponsor_group_title">
-        <item name="android:fontFamily">sans-serif-light</item>
-        <item name="android:textColor">@color/grey</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/gill_sans_light</item>
     </style>
 
     <style name="Schedule.TimeSeparator" parent="">
         <item name="android:textAppearance">?android:textAppearanceMedium</item>
         <item name="android:fontFeatureSettings">smcp</item>
         <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="sponsor_group_title">
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
 </resources>
