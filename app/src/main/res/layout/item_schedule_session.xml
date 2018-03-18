@@ -14,13 +14,13 @@
         android:id="@+id/sessionTitleTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/section_title"
+        android:textAppearance="@style/SessionTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="What's new in Android ?"/>
 
-    <!--Contains the room and the duration of the session-->
+    <!--Contains the room and the duration of the session, eventually the type of session-->
     <TextView
         android:id="@+id/sessionDescriptionTextView"
         android:layout_width="match_parent"
@@ -29,6 +29,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@+id/sessionTitleTextView"
         tools:text="45 min / Room machin"/>
 
