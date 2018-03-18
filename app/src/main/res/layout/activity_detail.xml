@@ -37,8 +37,10 @@
                         android:id="@+id/sessionDateAndRoomTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="2dp"
-                        tools:text="Description"/>
+                        android:paddingBottom="@dimen/default_padding"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        tools:text="Date"/>
 
                     <TextView
                         android:id="@+id/sessionDescriptionTextView"
@@ -74,15 +76,8 @@
                         android:layout_height="1dip"
                         android:layout_marginBottom="@dimen/large_padding"
                         android:layout_marginTop="@dimen/large_padding"
-                        android:background="@color/grey"/>
-
-                    <TextView
-                        android:id="@+id/speakersTitleTextView"
-                        style="@style/SessionTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/Detail_speakerLayoutHeaderTitle"/>
-
+                        android:background="@color/light_grey"/>
+                    
                 </LinearLayout>
 
                 <LinearLayout

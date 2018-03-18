@@ -17,11 +17,7 @@
     </string>
     <string name="filter_language_header">Langues</string>
     <string name="filter_language_all">Toutes</string>
-    <string name="Detail_speakerLayoutHeaderTitle">Orateur(s)</string>
-    <plurals name="session_details_speakers">
-        <item quantity="one">Orateur</item>
-        <item quantity="other">Orateurs</item>
-    </plurals>
+
     <string name="ImageDesc_speaker_avatar">Photo du speaker</string>
     <string name="ImageDesc_social_network_image">réseau social</string>
 

@@ -40,9 +40,9 @@ public class TimeUtils {
                     (int) Math.ceil(hours), (hours == hours.intValue()) ?
                             String.valueOf(hours.intValue()) : hours.toString());
         } else {
-            long mins = duration / MINUTE;
+            long minutes = duration / MINUTE;
             return context.getResources().getQuantityString(
-                    R.plurals.duration_minutes, (int) mins, mins);
+                    R.plurals.duration_minutes, (int) minutes, minutes);
         }
     }
 
