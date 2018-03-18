@@ -30,7 +30,7 @@
         </activity>
 
         <activity
-            android:name=".ui.activity.DetailActivity"
+            android:name=".ui.activity.SessionDetailActivity"
             android:configChanges="orientation|screenSize"/>
 
         <receiver android:name=".receiver.SessionAlarmReceiver">

@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import fr.paug.androidmakers.R;
-import fr.paug.androidmakers.ui.activity.DetailActivity;
+import fr.paug.androidmakers.ui.activity.SessionDetailActivity;
 import fr.paug.androidmakers.util.sticky_headers.StickyHeadersLinearLayoutManager;
 
 public class AgendaPagerAdapter extends PagerAdapter {
@@ -53,7 +53,7 @@ public class AgendaPagerAdapter extends PagerAdapter {
 
         ScheduleDayAdapter adapter = new ScheduleDayAdapter(activity, getItems(position), true, new ScheduleDayAdapter.OnItemClickListener() {
             @Override public void onItemClick(ScheduleSession agendaItem) {
-                DetailActivity.startActivity(activity, agendaItem);
+                SessionDetailActivity.startActivity(activity, agendaItem);
             }
         });
 
