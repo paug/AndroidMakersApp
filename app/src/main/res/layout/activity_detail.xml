@@ -29,7 +29,8 @@
                         style="@style/SessionTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="2dp"
+                        android:paddingBottom="@dimen/large_padding"
+                        android:paddingTop="@dimen/large_padding"
                         tools:text="Title"/>
 
                     <TextView
