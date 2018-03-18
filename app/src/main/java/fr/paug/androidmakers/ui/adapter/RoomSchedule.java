@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import java.util.List;
 
 public class RoomSchedule implements Comparable<RoomSchedule> {
+
     private final int mRoomId;
     private final String mTitle;
     @NonNull

@@ -16,4 +16,10 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="Schedule.TimeSeparator" parent="">
+        <item name="android:textAppearance">?android:textAppearanceMedium</item>
+        <item name="android:fontFeatureSettings">smcp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
 </resources>
