@@ -152,11 +152,11 @@ public class AgendaFragment extends Fragment {
         final AgendaPagerAdapter adapter = new AgendaPagerAdapter(days, getActivity());
         mViewPager.setAdapter(adapter);
 
-//        final int indexOfToday = getTodayIndex(items);
-//        if (indexOfToday > 0) {
-//            mViewPager.setCurrentItem(indexOfToday, true);
-//        }
-//        refreshViewsDisplay();
+        final int indexOfToday = getTodayIndex(days);
+        if (indexOfToday > 0) {
+            mViewPager.setCurrentItem(indexOfToday, true);
+        }
+        refreshViewsDisplay();
 //        adapter.refreshSessionsSelected();
     }
 
@@ -303,4 +303,5 @@ public class AgendaFragment extends Fragment {
             }
         }
     }
+
 }

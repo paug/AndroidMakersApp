@@ -22,6 +22,9 @@ import fr.paug.androidmakers.util.ScheduleSessionHelper;
 import fr.paug.androidmakers.util.TimeUtils;
 import fr.paug.androidmakers.util.sticky_headers.StickyHeaders;
 
+//TODO Favorite icon
+//TODO Filter
+//TODO Show Language ?
 public class ScheduleDayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         implements StickyHeaders, StickyHeaders.ViewSetup {
 
@@ -219,10 +222,6 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
     //endregion
 
-    public interface OnItemClickListener {
-        void onItemClick(ScheduleSession scheduleSession);
-    }
-
     //region Session
     public static class SessionItemViewHolder extends RecyclerView.ViewHolder {
         public ConstraintLayout sessionLayout;
@@ -255,14 +254,7 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             description.append(" / ");
 
             // Session room title
-            //TODO improve or move this
-            String roomTitle = "";
-            for (RoomSchedule roomSchedule : daySchedule.getRoomSchedules()) {
-                if (roomSchedule.getRoomId() == scheduleSession.getRoomId()) {
-                    roomTitle = roomSchedule.getTitle();
-                }
-            }
-            description.append(roomTitle);
+            description.append(getRoomTitle(scheduleSession, daySchedule));
 
             sessionDescription.setText(description.toString());
 
@@ -273,7 +265,21 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             });
         }
 
+        private String getRoomTitle(@NonNull ScheduleSession scheduleSession, DaySchedule daySchedule) {
+            String roomTitle = "";
+            for (RoomSchedule roomSchedule : daySchedule.getRoomSchedules()) {
+                if (roomSchedule.getRoomId() == scheduleSession.getRoomId()) {
+                    roomTitle = roomSchedule.getTitle();
+                }
+            }
+            return roomTitle;
+        }
+
     }
     //endregion
+
+    public interface OnItemClickListener {
+        void onItemClick(ScheduleSession scheduleSession);
+    }
 
 }

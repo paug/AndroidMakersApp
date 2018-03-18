@@ -41,8 +41,10 @@ import fr.paug.androidmakers.util.SessionSelector;
 
 /**
  * Details of a session
+ *
+ * Nice improvements to have : video link, session rate/feedback
  */
-public class DetailActivity extends BaseActivity {
+public class SessionDetailActivity extends BaseActivity {
 
     private static final String PARAM_SESSION_ID = "param_session_id";
     private static final String PARAM_SESSION_START_DATE = "param_session_start_date";
@@ -58,7 +60,7 @@ public class DetailActivity extends BaseActivity {
     private List<String> speakersList = new ArrayList<>();
 
     public static void startActivity(Context context, ScheduleSession scheduleSession) {
-        Intent intent = new Intent(context, DetailActivity.class);
+        Intent intent = new Intent(context, SessionDetailActivity.class);
         intent.putExtra(PARAM_SESSION_ID, scheduleSession.getSessionId());
         intent.putExtra(PARAM_SESSION_START_DATE, scheduleSession.getStartTimestamp());
         intent.putExtra(PARAM_SESSION_END_DATE, scheduleSession.getEndTimestamp());
@@ -103,7 +105,7 @@ public class DetailActivity extends BaseActivity {
                 @Override
                 public void onChipClick(View view) {
                     if (BuildConfig.DEBUG) {
-                        Log.d(DetailActivity.class.getName(), "User clicked on tag with content=" + session.language);
+                        Log.d(SessionDetailActivity.class.getName(), "User clicked on tag with content=" + session.language);
                     }
                 }
             });
@@ -117,7 +119,7 @@ public class DetailActivity extends BaseActivity {
             @Override
             public void onChipClick(View view) {
                 if (BuildConfig.DEBUG) {
-                    Log.d(DetailActivity.class.getName(), "User clicked on tag with content=" + session.subtype);
+                    Log.d(SessionDetailActivity.class.getName(), "User clicked on tag with content=" + session.subtype);
                 }
                 // TODO: Use this for future filter feature
             }
@@ -157,7 +159,7 @@ public class DetailActivity extends BaseActivity {
                         @Override
                         public void onClick(View view) {
                             if (BuildConfig.DEBUG) {
-                                Log.d(DetailActivity.class.getName(), "User clicked on social handle with name=" + socialNetworkHandle.networkType.name());
+                                Log.d(SessionDetailActivity.class.getName(), "User clicked on social handle with name=" + socialNetworkHandle.networkType.name());
                             }
                             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(socialNetworkHandle.link)));
                         }
@@ -180,7 +182,7 @@ public class DetailActivity extends BaseActivity {
                         @Override
                         public void onClick(View view) {
                             if (BuildConfig.DEBUG) {
-                                Log.d(DetailActivity.class.getName(), "User clicked on ribbon with name=" + ribbon.ribbonType.name());
+                                Log.d(SessionDetailActivity.class.getName(), "User clicked on ribbon with name=" + ribbon.ribbonType.name());
                             }
                             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(ribbon.link)));
                         }
