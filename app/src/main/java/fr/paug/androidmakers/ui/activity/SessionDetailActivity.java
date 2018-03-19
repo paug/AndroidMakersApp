@@ -89,8 +89,15 @@ public class SessionDetailActivity extends BaseActivity {
             return;
         }
 
-        final String sessionDate = DateUtils.formatDateRange(this, new Formatter(getResources().getConfiguration().locale), sessionStartDateInMillis, sessionEndDateInMillis, DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_ABBREV_WEEKDAY | DateUtils.FORMAT_SHOW_TIME, null).toString();
-        sessionDateAndRoom = sessionRoom != null && !TextUtils.isEmpty(sessionRoom.name) ? getString(R.string.sessionDateWithRoomPlaceholder, sessionDate, sessionRoom.name) : sessionDate;
+        final String sessionDate = DateUtils.formatDateRange(this,
+                new Formatter(getResources().getConfiguration().locale),
+                sessionStartDateInMillis,
+                sessionEndDateInMillis,
+                DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_SHOW_TIME,
+                null).toString();
+        sessionDateAndRoom = sessionRoom != null &&
+                !TextUtils.isEmpty(sessionRoom.name) ?
+                getString(R.string.sessionDateWithRoomPlaceholder, sessionDate, sessionRoom.name) : sessionDate;
 
         activityDetailBinding.sessionTitleTextView.setText(session.title);
         activityDetailBinding.sessionDateAndRoomTextView.setText(sessionDateAndRoom);
@@ -129,11 +136,8 @@ public class SessionDetailActivity extends BaseActivity {
         if (session.speakers != null && session.speakers.length > 0) {
             for (final int speakerID : session.speakers) {
                 final Speaker speaker = AgendaRepository.getInstance().getSpeaker(speakerID);
+                assert speaker != null;
                 speakersList.add(speaker.getFullNameAndCompany());
-
-                if (speaker == null) {
-                    continue;
-                }
 
                 final DetailViewSpeakerInfoElementBinding speakerInfoElementBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.detail_view_speaker_info_element, null, false);
                 speakerInfoElementBinding.speakerBio.setMovementMethod(LinkMovementMethod.getInstance());
