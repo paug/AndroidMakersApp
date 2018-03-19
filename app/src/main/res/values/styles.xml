@@ -1,9 +1,9 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="SessionTitle" parent="@style/TextAppearance.AppCompat.Large">
-        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:fontFamily">@font/gill_sans_light</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/gill_sans_light</item>
     </style>
 
     <style name="Schedule.TimeSeparator" parent="">
