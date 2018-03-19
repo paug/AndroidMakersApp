@@ -31,7 +31,7 @@
         app:layout_constraintStart_toStartOf="parent"
         android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@+id/sessionTitleTextView"
-        tools:text="50 min / Room machin"/>
+        tools:text="50 min / Room machin / FR"/>
 
     <!--TODO : Language, Speakers ?, Favorite button ?-->
 
