@@ -224,15 +224,15 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     //region Session
     public static class SessionItemViewHolder extends RecyclerView.ViewHolder {
-        public ConstraintLayout sessionLayout;
-        public TextView sessionTitle;
-        public TextView sessionDescription;
+        ConstraintLayout sessionLayout;
+        TextView sessionTitle;
+        TextView sessionDescription;
 
         private final OnItemClickListener listener;
 
         private static final StringBuilder mTmpStringBuilder = new StringBuilder();
 
-        public SessionItemViewHolder(View itemView, OnItemClickListener onItemClickListener) {
+        SessionItemViewHolder(View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
             sessionLayout = itemView.findViewById(R.id.sessionItemLayout);
             sessionTitle = itemView.findViewById(R.id.sessionTitleTextView);
