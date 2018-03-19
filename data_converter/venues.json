@@ -1,0 +1,18 @@
+[
+    {
+        "id": 1,
+        "name": "Les Salons de l'Aveyron",
+        "address": "17 Rue de l'Aubrac\n75012 Paris, France",
+        "image": "",
+        "description": "<b>By car</b>: at the Porte de Bercy exit, head towards Paris Centre, taking the first exit, Bercy Cour Saint-Emilion.\n\n<b>By metro</b>: Cour Saint-Emilion station on line 14.\n\n<b>By bus</b>: line 24 or 64, Dijon Lachambaudie stop.",
+        "type": "conference"
+    },
+    {
+        "id": 2,
+        "name": "The Frog at Bercy Village",
+        "address": "Bercy Village, 25 Cour Saint-Emilion, 75012 Paris",
+        "image": "",
+        "description": "Pub and microbrewery in an old cellar with beams and stone walls, with 2 terraces.",
+        "type": "afterparty"
+    }
+]
