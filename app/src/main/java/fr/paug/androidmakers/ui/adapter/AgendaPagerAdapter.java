@@ -30,12 +30,13 @@ public class AgendaPagerAdapter extends PagerAdapter {
         this.activity = activity;
     }
 
-//    public void refreshSessionsSelected() {
-//        for (int i = 0; i < mAgendaViews.size(); i++) {
-//            AgendaView agendaView = mAgendaViews.get(mAgendaViews.keyAt(i));
-//            agendaView.refreshSessionsSelected(mAgendaSelector);
-//        }
-//    }
+    public void refreshSessionsSelected() {
+        for (int i = 0; i < mAgendaViews.size(); i++) {
+            View view = mAgendaViews.get(mAgendaViews.keyAt(i));
+            RecyclerView recyclerView = view.findViewById(android.R.id.list);
+            recyclerView.getAdapter().notifyDataSetChanged();
+        }
+    }
 
     @Override
     public Object instantiateItem(ViewGroup collection, int position) {

@@ -37,6 +37,7 @@ import fr.paug.androidmakers.model.SocialNetworkHandle;
 import fr.paug.androidmakers.model.Speaker;
 import fr.paug.androidmakers.service.SessionAlarmService;
 import fr.paug.androidmakers.ui.adapter.ScheduleSession;
+import fr.paug.androidmakers.ui.util.CheckableFloatingActionButton;
 import fr.paug.androidmakers.util.SessionSelector;
 
 /**
@@ -44,6 +45,7 @@ import fr.paug.androidmakers.util.SessionSelector;
  *
  * Nice improvements to have : video link, session rate/feedback
  */
+//TODO change star menu in a "bookmark fab"
 public class SessionDetailActivity extends BaseActivity {
 
     private static final String PARAM_SESSION_ID = "param_session_id";
@@ -150,6 +152,21 @@ public class SessionDetailActivity extends BaseActivity {
             }
         }
 
+        activityDetailBinding.scheduleFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View fab) {
+                boolean isInSchedule = !((CheckableFloatingActionButton) fab).isChecked();
+                ((CheckableFloatingActionButton) fab).setChecked(isInSchedule); //TODO (animate the fab)
+                changeSessionSelection(isInSchedule);
+            }
+        });
+
+        if (SessionSelector.getInstance().isSelected(sessionId)) {
+            activityDetailBinding.scheduleFab.setChecked(true);
+        } else {
+            activityDetailBinding.scheduleFab.setChecked(false);
+        }
+
         setActionBar(session);
     }
 
@@ -210,19 +227,25 @@ public class SessionDetailActivity extends BaseActivity {
         SessionSelector.getInstance().setSessionSelected(sessionId, select);
         invalidateOptionsMenu();
 
+        toggleScheduleSessionNotification(select);
+    }
+
+    private void toggleScheduleSessionNotification(boolean select) {
         if (select) {
-            Toast.makeText(this, R.string.session_selected, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.session_selected, Toast.LENGTH_SHORT).show(); // TODO Snackbar
             scheduleStarredSession();
         } else {
-            Toast.makeText(this, R.string.session_deselected, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.session_deselected, Toast.LENGTH_SHORT).show(); // TODO Snackbar
             unScheduleSession();
         }
     }
 
+    //TODO Do this in SessionSelector or move this in Utils
     private void scheduleStarredSession() {
         Log.d("Detail", "Scheduling notification about session start. " +
                 "start time : " + sessionStartDateInMillis + ", " +
                 "end time : " + sessionEndDateInMillis);
+
         final Intent scheduleIntent = new Intent(
                 SessionAlarmService.ACTION_SCHEDULE_STARRED_BLOCK,
                 null, this, SessionAlarmService.class);
@@ -236,6 +259,7 @@ public class SessionDetailActivity extends BaseActivity {
         Log.d("Detail", "Unscheduling notification about session start. " +
                 "start time : " + sessionStartDateInMillis + ", " +
                 "end time : " + sessionEndDateInMillis);
+
         final Intent scheduleIntent = new Intent(
                 SessionAlarmService.ACTION_UNSCHEDULE_UNSTARRED_BLOCK,
                 null, this, SessionAlarmService.class);
@@ -246,17 +270,6 @@ public class SessionDetailActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.detail, menu);
-        final MenuItem selectItem = menu.findItem(R.id.select);
-        final MenuItem unSelectItem = menu.findItem(R.id.unSelect);
-        if (selectItem != null && unSelectItem != null) {
-            if (SessionSelector.getInstance().isSelected(sessionId)) {
-                selectItem.setVisible(false);
-                unSelectItem.setVisible(true);
-            } else {
-                unSelectItem.setVisible(false);
-                selectItem.setVisible(true);
-            }
-        }
         return true;
     }
 
@@ -265,12 +278,6 @@ public class SessionDetailActivity extends BaseActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
-                return true;
-            case R.id.select:
-                changeSessionSelection(true);
-                return true;
-            case R.id.unSelect:
-                changeSessionSelection(false);
                 return true;
             case R.id.share:
                 shareSession();

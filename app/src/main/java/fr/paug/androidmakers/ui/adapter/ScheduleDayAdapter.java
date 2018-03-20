@@ -20,6 +20,7 @@ import java.util.List;
 
 import fr.paug.androidmakers.R;
 import fr.paug.androidmakers.util.ScheduleSessionHelper;
+import fr.paug.androidmakers.util.SessionSelector;
 import fr.paug.androidmakers.util.TimeUtils;
 import fr.paug.androidmakers.util.sticky_headers.StickyHeaders;
 
@@ -29,7 +30,7 @@ import fr.paug.androidmakers.util.sticky_headers.StickyHeaders;
 public class ScheduleDayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         implements StickyHeaders, StickyHeaders.ViewSetup {
 
-    DaySchedule daySchedule;
+    private DaySchedule daySchedule;
 
     private static final long[] ID_ARRAY = new long[4];
     private static final int ITEM_TYPE_SESSION = 0;
@@ -44,7 +45,7 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private final OnItemClickListener listener;
 
     //region Constructor
-    public ScheduleDayAdapter(Context context, DaySchedule daySchedule, boolean showTimeSeparators, OnItemClickListener listener) {
+    ScheduleDayAdapter(Context context, DaySchedule daySchedule, boolean showTimeSeparators, OnItemClickListener listener) {
         this.daySchedule = daySchedule;
         this.listener = listener;
 
@@ -241,14 +242,6 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             sessionDescription = itemView.findViewById(R.id.sessionDescriptionTextView);
             sessionBookmark = itemView.findViewById(R.id.bookmark);
             listener = onItemClickListener;
-
-            sessionBookmark.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(final View view) {
-                    sessionBookmark.setActivated(!sessionBookmark.isActivated());
-                    // TODO add to favorites/bookmarks
-                }
-            });
         }
 
         void bind(@NonNull final ScheduleSession scheduleSession, DaySchedule daySchedule) {
@@ -274,6 +267,16 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     listener.onItemClick(scheduleSession);
                 }
             });
+
+            sessionBookmark.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View view) {
+                    sessionBookmark.setActivated(!sessionBookmark.isActivated());
+                    SessionSelector.getInstance().setSessionSelected(scheduleSession.getSessionId(), sessionBookmark.isActivated());
+                    //TODO scheduleStarredSession
+                }
+            });
+            sessionBookmark.setActivated(SessionSelector.getInstance().isSelected(scheduleSession.getSessionId()));
         }
 
         private String getRoomTitle(@NonNull ScheduleSession scheduleSession, DaySchedule daySchedule) {
