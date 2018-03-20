@@ -97,10 +97,10 @@ public class AgendaFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-//        PagerAdapter adapter = mViewPager.getAdapter();
-//        if (adapter instanceof AgendaPagerAdapter) {
-//            ((AgendaPagerAdapter) adapter).refreshSessionsSelected();
-//        }
+        PagerAdapter adapter = mViewPager.getAdapter();
+        if (adapter instanceof AgendaPagerAdapter) {
+            ((AgendaPagerAdapter) adapter).refreshSessionsSelected();
+        }
     }
 
 //    @Override
