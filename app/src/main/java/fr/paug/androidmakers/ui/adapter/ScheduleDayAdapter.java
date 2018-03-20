@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -227,6 +228,7 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         ConstraintLayout sessionLayout;
         TextView sessionTitle;
         TextView sessionDescription;
+        ImageButton sessionBookmark;
 
         private final OnItemClickListener listener;
 
@@ -237,7 +239,16 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             sessionLayout = itemView.findViewById(R.id.sessionItemLayout);
             sessionTitle = itemView.findViewById(R.id.sessionTitleTextView);
             sessionDescription = itemView.findViewById(R.id.sessionDescriptionTextView);
+            sessionBookmark = itemView.findViewById(R.id.bookmark);
             listener = onItemClickListener;
+
+            sessionBookmark.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View view) {
+                    sessionBookmark.setActivated(!sessionBookmark.isActivated());
+                    // TODO add to favorites/bookmarks
+                }
+            });
         }
 
         void bind(@NonNull final ScheduleSession scheduleSession, DaySchedule daySchedule) {
