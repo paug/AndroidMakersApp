@@ -16,4 +16,9 @@
         android:icon="@drawable/ic_info_outline_black_24dp"
         android:title="@string/title_about" />
 
+    <item
+        android:id="@+id/navigation_makerdroid"
+        android:icon="@drawable/ic_person_black_24dp"
+        android:title="@string/title_makerdroid" />
+
 </menu>
