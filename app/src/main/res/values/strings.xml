@@ -43,7 +43,7 @@
         \n∙ Workshop : Get trained on new methods, discover and build your app during the workshops.
         \n∙ Makers Area : Walk around, play and discover the latest innovation in hardware and software developed by the makers.
         \n∙ Party! : Let’s meet, talk, drink and party!
-        \n\nAll the Talks will be recorded, on uploaded on the youtube channel.</string>
+        \n\nAll the Talks will be recorded, and uploaded on the youtube channel.</string>
 
     <string name="social">Social</string>
 
@@ -60,9 +60,10 @@
     <string name="wifi_connect">Connect</string>
 
     <string name="sponsors">Sponsors</string>
-    <string name="gold_sponsor">Gold+ Sponsor</string>
+    <string name="gold_sponsor">Gold Sponsor</string>
     <string name="silver_sponsor">Silver Sponsor</string>
     <string name="other_sponsor">Other Sponsor</string>
+    <string name="virtual_sponsor">Virtual Sponsor</string>
     <string name="media_sponsor">Media</string>
     <string name="location_sponsor">Location</string>
 

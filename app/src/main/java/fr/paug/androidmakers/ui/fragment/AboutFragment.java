@@ -29,7 +29,7 @@ import fr.paug.androidmakers.model.Partners;
 import fr.paug.androidmakers.util.CustomTabUtil;
 import fr.paug.androidmakers.util.WifiUtil;
 
-//TODO change social icons? change wifi?
+//TODO change social icons?
 public class AboutFragment extends Fragment implements View.OnClickListener {
 
     private FragmentAboutBinding fragmentAboutBinding;
@@ -49,17 +49,19 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         fragmentAboutBinding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_about, container, false);
 
         final Map<PartnerGroup.PartnerType, PartnerGroup> partners = AgendaRepository.getInstance().getPartners();
 
+        //TODO improve this
         if (partners != null) {
             final PartnerGroup goldSponsorGroup = partners.get(PartnerGroup.PartnerType.GoldSponsor);
             addPartnerTypeToView(goldSponsorGroup);
             final PartnerGroup silverSponsorGroup = partners.get(PartnerGroup.PartnerType.SilverSponsor);
             addPartnerTypeToView(silverSponsorGroup);
+            final PartnerGroup virtualSponsorGroup = partners.get(PartnerGroup.PartnerType.VirtualSponsor);
+            addPartnerTypeToView(virtualSponsorGroup);
             final PartnerGroup otherSponsorGroup = partners.get(PartnerGroup.PartnerType.OtherSponsor);
             addPartnerTypeToView(otherSponsorGroup);
             final PartnerGroup mediaSponsorGroup = partners.get(PartnerGroup.PartnerType.Media);
@@ -68,7 +70,7 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
             addPartnerTypeToView(locationGroup);
         }
 
-        // listen to network state change
+        // Listen to network state change
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
         getContext().registerReceiver(wifiStateChangedReceiver, intentFilter);
