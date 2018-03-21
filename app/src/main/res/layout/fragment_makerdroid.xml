@@ -1,22 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/bot_layout"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:layout_margin="@dimen/padding"
-              android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+    >
+
+    <ScrollView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello ! You can ask me about questions about Android Makers like 'What are the next sessions ?'"/>
+        android:layout_margin="@dimen/padding_double">
 
-    <Button
-        android:id="@+id/bot_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="click and speak"
-        android:layout_margin="@dimen/padding"/>
+        <LinearLayout
+            android:id="@+id/bot_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-</LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_bot_answer"
+                android:padding="@dimen/padding"
+                android:text="@string/bot_hello"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
+
+        <RelativeLayout
+            android:id="@+id/bot_layout_icons"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/padding"
+            android:background="@color/white"
+            android:layout_centerVertical="true"
+            >
+
+            <ImageButton
+                android:id="@+id/bot_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:src="@drawable/ic_mic_black_48dp"
+                android:visibility="visible"
+                android:layout_centerVertical="true"
+                />
+
+            <ImageButton
+                android:id="@+id/bot_listening"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:src="@drawable/ic_record_voice_over_black_48dp"
+                android:visibility="gone"
+                android:layout_centerVertical="true"
+                />
+
+            <ProgressBar
+                android:id="@+id/bot_treating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:visibility="gone"
+                android:layout_centerVertical="true"
+                />
+        </RelativeLayout>
+
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@id/bot_layout_icons"
+            android:hint="@string/bot_text_hint"
+            android:padding="@dimen/padding_double"
+            />
+    </RelativeLayout>
+
+
+</RelativeLayout>
