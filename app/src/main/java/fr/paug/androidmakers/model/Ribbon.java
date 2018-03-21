@@ -5,13 +5,6 @@ import android.text.TextUtils;
 
 import fr.paug.androidmakers.R;
 
-/**
- * The class description here.
- *
- * @author Adrien Vitti
- * @since 2018.01.21
- */
-
 public class Ribbon {
 
     public enum RibbonType {

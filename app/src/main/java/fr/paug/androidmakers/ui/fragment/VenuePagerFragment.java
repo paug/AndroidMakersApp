@@ -11,10 +11,6 @@ import android.view.ViewGroup;
 import fr.paug.androidmakers.R;
 import fr.paug.androidmakers.ui.adapter.VenuePagerAdapter;
 
-/**
- * Created by benju on 30/03/2017.
- */
-
 public class VenuePagerFragment extends Fragment {
 
     private ViewPager viewPager;
@@ -31,4 +27,5 @@ public class VenuePagerFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         viewPager.setAdapter(new VenuePagerAdapter(getContext(), getChildFragmentManager()));
     }
+
 }
