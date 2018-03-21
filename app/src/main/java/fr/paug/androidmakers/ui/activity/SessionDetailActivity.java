@@ -141,7 +141,8 @@ public class SessionDetailActivity extends BaseActivity {
                 assert speaker != null;
                 speakersList.add(speaker.getFullNameAndCompany());
 
-                final DetailViewSpeakerInfoElementBinding speakerInfoElementBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.detail_view_speaker_info_element, null, false);
+                final DetailViewSpeakerInfoElementBinding speakerInfoElementBinding =
+                        DataBindingUtil.inflate(getLayoutInflater(), R.layout.detail_view_speaker_info_element, null, false);
                 speakerInfoElementBinding.speakerBio.setMovementMethod(LinkMovementMethod.getInstance());
                 speakerInfoElementBinding.setSpeaker(speaker);
 
@@ -197,7 +198,8 @@ public class SessionDetailActivity extends BaseActivity {
         if (speaker.ribbonList != null && speaker.ribbonList.size() > 0) {
             for (final Ribbon ribbon : speaker.ribbonList) {
                 if (ribbon.ribbonType != Ribbon.RibbonType.NONE) {
-                    final SmallRibbonImageBinding smallRibbonImageBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.small_ribbon_image, null, false);
+                    final SmallRibbonImageBinding smallRibbonImageBinding =
+                            DataBindingUtil.inflate(getLayoutInflater(), R.layout.small_ribbon_image, null, false);
                     smallRibbonImageBinding.setRibbon(ribbon);
                     smallRibbonImageBinding.image.setOnClickListener(new View.OnClickListener() {
                         @Override
