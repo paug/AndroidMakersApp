@@ -7,14 +7,10 @@ import java.util.List;
 
 import fr.paug.androidmakers.R;
 
-/**
- * @author Adrien Vitti
- * @since 2017.03.23
- */
 public class PartnerGroup {
 
     public enum PartnerType {
-        Unknown, GoldSponsor, SilverSponsor, OtherSponsor, Media, Location;
+        Unknown, GoldSponsor, SilverSponsor, OtherSponsor, VirtualSponsor, Media, Location;
 
         @StringRes
         public int getName() {
@@ -25,6 +21,8 @@ public class PartnerGroup {
                     return R.string.silver_sponsor;
                 case OtherSponsor:
                     return R.string.other_sponsor;
+                case VirtualSponsor:
+                    return R.string.virtual_sponsor;
                 case Media:
                     return R.string.media_sponsor;
                 case Location:
@@ -40,6 +38,7 @@ public class PartnerGroup {
                     return 1;
                 case SilverSponsor:
                 case OtherSponsor:
+                case VirtualSponsor:
                 case Location:
                     return 2;
                 case Media:
@@ -60,12 +59,14 @@ public class PartnerGroup {
 
     static PartnerType getPartnerTypeFromString(String typeName) {
         if (!TextUtils.isEmpty(typeName)) {
-            if ("gold+ sponsor".equalsIgnoreCase(typeName)) {
+            if ("gold sponsor".equalsIgnoreCase(typeName)) {
                 return PartnerType.GoldSponsor;
             } else if ("silver sponsor".equalsIgnoreCase(typeName)) {
                 return PartnerType.SilverSponsor;
             } else if ("other sponsor".equalsIgnoreCase(typeName)) {
                 return PartnerType.OtherSponsor;
+            } else if ("virtual sponsor".equalsIgnoreCase(typeName)) {
+                return PartnerType.VirtualSponsor;
             } else if ("media".equalsIgnoreCase(typeName)) {
                 return PartnerType.Media;
             } else if ("location".equalsIgnoreCase(typeName)) {

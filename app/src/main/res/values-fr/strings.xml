@@ -53,10 +53,11 @@
     <string name="wifi_connect">Se connecter</string>
 
     <string name="sponsors">Sponsors</string>
-    <string name="gold_sponsor">Sponsor Gold+</string>
+    <string name="gold_sponsor">Sponsor Gold</string>
     <string name="silver_sponsor">Sponsor Silver</string>
     <string name="media_sponsor">Média</string>
     <string name="other_sponsor">Autre Sponsor</string>
+    <string name="virtual_sponsor">Virtual Sponsor</string>
     <string name="location_sponsor">Salle</string>
     <string name="venue_afterparty_tab">After Party</string>
     <string name="venue_conference_tab">Conférence</string>
