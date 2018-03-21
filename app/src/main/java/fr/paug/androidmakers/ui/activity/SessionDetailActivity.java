@@ -16,8 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.robertlevonyan.views.chip.OnChipClickListener;
-
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;
@@ -103,35 +101,19 @@ public class SessionDetailActivity extends BaseActivity {
         activityDetailBinding.sessionDateAndRoomTextView.setText(sessionDateAndRoom);
         activityDetailBinding.sessionDescriptionTextView.setMovementMethod(LinkMovementMethod.getInstance());
         activityDetailBinding.sessionDescriptionTextView.setText(session.description != null ?
-                Html.fromHtml(session.description) : "");
+                Html.fromHtml(session.description.trim()) : "");
 
         final int languageFullNameRes = session.getLanguageName();
         if (languageFullNameRes != 0) {
             activityDetailBinding.sessionLanguageChip.setChipText(getString(languageFullNameRes));
-            activityDetailBinding.sessionLanguageChip.setOnChipClickListener(new OnChipClickListener() {
-                @Override
-                public void onChipClick(View view) {
-                    if (BuildConfig.DEBUG) {
-                        Log.d(SessionDetailActivity.class.getName(), "User clicked on tag with content=" + session.language);
-                    }
-                }
-            });
         } else {
             activityDetailBinding.sessionLanguageChip.setVisibility(View.GONE);
         }
 
-        //TODO Type of session Chip
-        //TODO Experience of session Chip
-        activityDetailBinding.sessionTypeChip.setChipText(session.subtype);
-        activityDetailBinding.sessionTypeChip.setOnChipClickListener(new OnChipClickListener() {
-            @Override
-            public void onChipClick(View view) {
-                if (BuildConfig.DEBUG) {
-                    Log.d(SessionDetailActivity.class.getName(), "User clicked on tag with content=" + session.subtype);
-                }
-                // TODO: Use this for future filter feature
-            }
-        });
+        String capitalizedSubType = session.subtype.substring(0, 1).toUpperCase() + session.subtype.substring(1);
+        activityDetailBinding.sessionSubTypeChip.setChipText(capitalizedSubType);
+        activityDetailBinding.sessionTypeChip.setChipText(session.type);
+        activityDetailBinding.sessionExperienceChip.setChipText(session.experience);
 
         final ViewGroup sessionSpeakerLayout = findViewById(R.id.sessionSpeakerLayout);
         if (session.speakers != null && session.speakers.length > 0) {
@@ -210,6 +192,8 @@ public class SessionDetailActivity extends BaseActivity {
                         }
                     });
                     speakerInfoElementBinding.speakerRibbonLayout.addView(smallRibbonImageBinding.getRoot());
+                } else {
+                    speakerInfoElementBinding.speakerRibbonLayout.setVisibility(View.GONE);
                 }
             }
         } else {

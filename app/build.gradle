@@ -65,6 +65,7 @@ dependencies {
 
     // Used for tags
     implementation "com.robertlevonyan.view:MaterialChipView:1.0.1"
+    implementation 'org.apmem.tools:layouts:1.10@aar'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
