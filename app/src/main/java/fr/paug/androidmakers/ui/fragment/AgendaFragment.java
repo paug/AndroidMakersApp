@@ -12,8 +12,6 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -23,9 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import fr.paug.androidmakers.R;
 import fr.paug.androidmakers.manager.AgendaRepository;
@@ -35,8 +31,8 @@ import fr.paug.androidmakers.model.Session;
 import fr.paug.androidmakers.service.SessionAlarmService;
 import fr.paug.androidmakers.ui.adapter.AgendaPagerAdapter;
 import fr.paug.androidmakers.ui.adapter.DaySchedule;
-import fr.paug.androidmakers.ui.adapter.ScheduleSession;
 import fr.paug.androidmakers.ui.adapter.RoomSchedule;
+import fr.paug.androidmakers.ui.adapter.ScheduleSession;
 import fr.paug.androidmakers.ui.util.AgendaFilterMenu;
 
 public class AgendaFragment extends Fragment {
@@ -78,20 +74,20 @@ public class AgendaFragment extends Fragment {
 
         AgendaRepository.getInstance().load(new AgendaLoadListener(this));
 
-        setHasOptionsMenu(true);
+        //setHasOptionsMenu(true);
         return view;
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        mAgendaFilterMenu = new AgendaFilterMenu(getContext(), menu, inflater);
-//        mAgendaFilterMenu.setMenuFilterListener(this);
-
-        if (AgendaRepository.getInstance().isLoaded()) {
-            onAgendaLoaded(); // reload agenda
-        }
-    }
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        super.onCreateOptionsMenu(menu, inflater);
+//        mAgendaFilterMenu = new AgendaFilterMenu(getContext(), menu, inflater);
+////        mAgendaFilterMenu.setMenuFilterListener(this);
+//
+//        if (AgendaRepository.getInstance().isLoaded()) {
+//            onAgendaLoaded(); // reload agenda
+//        }
+//    }
 
     @Override
     public void onResume() {
@@ -109,35 +105,35 @@ public class AgendaFragment extends Fragment {
 //    }
 
     private void onAgendaLoaded() {
-        if (mAgendaFilterMenu == null) {
-            return;
-        }
-        final String languageFilter = mAgendaFilterMenu.getLanguageFilter();
-        final Set<String> allLanguageAbreviated = AgendaRepository.getInstance().getAllLanguages();
-        final Set<String> fullLengthLanguageName = new HashSet<>();
-
-        for (final String languageAbbreviated : allLanguageAbreviated) {
-            final int languageStringRes = Session.getLanguageFullName(languageAbbreviated);
-            if (languageStringRes != 0) {
-                fullLengthLanguageName.add(getString(languageStringRes)); //FIXME Fragment AgendaFragment{7ca9acc} not attached to Activity (when changing data in firebase db x) )
-            }
-        }
-
-        mAgendaFilterMenu.setLanguages(fullLengthLanguageName.toArray(new String[fullLengthLanguageName.size()]));
+//        if (mAgendaFilterMenu == null) {
+//            return;
+//        }
+//        final String languageFilter = mAgendaFilterMenu.getLanguageFilter();
+//        final Set<String> allLanguageAbreviated = AgendaRepository.getInstance().getAllLanguages();
+//        final Set<String> fullLengthLanguageName = new HashSet<>();
+//
+//        for (final String languageAbbreviated : allLanguageAbreviated) {
+//            final int languageStringRes = Session.getLanguageFullName(languageAbbreviated);
+//            if (languageStringRes != 0) {
+//                fullLengthLanguageName.add(getString(languageStringRes)); //FIXME Fragment AgendaFragment{7ca9acc} not attached to Activity (when changing data in firebase db x) )
+//            }
+//        }
+//
+//        mAgendaFilterMenu.setLanguages(fullLengthLanguageName.toArray(new String[fullLengthLanguageName.size()]));
 
         final SparseArray<DaySchedule> itemByDayOfTheYear = new SparseArray<>();
 
         final Calendar calendar = Calendar.getInstance();
         final List<ScheduleSlot> scheduleSlots = AgendaRepository.getInstance().getScheduleSlots();
         for (final ScheduleSlot scheduleSlot : scheduleSlots) {
-            if (languageFilter != null) {
-                final int sessionId = scheduleSlot.sessionId;
-                final Session session = AgendaRepository.getInstance().getSession(sessionId);
-                if (session == null || session.getLanguageName() == 0 || !languageFilter.equals(getString(session.getLanguageName()))) {
-                    // skip this session
-                    continue;
-                }
-            }
+//            if (languageFilter != null) {
+//                final int sessionId = scheduleSlot.sessionId;
+//                final Session session = AgendaRepository.getInstance().getSession(sessionId);
+//                if (session == null || session.getLanguageName() == 0 || !languageFilter.equals(getString(session.getLanguageName()))) {
+//                    // skip this session
+//                    continue;
+//                }
+//            }
 
             final List<ScheduleSession> agendaScheduleSessions = getAgendaItems(
                     itemByDayOfTheYear, calendar, scheduleSlot);
