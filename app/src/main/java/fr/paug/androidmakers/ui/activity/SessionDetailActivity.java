@@ -15,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.robertlevonyan.views.chip.OnChipClickListener;
 
@@ -35,9 +34,9 @@ import fr.paug.androidmakers.model.Room;
 import fr.paug.androidmakers.model.Session;
 import fr.paug.androidmakers.model.SocialNetworkHandle;
 import fr.paug.androidmakers.model.Speaker;
-import fr.paug.androidmakers.service.SessionAlarmService;
 import fr.paug.androidmakers.ui.adapter.ScheduleSession;
 import fr.paug.androidmakers.ui.util.CheckableFloatingActionButton;
+import fr.paug.androidmakers.util.ScheduleSessionHelper;
 import fr.paug.androidmakers.util.SessionSelector;
 
 /**
@@ -45,7 +44,6 @@ import fr.paug.androidmakers.util.SessionSelector;
  *
  * Nice improvements to have : video link, session rate/feedback
  */
-//TODO change star menu in a "bookmark fab"
 public class SessionDetailActivity extends BaseActivity {
 
     private static final String PARAM_SESSION_ID = "param_session_id";
@@ -122,7 +120,8 @@ public class SessionDetailActivity extends BaseActivity {
             activityDetailBinding.sessionLanguageChip.setVisibility(View.GONE);
         }
 
-        //TODO type of session
+        //TODO Type of session Chip
+        //TODO Experience of session Chip
         activityDetailBinding.sessionTypeChip.setChipText(session.subtype);
         activityDetailBinding.sessionTypeChip.setOnChipClickListener(new OnChipClickListener() {
             @Override
@@ -157,7 +156,7 @@ public class SessionDetailActivity extends BaseActivity {
             @Override
             public void onClick(View fab) {
                 boolean isInSchedule = !((CheckableFloatingActionButton) fab).isChecked();
-                ((CheckableFloatingActionButton) fab).setChecked(isInSchedule); //TODO (animate the fab)
+                ((CheckableFloatingActionButton) fab).setChecked(isInSchedule);
                 changeSessionSelection(isInSchedule);
             }
         });
@@ -227,46 +226,15 @@ public class SessionDetailActivity extends BaseActivity {
 
     private void changeSessionSelection(boolean select) {
         SessionSelector.getInstance().setSessionSelected(sessionId, select);
-        invalidateOptionsMenu();
-
         toggleScheduleSessionNotification(select);
     }
 
     private void toggleScheduleSessionNotification(boolean select) {
         if (select) {
-            Toast.makeText(this, R.string.session_selected, Toast.LENGTH_SHORT).show(); // TODO Snackbar
-            scheduleStarredSession();
+            ScheduleSessionHelper.scheduleStarredSession(this, sessionStartDateInMillis, sessionEndDateInMillis, sessionId);
         } else {
-            Toast.makeText(this, R.string.session_deselected, Toast.LENGTH_SHORT).show(); // TODO Snackbar
-            unScheduleSession();
+            ScheduleSessionHelper.unScheduleSession(this, sessionId);
         }
-    }
-
-    //TODO Do this in SessionSelector or move this in Utils
-    private void scheduleStarredSession() {
-        Log.d("Detail", "Scheduling notification about session start. " +
-                "start time : " + sessionStartDateInMillis + ", " +
-                "end time : " + sessionEndDateInMillis);
-
-        final Intent scheduleIntent = new Intent(
-                SessionAlarmService.ACTION_SCHEDULE_STARRED_BLOCK,
-                null, this, SessionAlarmService.class);
-        scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_START, sessionStartDateInMillis);
-        scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_END, sessionEndDateInMillis);
-        scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_ID, sessionId);
-        startService(scheduleIntent);
-    }
-
-    private void unScheduleSession() {
-        Log.d("Detail", "Unscheduling notification about session start. " +
-                "start time : " + sessionStartDateInMillis + ", " +
-                "end time : " + sessionEndDateInMillis);
-
-        final Intent scheduleIntent = new Intent(
-                SessionAlarmService.ACTION_UNSCHEDULE_UNSTARRED_BLOCK,
-                null, this, SessionAlarmService.class);
-        scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_ID, sessionId);
-        startService(scheduleIntent);
     }
 
     @Override

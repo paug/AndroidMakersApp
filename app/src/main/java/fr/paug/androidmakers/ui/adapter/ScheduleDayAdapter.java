@@ -24,12 +24,12 @@ import fr.paug.androidmakers.util.SessionSelector;
 import fr.paug.androidmakers.util.TimeUtils;
 import fr.paug.androidmakers.util.sticky_headers.StickyHeaders;
 
-//TODO Favorite icon
 //TODO Filter
 //TODO Show Language ?
 public class ScheduleDayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         implements StickyHeaders, StickyHeaders.ViewSetup {
 
+    private Context context;
     private DaySchedule daySchedule;
 
     private static final long[] ID_ARRAY = new long[4];
@@ -46,6 +46,7 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     //region Constructor
     ScheduleDayAdapter(Context context, DaySchedule daySchedule, boolean showTimeSeparators, OnItemClickListener listener) {
+        this.context = context;
         this.daySchedule = daySchedule;
         this.listener = listener;
 
@@ -68,7 +69,7 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         switch (viewType) {
             case ITEM_TYPE_SESSION:
                 return new SessionItemViewHolder(LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.item_schedule_session, parent, false), listener);
+                        .inflate(R.layout.item_schedule_session, parent, false), listener, context);
 //            case ITEM_TYPE_BREAK:
 //                return NonSessionItemViewHolder.newInstance(parent);
             case ITEM_TYPE_TIME_HEADER:
@@ -232,16 +233,18 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         ImageButton sessionBookmark;
 
         private final OnItemClickListener listener;
+        private Context context;
 
         private static final StringBuilder mTmpStringBuilder = new StringBuilder();
 
-        SessionItemViewHolder(View itemView, OnItemClickListener onItemClickListener) {
+        SessionItemViewHolder(View itemView, OnItemClickListener onItemClickListener, Context ctx) {
             super(itemView);
             sessionLayout = itemView.findViewById(R.id.sessionItemLayout);
             sessionTitle = itemView.findViewById(R.id.sessionTitleTextView);
             sessionDescription = itemView.findViewById(R.id.sessionDescriptionTextView);
             sessionBookmark = itemView.findViewById(R.id.bookmark);
             listener = onItemClickListener;
+            context = ctx;
         }
 
         void bind(@NonNull final ScheduleSession scheduleSession, DaySchedule daySchedule) {
@@ -273,7 +276,14 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 public void onClick(final View view) {
                     sessionBookmark.setActivated(!sessionBookmark.isActivated());
                     SessionSelector.getInstance().setSessionSelected(scheduleSession.getSessionId(), sessionBookmark.isActivated());
-                    //TODO scheduleStarredSession
+                    if (sessionBookmark.isActivated()) {
+                        ScheduleSessionHelper.scheduleStarredSession(context,
+                                scheduleSession.getStartTimestamp(),
+                                scheduleSession.getEndTimestamp(),
+                                scheduleSession.getSessionId());
+                    } else {
+                        ScheduleSessionHelper.unScheduleSession(context, scheduleSession.getSessionId());
+                    }
                 }
             });
             sessionBookmark.setActivated(SessionSelector.getInstance().isSelected(scheduleSession.getSessionId()));
