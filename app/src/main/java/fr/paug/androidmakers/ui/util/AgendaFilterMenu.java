@@ -10,9 +10,7 @@ import android.view.SubMenu;
 
 import fr.paug.androidmakers.R;
 
-/**
- * Created by stan on 26/03/2017.
- */
+// TODO remove this ?
 public class AgendaFilterMenu implements MenuItem.OnMenuItemClickListener {
     private static final String PREF_FILTER_LANGUAGE_SELECTED = "filter_language_selected";
     private final SharedPreferences mSharedPreferences;
