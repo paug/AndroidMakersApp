@@ -23,8 +23,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="65dip"
-                    android:layout_marginStart="65dip"
                     android:orientation="vertical">
 
                     <TextView
@@ -52,36 +50,44 @@
                         android:paddingBottom="2dp"
                         tools:text="Description"/>
 
-                    <LinearLayout
+                    <org.apmem.tools.layouts.FlowLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:divider="@drawable/divider5dip"
-                        android:orientation="horizontal"
-                        android:paddingBottom="2dp"
-                        android:showDividers="middle">
+                        android:layout_height="wrap_content">
 
-                        <!--TODO: remove the gone visibility when session type will be properly available-->
                         <com.robertlevonyan.views.chip.Chip
                             android:id="@+id/sessionTypeChip"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:visibility="gone"/>
-
-                        <com.robertlevonyan.views.chip.Chip
-                            android:id="@+id/sessionLanguageChip"
+                            android:layout_margin="@dimen/small_padding"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
 
-                    </LinearLayout>
+                        <com.robertlevonyan.views.chip.Chip
+                            android:id="@+id/sessionLanguageChip"
+                            android:layout_margin="@dimen/small_padding"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dip"
-                        android:layout_marginBottom="@dimen/large_padding"
-                        android:layout_marginTop="@dimen/large_padding"
-                        android:background="@color/light_grey"/>
-                    
+                        <com.robertlevonyan.views.chip.Chip
+                            android:id="@+id/sessionSubTypeChip"
+                            android:layout_margin="@dimen/small_padding"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <com.robertlevonyan.views.chip.Chip
+                            android:id="@+id/sessionExperienceChip"
+                            android:layout_margin="@dimen/small_padding"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </org.apmem.tools.layouts.FlowLayout>
+
                 </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dip"
+                    android:layout_marginBottom="@dimen/large_padding"
+                    android:layout_marginTop="@dimen/large_padding"
+                    android:background="@color/light_grey"/>
 
                 <LinearLayout
                     android:id="@+id/sessionSpeakerLayout"
