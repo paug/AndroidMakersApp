@@ -110,10 +110,24 @@ public class SessionDetailActivity extends BaseActivity {
             activityDetailBinding.sessionLanguageChip.setVisibility(View.GONE);
         }
 
-        String capitalizedSubType = session.subtype.substring(0, 1).toUpperCase() + session.subtype.substring(1);
-        activityDetailBinding.sessionSubTypeChip.setChipText(capitalizedSubType);
-        activityDetailBinding.sessionTypeChip.setChipText(session.type);
-        activityDetailBinding.sessionExperienceChip.setChipText(session.experience);
+        if (session.subtype != null) {
+            String capitalizedSubType = session.subtype.substring(0, 1).toUpperCase() + session.subtype.substring(1);
+            activityDetailBinding.sessionSubTypeChip.setChipText(capitalizedSubType);
+        } else {
+            activityDetailBinding.sessionSubTypeChip.setVisibility(View.GONE);
+        }
+
+        if (session.type != null) {
+            activityDetailBinding.sessionTypeChip.setChipText(session.type);
+        } else {
+            activityDetailBinding.sessionTypeChip.setVisibility(View.GONE);
+        }
+
+        if (session.experience != null) {
+            activityDetailBinding.sessionExperienceChip.setChipText(session.experience);
+        } else {
+            activityDetailBinding.sessionExperienceChip.setVisibility(View.GONE);
+        }
 
         final ViewGroup sessionSpeakerLayout = findViewById(R.id.sessionSpeakerLayout);
         if (session.speakers != null && session.speakers.length > 0) {
