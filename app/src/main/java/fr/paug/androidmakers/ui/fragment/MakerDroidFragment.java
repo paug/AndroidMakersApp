@@ -1,24 +1,27 @@
 package fr.paug.androidmakers.ui.fragment;
 
 import android.Manifest;
-import android.app.Activity;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.JsonElement;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import ai.api.AIListener;
@@ -34,13 +37,14 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import fr.paug.androidmakers.R;
 import fr.paug.androidmakers.manager.AgendaRepository;
+import fr.paug.androidmakers.model.ScheduleSlot;
 import fr.paug.androidmakers.model.Session;
 
 /**
  * Created by Jade on 20/03/2018
  */
 
-public class MakerDroidFragment extends Fragment implements AIListener{
+public class MakerDroidFragment extends Fragment implements AIListener {
 
     private static final String TAG = MakerDroidFragment.class.getSimpleName();
 
@@ -50,7 +54,14 @@ public class MakerDroidFragment extends Fragment implements AIListener{
     LinearLayout botLayout;
 
     @BindView(R.id.bot_button)
-    Button botButton;
+    ImageButton botButton;
+
+    @BindView(R.id.bot_listening)
+    ImageButton botListening;
+
+    @BindView(R.id.bot_treating)
+    ProgressBar botTreatingProgressBar;
+
 
     private final AIConfiguration config = new AIConfiguration("97ef1441bcd540038c4add623c6f9610",
         AIConfiguration.SupportedLanguages.English,
@@ -59,10 +70,12 @@ public class MakerDroidFragment extends Fragment implements AIListener{
     private AIService aiService;
 
     // Requesting permission to RECORD_AUDIO
-    private boolean permissionToRecordAccepted = false;
-    private String [] permissions = {Manifest.permission.RECORD_AUDIO};
+    private String[] permissions = {Manifest.permission.RECORD_AUDIO};
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
 
+    private int paddingDp;
+    private LinearLayout.LayoutParams paramsQuestion;
+    private LinearLayout.LayoutParams paramsAnswer;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,15 +88,9 @@ public class MakerDroidFragment extends Fragment implements AIListener{
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_makerdroid, container, false);
-        unbinder = ButterKnife.bind(this, view);
+        setHasOptionsMenu(true);
 
-//        Session session = AgendaRepository.getInstance().getSession(47);
-//
-//        if (session != null) {
-//            TextView tv = new TextView(this.getContext());
-//            tv.setText(session.title);
-//            botLayout.addView(tv);
-//        }
+        unbinder = ButterKnife.bind(this, view);
 
         ActivityCompat.requestPermissions(this.getActivity(), permissions, REQUEST_RECORD_AUDIO_PERMISSION);
 
@@ -95,8 +102,37 @@ public class MakerDroidFragment extends Fragment implements AIListener{
             }
         });
 
-//        setHasOptionsMenu(true);
+        botListening.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                aiService.stopListening();
+            }
+        });
+
+
+        paddingDp = (int) getResources().getDimension(R.dimen.padding);
+
+        paramsQuestion = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT);
+        paramsQuestion.weight = 1.0f;
+        paramsQuestion.gravity = Gravity.RIGHT;
+        paramsQuestion.setMargins(0, paddingDp, 0, 0);
+
+        paramsAnswer = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT);
+        paramsAnswer.weight = 1.0f;
+        paramsAnswer.gravity = Gravity.LEFT;
+        paramsAnswer.setMargins(0, paddingDp, 0, 0);
+
         return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        aiService.setListener(null);
     }
 
     @Override
@@ -106,22 +142,13 @@ public class MakerDroidFragment extends Fragment implements AIListener{
     }
 
 
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode){
-            case REQUEST_RECORD_AUDIO_PERMISSION:
-                permissionToRecordAccepted  = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                break;
-        }
-    }
-
-
     @Override
     public void onResult(AIResponse aiResponse) {
         try {
+
+            botButton.setVisibility(View.VISIBLE);
+            botListening.setVisibility(View.GONE);
+            botTreatingProgressBar.setVisibility(View.GONE);
 
 
             final Status status = aiResponse.getStatus();
@@ -142,40 +169,46 @@ public class MakerDroidFragment extends Fragment implements AIListener{
                 Log.i(TAG, "Intent name: " + metadata.getIntentName());
             }
 
-            // Get parameters
-            String parameterString = "";
-            if (result.getParameters() != null && !result.getParameters().isEmpty()) {
-                for (final Map.Entry<String, JsonElement> entry : result.getParameters().entrySet()) {
-                    parameterString += "(" + entry.getKey() + ", " + entry.getValue() + ") ";
+
+            addQuestionView(result.getResolvedQuery());
+
+            // TODO all cases + clean up + export Strings
+            if (aiResponse.getResult().getAction().equalsIgnoreCase("action.sessions.byfilter")) {
+                // Get parameters
+                String parameterString = "";
+
+                if (result.getParameters() != null && !result.getParameters().isEmpty()) {
+                    for (final Map.Entry<String, JsonElement> entry : result.getParameters().entrySet()) {
+                        parameterString += "[" + entry.getKey() + ": " + entry.getValue() + "] ";
+                    }
+
+                    addAnswerView("I got that!\n" + parameterString);
+                    addAnswerView(treatQuestion(result.getParameters()));
+                } else {
+                    addAnswerView("I got that, but no params... Try again");
                 }
+
+            } else {
+                addAnswerView("Bummer, I did not get that. Can you repeat please?");
             }
-
-
-            TextView tv = new TextView(this.getContext());
-            tv.setText("Query:" + result.getResolvedQuery() +
-                "\nAction: " + result.getAction() +
-                "\nParameters: " + parameterString);
-
-            botLayout.addView(tv);
-
-            // Show results in TextView.
-
-
-
 
         } catch (Exception e) {
             Log.e(TAG, "Exception " + e.getMessage());
         }
-
-
     }
 
     @Override
     public void onError(AIError aiError) {
         try {
-            Log.i(TAG, "Result: " + aiError.getMessage());
+            Log.i(TAG, "Result Error : " + aiError.getMessage());
+            botButton.setVisibility(View.VISIBLE);
+            botListening.setVisibility(View.GONE);
+            botTreatingProgressBar.setVisibility(View.GONE);
+            Toast.makeText(this.getContext(), "An error occured (" + aiError.getMessage() + ").\nPlease try again.", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             Log.e(TAG, "Exception " + e.getMessage());
+            Toast.makeText(this.getContext(), "An error occured.\nPlease try again.", Toast.LENGTH_SHORT).show();
+
         }
     }
 
@@ -187,15 +220,75 @@ public class MakerDroidFragment extends Fragment implements AIListener{
     @Override
     public void onListeningStarted() {
         Log.d(TAG, "onListeningStarted");
+        botButton.setVisibility(View.GONE);
+        botListening.setVisibility(View.VISIBLE);
+        botTreatingProgressBar.setVisibility(View.GONE);
+
     }
 
     @Override
     public void onListeningCanceled() {
         Log.d(TAG, "onListeningCanceled");
+        botButton.setVisibility(View.VISIBLE);
+        botListening.setVisibility(View.GONE);
+        botTreatingProgressBar.setVisibility(View.GONE);
     }
 
     @Override
     public void onListeningFinished() {
         Log.d(TAG, "onListeningFinished");
+        botButton.setVisibility(View.GONE);
+        botListening.setVisibility(View.GONE);
+        botTreatingProgressBar.setVisibility(View.VISIBLE);
+        botTreatingProgressBar.animate();
+    }
+
+
+    private void addQuestionView(String text) {
+        TextView tvQuestion = new TextView(this.getContext());
+        tvQuestion.setText(text);
+        tvQuestion.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_bot_question));
+        tvQuestion.setLayoutParams(paramsQuestion);
+        tvQuestion.setPadding(paddingDp, paddingDp, paddingDp, paddingDp);
+        botLayout.addView(tvQuestion);
+    }
+
+    private void addAnswerView(String text) {
+        TextView tvAnswer = new TextView(this.getContext());
+        tvAnswer.setText(text);
+        tvAnswer.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_bot_answer));
+        tvAnswer.setLayoutParams(paramsAnswer);
+        tvAnswer.setPadding(paddingDp, paddingDp, paddingDp, paddingDp);
+        botLayout.addView(tvAnswer);
+    }
+
+    private String treatQuestion(HashMap<String, JsonElement> parameters) {
+
+        List<Session> resultSessions = new ArrayList<>();
+
+        try {
+            if (parameters.get("language") != null) {
+                String userLang = parameters.get("language").getAsString();
+
+                for (ScheduleSlot slot : AgendaRepository.getInstance().getScheduleSlots()) {
+                    Session session = AgendaRepository.getInstance().getSession(slot.sessionId);
+                    if (getResources().getString(Session.getLanguageFullName(session.language)).equalsIgnoreCase(userLang)) {
+                        resultSessions.add(session);
+                    }
+                }
+
+                String returnedMsg = "I have " + resultSessions.size() + "/" + AgendaRepository.getInstance().getScheduleSlots().size() + " sessions " +
+                    "in " + userLang;
+
+                Log.d(TAG, returnedMsg);
+                return returnedMsg;
+            }
+
+            return "I can only filter by language for now";
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+            return "An error occurred, please try again.";
+        }
     }
 }

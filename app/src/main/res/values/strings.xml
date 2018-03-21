@@ -88,5 +88,8 @@
     <string name="language">Language</string>
     <string name="room">Room</string>
     <string name="rooms">Rooms</string>
+    
+    <string name="bot_hello">Hello ! Please ask a question regarding the Android Makers sessions.</string>
+    <string name="bot_text_hint">Ask a question</string>
 
 </resources>

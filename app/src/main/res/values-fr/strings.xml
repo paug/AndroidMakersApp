@@ -77,5 +77,8 @@
     <string name="language">Langue</string>
     <string name="room">Salle</string>
     <string name="rooms">Salles</string>
+    
+    <string name="bot_hello">Bonjour ! Veuillez poser une question en rapport avec les sessions d\'Android Makers.</string>
+    <string name="bot_text_hint">Poser une question</string>
 
 </resources>
