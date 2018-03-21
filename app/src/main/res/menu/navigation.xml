@@ -18,7 +18,7 @@
 
     <item
         android:id="@+id/navigation_makerdroid"
-        android:icon="@drawable/ic_person_black_24dp"
+        android:icon="@drawable/ic_bothead"
         android:title="@string/title_makerdroid" />
 
 </menu>

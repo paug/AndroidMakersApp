@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -272,7 +271,9 @@ public class MakerDroidFragment extends Fragment implements AIListener {
 
                 for (ScheduleSlot slot : AgendaRepository.getInstance().getScheduleSlots()) {
                     Session session = AgendaRepository.getInstance().getSession(slot.sessionId);
-                    if (getResources().getString(Session.getLanguageFullName(session.language)).equalsIgnoreCase(userLang)) {
+                    if (session != null &&
+                        session.language != null &&
+                        getResources().getString(Session.getLanguageFullName(session.language)).equalsIgnoreCase(userLang)) {
                         resultSessions.add(session);
                     }
                 }

@@ -8,20 +8,38 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/padding_double">
+        android:layout_margin="@dimen/padding_double"
+        android:background="@color/white">
 
         <LinearLayout
             android:id="@+id/bot_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            >
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_bot_answer"
-                android:padding="@dimen/padding"
-                android:text="@string/bot_hello"/>
+                android:orientation="horizontal">
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_bothead"
+                    android:layout_marginRight="@dimen/padding_double"
+                    android:layout_gravity="center"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_bot_answer"
+                    android:padding="@dimen/padding"
+                    android:text="@string/bot_hello"/>
+            </LinearLayout>
+
 
         </LinearLayout>
 
@@ -45,38 +63,38 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_margin="@dimen/padding"
             android:background="@color/white"
-            android:layout_centerVertical="true"
             >
 
             <ImageButton
                 android:id="@+id/bot_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:background="@color/white"
                 android:src="@drawable/ic_mic_black_48dp"
                 android:visibility="visible"
-                android:layout_centerVertical="true"
                 />
 
             <ImageButton
                 android:id="@+id/bot_listening"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:background="@color/white"
                 android:src="@drawable/ic_record_voice_over_black_48dp"
                 android:visibility="gone"
-                android:layout_centerVertical="true"
                 />
 
             <ProgressBar
                 android:id="@+id/bot_treating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:background="@color/white"
                 android:visibility="gone"
-                android:layout_centerVertical="true"
                 />
         </RelativeLayout>
 
