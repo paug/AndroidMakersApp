@@ -189,20 +189,24 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
                 if (partnerLogoSizePriority > 0) {
                     final ImageView partner1 = partnerRow.findViewById(R.id.partner1);
                     setLogoInfo(partner1, partnersList.get(index));
+                    partner1.setContentDescription(partnersList.get(index).getName());
                 }
 
                 if (partnerLogoSizePriority > 1 && partnersList.size() > index + 1) {
                     final ImageView partner2 = partnerRow.findViewById(R.id.partner2);
                     setLogoInfo(partner2, partnersList.get(index + 1));
+                    partner2.setContentDescription(partnersList.get(index).getName());
                 }
 
                 if (partnerLogoSizePriority > 2 && partnersList.size() > index + 2) {
                     final ImageView partner3 = partnerRow.findViewById(R.id.partner3);
                     setLogoInfo(partner3, partnersList.get(index + 2));
+                    partner3.setContentDescription(partnersList.get(index).getName());
                 }
 
                 partnerLogoLayout.addView(partnerRow);
             }
+
             fragmentAboutBinding.sponsorsLayout.addView(partnersGroupLinearLayout);
         }
     }
