@@ -29,7 +29,6 @@ import fr.paug.androidmakers.model.Partners;
 import fr.paug.androidmakers.util.CustomTabUtil;
 import fr.paug.androidmakers.util.WifiUtil;
 
-//TODO change social icons?
 public class AboutFragment extends Fragment implements View.OnClickListener {
 
     private FragmentAboutBinding fragmentAboutBinding;
@@ -67,6 +66,11 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
         getContext().registerReceiver(wifiStateChangedReceiver, intentFilter);
 
         fragmentAboutBinding.twitterUserButton.setOnClickListener(this);
+        fragmentAboutBinding.twitterHashtagButton.setOnClickListener(this);
+        fragmentAboutBinding.googlePlusButton.setOnClickListener(this);
+        fragmentAboutBinding.facebookButton.setOnClickListener(this);
+        fragmentAboutBinding.youtubeButton.setOnClickListener(this);
+        fragmentAboutBinding.wifiConnectButton.setOnClickListener(this);
 
         return fragmentAboutBinding.getRoot();
     }
@@ -78,7 +82,7 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
         } else if (v == fragmentAboutBinding.twitterHashtagButton) {
             openTwitterHashtag();
         } else if (v == fragmentAboutBinding.googlePlusButton) {
-            openGPlus();
+            openGooglePlus();
         } else if (v == fragmentAboutBinding.facebookButton) {
             openFacebookEvent();
         } else if (v == fragmentAboutBinding.youtubeButton) {
@@ -116,19 +120,16 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
         startActivity(twitterIntent);
     }
 
-    void openGPlus() {
-        Intent gplusIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.gplus)));
-        startActivity(gplusIntent);
+    void openGooglePlus() {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.gplus))));
     }
 
     void openFacebookEvent() {
-        Intent facebookIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.fbevent)));
-        startActivity(facebookIntent);
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.fbevent))));
     }
 
     void openYoutube() {
-        Intent ytIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.ytchannel)));
-        startActivity(ytIntent);
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.ytchannel))));
     }
 
     void connectToVenuesWifi() {
