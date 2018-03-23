@@ -21,7 +21,6 @@ public class AgendaPagerAdapter extends PagerAdapter {
     private final List<DaySchedule> mAgenda;
     private final SparseArray<View> mAgendaViews = new SparseArray<>();
     private Activity activity;
-//    private final AgendaView.AgendaSelector mAgendaSelector;
 
     private RecyclerView recyclerView;
 
@@ -42,13 +41,10 @@ public class AgendaPagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup collection, int position) {
         View view = LayoutInflater.from(collection.getContext()).inflate(R.layout.schedule_single_day_list, null, false);
 
-        recyclerView = view.findViewById(android.R.id.list);//new RecyclerView(collection.getContext());
+        recyclerView = view.findViewById(android.R.id.list);
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-//        LinearLayoutManager mLayoutManager = new LinearLayoutManager(collection.getContext());
-//        recyclerView.setLayoutManager(mLayoutManager);
 
         recyclerView.setLayoutManager(new StickyHeadersLinearLayoutManager<ScheduleDayAdapter>(activity));
 
@@ -63,13 +59,6 @@ public class AgendaPagerAdapter extends PagerAdapter {
         collection.addView(view);
         mAgendaViews.put(position, view);
         return view;
-
-//        AgendaView agendaView = new AgendaView(collection.getContext());
-//        agendaView.setAgenda(getItems(position), mAgendaClickListener);
-//        agendaView.refreshSessionsSelected(mAgendaSelector);
-//        collection.addView(agendaView);
-//        mAgendaViews.put(position, agendaView);
-//        return agendaView;
     }
 
     @Override

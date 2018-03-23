@@ -33,27 +33,12 @@ import fr.paug.androidmakers.ui.adapter.AgendaPagerAdapter;
 import fr.paug.androidmakers.ui.adapter.DaySchedule;
 import fr.paug.androidmakers.ui.adapter.RoomSchedule;
 import fr.paug.androidmakers.ui.adapter.ScheduleSession;
-import fr.paug.androidmakers.ui.util.AgendaFilterMenu;
 
 public class AgendaFragment extends Fragment {
-        //AgendaFilterMenu.MenuFilterListener {
 
-    private AgendaFilterMenu mAgendaFilterMenu;
     private View mProgressView;
     private View mEmptyView;
     private ViewPager mViewPager;
-
-//    private AgendaSelector mAgendaSelector = new AgendaSelector() {
-//        @Override
-//        public boolean isSelected(int sessionId) {
-//            return SessionSelector.getInstance().isSelected(sessionId);
-//        }
-//
-//        @Override
-//        public boolean hasSelected() {
-//            return SessionSelector.getInstance().hasSelected();
-//        }
-//    };
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,17 +63,6 @@ public class AgendaFragment extends Fragment {
         return view;
     }
 
-//    @Override
-//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//        super.onCreateOptionsMenu(menu, inflater);
-//        mAgendaFilterMenu = new AgendaFilterMenu(getContext(), menu, inflater);
-////        mAgendaFilterMenu.setMenuFilterListener(this);
-//
-//        if (AgendaRepository.getInstance().isLoaded()) {
-//            onAgendaLoaded(); // reload agenda
-//        }
-//    }
-
     @Override
     public void onResume() {
         super.onResume();
@@ -99,42 +73,12 @@ public class AgendaFragment extends Fragment {
         }
     }
 
-//    @Override
-//    public void onFilterChanged() {
-//        onAgendaLoaded();
-//    }
-
     private void onAgendaLoaded() {
-//        if (mAgendaFilterMenu == null) {
-//            return;
-//        }
-//        final String languageFilter = mAgendaFilterMenu.getLanguageFilter();
-//        final Set<String> allLanguageAbreviated = AgendaRepository.getInstance().getAllLanguages();
-//        final Set<String> fullLengthLanguageName = new HashSet<>();
-//
-//        for (final String languageAbbreviated : allLanguageAbreviated) {
-//            final int languageStringRes = Session.getLanguageFullName(languageAbbreviated);
-//            if (languageStringRes != 0) {
-//                fullLengthLanguageName.add(getString(languageStringRes)); //FIXME Fragment AgendaFragment{7ca9acc} not attached to Activity (when changing data in firebase db x) )
-//            }
-//        }
-//
-//        mAgendaFilterMenu.setLanguages(fullLengthLanguageName.toArray(new String[fullLengthLanguageName.size()]));
-
         final SparseArray<DaySchedule> itemByDayOfTheYear = new SparseArray<>();
 
         final Calendar calendar = Calendar.getInstance();
         final List<ScheduleSlot> scheduleSlots = AgendaRepository.getInstance().getScheduleSlots();
         for (final ScheduleSlot scheduleSlot : scheduleSlots) {
-//            if (languageFilter != null) {
-//                final int sessionId = scheduleSlot.sessionId;
-//                final Session session = AgendaRepository.getInstance().getSession(sessionId);
-//                if (session == null || session.getLanguageName() == 0 || !languageFilter.equals(getString(session.getLanguageName()))) {
-//                    // skip this session
-//                    continue;
-//                }
-//            }
-
             final List<ScheduleSession> agendaScheduleSessions = getAgendaItems(
                     itemByDayOfTheYear, calendar, scheduleSlot);
             agendaScheduleSessions.add(new ScheduleSession(scheduleSlot, getTitle(scheduleSlot.sessionId)));
@@ -142,8 +86,6 @@ public class AgendaFragment extends Fragment {
 
         final List<DaySchedule> days = getItemsOrdered(itemByDayOfTheYear);
         Log.d("days items", days.toString());
-//        final AgendaPagerAdapter adapter = new AgendaPagerAdapter(items, mAgendaSelector, this);
-//        mViewPager.setAdapter(adapter);
 
         final AgendaPagerAdapter adapter = new AgendaPagerAdapter(days, getActivity());
         mViewPager.setAdapter(adapter);
@@ -153,7 +95,6 @@ public class AgendaFragment extends Fragment {
             mViewPager.setCurrentItem(indexOfToday, true);
         }
         refreshViewsDisplay();
-//        adapter.refreshSessionsSelected();
     }
 
     private void refreshViewsDisplay() {
