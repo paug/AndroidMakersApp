@@ -64,6 +64,7 @@
     <string name="silver_sponsor">Silver Sponsor</string>
     <string name="other_sponsor">Other Sponsor</string>
     <string name="virtual_sponsor">Virtual Sponsor</string>
+    <string name="speaker_sponsor">Individual Speaker Sponsor</string>
     <string name="media_sponsor">Media</string>
     <string name="location_sponsor">Location</string>
 

@@ -54,20 +54,11 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
 
         final Map<PartnerGroup.PartnerType, PartnerGroup> partners = AgendaRepository.getInstance().getPartners();
 
-        //TODO improve this
         if (partners != null) {
-            final PartnerGroup goldSponsorGroup = partners.get(PartnerGroup.PartnerType.GoldSponsor);
-            addPartnerTypeToView(goldSponsorGroup);
-            final PartnerGroup silverSponsorGroup = partners.get(PartnerGroup.PartnerType.SilverSponsor);
-            addPartnerTypeToView(silverSponsorGroup);
-            final PartnerGroup virtualSponsorGroup = partners.get(PartnerGroup.PartnerType.VirtualSponsor);
-            addPartnerTypeToView(virtualSponsorGroup);
-            final PartnerGroup otherSponsorGroup = partners.get(PartnerGroup.PartnerType.OtherSponsor);
-            addPartnerTypeToView(otherSponsorGroup);
-            final PartnerGroup mediaSponsorGroup = partners.get(PartnerGroup.PartnerType.Media);
-            addPartnerTypeToView(mediaSponsorGroup);
-            final PartnerGroup locationGroup = partners.get(PartnerGroup.PartnerType.Location);
-            addPartnerTypeToView(locationGroup);
+            for (PartnerGroup.PartnerType partnerType : PartnerGroup.PartnerType.values()) {
+                PartnerGroup sponsorGroup = partners.get(partnerType);
+                addPartnerTypeToView(sponsorGroup);
+            }
         }
 
         // Listen to network state change
