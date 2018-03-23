@@ -178,7 +178,11 @@ public class SessionDetailActivity extends BaseActivity {
                             if (BuildConfig.DEBUG) {
                                 Log.d(SessionDetailActivity.class.getName(), "User clicked on social handle with name=" + socialNetworkHandle.networkType.name());
                             }
-                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(socialNetworkHandle.link)));
+                            try {
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(socialNetworkHandle.link)));
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
                     speakerInfoElementBinding.speakerSocialNetworkHandleLayout.addView(smallSocialImageBinding.getRoot());
@@ -202,7 +206,11 @@ public class SessionDetailActivity extends BaseActivity {
                             if (BuildConfig.DEBUG) {
                                 Log.d(SessionDetailActivity.class.getName(), "User clicked on ribbon with name=" + ribbon.ribbonType.name());
                             }
-                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(ribbon.link)));
+                            try {
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(ribbon.link)));
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
                     speakerInfoElementBinding.speakerRibbonLayout.addView(smallRibbonImageBinding.getRoot());
