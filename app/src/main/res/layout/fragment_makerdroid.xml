@@ -2,27 +2,27 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-    >
+                android:layout_height="match_parent">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/padding_double"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:layout_above="@+id/bot_layout_bottom"
+        android:layout_alignParentTop="true">
 
         <LinearLayout
             android:id="@+id/bot_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
+            android:paddingBottom="@dimen/padding"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
+                android:orientation="horizontal"
+                android:layout_margin="@dimen/padding_double">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -36,10 +36,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_bot_answer"
-                    android:padding="@dimen/padding"
                     android:text="@string/bot_hello"/>
             </LinearLayout>
-
 
         </LinearLayout>
 
@@ -47,6 +45,7 @@
 
 
     <RelativeLayout
+        android:id="@id/bot_layout_bottom"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_alignParentBottom="true"
