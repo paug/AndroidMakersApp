@@ -43,9 +43,8 @@ import fr.paug.androidmakers.manager.AgendaRepository;
 import fr.paug.androidmakers.model.Room;
 import fr.paug.androidmakers.model.ScheduleSlot;
 import fr.paug.androidmakers.model.Session;
-import fr.paug.androidmakers.model.Speaker;
-import fr.paug.androidmakers.ui.activity.DetailActivity;
-import fr.paug.androidmakers.ui.view.AgendaView;
+import fr.paug.androidmakers.ui.activity.SessionDetailActivity;
+import fr.paug.androidmakers.ui.adapter.ScheduleSession;
 
 /**
  * Created by Jade on 20/03/2018
@@ -298,7 +297,7 @@ public class MakerDroidFragment extends Fragment implements AIListener {
                     "in " + userLang;
 
 //                addCarouselView(resultSessions);
-//                addListView(resultSessions);
+                addListView(resultSessions);
 
                 Log.d(TAG, returnedMsg);
                 return returnedMsg;
@@ -393,8 +392,8 @@ public class MakerDroidFragment extends Fragment implements AIListener {
             tvSession.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AgendaView.Item item = new AgendaView.Item(slot, session.title);
-                    DetailActivity.startActivity(getActivity(), item);
+                    ScheduleSession scheduleSession = new ScheduleSession(slot, session.title);
+                    SessionDetailActivity.startActivity(getContext(), scheduleSession);
                 }
             });
             ll.addView(tvSession);
