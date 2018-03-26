@@ -3,7 +3,9 @@ package fr.paug.androidmakers.util;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
+import fr.paug.androidmakers.R;
 import fr.paug.androidmakers.service.SessionAlarmService;
 import fr.paug.androidmakers.ui.adapter.ScheduleSession;
 
@@ -18,6 +20,7 @@ public class ScheduleSessionHelper {
     //region Scheduling session
     public static void scheduleStarredSession(Context context, long sessionStartDateInMillis, long sessionEndDateInMillis, int sessionId) {
         Log.d("Schedule session", "Scheduling notification for session " + sessionId);
+        Toast.makeText(context, R.string.session_selected, Toast.LENGTH_SHORT).show();
 
         final Intent scheduleIntent = new Intent(
                 SessionAlarmService.ACTION_SCHEDULE_STARRED_BLOCK,
@@ -30,6 +33,7 @@ public class ScheduleSessionHelper {
 
     public static void unScheduleSession(Context context, int sessionId) {
         Log.d("Schedule session", "Unscheduling notification for session " + sessionId);
+        Toast.makeText(context, R.string.session_deselected, Toast.LENGTH_SHORT).show();
 
         final Intent scheduleIntent = new Intent(
                 SessionAlarmService.ACTION_UNSCHEDULE_UNSTARRED_BLOCK,

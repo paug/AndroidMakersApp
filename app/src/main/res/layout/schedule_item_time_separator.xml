@@ -12,5 +12,7 @@
     android:paddingBottom="@dimen/small_padding"
     android:paddingEnd="@dimen/large_padding"
     android:paddingStart="@dimen/large_padding"
+    android:paddingLeft="@dimen/large_padding"
+    android:paddingRight="@dimen/large_padding"
     android:paddingTop="@dimen/small_padding"
     tools:text="10:00"/>

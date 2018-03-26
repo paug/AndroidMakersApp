@@ -1,7 +1,7 @@
 package fr.paug.androidmakers.ui.adapter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
@@ -147,16 +147,18 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return getItemViewType(position) == ITEM_TYPE_TIME_HEADER;
     }
 
-    @SuppressLint("NewApi")
     @Override
     public void setupStickyHeaderView(View stickyHeader) {
-        stickyHeader.setTranslationZ(stuckHeaderElevation);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            stickyHeader.setTranslationZ(stuckHeaderElevation);
+        }
     }
 
-    @SuppressLint("NewApi")
     @Override
     public void teardownStickyHeaderView(View stickyHeader) {
-        stickyHeader.setTranslationZ(0f);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            stickyHeader.setTranslationZ(0f);
+        }
     }
     //endregion
 

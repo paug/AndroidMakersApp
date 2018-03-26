@@ -18,6 +18,8 @@
                 android:orientation="vertical"
                 android:paddingStart="@dimen/large_padding"
                 android:paddingEnd="@dimen/large_padding"
+                android:paddingLeft="@dimen/large_padding"
+                android:paddingRight="@dimen/large_padding"
                 android:paddingBottom="72dp">
 
                 <LinearLayout
