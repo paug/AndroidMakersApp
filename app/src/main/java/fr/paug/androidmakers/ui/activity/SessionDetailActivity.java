@@ -1,11 +1,17 @@
 package fr.paug.androidmakers.ui.activity;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
+import android.graphics.drawable.AnimatedVectorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
+import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
@@ -15,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 
 import java.util.ArrayList;
 import java.util.Formatter;
@@ -36,6 +43,7 @@ import fr.paug.androidmakers.ui.adapter.ScheduleSession;
 import fr.paug.androidmakers.ui.util.CheckableFloatingActionButton;
 import fr.paug.androidmakers.util.ScheduleSessionHelper;
 import fr.paug.androidmakers.util.SessionSelector;
+import fr.paug.androidmakers.util.UIUtils;
 
 /**
  * Details of a session
@@ -158,6 +166,10 @@ public class SessionDetailActivity extends BaseActivity {
                 boolean isInSchedule = !((CheckableFloatingActionButton) fab).isChecked();
                 ((CheckableFloatingActionButton) fab).setChecked(isInSchedule);
                 changeSessionSelection(isInSchedule);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    animateFab((CheckableFloatingActionButton) fab, isInSchedule);
+                }
             }
         });
 
@@ -165,6 +177,23 @@ public class SessionDetailActivity extends BaseActivity {
         activityDetailBinding.scheduleFab.setChecked(sessionSelected);
 
         setActionBar(session);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    void animateFab(CheckableFloatingActionButton fab, Boolean isInSchedule) {
+        AnimatedVectorDrawable avd = (AnimatedVectorDrawable) ContextCompat.getDrawable(
+                this, isInSchedule ? R.drawable.avd_bookmark : R.drawable.avd_unbookmark);
+        fab.setImageDrawable(avd);
+        ObjectAnimator backgroundColor = ObjectAnimator.ofArgb(
+                fab,
+                UIUtils.BACKGROUND_TINT,
+                isInSchedule ? Color.WHITE
+                        : ContextCompat.getColor(this, R.color.colorAccent));
+        backgroundColor.setDuration(400L);
+        backgroundColor.setInterpolator(AnimationUtils.loadInterpolator(this,
+                android.R.interpolator.fast_out_slow_in));
+        backgroundColor.start();
+        avd.start();
     }
 
     private void setSpeakerSocialNetworkHandle(Speaker speaker, DetailViewSpeakerInfoElementBinding speakerInfoElementBinding) {
