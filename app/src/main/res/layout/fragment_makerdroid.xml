@@ -99,11 +99,14 @@
 
 
         <EditText
+            android:id="@+id/edit_text_ask"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_toLeftOf="@id/bot_layout_icons"
             android:hint="@string/bot_text_hint"
-            android:padding="@dimen/padding_double"
+            android:padding="@dimen/large_padding"
+            android:imeOptions="actionGo"
+            android:singleLine="true"
             />
     </RelativeLayout>
 
