@@ -62,20 +62,21 @@ public class PartnerGroup {
 
     static PartnerType getPartnerTypeFromString(String typeName) {
         if (!TextUtils.isEmpty(typeName)) {
-            if ("gold sponsor".equalsIgnoreCase(typeName)) {
-                return PartnerType.GoldSponsor;
-            } else if ("silver sponsor".equalsIgnoreCase(typeName)) {
-                return PartnerType.SilverSponsor;
-            } else if ("other sponsor".equalsIgnoreCase(typeName)) {
-                return PartnerType.OtherSponsor;
-            } else if ("virtual sponsor".equalsIgnoreCase(typeName)) {
-                return PartnerType.VirtualSponsor;
-            }  else if ("individual speaker sponsor".equalsIgnoreCase(typeName)) {
-                return PartnerType.SpeakerSponsor;
-            } else if ("media".equalsIgnoreCase(typeName)) {
-                return PartnerType.Media;
-            } else if ("location".equalsIgnoreCase(typeName)) {
-                return PartnerType.Location;
+            switch (typeName.toLowerCase()) {
+                case "gold sponsor":
+                    return PartnerType.GoldSponsor;
+                case "silver sponsor":
+                    return PartnerType.SilverSponsor;
+                case "other sponsor":
+                    return PartnerType.OtherSponsor;
+                case "virtual sponsor":
+                    return PartnerType.VirtualSponsor;
+                case "individual speaker sponsor":
+                    return PartnerType.SpeakerSponsor;
+                case "media":
+                    return PartnerType.Media;
+                case "location":
+                    return PartnerType.Location;
             }
         }
         return PartnerType.Unknown;

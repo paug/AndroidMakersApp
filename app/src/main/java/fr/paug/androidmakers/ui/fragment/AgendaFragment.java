@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -85,7 +84,6 @@ public class AgendaFragment extends Fragment {
         }
 
         final List<DaySchedule> days = getItemsOrdered(itemByDayOfTheYear);
-        Log.d("days items", days.toString());
 
         final AgendaPagerAdapter adapter = new AgendaPagerAdapter(days, getActivity());
         mViewPager.setAdapter(adapter);

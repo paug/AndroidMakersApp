@@ -2,18 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!--<item-->
-        <!--android:id="@+id/select"-->
-        <!--android:icon="@drawable/ic_star_border_24dp"-->
-        <!--android:title="@string/star_session"-->
-        <!--app:showAsAction="always"/>-->
-
-    <!--<item-->
-        <!--android:id="@+id/unSelect"-->
-        <!--android:icon="@drawable/ic_star_24dp"-->
-        <!--android:title="@string/unstar_session"-->
-        <!--app:showAsAction="always"/>-->
-
     <item
         android:id="@+id/share"
         android:icon="@drawable/ic_share_white_24dp"

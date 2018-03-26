@@ -133,18 +133,22 @@ public class SessionDetailActivity extends BaseActivity {
         if (session.speakers != null && session.speakers.length > 0) {
             for (final int speakerID : session.speakers) {
                 final Speaker speaker = AgendaRepository.getInstance().getSpeaker(speakerID);
-                assert speaker != null;
-                speakersList.add(speaker.getFullNameAndCompany());
+                if (speaker != null) {
+                    speakersList.add(speaker.getFullNameAndCompany());
 
-                final DetailViewSpeakerInfoElementBinding speakerInfoElementBinding =
-                        DataBindingUtil.inflate(getLayoutInflater(), R.layout.detail_view_speaker_info_element, null, false);
-                speakerInfoElementBinding.speakerBio.setMovementMethod(LinkMovementMethod.getInstance());
-                speakerInfoElementBinding.setSpeaker(speaker);
+                    final DetailViewSpeakerInfoElementBinding speakerInfoElementBinding =
+                            DataBindingUtil.inflate(getLayoutInflater(),
+                                    R.layout.detail_view_speaker_info_element,
+                                    null,
+                                    false);
+                    speakerInfoElementBinding.speakerBio.setMovementMethod(LinkMovementMethod.getInstance());
+                    speakerInfoElementBinding.setSpeaker(speaker);
 
-                setSpeakerSocialNetworkHandle(speaker, speakerInfoElementBinding);
-                setSpeakerRibbons(speaker, speakerInfoElementBinding);
+                    setSpeakerSocialNetworkHandle(speaker, speakerInfoElementBinding);
+                    setSpeakerRibbons(speaker, speakerInfoElementBinding);
 
-                sessionSpeakerLayout.addView(speakerInfoElementBinding.getRoot());
+                    sessionSpeakerLayout.addView(speakerInfoElementBinding.getRoot());
+                }
             }
         }
 
@@ -157,11 +161,8 @@ public class SessionDetailActivity extends BaseActivity {
             }
         });
 
-        if (SessionSelector.getInstance().isSelected(sessionId)) {
-            activityDetailBinding.scheduleFab.setChecked(true);
-        } else {
-            activityDetailBinding.scheduleFab.setChecked(false);
-        }
+        final boolean sessionSelected = SessionSelector.getInstance().isSelected(sessionId);
+        activityDetailBinding.scheduleFab.setChecked(sessionSelected);
 
         setActionBar(session);
     }
