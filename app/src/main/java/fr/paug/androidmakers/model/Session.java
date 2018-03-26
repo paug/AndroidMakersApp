@@ -15,6 +15,8 @@ public class Session {
     public final String subtype;
     public final String type;
     public final String experience;
+    public final String presentation = "";
+    public final String video = "";
 
     public Session(String title, String description, String language, int[] speakers, String subtype, String type, String experience) {
         this.title = title;

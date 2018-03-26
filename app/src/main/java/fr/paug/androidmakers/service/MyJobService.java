@@ -12,7 +12,6 @@ public class MyJobService extends JobService {
     @Override
     public boolean onStartJob(JobParameters jobParameters) {
         Log.d(TAG, "Performing long running task in scheduled job");
-        // TODO(developer): add long running task here.
         return false;
     }
 
