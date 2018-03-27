@@ -115,7 +115,7 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
             twitterIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         } catch (Exception e) {
             // no Twitter app, revert to browser
-            twitterIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/search?q=%23AndroidMakers"));
+            twitterIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/search?q=%23AndroidMakers2"));
         }
         startActivity(twitterIntent);
     }
