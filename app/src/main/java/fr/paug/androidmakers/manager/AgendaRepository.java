@@ -28,6 +28,8 @@ import fr.paug.androidmakers.model.Venue;
  */
 public class AgendaRepository {
     private static final String TAG = "AgendaRepository";
+    
+    public static final String CURRENT_YEAR_NODE = "2018";
 
     private final FirebaseDatabase mDatabase;
     private final DatabaseReference mDatabaseReference;
@@ -43,7 +45,9 @@ public class AgendaRepository {
         mDatabase = FirebaseDatabase.getInstance();
         mDatabaseReference = mDatabase.getReference();
 
-        mDatabaseReference.addValueEventListener(new ValueEventListener() {
+        final DatabaseReference currentYearReference = mDatabaseReference.child(CURRENT_YEAR_NODE);
+
+        currentYearReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mFirebaseDataConverted.loadAllFromFirebase(dataSnapshot.getValue());
