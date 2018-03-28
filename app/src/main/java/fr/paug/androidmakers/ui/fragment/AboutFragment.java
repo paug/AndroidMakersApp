@@ -97,11 +97,13 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
         try {
             // get the Twitter app if possible
             getActivity().getPackageManager().getPackageInfo("com.twitter.android", 0);
-            twitterIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("twitter://user?screen_name=AndroidMakersFR"));
+            twitterIntent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("twitter://user?screen_name=" + getString(R.string.twitter_user_name)));
             twitterIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         } catch (Exception e) {
             // no Twitter app, revert to browser
-            twitterIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/AndroidMakersFR"));
+            twitterIntent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://twitter.com/" + getString(R.string.twitter_user_name)));
         }
         startActivity(twitterIntent);
     }
@@ -111,11 +113,13 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
         try {
             // get the Twitter app if possible
             getActivity().getPackageManager().getPackageInfo("com.twitter.android", 0);
-            twitterIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("twitter://search?query=%23AndroidMakers"));
+            twitterIntent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("twitter://search?query=%23" + getString(R.string.twitter_hashtag_for_query)));
             twitterIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         } catch (Exception e) {
             // no Twitter app, revert to browser
-            twitterIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/search?q=%23AndroidMakers2"));
+            twitterIntent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://twitter.com/search?q=%23" + getString(R.string.twitter_hashtag_for_query)));
         }
         startActivity(twitterIntent);
     }
