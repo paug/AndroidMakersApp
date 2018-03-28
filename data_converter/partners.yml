@@ -1,0 +1,28 @@
+-
+  group: "Silver sponsor"
+  elements:
+    - {name: "Xebia mobile", description: "Xebia is an international consulting firm specialized in Big Data, Cloud, Web, Java architectures and mobile technologies within an agile approach.", link: "https://xebia.fr/", imageUrl: "xebia.png"}
+    - {name: "Vente privée", description: "Vente privée. Réveillez votre quotidien.", link: "https://tech.vente-privee.com/", imageUrl: "venteprivee.png"}
+    - {name: "Geronimo", description: "Geronimo. Agence digitale mobile.", link: "http://www.geronimo-agency.com/", imageUrl: "geronimo.png"}
+    - {name: "Leboncoin", description: "leboncoin, leader français de la petite annonce", link: "https://www.leboncoin.fr", imageUrl: "leboncoin.jpg"}
+    - {name: "iD.apps", description: "iD.apps, move Forward innovation!", link: "http://www.id-apps.fr/", imageUrl: "idapps.png"}
+    - {name: "BlaBlaCar", description: "BlaBlaCar, global leader in long-distance carpooling", link: "http://www.blablacar.fr/", imageUrl: "blablacar.png"}
+    - {name: "beNext", description: "beNext, be your potential", link: "http://www.benextcompany.com/", imageUrl: "benext.png"}
+    - {name: "Chauffeur Privé", description: "Chauffeur Privé, French leading platform connecting private drivers with 1,5M users and inventing a new urban mobility", link: "https://chauffeur-prive.com/", imageUrl: "chauffeurprive.png"}
+    - {name: "Trainline", description: "Trainline. Europe's leading independent rail and coach platform.", link: "https://www.thetrainline.com/about-us", imageUrl: "trainline.png"}
+    - {name: "Parrot Drone", description: "Parrot Drone", link: "https://www.parrot.com/eu/drones#discover-parrots-fpv-drones", imageUrl: "parrotdrones.png"}
+    - {name: "Parrot Faurecia Automotive", description: "Parrot Faurecia Automotive, Designing the future of drones & infotainment systems in cars", link: "http://www.parrotautomotive.com/", imageUrl: "parrotauto.png"}
+-
+  group: "Virtual sponsor"
+  elements:
+    - {name: "Deezer", description: "Deezer. Just hack it!", link: "https://www.deezerjobs.com/en/this-is-deezer/", imageUrl: "deezer.png"}
+-
+  group: "Media"
+  elements:
+    - {name: "ChooseYourBoss", description: "ChooseYourBoss : recrutement pour les IT fait par des IT", link: "https://www.chooseyourboss.com/", imageUrl: "chooseyourboss.png"}
+-
+  group: "Individual Speaker Sponsor"
+  elements:
+    - {name: "Uber", description: "Uber", link: "https://www.uber.com/", imageUrl: "uber.png"}
+    - {name: "Qonto", description: "Qonto", link: "https://qonto.eu", imageUrl: "qonto.png"}
+    - {name: "Smile", description: "Smile", link: "https://www.smile.eu", imageUrl: "smile.png"}
