@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    android:id="@+id/sessionItemLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:minHeight="56dp"
+    android:padding="@dimen/large_padding">
+
+    <TextView
+        android:id="@+id/sessionTitleTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/SessionTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="What's new in Android ?"/>
+
+    <!--Contains the room and the duration of the session, eventually the type of session-->
+    <TextView
+        android:id="@+id/sessionDescriptionTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/small_padding"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/sessionTitleTextView"
+        tools:text="50 min / Room machin / FR"/>
+
+    <ImageButton
+        android:id="@+id/bookmark"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginEnd="@dimen/small_padding"
+        android:layout_marginRight="@dimen/small_padding"
+        android:background="?selectableItemBackgroundBorderless"
+        android:contentDescription="Bookmark"
+        android:scaleType="center"
+        android:src="@drawable/session_bookmark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sessionDescriptionTextView" />
+    <!--TODO : Language, Speakers ?, Favorite button ?-->
+
+</android.support.constraint.ConstraintLayout>

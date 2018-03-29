@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <RelativeLayout
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -15,29 +16,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="@dimen/large_padding">
+                android:paddingStart="@dimen/large_padding"
+                android:paddingEnd="@dimen/large_padding"
+                android:paddingLeft="@dimen/large_padding"
+                android:paddingRight="@dimen/large_padding"
+                android:paddingBottom="72dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="65dip"
-                    android:layout_marginStart="65dip"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/sessionTitleTextView"
-                        style="@style/section_title"
+                        style="@style/SessionTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="2dp"
+                        android:paddingBottom="@dimen/large_padding"
+                        android:paddingTop="@dimen/large_padding"
                         tools:text="Title"/>
 
                     <TextView
                         android:id="@+id/sessionDateAndRoomTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="2dp"
-                        tools:text="Description"/>
+                        android:paddingBottom="@dimen/default_padding"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        tools:text="Date"/>
 
                     <TextView
                         android:id="@+id/sessionDescriptionTextView"
@@ -46,43 +52,44 @@
                         android:paddingBottom="2dp"
                         tools:text="Description"/>
 
-                    <LinearLayout
+                    <org.apmem.tools.layouts.FlowLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:divider="@drawable/divider5dip"
-                        android:orientation="horizontal"
-                        android:paddingBottom="2dp"
-                        android:showDividers="middle">
-
-                        <!--TODO: remove the gone visibility when session type will be properly available-->
-                        <com.robertlevonyan.views.chip.Chip
-                            android:id="@+id/sessionTypeChip"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:visibility="gone"/>
+                        android:layout_height="wrap_content">
 
                         <com.robertlevonyan.views.chip.Chip
                             android:id="@+id/sessionLanguageChip"
+                            android:layout_margin="@dimen/small_padding"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
 
-                    </LinearLayout>
+                        <com.robertlevonyan.views.chip.Chip
+                            android:id="@+id/sessionSubTypeChip"
+                            android:layout_margin="@dimen/small_padding"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dip"
-                        android:layout_marginBottom="@dimen/large_padding"
-                        android:layout_marginTop="@dimen/large_padding"
-                        android:background="@color/grey"/>
+                        <com.robertlevonyan.views.chip.Chip
+                            android:id="@+id/sessionTypeChip"
+                            android:layout_margin="@dimen/small_padding"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
 
-                    <TextView
-                        android:id="@+id/speakersTitleTextView"
-                        style="@style/section_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/Detail_speakerLayoutHeaderTitle"/>
+                        <com.robertlevonyan.views.chip.Chip
+                            android:id="@+id/sessionExperienceChip"
+                            android:layout_margin="@dimen/small_padding"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </org.apmem.tools.layouts.FlowLayout>
 
                 </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dip"
+                    android:layout_marginBottom="@dimen/large_padding"
+                    android:layout_marginTop="@dimen/large_padding"
+                    android:background="@color/light_grey"/>
 
                 <LinearLayout
                     android:id="@+id/sessionSpeakerLayout"
@@ -97,17 +104,29 @@
 
         </ScrollView>
 
+        <fr.paug.androidmakers.ui.util.CheckableFloatingActionButton
+            android:id="@+id/scheduleFab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/large_padding"
+            android:clickable="true"
+            app:backgroundTint="@drawable/session_details_fab"
+            android:src="@drawable/ic_session_bookmark_fab" />
+
         <TextView
             android:id="@+id/errorMessageTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
+            android:layout_gravity="center"
             android:padding="20dp"
             android:text="@string/Detail_sessionNotFound"
             android:visibility="gone"
             tools:visibility="gone"/>
 
-    </RelativeLayout>
+    </android.support.design.widget.CoordinatorLayout>
 
 </layout>

@@ -17,10 +17,6 @@ import fr.paug.androidmakers.R;
 import fr.paug.androidmakers.databinding.VenueItemFragmentBinding;
 import fr.paug.androidmakers.model.Venue;
 
-/**
- * @author Adrien Vitti
- * @since 2018.01.14
- */
 abstract class AbstractVenueFragment extends Fragment implements View.OnClickListener {
 
     private VenueItemFragmentBinding venueItemFragmentBinding;

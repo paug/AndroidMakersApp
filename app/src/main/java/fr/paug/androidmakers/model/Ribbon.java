@@ -5,17 +5,10 @@ import android.text.TextUtils;
 
 import fr.paug.androidmakers.R;
 
-/**
- * The class description here.
- *
- * @author Adrien Vitti
- * @since 2018.01.21
- */
-
 public class Ribbon {
 
     public enum RibbonType {
-        NONE, GDE, GDG;
+        NONE, GDE, GDG; // TODO GOO, WT
 
         @DrawableRes
         public int getRibbonIcon() {
@@ -25,7 +18,7 @@ public class Ribbon {
                 case GDG:
                     return R.drawable.gdg_logo;
                 default:
-                    return -1;
+                    return R.drawable.transparent;
             }
         }
 
@@ -37,7 +30,7 @@ public class Ribbon {
                 case GDG:
                     return R.drawable.gdg_badge;
                 default:
-                    return -1;
+                    return R.drawable.transparent;
             }
         }
     }

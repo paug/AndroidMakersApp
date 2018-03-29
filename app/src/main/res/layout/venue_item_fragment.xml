@@ -44,10 +44,8 @@
                     android:paddingBottom="@dimen/default_padding"
                     android:paddingTop="@dimen/default_padding"
                     android:text="@{venue.name}"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    tools:text="name"/>
+                    style="@style/SessionTitle"
+                    tools:text="Venue name"/>
 
                 <TextView
                     android:id="@+id/venue_address"
