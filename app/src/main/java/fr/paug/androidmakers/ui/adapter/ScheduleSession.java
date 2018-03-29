@@ -33,7 +33,13 @@ public class ScheduleSession implements Comparable<ScheduleSession> {
     }
 
     public String getLanguageInEmoji() {
-        return "en".equalsIgnoreCase(mLanguage) ? "\uD83C\uDDEC\uD83C\uDDE7": "\uD83C\uDDEB\uD83C\uDDF7";
+        if ("en".equalsIgnoreCase(mLanguage)) {
+            return "\uD83C\uDDEC\uD83C\uDDE7";
+        } else if ("fr".equalsIgnoreCase(mLanguage)) {
+            return "\uD83C\uDDEB\uD83C\uDDF7";
+        } else {
+            return "\uD83C\uDDEC\uD83C\uDDE7 \uD83C\uDDEB\uD83C\uDDF7";
+        }
     }
 
     public int getRoomId() {
