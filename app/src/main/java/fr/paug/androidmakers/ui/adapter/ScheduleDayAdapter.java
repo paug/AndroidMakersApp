@@ -252,7 +252,14 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         void bind(@NonNull final ScheduleSession scheduleSession, DaySchedule daySchedule) {
             // Session title
-            sessionTitle.setText(itemView.getResources().getString(R.string.session_title_placeholder, scheduleSession.getTitle(), EmojiCompat.get().process(scheduleSession.getLanguageInEmoji())));
+            if (EmojiCompat.get().getLoadState() == EmojiCompat.LOAD_STATE_SUCCEEDED) {
+                // We need to check the status of EmojiCompat if we want to avoid a crash at 1st launch
+                sessionTitle.setText(itemView.getResources().getString(R.string.session_title_placeholder,
+                        scheduleSession.getTitle(),
+                        EmojiCompat.get().process(scheduleSession.getLanguageInEmoji())));
+            } else {
+                sessionTitle.setText(scheduleSession.getTitle());
+            }
 
             final StringBuilder description = mTmpStringBuilder;
             mTmpStringBuilder.setLength(0); // clear the builder
@@ -269,7 +276,8 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             sessionDescription.setText(description.toString());
 
             sessionLayout.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View v) {
+                @Override
+                public void onClick(View v) {
                     listener.onItemClick(scheduleSession);
                 }
             });
