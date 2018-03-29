@@ -8,10 +8,12 @@ public class ScheduleSession implements Comparable<ScheduleSession> {
 
     private ScheduleSlot mScheduleSlot;
     private String mTitle;
+    private String mLanguage;
 
-    public ScheduleSession(ScheduleSlot scheduleSlot, String title) {
+    public ScheduleSession(ScheduleSlot scheduleSlot, String title, String language) {
         mScheduleSlot = scheduleSlot;
         mTitle = title;
+        mLanguage = language;
     }
 
     public long getStartTimestamp() {
@@ -24,6 +26,14 @@ public class ScheduleSession implements Comparable<ScheduleSession> {
 
     public String getTitle() {
         return mTitle;
+    }
+
+    public String getLanguage() {
+        return mLanguage;
+    }
+
+    public String getLanguageInEmoji() {
+        return "en".equalsIgnoreCase(mLanguage) ? "\uD83C\uDDEC\uD83C\uDDE7": "\uD83C\uDDEB\uD83C\uDDF7";
     }
 
     public int getRoomId() {
