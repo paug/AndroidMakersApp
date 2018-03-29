@@ -1,11 +1,17 @@
 package fr.paug.androidmakers.ui.activity;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
+import android.graphics.drawable.AnimatedVectorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
+import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
@@ -15,9 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
-import com.robertlevonyan.views.chip.OnChipClickListener;
+import android.view.animation.AnimationUtils;
 
 import java.util.ArrayList;
 import java.util.Formatter;
@@ -35,14 +39,18 @@ import fr.paug.androidmakers.model.Room;
 import fr.paug.androidmakers.model.Session;
 import fr.paug.androidmakers.model.SocialNetworkHandle;
 import fr.paug.androidmakers.model.Speaker;
-import fr.paug.androidmakers.service.SessionAlarmService;
-import fr.paug.androidmakers.ui.view.AgendaView;
+import fr.paug.androidmakers.ui.adapter.ScheduleSession;
+import fr.paug.androidmakers.ui.util.CheckableFloatingActionButton;
+import fr.paug.androidmakers.util.ScheduleSessionHelper;
 import fr.paug.androidmakers.util.SessionSelector;
+import fr.paug.androidmakers.util.UIUtils;
 
 /**
  * Details of a session
+ *
+ * Nice improvements to have : video link, session rate/feedback
  */
-public class DetailActivity extends BaseActivity {
+public class SessionDetailActivity extends BaseActivity {
 
     private static final String PARAM_SESSION_ID = "param_session_id";
     private static final String PARAM_SESSION_START_DATE = "param_session_start_date";
@@ -57,12 +65,12 @@ public class DetailActivity extends BaseActivity {
     private String sessionDateAndRoom;
     private List<String> speakersList = new ArrayList<>();
 
-    public static void startActivity(Context context, AgendaView.Item item) {
-        Intent intent = new Intent(context, DetailActivity.class);
-        intent.putExtra(PARAM_SESSION_ID, item.getSessionId());
-        intent.putExtra(PARAM_SESSION_START_DATE, item.getStartTimestamp());
-        intent.putExtra(PARAM_SESSION_END_DATE, item.getEndTimestamp());
-        intent.putExtra(PARAM_SESSION_ROOM, item.getRoomId());
+    public static void startActivity(Context context, ScheduleSession scheduleSession) {
+        Intent intent = new Intent(context, SessionDetailActivity.class);
+        intent.putExtra(PARAM_SESSION_ID, scheduleSession.getSessionId());
+        intent.putExtra(PARAM_SESSION_START_DATE, scheduleSession.getStartTimestamp());
+        intent.putExtra(PARAM_SESSION_END_DATE, scheduleSession.getEndTimestamp());
+        intent.putExtra(PARAM_SESSION_ROOM, scheduleSession.getRoomId());
         context.startActivity(intent);
     }
 
@@ -87,65 +95,105 @@ public class DetailActivity extends BaseActivity {
             return;
         }
 
-        final String sessionDate = DateUtils.formatDateRange(this, new Formatter(getResources().getConfiguration().locale), sessionStartDateInMillis, sessionEndDateInMillis, DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_ABBREV_WEEKDAY | DateUtils.FORMAT_SHOW_TIME, null).toString();
-        sessionDateAndRoom = sessionRoom != null && !TextUtils.isEmpty(sessionRoom.name) ? getString(R.string.sessionDateWithRoomPlaceholder, sessionDate, sessionRoom.name) : sessionDate;
+        final String sessionDate = DateUtils.formatDateRange(this,
+                new Formatter(getResources().getConfiguration().locale),
+                sessionStartDateInMillis,
+                sessionEndDateInMillis,
+                DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_SHOW_TIME,
+                null).toString();
+        sessionDateAndRoom = sessionRoom != null &&
+                !TextUtils.isEmpty(sessionRoom.name) ?
+                getString(R.string.sessionDateWithRoomPlaceholder, sessionDate, sessionRoom.name) : sessionDate;
 
         activityDetailBinding.sessionTitleTextView.setText(session.title);
         activityDetailBinding.sessionDateAndRoomTextView.setText(sessionDateAndRoom);
         activityDetailBinding.sessionDescriptionTextView.setMovementMethod(LinkMovementMethod.getInstance());
         activityDetailBinding.sessionDescriptionTextView.setText(session.description != null ?
-                Html.fromHtml(session.description) : "");
+                Html.fromHtml(session.description.trim()) : "");
 
         final int languageFullNameRes = session.getLanguageName();
         if (languageFullNameRes != 0) {
             activityDetailBinding.sessionLanguageChip.setChipText(getString(languageFullNameRes));
-            activityDetailBinding.sessionLanguageChip.setOnChipClickListener(new OnChipClickListener() {
-                @Override
-                public void onChipClick(View view) {
-                    if (BuildConfig.DEBUG) {
-                        Log.d(DetailActivity.class.getName(), "User clicked on tag with content=" + session.language);
-                    }
-                }
-            });
         } else {
             activityDetailBinding.sessionLanguageChip.setVisibility(View.GONE);
         }
 
-        //TODO type of session
-        activityDetailBinding.sessionTypeChip.setChipText(session.subtype);
-        activityDetailBinding.sessionTypeChip.setOnChipClickListener(new OnChipClickListener() {
-            @Override
-            public void onChipClick(View view) {
-                if (BuildConfig.DEBUG) {
-                    Log.d(DetailActivity.class.getName(), "User clicked on tag with content=" + session.subtype);
-                }
-                // TODO: Use this for future filter feature
-            }
-        });
+        if (session.subtype != null) {
+            String capitalizedSubType = session.subtype.substring(0, 1).toUpperCase() + session.subtype.substring(1);
+            activityDetailBinding.sessionSubTypeChip.setChipText(capitalizedSubType);
+        } else {
+            activityDetailBinding.sessionSubTypeChip.setVisibility(View.GONE);
+        }
+
+        if (session.type != null) {
+            activityDetailBinding.sessionTypeChip.setChipText(session.type);
+        } else {
+            activityDetailBinding.sessionTypeChip.setVisibility(View.GONE);
+        }
+
+        if (session.experience != null) {
+            activityDetailBinding.sessionExperienceChip.setChipText(session.experience);
+        } else {
+            activityDetailBinding.sessionExperienceChip.setVisibility(View.GONE);
+        }
 
         final ViewGroup sessionSpeakerLayout = findViewById(R.id.sessionSpeakerLayout);
         if (session.speakers != null && session.speakers.length > 0) {
-            activityDetailBinding.speakersTitleTextView.setText(getResources().getQuantityString(R.plurals.session_details_speakers, session.speakers.length));
             for (final int speakerID : session.speakers) {
                 final Speaker speaker = AgendaRepository.getInstance().getSpeaker(speakerID);
-                speakersList.add(speaker.getFullNameAndCompany());
+                if (speaker != null) {
+                    speakersList.add(speaker.getFullNameAndCompany());
 
-                if (speaker == null) {
-                    continue;
+                    final DetailViewSpeakerInfoElementBinding speakerInfoElementBinding =
+                            DataBindingUtil.inflate(getLayoutInflater(),
+                                    R.layout.detail_view_speaker_info_element,
+                                    null,
+                                    false);
+                    speakerInfoElementBinding.speakerBio.setMovementMethod(LinkMovementMethod.getInstance());
+                    speakerInfoElementBinding.setSpeaker(speaker);
+
+                    setSpeakerSocialNetworkHandle(speaker, speakerInfoElementBinding);
+                    setSpeakerRibbons(speaker, speakerInfoElementBinding);
+
+                    sessionSpeakerLayout.addView(speakerInfoElementBinding.getRoot());
                 }
-
-                final DetailViewSpeakerInfoElementBinding speakerInfoElementBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.detail_view_speaker_info_element, null, false);
-                speakerInfoElementBinding.speakerBio.setMovementMethod(LinkMovementMethod.getInstance());
-                speakerInfoElementBinding.setSpeaker(speaker);
-
-                setSpeakerSocialNetworkHandle(speaker, speakerInfoElementBinding);
-                setSpeakerRibbons(speaker, speakerInfoElementBinding);
-
-                sessionSpeakerLayout.addView(speakerInfoElementBinding.getRoot());
             }
         }
 
+        activityDetailBinding.scheduleFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View fab) {
+                boolean isInSchedule = !((CheckableFloatingActionButton) fab).isChecked();
+                ((CheckableFloatingActionButton) fab).setChecked(isInSchedule);
+                changeSessionSelection(isInSchedule);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    animateFab((CheckableFloatingActionButton) fab, isInSchedule);
+                }
+            }
+        });
+
+        final boolean sessionSelected = SessionSelector.getInstance().isSelected(sessionId);
+        activityDetailBinding.scheduleFab.setChecked(sessionSelected);
+
         setActionBar(session);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    void animateFab(CheckableFloatingActionButton fab, Boolean isInSchedule) {
+        AnimatedVectorDrawable avd = (AnimatedVectorDrawable) ContextCompat.getDrawable(
+                this, isInSchedule ? R.drawable.avd_bookmark : R.drawable.avd_unbookmark);
+        fab.setImageDrawable(avd);
+        ObjectAnimator backgroundColor = ObjectAnimator.ofArgb(
+                fab,
+                UIUtils.BACKGROUND_TINT,
+                isInSchedule ? Color.WHITE
+                        : ContextCompat.getColor(this, R.color.colorAccent));
+        backgroundColor.setDuration(400L);
+        backgroundColor.setInterpolator(AnimationUtils.loadInterpolator(this,
+                android.R.interpolator.fast_out_slow_in));
+        backgroundColor.start();
+        avd.start();
     }
 
     private void setSpeakerSocialNetworkHandle(Speaker speaker, DetailViewSpeakerInfoElementBinding speakerInfoElementBinding) {
@@ -158,9 +206,13 @@ public class DetailActivity extends BaseActivity {
                         @Override
                         public void onClick(View view) {
                             if (BuildConfig.DEBUG) {
-                                Log.d(DetailActivity.class.getName(), "User clicked on social handle with name=" + socialNetworkHandle.networkType.name());
+                                Log.d(SessionDetailActivity.class.getName(), "User clicked on social handle with name=" + socialNetworkHandle.networkType.name());
                             }
-                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(socialNetworkHandle.link)));
+                            try {
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(socialNetworkHandle.link)));
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
                     speakerInfoElementBinding.speakerSocialNetworkHandleLayout.addView(smallSocialImageBinding.getRoot());
@@ -175,18 +227,25 @@ public class DetailActivity extends BaseActivity {
         if (speaker.ribbonList != null && speaker.ribbonList.size() > 0) {
             for (final Ribbon ribbon : speaker.ribbonList) {
                 if (ribbon.ribbonType != Ribbon.RibbonType.NONE) {
-                    final SmallRibbonImageBinding smallRibbonImageBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.small_ribbon_image, null, false);
+                    final SmallRibbonImageBinding smallRibbonImageBinding =
+                            DataBindingUtil.inflate(getLayoutInflater(), R.layout.small_ribbon_image, null, false);
                     smallRibbonImageBinding.setRibbon(ribbon);
                     smallRibbonImageBinding.image.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             if (BuildConfig.DEBUG) {
-                                Log.d(DetailActivity.class.getName(), "User clicked on ribbon with name=" + ribbon.ribbonType.name());
+                                Log.d(SessionDetailActivity.class.getName(), "User clicked on ribbon with name=" + ribbon.ribbonType.name());
                             }
-                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(ribbon.link)));
+                            try {
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(ribbon.link)));
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
                     speakerInfoElementBinding.speakerRibbonLayout.addView(smallRibbonImageBinding.getRoot());
+                } else {
+                    speakerInfoElementBinding.speakerRibbonLayout.setVisibility(View.GONE);
                 }
             }
         } else {
@@ -203,55 +262,20 @@ public class DetailActivity extends BaseActivity {
 
     private void changeSessionSelection(boolean select) {
         SessionSelector.getInstance().setSessionSelected(sessionId, select);
-        invalidateOptionsMenu();
+        toggleScheduleSessionNotification(select);
+    }
 
+    private void toggleScheduleSessionNotification(boolean select) {
         if (select) {
-            Toast.makeText(this, R.string.session_selected, Toast.LENGTH_SHORT).show();
-            scheduleStarredSession();
+            ScheduleSessionHelper.scheduleStarredSession(this, sessionStartDateInMillis, sessionEndDateInMillis, sessionId);
         } else {
-            Toast.makeText(this, R.string.session_deselected, Toast.LENGTH_SHORT).show();
-            unScheduleSession();
+            ScheduleSessionHelper.unScheduleSession(this, sessionId);
         }
-    }
-
-    private void scheduleStarredSession() {
-        Log.d("Detail", "Scheduling notification about session start. " +
-                "start time : " + sessionStartDateInMillis + ", " +
-                "end time : " + sessionEndDateInMillis);
-        final Intent scheduleIntent = new Intent(
-                SessionAlarmService.ACTION_SCHEDULE_STARRED_BLOCK,
-                null, this, SessionAlarmService.class);
-        scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_START, sessionStartDateInMillis);
-        scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_END, sessionEndDateInMillis);
-        scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_ID, sessionId);
-        startService(scheduleIntent);
-    }
-
-    private void unScheduleSession() {
-        Log.d("Detail", "Unscheduling notification about session start. " +
-                "start time : " + sessionStartDateInMillis + ", " +
-                "end time : " + sessionEndDateInMillis);
-        final Intent scheduleIntent = new Intent(
-                SessionAlarmService.ACTION_UNSCHEDULE_UNSTARRED_BLOCK,
-                null, this, SessionAlarmService.class);
-        scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_ID, sessionId);
-        startService(scheduleIntent);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.detail, menu);
-        final MenuItem selectItem = menu.findItem(R.id.select);
-        final MenuItem unSelectItem = menu.findItem(R.id.unSelect);
-        if (selectItem != null && unSelectItem != null) {
-            if (SessionSelector.getInstance().isSelected(sessionId)) {
-                selectItem.setVisible(false);
-                unSelectItem.setVisible(true);
-            } else {
-                unSelectItem.setVisible(false);
-                selectItem.setVisible(true);
-            }
-        }
         return true;
     }
 
@@ -260,12 +284,6 @@ public class DetailActivity extends BaseActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
-                return true;
-            case R.id.select:
-                changeSessionSelection(true);
-                return true;
-            case R.id.unSelect:
-                changeSessionSelection(false);
                 return true;
             case R.id.share:
                 shareSession();

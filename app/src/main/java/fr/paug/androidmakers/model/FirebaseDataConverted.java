@@ -130,7 +130,9 @@ public class FirebaseDataConverted {
                             getString(map, "description"),
                             language,
                             getIntArray(map, "speakers"),
-                            getString(map, "subtype")
+                            getString(map, "subtype"),
+                            getString(map, "type"),
+                            getString(map, "experience")
                     ));
                 }
             }

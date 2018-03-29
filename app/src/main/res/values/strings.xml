@@ -10,14 +10,19 @@
     <string name="french">French</string>
 
     <!--Agenda-->
+    <plurals name="duration_hours">
+        <item quantity="one">%s hour</item>
+        <item quantity="other">%s hours</item>
+    </plurals>
+
+    <plurals name="duration_minutes">
+        <item quantity="one">%s minute</item>
+        <item quantity="other">%s minutes</item>
+    </plurals>
+
     <string name="ImageDesc_speaker_avatar">Speaker picture</string>
     <string name="ImageDesc_social_network_image">social network image</string>
-    <string name="Detail_sessionNotFound">Unable to retrieve this session informations.</string>
-    <string name="Detail_speakerLayoutHeaderTitle">Speaker(s)</string>
-    <plurals name="session_details_speakers">
-        <item quantity="one">Speaker</item>
-        <item quantity="other">Speakers</item>
-    </plurals>
+    <string name="Detail_sessionNotFound">Unable to retrieve this session information.</string>
     <string name="sessionDateWithRoomPlaceholder" translatable="false">%1$s, %2$s</string>
     <string name="agenda_empty_screen">We cannot load the agenda.\nPlease check your network
         connection and wait for this view to refresh
@@ -25,9 +30,6 @@
 
     <string name="filter_language_header">Language</string>
     <string name="filter_language_all">All</string>
-
-    <string name="star_session">Star session</string>
-    <string name="unstar_session">Unstar session</string>
 
     <string name="session_selected">Session added to favorites</string>
     <string name="session_deselected">Session removed of favorites</string>
@@ -48,11 +50,14 @@
         \n∙ Workshop : Get trained on new methods, discover and build your app during the workshops.
         \n∙ Makers Area : Walk around, play and discover the latest innovation in hardware and software developed by the makers.
         \n∙ Party! : Let’s meet, talk, drink and party!
-        \n\nAll the Talks will be recorded, on uploaded on the youtube channel.</string>
+        \n\nAll the Talks will be recorded, and uploaded on the youtube channel.</string>
 
     <string name="social">Social</string>
 
-    <string name="twitter_hashtag" translatable="false">#AndroidMakers</string>
+    <string name="twitter_hashtag" translatable="false">#AndroidMakers2</string>
+    <string name="twitter_hashtag_for_query" translatable="false">AndroidMakers2</string>
+    <string name="twitter_user_name" translatable="false">AndroidMakersFR</string>
+
     <string name="gplus" translatable="false">https://plus.google.com/+DroidconParis</string>
     <string name="fbevent" translatable="false">https://www.facebook.com/events/392002394567921/</string>
     <string name="ytchannel" translatable="false">https://www.youtube.com/channel/UCkatLlah5weIpN23LqMgdTg</string>
@@ -65,9 +70,11 @@
     <string name="wifi_connect">Connect</string>
 
     <string name="sponsors">Sponsors</string>
-    <string name="gold_sponsor">Gold+ Sponsor</string>
+    <string name="gold_sponsor">Gold Sponsor</string>
     <string name="silver_sponsor">Silver Sponsor</string>
     <string name="other_sponsor">Other Sponsor</string>
+    <string name="virtual_sponsor">Virtual Sponsor</string>
+    <string name="speaker_sponsor">Individual Speaker Sponsor</string>
     <string name="media_sponsor">Media</string>
     <string name="location_sponsor">Location</string>
 

@@ -29,7 +29,6 @@ import fr.paug.androidmakers.model.Partners;
 import fr.paug.androidmakers.util.CustomTabUtil;
 import fr.paug.androidmakers.util.WifiUtil;
 
-//TODO change social icons? change wifi?
 public class AboutFragment extends Fragment implements View.OnClickListener {
 
     private FragmentAboutBinding fragmentAboutBinding;
@@ -49,31 +48,29 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         fragmentAboutBinding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_about, container, false);
 
         final Map<PartnerGroup.PartnerType, PartnerGroup> partners = AgendaRepository.getInstance().getPartners();
 
         if (partners != null) {
-            final PartnerGroup goldSponsorGroup = partners.get(PartnerGroup.PartnerType.GoldSponsor);
-            addPartnerTypeToView(goldSponsorGroup);
-            final PartnerGroup silverSponsorGroup = partners.get(PartnerGroup.PartnerType.SilverSponsor);
-            addPartnerTypeToView(silverSponsorGroup);
-            final PartnerGroup otherSponsorGroup = partners.get(PartnerGroup.PartnerType.OtherSponsor);
-            addPartnerTypeToView(otherSponsorGroup);
-            final PartnerGroup mediaSponsorGroup = partners.get(PartnerGroup.PartnerType.Media);
-            addPartnerTypeToView(mediaSponsorGroup);
-            final PartnerGroup locationGroup = partners.get(PartnerGroup.PartnerType.Location);
-            addPartnerTypeToView(locationGroup);
+            for (PartnerGroup.PartnerType partnerType : PartnerGroup.PartnerType.values()) {
+                PartnerGroup sponsorGroup = partners.get(partnerType);
+                addPartnerTypeToView(sponsorGroup);
+            }
         }
 
-        // listen to network state change
+        // Listen to network state change
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
         getContext().registerReceiver(wifiStateChangedReceiver, intentFilter);
 
         fragmentAboutBinding.twitterUserButton.setOnClickListener(this);
+        fragmentAboutBinding.twitterHashtagButton.setOnClickListener(this);
+        fragmentAboutBinding.googlePlusButton.setOnClickListener(this);
+        fragmentAboutBinding.facebookButton.setOnClickListener(this);
+        fragmentAboutBinding.youtubeButton.setOnClickListener(this);
+        fragmentAboutBinding.wifiConnectButton.setOnClickListener(this);
 
         return fragmentAboutBinding.getRoot();
     }
@@ -85,7 +82,7 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
         } else if (v == fragmentAboutBinding.twitterHashtagButton) {
             openTwitterHashtag();
         } else if (v == fragmentAboutBinding.googlePlusButton) {
-            openGPlus();
+            openGooglePlus();
         } else if (v == fragmentAboutBinding.facebookButton) {
             openFacebookEvent();
         } else if (v == fragmentAboutBinding.youtubeButton) {
@@ -100,11 +97,13 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
         try {
             // get the Twitter app if possible
             getActivity().getPackageManager().getPackageInfo("com.twitter.android", 0);
-            twitterIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("twitter://user?screen_name=AndroidMakersFR"));
+            twitterIntent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("twitter://user?screen_name=" + getString(R.string.twitter_user_name)));
             twitterIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         } catch (Exception e) {
             // no Twitter app, revert to browser
-            twitterIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/AndroidMakersFR"));
+            twitterIntent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://twitter.com/" + getString(R.string.twitter_user_name)));
         }
         startActivity(twitterIntent);
     }
@@ -114,28 +113,27 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
         try {
             // get the Twitter app if possible
             getActivity().getPackageManager().getPackageInfo("com.twitter.android", 0);
-            twitterIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("twitter://search?query=%23AndroidMakers"));
+            twitterIntent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("twitter://search?query=%23" + getString(R.string.twitter_hashtag_for_query)));
             twitterIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         } catch (Exception e) {
             // no Twitter app, revert to browser
-            twitterIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/search?q=%23AndroidMakers"));
+            twitterIntent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://twitter.com/search?q=%23" + getString(R.string.twitter_hashtag_for_query)));
         }
         startActivity(twitterIntent);
     }
 
-    void openGPlus() {
-        Intent gplusIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.gplus)));
-        startActivity(gplusIntent);
+    void openGooglePlus() {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.gplus))));
     }
 
     void openFacebookEvent() {
-        Intent facebookIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.fbevent)));
-        startActivity(facebookIntent);
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.fbevent))));
     }
 
     void openYoutube() {
-        Intent ytIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.ytchannel)));
-        startActivity(ytIntent);
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.ytchannel))));
     }
 
     void connectToVenuesWifi() {
@@ -196,20 +194,24 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
                 if (partnerLogoSizePriority > 0) {
                     final ImageView partner1 = partnerRow.findViewById(R.id.partner1);
                     setLogoInfo(partner1, partnersList.get(index));
+                    partner1.setContentDescription(partnersList.get(index).getName());
                 }
 
                 if (partnerLogoSizePriority > 1 && partnersList.size() > index + 1) {
                     final ImageView partner2 = partnerRow.findViewById(R.id.partner2);
                     setLogoInfo(partner2, partnersList.get(index + 1));
+                    partner2.setContentDescription(partnersList.get(index).getName());
                 }
 
                 if (partnerLogoSizePriority > 2 && partnersList.size() > index + 2) {
                     final ImageView partner3 = partnerRow.findViewById(R.id.partner3);
                     setLogoInfo(partner3, partnersList.get(index + 2));
+                    partner3.setContentDescription(partnersList.get(index).getName());
                 }
 
                 partnerLogoLayout.addView(partnerRow);
             }
+
             fragmentAboutBinding.sponsorsLayout.addView(partnersGroupLinearLayout);
         }
     }

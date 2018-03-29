@@ -12,8 +12,10 @@ import java.util.List;
 public final class WifiUtil {
 
     private static final String TAG = "WifiUtil";
+
     private static final String SSID = "\"AndroidMakers\"";
-    private static final String PASSKEY = "\"Makers2017\"";
+    private static final String PASSKEY = "\"Makers2018\"";
+    // improvement wifi info : get this from firebase, have this only in one place in code
 
     /**
      * Private constructor for static utility class.
