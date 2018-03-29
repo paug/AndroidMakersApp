@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.text.emoji.EmojiCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -251,7 +252,7 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         void bind(@NonNull final ScheduleSession scheduleSession, DaySchedule daySchedule) {
             // Session title
-            sessionTitle.setText(scheduleSession.getTitle());
+            sessionTitle.setText(itemView.getResources().getString(R.string.session_title_placeholder, scheduleSession.getTitle(), EmojiCompat.get().process(scheduleSession.getLanguageInEmoji())));
 
             final StringBuilder description = mTmpStringBuilder;
             mTmpStringBuilder.setLength(0); // clear the builder
