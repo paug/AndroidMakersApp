@@ -238,8 +238,6 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         private final OnItemClickListener listener;
         private Context context;
 
-        private static final StringBuilder mTmpStringBuilder = new StringBuilder();
-
         SessionItemViewHolder(View itemView, OnItemClickListener onItemClickListener, Context ctx) {
             super(itemView);
             sessionLayout = itemView.findViewById(R.id.sessionItemLayout);
@@ -252,28 +250,24 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         void bind(@NonNull final ScheduleSession scheduleSession, DaySchedule daySchedule) {
             // Session title
-            if (EmojiCompat.get().getLoadState() == EmojiCompat.LOAD_STATE_SUCCEEDED) {
+            sessionTitle.setText(scheduleSession.getTitle());
+
+            if (EmojiCompat.get().getLoadState() == EmojiCompat.LOAD_STATE_SUCCEEDED
+                    && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 // We need to check the status of EmojiCompat if we want to avoid a crash at 1st launch
-                sessionTitle.setText(itemView.getResources().getString(R.string.session_title_placeholder,
-                        scheduleSession.getTitle(),
-                        EmojiCompat.get().process(scheduleSession.getLanguageInEmoji())));
+                sessionDescription.setText(itemView.getResources().getString(R.string.session_description_placeholder_with_emoji,
+                        TimeUtils.formatDuration(itemView.getContext(),
+                                scheduleSession.getStartTimestamp(), scheduleSession.getEndTimestamp()),
+                        getRoomTitle(scheduleSession, daySchedule),
+                        EmojiCompat.get().process(scheduleSession.getLanguageInEmoji())
+                ));
             } else {
-                sessionTitle.setText(scheduleSession.getTitle());
+                sessionDescription.setText(itemView.getResources().getString(R.string.session_description_placeholder,
+                        TimeUtils.formatDuration(itemView.getContext(),
+                                scheduleSession.getStartTimestamp(), scheduleSession.getEndTimestamp()),
+                        getRoomTitle(scheduleSession, daySchedule)
+                ));
             }
-
-            final StringBuilder description = mTmpStringBuilder;
-            mTmpStringBuilder.setLength(0); // clear the builder
-
-            // Session duration
-            description.append(TimeUtils.formatDuration(itemView.getContext(),
-                    scheduleSession.getStartTimestamp(), scheduleSession.getEndTimestamp()));
-
-            description.append(" / ");
-
-            // Session room title
-            description.append(getRoomTitle(scheduleSession, daySchedule));
-
-            sessionDescription.setText(description.toString());
 
             sessionLayout.setOnClickListener(new View.OnClickListener() {
                 @Override

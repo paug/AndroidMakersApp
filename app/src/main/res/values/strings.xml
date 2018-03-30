@@ -34,7 +34,8 @@
     <string name="session_selected">Session added to favorites</string>
     <string name="session_deselected">Session removed of favorites</string>
 
-    <string name="session_title_placeholder" translatable="false">%1$s %2$s</string>
+    <string name="session_description_placeholder_with_emoji" translatable="false">%1$s / %2$s / %3$s</string>
+    <string name="session_description_placeholder" translatable="false">%1$s / %2$s</string>
 
     <string name="share">Share the session</string>
 
