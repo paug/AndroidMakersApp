@@ -18,7 +18,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="What's new in Android ?"/>
+        tools:text="What's new in Android ?" />
 
     <!--Contains the room and the duration of the session, eventually the type of session-->
     <TextView

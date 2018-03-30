@@ -1,9 +1,11 @@
 package fr.paug.androidmakers.ui.adapter;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.text.emoji.EmojiCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -19,6 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 import fr.paug.androidmakers.R;
+import fr.paug.androidmakers.model.Session;
 import fr.paug.androidmakers.util.ScheduleSessionHelper;
 import fr.paug.androidmakers.util.SessionSelector;
 import fr.paug.androidmakers.util.TimeUtils;
@@ -237,8 +240,6 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         private final OnItemClickListener listener;
         private Context context;
 
-        private static final StringBuilder mTmpStringBuilder = new StringBuilder();
-
         SessionItemViewHolder(View itemView, OnItemClickListener onItemClickListener, Context ctx) {
             super(itemView);
             sessionLayout = itemView.findViewById(R.id.sessionItemLayout);
@@ -253,22 +254,33 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             // Session title
             sessionTitle.setText(scheduleSession.getTitle());
 
-            final StringBuilder description = mTmpStringBuilder;
-            mTmpStringBuilder.setLength(0); // clear the builder
+            final String sessionDuration = TimeUtils.formatDuration(itemView.getContext(),
+                    scheduleSession.getStartTimestamp(), scheduleSession.getEndTimestamp());
+            final String roomTitle = getRoomTitle(scheduleSession, daySchedule);
 
-            // Session duration
-            description.append(TimeUtils.formatDuration(itemView.getContext(),
-                    scheduleSession.getStartTimestamp(), scheduleSession.getEndTimestamp()));
-
-            description.append(" / ");
-
-            // Session room title
-            description.append(getRoomTitle(scheduleSession, daySchedule));
-
-            sessionDescription.setText(description.toString());
+            if (EmojiCompat.get().getLoadState() == EmojiCompat.LOAD_STATE_SUCCEEDED
+                    && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                // We need to check the status of EmojiCompat if we want to avoid a crash at 1st launch
+                sessionDescription.setText(itemView.getResources().getString(R.string.session_description_placeholder_with_language,
+                        sessionDuration, roomTitle, EmojiCompat.get().process(scheduleSession.getLanguageInEmoji())
+                ));
+            } else {
+                final int languageStringRes = Session.getLanguageFullName(scheduleSession.getLanguage());
+                final Resources resources = itemView.getResources();
+                if (languageStringRes != 0) {
+                    sessionDescription.setText(resources.getString(R.string.session_description_placeholder_with_language,
+                            sessionDuration, roomTitle, resources.getString(languageStringRes)
+                    ));
+                } else {
+                    sessionDescription.setText(resources.getString(R.string.session_description_placeholder,
+                            sessionDuration, roomTitle
+                    ));
+                }
+            }
 
             sessionLayout.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View v) {
+                @Override
+                public void onClick(View v) {
                     listener.onItemClick(scheduleSession);
                 }
             });
