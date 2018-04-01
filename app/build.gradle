@@ -42,7 +42,6 @@ android {
 }
 
 dependencies {
-
     // Support
     implementation "com.android.support:appcompat-v7:$support_version"
     implementation "com.android.support:design:$support_version"
@@ -61,8 +60,8 @@ dependencies {
     implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
 
     // Image management
-    implementation "com.github.bumptech.glide:glide:3.8.0" // TODO Update to v4
-    implementation 'jp.wasabeef:glide-transformations:2.0.2'
+    implementation "com.github.bumptech.glide:glide:$glide_version"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
 
     // Used for tags
     implementation "com.robertlevonyan.view:MaterialChipView:1.0.1"
@@ -72,7 +71,6 @@ dependencies {
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-
 }
 
 apply plugin: 'com.google.gms.google-services'

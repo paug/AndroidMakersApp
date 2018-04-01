@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 import java.util.Map;
@@ -218,8 +219,11 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
 
     private void setLogoInfo(final ImageView partnerLogo, final Partners partner) {
         partnerLogo.setVisibility(View.VISIBLE);
+        RequestOptions options = new RequestOptions()
+                .placeholder(R.color.light_grey);
         Glide.with(getContext())
-                .load("http://androidmakers.fr/img/partners/" + partner.getImageUrl())
+                .load(String.format("http://androidmakers.fr/img/partners/%s", partner.getImageUrl()))
+                .apply(options)
                 .into(partnerLogo);
         partnerLogo.setOnClickListener(new View.OnClickListener() {
             @Override
