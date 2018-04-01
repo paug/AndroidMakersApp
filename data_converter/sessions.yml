@@ -1,6 +1,6 @@
 -
   id: 101
-  title: "Registration"
+  title: "Gates open / Registration"
   service: true
   description: "Registration of participants will begin on Monday April 23rd, from 8:00 a.m. in the entrance hall. For registration it is mandatory to carry the eventbrite ticket."
 -
@@ -22,7 +22,6 @@
   title: "Thank you!"
   service: true
   description: "Thank you and see you next year!"
-  subtype: presentation
 -
   id: 106
   title: "Opening"
@@ -63,7 +62,7 @@
   experience: "Intermediate"
   subtype: presentation
   speakers: [4,81]
-  language: fr
+  language: en
 -
   id: 5
   title: "Creating Layouts doesn’t have to be painful"
