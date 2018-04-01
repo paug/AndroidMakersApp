@@ -6,9 +6,10 @@ import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.request.RequestOptions;
 
 import fr.paug.androidmakers.R;
-import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 /**
  * @author Adrien Vitti
@@ -24,11 +25,15 @@ public final class DataBindingAdapters {
     @BindingAdapter("imageUrl")
     public static void setSpeakerImageUrl(ImageView imageView, String url) {
         final Context context = imageView.getContext();
-        Glide.with(context)
-                .load("http://androidmakers.fr/img/people/" + url)
+
+        RequestOptions options = new RequestOptions()
                 .centerCrop()
-                .bitmapTransform(new CropCircleTransformation(context))
-                .placeholder(R.drawable.ic_person_black_24dp)
+                .bitmapTransform(new CircleCrop())
+                .placeholder(R.drawable.ic_person_black_24dp);
+
+        Glide.with(context)
+                .load(String.format("http://androidmakers.fr/img/people/%s", url))
+                .apply(options)
                 .into(imageView);
     }
 
@@ -36,8 +41,12 @@ public final class DataBindingAdapters {
     public static void setVenueCoverImage(ImageView imageView, String venueImageURL) {
         final Context context = imageView.getContext();
         if (TextUtils.isEmpty(venueImageURL) == false) {
+            RequestOptions options = new RequestOptions()
+                    .placeholder(R.color.light_grey);
+
             Glide.with(context)
-                    .load("http://androidmakers.fr/img/venue/" + venueImageURL)
+                    .load(String.format("http://androidmakers.fr/img/venue/%s", venueImageURL))
+                    .apply(options)
                     .into(imageView);
         } else {
             imageView.setImageDrawable(null);
