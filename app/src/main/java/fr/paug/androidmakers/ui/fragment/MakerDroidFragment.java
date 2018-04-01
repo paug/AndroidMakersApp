@@ -423,7 +423,7 @@ public class MakerDroidFragment extends Fragment implements AIListener {
             tvSession.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ScheduleSession scheduleSession = new ScheduleSession(slot, session.title);
+                    ScheduleSession scheduleSession = new ScheduleSession(slot, session.title, session.language);
                     SessionDetailActivity.startActivity(getContext(), scheduleSession);
                 }
             });
