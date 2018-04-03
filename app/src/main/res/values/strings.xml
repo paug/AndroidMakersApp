@@ -32,7 +32,7 @@
     <string name="filter_language_all">All</string>
 
     <string name="session_selected">Session added to favorites</string>
-    <string name="session_deselected">Session removed of favorites</string>
+    <string name="session_deselected">Session removed from favorites</string>
 
     <string name="session_description_placeholder_with_language" translatable="false">%1$s / %2$s / %3$s</string>
     <string name="session_description_placeholder" translatable="false">%1$s / %2$s</string>
