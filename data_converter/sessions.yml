@@ -206,7 +206,7 @@
   experience: "Beginner and novice"
   subtype: presentation
   speakers: [23]
-  language: fr
+  language: en
 -
   id: 21
   title: "Migrating from installed to instant app, a retrospective"
