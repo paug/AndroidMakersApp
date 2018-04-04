@@ -28,3 +28,4 @@ build/
 *.apk
 
 google-services.json
+app/prod/release/output.json
