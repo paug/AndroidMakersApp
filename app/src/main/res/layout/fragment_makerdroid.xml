@@ -5,6 +5,7 @@
                 android:layout_height="match_parent">
 
     <ScrollView
+        android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -37,6 +38,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_bot_answer"
                     android:text="@string/bot_hello"/>
+
             </LinearLayout>
 
         </LinearLayout>
@@ -53,6 +55,7 @@
         android:orientation="horizontal">
 
         <View
+            android:id="@+id/view_separator"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@android:color/darker_gray"/>
