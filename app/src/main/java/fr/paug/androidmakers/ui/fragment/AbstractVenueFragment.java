@@ -34,7 +34,7 @@ abstract class AbstractVenueFragment extends Fragment implements View.OnClickLis
         // Inflate the layout for this fragment
         venueItemFragmentBinding = DataBindingUtil.inflate(
                 inflater, R.layout.venue_item_fragment, container, false);
-        venueItemFragmentBinding.setVenue(getVenueInformations());
+        venueItemFragmentBinding.setVenue(getVenueInformation());
         venueItemFragmentBinding.venueDirections.setText(Html.fromHtml(getVenueDescription()));
         venueItemFragmentBinding.venueLocateButton.setOnClickListener(this);
         return venueItemFragmentBinding.getRoot();
@@ -57,14 +57,14 @@ abstract class AbstractVenueFragment extends Fragment implements View.OnClickLis
 
     protected abstract Uri getVenueCoordinatesUri();
 
-    protected abstract Venue getVenueInformations();
+    protected abstract Venue getVenueInformation();
 
     protected String getVenueDescription() {
         Locale fr = Locale.FRENCH;
         if (Locale.getDefault().getLanguage() == fr.getLanguage()) {
-            return getVenueInformations().descriptionFr;
+            return getVenueInformation().descriptionFr;
         } else {
-            return getVenueInformations().description;
+            return getVenueInformation().description;
         }
     }
 
