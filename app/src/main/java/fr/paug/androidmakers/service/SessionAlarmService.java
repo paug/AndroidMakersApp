@@ -3,10 +3,12 @@ package fr.paug.androidmakers.service;
 import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.text.format.DateUtils;
@@ -229,7 +231,9 @@ public class SessionAlarmService extends IntentService {
                         PendingIntent.FLAG_UPDATE_CURRENT
                 );
 
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+        String channelId = "Sessions";
+
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelId)
                 .setContentTitle(notificationTitle)
                 .setContentText(notificationContent)
                 .setColor(getResources().getColor(R.color.colorPrimary))
@@ -243,8 +247,17 @@ public class SessionAlarmService extends IntentService {
                 .setPriority(Notification.PRIORITY_MAX)
                 .setAutoCancel(true);
 
-        NotificationManager notificationManager = (NotificationManager) getSystemService(
-                Context.NOTIFICATION_SERVICE);
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // Since android Oreo notification channel is needed.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(channelId,
+                    "Sessions about to begin",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            notificationManager.createNotificationChannel(channel);
+        }
+
         logDebug("Now showing notification.");
         notificationManager.notify(sessionId, notificationBuilder.build());
     }
