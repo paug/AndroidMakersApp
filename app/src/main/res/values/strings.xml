@@ -8,6 +8,7 @@
 
     <string name="english">English</string>
     <string name="french">French</string>
+    <string name="no_language"></string>
 
     <!--Agenda-->
     <plurals name="duration_hours">

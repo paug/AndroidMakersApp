@@ -43,7 +43,7 @@ public class Session {
                 return R.string.french;
             }
         }
-        return 0;
+        return R.string.no_language;
     }
 
 }
