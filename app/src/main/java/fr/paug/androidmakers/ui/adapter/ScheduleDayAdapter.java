@@ -142,6 +142,18 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
         return RecyclerView.INVALID_TYPE;
     }
+
+    public int findTimeHeaderPositionForTime(final long time) {
+        for (int pos = mItems.size() - 1; pos >= 0; pos--) {
+            Object item = mItems.get(pos);
+            // Keep going backwards until we find a time separator which has a start time before
+            // now
+            if (item instanceof TimeSeparatorItem && ((TimeSeparatorItem) item).startTime < time) {
+                return pos;
+            }
+        }
+        return 0;
+    }
     //endregion
 
     //region Sticky headers Override
