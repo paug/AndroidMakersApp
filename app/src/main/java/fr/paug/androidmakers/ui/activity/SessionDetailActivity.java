@@ -276,6 +276,10 @@ public class SessionDetailActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.detail, menu);
+        final MenuItem shareItem = menu.findItem(R.id.share);
+        if (speakersList.isEmpty()) {
+            shareItem.setVisible(false);
+        }
         return true;
     }
 
