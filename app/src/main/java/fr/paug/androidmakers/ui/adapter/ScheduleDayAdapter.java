@@ -28,7 +28,6 @@ import fr.paug.androidmakers.util.TimeUtils;
 import fr.paug.androidmakers.util.sticky_headers.StickyHeaders;
 
 //TODO Filter
-//TODO Show Language ?
 public class ScheduleDayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         implements StickyHeaders, StickyHeaders.ViewSetup {
 

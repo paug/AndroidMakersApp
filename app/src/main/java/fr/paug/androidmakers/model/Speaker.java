@@ -5,9 +5,6 @@ import android.text.TextUtils;
 
 import java.util.List;
 
-/**
- * Created by stan on 18/03/2017.
- */
 public class Speaker {
 
     public final String name;

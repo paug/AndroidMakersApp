@@ -11,10 +11,6 @@ import com.bumptech.glide.request.RequestOptions;
 
 import fr.paug.androidmakers.R;
 
-/**
- * @author Adrien Vitti
- * @since 2018.01.21
- */
 public final class DataBindingAdapters {
 
     @BindingAdapter("img_src")

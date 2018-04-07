@@ -1,9 +1,5 @@
 package fr.paug.androidmakers.model;
 
-/**
- * @author Adrien Vitti
- * @since 2018.01.14
- */
 public class Venue {
 
     public String address = "";

@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import fr.paug.androidmakers.R;
 
+//TODO display presentation and video link if they exist
 public class Session {
 
     public final String title;
