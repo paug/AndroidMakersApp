@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSmoothScroller;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -55,6 +57,7 @@ public class AgendaPagerAdapter extends PagerAdapter {
         });
 
         recyclerView.setAdapter(adapter);
+        moveToCurrentTimeSlot(true, adapter);
 
         collection.addView(view);
         mAgendaViews.put(position, view);
@@ -84,6 +87,29 @@ public class AgendaPagerAdapter extends PagerAdapter {
 
     private DaySchedule getItems(int position) {
         return mAgenda.get(position);
+    }
+
+    private void moveToCurrentTimeSlot(boolean animate, ScheduleDayAdapter adapter) {
+        final long now = System.currentTimeMillis(); // current time
+        final int position = adapter.findTimeHeaderPositionForTime(now);
+
+        RecyclerView.SmoothScroller smoothScroller = new LinearSmoothScroller(activity) {
+            @Override protected int getVerticalSnapPreference() {
+                return LinearSmoothScroller.SNAP_TO_START;
+            }
+        };
+
+        LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+
+        if (position >= 0) {
+            if (animate) {
+                smoothScroller.setTargetPosition(position);
+                layoutManager.startSmoothScroll(smoothScroller);
+            } else {
+                layoutManager.scrollToPositionWithOffset(position,
+                        this.activity.getResources().getDimensionPixelSize(R.dimen.default_padding));
+            }
+        }
     }
 
 }
