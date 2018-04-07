@@ -14,9 +14,6 @@ import java.util.Set;
 
 import static fr.paug.androidmakers.util.MapUtil.*;
 
-/**
- * Created by stan on 18/03/2017.
- */
 public class FirebaseDataConverted {
 
     private static final SimpleDateFormat ISO_8601_DATEFORMAT =

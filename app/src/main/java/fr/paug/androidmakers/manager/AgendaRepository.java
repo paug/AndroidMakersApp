@@ -23,9 +23,6 @@ import fr.paug.androidmakers.model.Session;
 import fr.paug.androidmakers.model.Speaker;
 import fr.paug.androidmakers.model.Venue;
 
-/**
- * Created by stan on 18/03/2017.
- */
 public class AgendaRepository {
     private static final String TAG = "AgendaRepository";
     

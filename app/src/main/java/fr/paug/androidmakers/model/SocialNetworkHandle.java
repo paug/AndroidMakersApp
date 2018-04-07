@@ -5,10 +5,6 @@ import android.text.TextUtils;
 
 import fr.paug.androidmakers.R;
 
-/**
- * @author adrien
- * @since 2017.03.22
- */
 public class SocialNetworkHandle {
 
     public enum SocialNetworkType {
