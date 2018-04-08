@@ -56,25 +56,29 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <com.robertlevonyan.views.chip.Chip
+                        <TextView
+                            android:background="@drawable/round_rect_grey"
                             android:id="@+id/sessionLanguageChip"
                             android:layout_margin="@dimen/small_padding"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
 
-                        <com.robertlevonyan.views.chip.Chip
+                        <TextView
+                            android:background="@drawable/round_rect_grey"
                             android:id="@+id/sessionSubTypeChip"
                             android:layout_margin="@dimen/small_padding"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
 
-                        <com.robertlevonyan.views.chip.Chip
+                        <TextView
+                            android:background="@drawable/round_rect_grey"
                             android:id="@+id/sessionTypeChip"
                             android:layout_margin="@dimen/small_padding"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
 
-                        <com.robertlevonyan.views.chip.Chip
+                        <TextView
+                            android:background="@drawable/round_rect_grey"
                             android:id="@+id/sessionExperienceChip"
                             android:layout_margin="@dimen/small_padding"
                             android:layout_width="wrap_content"

@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 def versionMajor = 1
 def versionMinor = 1
-def versionPatch = 1
+def versionPatch = 3
 
 android {
     compileSdkVersion 27
@@ -64,7 +64,6 @@ dependencies {
     annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
 
     // Used for tags
-    implementation "com.robertlevonyan.view:MaterialChipView:1.0.1"
     implementation 'org.apmem.tools:layouts:1.10@aar'
 
     testImplementation 'junit:junit:4.12'
