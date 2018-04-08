@@ -99,7 +99,7 @@ public class SessionDetailActivity extends BaseActivity {
                 new Formatter(getResources().getConfiguration().locale),
                 sessionStartDateInMillis,
                 sessionEndDateInMillis,
-                DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_SHOW_TIME,
+                DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR,
                 null).toString();
         sessionDateAndRoom = sessionRoom != null &&
                 !TextUtils.isEmpty(sessionRoom.name) ?
@@ -276,10 +276,6 @@ public class SessionDetailActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.detail, menu);
-        final MenuItem shareItem = menu.findItem(R.id.share);
-        if (speakersList.isEmpty()) {
-            shareItem.setVisible(false);
-        }
         return true;
     }
 
@@ -302,8 +298,13 @@ public class SessionDetailActivity extends BaseActivity {
 
         Intent shareSessionIntent = new Intent(Intent.ACTION_SEND);
         shareSessionIntent.putExtra(Intent.EXTRA_SUBJECT, session.title);
-        shareSessionIntent.putExtra(Intent.EXTRA_TEXT,
-                String.format("%s (%s, %s, %s)", session.title, speakers, sessionDateAndRoom, getString(session.getLanguageName())));
+        if (speakersList.isEmpty()) {
+            shareSessionIntent.putExtra(Intent.EXTRA_TEXT,
+                    String.format("%s: %s (%s)", getString(R.string.app_name), session.title, sessionDateAndRoom));
+        } else {
+            shareSessionIntent.putExtra(Intent.EXTRA_TEXT,
+                    String.format("%s: %s (%s, %s, %s)", getString(R.string.app_name), session.title, speakers, sessionDateAndRoom, getString(session.getLanguageName())));
+        }
         shareSessionIntent.setType("text/plain");
         startActivity(shareSessionIntent);
     }
