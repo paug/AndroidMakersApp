@@ -112,27 +112,27 @@ public class SessionDetailActivity extends BaseActivity {
                 Html.fromHtml(session.description.trim()) : "");
 
         final int languageFullNameRes = session.getLanguageName();
-        if (languageFullNameRes != 0) {
-            activityDetailBinding.sessionLanguageChip.setChipText(getString(languageFullNameRes));
+        if (languageFullNameRes != R.string.no_language) {
+            activityDetailBinding.sessionLanguageChip.setText(getString(languageFullNameRes));
         } else {
             activityDetailBinding.sessionLanguageChip.setVisibility(View.GONE);
         }
 
         if (session.subtype != null) {
             String capitalizedSubType = session.subtype.substring(0, 1).toUpperCase() + session.subtype.substring(1);
-            activityDetailBinding.sessionSubTypeChip.setChipText(capitalizedSubType);
+            activityDetailBinding.sessionSubTypeChip.setText(capitalizedSubType);
         } else {
             activityDetailBinding.sessionSubTypeChip.setVisibility(View.GONE);
         }
 
         if (session.type != null) {
-            activityDetailBinding.sessionTypeChip.setChipText(session.type);
+            activityDetailBinding.sessionTypeChip.setText(session.type);
         } else {
             activityDetailBinding.sessionTypeChip.setVisibility(View.GONE);
         }
 
         if (session.experience != null) {
-            activityDetailBinding.sessionExperienceChip.setChipText(session.experience);
+            activityDetailBinding.sessionExperienceChip.setText(session.experience);
         } else {
             activityDetailBinding.sessionExperienceChip.setVisibility(View.GONE);
         }
