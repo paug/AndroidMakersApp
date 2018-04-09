@@ -47,7 +47,7 @@ public class SessionAlarmService extends IntentService {
     private static final int NOTIFICATION_LED_OFF_MS = 1000;
     private static final int NOTIFICATION_ARGB_COLOR = 0xff1EB6E1;
 
-    private static final long MILLI_FIVE_MINUTES = 300000;
+    private static final long FIVE_MINUTES_IN_MILLISECONDS = 300000;
 
     private static final long UNDEFINED_VALUE = -1;
 
@@ -67,7 +67,6 @@ public class SessionAlarmService extends IntentService {
         logDebug("Session alarm : " + action);
 
         if (ACTION_SCHEDULE_ALL_STARRED_BLOCKS.equals(action)) {
-            //Scheduling all starred blocks.
             scheduleAllStarredSessions();
             return;
         }
@@ -100,7 +99,7 @@ public class SessionAlarmService extends IntentService {
 
     void scheduleAllStarredSessions() {
         logDebug("scheduleAllStarredSessions");
-        // need to be sure that the AngendaRepository is loaded in order to schedule all starred sessions
+        // need to be sure that the AgendaRepository is loaded in order to schedule all starred sessions
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
@@ -146,7 +145,7 @@ public class SessionAlarmService extends IntentService {
 
         Log.i("Time", "current: " + currentTime + ", session start: " + sessionStart);
 
-        final long alarmTime = sessionStart - MILLI_FIVE_MINUTES;
+        final long alarmTime = sessionStart - FIVE_MINUTES_IN_MILLISECONDS;
 
         if (allowLastMinute) {
             // If the session is already started, do not schedule system notification.
@@ -193,13 +192,13 @@ public class SessionAlarmService extends IntentService {
         notificationIntent.putExtra(EXTRA_NOTIFICATION_TITLE, sessionToNotify.title);
         notificationIntent.putExtra(EXTRA_NOTIFICATION_CONTENT, roomName + sessionDate);
 
-        PendingIntent pi = PendingIntent.getService(this, sessionId, notificationIntent,
+        PendingIntent pendingIntent = PendingIntent.getService(this, sessionId, notificationIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
-        final AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        final AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         // Schedule an alarm to be fired to notify user of added sessions are about to begin.
         logDebug("-> Scheduling RTC_WAKEUP alarm at " + alarmTime);
-        am.set(AlarmManager.RTC_WAKEUP, alarmTime, pi);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent);
     }
 
     /**
