@@ -58,7 +58,6 @@ public class SessionAlarmService extends IntentService {
     @Override
     public void onCreate() {
         super.onCreate();
-        startForeground(1, new Notification());
     }
 
     @Override
