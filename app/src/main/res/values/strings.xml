@@ -8,7 +8,7 @@
 
     <string name="english">English</string>
     <string name="french">French</string>
-    <string name="no_language"></string>
+    <string name="no_language" translatable="false"></string>
 
     <!--Agenda-->
     <plurals name="duration_hours">
@@ -26,7 +26,7 @@
     <string name="Detail_sessionNotFound">Unable to retrieve this session information.</string>
     <string name="sessionDateWithRoomPlaceholder" translatable="false">%1$s, %2$s</string>
     <string name="agenda_empty_screen">We cannot load the agenda.\nPlease check your network
-        connection and wait for this view to refresh
+        connection and wait for this view to refresh.
     </string>
 
     <string name="filter_language_header">Language</string>
@@ -42,8 +42,8 @@
 
     <!--Venue-->
     <string name="locate_on_map">Locate on map</string>
-    <string name="venue_conference_tab">Conference</string>
     <string name="venue_afterparty_tab">Afterparty</string>
+    <string name="venue_conference_tab">Conference</string>
 
     <!--About-->
     <string name="about_android_makers">Android Makers Paris is a two day event held on April 23rd and 24th, 2018 at Beffroi de Montrouge, in Paris, France.
@@ -54,22 +54,19 @@
         \n∙ Workshop : Get trained on new methods, discover and build your app during the workshops.
         \n∙ Makers Area : Walk around, play and discover the latest innovation in hardware and software developed by the makers.
         \n∙ Party! : Let’s meet, talk, drink and party!
-        \n\nAll the Talks will be recorded, and uploaded on the youtube channel.</string>
+        \n\nAll the Talks will be recorded, and uploaded on the Youtube channel.</string>
 
     <string name="social">Social</string>
-
     <string name="twitter_hashtag" translatable="false">#AndroidMakers2</string>
     <string name="twitter_hashtag_for_query" translatable="false">AndroidMakers2</string>
     <string name="twitter_user_name" translatable="false">AndroidMakersFR</string>
-
-    <string name="gplus" translatable="false">https://plus.google.com/+DroidconParis</string>
-    <string name="fbevent" translatable="false">https://www.facebook.com/events/392002394567921/</string>
-    <string name="ytchannel" translatable="false">https://www.youtube.com/channel/UCkatLlah5weIpN23LqMgdTg</string>
+    <string name="google_plus" translatable="false">https://plus.google.com/+DroidconParis</string>
+    <string name="facebook_event" translatable="false">https://www.facebook.com/events/392002394567921/</string>
+    <string name="youtube_channel" translatable="false">https://www.youtube.com/channel/UCkatLlah5weIpN23LqMgdTg</string>
 
     <string name="wifi">Wifi</string>
     <string name="wifi_network">Network: <b>AndroidMakers</b></string>
     <string name="wifi_password">Password : <b>Makers2018</b></string>
-
     <string name="wifi_connect_description">Directly connect to the venue\'s wifi</string>
     <string name="wifi_connect">Connect</string>
 

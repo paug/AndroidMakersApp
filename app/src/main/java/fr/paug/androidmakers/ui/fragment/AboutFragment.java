@@ -126,15 +126,15 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
     }
 
     void openGooglePlus() {
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.gplus))));
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.google_plus))));
     }
 
     void openFacebookEvent() {
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.fbevent))));
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.facebook_event))));
     }
 
     void openYoutube() {
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.ytchannel))));
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.youtube_channel))));
     }
 
     void connectToVenuesWifi() {
