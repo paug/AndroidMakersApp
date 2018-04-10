@@ -23,7 +23,7 @@
         session.
     </string>
     <string name="agenda_empty_screen">Impossible de charger l\'agenda.\nVérifiez votre connexion et
-        attendez que cette vue se rafraîchise.
+        attendez que cette vue se rafraîchit.
     </string>
     <string name="filter_language_header">Langues</string>
     <string name="filter_language_all">Toutes</string>
@@ -38,6 +38,8 @@
 
     <!--Venue-->
     <string name="locate_on_map">Localiser sur la carte</string>
+    <string name="venue_afterparty_tab">After Party</string>
+    <string name="venue_conference_tab">Conférence</string>
 
     <!--About-->
     <string name="about_android_makers">Android Makers Paris est un événement de deux jours qui se tiendra les 23 et 24 avril 2018 au Beffroi de Montrouge, à Paris, en France.
@@ -55,7 +57,6 @@
     <string name="wifi">Wifi</string>
     <string name="wifi_network">Réseau: <b>AndroidMakers</b></string>
     <string name="wifi_password">Mot de passe : <b>Makers2018</b></string>
-
     <string name="wifi_connect_description">Se connecter directement au Wifi du lieu</string>
     <string name="wifi_connect">Se connecter</string>
 
@@ -67,9 +68,5 @@
     <string name="virtual_sponsor">Sponsor virtuel</string>
     <string name="speaker_sponsor">Sponsor Speaker</string>
     <string name="location_sponsor">Salle</string>
-    <string name="venue_afterparty_tab">After Party</string>
-    <string name="venue_conference_tab">Conférence</string>
-
-
 
 </resources>
