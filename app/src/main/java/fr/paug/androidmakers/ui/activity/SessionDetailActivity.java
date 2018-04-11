@@ -74,6 +74,16 @@ public class SessionDetailActivity extends BaseActivity {
         context.startActivity(intent);
     }
 
+    public static void startActivity(Context context, int sessionId, long sessionStartDateInMillis,
+                                     long sessionEndDateInMillis, int roomId) {
+        Intent intent = new Intent(context, SessionDetailActivity.class);
+        intent.putExtra(PARAM_SESSION_ID, sessionId);
+        intent.putExtra(PARAM_SESSION_START_DATE, sessionStartDateInMillis);
+        intent.putExtra(PARAM_SESSION_END_DATE, sessionEndDateInMillis);
+        intent.putExtra(PARAM_SESSION_ROOM, roomId);
+        context.startActivity(intent);
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

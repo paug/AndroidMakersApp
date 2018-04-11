@@ -1,14 +1,18 @@
 package fr.paug.androidmakers.ui.activity;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.MenuItem;
 
 import fr.paug.androidmakers.R;
+import fr.paug.androidmakers.manager.AgendaRepository;
+import fr.paug.androidmakers.model.ScheduleSlot;
 import fr.paug.androidmakers.ui.fragment.AboutFragment;
 import fr.paug.androidmakers.ui.fragment.AgendaFragment;
 import fr.paug.androidmakers.ui.fragment.VenuePagerFragment;
@@ -58,7 +62,6 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         fragmentManager = getSupportFragmentManager();
 
         if (savedInstanceState == null) {
@@ -67,6 +70,7 @@ public class MainActivity extends BaseActivity {
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        handleURLLinks();
     }
 
     private void addAgenda() {
@@ -90,6 +94,28 @@ public class MainActivity extends BaseActivity {
             case TAG_FRAGMENT_AGENDA:
             default:
                 return new AgendaFragment();
+        }
+    }
+
+    public void handleURLLinks() {
+        final Uri data = getIntent().getData();
+        if (data != null && data.getHost().equalsIgnoreCase("androidmakers.fr")) {
+            final String path = data.getPath();
+            if (path != null && path.equalsIgnoreCase("/schedule/")) {
+                final String uriFragment = data.getFragment();
+                if (uriFragment.startsWith("session-")) {
+                    String[] split = uriFragment.split("session-");
+                    if (split.length > 1 && TextUtils.isDigitsOnly(split[1])) {
+                        final Integer sessionId = Integer.valueOf(split[1]);
+                        for (final ScheduleSlot scheduleSlot : AgendaRepository.getInstance().getScheduleSlots()) {
+                            if (scheduleSlot.sessionId == sessionId) {
+                                SessionDetailActivity.startActivity(this, sessionId, scheduleSlot.startDate, scheduleSlot.endDate, scheduleSlot.room);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
