@@ -7,9 +7,11 @@ import android.support.text.emoji.FontRequestEmojiCompatConfig;
 import android.support.v4.provider.FontRequest;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.firebase.database.FirebaseDatabase;
 
 import fr.paug.androidmakers.util.SessionSelector;
+import io.fabric.sdk.android.Fabric;
 
 public class AndroidMakersApplication extends Application {
 
@@ -18,6 +20,11 @@ public class AndroidMakersApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        if (!BuildConfig.DEBUG) {
+            Fabric.with(this, new Crashlytics());
+        }
+
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         SessionSelector.getInstance().init(this);
 
