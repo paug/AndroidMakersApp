@@ -1,14 +1,21 @@
 package fr.paug.androidmakers.ui.activity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.MenuItem;
 
+import java.util.List;
+
 import fr.paug.androidmakers.R;
+import fr.paug.androidmakers.manager.AgendaRepository;
+import fr.paug.androidmakers.model.ScheduleSlot;
 import fr.paug.androidmakers.ui.fragment.AboutFragment;
 import fr.paug.androidmakers.ui.fragment.AgendaFragment;
 import fr.paug.androidmakers.ui.fragment.VenuePagerFragment;
@@ -21,6 +28,7 @@ public class MainActivity extends BaseActivity {
 
     private Fragment fragment;
     private FragmentManager fragmentManager;
+    private BottomNavigationView navigation;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -58,15 +66,15 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         fragmentManager = getSupportFragmentManager();
 
         if (savedInstanceState == null) {
             addAgenda();
         }
 
-        BottomNavigationView navigation = findViewById(R.id.navigation);
+        navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        handleURLLink(getIntent());
     }
 
     private void addAgenda() {
@@ -90,6 +98,55 @@ public class MainActivity extends BaseActivity {
             case TAG_FRAGMENT_AGENDA:
             default:
                 return new AgendaFragment();
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        handleURLLink(intent);
+    }
+
+    private void handleURLLink(@NonNull final Intent intent) {
+        // Do not handle the Deep link if user is coming from recent tasks
+        if (intent.getFlags() != (Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY)) {
+            final Uri data = intent.getData();
+            if (data != null && data.getHost().equalsIgnoreCase("androidmakers.fr")) {
+                final List<String> pathSegments = data.getPathSegments();
+                if (pathSegments != null && pathSegments.size() > 0) {
+                    final String path = pathSegments.get(0);
+                    if (path.equalsIgnoreCase("schedule")) {
+                        handleScheduleLink(data);
+                    } else if (path.equalsIgnoreCase("logistics")) {
+                        handleLogisticsLink();
+                    }
+                }
+            }
+        }
+    }
+
+    private void handleLogisticsLink() {
+        if (navigation != null) {
+            navigation.setSelectedItemId(R.id.navigation_venue);
+        }
+    }
+
+    private void handleScheduleLink(@NonNull final Uri data) {
+        if (navigation != null) {
+            navigation.setSelectedItemId(R.id.navigation_agenda);
+        }
+        final String uriFragment = data.getFragment();
+        if (uriFragment != null && uriFragment.startsWith("session-")) {
+            final String[] split = uriFragment.split("session-");
+            if (split.length > 1 && TextUtils.isDigitsOnly(split[1])) {
+                final Integer sessionId = Integer.valueOf(split[1]);
+                for (final ScheduleSlot scheduleSlot : AgendaRepository.getInstance().getScheduleSlots()) {
+                    if (scheduleSlot.sessionId == sessionId) {
+                        SessionDetailActivity.startActivity(this, sessionId, scheduleSlot.startDate, scheduleSlot.endDate, scheduleSlot.room);
+                        break;
+                    }
+                }
+            }
         }
     }
 
