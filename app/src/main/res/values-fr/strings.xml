@@ -70,5 +70,6 @@
     <string name="virtual_sponsor">Sponsor virtuel</string>
     <string name="speaker_sponsor">Sponsor Speaker</string>
     <string name="location_sponsor">Salle</string>
+    <string name="specialthanks_sponsor">Remerciement spécial</string>
 
 </resources>
