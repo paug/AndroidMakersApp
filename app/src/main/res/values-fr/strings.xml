@@ -8,6 +8,8 @@
     <string name="english">Anglais</string>
     <string name="french">Français</string>
 
+    <string name="no_maps_app_found">Erreur: Pas d\'application de carte trouvée</string>
+
     <!--Agenda-->
     <plurals name="duration_hours">
         <item quantity="one">%s heure</item>

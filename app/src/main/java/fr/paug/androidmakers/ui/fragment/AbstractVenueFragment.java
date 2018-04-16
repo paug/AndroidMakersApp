@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.Html;
@@ -16,6 +17,7 @@ import java.util.Locale;
 import fr.paug.androidmakers.R;
 import fr.paug.androidmakers.databinding.VenueItemFragmentBinding;
 import fr.paug.androidmakers.model.Venue;
+import fr.paug.androidmakers.util.CustomTabUtil;
 
 abstract class AbstractVenueFragment extends Fragment implements View.OnClickListener {
 
@@ -29,7 +31,7 @@ abstract class AbstractVenueFragment extends Fragment implements View.OnClickLis
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         venueItemFragmentBinding = DataBindingUtil.inflate(
@@ -49,8 +51,11 @@ abstract class AbstractVenueFragment extends Fragment implements View.OnClickLis
             } catch (Exception e) {
                 View view = getView();
                 if (view != null) {
-                    Snackbar.make(view, "Error opening maps", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(view, R.string.no_maps_app_found, Snackbar.LENGTH_SHORT).show();
                 }
+
+                // Open in Webview
+                CustomTabUtil.openChromeTab(getContext(), "https://www.google.com/maps/?q=" + getVenueInformation().coordinates.replace(" ", ""));
             }
         }
     }
