@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.v4.app.AlarmManagerCompat;
 import android.support.v4.app.JobIntentService;
 import android.support.v4.app.NotificationCompat;
 import android.text.format.DateUtils;
@@ -207,7 +208,7 @@ public class SessionAlarmService extends JobIntentService {
         final AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         // Schedule an alarm to be fired to notify user of added sessions are about to begin.
         logDebug("-> Scheduling RTC_WAKEUP alarm at " + alarmTime);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent);
+        AlarmManagerCompat.setExact(alarmManager, AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent);
     }
 
     /**
