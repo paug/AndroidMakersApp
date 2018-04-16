@@ -55,7 +55,8 @@ abstract class AbstractVenueFragment extends Fragment implements View.OnClickLis
                 }
 
                 // Open in Webview
-                CustomTabUtil.openChromeTab(getContext(), "https://www.google.com/maps/?q=" + getVenueInformation().coordinates.replace(" ", ""));
+                CustomTabUtil.openChromeTab(getContext(), "https://www.google.com/maps/?q="
+                        + getVenueInformation().coordinates.replace(" ", ""));
             }
         }
     }

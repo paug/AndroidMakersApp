@@ -7,10 +7,11 @@ import java.util.List;
 
 import fr.paug.androidmakers.R;
 
+//TODO get rid of this, handle localization in Firebase
 public class PartnerGroup {
 
     public enum PartnerType {
-        Unknown, GoldSponsor, SilverSponsor, OtherSponsor, VirtualSponsor, SpeakerSponsor, Media, Location;
+        Unknown, GoldSponsor, SilverSponsor, OtherSponsor, VirtualSponsor, SpeakerSponsor, Media, Location, SpecialThanks;
 
         @StringRes
         public int getName() {
@@ -29,6 +30,8 @@ public class PartnerGroup {
                     return R.string.media_sponsor;
                 case Location:
                     return R.string.location_sponsor;
+                case SpecialThanks:
+                    return R.string.specialthanks_sponsor;
                 default:
                     return 0;
             }
@@ -43,6 +46,7 @@ public class PartnerGroup {
                 case VirtualSponsor:
                 case SpeakerSponsor:
                 case Location:
+                case SpecialThanks:
                     return 2;
                 case Media:
                     return 3;
@@ -77,6 +81,8 @@ public class PartnerGroup {
                     return PartnerType.Media;
                 case "location":
                     return PartnerType.Location;
+                case "special thanks":
+                    return PartnerType.SpecialThanks;
             }
         }
         return PartnerType.Unknown;
