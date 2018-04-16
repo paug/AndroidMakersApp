@@ -8,7 +8,9 @@
 
     <string name="english">English</string>
     <string name="french">French</string>
-    <string name="no_language" translatable="false"></string>
+    <string name="no_language" translatable="false" />
+
+    <string name="no_maps_app_found">Error: No maps app found</string>
 
     <!--Agenda-->
     <plurals name="duration_hours">
