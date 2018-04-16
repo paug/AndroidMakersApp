@@ -204,7 +204,6 @@
 
             </android.support.v7.widget.CardView>
 
-
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -227,6 +226,15 @@
                 </LinearLayout>
 
             </android.support.v7.widget.CardView>
+
+            <TextView
+                android:id="@+id/versionTextView"
+                android:textSize="16sp"
+                android:fontFamily="@font/gill_sans_light"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Version"/>
 
         </LinearLayout>
 
