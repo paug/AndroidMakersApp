@@ -358,12 +358,15 @@ public class MakerDroidFragment extends Fragment implements AIListener {
     private void treatQuestion(JsonArray sessionIds) {
 
         List<ScheduleSlot> resultSlots = new ArrayList<>();
+        List<JsonElement> ids = new ArrayList<>();
         Log.d(TAG, sessionIds.toString());
 
-        for (JsonElement id : sessionIds) {
-            Session session = AgendaRepository.getInstance().getSession(id.getAsInt());
-            if (session != null) {
-                addAnswerView(session.title);
+        for (ScheduleSlot slot : scheduleSlots) {
+            for (JsonElement id : sessionIds) {
+                if (slot.sessionId == id.getAsInt() && !ids.contains(id)) {
+                    resultSlots.add(slot);
+                    ids.add(id);
+                }
             }
         }
     }
