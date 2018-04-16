@@ -42,6 +42,7 @@ import java.util.Date;
 import java.util.Formatter;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import ai.api.AIDataService;
@@ -74,10 +75,8 @@ public class MakerDroidFragment extends Fragment implements AIListener {
 
     private static final String TAG = MakerDroidFragment.class.getSimpleName();
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
-    private final AIConfiguration config = new AIConfiguration("97ef1441bcd540038c4add623c6f9610",
-            AIConfiguration.SupportedLanguages.English,
-            AIConfiguration.RecognitionEngine.System);
-    final AIDataService aiDataService = new AIDataService(config);
+    private AIConfiguration config;
+    AIDataService aiDataService;
     @BindView(R.id.scroll)
     ScrollView scroll;
     @BindView(R.id.bot_layout)
@@ -106,11 +105,21 @@ public class MakerDroidFragment extends Fragment implements AIListener {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        aiService = AIService.getService(this.getContext(), config);
-        aiService.setListener(this);
-
         // Keeps this Fragment alive during configuration changes
         setRetainInstance(true);
+
+        if (Locale.getDefault().getLanguage().equals(new Locale("fr").getLanguage())) {
+            config = new AIConfiguration("97ef1441bcd540038c4add623c6f9610",
+                    AIConfiguration.SupportedLanguages.French,
+                    AIConfiguration.RecognitionEngine.System);
+        } else {
+            config = new AIConfiguration("97ef1441bcd540038c4add623c6f9610",
+                    AIConfiguration.SupportedLanguages.English,
+                    AIConfiguration.RecognitionEngine.System);
+        }
+        aiDataService = new AIDataService(config);
+        aiService = AIService.getService(this.getContext(), config);
+        aiService.setListener(this);
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -348,7 +357,8 @@ public class MakerDroidFragment extends Fragment implements AIListener {
 
     private void treatQuestion(JsonArray sessionIds) {
 
-        addAnswerView("Here are the sessions I found:");
+        List<ScheduleSlot> resultSlots = new ArrayList<>();
+        Log.d(TAG, sessionIds.toString());
 
         for (JsonElement id : sessionIds) {
             Session session = AgendaRepository.getInstance().getSession(id.getAsInt());
@@ -370,8 +380,10 @@ public class MakerDroidFragment extends Fragment implements AIListener {
             final Result result = aiResponse.getResult();
             Log.i(TAG, "Action: " + aiResponse.getResult().getAction());
             Log.i(TAG, "Resolved query: " + result.getResolvedQuery());
+            Log.i(TAG, "Params: " + result.getParameters());
 
-            final String speech = result.getFulfillment().getSpeech();
+
+            String speech = result.getFulfillment().getSpeech();
             Log.i(TAG, "Speech: " + speech);
 
             final Metadata metadata = result.getMetadata();
