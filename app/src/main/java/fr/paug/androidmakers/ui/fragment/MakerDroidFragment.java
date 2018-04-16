@@ -399,12 +399,23 @@ public class MakerDroidFragment extends Fragment implements AIListener {
             Map<String, JsonElement> data = result.getFulfillment().getData();
 
             try {
-
-                JsonObject makerdroidData = data.get("makerdroid").getAsJsonObject();
-                // To test
-                JsonArray sessionsIds = makerdroidData.get("session_ids").getAsJsonArray();
-                treatQuestion(sessionsIds);
-
+                assert metadata != null;
+                if (metadata.getIntentName().equalsIgnoreCase("sessions.byfilter")) {
+                    if (data.get("makerdroid") != null) {
+                        JsonObject makerdroidData = data.get("makerdroid").getAsJsonObject();
+                        JsonArray sessionsIds = makerdroidData.get("session_ids").getAsJsonArray();
+                        if (sessionsIds.size() == 0) {
+                            Log.d(TAG, "no sessions ids retrieved");
+                            addAnswerView(speech);
+                        } else {
+                            treatQuestion(sessionsIds);
+                        }
+                    } else {
+                        addAnswerView(speech);
+                    }
+                } else {
+                    addAnswerView(speech);
+                }
             } catch (Exception e) {
                 Log.e(TAG, "Exception getting data " + e.getMessage());
                 Toast.makeText(getContext(), "Exception getting data " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -484,6 +495,15 @@ public class MakerDroidFragment extends Fragment implements AIListener {
                     DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_ABBREV_WEEKDAY | DateUtils.FORMAT_SHOW_TIME,
                     null).toString();
 
+            if (session != null) {
+                tvSession.setText(
+                    (session.title != null ? getString(R.string.bot_response_title) + " " + session.title : "") +
+                        (session.experience != null && !session.experience.isEmpty() ? "\n" + getString(R.string.bot_answer_level) + " " + session.experience : "") +
+                        (session.language != null && !session.language.isEmpty() ? "\n" + getString(R.string.bot_answer_lang) + " " + session.language : "") +
+                        (sessionRoom != null && sessionRoom.name != null && !sessionRoom.name.isEmpty() ? "\n" + sessionRoom.name : "") +
+                        (sessionDate != null && sessionRoom != null && sessionRoom.name != null && !sessionRoom.name.isEmpty() ? "\n" + getString(R.string.bot_answer_date) + " " + sessionDate : "")
+                );
+            }
 
             tvSession.setText(
                     "Title: " + (session != null ? session.title : "No session") +
