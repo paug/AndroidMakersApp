@@ -22,24 +22,20 @@ public class ScheduleSessionHelper {
         Log.d("Schedule session", "Scheduling notification for session " + sessionId);
         Toast.makeText(context, R.string.session_selected, Toast.LENGTH_SHORT).show();
 
-        final Intent scheduleIntent = new Intent(
-                SessionAlarmService.ACTION_SCHEDULE_STARRED_BLOCK,
-                null, context, SessionAlarmService.class);
+        final Intent scheduleIntent = new Intent(SessionAlarmService.ACTION_SCHEDULE_STARRED_BLOCK);
         scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_START, sessionStartDateInMillis);
         scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_END, sessionEndDateInMillis);
         scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_ID, sessionId);
-        context.startService(scheduleIntent);
+        SessionAlarmService.enqueueWork(context, scheduleIntent);
     }
 
     public static void unScheduleSession(Context context, int sessionId) {
         Log.d("Schedule session", "Unscheduling notification for session " + sessionId);
         Toast.makeText(context, R.string.session_deselected, Toast.LENGTH_SHORT).show();
 
-        final Intent scheduleIntent = new Intent(
-                SessionAlarmService.ACTION_UNSCHEDULE_UNSTARRED_BLOCK,
-                null, context, SessionAlarmService.class);
+        final Intent scheduleIntent = new Intent(SessionAlarmService.ACTION_UNSCHEDULE_UNSTARRED_BLOCK);
         scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_ID, sessionId);
-        context.startService(scheduleIntent);
+        SessionAlarmService.enqueueWork(context, scheduleIntent);
     }
     //endregion
 

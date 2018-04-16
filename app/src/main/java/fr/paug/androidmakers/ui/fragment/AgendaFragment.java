@@ -236,10 +236,8 @@ public class AgendaFragment extends Fragment {
             if (fragment != null) {
                 // reschedule all starred blocks in case one session start or stop time has changed
                 final Context ctx = fragment.getContext();
-                Intent scheduleIntent = new Intent(
-                        SessionAlarmService.ACTION_SCHEDULE_ALL_STARRED_BLOCKS,
-                        null, ctx, SessionAlarmService.class);
-                ctx.startService(scheduleIntent);
+                Intent scheduleIntent = new Intent(SessionAlarmService.ACTION_SCHEDULE_ALL_STARRED_BLOCKS);
+                SessionAlarmService.enqueueWork(ctx, scheduleIntent);
             }
         }
     }
