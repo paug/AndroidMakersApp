@@ -11,7 +11,8 @@ import fr.paug.androidmakers.R;
 public class PartnerGroup {
 
     public enum PartnerType {
-        Unknown, GoldSponsor, SilverSponsor, OtherSponsor, VirtualSponsor, SpeakerSponsor, Media, Location, SpecialThanks;
+        Unknown, GoldSponsor, SilverSponsor, OtherSponsor, VirtualSponsor,
+        SpeakerSponsor, Makers, Media, Location, SpecialThanks;
 
         @StringRes
         public int getName() {
@@ -26,6 +27,8 @@ public class PartnerGroup {
                     return R.string.virtual_sponsor;
                 case SpeakerSponsor:
                     return R.string.speaker_sponsor;
+                case Makers:
+                    return R.string.makers_sponsor;
                 case Media:
                     return R.string.media_sponsor;
                 case Location:
@@ -48,6 +51,7 @@ public class PartnerGroup {
                 case Location:
                 case SpecialThanks:
                     return 2;
+                case Makers:
                 case Media:
                     return 3;
                 default:
@@ -77,6 +81,8 @@ public class PartnerGroup {
                     return PartnerType.VirtualSponsor;
                 case "individual speaker sponsor":
                     return PartnerType.SpeakerSponsor;
+                case "makers":
+                    return PartnerType.Makers;
                 case "media":
                     return PartnerType.Media;
                 case "location":
