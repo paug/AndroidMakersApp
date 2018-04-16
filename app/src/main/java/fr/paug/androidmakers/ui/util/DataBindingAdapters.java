@@ -36,7 +36,7 @@ public final class DataBindingAdapters {
     @BindingAdapter(value = "venueCoverUrl")
     public static void setVenueCoverImage(ImageView imageView, String venueImageURL) {
         final Context context = imageView.getContext();
-        if (TextUtils.isEmpty(venueImageURL) == false) {
+        if (!TextUtils.isEmpty(venueImageURL)) {
             RequestOptions options = new RequestOptions()
                     .fitCenter()
                     .placeholder(R.color.light_grey);
