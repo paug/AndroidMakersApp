@@ -25,7 +25,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
                 android:contentDescription="@null"
-                android:scaleType="centerCrop"
+                android:scaleType="center"
+                android:background="@color/light_grey"
                 app:venueCoverUrl="@{venue.imageUrl}"
                 tools:src="@color/colorAccent"/>
 
