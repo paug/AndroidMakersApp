@@ -38,6 +38,7 @@ public final class DataBindingAdapters {
         final Context context = imageView.getContext();
         if (TextUtils.isEmpty(venueImageURL) == false) {
             RequestOptions options = new RequestOptions()
+                    .fitCenter()
                     .placeholder(R.color.light_grey);
 
             Glide.with(context)
