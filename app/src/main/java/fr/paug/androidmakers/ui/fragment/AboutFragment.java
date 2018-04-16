@@ -22,6 +22,7 @@ import com.bumptech.glide.request.RequestOptions;
 import java.util.List;
 import java.util.Map;
 
+import fr.paug.androidmakers.BuildConfig;
 import fr.paug.androidmakers.R;
 import fr.paug.androidmakers.databinding.FragmentAboutBinding;
 import fr.paug.androidmakers.manager.AgendaRepository;
@@ -72,6 +73,7 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
         fragmentAboutBinding.facebookButton.setOnClickListener(this);
         fragmentAboutBinding.youtubeButton.setOnClickListener(this);
         fragmentAboutBinding.wifiConnectButton.setOnClickListener(this);
+        fragmentAboutBinding.versionTextView.setText(String.format("Version: %s(%d)", BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE));
 
         return fragmentAboutBinding.getRoot();
     }
