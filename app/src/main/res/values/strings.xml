@@ -82,5 +82,6 @@
     <string name="media_sponsor">Media</string>
     <string name="location_sponsor">Location</string>
     <string name="specialthanks_sponsor">Special Thanks</string>
+    <string name="filter">Filter</string>
 
 </resources>

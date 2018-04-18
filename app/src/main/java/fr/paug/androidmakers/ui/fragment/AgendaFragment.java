@@ -7,12 +7,18 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.lang.ref.WeakReference;
 import java.text.DateFormat;
@@ -33,11 +39,15 @@ import fr.paug.androidmakers.ui.adapter.DaySchedule;
 import fr.paug.androidmakers.ui.adapter.RoomSchedule;
 import fr.paug.androidmakers.ui.adapter.ScheduleSession;
 
+import static android.view.MenuItem.SHOW_AS_ACTION_ALWAYS;
+
 public class AgendaFragment extends Fragment {
 
     private View mProgressView;
     private View mEmptyView;
     private ViewPager mViewPager;
+    private DrawerLayout mDrawerLayout;
+    private ViewGroup mFiltersView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,6 +55,8 @@ public class AgendaFragment extends Fragment {
 
         // Keeps this Fragment alive during configuration changes
         setRetainInstance(true);
+
+        setHasOptionsMenu(true);
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -52,14 +64,43 @@ public class AgendaFragment extends Fragment {
         mViewPager = view.findViewById(R.id.viewpager);
         mProgressView = view.findViewById(R.id.progressbar);
         mEmptyView = view.findViewById(R.id.empty_view);
+        mFiltersView = view.findViewById(R.id.filters);
+        mDrawerLayout = (DrawerLayout) view;
 
         // auto dismiss loading
         new Handler().postDelayed(new RefreshRunnable(this), 3000); 
 
         AgendaRepository.getInstance().load(new AgendaLoadListener(this));
 
-        //setHasOptionsMenu(true);
+        initFilters();
+
         return view;
+    }
+
+    private void initFilters() {
+        View view;
+
+        view = LayoutInflater.from(getActivity()).inflate(R.layout.filter_header, mDrawerLayout, false);
+        ((TextView)view).setText(R.string.filter);
+        mFiltersView.addView(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        MenuItem menuItem = menu.add(getActivity().getString(R.string.filter));
+        menuItem.setIcon(R.drawable.ic_filter_list_white_24dp);
+        menuItem.setShowAsAction(SHOW_AS_ACTION_ALWAYS);
+        menuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                mDrawerLayout.openDrawer(GravityCompat.END);
+                return true;
+            }
+        });
     }
 
     @Override
