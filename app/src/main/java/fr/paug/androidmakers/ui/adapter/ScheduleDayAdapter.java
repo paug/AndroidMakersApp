@@ -41,11 +41,13 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private static final int ITEM_TYPE_TIME_HEADER = 2;
 
     private final List<Object> mItems = new ArrayList<>();
+    private final List<ScheduleSession> mSessions = new ArrayList<>();
 
     private final boolean mShowTimeSeparators;
     private final float stuckHeaderElevation;
 
     private final OnItemClickListener listener;
+    private List<SessionFilter> sessionFilterList = new ArrayList<>();
 
     //region Constructor
     ScheduleDayAdapter(Context context, DaySchedule daySchedule, boolean showTimeSeparators, OnItemClickListener listener) {
@@ -62,8 +64,21 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
 
         Collections.sort(sessions);
-        updateItems(sessions);
+        setScheduleSessionList(sessions);
     }
+
+    private void setScheduleSessionList(List<ScheduleSession> sessions) {
+        this.mSessions.clear();
+        this.mSessions.addAll(sessions);
+        update();
+    }
+
+    public void setSessionFilterList(List<SessionFilter> sessionFilterList) {
+        this.sessionFilterList.clear();
+        this.sessionFilterList.addAll(sessionFilterList);
+        update();
+    }
+
     //endregion
 
     //region RecyclerView Override
@@ -177,19 +192,46 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
     //endregion
 
-    public void updateItems(final List<ScheduleSession> items) {
+    public void update() {
         mItems.clear();
-        if (items == null) {
-            notifyDataSetChanged();
-            return;
+
+        List<ScheduleSession> filteredSessions = new ArrayList<>();
+
+        if (sessionFilterList.isEmpty()) {
+            filteredSessions.addAll(mSessions);
+        } else {
+            for (ScheduleSession item : mSessions) {
+                for (SessionFilter sessionFilter: sessionFilterList) {
+                    boolean matched = false;
+
+                    switch (sessionFilter.type) {
+                        case BOOKMARK: {
+                            matched = SessionSelector.getInstance().isSelected(item.getSessionId());
+                            break;
+                        }
+                        case LANGUAGE: {
+                            matched = sessionFilter.value.equals(item.getLanguage());
+                            break;
+                        }
+                        case ROOM: {
+                            matched = sessionFilter.value.equals(item.getRoomId());
+                            break;
+                        }
+                    }
+
+                    if (matched) {
+                        filteredSessions.add(item);
+                    }
+                }
+            }
         }
 
         if (!mShowTimeSeparators) {
-            mItems.addAll(items);
+            mItems.addAll(filteredSessions);
         } else {
-            for (int i = 0, size = items.size(); i < size; i++) {
-                final ScheduleSession prev = i > 0 ? items.get(i - 1) : null;
-                final ScheduleSession item = items.get(i);
+            for (int i = 0, size = filteredSessions.size(); i < size; i++) {
+                final ScheduleSession prev = i > 0 ? filteredSessions.get(i - 1) : null;
+                final ScheduleSession item = filteredSessions.get(i);
 
                 if (prev == null || !ScheduleSessionHelper.sameStartTime(prev, item, true)) {
                     mItems.add(new TimeSeparatorItem(item));
@@ -200,10 +242,6 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         // TODO use DiffUtil
         notifyDataSetChanged();
-    }
-
-    public void setSessionFilterList(List<SessionFilter> sessionFilterList) {
-
     }
 
     //region Time Separator

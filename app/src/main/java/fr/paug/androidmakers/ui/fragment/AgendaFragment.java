@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -13,11 +12,13 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -48,6 +49,7 @@ import fr.paug.androidmakers.util.EmojiUtils;
 import static android.view.MenuItem.SHOW_AS_ACTION_ALWAYS;
 import static fr.paug.androidmakers.ui.util.SessionFilter.FilterType.BOOKMARK;
 import static fr.paug.androidmakers.ui.util.SessionFilter.FilterType.LANGUAGE;
+import static fr.paug.androidmakers.ui.util.SessionFilter.FilterType.ROOM;
 
 public class AgendaFragment extends Fragment {
 
@@ -111,24 +113,51 @@ public class AgendaFragment extends Fragment {
     }
 
     private void initFilters() {
+        mFiltersView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // a dummy touch listener that makes sure we don't click through the filter list
+                return true;
+            }
+        });
         addFilterHeader(R.string.filter);
-        addFilter(new SessionFilter(BOOKMARK, null));
+        addFilter(new SessionFilter(BOOKMARK, null), null);
 
         addFilterHeader(R.string.language);
-        addFilter(new SessionFilter(LANGUAGE, "fr"));
-        addFilter(new SessionFilter(LANGUAGE, "en"));
+        addFilter(new SessionFilter(LANGUAGE, "fr"), null);
+        addFilter(new SessionFilter(LANGUAGE, "en"), null);
+
+        AgendaRepository.getInstance().load(new AgendaRepository.OnLoadListener() {
+            @Override
+            public void onAgendaLoaded() {
+                addFilterHeader(R.string.rooms);
+                SparseArray<Room> rooms = AgendaRepository.getInstance().getAllRooms();
+                for(int i = 0; i < rooms.size(); i++) {
+                    int key = rooms.keyAt(i);
+                    String roomName = rooms.get(key).name;
+
+                    if (!TextUtils.isEmpty(roomName)) {
+                        addFilter(new SessionFilter(ROOM, key), roomName);
+                    }
+                }
+                AgendaRepository.getInstance().removeListener(this);
+            }
+        });
+
     }
 
-    private void addFilter(SessionFilter sessionFilter) {
+    private void addFilter(SessionFilter sessionFilter, String roomName) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.filter_item, mDrawerLayout, false);
         CheckBox checkBox = view.findViewById(R.id.checkbox);
         checkBox.setOnCheckedChangeListener(mCheckBoxOnCheckedChangeListener);
         mFiltersView.addView(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
+        Context context = mFiltersView.getContext();
+
         allCheckBoxes.add(checkBox);
         allSessionFilters.add(sessionFilter);
 
-        int nameResId = 0;
+        String name = "";
 
         View bookmark = view.findViewById(R.id.bookmark);
         TextView flag = view.findViewById(R.id.flag);
@@ -138,24 +167,26 @@ public class AgendaFragment extends Fragment {
 
         switch(sessionFilter.type) {
             case BOOKMARK: {
-                nameResId = R.string.bookmarked;
+                name = context.getString(R.string.bookmarked);
                 bookmark.setVisibility(View.VISIBLE);
                 break;
             }
             case LANGUAGE: {
-                nameResId = "fr".equals(sessionFilter.value) ? R.string.french : R.string.english;
+                int nameResId = "fr".equals(sessionFilter.value) ? R.string.french : R.string.english;
+                name = context.getString(nameResId);
 
-                flag.setText(EmojiUtils.getLanguageInEmoji(sessionFilter.value));
+                flag.setText(EmojiUtils.getLanguageInEmoji((String)sessionFilter.value));
                 flag.setVisibility(View.VISIBLE);
                 break;
             }
             case ROOM: {
-                nameResId = R.string.room;
+                bookmark.setVisibility(View.INVISIBLE);
+                name = roomName;
                 break;
             }
         }
 
-        ((TextView)view.findViewById(R.id.name)).setText(nameResId);
+        ((TextView)view.findViewById(R.id.name)).setText(name);
     }
 
     private void addFilterHeader(@StringRes int titleResId) {
