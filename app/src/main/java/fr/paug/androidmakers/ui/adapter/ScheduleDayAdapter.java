@@ -22,6 +22,7 @@ import java.util.List;
 
 import fr.paug.androidmakers.R;
 import fr.paug.androidmakers.model.Session;
+import fr.paug.androidmakers.ui.util.SessionFilter;
 import fr.paug.androidmakers.util.ScheduleSessionHelper;
 import fr.paug.androidmakers.util.SessionSelector;
 import fr.paug.androidmakers.util.TimeUtils;
@@ -199,6 +200,10 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         // TODO use DiffUtil
         notifyDataSetChanged();
+    }
+
+    public void setSessionFilterList(List<SessionFilter> sessionFilterList) {
+
     }
 
     //region Time Separator

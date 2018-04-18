@@ -3,6 +3,7 @@ package fr.paug.androidmakers.ui.adapter;
 import android.support.annotation.NonNull;
 
 import fr.paug.androidmakers.model.ScheduleSlot;
+import fr.paug.androidmakers.util.EmojiUtils;
 
 public class ScheduleSession implements Comparable<ScheduleSession> {
 
@@ -33,13 +34,7 @@ public class ScheduleSession implements Comparable<ScheduleSession> {
     }
 
     public String getLanguageInEmoji() {
-        if ("en".equalsIgnoreCase(mLanguage)) {
-            return "\uD83C\uDDEC\uD83C\uDDE7";
-        } else if ("fr".equalsIgnoreCase(mLanguage)) {
-            return "\uD83C\uDDEB\uD83C\uDDF7";
-        } else {
-            return "\uD83C\uDDEC\uD83C\uDDE7 \uD83C\uDDEB\uD83C\uDDF7";
-        }
+        return EmojiUtils.getLanguageInEmoji(mLanguage);
     }
 
     public int getRoomId() {
