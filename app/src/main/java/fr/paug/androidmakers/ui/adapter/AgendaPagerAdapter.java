@@ -12,10 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import fr.paug.androidmakers.R;
 import fr.paug.androidmakers.ui.activity.SessionDetailActivity;
+import fr.paug.androidmakers.ui.util.SessionFilter;
 import fr.paug.androidmakers.util.sticky_headers.StickyHeadersLinearLayoutManager;
 
 public class AgendaPagerAdapter extends PagerAdapter {
@@ -25,6 +27,7 @@ public class AgendaPagerAdapter extends PagerAdapter {
     private Activity activity;
 
     private RecyclerView recyclerView;
+    private List<SessionFilter> sessionFilterList = new ArrayList<>();
 
     public AgendaPagerAdapter(List<DaySchedule> mAgenda, Activity activity) {
         this.mAgenda = mAgenda;
@@ -56,6 +59,7 @@ public class AgendaPagerAdapter extends PagerAdapter {
             }
         });
 
+        adapter.setSessionFilterList(sessionFilterList);
         recyclerView.setAdapter(adapter);
         moveToCurrentTimeSlot(true, adapter);
 
@@ -112,4 +116,8 @@ public class AgendaPagerAdapter extends PagerAdapter {
         }
     }
 
+    public void setSessionFilterList(List<SessionFilter> sessionFilterList) {
+        this.sessionFilterList = sessionFilterList;
+        notifyDataSetChanged();
+    }
 }

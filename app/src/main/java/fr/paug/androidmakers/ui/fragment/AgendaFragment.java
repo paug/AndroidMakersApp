@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerAdapter;
@@ -18,6 +20,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import java.lang.ref.WeakReference;
@@ -38,8 +42,12 @@ import fr.paug.androidmakers.ui.adapter.AgendaPagerAdapter;
 import fr.paug.androidmakers.ui.adapter.DaySchedule;
 import fr.paug.androidmakers.ui.adapter.RoomSchedule;
 import fr.paug.androidmakers.ui.adapter.ScheduleSession;
+import fr.paug.androidmakers.ui.util.SessionFilter;
+import fr.paug.androidmakers.util.EmojiUtils;
 
 import static android.view.MenuItem.SHOW_AS_ACTION_ALWAYS;
+import static fr.paug.androidmakers.ui.util.SessionFilter.FilterType.BOOKMARK;
+import static fr.paug.androidmakers.ui.util.SessionFilter.FilterType.LANGUAGE;
 
 public class AgendaFragment extends Fragment {
 
@@ -77,11 +85,82 @@ public class AgendaFragment extends Fragment {
         return view;
     }
 
-    private void initFilters() {
-        View view;
+    private List<SessionFilter> allSessionFilters = new ArrayList<>();
+    private List<CheckBox> allCheckBoxes = new ArrayList<>();
 
-        view = LayoutInflater.from(getActivity()).inflate(R.layout.filter_header, mDrawerLayout, false);
-        ((TextView)view).setText(R.string.filter);
+    private CompoundButton.OnCheckedChangeListener mCheckBoxOnCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            applyFilters();
+        }
+
+    };
+
+    private void applyFilters() {
+        PagerAdapter adapter = mViewPager.getAdapter();
+        if (adapter instanceof AgendaPagerAdapter) {
+            List<SessionFilter> sessionFilterList = new ArrayList<SessionFilter>();
+
+            for (int i = 0; i < allCheckBoxes.size(); i++) {
+                if (allCheckBoxes.get(i).isChecked()) {
+                    sessionFilterList.add(allSessionFilters.get(i));
+                }
+            }
+            ((AgendaPagerAdapter) adapter).setSessionFilterList(sessionFilterList);
+        }
+    }
+
+    private void initFilters() {
+        addFilterHeader(R.string.filter);
+        addFilter(new SessionFilter(BOOKMARK, null));
+
+        addFilterHeader(R.string.language);
+        addFilter(new SessionFilter(LANGUAGE, "fr"));
+        addFilter(new SessionFilter(LANGUAGE, "en"));
+    }
+
+    private void addFilter(SessionFilter sessionFilter) {
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.filter_item, mDrawerLayout, false);
+        CheckBox checkBox = view.findViewById(R.id.checkbox);
+        checkBox.setOnCheckedChangeListener(mCheckBoxOnCheckedChangeListener);
+        mFiltersView.addView(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        allCheckBoxes.add(checkBox);
+        allSessionFilters.add(sessionFilter);
+
+        int nameResId = 0;
+
+        View bookmark = view.findViewById(R.id.bookmark);
+        TextView flag = view.findViewById(R.id.flag);
+
+        bookmark.setVisibility(View.GONE);
+        flag.setVisibility(View.GONE);
+
+        switch(sessionFilter.type) {
+            case BOOKMARK: {
+                nameResId = R.string.bookmarked;
+                bookmark.setVisibility(View.VISIBLE);
+                break;
+            }
+            case LANGUAGE: {
+                nameResId = "fr".equals(sessionFilter.value) ? R.string.french : R.string.english;
+
+                flag.setText(EmojiUtils.getLanguageInEmoji(sessionFilter.value));
+                flag.setVisibility(View.VISIBLE);
+                break;
+            }
+            case ROOM: {
+                nameResId = R.string.room;
+                break;
+            }
+        }
+
+        ((TextView)view.findViewById(R.id.name)).setText(nameResId);
+    }
+
+    private void addFilterHeader(@StringRes int titleResId) {
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.filter_header, mDrawerLayout, false);
+        ((TextView)view).setText(titleResId);
         mFiltersView.addView(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
     }
@@ -128,6 +207,7 @@ public class AgendaFragment extends Fragment {
 
         final AgendaPagerAdapter adapter = new AgendaPagerAdapter(days, getActivity());
         mViewPager.setAdapter(adapter);
+        applyFilters();
 
         final int indexOfToday = getTodayIndex(days);
         if (indexOfToday > 0) {
