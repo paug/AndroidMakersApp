@@ -3,6 +3,7 @@ package fr.paug.androidmakers.manager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.util.SparseArray;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -82,6 +83,10 @@ public class AgendaRepository {
     @Nullable
     public Room getRoom(int id) {
         return mFirebaseDataConverted.getRooms().get(id);
+    }
+
+    public SparseArray<Room> getAllRooms() {
+        return mFirebaseDataConverted.getRooms();
     }
 
     @Nullable

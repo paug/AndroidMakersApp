@@ -12,10 +12,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import fr.paug.androidmakers.R;
 import fr.paug.androidmakers.ui.activity.SessionDetailActivity;
+import fr.paug.androidmakers.ui.util.SessionFilter;
 import fr.paug.androidmakers.util.sticky_headers.StickyHeadersLinearLayoutManager;
 
 public class AgendaPagerAdapter extends PagerAdapter {
@@ -24,7 +29,8 @@ public class AgendaPagerAdapter extends PagerAdapter {
     private final SparseArray<View> mAgendaViews = new SparseArray<>();
     private Activity activity;
 
-    private RecyclerView recyclerView;
+    private List<SessionFilter> sessionFilterList = new ArrayList<>();
+    private Set<ScheduleDayAdapter> activeAdapterSet = new HashSet<>();
 
     public AgendaPagerAdapter(List<DaySchedule> mAgenda, Activity activity) {
         this.mAgenda = mAgenda;
@@ -32,10 +38,8 @@ public class AgendaPagerAdapter extends PagerAdapter {
     }
 
     public void refreshSessionsSelected() {
-        for (int i = 0; i < mAgendaViews.size(); i++) {
-            View view = mAgendaViews.get(mAgendaViews.keyAt(i));
-            RecyclerView recyclerView = view.findViewById(android.R.id.list);
-            recyclerView.getAdapter().notifyDataSetChanged();
+        for (RecyclerView.Adapter adapter: activeAdapterSet) {
+            adapter.notifyDataSetChanged();
         }
     }
 
@@ -43,6 +47,7 @@ public class AgendaPagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup collection, int position) {
         View view = LayoutInflater.from(collection.getContext()).inflate(R.layout.schedule_single_day_list, null, false);
 
+        RecyclerView recyclerView;
         recyclerView = view.findViewById(android.R.id.list);
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
@@ -55,9 +60,11 @@ public class AgendaPagerAdapter extends PagerAdapter {
                 SessionDetailActivity.startActivity(activity, agendaItem);
             }
         });
+        adapter.setSessionFilterList(sessionFilterList);
 
         recyclerView.setAdapter(adapter);
-        moveToCurrentTimeSlot(true, adapter);
+        activeAdapterSet.add(adapter);
+        moveToCurrentTimeSlot(recyclerView,true, adapter);
 
         collection.addView(view);
         mAgendaViews.put(position, view);
@@ -67,6 +74,8 @@ public class AgendaPagerAdapter extends PagerAdapter {
     @Override
     public void destroyItem(ViewGroup collection, int position, Object view) {
         collection.removeView((View) view);
+        RecyclerView recyclerView = ((View)view).findViewById(android.R.id.list);
+        activeAdapterSet.remove(recyclerView.getAdapter());
         mAgendaViews.remove(position);
     }
 
@@ -89,7 +98,7 @@ public class AgendaPagerAdapter extends PagerAdapter {
         return mAgenda.get(position);
     }
 
-    private void moveToCurrentTimeSlot(boolean animate, ScheduleDayAdapter adapter) {
+    private void moveToCurrentTimeSlot(RecyclerView recyclerView, boolean animate, ScheduleDayAdapter adapter) {
         final long now = System.currentTimeMillis(); // current time
         final int position = adapter.findTimeHeaderPositionForTime(now);
 
@@ -112,4 +121,10 @@ public class AgendaPagerAdapter extends PagerAdapter {
         }
     }
 
+    public void setSessionFilterList(List<SessionFilter> sessionFilterList) {
+        this.sessionFilterList = sessionFilterList;
+        for (ScheduleDayAdapter adapter: activeAdapterSet) {
+            adapter.setSessionFilterList(sessionFilterList);
+        }
+    }
 }
