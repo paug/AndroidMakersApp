@@ -67,15 +67,18 @@
             android:name=".ui.activity.SessionDetailActivity"
             android:configChanges="orientation|screenSize" />
 
-        <receiver android:name=".receiver.SessionAlarmReceiver">
+        <receiver
+            android:name=".receiver.SessionAlarmReceiver"
+            android:exported="false">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
 
         <service
             android:name=".service.SessionAlarmService"
-            android:exported="false" />
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
 
         <service
             android:name=".service.MyFirebaseMessagingService">

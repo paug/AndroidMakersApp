@@ -27,13 +27,11 @@ public class ScheduleSessionHelper {
         toast = Toast.makeText(context, R.string.session_selected, Toast.LENGTH_SHORT);
         toast.show();
 
-        final Intent scheduleIntent = new Intent(
-                SessionAlarmService.ACTION_SCHEDULE_STARRED_BLOCK,
-                null, context, SessionAlarmService.class);
+        final Intent scheduleIntent = new Intent(SessionAlarmService.ACTION_SCHEDULE_STARRED_BLOCK);
         scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_START, sessionStartDateInMillis);
         scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_END, sessionEndDateInMillis);
         scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_ID, sessionId);
-        context.startService(scheduleIntent);
+        SessionAlarmService.enqueueWork(context, scheduleIntent);
     }
 
     public static void unScheduleSession(Context context, int sessionId) {
@@ -43,11 +41,9 @@ public class ScheduleSessionHelper {
         toast = Toast.makeText(context, R.string.session_deselected, Toast.LENGTH_SHORT);
         toast.show();
 
-        final Intent scheduleIntent = new Intent(
-                SessionAlarmService.ACTION_UNSCHEDULE_UNSTARRED_BLOCK,
-                null, context, SessionAlarmService.class);
+        final Intent scheduleIntent = new Intent(SessionAlarmService.ACTION_UNSCHEDULE_UNSTARRED_BLOCK);
         scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_ID, sessionId);
-        context.startService(scheduleIntent);
+        SessionAlarmService.enqueueWork(context, scheduleIntent);
     }
     //endregion
 
