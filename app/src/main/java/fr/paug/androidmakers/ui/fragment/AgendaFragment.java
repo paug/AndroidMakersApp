@@ -148,8 +148,14 @@ public class AgendaFragment extends Fragment {
 
     private void addFilter(SessionFilter sessionFilter, String roomName) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.filter_item, mDrawerLayout, false);
-        CheckBox checkBox = view.findViewById(R.id.checkbox);
+        final CheckBox checkBox = view.findViewById(R.id.checkbox);
         checkBox.setOnCheckedChangeListener(mCheckBoxOnCheckedChangeListener);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkBox.setChecked(!checkBox.isChecked());
+            }
+        });
         mFiltersView.addView(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         Context context = mFiltersView.getContext();
@@ -207,7 +213,11 @@ public class AgendaFragment extends Fragment {
         menuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                mDrawerLayout.openDrawer(GravityCompat.END);
+                if (mDrawerLayout.isDrawerOpen(GravityCompat.END)) {
+                    mDrawerLayout.closeDrawer(GravityCompat.END);
+                } else {
+                    mDrawerLayout.openDrawer(GravityCompat.END);
+                }
                 return true;
             }
         });

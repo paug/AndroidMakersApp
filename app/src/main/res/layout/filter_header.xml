@@ -4,7 +4,7 @@
     android:padding="12dp"
     android:textSize="16sp"
     android:textStyle="bold"
-    android:background="#D0D0D0"
+    android:background="@color/light_grey"
     android:gravity="start|center"
     android:layout_height="match_parent">
 </TextView>
