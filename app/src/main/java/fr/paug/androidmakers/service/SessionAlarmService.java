@@ -1,15 +1,17 @@
 package fr.paug.androidmakers.service;
 
 import android.app.AlarmManager;
-import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.v4.app.AlarmManagerCompat;
+import android.support.v4.app.JobIntentService;
 import android.support.v4.app.NotificationCompat;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -18,17 +20,23 @@ import java.util.Date;
 import java.util.Formatter;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.CountDownLatch;
 
 import fr.paug.androidmakers.R;
 import fr.paug.androidmakers.manager.AgendaRepository;
 import fr.paug.androidmakers.model.Room;
 import fr.paug.androidmakers.model.ScheduleSlot;
 import fr.paug.androidmakers.model.Session;
+import fr.paug.androidmakers.receiver.SessionAlarmReceiver;
 import fr.paug.androidmakers.ui.activity.MainActivity;
 import fr.paug.androidmakers.util.SessionSelector;
 
-public class SessionAlarmService extends IntentService {
+public class SessionAlarmService extends JobIntentService {
 
+    /**
+     * Unique job ID for this service.
+     */
+    private static final int JOB_ID = 1000;
     private static final String TAG = "sessionAlarm";
 
     public static final String ACTION_NOTIFY_SESSION = "NOTIFY_SESSION";
@@ -51,17 +59,15 @@ public class SessionAlarmService extends IntentService {
 
     private static final long UNDEFINED_VALUE = -1;
 
-    public SessionAlarmService() {
-        super("SessionAlarmService");
+    /**
+     * Convenience method for enqueuing work in to this service.
+     */
+    public static void enqueueWork(Context context, Intent work) {
+        enqueueWork(context, SessionAlarmService.class, JOB_ID, work);
     }
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-    }
-
-    @Override
-    protected void onHandleIntent(Intent intent) {
+    protected void onHandleWork(Intent intent) {
         final String action = intent.getAction();
         logDebug("Session alarm : " + action);
 
@@ -98,6 +104,7 @@ public class SessionAlarmService extends IntentService {
 
     void scheduleAllStarredSessions() {
         logDebug("scheduleAllStarredSessions");
+        final CountDownLatch latch = new CountDownLatch(1);
         // need to be sure that the AgendaRepository is loaded in order to schedule all starred sessions
         final Runnable runnable = new Runnable() {
             @Override
@@ -122,9 +129,14 @@ public class SessionAlarmService extends IntentService {
                                 scheduleSlot.sessionId, false);
                     }
                 }
+                latch.countDown();
             }
         };
         AgendaRepository.getInstance().load(new AgendaLoadListener(runnable));
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+        }
     }
 
     /**
@@ -180,9 +192,9 @@ public class SessionAlarmService extends IntentService {
 
         final Intent notificationIntent = new Intent(
                 ACTION_NOTIFY_SESSION,
-                null,
+                Uri.parse(String.valueOf(sessionId)),
                 this,
-                SessionAlarmService.class);
+                SessionAlarmReceiver.class);
         notificationIntent.putExtra(EXTRA_SESSION_START, sessionStart);
         logDebug("-> Intent extra: session start " + sessionStart);
         notificationIntent.putExtra(EXTRA_SESSION_END, sessionEnd);
@@ -191,13 +203,12 @@ public class SessionAlarmService extends IntentService {
         notificationIntent.putExtra(EXTRA_NOTIFICATION_TITLE, sessionToNotify.title);
         notificationIntent.putExtra(EXTRA_NOTIFICATION_CONTENT, roomName + sessionDate);
 
-        PendingIntent pendingIntent = PendingIntent.getService(this, sessionId, notificationIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, sessionId, notificationIntent, 0);
 
         final AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         // Schedule an alarm to be fired to notify user of added sessions are about to begin.
         logDebug("-> Scheduling RTC_WAKEUP alarm at " + alarmTime);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent);
+        AlarmManagerCompat.setExact(alarmManager, AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent);
     }
 
     /**
@@ -209,11 +220,10 @@ public class SessionAlarmService extends IntentService {
         final AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         final Intent notifIntent = new Intent(
                 ACTION_NOTIFY_SESSION,
-                null,
+                Uri.parse(String.valueOf(sessionId)),
                 this,
-                SessionAlarmService.class);
-        PendingIntent pi = PendingIntent.getService(this, sessionId, notifIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+                SessionAlarmReceiver.class);
+        PendingIntent pi = PendingIntent.getBroadcast(this, sessionId, notifIntent, 0);
 
         am.cancel(pi);
     }
