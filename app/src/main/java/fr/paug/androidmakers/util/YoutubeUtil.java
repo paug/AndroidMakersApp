@@ -4,6 +4,8 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import java.util.List;
+
 public final class YoutubeUtil {
 
     private YoutubeUtil() {
@@ -20,10 +22,29 @@ public final class YoutubeUtil {
         if (host.equalsIgnoreCase("youtu.be")) {
             return parse.getLastPathSegment();
         } else if (host.endsWith("youtube.com")) {
-            return parse.getQueryParameter("v");
+            final String id = parse.getQueryParameter("v");
+            if (TextUtils.isEmpty(id)) {
+                final List<String> pathSegments = parse.getPathSegments();
+                if (pathSegments != null && pathSegments.size() == 2
+                        && pathSegments.get(0).equalsIgnoreCase("embed")) {
+                    return pathSegments.get(1);
+                }
+            }
+            return id;
         }
 
         return null;
+    }
+
+    @Nullable
+    public static Uri getVideoUri(final String videoURL) {
+        final String videoID = getVideoID(videoURL);
+
+        if (TextUtils.isEmpty(videoID)) {
+            return null;
+        }
+
+        return Uri.parse("https://youtu.be/" + videoID);
     }
 
 }
