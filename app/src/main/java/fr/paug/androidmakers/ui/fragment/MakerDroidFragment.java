@@ -1,6 +1,7 @@
 package fr.paug.androidmakers.ui.fragment;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -35,12 +36,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.Formatter;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -163,16 +159,16 @@ public class MakerDroidFragment extends Fragment implements AIListener {
 
         // layout params for the question bubble
         paramsQuestion = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT);
         paramsQuestion.weight = 1.0f;
         paramsQuestion.gravity = Gravity.RIGHT;
         paramsQuestion.setMargins(largePadding, 0, largePadding, largePadding);
 
         // layout params for the answer bubble
         paramsAnswer = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT);
         paramsAnswer.weight = 1.0f;
         paramsAnswer.gravity = Gravity.LEFT;
         paramsAnswer.setMargins(largePadding, 0, largePadding, largePadding);
@@ -301,7 +297,8 @@ public class MakerDroidFragment extends Fragment implements AIListener {
     }
 
     @Override
-    public void onAudioLevel(float v) {}
+    public void onAudioLevel(float v) {
+    }
 
     @Override
     public void onListeningStarted() {
@@ -372,6 +369,9 @@ public class MakerDroidFragment extends Fragment implements AIListener {
                 }
             }
         }
+
+        addAnswerView(getString(R.string.bot_answer_intro_sessions));
+        addListView(resultSlots);
     }
 
     private void processAiResponse(AIResponse aiResponse) {
@@ -380,8 +380,7 @@ public class MakerDroidFragment extends Fragment implements AIListener {
             displayButton(ButtonType.MIC);
 
             final Status status = aiResponse.getStatus();
-            Log.i(TAG, "Status code: " + status.getCode());
-            Log.i(TAG, "Status type: " + status.getErrorType());
+            Log.i(TAG, "Status: " + status.getCode() + " ErrorType: " + status.getErrorType());
 
             final Result result = aiResponse.getResult();
             Log.i(TAG, "Action: " + aiResponse.getResult().getAction());
@@ -391,11 +390,13 @@ public class MakerDroidFragment extends Fragment implements AIListener {
 
             String speech = result.getFulfillment().getSpeech();
             Log.i(TAG, "Speech: " + speech);
+            if (speech.isEmpty()) {
+                speech = getString(R.string.bot_answer_empty);
+            }
 
             final Metadata metadata = result.getMetadata();
             if (metadata != null) {
-                Log.i(TAG, "Intent id: " + metadata.getIntentId());
-                Log.i(TAG, "Intent name: " + metadata.getIntentName());
+                Log.i(TAG, "Intent: id> " + metadata.getIntentId() + " name> " + metadata.getIntentName());
             }
 
             addQuestionView(result.getResolvedQuery());
@@ -421,11 +422,8 @@ public class MakerDroidFragment extends Fragment implements AIListener {
                 }
             } catch (Exception e) {
                 Log.e(TAG, "Exception getting data " + e.getMessage());
-                Toast.makeText(getContext(), "Exception getting data " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                addAnswerView(speech);
             }
-
-
-
         } catch (Exception e) {
             Log.e(TAG, "Exception " + e.getMessage());
         }
@@ -434,8 +432,8 @@ public class MakerDroidFragment extends Fragment implements AIListener {
     private void addCarouselView(List<ScheduleSlot> slots) {
 
         LinearLayout.LayoutParams defaultWrapParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT);
 
         HorizontalScrollView hScrollView = new HorizontalScrollView(getContext());
         hScrollView.setLayoutParams(defaultWrapParams);
@@ -448,8 +446,8 @@ public class MakerDroidFragment extends Fragment implements AIListener {
 
 
         LinearLayout.LayoutParams viewParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT);
         viewParams.setMargins(defaultPadding, 0, defaultPadding, 0);
 
 
@@ -467,11 +465,12 @@ public class MakerDroidFragment extends Fragment implements AIListener {
 
     }
 
+    @SuppressLint("SetTextI18n")
     private void addListView(List<ScheduleSlot> slots) {
 
         LinearLayout.LayoutParams defaultWrapParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT);
 
 
         LinearLayout ll = new LinearLayout(getContext());
@@ -481,8 +480,8 @@ public class MakerDroidFragment extends Fragment implements AIListener {
 
 
         LinearLayout.LayoutParams contentParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT);
 
         for (final ScheduleSlot slot : slots) {
             final Session session = AgendaRepository.getInstance().getSession(slot.sessionId);
@@ -491,12 +490,12 @@ public class MakerDroidFragment extends Fragment implements AIListener {
             TextView tvSession = new TextView(this.getContext());
 
             final String sessionDate = DateUtils.formatDateRange(
-                    getContext(),
-                    new Formatter(getResources().getConfiguration().locale),
-                    slot.startDate,
-                    slot.endDate,
-                    DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_ABBREV_WEEKDAY | DateUtils.FORMAT_SHOW_TIME,
-                    null).toString();
+                getContext(),
+                new Formatter(getResources().getConfiguration().locale),
+                slot.startDate,
+                slot.endDate,
+                DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_ABBREV_WEEKDAY | DateUtils.FORMAT_SHOW_TIME,
+                null).toString();
 
             if (session != null) {
                 tvSession.setText(
@@ -508,13 +507,6 @@ public class MakerDroidFragment extends Fragment implements AIListener {
                 );
             }
 
-            tvSession.setText(
-                    "Title: " + (session != null ? session.title : "No session") +
-                            "\nLevel: " + session.experience +
-                            "\nLanguage: " + session.language +
-                            "\nRoom: " + sessionRoom.name +
-                            "\nDate: " + sessionDate
-            );
 
             tvSession.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_bot_list));
             tvSession.setLayoutParams(contentParams);
