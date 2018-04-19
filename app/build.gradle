@@ -14,6 +14,8 @@ android {
         versionCode versionMajor * 1000 + versionMinor * 100 + versionPatch * 10
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "YOUTUBE_API_KEY", "\"" + System.getProperty("androidMakersYouTubeApiKey", "dummyAPIKey") + "\""
     }
 
     flavorDimensions 'environment'
@@ -82,6 +84,9 @@ dependencies {
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+
+    // For Video preview
+    implementation files('libs/YouTubeAndroidPlayerApi.jar')
 
 }
 

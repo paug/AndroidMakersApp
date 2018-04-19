@@ -17,9 +17,9 @@ public class Session {
     public final String type;
     public final String experience;
     public final String presentation = "";
-    public final String video = "";
+    public final @Nullable String videoURL;
 
-    public Session(String title, String description, String language, int[] speakers, String subtype, String type, String experience) {
+    public Session(String title, String description, String language, int[] speakers, String subtype, String type, String experience, String videoURL) {
         this.title = title;
         this.description = description;
         this.language = language;
@@ -27,6 +27,7 @@ public class Session {
         this.subtype = subtype;
         this.type = type;
         this.experience = experience;
+        this.videoURL = videoURL;
     }
 
     @StringRes
