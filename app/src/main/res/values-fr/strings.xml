@@ -77,8 +77,18 @@
     <string name="language">Langue</string>
     <string name="room">Salle</string>
     <string name="rooms">Salles</string>
-    
-    <string name="bot_hello">Bonjour ! Veuillez poser une question en rapport avec les sessions d\'Android Makers.</string>
+
+    <string name="bot_hello">Bonjour ! Je suis MakerDroid. Vous pouvez me poser des questions sur les sessions d\'Android Makers. Comment puis-je
+        vous aider ?</string>
     <string name="bot_text_hint">Poser une question</string>
+    <string name="bot_response_title">Titre :</string>
+    <string name="bot_answer_level">Niveau :</string>
+    <string name="bot_answer_lang">Langue :</string>
+    <string name="bot_answer_room">Salle :</string>
+    <string name="bot_answer_date">Date :</string>
+    <string name="bot_answer_empty">Je n\'ai pas de réponse pour cela. Veuillez réessayer.</string>
+    <string name="bot_answer_intro_sessions">Voici les sessions correspondantes :</string>
+
+
 
 </resources>

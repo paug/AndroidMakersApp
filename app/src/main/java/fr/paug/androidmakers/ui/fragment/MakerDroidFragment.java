@@ -102,6 +102,9 @@ public class MakerDroidFragment extends Fragment implements AIListener {
     private LinearLayout.LayoutParams paramsQuestion;
     private LinearLayout.LayoutParams paramsAnswer;
 
+    private List<ScheduleSlot> scheduleSlots = AgendaRepository.getInstance().getScheduleSlots();
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -164,7 +167,7 @@ public class MakerDroidFragment extends Fragment implements AIListener {
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         paramsQuestion.weight = 1.0f;
         paramsQuestion.gravity = Gravity.RIGHT;
-        paramsQuestion.setMargins(paddingDouble, 0, paddingDouble, paddingDouble);
+        paramsQuestion.setMargins(largePadding, 0, largePadding, largePadding);
 
         // layout params for the answer bubble
         paramsAnswer = new LinearLayout.LayoutParams(
@@ -172,7 +175,7 @@ public class MakerDroidFragment extends Fragment implements AIListener {
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         paramsAnswer.weight = 1.0f;
         paramsAnswer.gravity = Gravity.LEFT;
-        paramsAnswer.setMargins(paddingDouble, 0, paddingDouble, paddingDouble);
+        paramsAnswer.setMargins(largePadding, 0, largePadding, largePadding);
 
         setEditTextActions();
 
@@ -339,7 +342,7 @@ public class MakerDroidFragment extends Fragment implements AIListener {
         tvQuestion.setText(text);
         tvQuestion.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_bot_question));
         tvQuestion.setLayoutParams(paramsQuestion);
-        tvQuestion.setPadding(padding, padding, padding, padding);
+        tvQuestion.setPadding(defaultPadding, defaultPadding, defaultPadding, defaultPadding);
         botLayout.addView(tvQuestion);
         scrollToBottom();
     }
@@ -349,7 +352,7 @@ public class MakerDroidFragment extends Fragment implements AIListener {
         tvAnswer.setText(text);
         tvAnswer.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_bot_answer));
         tvAnswer.setLayoutParams(paramsAnswer);
-        tvAnswer.setPadding(padding, padding, padding, padding);
+        tvAnswer.setPadding(defaultPadding, defaultPadding, defaultPadding, defaultPadding);
         botLayout.addView(tvAnswer);
         separator.requestFocus();
         scrollToBottom();
@@ -441,7 +444,7 @@ public class MakerDroidFragment extends Fragment implements AIListener {
         LinearLayout ll = new LinearLayout(getContext());
         ll.setOrientation(LinearLayout.HORIZONTAL);
         ll.setLayoutParams(defaultWrapParams);
-        ll.setPadding(paddingDouble, 0, paddingDouble, 0);
+        ll.setPadding(largePadding, 0, largePadding, 0);
 
 
         LinearLayout.LayoutParams viewParams = new LinearLayout.LayoutParams(
@@ -474,7 +477,7 @@ public class MakerDroidFragment extends Fragment implements AIListener {
         LinearLayout ll = new LinearLayout(getContext());
         ll.setOrientation(LinearLayout.VERTICAL);
         ll.setLayoutParams(defaultWrapParams);
-        ll.setPadding(paddingDouble, 0, paddingDouble, paddingDouble);
+        ll.setPadding(largePadding, 0, largePadding, largePadding);
 
 
         LinearLayout.LayoutParams contentParams = new LinearLayout.LayoutParams(
