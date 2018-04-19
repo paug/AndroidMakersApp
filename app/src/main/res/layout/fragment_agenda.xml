@@ -40,6 +40,7 @@
                 app:tabMode="fixed" />
 
         </android.support.v4.view.ViewPager>
+
     </FrameLayout>
 
     <LinearLayout
@@ -47,6 +48,7 @@
         android:orientation="vertical"
         android:layout_width="300dp"
         android:layout_gravity="end"
-        android:background="@color/light_grey"
+        android:background="@color/white"
         android:layout_height="match_parent"/>
+
 </android.support.v4.widget.DrawerLayout>
