@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubeThumbnailLoader;
@@ -331,14 +332,22 @@ public class SessionDetailActivity extends BaseActivity implements YouTubeThumbn
 
     // region Video management
     private void setVideoThumbnail(ActivityDetailBinding activityDetailBinding) {
-        if (!TextUtils.isEmpty(session.videoURL)) {
-            videoID = YoutubeUtil.getVideoID(session.videoURL);
+        if (TextUtils.isEmpty(session.videoURL))
+            return;
+
+        videoID = YoutubeUtil.getVideoID(session.videoURL);
+        if (!TextUtils.isEmpty(videoID)) {
             playButton = activityDetailBinding.playButton;
             activityDetailBinding.videoThumbnail.initialize(BuildConfig.YOUTUBE_API_KEY, this);
             activityDetailBinding.videoThumbnail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(session.videoURL)));
+                    final Uri videoUri = YoutubeUtil.getVideoUri(session.videoURL);
+                    if (videoUri != null) {
+                        startActivity(new Intent(Intent.ACTION_VIEW, videoUri));
+                    } else {
+                        Toast.makeText(SessionDetailActivity.this, R.string.unable_to_launch_video_intent, Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         }

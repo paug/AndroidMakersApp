@@ -87,5 +87,6 @@
     <string name="language">Language</string>
     <string name="room">Room</string>
     <string name="rooms">Rooms</string>
+    <string name="unable_to_launch_video_intent">Sorry, we are unable to launch the video at this time :(</string>
 
 </resources>
