@@ -71,5 +71,10 @@
     <string name="speaker_sponsor">Sponsor Speaker</string>
     <string name="location_sponsor">Salle</string>
     <string name="specialthanks_sponsor">Remerciement spécial</string>
+    <string name="filter">Filtres</string>
+    <string name="bookmarked">Favori</string>
+    <string name="language">Langue</string>
+    <string name="room">Salle</string>
+    <string name="rooms">Salles</string>
 
 </resources>
