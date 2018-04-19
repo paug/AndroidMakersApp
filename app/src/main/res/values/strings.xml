@@ -88,8 +88,15 @@
     <string name="language">Language</string>
     <string name="room">Room</string>
     <string name="rooms">Rooms</string>
-    
-    <string name="bot_hello">Hello ! Please ask a question regarding the Android Makers sessions.</string>
+
+    <string name="bot_hello">Hi! I am MakerDroid. You can ask me questions about the Android Makers agenda, like what are the current sessions. How can I help you?</string>
     <string name="bot_text_hint">Ask a question</string>
+    <string name="bot_response_title">Title:</string>
+    <string name="bot_answer_level">Level:</string>
+    <string name="bot_answer_lang">Language:</string>
+    <string name="bot_answer_room">Room:</string>
+    <string name="bot_answer_date">Date:</string>
+    <string name="bot_answer_empty">I don\'t have an answer for that. Please try again.</string>
+    <string name="bot_answer_intro_sessions">Here are the sessions I found:</string>
 
 </resources>
