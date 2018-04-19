@@ -11,7 +11,9 @@ import fr.paug.androidmakers.ui.adapter.ScheduleSession;
 
 public class ScheduleSessionHelper {
 
-    public static final long ALLOWED_OVERLAP = 5 * 60 * 1000; // 5 minutes
+    private static final long ALLOWED_OVERLAP = 5 * 60 * 1000; // 5 minutes
+
+    private static Toast toast;
 
     public static boolean sameStartTime(ScheduleSession block1, ScheduleSession block2, boolean useOverlap) {
         return Math.abs(block1.getStartTimestamp() - block2.getStartTimestamp()) <= (useOverlap ? ALLOWED_OVERLAP : 0);
@@ -20,7 +22,10 @@ public class ScheduleSessionHelper {
     //region Scheduling session
     public static void scheduleStarredSession(Context context, long sessionStartDateInMillis, long sessionEndDateInMillis, int sessionId) {
         Log.d("Schedule session", "Scheduling notification for session " + sessionId);
-        Toast.makeText(context, R.string.session_selected, Toast.LENGTH_SHORT).show();
+
+        if (toast != null) toast.cancel();
+        toast = Toast.makeText(context, R.string.session_selected, Toast.LENGTH_SHORT);
+        toast.show();
 
         final Intent scheduleIntent = new Intent(
                 SessionAlarmService.ACTION_SCHEDULE_STARRED_BLOCK,
@@ -33,7 +38,10 @@ public class ScheduleSessionHelper {
 
     public static void unScheduleSession(Context context, int sessionId) {
         Log.d("Schedule session", "Unscheduling notification for session " + sessionId);
-        Toast.makeText(context, R.string.session_deselected, Toast.LENGTH_SHORT).show();
+
+        if (toast != null) toast.cancel();
+        toast = Toast.makeText(context, R.string.session_deselected, Toast.LENGTH_SHORT);
+        toast.show();
 
         final Intent scheduleIntent = new Intent(
                 SessionAlarmService.ACTION_UNSCHEDULE_UNSTARRED_BLOCK,
