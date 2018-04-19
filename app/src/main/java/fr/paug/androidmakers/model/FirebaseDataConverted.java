@@ -130,7 +130,7 @@ public class FirebaseDataConverted {
                             getString(map, "subtype"),
                             getString(map, "type"),
                             getString(map, "experience"),
-                            getString(map, "videoURL")
+                            getString(map, "video")
                     ));
                 }
             }
