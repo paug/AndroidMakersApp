@@ -78,10 +78,6 @@ dependencies {
     // Used for tags
     implementation 'org.apmem.tools:layouts:1.10@aar'
 
-    // Butterknife
-    compile 'com.jakewharton:butterknife:8.5.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
-
     // Dialogflow SDK dependencies
     compile 'ai.api:sdk:2.0.7@aar'
     compile "com.android.support:appcompat-v7:$google_play_services_client_library_version"

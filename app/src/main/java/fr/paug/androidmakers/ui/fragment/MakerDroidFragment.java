@@ -52,9 +52,6 @@ import ai.api.model.AIResponse;
 import ai.api.model.Metadata;
 import ai.api.model.Result;
 import ai.api.model.Status;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import fr.paug.androidmakers.R;
 import fr.paug.androidmakers.manager.AgendaRepository;
 import fr.paug.androidmakers.model.Room;
@@ -73,23 +70,14 @@ public class MakerDroidFragment extends Fragment implements AIListener {
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
     private AIConfiguration config;
     AIDataService aiDataService;
-    @BindView(R.id.scroll)
     ScrollView scroll;
-    @BindView(R.id.bot_layout)
     LinearLayout botLayout;
-    @BindView(R.id.bot_button)
     ImageButton botMicro;
-    @BindView(R.id.bot_listening)
     ImageButton botListening;
-    @BindView(R.id.bot_send)
     ImageButton botSend;
-    @BindView(R.id.bot_treating)
     ProgressBar botTreatingProgressBar;
-    @BindView(R.id.edit_text_ask)
     EditText editTextAsk;
-    @BindView(R.id.view_separator)
     View separator;
-    private Unbinder unbinder;
     private AIService aiService;
     // Requesting permission to RECORD_AUDIO
     private String[] permissions = {Manifest.permission.RECORD_AUDIO};
@@ -125,7 +113,14 @@ public class MakerDroidFragment extends Fragment implements AIListener {
         View view = inflater.inflate(R.layout.fragment_makerdroid, container, false);
         setHasOptionsMenu(true);
 
-        unbinder = ButterKnife.bind(this, view);
+        scroll = view.findViewById(R.id.scroll);
+        botLayout = view.findViewById(R.id.bot_layout);
+        botMicro = view.findViewById(R.id.bot_button);
+        botListening = view.findViewById(R.id.bot_listening);
+        botSend = view.findViewById(R.id.bot_send);
+        botTreatingProgressBar = view.findViewById(R.id.bot_treating);
+        editTextAsk = view.findViewById(R.id.edit_text_ask);
+        separator = view.findViewById(R.id.view_separator);
 
         ActivityCompat.requestPermissions(this.getActivity(), permissions, REQUEST_RECORD_AUDIO_PERMISSION);
 
@@ -269,7 +264,6 @@ public class MakerDroidFragment extends Fragment implements AIListener {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
     }
 
     @Override
