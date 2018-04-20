@@ -79,15 +79,19 @@
     <string name="other_sponsor">Other Sponsor</string>
     <string name="virtual_sponsor">Virtual Sponsor</string>
     <string name="speaker_sponsor">Individual Speaker Sponsor</string>
-    <string name="makers_sponsor">Makers</string>
+    <string name="makers_sponsor" translatable="false">Makers</string>
     <string name="media_sponsor">Media</string>
     <string name="location_sponsor">Location</string>
     <string name="specialthanks_sponsor">Special Thanks</string>
+
+    <!--Filters-->
     <string name="filter">Filter</string>
     <string name="bookmarked">Favorite</string>
     <string name="language">Language</string>
     <string name="room">Room</string>
     <string name="rooms">Rooms</string>
+
+    <string name="unable_to_launch_video_intent">Sorry, we are unable to launch the video at this time :(</string>
 
     <string name="bot_hello">Hi! I am MakerDroid. You can ask me questions about the Android Makers agenda, like what are the current sessions. How can I help you?</string>
     <string name="bot_text_hint">Ask a question</string>

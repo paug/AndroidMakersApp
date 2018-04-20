@@ -22,6 +22,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubeThumbnailLoader;
+import com.google.android.youtube.player.YouTubeThumbnailView;
 
 import java.util.ArrayList;
 import java.util.Formatter;
@@ -44,13 +50,14 @@ import fr.paug.androidmakers.ui.util.CheckableFloatingActionButton;
 import fr.paug.androidmakers.util.ScheduleSessionHelper;
 import fr.paug.androidmakers.util.SessionSelector;
 import fr.paug.androidmakers.util.UIUtils;
+import fr.paug.androidmakers.util.YoutubeUtil;
 
 /**
  * Details of a session
- *
- * Nice improvements to have : video link, session rate/feedback
+ * 
+ * Nice improvements to have : session rate/feedback
  */
-public class SessionDetailActivity extends BaseActivity {
+public class SessionDetailActivity extends BaseActivity implements YouTubeThumbnailView.OnInitializedListener {
 
     private static final String PARAM_SESSION_ID = "param_session_id";
     private static final String PARAM_SESSION_START_DATE = "param_session_start_date";
@@ -64,6 +71,8 @@ public class SessionDetailActivity extends BaseActivity {
     private Session session;
     private String sessionDateAndRoom;
     private List<String> speakersList = new ArrayList<>();
+    private String videoID;
+    private ImageView playButton;
 
     public static void startActivity(Context context, ScheduleSession scheduleSession) {
         Intent intent = new Intent(context, SessionDetailActivity.class);
@@ -187,6 +196,8 @@ public class SessionDetailActivity extends BaseActivity {
         activityDetailBinding.scheduleFab.setChecked(sessionSelected);
 
         setActionBar(session);
+
+        setVideoThumbnail(activityDetailBinding);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -318,5 +329,61 @@ public class SessionDetailActivity extends BaseActivity {
         shareSessionIntent.setType("text/plain");
         startActivity(shareSessionIntent);
     }
+
+    // region Video management
+    private void setVideoThumbnail(ActivityDetailBinding activityDetailBinding) {
+        if (TextUtils.isEmpty(session.videoURL))
+            return;
+
+        videoID = YoutubeUtil.getVideoID(session.videoURL);
+        if (!TextUtils.isEmpty(videoID)) {
+            playButton = activityDetailBinding.playButton;
+            activityDetailBinding.videoThumbnail.initialize(BuildConfig.YOUTUBE_API_KEY, this);
+            activityDetailBinding.videoThumbnail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final Uri videoUri = YoutubeUtil.getVideoUri(session.videoURL);
+                    if (videoUri != null) {
+                        startActivity(new Intent(Intent.ACTION_VIEW, videoUri));
+                    } else {
+                        Toast.makeText(SessionDetailActivity.this, R.string.unable_to_launch_video_intent, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, final YouTubeThumbnailLoader youTubeThumbnailLoader) {
+        youTubeThumbnailLoader.setOnThumbnailLoadedListener(new YouTubeThumbnailLoader.OnThumbnailLoadedListener() {
+            @Override
+            public void onThumbnailLoaded(YouTubeThumbnailView youTubeThumbnailView, String s) {
+                if (BuildConfig.DEBUG) {
+                    Log.d(SessionDetailActivity.class.getName(), "onThumbnailLoaded");
+                }
+                youTubeThumbnailLoader.release();
+            }
+
+            @Override
+            public void onThumbnailError(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader.ErrorReason errorReason) {
+                if (BuildConfig.DEBUG) {
+                    Log.d(SessionDetailActivity.class.getName(), "onThumbnailError");
+                }
+                youTubeThumbnailLoader.release();
+            }
+        });
+        // TODO : placeholder ?
+        youTubeThumbnailLoader.setVideo(videoID);
+        youTubeThumbnailView.setVisibility(View.VISIBLE);
+        playButton.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onInitializationFailure(YouTubeThumbnailView youTubeThumbnailView, YouTubeInitializationResult youTubeInitializationResult) {
+        youTubeThumbnailView.setVisibility(View.GONE);
+        playButton.setVisibility(View.GONE);
+    }
+
+    // endregion Video management
 
 }
