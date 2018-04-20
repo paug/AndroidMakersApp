@@ -76,5 +76,6 @@
     <string name="language">Langue</string>
     <string name="room">Salle</string>
     <string name="rooms">Salles</string>
+    <string name="unable_to_launch_video_intent">Désolé, la vidéo ne peut pas être lancée pour le moment :(</string>
 
 </resources>
