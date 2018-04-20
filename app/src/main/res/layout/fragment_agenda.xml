@@ -43,12 +43,17 @@
 
     </FrameLayout>
 
-    <LinearLayout
-        android:id="@+id/filters"
-        android:orientation="vertical"
-        android:layout_width="300dp"
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="end"
-        android:background="@color/white"
-        android:layout_height="match_parent"/>
+        android:fillViewport="true">
+        <LinearLayout
+            android:id="@+id/filters"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical" />
+    </ScrollView>
 
 </android.support.v4.widget.DrawerLayout>
