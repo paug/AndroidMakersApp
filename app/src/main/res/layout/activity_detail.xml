@@ -38,15 +38,17 @@
                     android:id="@+id/playButton"
                     android:layout_width="0dp"
                     android:layout_height="80dip"
-                    android:visibility="gone"
-                    tools:visibility="visible"
                     android:adjustViewBounds="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_play_circle"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintDimensionRatio="1"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription"
+                    tools:visibility="visible" />
 
             </android.support.constraint.ConstraintLayout>
 
