@@ -54,8 +54,8 @@ import fr.paug.androidmakers.util.YoutubeUtil;
 
 /**
  * Details of a session
- * <p>
- * Nice improvements to have : video link, session rate/feedback
+ * 
+ * Nice improvements to have : session rate/feedback
  */
 public class SessionDetailActivity extends BaseActivity implements YouTubeThumbnailView.OnInitializedListener {
 
