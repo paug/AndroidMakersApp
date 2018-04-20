@@ -90,7 +90,7 @@ dependencies {
 
     // Dialogflow SDK dependencies
     compile 'ai.api:sdk:2.0.7@aar'
-    compile "com.android.support:appcompat-v7:$google_play_services_client_library_version"
+    compile "com.android.support:appcompat-v7:$play_services_version"
     compile 'ai.api:libai:1.6.12'
 }
 
