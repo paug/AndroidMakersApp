@@ -2,6 +2,8 @@
 
     <string name="app_name" translatable="false">Android Makers Paris 2018</string>
 
+    <string name="version" translatable="false">Version %s (%d)</string>
+
     <string name="title_agenda">Agenda</string>
     <string name="title_venue">Venue</string>
     <string name="title_about">About</string>
@@ -41,6 +43,15 @@
     <string name="session_description_placeholder" translatable="false">%1$s / %2$s</string>
 
     <string name="share">Share the session</string>
+
+    <string name="unable_to_launch_video_intent">Sorry, we are unable to launch the video at this time :(</string>
+
+    <!--Filters-->
+    <string name="filter">Filter</string>
+    <string name="bookmarked">Favorite</string>
+    <string name="language">Language</string>
+    <string name="room">Room</string>
+    <string name="rooms">Rooms</string>
 
     <!--Venue-->
     <string name="locate_on_map">Locate on map</string>
@@ -82,14 +93,5 @@
     <string name="media_sponsor">Media</string>
     <string name="location_sponsor">Location</string>
     <string name="specialthanks_sponsor">Special Thanks</string>
-
-    <!--Filters-->
-    <string name="filter">Filter</string>
-    <string name="bookmarked">Favorite</string>
-    <string name="language">Language</string>
-    <string name="room">Room</string>
-    <string name="rooms">Rooms</string>
-
-    <string name="unable_to_launch_video_intent">Sorry, we are unable to launch the video at this time :(</string>
 
 </resources>
