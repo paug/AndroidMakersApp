@@ -39,6 +39,15 @@
 
     <string name="share">Partager la session</string>
 
+    <string name="unable_to_launch_video_intent">Désolé, la vidéo ne peut pas être lancée pour le moment :(</string>
+
+    <!--Filters-->
+    <string name="filter">Filtres</string>
+    <string name="bookmarked">Favori</string>
+    <string name="language">Langue</string>
+    <string name="room">Salle</string>
+    <string name="rooms">Salles</string>
+
     <!--Venue-->
     <string name="locate_on_map">Localiser sur la carte</string>
     <string name="venue_afterparty_tab">After Party</string>
@@ -72,16 +81,8 @@
     <string name="speaker_sponsor">Sponsor Speaker</string>
     <string name="location_sponsor">Salle</string>
     <string name="specialthanks_sponsor">Remerciement spécial</string>
-
-    <!--Filters-->
-    <string name="filter">Filtres</string>
-    <string name="bookmarked">Favori</string>
-    <string name="language">Langue</string>
-    <string name="room">Salle</string>
-    <string name="rooms">Salles</string>
-
-    <string name="unable_to_launch_video_intent">Désolé, la vidéo ne peut pas être lancée pour le moment :(</string>
-
+  
+    <!--Bot-->
     <string name="bot_hello">Bonjour ! Je suis MakerDroid. Vous pouvez me poser des questions sur les sessions d\'Android Makers. Comment puis-je
         vous aider ?</string>
     <string name="bot_text_hint">Poser une question</string>
@@ -92,7 +93,5 @@
     <string name="bot_answer_date">Date :</string>
     <string name="bot_answer_empty">Je n\'ai pas de réponse pour cela. Veuillez réessayer.</string>
     <string name="bot_answer_intro_sessions">Voici les sessions correspondantes :</string>
-
-
-
+  
 </resources>
