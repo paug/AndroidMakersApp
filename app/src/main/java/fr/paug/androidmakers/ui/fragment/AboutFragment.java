@@ -73,7 +73,7 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
         fragmentAboutBinding.facebookButton.setOnClickListener(this);
         fragmentAboutBinding.youtubeButton.setOnClickListener(this);
         fragmentAboutBinding.wifiConnectButton.setOnClickListener(this);
-        fragmentAboutBinding.versionTextView.setText(String.format("Version: %s(%d)", BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE));
+        fragmentAboutBinding.versionTextView.setText(String.format(getString(R.string.version), BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE));
 
         return fragmentAboutBinding.getRoot();
     }
