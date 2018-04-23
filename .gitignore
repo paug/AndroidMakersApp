@@ -29,3 +29,4 @@ build/
 
 google-services.json
 app/prod/release/output.json
+app/google-services.json
