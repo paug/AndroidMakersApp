@@ -4,6 +4,7 @@
     <string name="title_agenda">Agenda</string>
     <string name="title_venue">Lieu</string>
     <string name="title_about">À propos</string>
+    <string name="title_makerdroid">MakerDroid</string>
 
     <string name="english">Anglais</string>
     <string name="french">Français</string>
@@ -80,5 +81,17 @@
     <string name="speaker_sponsor">Sponsor Speaker</string>
     <string name="location_sponsor">Salle</string>
     <string name="specialthanks_sponsor">Remerciement spécial</string>
-
+  
+    <!--Bot-->
+    <string name="bot_hello">Bonjour ! Je suis MakerDroid. Vous pouvez me poser des questions sur les sessions d\'Android Makers. Comment puis-je
+        vous aider ?</string>
+    <string name="bot_text_hint">Poser une question</string>
+    <string name="bot_response_title">Titre :</string>
+    <string name="bot_answer_level">Niveau :</string>
+    <string name="bot_answer_lang">Langue :</string>
+    <string name="bot_answer_room">Salle :</string>
+    <string name="bot_answer_date">Date :</string>
+    <string name="bot_answer_empty">Je n\'ai pas de réponse pour cela. Veuillez réessayer.</string>
+    <string name="bot_answer_intro_sessions">Voici les sessions correspondantes :</string>
+  
 </resources>

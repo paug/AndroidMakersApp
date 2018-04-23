@@ -7,6 +7,7 @@
     <string name="title_agenda">Agenda</string>
     <string name="title_venue">Venue</string>
     <string name="title_about">About</string>
+    <string name="title_makerdroid">MakerDroid</string>
 
     <string name="english">English</string>
     <string name="french">French</string>
@@ -93,5 +94,16 @@
     <string name="media_sponsor">Media</string>
     <string name="location_sponsor">Location</string>
     <string name="specialthanks_sponsor">Special Thanks</string>
+
+    <!--Bot-->
+    <string name="bot_hello">Hi! I am MakerDroid. You can ask me questions about the Android Makers agenda, like what are the current sessions. How can I help you?</string>
+    <string name="bot_text_hint">Ask a question</string>
+    <string name="bot_response_title">Title:</string>
+    <string name="bot_answer_level">Level:</string>
+    <string name="bot_answer_lang">Language:</string>
+    <string name="bot_answer_room">Room:</string>
+    <string name="bot_answer_date">Date:</string>
+    <string name="bot_answer_empty">I don\'t have an answer for that. Please try again.</string>
+    <string name="bot_answer_intro_sessions">Here are the sessions I found:</string>
 
 </resources>
