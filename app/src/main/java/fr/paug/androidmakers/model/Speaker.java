@@ -31,6 +31,10 @@ public class Speaker {
         return this.name + " " + this.surname + (TextUtils.isEmpty(company) ? "" : ", " + this.company);
     }
 
+    public String getFullName() {
+        return this.name + " " + this.surname;
+    }
+
     /**
      * Gets the main ribbon.
      * The main ribbon is the first ribbon of the list.
