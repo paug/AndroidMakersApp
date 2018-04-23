@@ -96,7 +96,7 @@
     <string name="specialthanks_sponsor">Special Thanks</string>
 
     <!--Bot-->
-    <string name="bot_hello">Hi! I am MakerDroid. You can ask me questions about the Android Makers agenda, like what are the current sessions. How can I help you?</string>
+    <string name="bot_hello">Hi! I am MakerDroid. You can ask me questions about the Android Makers agenda, like what are the current sessions, the next sessions or those in English. How can I help you?</string>
     <string name="bot_text_hint">Ask a question</string>
     <string name="bot_response_title">Title:</string>
     <string name="bot_answer_level">Level:</string>

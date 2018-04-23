@@ -83,7 +83,7 @@
     <string name="specialthanks_sponsor">Remerciement spécial</string>
   
     <!--Bot-->
-    <string name="bot_hello">Bonjour ! Je suis MakerDroid. Vous pouvez me poser des questions sur les sessions d\'Android Makers. Comment puis-je
+    <string name="bot_hello">Bonjour ! Je suis MakerDroid. Vous pouvez me poser des questions sur les sessions en cours d\'Android Makers, les prochaines ou celles en Français. Comment puis-je
         vous aider ?</string>
     <string name="bot_text_hint">Poser une question</string>
     <string name="bot_response_title">Titre :</string>

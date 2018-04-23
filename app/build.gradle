@@ -89,9 +89,8 @@ dependencies {
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
 
     // Dialogflow SDK dependencies
-    compile 'ai.api:sdk:2.0.7@aar'
-    compile "com.android.support:appcompat-v7:$play_services_version"
-    compile 'ai.api:libai:1.6.12'
+    implementation 'ai.api:sdk:2.0.7@aar'
+    implementation 'ai.api:libai:1.6.12'
 }
 
 apply plugin: 'com.google.gms.google-services'
