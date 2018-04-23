@@ -18,6 +18,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintBottom_toTopOf="@+id/sessionDescriptionTextView"
         tools:text="What's new in Android ?" />
 
     <!--Contains the room and the duration of the session, eventually the type of session-->
@@ -30,6 +33,7 @@
         app:layout_constraintStart_toStartOf="parent"
         android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@+id/sessionTitleTextView"
+        app:layout_constraintBottom_toBottomOf="parent"
         tools:text="50 min / Room machin / FR"/>
 
     <ImageButton
@@ -43,7 +47,8 @@
         android:scaleType="center"
         android:src="@drawable/session_bookmark"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sessionDescriptionTextView" />
+        app:layout_constraintTop_toTopOf="@+id/sessionDescriptionTextView"
+        app:layout_constraintBottom_toBottomOf="@+id/sessionDescriptionTextView"/>
     <!--TODO : Language, Speakers ?, Favorite button ?-->
 
 </android.support.constraint.ConstraintLayout>
