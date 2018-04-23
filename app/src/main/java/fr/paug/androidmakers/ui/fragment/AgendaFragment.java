@@ -78,7 +78,7 @@ public class AgendaFragment extends Fragment {
         mDrawerLayout = (DrawerLayout) view;
 
         // auto dismiss loading
-        new Handler().postDelayed(new RefreshRunnable(this), 3000); 
+        new Handler().postDelayed(new RefreshRunnable(this), 3000);
 
         AgendaRepository.getInstance().load(new AgendaLoadListener(this));
 
@@ -132,7 +132,7 @@ public class AgendaFragment extends Fragment {
             public void onAgendaLoaded() {
                 addFilterHeader(R.string.rooms);
                 SparseArray<Room> rooms = AgendaRepository.getInstance().getAllRooms();
-                for(int i = 0; i < rooms.size(); i++) {
+                for (int i = 0; i < rooms.size(); i++) {
                     int key = rooms.keyAt(i);
                     String roomName = rooms.get(key).name;
 
@@ -171,7 +171,7 @@ public class AgendaFragment extends Fragment {
         bookmark.setVisibility(View.GONE);
         flag.setVisibility(View.GONE);
 
-        switch(sessionFilter.type) {
+        switch (sessionFilter.type) {
             case BOOKMARK: {
                 name = context.getString(R.string.bookmarked);
                 bookmark.setVisibility(View.VISIBLE);
@@ -181,7 +181,7 @@ public class AgendaFragment extends Fragment {
                 int nameResId = "fr".equals(sessionFilter.value) ? R.string.french : R.string.english;
                 name = context.getString(nameResId);
 
-                flag.setText(EmojiUtils.getLanguageInEmoji((String)sessionFilter.value));
+                flag.setText(EmojiUtils.getLanguageInEmoji((String) sessionFilter.value));
                 flag.setVisibility(View.VISIBLE);
                 break;
             }
@@ -192,12 +192,12 @@ public class AgendaFragment extends Fragment {
             }
         }
 
-        ((TextView)view.findViewById(R.id.name)).setText(name);
+        ((TextView) view.findViewById(R.id.name)).setText(name);
     }
 
     private void addFilterHeader(@StringRes int titleResId) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.filter_header, mDrawerLayout, false);
-        ((TextView)view).setText(titleResId);
+        ((TextView) view).setText(titleResId);
         mFiltersView.addView(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
     }
