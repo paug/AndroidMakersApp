@@ -5,3 +5,5 @@
   **[] $VALUES;
   public *;
 }
+
+-dontwarn org.slf4j.**
