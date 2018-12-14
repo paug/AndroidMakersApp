@@ -1,10 +1,15 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="section_title">
-        <item name="android:fontFamily">sans-serif-condensed</item>
-        <item name="android:textSize">@dimen/section_title_text_size</item>
+    <style name="SessionTitle" parent="@style/TextAppearance.AppCompat.Large">
         <item name="android:textColor">@color/colorPrimaryDark</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/gill_sans_light</item>
+    </style>
+
+    <style name="Schedule.TimeSeparator" parent="">
+        <item name="android:textAppearance">?android:textAppearanceMedium</item>
+        <item name="android:fontFeatureSettings">smcp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
     <style name="sponsor_group_title">

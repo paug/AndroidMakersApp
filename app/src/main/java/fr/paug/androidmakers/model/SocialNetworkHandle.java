@@ -5,10 +5,6 @@ import android.text.TextUtils;
 
 import fr.paug.androidmakers.R;
 
-/**
- * @author adrien
- * @since 2017.03.22
- */
 public class SocialNetworkHandle {
 
     public enum SocialNetworkType {
@@ -18,17 +14,17 @@ public class SocialNetworkHandle {
         public int getSocialNetworkIcon() {
             switch (this) {
                 case Twitter:
-                    return R.drawable.ic_twitter_logo_white_on_blue;
+                    return R.drawable.ic_network_twitter;
                 case GooglePlus:
-                    return R.drawable.google_plus;
+                    return R.drawable.ic_network_google_plus;
                 case Facebook:
-                    return R.drawable.fb_logo_blue;
+                    return R.drawable.ic_network_facebook;
                 case Github:
-                    return R.drawable.github_mark;
+                    return R.drawable.ic_network_github;
                 case Website:
-                    return R.drawable.ic_public_black_24dp;
+                    return R.drawable.ic_network_web;
                 default:
-                    return R.drawable.ic_public_black_24dp;
+                    return R.drawable.ic_network_web;
             }
         }
     }
@@ -41,7 +37,7 @@ public class SocialNetworkHandle {
         this.link = link;
     }
 
-    static SocialNetworkType getSocialNetworkType(String networkName) {
+    private static SocialNetworkType getSocialNetworkType(String networkName) {
         if (!TextUtils.isEmpty(networkName)) {
             if (networkName.equalsIgnoreCase("twitter")) {
                 return SocialNetworkType.Twitter;

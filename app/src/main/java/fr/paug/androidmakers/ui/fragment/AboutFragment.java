@@ -4,11 +4,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.AppCompatButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,30 +17,23 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 import java.util.Map;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
+import fr.paug.androidmakers.BuildConfig;
 import fr.paug.androidmakers.R;
+import fr.paug.androidmakers.databinding.FragmentAboutBinding;
 import fr.paug.androidmakers.manager.AgendaRepository;
 import fr.paug.androidmakers.model.PartnerGroup;
 import fr.paug.androidmakers.model.Partners;
 import fr.paug.androidmakers.util.CustomTabUtil;
 import fr.paug.androidmakers.util.WifiUtil;
 
-public class AboutFragment extends Fragment {
+public class AboutFragment extends Fragment implements View.OnClickListener {
 
-    @BindView(R.id.about_layout)
-    LinearLayout aboutLayout;
-    @BindView(R.id.wifi_autoconnect_progress)
-    View wifiConnectionProgress;
-    @BindView(R.id.wifi_connect_button)
-    AppCompatButton wifiConnectButton;
-    private Unbinder unbinder;
+    private FragmentAboutBinding fragmentAboutBinding;
 
     public AboutFragment() {
         // Required empty public constructor
@@ -57,89 +50,102 @@ public class AboutFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_about, container, false);
-        unbinder = ButterKnife.bind(this, view);
+        fragmentAboutBinding = DataBindingUtil.inflate(
+                inflater, R.layout.fragment_about, container, false);
 
         final Map<PartnerGroup.PartnerType, PartnerGroup> partners = AgendaRepository.getInstance().getPartners();
 
         if (partners != null) {
-            final PartnerGroup goldSponsorGroup = partners.get(PartnerGroup.PartnerType.GoldSponsor);
-            addPartnerTypeToView(goldSponsorGroup);
-            final PartnerGroup silverSponsorGroup = partners.get(PartnerGroup.PartnerType.SilverSponsor);
-            addPartnerTypeToView(silverSponsorGroup);
-            final PartnerGroup otherSponsorGroup = partners.get(PartnerGroup.PartnerType.OtherSponsor);
-            addPartnerTypeToView(otherSponsorGroup);
-            final PartnerGroup mediaSponsorGroup = partners.get(PartnerGroup.PartnerType.Media);
-            addPartnerTypeToView(mediaSponsorGroup);
-            final PartnerGroup locationGroup = partners.get(PartnerGroup.PartnerType.Location);
-            addPartnerTypeToView(locationGroup);
+            for (PartnerGroup.PartnerType partnerType : PartnerGroup.PartnerType.values()) {
+                PartnerGroup sponsorGroup = partners.get(partnerType);
+                addPartnerTypeToView(sponsorGroup);
+            }
         }
 
-        // listen to network state change
+        // Listen to network state change
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
         getContext().registerReceiver(wifiStateChangedReceiver, intentFilter);
 
-        return view;
+        fragmentAboutBinding.twitterUserButton.setOnClickListener(this);
+        fragmentAboutBinding.twitterHashtagButton.setOnClickListener(this);
+        fragmentAboutBinding.googlePlusButton.setOnClickListener(this);
+        fragmentAboutBinding.facebookButton.setOnClickListener(this);
+        fragmentAboutBinding.youtubeButton.setOnClickListener(this);
+        fragmentAboutBinding.wifiConnectButton.setOnClickListener(this);
+        fragmentAboutBinding.versionTextView.setText(String.format(getString(R.string.version), BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE));
+
+        return fragmentAboutBinding.getRoot();
     }
 
-    @OnClick(R.id.twitter_user_button)
+    @Override
+    public void onClick(View v) {
+        if (v == fragmentAboutBinding.twitterUserButton) {
+            openTwitterUser();
+        } else if (v == fragmentAboutBinding.twitterHashtagButton) {
+            openTwitterHashtag();
+        } else if (v == fragmentAboutBinding.googlePlusButton) {
+            openGooglePlus();
+        } else if (v == fragmentAboutBinding.facebookButton) {
+            openFacebookEvent();
+        } else if (v == fragmentAboutBinding.youtubeButton) {
+            openYoutube();
+        } else if (v == fragmentAboutBinding.wifiConnectButton) {
+            connectToVenuesWifi();
+        }
+    }
+
     void openTwitterUser() {
         Intent twitterIntent;
         try {
             // get the Twitter app if possible
             getActivity().getPackageManager().getPackageInfo("com.twitter.android", 0);
-            twitterIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("twitter://user?screen_name=AndroidMakersFR"));
+            twitterIntent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("twitter://user?screen_name=" + getString(R.string.twitter_user_name)));
             twitterIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         } catch (Exception e) {
             // no Twitter app, revert to browser
-            twitterIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/AndroidMakersFR"));
+            twitterIntent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://twitter.com/" + getString(R.string.twitter_user_name)));
         }
         startActivity(twitterIntent);
     }
 
-    @OnClick(R.id.twitter_hashtag_button)
     void openTwitterHashtag() {
         Intent twitterIntent;
         try {
             // get the Twitter app if possible
             getActivity().getPackageManager().getPackageInfo("com.twitter.android", 0);
-            twitterIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("twitter://search?query=%23AndroidMakers"));
+            twitterIntent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("twitter://search?query=%23" + getString(R.string.twitter_hashtag_for_query)));
             twitterIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         } catch (Exception e) {
             // no Twitter app, revert to browser
-            twitterIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/search?q=%23AndroidMakers"));
+            twitterIntent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://twitter.com/search?q=%23" + getString(R.string.twitter_hashtag_for_query)));
         }
         startActivity(twitterIntent);
     }
 
-    @OnClick(R.id.google_plus_button)
-    void openGPlus() {
-        Intent gplusIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.gplus)));
-        startActivity(gplusIntent);
+    void openGooglePlus() {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.google_plus))));
     }
 
-    @OnClick(R.id.facebook_button)
     void openFacebookEvent() {
-        Intent facebookIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.fbevent)));
-        startActivity(facebookIntent);
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.facebook_event))));
     }
 
-    @OnClick(R.id.youtube_button)
     void openYoutube() {
-        Intent ytIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.ytchannel)));
-        startActivity(ytIntent);
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.youtube_channel))));
     }
 
-    @OnClick(R.id.wifi_connect_button)
     void connectToVenuesWifi() {
         final Context context = getContext();
         final int networkId = WifiUtil.getVenuesWifiNetworkId(context);
         if (networkId != -1) {
             if (WifiUtil.connectToWifi(context, networkId)) {
-                wifiConnectButton.setVisibility(View.GONE);
-                wifiConnectionProgress.setVisibility(View.VISIBLE);
+                fragmentAboutBinding.wifiConnectButton.setVisibility(View.GONE);
+                fragmentAboutBinding.wifiAutoconnectProgress.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -147,7 +153,6 @@ public class AboutFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
         getContext().unregisterReceiver(wifiStateChangedReceiver);
     }
 
@@ -160,15 +165,15 @@ public class AboutFragment extends Fragment {
 
     private void onConnectivityChanged() {
         if (WifiUtil.isCurrentlyConnectedToVenuesWifi(getContext())) {
-            wifiConnectButton.setVisibility(View.INVISIBLE);
-            wifiConnectionProgress.setVisibility(View.GONE);
-        } else if (wifiConnectionProgress.getVisibility() == View.GONE) {
+            fragmentAboutBinding.wifiConnectButton.setVisibility(View.INVISIBLE);
+            fragmentAboutBinding.wifiAutoconnectProgress.setVisibility(View.GONE);
+        } else if (fragmentAboutBinding.wifiAutoconnectProgress.getVisibility() == View.GONE) {
             // case where we are not currently trying to connect to the venue's wifi
-            wifiConnectButton.setVisibility(View.VISIBLE);
-            wifiConnectionProgress.setVisibility(View.GONE);
+            fragmentAboutBinding.wifiConnectButton.setVisibility(View.VISIBLE);
+            fragmentAboutBinding.wifiAutoconnectProgress.setVisibility(View.GONE);
         } else {
-            wifiConnectButton.setVisibility(View.GONE);
-            wifiConnectionProgress.setVisibility(View.VISIBLE);
+            fragmentAboutBinding.wifiConnectButton.setVisibility(View.GONE);
+            fragmentAboutBinding.wifiAutoconnectProgress.setVisibility(View.VISIBLE);
         }
     }
 
@@ -176,43 +181,55 @@ public class AboutFragment extends Fragment {
         if (partnerGroup == null) {
             return;
         }
+
         final List<Partners> partnersList = partnerGroup.getPartnersList();
         if (partnersList != null && partnersList.size() > 0) {
-            final LinearLayout partnersGroupLinearLayout = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.partners_group, null);
-            final TextView partnerGroupHeader = (TextView) partnersGroupLinearLayout.findViewById(R.id.partners_title);
+            final LinearLayout partnersGroupLinearLayout =
+                    (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.partners_group, null);
+
+            final TextView partnerGroupHeader = partnersGroupLinearLayout.findViewById(R.id.partners_title);
             partnerGroupHeader.setText(partnerGroup.getPartnerType().getName());
 
-            final LinearLayout partnerLogoLayout = (LinearLayout) partnersGroupLinearLayout.findViewById(R.id.partners_layout);
+            final LinearLayout partnerLogoLayout = partnersGroupLinearLayout.findViewById(R.id.partners_layout);
             final int partnerLogoSizePriority = partnerGroup.getPartnerType().getPartnerLogoSizePriority();
+
             for (int index = 0; index < partnersList.size(); index += partnerLogoSizePriority) {
-                final LinearLayout partnerRow = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.partner_row, null);
+                final LinearLayout partnerRow =
+                        (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.partner_row, null);
                 partnerRow.setWeightSum(partnerLogoSizePriority);
 
                 if (partnerLogoSizePriority > 0) {
-                    final ImageView partner1 = (ImageView) partnerRow.findViewById(R.id.partner1);
+                    final ImageView partner1 = partnerRow.findViewById(R.id.partner1);
                     setLogoInfo(partner1, partnersList.get(index));
+                    partner1.setContentDescription(partnersList.get(index).getName());
                 }
 
                 if (partnerLogoSizePriority > 1 && partnersList.size() > index + 1) {
-                    final ImageView partner2 = (ImageView) partnerRow.findViewById(R.id.partner2);
+                    final ImageView partner2 = partnerRow.findViewById(R.id.partner2);
                     setLogoInfo(partner2, partnersList.get(index + 1));
+                    partner2.setContentDescription(partnersList.get(index).getName());
                 }
 
                 if (partnerLogoSizePriority > 2 && partnersList.size() > index + 2) {
-                    final ImageView partner3 = (ImageView) partnerRow.findViewById(R.id.partner3);
+                    final ImageView partner3 = partnerRow.findViewById(R.id.partner3);
                     setLogoInfo(partner3, partnersList.get(index + 2));
+                    partner3.setContentDescription(partnersList.get(index).getName());
                 }
 
                 partnerLogoLayout.addView(partnerRow);
             }
-            aboutLayout.addView(partnersGroupLinearLayout);
+
+            fragmentAboutBinding.sponsorsLayout.addView(partnersGroupLinearLayout);
         }
     }
 
     private void setLogoInfo(final ImageView partnerLogo, final Partners partner) {
         partnerLogo.setVisibility(View.VISIBLE);
+        RequestOptions options = new RequestOptions()
+                .placeholder(R.color.light_grey);
         Glide.with(getContext())
-                .load("http://androidmakers.fr/img/partners/" + partner.getImageUrl())
+                .load(String.format("http://androidmakers.fr/img/partners/%s", partner.getImageUrl()))
+                .apply(options)
                 .into(partnerLogo);
         partnerLogo.setOnClickListener(new View.OnClickListener() {
             @Override

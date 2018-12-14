@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
-        <import type="android.text.Html" />
+        <import type="android.text.Html"/>
 
         <variable
             name="speaker"
-            type="fr.paug.androidmakers.model.Speaker" />
+            type="fr.paug.androidmakers.model.Speaker"/>
     </data>
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@drawable/divider15dip"
         android:orientation="horizontal"
         android:showDividers="middle">
 
@@ -25,44 +23,76 @@
             android:layout_height="@dimen/avatar_size"
             android:contentDescription="@string/ImageDesc_speaker_avatar"
             app:imageUrl="@{speaker.thumbnailUrl}"
-            tools:src="@color/colorAccent" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_person_black_24dp"/>
+
+        <ImageView
+            android:id="@+id/speakerRibbon"
+            android:layout_width="@dimen/avatar_size"
+            android:layout_height="@dimen/avatar_size"
+            android:contentDescription="@{speaker.mainRibbon.title}"
+            app:img_src="@{speaker.mainRibbon.ribbonType.badgeIcon}"
+            app:layout_constraintLeft_toLeftOf="@+id/speakerAvatar"
+            app:layout_constraintTop_toTopOf="@+id/speakerAvatar"
+            tools:src="@drawable/gdg_badge"/>
+
+        <TextView
+            android:id="@+id/speakerName"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginLeft="@dimen/large_padding"
+            android:layout_marginStart="@dimen/large_padding"
+            android:text="@{speaker.fullNameAndCompany}"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintHeight_default="wrap"
+            app:layout_constraintLeft_toRightOf="@id/speakerAvatar"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="FirstName LastName, Company"/>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/speakerRibbonLayout"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="@dimen/default_padding"
+            android:divider="@drawable/divider5dip"
+            android:orientation="horizontal"
+            android:showDividers="middle"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintLeft_toLeftOf="@id/speakerName"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/speakerName"/>
+
+        <TextView
+            android:id="@+id/speakerBio"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:divider="@drawable/divider15dip"
-            android:orientation="vertical"
-            android:showDividers="middle">
+            android:layout_marginTop="@dimen/small_padding"
+            android:text="@{Html.fromHtml(speaker.bio)}"
+            android:textSize="14sp"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintLeft_toLeftOf="@id/speakerName"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/speakerRibbonLayout"
+            app:layout_goneMarginTop="@dimen/large_padding"
+            tools:lines="3"
+            tools:text="@tools:sample/lorem/random"/>
 
-            <TextView
-                android:id="@+id/speakerName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{speaker.fullNameAndCompany}"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                tools:text="FirstName Name, Company" />
+        <LinearLayout
+            android:id="@+id/speakerSocialNetworkHandleLayout"
+            android:layout_width="0dip"
+            android:layout_height="40dp"
+            android:layout_marginTop="@dimen/large_padding"
+            android:divider="@drawable/divider5dip"
+            android:orientation="horizontal"
+            android:showDividers="middle"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintLeft_toLeftOf="@id/speakerName"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/speakerBio"/>
 
-            <TextView
-                android:id="@+id/speakerBio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{Html.fromHtml(speaker.bio)}"
-                android:textSize="14sp"
-                tools:text="Bio" />
-
-            <LinearLayout
-                android:id="@+id/speakerSocialNetworkHandleLayout"
-                android:layout_width="match_parent"
-                android:layout_height="40dip"
-                android:divider="@drawable/divider5dip"
-                android:orientation="horizontal"
-                android:showDividers="middle">
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-    </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
 
 </layout>

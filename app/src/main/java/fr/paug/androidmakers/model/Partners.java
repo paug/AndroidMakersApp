@@ -1,10 +1,5 @@
 package fr.paug.androidmakers.model;
 
-/**
- * @author Adrien Vitti
- * @since 2017.03.23
- */
-
 public class Partners {
 
     private final String name;

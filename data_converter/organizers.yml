@@ -1,0 +1,5 @@
+- 
+  group: "Main organizers"
+  elements: 
+    - {name: "Paris Android User Group", description: "PAUG - Open and volunteer Android lovers", link: "http://paug.fr", imageUrl: "paug.svg"}
+    - {name: "BeMyApp", description: "BeMyApp - The one stop shop for your developer relations", link: "http://agency.bemyapp.com/", imageUrl: "bemyapp.png"}

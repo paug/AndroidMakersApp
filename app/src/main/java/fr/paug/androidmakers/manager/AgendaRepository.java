@@ -3,6 +3,7 @@ package fr.paug.androidmakers.manager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.util.SparseArray;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,12 +22,12 @@ import fr.paug.androidmakers.model.Room;
 import fr.paug.androidmakers.model.ScheduleSlot;
 import fr.paug.androidmakers.model.Session;
 import fr.paug.androidmakers.model.Speaker;
+import fr.paug.androidmakers.model.Venue;
 
-/**
- * Created by stan on 18/03/2017.
- */
 public class AgendaRepository {
     private static final String TAG = "AgendaRepository";
+    
+    public static final String CURRENT_YEAR_NODE = "2018";
 
     private final FirebaseDatabase mDatabase;
     private final DatabaseReference mDatabaseReference;
@@ -42,7 +43,9 @@ public class AgendaRepository {
         mDatabase = FirebaseDatabase.getInstance();
         mDatabaseReference = mDatabase.getReference();
 
-        mDatabaseReference.addValueEventListener(new ValueEventListener() {
+        final DatabaseReference currentYearReference = mDatabaseReference.child(CURRENT_YEAR_NODE);
+
+        currentYearReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mFirebaseDataConverted.loadAllFromFirebase(dataSnapshot.getValue());
@@ -82,6 +85,10 @@ public class AgendaRepository {
         return mFirebaseDataConverted.getRooms().get(id);
     }
 
+    public SparseArray<Room> getAllRooms() {
+        return mFirebaseDataConverted.getRooms();
+    }
+
     @Nullable
     public Session getSession(int id) {
         return mFirebaseDataConverted.getSessions().get(id);
@@ -90,6 +97,11 @@ public class AgendaRepository {
     @Nullable
     public Speaker getSpeaker(int id) {
         return mFirebaseDataConverted.getSpeakers().get(id);
+    }
+
+    @Nullable
+    public Venue getVenue(int id) {
+        return mFirebaseDataConverted.getVenues().get(id);
     }
 
     @NonNull

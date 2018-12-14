@@ -4,64 +4,94 @@
     <string name="title_agenda">Agenda</string>
     <string name="title_venue">Lieu</string>
     <string name="title_about">À propos</string>
+    <string name="title_makerdroid">MakerDroid</string>
 
     <string name="english">Anglais</string>
     <string name="french">Français</string>
 
+    <string name="no_maps_app_found">Erreur: Pas d\'application de carte trouvée</string>
+
     <!--Agenda-->
+    <plurals name="duration_hours">
+        <item quantity="one">%s heure</item>
+        <item quantity="other">%s heures</item>
+    </plurals>
+
+    <plurals name="duration_minutes">
+        <item quantity="one">%s minute</item>
+        <item quantity="other">%s minutes</item>
+    </plurals>
+
     <string name="Detail_sessionNotFound">Impossible de récuperer les informations sur cette
         session.
     </string>
     <string name="agenda_empty_screen">Impossible de charger l\'agenda.\nVérifiez votre connexion et
-        attendez que cette vue se rafraîchise.
+        attendez que cette vue se rafraîchit.
     </string>
     <string name="filter_language_header">Langues</string>
     <string name="filter_language_all">Toutes</string>
-    <string name="Detail_speakerLayoutHeaderTitle">Orateur(s)</string>
-    <plurals name="session_details_speakers">
-        <item quantity="one">Orateur</item>
-        <item quantity="other">Orateurs</item>
-    </plurals>
+
     <string name="ImageDesc_speaker_avatar">Photo du speaker</string>
     <string name="ImageDesc_social_network_image">réseau social</string>
-
-    <string name="star_session">Mettre en favori</string>
-    <string name="unstar_session">Enlever des favoris</string>
 
     <string name="session_selected">Session ajoutée en favori</string>
     <string name="session_deselected">Session enlevée des favoris</string>
 
-    <!--Venue-->
-    <string name="venue_conference_directions"><b>Voiture</b>: sortie Porte de Bercy, direction Paris centre, sortie
-        Bercy Cour Saint-Emilion\n\n<b>Métro</b> : Ligne 14, Cour Saint-Emilion\n\n<b>Bus</b> :
-        ligne 24 ou 64,
-        Arrêt Dijon Lachambaudie
-    </string>
-    <string name="locate_on_map">Localiser sur la carte</string>
+    <string name="share">Partager la session</string>
 
-    <string name="venue_afterparty_info">Pub et microbrasserie artisanale dans un ancien chai aux poutres et pierres apparentes, avec 2 terrasses.</string>
+    <string name="unable_to_launch_video_intent">Désolé, la vidéo ne peut pas être lancée pour le moment :(</string>
+
+    <!--Filters-->
+    <string name="filter">Filtres</string>
+    <string name="bookmarked">Favori</string>
+    <string name="language">Langue</string>
+    <string name="room">Salle</string>
+    <string name="rooms">Salles</string>
+
+    <!--Venue-->
+    <string name="locate_on_map">Localiser sur la carte</string>
+    <string name="venue_afterparty_tab">After Party</string>
+    <string name="venue_conference_tab">Conférence</string>
 
     <!--About-->
-    <string name="about_android_makers">Android Makers Paris 2017 c\'est les 10 et 11 Avril aux
-        Salons de l\'Aveyron
-    </string>
+    <string name="about_android_makers">Android Makers Paris est un événement de deux jours qui se tiendra les 23 et 24 avril 2018 au Beffroi de Montrouge, à Paris, en France.
+        \n\nRejoignez-nous pour aborder le futur d\'Android avec les meilleurs experts du domaine.
+        Il y aura des sessions techniques, des ateliers, des débats, du réseautage, plus une chance de présenter votre projet dans la zone Makers.
+        La 2ème édition d\'Android Makers rassemble 4 événements en 1.
+        \n\n∙ Conférences: Tech Talks de 40min par des super conférenciers et Lightning Talks de 20min sur le futur d\'Android.
+        \n∙ Atelier: Entrainez-vous sur les nouvelles méthodes, découvrez et construisez votre application pendant les ateliers.
+        \n∙ Makers Area: promenez vous, jouez et découvrez les dernières innovations en matière de matériel et de logiciels développés par les fabricants.
+        \n∙ Party! : Rencontrons nous, parlons, buvons et faisons la fête!
+        \n\nTous les talks seront enregistrées, et mis sur la chaîne YouTube.</string>
 
     <string name="social">Social</string>
 
     <string name="wifi">Wifi</string>
     <string name="wifi_network">Réseau: <b>AndroidMakers</b></string>
-    <string name="wifi_password">Mot de passe : <b>Makers2017</b></string>
-
+    <string name="wifi_password">Mot de passe : <b>Makers2018</b></string>
     <string name="wifi_connect_description">Se connecter directement au Wifi du lieu</string>
     <string name="wifi_connect">Se connecter</string>
 
     <string name="sponsors">Sponsors</string>
-    <string name="gold_sponsor">Sponsor Gold+</string>
+    <string name="gold_sponsor">Sponsor Gold</string>
     <string name="silver_sponsor">Sponsor Silver</string>
     <string name="media_sponsor">Média</string>
     <string name="other_sponsor">Autre Sponsor</string>
+    <string name="virtual_sponsor">Sponsor virtuel</string>
+    <string name="speaker_sponsor">Sponsor Speaker</string>
     <string name="location_sponsor">Salle</string>
-    <string name="venue_afterparty_tab">After Party</string>
-    <string name="venue_conference_tab">Conférence</string>
-
+    <string name="specialthanks_sponsor">Remerciement spécial</string>
+  
+    <!--Bot-->
+    <string name="bot_hello">Bonjour ! Je suis MakerDroid. Vous pouvez me poser des questions sur les sessions en cours d\'Android Makers, les prochaines ou celles en Français. Comment puis-je
+        vous aider ?</string>
+    <string name="bot_text_hint">Poser une question</string>
+    <string name="bot_response_title">Titre :</string>
+    <string name="bot_answer_level">Niveau :</string>
+    <string name="bot_answer_lang">Langue :</string>
+    <string name="bot_answer_room">Salle :</string>
+    <string name="bot_answer_date">Date :</string>
+    <string name="bot_answer_empty">Je n\'ai pas de réponse pour cela. Veuillez réessayer.</string>
+    <string name="bot_answer_intro_sessions">Voici les sessions correspondantes :</string>
+  
 </resources>
