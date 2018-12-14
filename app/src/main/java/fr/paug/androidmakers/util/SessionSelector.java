@@ -7,6 +7,8 @@ import android.preference.PreferenceManager;
 import java.util.HashSet;
 import java.util.Set;
 
+import fr.paug.androidmakers.manager.AgendaRepository;
+
 public final class SessionSelector {
 
     private static final String PREF_SELECTED_SESSIONS = "selected_sessions";
@@ -32,7 +34,7 @@ public final class SessionSelector {
     }
 
     public void setSessionSelected(int id, boolean selected) {
-        String idString = Integer.toString(id);
+        String idString = AgendaRepository.CURRENT_YEAR_NODE + "_" + Integer.toString(id);
         if (selected) {
             mSessionsSelected.add(idString);
         } else {
@@ -41,20 +43,12 @@ public final class SessionSelector {
         save();
     }
 
-    public boolean hasSelected() {
-        return !mSessionsSelected.isEmpty();
-    }
-
     public boolean isSelected(int id) {
-        return mSessionsSelected.contains(Integer.toString(id));
+        return mSessionsSelected.contains(AgendaRepository.CURRENT_YEAR_NODE + "_" + Integer.toString(id));
     }
 
     public Set<String> getSessionsSelected() {
         return mSessionsSelected;
-    }
-
-    public void setSessionsSelected(Set<String> sessionsSelected) {
-        mSessionsSelected = sessionsSelected;
     }
 
     private void save() {

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:layout_above="@+id/bot_layout_bottom"
+        android:layout_alignParentTop="true">
+
+        <LinearLayout
+            android:id="@+id/bot_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/default_padding"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="@dimen/large_padding">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_bothead"
+                    android:layout_marginRight="@dimen/large_padding"
+                    android:layout_gravity="center"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_bot_answer"
+                    android:text="@string/bot_hello"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+    <RelativeLayout
+        android:id="@id/bot_layout_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <View
+            android:id="@+id/view_separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
+
+        <RelativeLayout
+            android:id="@+id/bot_layout_icons"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="@dimen/default_padding"
+            android:background="@color/white"
+            >
+
+            <ImageButton
+                android:id="@+id/bot_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="@color/white"
+                android:src="@drawable/ic_mic_black_24dp"
+                android:visibility="visible"
+                />
+
+            <ImageButton
+                android:id="@+id/bot_listening"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="@color/white"
+                android:src="@drawable/ic_record_voice_over_black_24dp"
+                android:visibility="gone"
+                />
+
+            <ImageButton
+                android:id="@+id/bot_send"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="@color/white"
+                android:src="@drawable/ic_send_black_24dp"
+                android:visibility="gone"
+                />
+
+            <ProgressBar
+                android:id="@+id/bot_treating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="@color/white"
+                android:visibility="gone"
+                />
+        </RelativeLayout>
+
+
+        <EditText
+            android:id="@+id/edit_text_ask"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@id/bot_layout_icons"
+            android:hint="@string/bot_text_hint"
+            android:padding="@dimen/large_padding"
+            android:imeOptions="actionSend"
+            android:singleLine="true"
+            />
+    </RelativeLayout>
+
+
+</RelativeLayout>

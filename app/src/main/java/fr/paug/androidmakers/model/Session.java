@@ -6,9 +6,7 @@ import android.text.TextUtils;
 
 import fr.paug.androidmakers.R;
 
-/**
- * Created by stan on 18/03/2017.
- */
+//TODO display presentation and video link if they exist
 public class Session {
 
     public final String title;
@@ -16,14 +14,20 @@ public class Session {
     public final String language;
     public final int[] speakers;
     public final String subtype;
+    public final String type;
+    public final String experience;
+    public final String presentation = "";
+    public final @Nullable String videoURL;
 
-    public Session(String title, @Nullable String description, String language,
-                   int[] speakers, String subtype) {
+    public Session(String title, String description, String language, int[] speakers, String subtype, String type, String experience, String videoURL) {
         this.title = title;
         this.description = description;
         this.language = language;
         this.speakers = speakers;
         this.subtype = subtype;
+        this.type = type;
+        this.experience = experience;
+        this.videoURL = videoURL;
     }
 
     @StringRes
@@ -40,7 +44,7 @@ public class Session {
                 return R.string.french;
             }
         }
-        return 0;
+        return R.string.no_language;
     }
 
 }

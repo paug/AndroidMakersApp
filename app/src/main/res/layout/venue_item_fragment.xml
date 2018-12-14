@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.text.Html"/>
+        <variable
+            name="venue"
+            type="fr.paug.androidmakers.model.Venue"/>
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/venue_image"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:contentDescription="@null"
+                android:scaleType="center"
+                android:background="@color/light_grey"
+                app:venueCoverUrl="@{venue.imageUrl}"
+                tools:src="@color/colorAccent"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="@dimen/large_padding"
+                android:layout_marginRight="@dimen/large_padding"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/venue_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/default_padding"
+                    android:paddingTop="@dimen/default_padding"
+                    android:text="@{venue.name}"
+                    style="@style/SessionTitle"
+                    tools:text="Venue name"/>
+
+                <TextView
+                    android:id="@+id/venue_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="4dp"
+                    android:paddingTop="4dp"
+                    android:text="@{venue.address}"
+                    android:textColor="@color/black"
+                    android:textIsSelectable="true"
+                    android:textSize="15sp"
+                    tools:text="address"/>
+
+                <TextView
+                    android:id="@+id/venue_directions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="4dp"
+                    android:paddingTop="4dp"
+                    tools:maxLines="10"
+                    tools:text="@tools:sample/lorem/random"/>
+
+            </LinearLayout>
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/venue_locate_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/large_padding"
+                android:layout_marginLeft="@dimen/large_padding"
+                android:layout_marginRight="@dimen/large_padding"
+                android:text="@string/locate_on_map"
+                android:textColor="@android:color/white"
+                app:backgroundTint="?attr/colorAccent"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</layout>

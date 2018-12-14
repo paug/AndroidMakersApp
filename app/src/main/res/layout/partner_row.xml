@@ -13,10 +13,11 @@
         android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="?attr/selectableItemBackground"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:minHeight="80dp"
         android:scaleType="fitCenter"
-        tools:src="@drawable/google_plus"/>
+        tools:src="@drawable/google_plus"
+        tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/partner2"
@@ -25,12 +26,13 @@
         android:layout_marginLeft="15dp"
         android:layout_marginStart="15dp"
         android:layout_weight="1"
-        android:background="?attr/selectableItemBackground"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:minHeight="80dp"
         android:scaleType="fitCenter"
         android:visibility="gone"
         tools:src="@drawable/google_plus"
-        tools:visibility="visible"/>
+        tools:visibility="visible"
+        tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/partner3"
@@ -39,11 +41,12 @@
         android:layout_marginLeft="15dp"
         android:layout_marginStart="15dp"
         android:layout_weight="1"
-        android:background="?attr/selectableItemBackground"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:minHeight="80dp"
         android:scaleType="fitCenter"
         android:visibility="gone"
         tools:src="@drawable/google_plus"
-        tools:visibility="visible"/>
+        tools:visibility="visible"
+        tools:ignore="ContentDescription" />
 
 </LinearLayout>

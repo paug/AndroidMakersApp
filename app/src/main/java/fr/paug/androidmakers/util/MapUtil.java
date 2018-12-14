@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import fr.paug.androidmakers.model.Partners;
+import fr.paug.androidmakers.model.Ribbon;
 import fr.paug.androidmakers.model.SocialNetworkHandle;
 
 public final class MapUtil {
@@ -55,6 +56,29 @@ public final class MapUtil {
                 }
             }
             return socialNetworkHandles;
+        } else {
+            return null;
+        }
+    }
+
+    public static List<Ribbon> getRibbonItems(Map map, String key) {
+        final Object object = map.get(key);
+        if (object instanceof List) {
+            List<Ribbon> ribbonList = null;
+            for (Object socialItem : ((List) object)) {
+                if (socialItem instanceof Map) {
+                    final String name = getString((Map) socialItem, "abbr");
+                    final String title = getString((Map) socialItem, "title");
+                    final String link = getString((Map) socialItem, "url");
+                    if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(link)) {
+                        if (ribbonList == null) {
+                            ribbonList = new ArrayList<>();
+                        }
+                        ribbonList.add(new Ribbon(name, title, link));
+                    }
+                }
+            }
+            return ribbonList;
         } else {
             return null;
         }

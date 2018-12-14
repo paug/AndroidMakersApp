@@ -9,21 +9,17 @@ import fr.paug.androidmakers.R;
 import fr.paug.androidmakers.ui.fragment.VenueAfterPartyFragment;
 import fr.paug.androidmakers.ui.fragment.VenueConferenceFragment;
 
-/**
- * Created by benju on 30/03/2017.
- */
-
 public class VenuePagerAdapter extends FragmentPagerAdapter {
 
-    private Context ctx;
+    private Context context;
 
     @Override
     public CharSequence getPageTitle(int position) {
         switch(position) {
             case 0:
-                return ctx.getString(R.string.venue_conference_tab);
+                return context.getString(R.string.venue_conference_tab);
             case 1:
-                return ctx.getString(R.string.venue_afterparty_tab);
+                return context.getString(R.string.venue_afterparty_tab);
             default:
                 return super.getPageTitle(position);
         }
@@ -31,7 +27,7 @@ public class VenuePagerAdapter extends FragmentPagerAdapter {
 
     public VenuePagerAdapter(Context ctx, FragmentManager fm) {
         super(fm);
-        this.ctx = ctx;
+        this.context = ctx;
     }
 
     @Override
@@ -50,4 +46,5 @@ public class VenuePagerAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return 2;
     }
+
 }

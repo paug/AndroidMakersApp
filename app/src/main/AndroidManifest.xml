@@ -11,6 +11,10 @@
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
+    <!-- BOT -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+
     <application
         android:name=".AndroidMakersApplication"
         android:allowBackup="true"
@@ -20,28 +24,87 @@
         android:theme="@style/PreviewTheme.AndroidMakers"
         tools:replace="android:theme">
 
+        <!-- We need this to enable manual activation (to avoid reporting in debug) -->
+        <meta-data android:name="firebase_crashlytics_collection_enabled" android:value="false"/>
+
         <activity
             android:name=".ui.activity.MainActivity"
+            android:launchMode="singleTask"
             android:configChanges="orientation|screenSize">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <data android:host="androidmakers.fr" />
+                <data android:path="/" />
+            </intent-filter>
+
+            <meta-data
+                android:name="default-url"
+                android:value="https://androidmakers.fr/" />
+
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <data android:host="androidmakers.fr" />
+                <data android:pathPrefix="/schedule" />
+                <data android:pathPrefix="/logistics" />
+            </intent-filter>
+
         </activity>
 
         <activity
-            android:name=".ui.activity.DetailActivity"
-            android:configChanges="orientation|screenSize"/>
+            android:name=".ui.activity.SessionDetailActivity"
+            android:configChanges="orientation|screenSize" />
 
-        <receiver android:name=".receiver.SessionAlarmReceiver">
+        <receiver
+            android:name=".receiver.SessionAlarmReceiver"
+            android:exported="false">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
 
         <service
             android:name=".service.SessionAlarmService"
-            android:exported="false" />
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
+
+        <service
+            android:name=".service.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_event_note_white_24dp" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorAccent" />
 
     </application>
 
