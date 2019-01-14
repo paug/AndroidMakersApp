@@ -1,6 +1,6 @@
 package fr.paug.androidmakers.model;
 
-import android.support.annotation.DrawableRes;
+import androidx.annotation.DrawableRes;
 import android.text.TextUtils;
 
 import fr.paug.androidmakers.R;

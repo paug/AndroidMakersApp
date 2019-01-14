@@ -1,6 +1,6 @@
 package fr.paug.androidmakers.util.sticky_headers;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
 /**
