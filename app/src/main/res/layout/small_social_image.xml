@@ -13,7 +13,7 @@
             type="fr.paug.androidmakers.model.SocialNetworkHandle" />
     </data>
 
-    <android.support.percent.PercentRelativeLayout
+    <androidx.percentlayout.widget.PercentRelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:padding="5dip">
@@ -29,6 +29,6 @@
             app:layout_heightPercent="100%"
             tools:src="@drawable/google_plus"/>
 
-    </android.support.percent.PercentRelativeLayout>
+    </androidx.percentlayout.widget.PercentRelativeLayout>
 
 </layout>

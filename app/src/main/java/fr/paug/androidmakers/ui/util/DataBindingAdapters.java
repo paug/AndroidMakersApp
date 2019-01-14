@@ -1,7 +1,7 @@
 package fr.paug.androidmakers.ui.util;
 
 import android.content.Context;
-import android.databinding.BindingAdapter;
+import androidx.databinding.BindingAdapter;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
