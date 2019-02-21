@@ -13,6 +13,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.AlarmManagerCompat;
 import android.support.v4.app.JobIntentService;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.text.format.DateUtils;
 import android.util.Log;
 
@@ -233,9 +234,6 @@ public class SessionAlarmService extends JobIntentService {
                                @NonNull String notificationTitle,
                                @NonNull String notificationContent) {
         // Generates the pending intent which gets fired when the user taps on the notification.
-        Intent baseIntent = new Intent(this, MainActivity.class);
-        baseIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
         Intent resultIntent = new Intent(this, MainActivity.class);
         PendingIntent resultPendingIntent =
                 PendingIntent.getActivity(
@@ -258,22 +256,28 @@ public class SessionAlarmService extends JobIntentService {
                         SessionAlarmService.NOTIFICATION_LED_OFF_MS)
                 .setSmallIcon(R.drawable.ic_event_note_white_24dp)
                 .setContentIntent(resultPendingIntent)
-                .setPriority(Notification.PRIORITY_MAX)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_EVENT)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setAutoCancel(true);
-
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationManager notificationManager =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             NotificationChannel channel = new NotificationChannel(channelId,
                     "Sessions about to begin",
-                    NotificationManager.IMPORTANCE_DEFAULT);
+                    NotificationManager.IMPORTANCE_HIGH);
+            channel.setShowBadge(false);
+            channel.enableLights(true);
+            channel.setLightColor(SessionAlarmService.NOTIFICATION_ARGB_COLOR);
+            channel.enableVibration(true);
+            channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
             notificationManager.createNotificationChannel(channel);
         }
 
         logDebug("Now showing notification.");
-        notificationManager.notify(sessionId, notificationBuilder.build());
+        NotificationManagerCompat.from(this).notify(sessionId, notificationBuilder.build());
     }
 
     public static void logDebug(String message) {
