@@ -18,7 +18,6 @@ import fr.paug.androidmakers.manager.AgendaRepository;
 import fr.paug.androidmakers.model.ScheduleSlot;
 import fr.paug.androidmakers.ui.fragment.AboutFragment;
 import fr.paug.androidmakers.ui.fragment.AgendaFragment;
-import fr.paug.androidmakers.ui.fragment.MakerDroidFragment;
 import fr.paug.androidmakers.ui.fragment.VenuePagerFragment;
 
 public class MainActivity extends BaseActivity {
@@ -26,7 +25,6 @@ public class MainActivity extends BaseActivity {
     private static final String TAG_FRAGMENT_AGENDA = "TAG_FRAGMENT_AGENDA";
     private static final String TAG_FRAGMENT_VENUE = "TAG_FRAGMENT_VENUE";
     private static final String TAG_FRAGMENT_ABOUT = "TAG_FRAGMENT_ABOUT";
-    private static final String TAG_FRAGMENT_MAKERDROID = "TAG_FRAGMENT_MAKERDROID";
 
     private Fragment fragment;
     private FragmentManager fragmentManager;
@@ -47,9 +45,6 @@ public class MainActivity extends BaseActivity {
                     break;
                 case R.id.navigation_about:
                     tag = TAG_FRAGMENT_ABOUT;
-                    break;
-                case R.id.navigation_makerdroid:
-                    tag = TAG_FRAGMENT_MAKERDROID;
                     break;
                 default:
                     return false;
@@ -100,8 +95,6 @@ public class MainActivity extends BaseActivity {
                 return new VenuePagerFragment();
             case TAG_FRAGMENT_ABOUT:
                 return new AboutFragment();
-            case TAG_FRAGMENT_MAKERDROID:
-                return new MakerDroidFragment();
             case TAG_FRAGMENT_AGENDA:
             default:
                 return new AgendaFragment();

@@ -61,7 +61,10 @@ dependencies {
     androidTestImplementation('androidx.test.espresso:espresso-core:3.1.1', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    
+
+    // Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
     // Support
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'com.google.android.material:material:1.0.0'
@@ -88,11 +91,6 @@ dependencies {
 
     // For Video preview
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
-
-    // Dialogflow SDK dependencies
-    implementation 'ai.api:sdk:2.0.7@aar'
-    implementation 'ai.api:libai:1.6.12'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
 apply plugin: 'com.google.gms.google-services'
