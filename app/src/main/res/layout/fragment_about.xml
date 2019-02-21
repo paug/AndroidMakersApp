@@ -97,23 +97,23 @@
                             android:clickable="true"
                             android:src="@drawable/ic_network_twitter"/>
 
-                        <ImageView
-                            android:id="@+id/google_plus_button"
-                            android:layout_width="0dip"
-                            android:layout_height="64dp"
-                            android:layout_weight="1"
-                            android:background="?selectableItemBackgroundBorderless"
-                            android:clickable="true"
-                            android:src="@drawable/ic_network_google_plus"/>
+                        <!--<ImageView-->
+                            <!--android:id="@+id/google_plus_button"-->
+                            <!--android:layout_width="0dip"-->
+                            <!--android:layout_height="64dp"-->
+                            <!--android:layout_weight="1"-->
+                            <!--android:background="?selectableItemBackgroundBorderless"-->
+                            <!--android:clickable="true"-->
+                            <!--android:src="@drawable/ic_network_google_plus"/>-->
 
-                        <ImageView
-                            android:id="@+id/facebook_button"
-                            android:layout_width="0dip"
-                            android:layout_height="64dp"
-                            android:layout_weight="1"
-                            android:background="?selectableItemBackgroundBorderless"
-                            android:clickable="true"
-                            android:src="@drawable/ic_network_facebook"/>
+                        <!--<ImageView-->
+                            <!--android:id="@+id/facebook_button"-->
+                            <!--android:layout_width="0dip"-->
+                            <!--android:layout_height="64dp"-->
+                            <!--android:layout_weight="1"-->
+                            <!--android:background="?selectableItemBackgroundBorderless"-->
+                            <!--android:clickable="true"-->
+                            <!--android:src="@drawable/ic_network_facebook"/>-->
 
                         <ImageView
                             android:id="@+id/youtube_button"

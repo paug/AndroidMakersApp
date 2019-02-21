@@ -69,8 +69,8 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
 
         fragmentAboutBinding.twitterUserButton.setOnClickListener(this);
         fragmentAboutBinding.twitterHashtagButton.setOnClickListener(this);
-        fragmentAboutBinding.googlePlusButton.setOnClickListener(this);
-        fragmentAboutBinding.facebookButton.setOnClickListener(this);
+//        fragmentAboutBinding.googlePlusButton.setOnClickListener(this);
+//        fragmentAboutBinding.facebookButton.setOnClickListener(this);
         fragmentAboutBinding.youtubeButton.setOnClickListener(this);
         fragmentAboutBinding.wifiConnectButton.setOnClickListener(this);
         fragmentAboutBinding.versionTextView.setText(String.format(getString(R.string.version), BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE));
@@ -84,10 +84,10 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
             openTwitterUser();
         } else if (v == fragmentAboutBinding.twitterHashtagButton) {
             openTwitterHashtag();
-        } else if (v == fragmentAboutBinding.googlePlusButton) {
-            openGooglePlus();
-        } else if (v == fragmentAboutBinding.facebookButton) {
-            openFacebookEvent();
+//        } else if (v == fragmentAboutBinding.googlePlusButton) {
+//            openGooglePlus();
+//        } else if (v == fragmentAboutBinding.facebookButton) {
+//            openFacebookEvent();
         } else if (v == fragmentAboutBinding.youtubeButton) {
             openYoutube();
         } else if (v == fragmentAboutBinding.wifiConnectButton) {
@@ -127,13 +127,13 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
         startActivity(twitterIntent);
     }
 
-    void openGooglePlus() {
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.google_plus))));
-    }
+//    void openGooglePlus() {
+//        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.google_plus))));
+//    }
 
-    void openFacebookEvent() {
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.facebook_event))));
-    }
+//    void openFacebookEvent() {
+//        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.facebook_event))));
+//    }
 
     void openYoutube() {
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.youtube_channel))));
