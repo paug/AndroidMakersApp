@@ -16,6 +16,5 @@ Help us improve the app if you want, PR welcome!
 
 <h2>TODO</h2>
 
-- Update for 2018
-- Improvements
-- Videos links
+- Update for 2019
+- Go see the dashboard in Projects
