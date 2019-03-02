@@ -51,6 +51,7 @@
     <string name="locate_on_map">Localiser sur la carte</string>
     <string name="venue_afterparty_tab">After Party</string>
     <string name="venue_conference_tab">Conférence</string>
+    <string name="venue_floor_plan_tab">Plan</string>
 
     <!--About-->
     <string name="about_android_makers">Android Makers Paris est un événement de deux jours qui se tiendra les 23 et 24 avril 2019 au Beffroi de Montrouge, à Paris, en France.
