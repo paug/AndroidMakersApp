@@ -9,3 +9,8 @@
 -dontwarn org.slf4j.**
 
 -keep class fr.paug.androidmakers.model.** { *; }
+
+-keep class com.google.ar.** { *; }
+-keep class com.google.vr.** { *; }
+
+-dontwarn com.google.ar.**
