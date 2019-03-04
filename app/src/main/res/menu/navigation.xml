@@ -12,6 +12,11 @@
         android:title="@string/title_venue" />
 
     <item
+        android:id="@+id/navigation_ar"
+        android:icon="@drawable/ic_camera_alt_black_24dp"
+        android:title="@string/title_ar" />
+
+    <item
         android:id="@+id/navigation_about"
         android:icon="@drawable/ic_info_outline_black_24dp"
         android:title="@string/title_about" />

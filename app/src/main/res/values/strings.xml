@@ -7,6 +7,8 @@
     <string name="title_agenda">Agenda</string>
     <string name="title_venue">Venue</string>
     <string name="title_about">About</string>
+    <string name="title_ar">AR</string>
+
 
     <string name="english">English</string>
     <string name="french">French</string>
@@ -93,5 +95,6 @@
     <string name="media_sponsor">Media</string>
     <string name="location_sponsor">Location</string>
     <string name="specialthanks_sponsor">Special Thanks</string>
+    <string name="nougat_needed">You need a newer shiner phone with nougat on it...</string>
 
 </resources>

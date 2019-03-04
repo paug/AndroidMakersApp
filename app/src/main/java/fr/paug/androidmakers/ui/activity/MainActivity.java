@@ -2,9 +2,13 @@ package fr.paug.androidmakers.ui.activity;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.ar.core.ArCoreApk;
+import com.google.ar.sceneform.ux.ArFragment;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -18,12 +22,15 @@ import fr.paug.androidmakers.manager.AgendaRepository;
 import fr.paug.androidmakers.model.ScheduleSlot;
 import fr.paug.androidmakers.ui.fragment.AboutFragment;
 import fr.paug.androidmakers.ui.fragment.AgendaFragment;
+import fr.paug.androidmakers.ui.fragment.AmArFragment;
+import fr.paug.androidmakers.ui.fragment.NougatNeededFragment;
 import fr.paug.androidmakers.ui.fragment.VenuePagerFragment;
 
 public class MainActivity extends BaseActivity {
 
     private static final String TAG_FRAGMENT_AGENDA = "TAG_FRAGMENT_AGENDA";
     private static final String TAG_FRAGMENT_VENUE = "TAG_FRAGMENT_VENUE";
+    private static final String TAG_FRAGMENT_AR = "TAG_FRAGMENT_AR";
     private static final String TAG_FRAGMENT_ABOUT = "TAG_FRAGMENT_ABOUT";
 
     private Fragment fragment;
@@ -42,6 +49,9 @@ public class MainActivity extends BaseActivity {
                     break;
                 case R.id.navigation_venue:
                     tag = TAG_FRAGMENT_VENUE;
+                    break;
+                case R.id.navigation_ar:
+                    tag = TAG_FRAGMENT_AR;
                     break;
                 case R.id.navigation_about:
                     tag = TAG_FRAGMENT_ABOUT;
@@ -74,6 +84,7 @@ public class MainActivity extends BaseActivity {
 
         navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
         handleURLLink(getIntent());
     }
 
@@ -93,6 +104,14 @@ public class MainActivity extends BaseActivity {
         switch (tag) {
             case TAG_FRAGMENT_VENUE:
                 return new VenuePagerFragment();
+            case TAG_FRAGMENT_AR:
+                ArCoreApk.Availability availability = ArCoreApk.getInstance().checkAvailability(this);
+
+                if (availability.isSupported() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    return new AmArFragment();
+                } else {
+                    return new NougatNeededFragment();
+                }
             case TAG_FRAGMENT_ABOUT:
                 return new AboutFragment();
             case TAG_FRAGMENT_AGENDA:

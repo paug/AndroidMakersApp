@@ -14,6 +14,9 @@
     <!-- BOT -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
+    <!-- AR -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera.ar" android:required="false"/>
 
     <application
         android:name=".AndroidMakersApplication"
@@ -26,6 +29,8 @@
 
         <!-- We need this to enable manual activation (to avoid reporting in debug) -->
         <meta-data android:name="firebase_crashlytics_collection_enabled" android:value="false"/>
+
+        <meta-data android:name="com.google.ar.core" android:value="optional" />
 
         <activity
             android:name=".ui.activity.MainActivity"
