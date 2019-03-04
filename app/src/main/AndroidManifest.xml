@@ -11,6 +11,14 @@
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
+    <!-- BOT -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <!-- AR -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera.ar" android:required="false"/>
+
+    <uses-sdk tools:overrideLibrary="com.firebase.ui.auth"/>
     <application
         android:name=".AndroidMakersApplication"
         android:allowBackup="true"
@@ -18,11 +26,14 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/PreviewTheme.AndroidMakers"
+
         tools:replace="android:theme">
 
         <!-- Disable analytics and advertisingId collection. Google just pushed us out of the store for that -->
         <meta-data android:name="firebase_crashlytics_collection_enabled" android:value="false" />
         <meta-data android:name="google_analytics_adid_collection_enabled" android:value="false" />
+
+        <meta-data android:name="com.google.ar.core" android:value="optional" />
 
         <activity
             android:name=".ui.activity.MainActivity"
@@ -67,6 +78,11 @@
         <activity
             android:name=".ui.activity.SessionDetailActivity"
             android:configChanges="orientation|screenSize" />
+        <activity
+            android:theme="@style/Theme.FlashDroid"
+            android:name=".flash_droid.FlashDroidActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="userPortrait"/>
 
         <receiver
             android:name=".receiver.SessionAlarmReceiver"

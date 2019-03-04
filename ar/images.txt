@@ -1,0 +1,15 @@
+cupcake|cupcake.png
+donut|donut.png
+eclair|eclair.png
+froyo|froyo.png
+gingerbread|gingerbread.png
+honeycomb|honeycomb.png
+ice_cream_sandwich|ice_cream_sandwich.png
+jelly_bean|jelly_bean.png
+kitkat|kitkat.png
+lollipop|lollipop.png
+marshmallow|marshmallow.png
+nougat|nougat.png
+oreo|oreo.png
+pie|pie.png
+montrouge|montrouge.png

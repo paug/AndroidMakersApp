@@ -15,6 +15,7 @@ buildscript {
         classpath 'com.google.gms:google-services:4.2.0' // google-services plugin
         classpath 'io.fabric.tools:gradle:1.28.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.google.ar.sceneform:plugin:1.7.0'
     }
 }
 

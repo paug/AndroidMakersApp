@@ -15,6 +15,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import fr.paug.androidmakers.R
+import fr.paug.androidmakers.flash_droid.FlashDroidActivity
 import fr.paug.androidmakers.manager.AndroidMakersStore
 import fr.paug.androidmakers.model.RoomKt
 import fr.paug.androidmakers.model.ScheduleSlotKt
@@ -337,27 +338,33 @@ class AgendaFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater?) {
         super.onCreateOptionsMenu(menu, inflater)
 
-        val menuItem = menu.add(0, R.id.filter, 0, activity!!.getString(R.string.filter))!!
+        var menuItem = menu.add(0, R.id.flash_droid_menu, 0, "FlashDroid")!!
+        menuItem.setIcon(R.drawable.ic_egg)
+        menuItem.setShowAsAction(SHOW_AS_ACTION_ALWAYS)
+
+        menuItem = menu.add(0, R.id.filter, 0, activity!!.getString(R.string.filter))!!
         menuItem.setIcon(R.drawable.ic_filter_list_white_24dp)
         menuItem.setShowAsAction(SHOW_AS_ACTION_ALWAYS)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.filter) {
-            if (mDrawerLayout!!.isDrawerOpen(GravityCompat.END)) {
-                mDrawerLayout!!.closeDrawer(GravityCompat.END)
-            } else {
-                mDrawerLayout!!.openDrawer(GravityCompat.END)
+        when(item.itemId) {
+            R.id.filter -> {
+                if (mDrawerLayout!!.isDrawerOpen(GravityCompat.END)) {
+                    mDrawerLayout!!.closeDrawer(GravityCompat.END)
+                } else {
+                    mDrawerLayout!!.openDrawer(GravityCompat.END)
+                }
+                return true
             }
-            return true
+            R.id.flash_droid_menu -> {
+                val intent = Intent()
+                intent.setClass(context!!, FlashDroidActivity::class.java)
+                startActivity(intent)
+                return true
+            }
         }
         return false
     }
     //endregion
-
-    fun rescheduleStarredBlocks() {
-        // reschedule all starred blocks in case one session start or stop time has changed
-        val scheduleIntent = Intent(SessionAlarmService.ACTION_SCHEDULE_ALL_STARRED_BLOCKS)
-        SessionAlarmService.enqueueWork(context!!, scheduleIntent)
-    }
 }
