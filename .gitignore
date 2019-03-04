@@ -31,3 +31,8 @@ app/src/prod/google-services.json
 app/src/preprod/google-services.json
 
 app/prod/release/output.json
+keystore.jks
+/ar/*.png
+/app/prod
+/captures
+/app/src/main/assets/images.imgdb-imglist.txt

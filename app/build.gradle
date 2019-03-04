@@ -1,10 +1,11 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'io.fabric'
+apply plugin: 'kotlin-android-extensions'
 
 def versionMajor = 1
 def versionMinor = 2
-def versionPatch = 1
+def versionPatch = 2
 
 def checkGoogleServices(variant) {
     def target = project.file("src/" + variant + "/google-services.json")
@@ -27,6 +28,8 @@ android {
         versionCode versionMajor * 1000 + versionMinor * 100 + versionPatch * 10
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+
         multiDexEnabled true
 
         buildConfigField "String", "YOUTUBE_API_KEY", "\"" + System.getProperty("androidMakersYouTubeApiKey", "dummyAPIKey") + "\""
@@ -71,6 +74,11 @@ android {
     dataBinding {
         enabled = true
     }
+
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
 }
 
 dependencies {
@@ -103,6 +111,9 @@ dependencies {
 
     // Firestore
     implementation 'com.google.firebase:firebase-firestore:18.2.0'
+    implementation 'com.google.firebase:firebase-auth:16.2.1'
+    implementation 'com.firebaseui:firebase-ui-auth:4.3.1'
+    implementation 'com.google.android.gms:play-services-auth:16.0.1'
 
     // Image management
     implementation "com.github.bumptech.glide:glide:$glide_version"
@@ -113,6 +124,10 @@ dependencies {
 
     // For Video preview
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
+
+    implementation "com.google.ar.sceneform.ux:sceneform-ux:1.8.0"
+    implementation "com.google.ar.sceneform:core:1.8.0"
 }
 
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.ar.sceneform.plugin'
