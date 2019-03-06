@@ -68,9 +68,26 @@ class AgendaFragment : Fragment() {
         //AgendaRepository.getInstance().load(AgendaLoadListener(this))
 
         // Access a Cloud Firestore instance from your Activity
-        val db = FirebaseFirestore.getInstance()
+        val firestore = FirebaseFirestore.getInstance()
 
-        db.collection("partners")
+        firestore.collection("speakers")
+                .get()
+                .addOnSuccessListener { result ->
+//                    Log.d("result", result.toString())
+//                    Log.d("docs", result.documents.toString())
+
+                    for (document in result.documents) {
+                        Log.d("FS", document.id + " => " + document.data)
+                    }
+//                    for (document in result) {
+//                        Log.d("FS", document.id + " => " + document.data)
+//                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.w("FS", "Error getting documents.", exception)
+                }
+
+        firestore.collection("partners")
                 .get()
                 .addOnSuccessListener { result ->
                     for (document in result) {
@@ -80,7 +97,6 @@ class AgendaFragment : Fragment() {
                 .addOnFailureListener { exception ->
                     Log.w("FS", "Error getting documents.", exception)
                 }
-
 
         initFilters()
 
