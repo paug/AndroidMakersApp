@@ -1,7 +1,5 @@
 package fr.paug.androidmakers.manager;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.util.Log;
 import android.util.SparseArray;
 
@@ -16,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import fr.paug.androidmakers.model.FirebaseDataConverted;
 import fr.paug.androidmakers.model.PartnerGroup;
 import fr.paug.androidmakers.model.Room;
