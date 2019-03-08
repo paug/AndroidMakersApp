@@ -16,7 +16,7 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:minHeight="80dp"
         android:scaleType="fitCenter"
-        tools:src="@drawable/google_plus"
+        tools:src="@drawable/ic_bookmark"
         tools:ignore="ContentDescription" />
 
     <ImageView
@@ -30,7 +30,7 @@
         android:minHeight="80dp"
         android:scaleType="fitCenter"
         android:visibility="gone"
-        tools:src="@drawable/google_plus"
+        tools:src="@drawable/ic_bookmark"
         tools:visibility="visible"
         tools:ignore="ContentDescription" />
 
@@ -45,7 +45,7 @@
         android:minHeight="80dp"
         android:scaleType="fitCenter"
         android:visibility="gone"
-        tools:src="@drawable/google_plus"
+        tools:src="@drawable/ic_bookmark"
         tools:visibility="visible"
         tools:ignore="ContentDescription" />
 
