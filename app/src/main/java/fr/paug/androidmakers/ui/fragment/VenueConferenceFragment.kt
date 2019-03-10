@@ -21,11 +21,13 @@ class VenueConferenceFragment : Fragment(), View.OnClickListener {
 
     private var venueItemFragmentBinding: VenueItemFragmentBinding? = null
 
-    val venueCoordinatesUri: Uri = Uri.EMPTY
+    private val venueCoordinatesUri: Uri
+        get() = Uri.parse("geo:" + venueInformation?.coordinates +
+                "?q=" + Uri.encode(venueInformation?.name))
 
-    open var venueInformation: Venue? = null
+    private var venueInformation: Venue? = null
 
-    var venueDescription: String? = ""
+    private val venueDescription: String?
         get() {
             val fr = Locale.FRENCH
             return if (Locale.getDefault().language === fr.language) {
@@ -36,8 +38,6 @@ class VenueConferenceFragment : Fragment(), View.OnClickListener {
         }
 
     init {
-        // Required empty public constructor
-
         // Keeps this Fragment alive during configuration changes
         retainInstance = true
     }
@@ -47,7 +47,7 @@ class VenueConferenceFragment : Fragment(), View.OnClickListener {
         // Inflate the layout for this fragment
         venueItemFragmentBinding = DataBindingUtil.inflate(
                 inflater, R.layout.venue_item_fragment, container, false)
-        AndroidMakersStore().getVenue("UrAiqcpPwlGJBTSQVnY4") {
+        AndroidMakersStore().getVenue("conference") {
             venueInformation = it
             venueItemFragmentBinding!!.venue = venueInformation
             venueItemFragmentBinding!!.venueDirections.text = Html.fromHtml(venueDescription)
@@ -58,18 +58,22 @@ class VenueConferenceFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View) {
         if (v === venueItemFragmentBinding!!.venueLocateButton) {
-            try {
-                val intent = Intent(Intent.ACTION_VIEW, venueCoordinatesUri)
-                startActivity(intent)
-            } catch (e: Exception) {
-                val view = view
-                if (view != null) {
-                    Snackbar.make(view, R.string.no_maps_app_found, Snackbar.LENGTH_SHORT).show()
-                }
+            openMap()
+        }
+    }
 
-                // Open in Webview
-                CustomTabUtil.openChromeTab(context, "https://www.google.com/maps/?q=" + venueInformation?.coordinates?.replace(" ", ""))
+    fun openMap() {
+        try {
+            val intent = Intent(Intent.ACTION_VIEW, venueCoordinatesUri)
+            startActivity(intent)
+        } catch (e: Exception) {
+            val view = view
+            if (view != null) {
+                Snackbar.make(view, R.string.no_maps_app_found, Snackbar.LENGTH_SHORT).show()
             }
+
+            // Open in Webview
+            CustomTabUtil.openChromeTab(context, "https://www.google.com/maps/?q=" + venueInformation?.coordinates?.replace(" ", ""))
         }
     }
 }

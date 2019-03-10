@@ -72,6 +72,12 @@ class AndroidMakersStore {
                 }
     }
 
+    /*
+    rajouter cette règle dans firestore :
+    match /venues/{id} {
+    	allow read;
+    }
+     */
     fun getVenue(document: String, callback: (Venue?) -> Unit) {
         val firestore = FirebaseFirestore.getInstance()
         val docRef = firestore.collection("venues").document(document)
