@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.text.TextUtils
-import android.util.Log
 import android.util.SparseArray
 import android.view.*
 import android.view.MenuItem.SHOW_AS_ACTION_ALWAYS
@@ -16,7 +15,6 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
-import com.google.firebase.firestore.FirebaseFirestore
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.manager.AgendaRepository
 import fr.paug.androidmakers.model.ScheduleSlot
@@ -66,37 +64,7 @@ class AgendaFragment : Fragment() {
         Handler().postDelayed(RefreshRunnable(this), 3000)
 
         //AgendaRepository.getInstance().load(AgendaLoadListener(this))
-
-        // Access a Cloud Firestore instance from your Activity
-        val firestore = FirebaseFirestore.getInstance()
-
-        firestore.collection("speakers")
-                .get()
-                .addOnSuccessListener { result ->
-//                    Log.d("result", result.toString())
-//                    Log.d("docs", result.documents.toString())
-
-                    for (document in result.documents) {
-                        Log.d("FS", document.id + " => " + document.data)
-                    }
-//                    for (document in result) {
-//                        Log.d("FS", document.id + " => " + document.data)
-//                    }
-                }
-                .addOnFailureListener { exception ->
-                    Log.w("FS", "Error getting documents.", exception)
-                }
-
-        firestore.collection("partners")
-                .get()
-                .addOnSuccessListener { result ->
-                    for (document in result) {
-                        Log.d("FS", document.id + " => " + document.data)
-                    }
-                }
-                .addOnFailureListener { exception ->
-                    Log.w("FS", "Error getting documents.", exception)
-                }
+        // TODO replace with cloud firestore code
 
         initFilters()
 

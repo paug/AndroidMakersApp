@@ -8,15 +8,15 @@ import fr.paug.androidmakers.model.Venue;
 public class VenueAfterPartyFragment extends AbstractVenueFragment {
 
     private final Uri AFTER_PARTY_VENUE_COORDINATES_URI =
-            Uri.parse("geo:" + getVenueInformation().coordinates +
-                    "?q=" + Uri.encode(getVenueInformation().name));
+            Uri.parse("geo:" + getVenueInformation().getCoordinates() +
+                    "?q=" + Uri.encode(getVenueInformation().getName()));
 
     protected Uri getVenueCoordinatesUri() {
         return AFTER_PARTY_VENUE_COORDINATES_URI;
     }
 
     @Override
-    protected Venue getVenueInformation() {
+    public Venue getVenueInformation() {
         Venue party = AgendaRepository.getInstance().getVenue(2);
         if (party != null) {
             return party;
