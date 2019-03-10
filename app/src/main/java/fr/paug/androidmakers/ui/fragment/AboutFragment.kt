@@ -49,32 +49,9 @@ class AboutFragment : Fragment(), View.OnClickListener {
                               savedInstanceState: Bundle?): View? {
         fragmentAboutBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_about, container, false)
 
-//        val partners = AgendaRepository.getInstance().partners
-//
-//        if (partners != null) {
-//            for (partnerType in PartnerGroup.PartnerType.values()) {
-//                val sponsorGroup = partners[partnerType]
-//                addPartnerTypeToView(sponsorGroup)
-//            }
-//        }
-
         AndroidMakersStore().getPartners { partnerCollection ->
             addPartnerCollectionToView(partnerCollection)
         }
-
-//        val firestore = FirebaseFirestore.getInstance()
-//        firestore.collection("partners")
-//                .get()
-//                .addOnSuccessListener { result ->
-//                    for (document in result) {
-//                        Log.d("Firestore", document.id + " => " + document.data)
-//                        val partnerCollection = document.toObject(PartnerCollection::class.java)
-//                        addPartnerCollectionToView(partnerCollection)
-//                    }
-//                }
-//                .addOnFailureListener { exception ->
-//                    Log.w("Firestore", "Error getting documents.", exception)
-//                }
 
         // Listen to network state change
         val intentFilter = IntentFilter()
