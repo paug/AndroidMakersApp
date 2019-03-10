@@ -4,23 +4,19 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import androidx.databinding.DataBindingUtil
 import android.net.Uri
 import android.net.wifi.WifiManager
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.google.firebase.firestore.FirebaseFirestore
-
 import fr.paug.androidmakers.BuildConfig
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.databinding.FragmentAboutBinding
@@ -62,29 +58,28 @@ class AboutFragment : Fragment(), View.OnClickListener {
 //            }
 //        }
 
-//        val partnerCollectionList = AndroidMakersStore().getPartners()
-//        for (partnerCollection in partnerCollectionList) {
-//            addPartnerCollectionToView(partnerCollection)
-//        }
+        AndroidMakersStore().getPartners { partnerCollection ->
+            addPartnerCollectionToView(partnerCollection)
+        }
 
-        val firestore = FirebaseFirestore.getInstance()
-        firestore.collection("partners")
-                .get()
-                .addOnSuccessListener { result ->
-                    for (document in result) {
-                        Log.d("Firestore", document.id + " => " + document.data)
-                        val partnerCollection = document.toObject(PartnerCollection::class.java)
-                        addPartnerCollectionToView(partnerCollection)
-                    }
-                }
-                .addOnFailureListener { exception ->
-                    Log.w("Firestore", "Error getting documents.", exception)
-                }
+//        val firestore = FirebaseFirestore.getInstance()
+//        firestore.collection("partners")
+//                .get()
+//                .addOnSuccessListener { result ->
+//                    for (document in result) {
+//                        Log.d("Firestore", document.id + " => " + document.data)
+//                        val partnerCollection = document.toObject(PartnerCollection::class.java)
+//                        addPartnerCollectionToView(partnerCollection)
+//                    }
+//                }
+//                .addOnFailureListener { exception ->
+//                    Log.w("Firestore", "Error getting documents.", exception)
+//                }
 
         // Listen to network state change
         val intentFilter = IntentFilter()
         intentFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION)
-        context!!.registerReceiver(wifiStateChangedReceiver, intentFilter)
+        context?.registerReceiver(wifiStateChangedReceiver, intentFilter)
 
         fragmentAboutBinding!!.twitterUserButton.setOnClickListener(this)
         fragmentAboutBinding!!.twitterHashtagButton.setOnClickListener(this)
@@ -230,34 +225,33 @@ class AboutFragment : Fragment(), View.OnClickListener {
             partnerGroupHeader.text = partnerCollection.title
 
             val partnerLogoLayout = partnersGroupLinearLayout.findViewById<LinearLayout>(R.id.partners_layout)
-            //val partnerLogoSizePriority = partnerGroup.partnerType.partnerLogoSizePriority
+            val partnerLogoSizePriority = 1 //partnerGroup.partnerType.partnerLogoSizePriority
 
             var index = 0
             while (index < partnersList.size) {
-                //TODO Flow layouts
                 val partnerRow = LayoutInflater.from(context).inflate(R.layout.partner_row, null) as LinearLayout
-//                partnerRow.weightSum = partnerLogoSizePriority.toFloat()
-//
-//                if (partnerLogoSizePriority > 0) {
+                partnerRow.weightSum = partnerLogoSizePriority.toFloat()
+
+                if (partnerLogoSizePriority > 0) {
                     val partner1 = partnerRow.findViewById<ImageView>(R.id.partner1)
                     setLogo(partner1, partnersList[index])
                     partner1.contentDescription = partnersList[index].name
-//                }
-//
-                if (/*partnerLogoSizePriority > 1 &&*/ partnersList.size > index + 1) {
+                }
+
+                if (partnerLogoSizePriority > 1 && partnersList.size > index + 1) {
                     val partner2 = partnerRow.findViewById<ImageView>(R.id.partner2)
                     setLogo(partner2, partnersList[index + 1])
                     partner2.contentDescription = partnersList[index].name
                 }
-//
-                if (/*partnerLogoSizePriority > 2 &&*/ partnersList.size > index + 2) {
+
+                if (partnerLogoSizePriority > 2 && partnersList.size > index + 2) {
                     val partner3 = partnerRow.findViewById<ImageView>(R.id.partner3)
                     setLogo(partner3, partnersList[index + 2])
                     partner3.contentDescription = partnersList[index].name
                 }
 
                 partnerLogoLayout.addView(partnerRow)
-                index += 1
+                index += partnerLogoSizePriority
             }
 
             fragmentAboutBinding!!.sponsorsLayout.addView(partnersGroupLinearLayout)
@@ -279,13 +273,12 @@ class AboutFragment : Fragment(), View.OnClickListener {
         partnerLogo.visibility = View.VISIBLE
         val options = RequestOptions()
                 .placeholder(R.color.light_grey)
-        //TODO Change svg to png on website
+        val imageUrl = String.format("https://androidmakers.fr%s", logo.logoUrl.replace("..", "").replace(".svg", ".png"))
         Glide.with(context!!)
-                .load(String.format("https://androidmakers.fr", logo.logoUrl.replace("..", "")))
-//                .load("https://paug.github.io/android-makers-2018/img/partners/xebia.png")
+                .load(imageUrl)
                 .apply(options)
                 .into(partnerLogo)
         partnerLogo.setOnClickListener { CustomTabUtil.openChromeTab(context, logo.url) }
     }
 
-}// Required empty public constructor
+}
