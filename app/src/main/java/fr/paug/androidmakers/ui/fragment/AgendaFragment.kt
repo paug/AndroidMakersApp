@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.text.TextUtils
+import android.util.Log
 import android.util.SparseArray
 import android.view.*
 import android.view.MenuItem.SHOW_AS_ACTION_ALWAYS
@@ -15,9 +16,12 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
+import com.google.firebase.firestore.FirebaseFirestore
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.manager.AgendaRepository
 import fr.paug.androidmakers.model.ScheduleSlot
+import fr.paug.androidmakers.model.SessionKt
+import fr.paug.androidmakers.model.SpeakerKt
 import fr.paug.androidmakers.service.SessionAlarmService
 import fr.paug.androidmakers.ui.adapter.AgendaPagerAdapter
 import fr.paug.androidmakers.ui.adapter.DaySchedule
@@ -31,6 +35,8 @@ import java.text.DateFormat
 import java.util.*
 
 class AgendaFragment : Fragment() {
+
+    val TAG = "Agenda"
 
     private var mProgressView: View? = null
     private var mEmptyView: View? = null
@@ -65,6 +71,61 @@ class AgendaFragment : Fragment() {
 
         //AgendaRepository.getInstance().load(AgendaLoadListener(this))
         // TODO replace with cloud firestore code
+
+        val firestore = FirebaseFirestore.getInstance()
+        // Load speakers
+        firestore.collection("speakers")
+                .get()
+                .addOnSuccessListener { result ->
+                    for (document in result) {
+//                        Log.d(TAG, document.id + " => " + document.data)
+                        val speaker = document.toObject(SpeakerKt::class.java)
+                        Log.e("speaker", speaker.toString())
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.w(TAG, "Error getting documents.", exception)
+                }
+
+        // Load Sessions
+        firestore.collection("sessions")
+                .get()
+                .addOnSuccessListener { result ->
+                    for (document in result) {
+//                        Log.d(TAG, document.id + " => " + document.data)
+                        val session = document.toObject(SessionKt::class.java)
+                        Log.e("session", session.toString())
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.w(TAG, "Error getting documents.", exception)
+                }
+
+        // Load Schedule
+        firestore.collection("schedule")
+                .get()
+                .addOnSuccessListener { result ->
+                    for (document in result) {
+                        Log.d(TAG, document.id + " => " + document.data)
+//                        val day = document.toObject(DaySchedule::class.java)
+//                        Log.e("day", day.toString())
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.w(TAG, "Error getting documents.", exception)
+                }
+
+        // OR generatedSchedule?
+//        firestore.collection("generatedSchedule")
+//                .get()
+//                .addOnSuccessListener { result ->
+//                    for (document in result) {
+//                        Log.d(TAG, document.id + " => " + document.data)
+//                    }
+//                }
+//                .addOnFailureListener { exception ->
+//                    Log.w(TAG, "Error getting documents.", exception)
+//                }
 
         initFilters()
 
