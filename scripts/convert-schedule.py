@@ -6,7 +6,9 @@ source: https://github.com/paug/android-makers-2019/blob/master/data/database/sc
 #!/usr/bin/env python
 
 import json
-from datetime import datetime
+
+from datetime import timedelta, datetime, tzinfo
+import pytz
 
 input_schedule_raw = "schedule.json"
 output_schedule_app = "schedule-app.json"
@@ -16,14 +18,16 @@ rooms = ["moebius", "blin", "202", "204"]
 talks = []
 
 def convertDate(datetime_str):
-	# TODO set timezone too
-	raw_date = datetime.strptime(datetime_str, '%Y-%m-%d %H:%M')
-	return raw_date.isoformat()
+	# https://stackabuse.com/converting-strings-to-datetime-in-python/
+	date_time_obj = datetime.strptime(datetime_str, '%Y-%m-%d %H:%M')
+	timezone = pytz.timezone('Europe/Paris')  
+	timezone_date_time_obj = timezone.localize(date_time_obj)
+	return timezone_date_time_obj.isoformat()
 
 def extractTalks(day_str, timeslots):
 	for slot in timeslots_day_1:
-		start_date_string = "%s %s" % (day_str, slot["startTime"])
-		end_date_string = "%s %s" % (day_str, slot["startTime"])
+		start_date_string = "{} {}".format(day_str, slot["startTime"])
+		end_date_string = "{} {}".format(day_str, slot["endTime"])
 
 		sessions = slot["sessions"]
 		if (len(sessions) == 1):
@@ -31,7 +35,7 @@ def extractTalks(day_str, timeslots):
 
 			items = sessions[0]["items"]
 			talk["startDate"] = convertDate(start_date_string)
-			talk["endDate"] = convertDate(start_date_string)
+			talk["endDate"] = convertDate(end_date_string)
 			talk["roomId"] = "all"
 			talk["sessionId"] = items[0]
 			talks.append(talk)
@@ -43,7 +47,7 @@ def extractTalks(day_str, timeslots):
 				if (len(items) > 0):
 					talk = {}
 					talk["startDate"] = convertDate(start_date_string)
-					talk["endDate"] = convertDate(start_date_string)
+					talk["endDate"] = convertDate(end_date_string)
 					talk["roomId"] = rooms[session_index]
 					talk["sessionId"] = items[0]
 					if (session.get("extend") != None):
