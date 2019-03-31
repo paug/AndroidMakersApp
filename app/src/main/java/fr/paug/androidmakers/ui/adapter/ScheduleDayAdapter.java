@@ -347,11 +347,11 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 }
             }
 
-            Session session = AgendaRepository.getInstance().getSession(scheduleSession.getSessionId());
+            Session session = AgendaRepository.Companion.getInstance().getSession(scheduleSession.getSessionId());
             if (session != null && session.speakers != null) {
                 descriptionBuilder.append('\n');
                 for (int i = 0; i < session.speakers.length; i++) {
-                    final Speaker speaker = AgendaRepository.getInstance().getSpeaker(session.speakers[i]);
+                    final Speaker speaker = AgendaRepository.Companion.getInstance().getSpeaker(session.speakers[i]);
 
                     if (speaker != null) {
                         descriptionBuilder.append(speaker.getFullName().trim());
