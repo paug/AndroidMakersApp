@@ -25,7 +25,7 @@ def convertDate(datetime_str):
 	return timezone_date_time_obj.isoformat()
 
 def extractTalks(day_str, timeslots):
-	for slot in timeslots_day_1:
+	for slot in timeslots:
 		start_date_string = "{} {}".format(day_str, slot["startTime"])
 		end_date_string = "{} {}".format(day_str, slot["endTime"])
 
@@ -47,12 +47,16 @@ def extractTalks(day_str, timeslots):
 				if (len(items) > 0):
 					talk = {}
 					talk["startDate"] = convertDate(start_date_string)
-					talk["endDate"] = convertDate(end_date_string)
 					talk["roomId"] = rooms[session_index]
 					talk["sessionId"] = items[0]
 					if (session.get("extend") != None):
-						# TODO Change the end time
-						talk["extend"] = session["extend"]
+						slot_index = timeslots.index(slot)
+						extend_slot = timeslots[slot_index + session["extend"] - 1]
+						extend_end_date_string = "{} {}".format(day_str, extend_slot["endTime"])
+						talk["endDate"] = convertDate(extend_end_date_string)
+					else:
+						talk["endDate"] = convertDate(end_date_string)
+
 					talks.append(talk)
 
 with open(input_schedule_raw) as json_data:
