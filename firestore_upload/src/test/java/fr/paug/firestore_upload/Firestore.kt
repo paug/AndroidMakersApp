@@ -40,19 +40,38 @@ class Main {
         }!!
 
         val list = mutableListOf<Map<*,*>>()
-        map.keys.forEach {
-            val day = map.getAsMap(it)
+        map.keys.forEach {d ->
+            val day = map.getAsMap(d)
             val timeSlots = day.getAsListOfMaps("timeslots")
-            val tracks = day.getAsListOfMaps("tracks")
 
-            timeSlots.forEach {
-                val sessions = it.getAsListOfMaps("sessions")
-                sessions.forEach {
+            timeSlots.forEachIndexed {timeSlotIndex, timeSlot ->
+                val sessions = timeSlot.getAsListOfMaps("sessions")
+                sessions.forEachIndexed {index, session ->
+                    val slot = mutableMapOf<String, String>()
+                    val sessionId = session.getAsListOfStrings("items").firstOrNull()
+                    if (sessionId != null) {
+                        slot.put("startTime", timeSlot.getAsString("startTime"))
 
+                        val extend = (session.get("extend") as Double?)?.toInt()?.minus(1) ?: 0
+                        slot.put("endTime", timeSlots[timeSlotIndex + extend].getAsString("endTime"))
+                        slot.put("sessionId", sessionId)
+                        val roomId = when {
+                            sessions.size == 1 -> "all"
+                            index == 0 -> "moebius"
+                            index == 1 -> "blin"
+                            index == 2 -> "202"
+                            index == 3 -> "204"
+                            else -> throw Exception("no room found")
+                        }
+                        slot.put("roomId", roomId)
+
+                        list.add(slot)
+                    }
                 }
-
             }
         }
+
+        System.out.println(listAdapter.indent("    ").toJson(list))
     }
 
     @Test
