@@ -8,14 +8,13 @@ import androidx.core.provider.FontRequest;
 import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
-import com.google.firebase.database.FirebaseDatabase;
 
 import fr.paug.androidmakers.util.SessionSelector;
 import io.fabric.sdk.android.Fabric;
 
 public class AndroidMakersApplication extends Application {
 
-    public static final String TAG = "AndroidMakersApplication";
+    public static final String TAG = "AndroidMakersApp";
 
     @Override
     public void onCreate() {
@@ -25,7 +24,6 @@ public class AndroidMakersApplication extends Application {
             Fabric.with(this, new Crashlytics());
         }
 
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         SessionSelector.getInstance().init(this);
 
         // Use a downloadable font for EmojiCompat
