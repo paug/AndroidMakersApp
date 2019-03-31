@@ -15,6 +15,7 @@ android {
         versionCode versionMajor * 1000 + versionMinor * 100 + versionPatch * 10
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
 
         buildConfigField "String", "YOUTUBE_API_KEY", "\"" + System.getProperty("androidMakersYouTubeApiKey", "dummyAPIKey") + "\""
     }
@@ -61,6 +62,8 @@ dependencies {
     androidTestImplementation('androidx.test.espresso:espresso-core:3.1.1', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+
+    implementation 'com.android.support:multidex:1.0.3'
 
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
