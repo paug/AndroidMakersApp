@@ -2,12 +2,7 @@ package fr.paug.androidmakers.manager
 
 import android.util.Log
 import android.util.SparseArray
-
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.firestore.FirebaseFirestore
 
 import java.util.ArrayList
 import fr.paug.androidmakers.model.FirebaseDataConverted
@@ -20,10 +15,9 @@ import fr.paug.androidmakers.model.Venue
 
 class AgendaRepository private constructor() {
 
-    private val mDatabase: FirebaseDatabase
-    private val mDatabaseReference: DatabaseReference
+    private val mDatabase = FirebaseFirestore.getInstance()
 
-    private val mOnLoadListeners: MutableList<OnLoadListener>
+    private val mOnLoadListeners = mutableListOf<OnLoadListener>()
     var isLoaded: Boolean = false
         private set
     private val mFirebaseDataConverted = FirebaseDataConverted()
@@ -39,31 +33,6 @@ class AgendaRepository private constructor() {
 
     val allLanguages: Set<String>
         get() = mFirebaseDataConverted.allLanguages
-
-    init {
-        Log.e(TAG, "AgendaRepo created")
-        mOnLoadListeners = ArrayList()
-        mDatabase = FirebaseDatabase.getInstance()
-        mDatabaseReference = mDatabase.reference
-
-        val currentYearReference = mDatabaseReference.child(CURRENT_YEAR_NODE)
-
-        currentYearReference.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                mFirebaseDataConverted.loadAllFromFirebase(dataSnapshot.value)
-                val listenersCpy = ArrayList(mOnLoadListeners)
-                for (listener in listenersCpy) {
-                    listener.onAgendaLoaded()
-                }
-                isLoaded = true
-                Log.e(TAG, "AgendaRepo loaded")
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                // nothing to do
-            }
-        })
-    }
 
     fun load(listener: OnLoadListener) {
         if (isLoaded) {
