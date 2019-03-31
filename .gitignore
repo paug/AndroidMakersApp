@@ -27,6 +27,7 @@ build/
 
 *.apk
 
-google-services.json
+app/src/prod/google-services.json
+app/src/preprod/google-services.json
+
 app/prod/release/output.json
-app/google-services.json
