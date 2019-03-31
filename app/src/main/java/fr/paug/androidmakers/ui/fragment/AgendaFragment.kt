@@ -80,7 +80,7 @@ class AgendaFragment : Fragment() {
                     for (document in result) {
 //                        Log.d(TAG, document.id + " => " + document.data)
                         val speaker = document.toObject(SpeakerKt::class.java)
-                        Log.e("speaker", speaker.toString())
+//                        Log.e("speaker", speaker.toString())
                     }
                 }
                 .addOnFailureListener { exception ->
@@ -94,7 +94,7 @@ class AgendaFragment : Fragment() {
                     for (document in result) {
 //                        Log.d(TAG, document.id + " => " + document.data)
                         val session = document.toObject(SessionKt::class.java)
-                        Log.e("session", session.toString())
+//                        Log.e("session", session.toString())
                     }
                 }
                 .addOnFailureListener { exception ->
@@ -102,12 +102,35 @@ class AgendaFragment : Fragment() {
                 }
 
         // Load Schedule
-        firestore.collection("schedule")
+        firestore.collection("schedule-app")
                 .get()
                 .addOnSuccessListener { result ->
                     for (document in result) {
                         Log.d(TAG, document.id + " => " + document.data)
-//                        val day = document.toObject(DaySchedule::class.java)
+
+                        val all = document.get("all")
+//                        Log.e("all", all.toString())
+
+                        val day1 = mutableListOf<HashMap<String, String>>()
+                        val day2 = mutableListOf<HashMap<String, String>>()
+                        val list = all as ArrayList<HashMap<String, String>>
+                        for (sessionItem in list) {
+                            Log.e("sessionItem", sessionItem.toString())
+                            val date = sessionItem["startDate"]
+
+                            if (date!!.contains("2019-04-23T")) {
+                                day1.add(sessionItem)
+                            }
+                            if (date!!.contains("2019-04-24T")) {
+                                day2.add(sessionItem)
+                            }
+                        }
+                        Log.d("day", day1.toString())
+                        Log.d("day", day2.toString())
+
+                        //TODO Days list
+
+//                        val day = document.toObject(Sessions::class.java)
 //                        Log.e("day", day.toString())
                     }
                 }
@@ -115,17 +138,6 @@ class AgendaFragment : Fragment() {
                     Log.w(TAG, "Error getting documents.", exception)
                 }
 
-        // OR generatedSchedule?
-//        firestore.collection("generatedSchedule")
-//                .get()
-//                .addOnSuccessListener { result ->
-//                    for (document in result) {
-//                        Log.d(TAG, document.id + " => " + document.data)
-//                    }
-//                }
-//                .addOnFailureListener { exception ->
-//                    Log.w(TAG, "Error getting documents.", exception)
-//                }
 
         initFilters()
 
