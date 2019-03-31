@@ -98,12 +98,12 @@ public class SessionDetailActivity extends BaseActivity implements YouTubeThumbn
         super.onCreate(savedInstanceState);
         final ActivityDetailBinding activityDetailBinding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
         sessionId = getIntent().getIntExtra(PARAM_SESSION_ID, -1);
-        session = AgendaRepository.getInstance().getSession(sessionId);
+        session = AgendaRepository.Companion.getInstance().getSession(sessionId);
 
         sessionStartDateInMillis = getIntent().getLongExtra(PARAM_SESSION_START_DATE, -1);
         sessionEndDateInMillis = getIntent().getLongExtra(PARAM_SESSION_END_DATE, -1);
 
-        final Room sessionRoom = AgendaRepository.getInstance().getRoom(
+        final Room sessionRoom = AgendaRepository.Companion.getInstance().getRoom(
                 getIntent().getIntExtra(PARAM_SESSION_ROOM, -1)
         );
 
@@ -159,7 +159,7 @@ public class SessionDetailActivity extends BaseActivity implements YouTubeThumbn
         final ViewGroup sessionSpeakerLayout = findViewById(R.id.sessionSpeakerLayout);
         if (session.speakers != null && session.speakers.length > 0) {
             for (final int speakerID : session.speakers) {
-                final Speaker speaker = AgendaRepository.getInstance().getSpeaker(speakerID);
+                final Speaker speaker = AgendaRepository.Companion.getInstance().getSpeaker(speakerID);
                 if (speaker != null) {
                     speakersList.add(speaker.getFullNameAndCompany());
 

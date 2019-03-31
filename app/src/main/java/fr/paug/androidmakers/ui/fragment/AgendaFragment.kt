@@ -158,10 +158,10 @@ class AgendaFragment : Fragment() {
         addFilter(SessionFilter(LANGUAGE, "fr"), null)
         addFilter(SessionFilter(LANGUAGE, "en"), null)
 
-        AgendaRepository.getInstance().load(object : AgendaRepository.OnLoadListener {
+        AgendaRepository.instance.load(object : AgendaRepository.OnLoadListener {
             override fun onAgendaLoaded() {
                 addFilterHeader(R.string.rooms)
-                val rooms = AgendaRepository.getInstance().allRooms
+                val rooms = AgendaRepository.instance.allRooms
                 for (i in 0 until rooms.size()) {
                     val key = rooms.keyAt(i)
                     val roomName = rooms.get(key).name
@@ -170,7 +170,7 @@ class AgendaFragment : Fragment() {
                         addFilter(SessionFilter(ROOM, key), roomName)
                     }
                 }
-                AgendaRepository.getInstance().removeListener(this)
+                AgendaRepository.instance.removeListener(this)
             }
         })
 
@@ -254,7 +254,7 @@ class AgendaFragment : Fragment() {
         val itemByDayOfTheYear = SparseArray<DaySchedule>()
 
         val calendar = Calendar.getInstance()
-        val scheduleSlots = AgendaRepository.getInstance().scheduleSlots
+        val scheduleSlots = AgendaRepository.instance.scheduleSlots
         for (scheduleSlot in scheduleSlots) {
             val agendaScheduleSessions = getAgendaItems(
                     itemByDayOfTheYear, calendar, scheduleSlot)
@@ -322,7 +322,7 @@ class AgendaFragment : Fragment() {
         }
         if (roomScheduleForThis == null) {
             val agendaScheduleSessions = ArrayList<ScheduleSession>()
-            val room = AgendaRepository.getInstance().getRoom(scheduleSlot.room)
+            val room = AgendaRepository.instance.getRoom(scheduleSlot.room)
             val titleRoom = room?.name
             roomScheduleForThis = RoomSchedule(
                     scheduleSlot.room, titleRoom, agendaScheduleSessions)
@@ -367,12 +367,12 @@ class AgendaFragment : Fragment() {
     }
 
     private fun getTitle(sessionId: Int): String {
-        val session = AgendaRepository.getInstance().getSession(sessionId)
+        val session = AgendaRepository.instance.getSession(sessionId)
         return if (session == null) "?" else session.title
     }
 
     private fun getLanguage(sessionId: Int): String {
-        val session = AgendaRepository.getInstance().getSession(sessionId)
+        val session = AgendaRepository.instance.getSession(sessionId)
         return if (session == null) "?" else session.language
     }
 

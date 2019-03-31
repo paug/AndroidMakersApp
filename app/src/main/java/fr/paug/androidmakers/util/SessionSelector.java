@@ -34,7 +34,7 @@ public final class SessionSelector {
     }
 
     public void setSessionSelected(int id, boolean selected) {
-        String idString = AgendaRepository.CURRENT_YEAR_NODE + "_" + Integer.toString(id);
+        String idString = AgendaRepository.Companion.getCURRENT_YEAR_NODE() + "_" + Integer.toString(id);
         if (selected) {
             mSessionsSelected.add(idString);
         } else {
@@ -44,7 +44,7 @@ public final class SessionSelector {
     }
 
     public boolean isSelected(int id) {
-        return mSessionsSelected.contains(AgendaRepository.CURRENT_YEAR_NODE + "_" + Integer.toString(id));
+        return mSessionsSelected.contains(AgendaRepository.Companion.getCURRENT_YEAR_NODE() + "_" + Integer.toString(id));
     }
 
     public Set<String> getSessionsSelected() {
