@@ -1,1 +1,1 @@
-include ':app'
+include ':app', ':firestore_upload'
