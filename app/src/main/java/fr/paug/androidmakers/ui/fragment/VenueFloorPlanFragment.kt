@@ -13,8 +13,8 @@ import fr.paug.androidmakers.R
 
 class VenueFloorPlanFragment: Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val scrollView = ScrollView(context!!)
-        val imageView = AppCompatImageView(context)
+        val scrollView = ScrollView(inflater.context)
+        val imageView = AppCompatImageView(inflater.context)
 
         val width = context!!.resources.displayMetrics.widthPixels
 
