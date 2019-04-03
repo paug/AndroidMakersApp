@@ -3,15 +3,11 @@ package fr.paug.androidmakers.ui.activity;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.core.content.ContextCompat;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
@@ -33,6 +29,10 @@ import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;
 
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
 import fr.paug.androidmakers.BuildConfig;
 import fr.paug.androidmakers.R;
 import fr.paug.androidmakers.databinding.ActivityDetailBinding;
@@ -45,7 +45,7 @@ import fr.paug.androidmakers.model.Room;
 import fr.paug.androidmakers.model.Session;
 import fr.paug.androidmakers.model.SocialNetworkHandle;
 import fr.paug.androidmakers.model.Speaker;
-import fr.paug.androidmakers.ui.adapter.ScheduleSession;
+import fr.paug.androidmakers.ui.adapter.ScheduleSessionKt;
 import fr.paug.androidmakers.ui.util.CheckableFloatingActionButton;
 import fr.paug.androidmakers.util.ScheduleSessionHelper;
 import fr.paug.androidmakers.util.SessionSelector;
@@ -74,7 +74,7 @@ public class SessionDetailActivity extends BaseActivity implements YouTubeThumbn
     private String videoID;
     private ImageView playButton;
 
-    public static void startActivity(Context context, ScheduleSession scheduleSession) {
+    public static void startActivity(Context context, ScheduleSessionKt scheduleSession) {
         Intent intent = new Intent(context, SessionDetailActivity.class);
         intent.putExtra(PARAM_SESSION_ID, scheduleSession.getSessionId());
         intent.putExtra(PARAM_SESSION_START_DATE, scheduleSession.getStartTimestamp());

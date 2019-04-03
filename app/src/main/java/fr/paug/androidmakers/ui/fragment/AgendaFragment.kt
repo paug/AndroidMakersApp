@@ -2,7 +2,6 @@ package fr.paug.androidmakers.ui.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.text.TextUtils
 import android.util.Log
 import android.util.SparseArray
@@ -22,16 +21,19 @@ import fr.paug.androidmakers.manager.AgendaRepository
 import fr.paug.androidmakers.model.*
 import fr.paug.androidmakers.service.SessionAlarmService
 import fr.paug.androidmakers.ui.adapter.AgendaPagerAdapter
-import fr.paug.androidmakers.ui.adapter.DaySchedule
-import fr.paug.androidmakers.ui.adapter.RoomSchedule
-import fr.paug.androidmakers.ui.adapter.ScheduleSession
+import fr.paug.androidmakers.ui.adapter.DayScheduleKt
+import fr.paug.androidmakers.ui.adapter.RoomScheduleKt
+import fr.paug.androidmakers.ui.adapter.ScheduleSessionKt
 import fr.paug.androidmakers.ui.util.SessionFilter
 import fr.paug.androidmakers.ui.util.SessionFilter.FilterType.*
 import fr.paug.androidmakers.util.EmojiUtils
+import fr.paug.androidmakers.util.TimeUtils
 import java.lang.ref.WeakReference
 import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class AgendaFragment : Fragment() {
 
@@ -47,6 +49,11 @@ class AgendaFragment : Fragment() {
     private val allCheckBoxes = ArrayList<CheckBox>()
 
     private val mCheckBoxOnCheckedChangeListener = CompoundButton.OnCheckedChangeListener { buttonView, isChecked -> applyFilters() }
+
+
+    var sessions = HashMap<String, SessionKt>()
+    var allRooms = mutableListOf<RoomKt>()
+    var slots = mutableListOf<ScheduleSlotKt>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,41 +73,56 @@ class AgendaFragment : Fragment() {
         mDrawerLayout = view as DrawerLayout
 
         // auto dismiss loading
-        Handler().postDelayed(RefreshRunnable(this), 3000)
+//        Handler().postDelayed(RefreshRunnable(this), 3000)
 
         //AgendaRepository.getInstance().load(AgendaLoadListener(this))
         // TODO replace with cloud firestore code
 
         val firestore = FirebaseFirestore.getInstance()
         // Load speakers
-        firestore.collection("speakers")
-                .get()
-                .addOnSuccessListener { result ->
-                    for (document in result) {
-//                        Log.d(TAG, document.id + " => " + document.data)
-                        val speaker = document.toObject(SpeakerKt::class.java)
-//                        Log.e("speaker", speaker.toString())
-                    }
-                }
-                .addOnFailureListener { exception ->
-                    Log.w(TAG, "Error getting documents.", exception)
-                }
+//        firestore.collection("speakers")
+//                .get()
+//                .addOnSuccessListener { result ->
+//                    for (document in result) {
+////                        Log.d(TAG, document.id + " => " + document.data)
+//                        val speaker = document.toObject(SpeakerKt::class.java)
+////                        Log.e("speaker", speaker.toString())
+//                    }
+//                }
+//                .addOnFailureListener { exception ->
+//                    Log.w(TAG, "Error getting documents.", exception)
+//                }
 
         // Load Sessions
+        getSessions(firestore)
+
+        // Load Schedule
+//        getSlots(firestore)
+
+//        getRooms(firestore)
+
+//        initFilters()
+        return view
+    }
+
+    private fun getSessions(firestore: FirebaseFirestore) {
         firestore.collection("sessions")
                 .get()
                 .addOnSuccessListener { result ->
                     for (document in result) {
 //                        Log.d(TAG, document.id + " => " + document.data)
                         val session = document.toObject(SessionKt::class.java)
+                        sessions[document.id] = session
 //                        Log.e("session", session.toString())
                     }
+                    getSlots(firestore)
                 }
                 .addOnFailureListener { exception ->
                     Log.w(TAG, "Error getting documents.", exception)
                 }
+    }
 
-        // Load Schedule
+    private fun getSlots(firestore: FirebaseFirestore) {
         firestore.collection("schedule-app").document("slots")
                 .get()
                 .addOnSuccessListener { result ->
@@ -109,47 +131,31 @@ class AgendaFragment : Fragment() {
                     val allSlots = result.toObject(ScheduleSlotList::class.java)
                     for (scheduleSlotKt in allSlots!!.all) {
                         Log.e("slot", scheduleSlotKt.toString())
+                        slots.add(scheduleSlotKt)
                     }
-
-
-//                    val day1 = mutableListOf<HashMap<String, String>>()
-//                    val day2 = mutableListOf<HashMap<String, String>>()
-//                    val list = all as ArrayList<HashMap<String, String>>
-//                    for (sessionItem in list) {
-//                        Log.e("sessionItem", sessionItem.toString())
-//                        val date = sessionItem["startDate"]
-//
-//                        if (date!!.contains("2019-04-23T")) {
-//                            day1.add(sessionItem)
-//                        }
-//                        if (date!!.contains("2019-04-24T")) {
-//                            day2.add(sessionItem)
-//                        }
-//                    }
-//                    Log.d("day", day1.toString())
-//                    Log.d("day", day2.toString())
-
-                    //TODO Days list
-
-                    //TODO onAgendaLoaded
-                    val itemByDayOfTheYear = SparseArray<DaySchedule>()
-
-                    val calendar = Calendar.getInstance()
-                    for (scheduleSlot in allSlots!!.all) {
-//                        val agendaScheduleSessions = getAgendaItems(itemByDayOfTheYear, calendar, scheduleSlot)
-//                        agendaScheduleSessions.add(ScheduleSession(scheduleSlot, getTitle(scheduleSlot.sessionId), getLanguage(scheduleSlot.sessionId)))
-                    }
+                    getRooms(firestore)
                 }
                 .addOnFailureListener { exception ->
                     Log.w(TAG, "Error getting documents.", exception)
                 }
-
-
-        initFilters()
-
-        return view
     }
 
+    private fun getRooms(firestore: FirebaseFirestore) {
+        firestore.collection("schedule-app").document("rooms")
+                .get()
+                .addOnSuccessListener { result ->
+                    Log.e("result", result.toString())
+
+                    val rooms = result.toObject(RoomsList::class.java)
+                    for (room in rooms!!.allRooms) {
+                        allRooms.add(room)
+                    }
+                    onAgendaLoaded()
+                    //initFilters()
+                }
+    }
+
+    //region Filters
     private fun applyFilters() {
         val adapter = mViewPager!!.adapter
         if (adapter is AgendaPagerAdapter) {
@@ -179,7 +185,7 @@ class AgendaFragment : Fragment() {
         AgendaRepository.instance.load(object : AgendaRepository.OnLoadListener {
             override fun onAgendaLoaded() {
                 addFilterHeader(R.string.rooms)
-                val rooms = AgendaRepository.instance.allRooms
+                val rooms = AgendaRepository.instance.allRooms //allRooms
                 for (i in 0 until rooms.size()) {
                     val key = rooms.keyAt(i)
                     val roomName = rooms.get(key).name
@@ -191,7 +197,6 @@ class AgendaFragment : Fragment() {
                 AgendaRepository.instance.removeListener(this)
             }
         })
-
     }
 
     private fun addFilter(sessionFilter: SessionFilter, roomName: String?) {
@@ -239,9 +244,7 @@ class AgendaFragment : Fragment() {
         val view = LayoutInflater.from(activity).inflate(R.layout.filter_header, mDrawerLayout, false)
         (view as TextView).setText(titleResId)
         mFiltersView!!.addView(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         super.onCreateOptionsMenu(menu, inflater)
@@ -258,6 +261,7 @@ class AgendaFragment : Fragment() {
             true
         }
     }
+    //endregion
 
     override fun onResume() {
         super.onResume()
@@ -268,21 +272,44 @@ class AgendaFragment : Fragment() {
         }
     }
 
+//    private fun onAgendaLoaded() {
+//        val itemByDayOfTheYear = SparseArray<DaySchedule>()
+//
+//        val calendar = Calendar.getInstance()
+//        val scheduleSlots = AgendaRepository.instance.scheduleSlots
+//        for (scheduleSlot in scheduleSlots) {
+//            val agendaScheduleSessions = getAgendaItems(itemByDayOfTheYear, calendar, scheduleSlot)
+//            agendaScheduleSessions.add(ScheduleSession(scheduleSlot, getTitle(scheduleSlot.sessionId), getLanguage(scheduleSlot.sessionId)))
+//        }
+//
+//        val days = getItemsOrdered(itemByDayOfTheYear)
+//
+//        val adapter = AgendaPagerAdapter(days, activity)
+//        mViewPager!!.adapter = adapter
+//        applyFilters()
+//
+//        val indexOfToday = getTodayIndex(days)
+//        if (indexOfToday > 0) {
+//            mViewPager!!.setCurrentItem(indexOfToday, true)
+//        }
+//        refreshViewsDisplay()
+//    }
+
     private fun onAgendaLoaded() {
-        val itemByDayOfTheYear = SparseArray<DaySchedule>()
+        val itemByDayOfTheYear = SparseArray<DayScheduleKt>()
 
         val calendar = Calendar.getInstance()
-        val scheduleSlots = AgendaRepository.instance.scheduleSlots
+        val scheduleSlots = slots
         for (scheduleSlot in scheduleSlots) {
             val agendaScheduleSessions = getAgendaItems(itemByDayOfTheYear, calendar, scheduleSlot)
-            agendaScheduleSessions.add(ScheduleSession(scheduleSlot, getTitle(scheduleSlot.sessionId), getLanguage(scheduleSlot.sessionId)))
+            agendaScheduleSessions.add(ScheduleSessionKt(scheduleSlot, getTitle(scheduleSlot.sessionId)!!, getLanguage(scheduleSlot.sessionId)!!))
         }
 
         val days = getItemsOrdered(itemByDayOfTheYear)
 
-        val adapter = AgendaPagerAdapter(days, activity)
+        val adapter = AgendaPagerAdapter(days, activity!!)
         mViewPager!!.adapter = adapter
-        applyFilters()
+        //applyFilters()
 
         val indexOfToday = getTodayIndex(days)
         if (indexOfToday > 0) {
@@ -303,7 +330,7 @@ class AgendaFragment : Fragment() {
         }
     }
 
-    private fun getTodayIndex(items: List<DaySchedule>?): Int {
+    private fun getTodayIndex(items: List<DayScheduleKt>?): Int {
         if (items == null || items.size < 2) {
             return -1
         }
@@ -314,7 +341,7 @@ class AgendaFragment : Fragment() {
             val agendaDaySchedule = items[i]
             val roomSchedules = agendaDaySchedule.roomSchedules
             if (!roomSchedules.isEmpty()) {
-                val scheduleSessionList = roomSchedules[0].items
+                val scheduleSessionList = roomSchedules[0].scheduleSessions
                 if (!scheduleSessionList.isEmpty()) {
                     val scheduleSession = scheduleSessionList[0]
                     calendar.timeInMillis = scheduleSession.startTimestamp
@@ -327,70 +354,124 @@ class AgendaFragment : Fragment() {
         return -1
     }
 
-    private fun getAgendaItems(itemByDayOfTheYear: SparseArray<DaySchedule>,
-                               calendar: Calendar, scheduleSlot: ScheduleSlot): MutableList<ScheduleSession> {
+//    private fun getAgendaItems(itemByDayOfTheYear: SparseArray<DaySchedule>,
+//                               calendar: Calendar, scheduleSlot: ScheduleSlot): MutableList<ScheduleSession> {
+//        //TODO
+//        val roomSchedules = getRoomScheduleForDay(itemByDayOfTheYear, calendar, scheduleSlot)
+//        var roomScheduleForThis: RoomSchedule? = null
+//        for (roomSchedule in roomSchedules) {
+//            if (roomSchedule.roomId == scheduleSlot.room) {
+//                roomScheduleForThis = roomSchedule
+//                break
+//            }
+//        }
+//        if (roomScheduleForThis == null) {
+//            val agendaScheduleSessions = ArrayList<ScheduleSession>()
+//            val room = AgendaRepository.instance.getRoom(scheduleSlot.room)
+//            val titleRoom = room?.name
+//            roomScheduleForThis = RoomSchedule(
+//                    scheduleSlot.room, titleRoom, agendaScheduleSessions)
+//            roomSchedules.add(roomScheduleForThis)
+//            Collections.sort(roomSchedules)
+//            return agendaScheduleSessions
+//        } else {
+//            return roomScheduleForThis.items
+//        }
+//    }
+
+    private fun getAgendaItems(itemByDayOfTheYear: SparseArray<DayScheduleKt>,
+                               calendar: Calendar, scheduleSlot: ScheduleSlotKt): ArrayList<ScheduleSessionKt> {
         //TODO
         val roomSchedules = getRoomScheduleForDay(itemByDayOfTheYear, calendar, scheduleSlot)
-        var roomScheduleForThis: RoomSchedule? = null
+        var roomScheduleForThis: RoomScheduleKt? = null
         for (roomSchedule in roomSchedules) {
-            if (roomSchedule.roomId == scheduleSlot.room) {
+            if (roomSchedule.roomId == scheduleSlot.roomId) {
                 roomScheduleForThis = roomSchedule
                 break
             }
         }
         if (roomScheduleForThis == null) {
-            val agendaScheduleSessions = ArrayList<ScheduleSession>()
-            val room = AgendaRepository.instance.getRoom(scheduleSlot.room)
-            val titleRoom = room?.name
-            roomScheduleForThis = RoomSchedule(
-                    scheduleSlot.room, titleRoom, agendaScheduleSessions)
+            val agendaScheduleSessions = ArrayList<ScheduleSessionKt>()
+            val room = allRooms.filter { it.roomId == scheduleSlot.roomId }.get(0)//AgendaRepository.instance.getRoom(scheduleSlot.room)
+            val titleRoom = room?.roomName
+            roomScheduleForThis = RoomScheduleKt(scheduleSlot.roomId, titleRoom, agendaScheduleSessions)
             roomSchedules.add(roomScheduleForThis)
-            Collections.sort(roomSchedules)
+            roomSchedules.sort()
             return agendaScheduleSessions
         } else {
-            return roomScheduleForThis.items
+            return roomScheduleForThis.scheduleSessions
         }
     }
 
-    private fun getRoomScheduleForDay(itemByDayOfTheYear: SparseArray<DaySchedule>,
+//    private fun getRoomScheduleForDay(itemByDayOfTheYear: SparseArray<DaySchedule>,
+//                                      calendar: Calendar,
+//                                      scheduleSlot: ScheduleSlot): MutableList<RoomSchedule> {
+//        calendar.timeInMillis = scheduleSlot.startDate
+//        val dayIndex = calendar.get(Calendar.DAY_OF_YEAR) + calendar.get(Calendar.YEAR) * 1000
+//        var daySchedule: DaySchedule? = itemByDayOfTheYear.get(dayIndex)
+//        if (daySchedule == null) {
+//            val roomSchedule = ArrayList<RoomSchedule>()
+//            val title = DateFormat.getDateInstance().format(calendar.time)
+//            daySchedule = DaySchedule(title, roomSchedule)
+//            itemByDayOfTheYear.put(dayIndex, daySchedule)
+//            return roomSchedule
+//        } else {
+//            return daySchedule.roomSchedules
+//        }
+//    }
+
+    private fun getRoomScheduleForDay(itemByDayOfTheYear: SparseArray<DayScheduleKt>,
                                       calendar: Calendar,
-                                      scheduleSlot: ScheduleSlot): MutableList<RoomSchedule> {
-        calendar.timeInMillis = scheduleSlot.startDate
+                                      scheduleSlot: ScheduleSlotKt): MutableList<RoomScheduleKt> {
+        val format = SimpleDateFormat(TimeUtils.dateFormat)
+        val date = format.parse(scheduleSlot.startDate)
+
+        calendar.timeInMillis = date.time
         val dayIndex = calendar.get(Calendar.DAY_OF_YEAR) + calendar.get(Calendar.YEAR) * 1000
-        var daySchedule: DaySchedule? = itemByDayOfTheYear.get(dayIndex)
+        var daySchedule: DayScheduleKt? = itemByDayOfTheYear.get(dayIndex)
         if (daySchedule == null) {
-            val roomSchedule = ArrayList<RoomSchedule>()
+            val roomSchedule = ArrayList<RoomScheduleKt>()
             val title = DateFormat.getDateInstance().format(calendar.time)
-            daySchedule = DaySchedule(title, roomSchedule)
+            daySchedule = DayScheduleKt(title, roomSchedule)
             itemByDayOfTheYear.put(dayIndex, daySchedule)
             return roomSchedule
         } else {
-            return daySchedule.roomSchedules
+            return daySchedule.roomSchedules.toMutableList()
         }
     }
 
-    private fun getItemsOrdered(itemByDayOfTheYear: SparseArray<DaySchedule>): List<DaySchedule> {
+    private fun getItemsOrdered(itemByDayOfTheYear: SparseArray<DayScheduleKt>): List<DayScheduleKt> {
         val size = itemByDayOfTheYear.size()
         val keysSorted = IntArray(size)
         for (i in 0 until size) {
             keysSorted[i] = itemByDayOfTheYear.keyAt(i)
         }
         Arrays.sort(keysSorted)
-        val items = ArrayList<DaySchedule>(size)
+        val items = ArrayList<DayScheduleKt>(size)
         for (key in keysSorted) {
             items.add(itemByDayOfTheYear.get(key))
         }
         return items
     }
 
-    private fun getTitle(sessionId: Int): String {
-        val session = AgendaRepository.instance.getSession(sessionId)
-        return if (session == null) "?" else session.title
+//    private fun getTitle(sessionId: Int): String {
+//        val session = AgendaRepository.instance.getSession(sessionId)
+//        return if (session == null) "?" else session.title
+//    }
+
+    private fun getTitle(sessionId: String): String {
+        val session = sessions[sessionId]
+        return session!!.title
     }
 
-    private fun getLanguage(sessionId: Int): String {
-        val session = AgendaRepository.instance.getSession(sessionId)
-        return if (session == null) "?" else session.language
+//    private fun getLanguage(sessionId: Int): String {
+//        val session = AgendaRepository.instance.getSession(sessionId)
+//        return if (session == null) "?" else session.language
+//    }
+
+    private fun getLanguage(sessionId: String): String {
+        val session = sessions[sessionId]
+        return session!!.language
     }
 
     private class RefreshRunnable constructor(agendaFragment: AgendaFragment) : Runnable {
