@@ -1,15 +1,17 @@
 package fr.paug.androidmakers.util;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
 
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
+import androidx.annotation.NonNull;
 import fr.paug.androidmakers.R;
 
 public class TimeUtils {
+
+    public static String dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ";
 
     public static final int SECOND = 1000;
     public static final int MINUTE = 60 * SECOND;

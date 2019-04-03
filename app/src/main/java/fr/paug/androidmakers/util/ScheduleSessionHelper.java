@@ -7,7 +7,7 @@ import android.widget.Toast;
 
 import fr.paug.androidmakers.R;
 import fr.paug.androidmakers.service.SessionAlarmService;
-import fr.paug.androidmakers.ui.adapter.ScheduleSession;
+import fr.paug.androidmakers.ui.adapter.ScheduleSessionKt;
 
 public class ScheduleSessionHelper {
 
@@ -15,7 +15,7 @@ public class ScheduleSessionHelper {
 
     private static Toast toast;
 
-    public static boolean sameStartTime(ScheduleSession block1, ScheduleSession block2, boolean useOverlap) {
+    public static boolean sameStartTime(ScheduleSessionKt block1, ScheduleSessionKt block2, boolean useOverlap) {
         return Math.abs(block1.getStartTimestamp() - block2.getStartTimestamp()) <= (useOverlap ? ALLOWED_OVERLAP : 0);
     }
 
