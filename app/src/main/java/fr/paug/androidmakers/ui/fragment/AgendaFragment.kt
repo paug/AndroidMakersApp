@@ -19,9 +19,7 @@ import androidx.viewpager.widget.ViewPager
 import com.google.firebase.firestore.FirebaseFirestore
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.manager.AgendaRepository
-import fr.paug.androidmakers.model.ScheduleSlot
-import fr.paug.androidmakers.model.SessionKt
-import fr.paug.androidmakers.model.SpeakerKt
+import fr.paug.androidmakers.model.*
 import fr.paug.androidmakers.service.SessionAlarmService
 import fr.paug.androidmakers.ui.adapter.AgendaPagerAdapter
 import fr.paug.androidmakers.ui.adapter.DaySchedule
@@ -33,6 +31,7 @@ import fr.paug.androidmakers.util.EmojiUtils
 import java.lang.ref.WeakReference
 import java.text.DateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class AgendaFragment : Fragment() {
 
@@ -102,36 +101,43 @@ class AgendaFragment : Fragment() {
                 }
 
         // Load Schedule
-        firestore.collection("schedule-app")
+        firestore.collection("schedule-app").document("slots")
                 .get()
                 .addOnSuccessListener { result ->
-                    for (document in result) {
-                        Log.d(TAG, document.id + " => " + document.data)
+                    Log.e("result", result.toString())
 
-                        val all = document.get("all")
-//                        Log.e("all", all.toString())
+                    val allSlots = result.toObject(ScheduleSlotList::class.java)
+                    for (scheduleSlotKt in allSlots!!.all) {
+                        Log.e("slot", scheduleSlotKt.toString())
+                    }
 
-                        val day1 = mutableListOf<HashMap<String, String>>()
-                        val day2 = mutableListOf<HashMap<String, String>>()
-                        val list = all as ArrayList<HashMap<String, String>>
-                        for (sessionItem in list) {
-                            Log.e("sessionItem", sessionItem.toString())
-                            val date = sessionItem["startDate"]
 
-                            if (date!!.contains("2019-04-23T")) {
-                                day1.add(sessionItem)
-                            }
-                            if (date!!.contains("2019-04-24T")) {
-                                day2.add(sessionItem)
-                            }
-                        }
-                        Log.d("day", day1.toString())
-                        Log.d("day", day2.toString())
+//                    val day1 = mutableListOf<HashMap<String, String>>()
+//                    val day2 = mutableListOf<HashMap<String, String>>()
+//                    val list = all as ArrayList<HashMap<String, String>>
+//                    for (sessionItem in list) {
+//                        Log.e("sessionItem", sessionItem.toString())
+//                        val date = sessionItem["startDate"]
+//
+//                        if (date!!.contains("2019-04-23T")) {
+//                            day1.add(sessionItem)
+//                        }
+//                        if (date!!.contains("2019-04-24T")) {
+//                            day2.add(sessionItem)
+//                        }
+//                    }
+//                    Log.d("day", day1.toString())
+//                    Log.d("day", day2.toString())
 
-                        //TODO Days list
+                    //TODO Days list
 
-//                        val day = document.toObject(Sessions::class.java)
-//                        Log.e("day", day.toString())
+                    //TODO onAgendaLoaded
+                    val itemByDayOfTheYear = SparseArray<DaySchedule>()
+
+                    val calendar = Calendar.getInstance()
+                    for (scheduleSlot in allSlots!!.all) {
+//                        val agendaScheduleSessions = getAgendaItems(itemByDayOfTheYear, calendar, scheduleSlot)
+//                        agendaScheduleSessions.add(ScheduleSession(scheduleSlot, getTitle(scheduleSlot.sessionId), getLanguage(scheduleSlot.sessionId)))
                     }
                 }
                 .addOnFailureListener { exception ->
@@ -268,8 +274,7 @@ class AgendaFragment : Fragment() {
         val calendar = Calendar.getInstance()
         val scheduleSlots = AgendaRepository.instance.scheduleSlots
         for (scheduleSlot in scheduleSlots) {
-            val agendaScheduleSessions = getAgendaItems(
-                    itemByDayOfTheYear, calendar, scheduleSlot)
+            val agendaScheduleSessions = getAgendaItems(itemByDayOfTheYear, calendar, scheduleSlot)
             agendaScheduleSessions.add(ScheduleSession(scheduleSlot, getTitle(scheduleSlot.sessionId), getLanguage(scheduleSlot.sessionId)))
         }
 
@@ -324,6 +329,7 @@ class AgendaFragment : Fragment() {
 
     private fun getAgendaItems(itemByDayOfTheYear: SparseArray<DaySchedule>,
                                calendar: Calendar, scheduleSlot: ScheduleSlot): MutableList<ScheduleSession> {
+        //TODO
         val roomSchedules = getRoomScheduleForDay(itemByDayOfTheYear, calendar, scheduleSlot)
         var roomScheduleForThis: RoomSchedule? = null
         for (roomSchedule in roomSchedules) {
@@ -346,9 +352,9 @@ class AgendaFragment : Fragment() {
         }
     }
 
-    private fun getRoomScheduleForDay(
-            itemByDayOfTheYear: SparseArray<DaySchedule>,
-            calendar: Calendar, scheduleSlot: ScheduleSlot): MutableList<RoomSchedule> {
+    private fun getRoomScheduleForDay(itemByDayOfTheYear: SparseArray<DaySchedule>,
+                                      calendar: Calendar,
+                                      scheduleSlot: ScheduleSlot): MutableList<RoomSchedule> {
         calendar.timeInMillis = scheduleSlot.startDate
         val dayIndex = calendar.get(Calendar.DAY_OF_YEAR) + calendar.get(Calendar.YEAR) * 1000
         var daySchedule: DaySchedule? = itemByDayOfTheYear.get(dayIndex)
@@ -363,8 +369,7 @@ class AgendaFragment : Fragment() {
         }
     }
 
-    private fun getItemsOrdered(
-            itemByDayOfTheYear: SparseArray<DaySchedule>): List<DaySchedule> {
+    private fun getItemsOrdered(itemByDayOfTheYear: SparseArray<DaySchedule>): List<DaySchedule> {
         val size = itemByDayOfTheYear.size()
         val keysSorted = IntArray(size)
         for (i in 0 until size) {
