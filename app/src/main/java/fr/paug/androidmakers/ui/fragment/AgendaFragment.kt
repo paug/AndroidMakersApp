@@ -436,7 +436,7 @@ class AgendaFragment : Fragment() {
             itemByDayOfTheYear.put(dayIndex, daySchedule)
             return roomSchedule
         } else {
-            return daySchedule.roomSchedules.toMutableList()
+            return daySchedule.roomSchedules
         }
     }
 
