@@ -1,6 +1,5 @@
 package fr.paug.androidmakers.ui.fragment
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -17,9 +16,8 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.google.firebase.firestore.FirebaseFirestore
 import fr.paug.androidmakers.R
-import fr.paug.androidmakers.manager.AgendaRepository
+import fr.paug.androidmakers.manager.AndroidMakersStore
 import fr.paug.androidmakers.model.*
-import fr.paug.androidmakers.service.SessionAlarmService
 import fr.paug.androidmakers.ui.adapter.AgendaPagerAdapter
 import fr.paug.androidmakers.ui.adapter.DayScheduleKt
 import fr.paug.androidmakers.ui.adapter.RoomScheduleKt
@@ -28,7 +26,6 @@ import fr.paug.androidmakers.ui.util.SessionFilter
 import fr.paug.androidmakers.ui.util.SessionFilter.FilterType.*
 import fr.paug.androidmakers.util.EmojiUtils
 import fr.paug.androidmakers.util.TimeUtils
-import java.lang.ref.WeakReference
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -49,7 +46,6 @@ class AgendaFragment : Fragment() {
     private val allCheckBoxes = ArrayList<CheckBox>()
 
     private val mCheckBoxOnCheckedChangeListener = CompoundButton.OnCheckedChangeListener { buttonView, isChecked -> applyFilters() }
-
 
     var sessions = HashMap<String, SessionKt>()
     var allRooms = mutableListOf<RoomKt>()
@@ -72,36 +68,11 @@ class AgendaFragment : Fragment() {
         mFiltersView = view.findViewById(R.id.filters)
         mDrawerLayout = view as DrawerLayout
 
-        // auto dismiss loading
-//        Handler().postDelayed(RefreshRunnable(this), 3000)
-
-        //AgendaRepository.getInstance().load(AgendaLoadListener(this))
-        // TODO replace with cloud firestore code
-
         val firestore = FirebaseFirestore.getInstance()
-        // Load speakers
-//        firestore.collection("speakers")
-//                .get()
-//                .addOnSuccessListener { result ->
-//                    for (document in result) {
-////                        Log.d(TAG, document.id + " => " + document.data)
-//                        val speaker = document.toObject(SpeakerKt::class.java)
-////                        Log.e("speaker", speaker.toString())
-//                    }
-//                }
-//                .addOnFailureListener { exception ->
-//                    Log.w(TAG, "Error getting documents.", exception)
-//                }
 
         // Load Sessions
         getSessions(firestore)
 
-        // Load Schedule
-//        getSlots(firestore)
-
-//        getRooms(firestore)
-
-//        initFilters()
         return view
     }
 
@@ -151,7 +122,7 @@ class AgendaFragment : Fragment() {
                         allRooms.add(room)
                     }
                     onAgendaLoaded()
-                    //initFilters()
+                    initFilters()
                 }
     }
 
@@ -171,7 +142,7 @@ class AgendaFragment : Fragment() {
     }
 
     private fun initFilters() {
-        mFiltersView!!.setOnTouchListener { v, event ->
+        mFiltersView?.setOnTouchListener { v, event ->
             // a dummy touch listener that makes sure we don't click through the filter list
             true
         }
@@ -179,24 +150,19 @@ class AgendaFragment : Fragment() {
         addFilter(SessionFilter(BOOKMARK, null), null)
 
         addFilterHeader(R.string.language)
-        addFilter(SessionFilter(LANGUAGE, "fr"), null)
-        addFilter(SessionFilter(LANGUAGE, "en"), null)
+        addFilter(SessionFilter(LANGUAGE, "French"), null)
+        addFilter(SessionFilter(LANGUAGE, "English"), null)
 
-        AgendaRepository.instance.load(object : AgendaRepository.OnLoadListener {
-            override fun onAgendaLoaded() {
-                addFilterHeader(R.string.rooms)
-                val rooms = AgendaRepository.instance.allRooms //allRooms
-                for (i in 0 until rooms.size()) {
-                    val key = rooms.keyAt(i)
-                    val roomName = rooms.get(key).name
-
-                    if (!TextUtils.isEmpty(roomName)) {
-                        addFilter(SessionFilter(ROOM, key), roomName)
+        AndroidMakersStore().getRooms { rooms ->
+            addFilterHeader(R.string.rooms)
+            if (rooms != null) {
+                for (room in rooms) {
+                    if (!TextUtils.isEmpty(room.roomName)) {
+                        addFilter(SessionFilter(ROOM, room.roomId), room.roomName)
                     }
                 }
-                AgendaRepository.instance.removeListener(this)
             }
-        })
+        }
     }
 
     private fun addFilter(sessionFilter: SessionFilter, roomName: String?) {
@@ -225,9 +191,8 @@ class AgendaFragment : Fragment() {
                 bookmark.visibility = View.VISIBLE
             }
             LANGUAGE -> {
-                val nameResId = if ("fr" == sessionFilter.value) R.string.french else R.string.english
+                val nameResId = if ("French" == sessionFilter.value) R.string.french else R.string.english
                 name = context.getString(nameResId)
-
                 flag.text = EmojiUtils.getLanguageInEmoji(sessionFilter.value as String)
                 flag.visibility = View.VISIBLE
             }
@@ -243,16 +208,16 @@ class AgendaFragment : Fragment() {
     private fun addFilterHeader(@StringRes titleResId: Int) {
         val view = LayoutInflater.from(activity).inflate(R.layout.filter_header, mDrawerLayout, false)
         (view as TextView).setText(titleResId)
-        mFiltersView!!.addView(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        mFiltersView?.addView(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         super.onCreateOptionsMenu(menu, inflater)
 
-        val menuItem = menu!!.add(activity!!.getString(R.string.filter))
-        menuItem.setIcon(R.drawable.ic_filter_list_white_24dp)
-        menuItem.setShowAsAction(SHOW_AS_ACTION_ALWAYS)
-        menuItem.setOnMenuItemClickListener {
+        val menuItem = menu?.add(activity!!.getString(R.string.filter))
+        menuItem?.setIcon(R.drawable.ic_filter_list_white_24dp)
+        menuItem?.setShowAsAction(SHOW_AS_ACTION_ALWAYS)
+        menuItem?.setOnMenuItemClickListener {
             if (mDrawerLayout!!.isDrawerOpen(GravityCompat.END)) {
                 mDrawerLayout!!.closeDrawer(GravityCompat.END)
             } else {
@@ -272,29 +237,6 @@ class AgendaFragment : Fragment() {
         }
     }
 
-//    private fun onAgendaLoaded() {
-//        val itemByDayOfTheYear = SparseArray<DaySchedule>()
-//
-//        val calendar = Calendar.getInstance()
-//        val scheduleSlots = AgendaRepository.instance.scheduleSlots
-//        for (scheduleSlot in scheduleSlots) {
-//            val agendaScheduleSessions = getAgendaItems(itemByDayOfTheYear, calendar, scheduleSlot)
-//            agendaScheduleSessions.add(ScheduleSession(scheduleSlot, getTitle(scheduleSlot.sessionId), getLanguage(scheduleSlot.sessionId)))
-//        }
-//
-//        val days = getItemsOrdered(itemByDayOfTheYear)
-//
-//        val adapter = AgendaPagerAdapter(days, activity)
-//        mViewPager!!.adapter = adapter
-//        applyFilters()
-//
-//        val indexOfToday = getTodayIndex(days)
-//        if (indexOfToday > 0) {
-//            mViewPager!!.setCurrentItem(indexOfToday, true)
-//        }
-//        refreshViewsDisplay()
-//    }
-
     private fun onAgendaLoaded() {
         val itemByDayOfTheYear = SparseArray<DayScheduleKt>()
 
@@ -308,7 +250,7 @@ class AgendaFragment : Fragment() {
         val days = getItemsOrdered(itemByDayOfTheYear)
 
         val adapter = AgendaPagerAdapter(days, activity!!)
-        mViewPager!!.adapter = adapter
+        mViewPager?.adapter = adapter
         //applyFilters()
 
         val indexOfToday = getTodayIndex(days)
@@ -319,14 +261,14 @@ class AgendaFragment : Fragment() {
     }
 
     private fun refreshViewsDisplay() {
-        mProgressView!!.visibility = View.GONE
+        mProgressView?.visibility = View.GONE
         val adapter = mViewPager!!.adapter
         if (adapter == null || adapter.count == 0) {
-            mEmptyView!!.visibility = View.VISIBLE
-            mViewPager!!.visibility = View.GONE
+            mEmptyView?.visibility = View.VISIBLE
+            mViewPager?.visibility = View.GONE
         } else {
-            mEmptyView!!.visibility = View.GONE
-            mViewPager!!.visibility = View.VISIBLE
+            mEmptyView?.visibility = View.GONE
+            mViewPager?.visibility = View.VISIBLE
         }
     }
 
@@ -354,34 +296,8 @@ class AgendaFragment : Fragment() {
         return -1
     }
 
-//    private fun getAgendaItems(itemByDayOfTheYear: SparseArray<DaySchedule>,
-//                               calendar: Calendar, scheduleSlot: ScheduleSlot): MutableList<ScheduleSession> {
-//        //TODO
-//        val roomSchedules = getRoomScheduleForDay(itemByDayOfTheYear, calendar, scheduleSlot)
-//        var roomScheduleForThis: RoomSchedule? = null
-//        for (roomSchedule in roomSchedules) {
-//            if (roomSchedule.roomId == scheduleSlot.room) {
-//                roomScheduleForThis = roomSchedule
-//                break
-//            }
-//        }
-//        if (roomScheduleForThis == null) {
-//            val agendaScheduleSessions = ArrayList<ScheduleSession>()
-//            val room = AgendaRepository.instance.getRoom(scheduleSlot.room)
-//            val titleRoom = room?.name
-//            roomScheduleForThis = RoomSchedule(
-//                    scheduleSlot.room, titleRoom, agendaScheduleSessions)
-//            roomSchedules.add(roomScheduleForThis)
-//            Collections.sort(roomSchedules)
-//            return agendaScheduleSessions
-//        } else {
-//            return roomScheduleForThis.items
-//        }
-//    }
-
     private fun getAgendaItems(itemByDayOfTheYear: SparseArray<DayScheduleKt>,
                                calendar: Calendar, scheduleSlot: ScheduleSlotKt): ArrayList<ScheduleSessionKt> {
-        //TODO
         val roomSchedules = getRoomScheduleForDay(itemByDayOfTheYear, calendar, scheduleSlot)
         var roomScheduleForThis: RoomScheduleKt? = null
         for (roomSchedule in roomSchedules) {
@@ -392,7 +308,7 @@ class AgendaFragment : Fragment() {
         }
         if (roomScheduleForThis == null) {
             val agendaScheduleSessions = ArrayList<ScheduleSessionKt>()
-            val room = allRooms.filter { it.roomId == scheduleSlot.roomId }.get(0)//AgendaRepository.instance.getRoom(scheduleSlot.room)
+            val room = allRooms.filter { it.roomId == scheduleSlot.roomId }.first()
             val titleRoom = room?.roomName
             roomScheduleForThis = RoomScheduleKt(scheduleSlot.roomId, titleRoom, agendaScheduleSessions)
             roomSchedules.add(roomScheduleForThis)
@@ -402,23 +318,6 @@ class AgendaFragment : Fragment() {
             return roomScheduleForThis.scheduleSessions
         }
     }
-
-//    private fun getRoomScheduleForDay(itemByDayOfTheYear: SparseArray<DaySchedule>,
-//                                      calendar: Calendar,
-//                                      scheduleSlot: ScheduleSlot): MutableList<RoomSchedule> {
-//        calendar.timeInMillis = scheduleSlot.startDate
-//        val dayIndex = calendar.get(Calendar.DAY_OF_YEAR) + calendar.get(Calendar.YEAR) * 1000
-//        var daySchedule: DaySchedule? = itemByDayOfTheYear.get(dayIndex)
-//        if (daySchedule == null) {
-//            val roomSchedule = ArrayList<RoomSchedule>()
-//            val title = DateFormat.getDateInstance().format(calendar.time)
-//            daySchedule = DaySchedule(title, roomSchedule)
-//            itemByDayOfTheYear.put(dayIndex, daySchedule)
-//            return roomSchedule
-//        } else {
-//            return daySchedule.roomSchedules
-//        }
-//    }
 
     private fun getRoomScheduleForDay(itemByDayOfTheYear: SparseArray<DayScheduleKt>,
                                       calendar: Calendar,
@@ -454,58 +353,14 @@ class AgendaFragment : Fragment() {
         return items
     }
 
-//    private fun getTitle(sessionId: Int): String {
-//        val session = AgendaRepository.instance.getSession(sessionId)
-//        return if (session == null) "?" else session.title
-//    }
-
     private fun getTitle(sessionId: String): String {
         val session = sessions[sessionId]
         return session!!.title
     }
 
-//    private fun getLanguage(sessionId: Int): String {
-//        val session = AgendaRepository.instance.getSession(sessionId)
-//        return if (session == null) "?" else session.language
-//    }
-
     private fun getLanguage(sessionId: String): String {
         val session = sessions[sessionId]
         return session!!.language
-    }
-
-    private class RefreshRunnable constructor(agendaFragment: AgendaFragment) : Runnable {
-        private val mAgendaActivity: WeakReference<AgendaFragment>
-
-        init {
-            mAgendaActivity = WeakReference(agendaFragment)
-        }
-
-        override fun run() {
-            val agendaFragment = mAgendaActivity.get()
-            agendaFragment?.refreshViewsDisplay()
-        }
-    }
-
-    private class AgendaLoadListener constructor(agendaFragment: AgendaFragment) : AgendaRepository.OnLoadListener {
-        private val reference: WeakReference<AgendaFragment>
-
-        init {
-            reference = WeakReference(agendaFragment)
-        }
-
-        override fun onAgendaLoaded() {
-            val agendaFragment = reference.get() ?: return
-            agendaFragment.onAgendaLoaded()
-
-            val fragment = reference.get()
-            if (fragment != null) {
-                // reschedule all starred blocks in case one session start or stop time has changed
-                val ctx = fragment.context
-                val scheduleIntent = Intent(SessionAlarmService.ACTION_SCHEDULE_ALL_STARRED_BLOCKS)
-                SessionAlarmService.enqueueWork(ctx, scheduleIntent)
-            }
-        }
     }
 
 }

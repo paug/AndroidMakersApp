@@ -15,6 +15,7 @@ import fr.paug.androidmakers.R
 import fr.paug.androidmakers.model.Session
 import fr.paug.androidmakers.ui.util.SessionFilter
 import fr.paug.androidmakers.util.ScheduleSessionHelper
+import fr.paug.androidmakers.util.SessionSelector
 import fr.paug.androidmakers.util.TimeUtils
 import fr.paug.androidmakers.util.sticky_headers.StickyHeaders
 import java.util.*
@@ -115,8 +116,7 @@ internal constructor(private val context: Context,
     fun findTimeHeaderPositionForTime(time: Long): Int {
         for (pos in mItems.indices.reversed()) {
             val item = mItems[pos]
-            // Keep going backwards until we find a time separator which has a start time before
-            // now
+            // Keep going backwards until we find a time separator which has a start time before now
             if (item is TimeSeparatorItem && item.startTime < time) {
                 return pos
             }
@@ -143,37 +143,34 @@ internal constructor(private val context: Context,
     }
     //endregion
 
-    fun update() {
+    private fun update() {
         mItems.clear()
 
         val filteredSessions = ArrayList<ScheduleSessionKt>()
 
         if (sessionFilterList.isEmpty()) {
             filteredSessions.addAll(mSessions)
+        } else {
+            for (item in mSessions) {
+                for (sessionFilter in sessionFilterList) {
+                    var matched = when (sessionFilter.type) {
+                        SessionFilter.FilterType.BOOKMARK -> {
+                            SessionSelector.getInstance().isSelected(item.sessionId)
+                        }
+                        SessionFilter.FilterType.LANGUAGE -> {
+                            sessionFilter.value == item.language
+                        }
+                        SessionFilter.FilterType.ROOM -> {
+                            sessionFilter.value == item.roomId
+                        }
+                    }
+
+                    if (matched) {
+                        filteredSessions.add(item)
+                    }
+                }
+            }
         }
-//        else {
-//            for (item in mSessions) {
-//                for (sessionFilter in sessionFilterList) {
-//                    var matched = false
-//
-//                    when (sessionFilter.type) {
-//                        SessionFilter.FilterType.BOOKMARK -> {
-//                            matched = SessionSelector.getInstance().isSelected(item.sessionId)
-//                        }
-//                        SessionFilter.FilterType.LANGUAGE -> {
-//                            matched = sessionFilter.value == item.language
-//                        }
-//                        SessionFilter.FilterType.ROOM -> {
-//                            matched = sessionFilter.value == item.roomId
-//                        }
-//                    }
-//
-//                    if (matched) {
-//                        filteredSessions.add(item)
-//                    }
-//                }
-//            }
-//        }
 
         if (!mShowTimeSeparators) {
             mItems.addAll(filteredSessions)
@@ -306,23 +303,22 @@ internal constructor(private val context: Context,
             sessionDescription.text = descriptionBuilder.toString()
 
             sessionLayout.setOnClickListener {
-                //listener.onItemClick(scheduleSession)
                 clickListener.invoke(scheduleSession)
             }
 
             sessionBookmark.setOnClickListener {
-                //                sessionBookmark.isActivated = !sessionBookmark.isActivated
-//                SessionSelector.getInstance().setSessionSelected(scheduleSession.sessionId, sessionBookmark.isActivated)
-//                if (sessionBookmark.isActivated) {
-//                    ScheduleSessionHelper.scheduleStarredSession(context,
-//                            scheduleSession.startTimestamp,
-//                            scheduleSession.endTimestamp,
-//                            scheduleSession.sessionId)
-//                } else {
-//                    ScheduleSessionHelper.unScheduleSession(context, scheduleSession.sessionId)
-//                }
+                sessionBookmark.isActivated = !sessionBookmark.isActivated
+                SessionSelector.getInstance().setSessionSelected(scheduleSession.sessionId, sessionBookmark.isActivated)
+                if (sessionBookmark.isActivated) {
+                    ScheduleSessionHelper.scheduleStarredSession(context,
+                            scheduleSession.startTimestamp,
+                            scheduleSession.endTimestamp,
+                            scheduleSession.sessionId)
+                } else {
+                    ScheduleSessionHelper.unScheduleSession(context, scheduleSession.sessionId)
+                }
             }
-//            sessionBookmark.isActivated = SessionSelector.getInstance().isSelected(scheduleSession.sessionId)
+            sessionBookmark.isActivated = SessionSelector.getInstance().isSelected(scheduleSession.sessionId)
         }
 
         private fun getRoomTitle(scheduleSession: ScheduleSessionKt, daySchedule: DayScheduleKt): String {
@@ -336,10 +332,6 @@ internal constructor(private val context: Context,
         }
     }
     //endregion
-
-    interface OnItemClickListener {
-        fun onItemClick(scheduleSession: ScheduleSessionKt)
-    }
 
     companion object {
 
