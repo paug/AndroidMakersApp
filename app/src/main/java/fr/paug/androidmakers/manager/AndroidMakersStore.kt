@@ -3,10 +3,7 @@ package fr.paug.androidmakers.manager
 import android.util.Log
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
-import fr.paug.androidmakers.model.PartnerCollection
-import fr.paug.androidmakers.model.SessionKt
-import fr.paug.androidmakers.model.SpeakerKt
-import fr.paug.androidmakers.model.Venue
+import fr.paug.androidmakers.model.*
 
 //TODO get realtime data https://firebase.google.com/docs/firestore/query-data/listen
 //TODO enable offline https://firebase.google.com/docs/firestore/manage-data/enable-offline
@@ -24,7 +21,7 @@ class AndroidMakersStore {
         return firestore.collection("speakers")
     }
 
-    fun getPartners() : List<PartnerCollection> {
+    fun getPartners(): List<PartnerCollection> {
         val partnersList = mutableListOf<PartnerCollection>()
         val firestore = FirebaseFirestore.getInstance()
         firestore.collection("partners")
@@ -133,6 +130,42 @@ class AndroidMakersStore {
                     Log.d(TAG, "get failed with ", exception)
                 }
 
+    }
+
+    fun getRooms(callback: (List<RoomKt>?) -> Unit) {
+        val allRooms = mutableListOf<RoomKt>()
+        val firestore = FirebaseFirestore.getInstance()
+        firestore.collection("schedule-app").document("rooms")
+                .get()
+                .addOnSuccessListener { result ->
+                    Log.e("result", result.toString())
+                    val rooms = result.toObject(RoomsList::class.java)
+                    for (room in rooms!!.allRooms) {
+                        allRooms.add(room)
+                    }
+                    callback.invoke(allRooms)
+                }
+                .addOnFailureListener { exception ->
+                    Log.d(TAG, "get failed with ", exception)
+                }
+    }
+
+    fun getRoom(roomId: String, callback: (RoomKt?) -> Unit) {
+        val firestore = FirebaseFirestore.getInstance()
+        firestore.collection("schedule-app").document("rooms")
+                .get()
+                .addOnSuccessListener { result ->
+                    Log.e("result", result.toString())
+                    val rooms = result.toObject(RoomsList::class.java)
+                    for (room in rooms!!.allRooms) {
+                        if (room.roomId == roomId) {
+                            callback.invoke(room)
+                        }
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.d(TAG, "get failed with ", exception)
+                }
     }
 
 }

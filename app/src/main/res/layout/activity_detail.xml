@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -32,7 +32,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     tools:background="@color/white"
                     tools:src="@drawable/gde_logo"
-                    tools:visibility="visible" />
+                    tools:visibility="visible"/>
 
                 <ImageView
                     android:id="@+id/playButton"
@@ -48,7 +48,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:ignore="ContentDescription"
-                    tools:visibility="visible" />
+                    tools:visibility="visible"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -64,11 +64,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingBottom="72dp"
-                android:paddingEnd="@dimen/large_padding"
+                android:paddingStart="@dimen/large_padding"
                 android:paddingLeft="@dimen/large_padding"
+                android:paddingEnd="@dimen/large_padding"
                 android:paddingRight="@dimen/large_padding"
-                android:paddingStart="@dimen/large_padding">
+                android:paddingBottom="72dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -80,9 +80,9 @@
                         style="@style/SessionTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="@dimen/large_padding"
                         android:paddingTop="@dimen/large_padding"
-                        tools:text="Title" />
+                        android:paddingBottom="@dimen/large_padding"
+                        tools:text="Title"/>
 
                     <TextView
                         android:id="@+id/sessionDateAndRoomTextView"
@@ -91,14 +91,14 @@
                         android:paddingBottom="@dimen/default_padding"
                         android:textColor="@color/black"
                         android:textStyle="bold"
-                        tools:text="Date" />
+                        tools:text="Date"/>
 
                     <TextView
                         android:id="@+id/sessionDescriptionTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingBottom="2dp"
-                        tools:text="Description" />
+                        tools:text="Description"/>
 
                     <org.apmem.tools.layouts.FlowLayout
                         android:layout_width="match_parent"
@@ -109,39 +109,45 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/small_padding"
-                            android:background="@drawable/round_rect_grey" />
+                            android:background="@drawable/round_rect_grey"
+                            android:visibility="gone"/>
 
                         <TextView
                             android:id="@+id/sessionSubTypeChip"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/small_padding"
-                            android:background="@drawable/round_rect_grey" />
+                            android:background="@drawable/round_rect_grey"
+                            android:visibility="gone"/>
 
                         <TextView
                             android:id="@+id/sessionTypeChip"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/small_padding"
-                            android:background="@drawable/round_rect_grey" />
+                            android:background="@drawable/round_rect_grey"
+                            android:visibility="gone"/>
 
                         <TextView
                             android:id="@+id/sessionExperienceChip"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/small_padding"
-                            android:background="@drawable/round_rect_grey" />
+                            android:background="@drawable/round_rect_grey"
+                            android:visibility="gone"/>
 
                     </org.apmem.tools.layouts.FlowLayout>
 
                 </LinearLayout>
 
                 <View
+                    android:id="@+id/separator"
                     android:layout_width="match_parent"
                     android:layout_height="1dip"
-                    android:layout_marginBottom="@dimen/large_padding"
                     android:layout_marginTop="@dimen/large_padding"
-                    android:background="@color/light_grey" />
+                    android:layout_marginBottom="@dimen/large_padding"
+                    android:background="@color/light_grey"
+                    android:visibility="gone"/>
 
                 <LinearLayout
                     android:id="@+id/sessionSpeakerLayout"
@@ -150,7 +156,7 @@
                     android:divider="@drawable/divider15dip"
                     android:orientation="vertical"
                     android:showDividers="beginning|middle|end"
-                    tools:layout_height="48dp" />
+                    tools:layout_height="48dp"/>
 
             </LinearLayout>
 
@@ -165,7 +171,7 @@
             android:clickable="true"
             android:focusable="true"
             android:src="@drawable/ic_session_bookmark_fab"
-            app:backgroundTint="@drawable/session_details_fab" />
+            app:backgroundTint="@drawable/session_details_fab"/>
 
         <TextView
             android:id="@+id/errorMessageTextView"
@@ -177,7 +183,7 @@
             android:padding="20dp"
             android:text="@string/Detail_sessionNotFound"
             android:visibility="gone"
-            tools:visibility="gone" />
+            tools:visibility="gone"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
