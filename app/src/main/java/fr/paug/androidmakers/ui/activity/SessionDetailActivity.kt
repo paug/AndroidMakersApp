@@ -76,7 +76,7 @@ class SessionDetailActivity : BaseActivity(), YouTubeThumbnailView.OnInitialized
         sessionEndDateInMillis = intent.getLongExtra(PARAM_SESSION_END_DATE, -1)
 
 //        val sessionRoom = AgendaRepository.instance.getRoom(intent.getIntExtra(PARAM_SESSION_ROOM, -1))
-        val sessionRoom = Room("")
+        val sessionRoom = Room("") //TODO
 
         if (session == null) {
             // We have a problem !
@@ -103,33 +103,30 @@ class SessionDetailActivity : BaseActivity(), YouTubeThumbnailView.OnInitialized
         else
             ""
 
-//        val languageFullNameRes = session!!.language
-//        if (languageFullNameRes != R.string.no_language) {
-//            activityDetailBinding.sessionLanguageChip.text = getString(languageFullNameRes)
-//        } else {
-//            activityDetailBinding.sessionLanguageChip.visibility = View.GONE
-//        }
+        val languageFullNameRes = session?.language
+        if (languageFullNameRes?.isNotEmpty() == true) {
+            activityDetailBinding.sessionLanguageChip.text = languageFullNameRes
+        } else {
+            activityDetailBinding.sessionLanguageChip.visibility = View.GONE
+        }
 
-        //TODO Tags list
-//        if (session!!.subtype != null) {
-//            val capitalizedSubType = session!!.subtype.substring(0, 1).toUpperCase() + session!!.subtype.substring(1)
-//            activityDetailBinding.sessionSubTypeChip.text = capitalizedSubType
-//        } else {
-//            activityDetailBinding.sessionSubTypeChip.visibility = View.GONE
-//        }
-//
-//        if (session!!.type != null) {
-//            activityDetailBinding.sessionTypeChip.text = session!!.type
-//        } else {
-//            activityDetailBinding.sessionTypeChip.visibility = View.GONE
-//        }
+        // Tags list
+        activityDetailBinding.sessionTypeChip.visibility = View.GONE
+        activityDetailBinding.sessionSubTypeChip.visibility = View.GONE
+        if (session?.tags?.isNotEmpty() == true) {
+            if (session?.tags?.first().isNullOrEmpty().not()) {
+                activityDetailBinding.sessionTypeChip.text = session?.tags?.first()
+                activityDetailBinding.sessionTypeChip.visibility = View.VISIBLE
+            }
+        }
 
-        if (session!!.complexity != null) {
-            activityDetailBinding.sessionExperienceChip.text = session!!.complexity
+        if (session?.complexity != null) {
+            activityDetailBinding.sessionExperienceChip.text = session?.complexity
         } else {
             activityDetailBinding.sessionExperienceChip.visibility = View.GONE
         }
 
+        //TODO get speakers
 //        val sessionSpeakerLayout = findViewById<ViewGroup>(R.id.sessionSpeakerLayout)
 //        if (session!!.speakers != null && session!!.speakers.size > 0) {
 //            for (speakerID in session!!.speakers) {
