@@ -5,6 +5,7 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import fr.paug.androidmakers.model.PartnerCollection
 import fr.paug.androidmakers.model.SessionKt
+import fr.paug.androidmakers.model.SpeakerKt
 import fr.paug.androidmakers.model.Venue
 
 //TODO get realtime data https://firebase.google.com/docs/firestore/query-data/listen
@@ -113,6 +114,25 @@ class AndroidMakersStore {
                 .addOnFailureListener { exception ->
                     Log.d(TAG, "get failed with ", exception)
                 }
+    }
+
+    fun getSpeaker(id: String, callback: (SpeakerKt?) -> Unit) {
+        val firestore = FirebaseFirestore.getInstance()
+        val docRef = firestore.collection("speakers").document(id)
+        docRef.get()
+                .addOnSuccessListener { document ->
+                    if (document != null) {
+                        Log.d(TAG, "DocumentSnapshot data: " + document.data)
+                        val speaker = document.toObject(SpeakerKt::class.java)
+                        callback.invoke(speaker)
+                    } else {
+                        Log.d(TAG, "No such document")
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.d(TAG, "get failed with ", exception)
+                }
+
     }
 
 }

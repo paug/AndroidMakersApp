@@ -28,7 +28,7 @@ public final class DataBindingAdapters {
                 .placeholder(R.drawable.ic_person_black_24dp);
 
         Glide.with(context)
-                .load(String.format("http://androidmakers.fr/img/people/%s", url))
+                .load(String.format("https://androidmakers.fr%s", url))
                 .apply(options)
                 .into(imageView);
     }
@@ -42,7 +42,6 @@ public final class DataBindingAdapters {
                     .placeholder(R.color.light_grey);
 
             Glide.with(context)
-//                    .load(String.format("http://androidmakers.fr/img/venue/%s", venueImageURL))
                     .load(venueImageURL)
                     .apply(options)
                     .into(imageView);

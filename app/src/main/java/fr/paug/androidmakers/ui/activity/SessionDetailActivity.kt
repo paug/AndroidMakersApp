@@ -16,6 +16,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.Toast
@@ -62,13 +63,11 @@ class SessionDetailActivity : BaseActivity(), YouTubeThumbnailView.OnInitialized
         super.onCreate(savedInstanceState)
         val activityDetailBinding = DataBindingUtil.setContentView<ActivityDetailBinding>(this, R.layout.activity_detail)
         sessionId = intent.getStringExtra(PARAM_SESSION_ID)
-        //session = AgendaRepository.instance.getSession(sessionId)
 
         AndroidMakersStore().getSession(sessionId) {
             session = it
             setUpSession(activityDetailBinding)
         }
-
     }
 
     private fun setUpSession(activityDetailBinding: ActivityDetailBinding) {
@@ -127,9 +126,26 @@ class SessionDetailActivity : BaseActivity(), YouTubeThumbnailView.OnInitialized
         }
 
         //TODO get speakers
-//        val sessionSpeakerLayout = findViewById<ViewGroup>(R.id.sessionSpeakerLayout)
-//        if (session!!.speakers != null && session!!.speakers.size > 0) {
-//            for (speakerID in session!!.speakers) {
+        val sessionSpeakerLayout = findViewById<ViewGroup>(R.id.sessionSpeakerLayout)
+        if (session?.speakers != null && session?.speakers?.isNotEmpty() == true) {
+            for (speakerId in session!!.speakers) {
+                AndroidMakersStore().getSpeaker(speakerId) { speaker ->
+                    if (speaker != null) {
+                        speakersList.add(speaker.getFullNameAndCompany())
+
+                        val speakerInfoElementBinding = DataBindingUtil.inflate<DetailViewSpeakerInfoElementBinding>(layoutInflater,
+                                R.layout.detail_view_speaker_info_element, null,
+                                false)
+                        speakerInfoElementBinding.speakerBio.movementMethod = LinkMovementMethod.getInstance()
+                        speakerInfoElementBinding.speaker = speaker
+
+//                        setSpeakerSocialNetworkHandle(speaker, speakerInfoElementBinding)
+//                        setSpeakerRibbons(speaker, speakerInfoElementBinding)
+
+                        sessionSpeakerLayout.addView(speakerInfoElementBinding.root)
+                    }
+                }
+
 //                val speaker = AgendaRepository.instance.getSpeaker(speakerID)
 //                if (speaker != null) {
 //                    speakersList.add(speaker.fullNameAndCompany)
@@ -145,8 +161,8 @@ class SessionDetailActivity : BaseActivity(), YouTubeThumbnailView.OnInitialized
 //
 //                    sessionSpeakerLayout.addView(speakerInfoElementBinding.root)
 //                }
-//            }
-//        }
+            }
+        }
 
         activityDetailBinding.scheduleFab.setOnClickListener { fab ->
             val isInSchedule = !(fab as CheckableFloatingActionButton).isChecked
