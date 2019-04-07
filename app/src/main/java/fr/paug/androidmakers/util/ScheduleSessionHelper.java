@@ -20,7 +20,7 @@ public class ScheduleSessionHelper {
     }
 
     //region Scheduling session
-    public static void scheduleStarredSession(Context context, long sessionStartDateInMillis, long sessionEndDateInMillis, int sessionId) {
+    public static void scheduleStarredSession(Context context, long sessionStartDateInMillis, long sessionEndDateInMillis, String sessionId) {
         Log.d("Schedule session", "Scheduling notification for session " + sessionId);
 
         if (toast != null) toast.cancel();
@@ -34,7 +34,7 @@ public class ScheduleSessionHelper {
         SessionAlarmService.enqueueWork(context, scheduleIntent);
     }
 
-    public static void unScheduleSession(Context context, int sessionId) {
+    public static void unScheduleSession(Context context, String sessionId) {
         Log.d("Schedule session", "Unscheduling notification for session " + sessionId);
 
         if (toast != null) toast.cancel();

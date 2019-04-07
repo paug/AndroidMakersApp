@@ -38,11 +38,15 @@ class AgendaPagerAdapter(private val mAgenda: List<DayScheduleKt>, private val a
 
         val adapter = ScheduleDayAdapter(activity,
                 getItems(position),
-                true)
-//                ScheduleDayAdapter.object : ScheduleDayAdapter.OnItemClickListener() {
-//                        override fun onItemClick(scheduleSession: ScheduleSessionKt) {
-//                            SessionDetailActivity.startActivity(activity, scheduleSession)
-//                        }
+                true,
+                clickListener = { scheduleSession ->
+                    SessionDetailActivity.startActivity(activity, scheduleSession)
+                })
+
+//                listener = ScheduleDayAdapter.object : ScheduleDayAdapter.OnItemClickListener() {
+//                    override fun onItemClick(scheduleSession: ScheduleSessionKt) {
+//                        SessionDetailActivity.startActivity(activity, scheduleSession)
+//                    }
 //                })
         //adapter.setSessionFilterList(sessionFilterList)
 

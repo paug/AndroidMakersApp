@@ -22,8 +22,8 @@ import java.util.*
 class ScheduleDayAdapter//region Constructor
 internal constructor(private val context: Context,
                      private val daySchedule: DayScheduleKt,
-                     private val mShowTimeSeparators: Boolean)
-                     //, private val listener: OnItemClickListener)
+                     private val mShowTimeSeparators: Boolean,
+                     val clickListener: (ScheduleSessionKt) -> Unit)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>(), StickyHeaders, StickyHeaders.ViewSetup {
 
     private val mItems = ArrayList<Any>()
@@ -61,7 +61,7 @@ internal constructor(private val context: Context,
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ITEM_TYPE_SESSION -> SessionItemViewHolder(LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_schedule_session, parent, false),/* listener,*/ context)
+                    .inflate(R.layout.item_schedule_session, parent, false), clickListener, context)
             //            case ITEM_TYPE_BREAK:
             //                return NonSessionItemViewHolder.newInstance(parent);
             ITEM_TYPE_TIME_HEADER -> TimeSeparatorViewHolder(
@@ -235,7 +235,7 @@ internal constructor(private val context: Context,
 
     //region Session
     class SessionItemViewHolder internal constructor(itemView: View,
-                                                     //private val listener: OnItemClickListener,
+                                                     val clickListener: (ScheduleSessionKt) -> Unit,
                                                      private val context: Context)
         : RecyclerView.ViewHolder(itemView) {
         internal var sessionLayout: ConstraintLayout
@@ -305,7 +305,10 @@ internal constructor(private val context: Context,
 
             sessionDescription.text = descriptionBuilder.toString()
 
-//            sessionLayout.setOnClickListener { listener.onItemClick(scheduleSession) }
+            sessionLayout.setOnClickListener {
+                //listener.onItemClick(scheduleSession)
+                clickListener.invoke(scheduleSession)
+            }
 
             sessionBookmark.setOnClickListener {
                 //                sessionBookmark.isActivated = !sessionBookmark.isActivated
