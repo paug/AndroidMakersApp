@@ -142,7 +142,7 @@ public class MainActivity extends BaseActivity {
                 final Integer sessionId = Integer.valueOf(split[1]);
                 for (final ScheduleSlot scheduleSlot : AgendaRepository.Companion.getInstance().getScheduleSlots()) {
                     if (scheduleSlot.sessionId == sessionId) {
-                        SessionDetailActivity.startActivity(this, sessionId, scheduleSlot.startDate, scheduleSlot.endDate, scheduleSlot.room);
+                        SessionDetailActivity.Companion.startActivity(this, sessionId, scheduleSlot.startDate, scheduleSlot.endDate, scheduleSlot.room);
                         break;
                     }
                 }

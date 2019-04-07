@@ -4,6 +4,7 @@ import android.util.Log
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import fr.paug.androidmakers.model.PartnerCollection
+import fr.paug.androidmakers.model.SessionKt
 import fr.paug.androidmakers.model.Venue
 
 //TODO get realtime data https://firebase.google.com/docs/firestore/query-data/listen
@@ -87,6 +88,24 @@ class AndroidMakersStore {
                         Log.d(TAG, "DocumentSnapshot data: " + document.data)
                         val venue = document.toObject(Venue::class.java)
                         callback.invoke(venue)
+                    } else {
+                        Log.d(TAG, "No such document")
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.d(TAG, "get failed with ", exception)
+                }
+    }
+
+    fun getSession(id: String, callback: (SessionKt?) -> Unit) {
+        val firestore = FirebaseFirestore.getInstance()
+        val docRef = firestore.collection("sessions").document(id)
+        docRef.get()
+                .addOnSuccessListener { document ->
+                    if (document != null) {
+                        Log.d(TAG, "DocumentSnapshot data: " + document.data)
+                        val session = document.toObject(SessionKt::class.java)
+                        callback.invoke(session)
                     } else {
                         Log.d(TAG, "No such document")
                     }
