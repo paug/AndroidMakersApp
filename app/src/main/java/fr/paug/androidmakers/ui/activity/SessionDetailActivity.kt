@@ -139,28 +139,12 @@ class SessionDetailActivity : BaseActivity(), YouTubeThumbnailView.OnInitialized
                         speakerInfoElementBinding.speakerBio.movementMethod = LinkMovementMethod.getInstance()
                         speakerInfoElementBinding.speaker = speaker
 
-//                        setSpeakerSocialNetworkHandle(speaker, speakerInfoElementBinding)
+                        setSpeakerSocialNetworkHandle(speaker, speakerInfoElementBinding)
 //                        setSpeakerRibbons(speaker, speakerInfoElementBinding)
 
                         sessionSpeakerLayout.addView(speakerInfoElementBinding.root)
                     }
                 }
-
-//                val speaker = AgendaRepository.instance.getSpeaker(speakerID)
-//                if (speaker != null) {
-//                    speakersList.add(speaker.fullNameAndCompany)
-//
-//                    val speakerInfoElementBinding = DataBindingUtil.inflate<DetailViewSpeakerInfoElementBinding>(layoutInflater,
-//                            R.layout.detail_view_speaker_info_element, null,
-//                            false)
-//                    speakerInfoElementBinding.speakerBio.movementMethod = LinkMovementMethod.getInstance()
-//                    speakerInfoElementBinding.speaker = speaker
-//
-//                    setSpeakerSocialNetworkHandle(speaker, speakerInfoElementBinding)
-//                    setSpeakerRibbons(speaker, speakerInfoElementBinding)
-//
-//                    sessionSpeakerLayout.addView(speakerInfoElementBinding.root)
-//                }
             }
         }
 
@@ -201,18 +185,19 @@ class SessionDetailActivity : BaseActivity(), YouTubeThumbnailView.OnInitialized
         avd!!.start()
     }
 
-    private fun setSpeakerSocialNetworkHandle(speaker: Speaker, speakerInfoElementBinding: DetailViewSpeakerInfoElementBinding) {
-        if (speaker.socialNetworkHandles != null && speaker.socialNetworkHandles.size > 0) {
-            for (socialNetworkHandle in speaker.socialNetworkHandles) {
-                if (socialNetworkHandle.networkType != SocialNetworkHandle.SocialNetworkType.Unknown) {
+    private fun setSpeakerSocialNetworkHandle(speaker: SpeakerKt, speakerInfoElementBinding: DetailViewSpeakerInfoElementBinding) {
+        if (speaker.socials != null && speaker.socials.size > 0) {
+            for (social in speaker.socials) {
+                val socialNetworkHandle = SocialNetworkHandle(social?.icon, social?.link)
+                if (socialNetworkHandle != SocialNetworkHandle.SocialNetworkType.Unknown) {
                     val smallSocialImageBinding = DataBindingUtil.inflate<SmallSocialImageBinding>(layoutInflater, R.layout.small_social_image, null, false)
                     smallSocialImageBinding.socialHandle = socialNetworkHandle
                     smallSocialImageBinding.image.setOnClickListener {
                         if (BuildConfig.DEBUG) {
-                            Log.d(SessionDetailActivity::class.java.name, "User clicked on social handle with name=" + socialNetworkHandle.networkType.name)
+                            Log.d(SessionDetailActivity::class.java.name, "User clicked on social handle with name=" + socialNetworkHandle.networkType)
                         }
                         try {
-                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(socialNetworkHandle.link)))
+                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(social?.link)))
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }
