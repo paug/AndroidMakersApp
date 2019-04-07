@@ -54,6 +54,7 @@ class SessionDetailActivity : BaseActivity(), YouTubeThumbnailView.OnInitialized
     private var sessionEndDateInMillis: Long = 0
 
     private var session: SessionKt? = null
+    private var sessionRoom: RoomKt? = RoomKt()
     private var sessionDateAndRoom: String? = null
     private val speakersList = ArrayList<String>()
     private var videoID: String? = null
@@ -64,18 +65,35 @@ class SessionDetailActivity : BaseActivity(), YouTubeThumbnailView.OnInitialized
         val activityDetailBinding = DataBindingUtil.setContentView<ActivityDetailBinding>(this, R.layout.activity_detail)
         sessionId = intent.getStringExtra(PARAM_SESSION_ID)
 
-        AndroidMakersStore().getSession(sessionId) {
-            session = it
-            setUpSession(activityDetailBinding)
+        AndroidMakersStore().getSession(sessionId) { sessionKt ->
+            session = sessionKt
+            AndroidMakersStore().getRoom(intent.getStringExtra(PARAM_SESSION_ROOM)) { roomKt ->
+                sessionRoom = roomKt
+                setUpSession(activityDetailBinding)
+            }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.detail, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
+        android.R.id.home -> {
+            onBackPressed()
+            true
+        }
+        R.id.share -> {
+            shareSession()
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
     }
 
     private fun setUpSession(activityDetailBinding: ActivityDetailBinding) {
         sessionStartDateInMillis = intent.getLongExtra(PARAM_SESSION_START_DATE, -1)
         sessionEndDateInMillis = intent.getLongExtra(PARAM_SESSION_END_DATE, -1)
-
-//        val sessionRoom = AgendaRepository.instance.getRoom(intent.getIntExtra(PARAM_SESSION_ROOM, -1))
-        val sessionRoom = Room("") //TODO
 
         if (session == null) {
             // We have a problem !
@@ -88,30 +106,28 @@ class SessionDetailActivity : BaseActivity(), YouTubeThumbnailView.OnInitialized
                 Formatter(resources.configuration.locale),
                 sessionStartDateInMillis,
                 sessionEndDateInMillis,
-                DateUtils.FORMAT_SHOW_WEEKDAY or DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_YEAR, null).toString()
-        sessionDateAndRoom = if (sessionRoom != null && !TextUtils.isEmpty(sessionRoom.name))
-            getString(R.string.sessionDateWithRoomPlaceholder, sessionDate, sessionRoom.name)
+                DateUtils.FORMAT_SHOW_WEEKDAY or DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_YEAR,
+                null).toString()
+        sessionDateAndRoom = if (sessionRoom != null && !TextUtils.isEmpty(sessionRoom?.roomName))
+            getString(R.string.sessionDateWithRoomPlaceholder, sessionDate, sessionRoom?.roomName)
         else
             sessionDate
-
-        activityDetailBinding.sessionTitleTextView.text = session!!.title
         activityDetailBinding.sessionDateAndRoomTextView.text = sessionDateAndRoom
+
+        activityDetailBinding.sessionTitleTextView.text = session?.title
         activityDetailBinding.sessionDescriptionTextView.movementMethod = LinkMovementMethod.getInstance()
-        activityDetailBinding.sessionDescriptionTextView.text = if (session!!.description != null)
-            Html.fromHtml(session!!.description!!.trim { it <= ' ' })
+        activityDetailBinding.sessionDescriptionTextView.text = if (session?.description != null)
+            Html.fromHtml(session?.description?.trim { it <= ' ' })
         else
             ""
 
         val languageFullNameRes = session?.language
         if (languageFullNameRes?.isNotEmpty() == true) {
             activityDetailBinding.sessionLanguageChip.text = languageFullNameRes
-        } else {
-            activityDetailBinding.sessionLanguageChip.visibility = View.GONE
+            activityDetailBinding.sessionLanguageChip.visibility = View.VISIBLE
         }
 
         // Tags list
-        activityDetailBinding.sessionTypeChip.visibility = View.GONE
-        activityDetailBinding.sessionSubTypeChip.visibility = View.GONE
         if (session?.tags?.isNotEmpty() == true) {
             if (session?.tags?.first().isNullOrEmpty().not()) {
                 activityDetailBinding.sessionTypeChip.text = session?.tags?.first()
@@ -119,33 +135,9 @@ class SessionDetailActivity : BaseActivity(), YouTubeThumbnailView.OnInitialized
             }
         }
 
-        if (session?.complexity != null) {
+        if (session?.complexity?.isNotEmpty() == true) {
             activityDetailBinding.sessionExperienceChip.text = session?.complexity
-        } else {
-            activityDetailBinding.sessionExperienceChip.visibility = View.GONE
-        }
-
-        //TODO get speakers
-        val sessionSpeakerLayout = findViewById<ViewGroup>(R.id.sessionSpeakerLayout)
-        if (session?.speakers != null && session?.speakers?.isNotEmpty() == true) {
-            for (speakerId in session!!.speakers) {
-                AndroidMakersStore().getSpeaker(speakerId) { speaker ->
-                    if (speaker != null) {
-                        speakersList.add(speaker.getFullNameAndCompany())
-
-                        val speakerInfoElementBinding = DataBindingUtil.inflate<DetailViewSpeakerInfoElementBinding>(layoutInflater,
-                                R.layout.detail_view_speaker_info_element, null,
-                                false)
-                        speakerInfoElementBinding.speakerBio.movementMethod = LinkMovementMethod.getInstance()
-                        speakerInfoElementBinding.speaker = speaker
-
-                        setSpeakerSocialNetworkHandle(speaker, speakerInfoElementBinding)
-//                        setSpeakerRibbons(speaker, speakerInfoElementBinding)
-
-                        sessionSpeakerLayout.addView(speakerInfoElementBinding.root)
-                    }
-                }
-            }
+            activityDetailBinding.sessionExperienceChip.visibility = View.VISIBLE
         }
 
         activityDetailBinding.scheduleFab.setOnClickListener { fab ->
@@ -163,7 +155,34 @@ class SessionDetailActivity : BaseActivity(), YouTubeThumbnailView.OnInitialized
 
         setActionBar(session)
 
+        setSpeakers()
+        activityDetailBinding.separator.visibility = View.VISIBLE
+
         setVideoThumbnail(activityDetailBinding)
+    }
+
+    private fun setSpeakers() {
+        val sessionSpeakerLayout = findViewById<ViewGroup>(R.id.sessionSpeakerLayout)
+        if (session?.speakers != null && session?.speakers?.isNotEmpty() == true) {
+            for (speakerId in session!!.speakers) {
+                AndroidMakersStore().getSpeaker(speakerId) { speaker ->
+                    if (speaker != null) {
+                        speakersList.add(speaker.getFullNameAndCompany())
+
+                        val speakerInfoElementBinding = DataBindingUtil.inflate<DetailViewSpeakerInfoElementBinding>(layoutInflater,
+                                R.layout.detail_view_speaker_info_element, null,
+                                false)
+                        speakerInfoElementBinding.speakerBio.movementMethod = LinkMovementMethod.getInstance()
+                        speakerInfoElementBinding.speaker = speaker
+
+                        setSpeakerSocialNetworkHandle(speaker, speakerInfoElementBinding)
+    //                        setSpeakerRibbons(speaker, speakerInfoElementBinding)
+
+                        sessionSpeakerLayout.addView(speakerInfoElementBinding.root)
+                    }
+                }
+            }
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -238,8 +257,8 @@ class SessionDetailActivity : BaseActivity(), YouTubeThumbnailView.OnInitialized
 
     private fun setActionBar(session: SessionKt?) {
         if (supportActionBar != null) {
-            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-            supportActionBar!!.title = session!!.title
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            supportActionBar?.title = session?.title
         }
     }
 
@@ -253,25 +272,6 @@ class SessionDetailActivity : BaseActivity(), YouTubeThumbnailView.OnInitialized
             ScheduleSessionHelper.scheduleStarredSession(this, sessionStartDateInMillis, sessionEndDateInMillis, sessionId)
         } else {
             ScheduleSessionHelper.unScheduleSession(this, sessionId)
-        }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.detail, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                onBackPressed()
-                return true
-            }
-            R.id.share -> {
-                shareSession()
-                return true
-            }
-            else -> return super.onOptionsItemSelected(item)
         }
     }
 
@@ -338,8 +338,9 @@ class SessionDetailActivity : BaseActivity(), YouTubeThumbnailView.OnInitialized
         playButton!!.visibility = View.GONE
     }
 
-    companion object {
+    // endregion Video management
 
+    companion object {
         private val PARAM_SESSION_ID = "param_session_id"
         private val PARAM_SESSION_START_DATE = "param_session_start_date"
         private val PARAM_SESSION_END_DATE = "param_session_end_date"
@@ -364,7 +365,5 @@ class SessionDetailActivity : BaseActivity(), YouTubeThumbnailView.OnInitialized
             context.startActivity(intent)
         }
     }
-
-    // endregion Video management
 
 }
