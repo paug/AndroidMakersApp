@@ -81,10 +81,9 @@ class AgendaFragment : Fragment() {
                 .get()
                 .addOnSuccessListener { result ->
                     for (document in result) {
-//                        Log.d(TAG, document.id + " => " + document.data)
                         val session = document.toObject(SessionKt::class.java)
                         sessions[document.id] = session
-//                        Log.e("session", session.toString())
+                        Log.e("session", session.toString())
                     }
                     getSlots(firestore)
                 }
@@ -97,8 +96,6 @@ class AgendaFragment : Fragment() {
         firestore.collection("schedule-app").document("slots")
                 .get()
                 .addOnSuccessListener { result ->
-                    Log.e("result", result.toString())
-
                     val allSlots = result.toObject(ScheduleSlotList::class.java)
                     for (scheduleSlotKt in allSlots!!.all) {
                         Log.e("slot", scheduleSlotKt.toString())
@@ -147,7 +144,7 @@ class AgendaFragment : Fragment() {
             true
         }
         addFilterHeader(R.string.filter)
-        addFilter(SessionFilter(BOOKMARK, null), null)
+        addFilter(SessionFilter(BOOKMARK, ""), null)
 
         addFilterHeader(R.string.language)
         addFilter(SessionFilter(LANGUAGE, "French"), null)
