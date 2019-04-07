@@ -42,12 +42,6 @@ class AgendaPagerAdapter(private val mAgenda: List<DayScheduleKt>, private val a
                 clickListener = { scheduleSession ->
                     SessionDetailActivity.startActivity(activity, scheduleSession)
                 })
-
-//                listener = ScheduleDayAdapter.object : ScheduleDayAdapter.OnItemClickListener() {
-//                    override fun onItemClick(scheduleSession: ScheduleSessionKt) {
-//                        SessionDetailActivity.startActivity(activity, scheduleSession)
-//                    }
-//                })
         //adapter.setSessionFilterList(sessionFilterList)
 
         recyclerView.adapter = adapter
