@@ -13,7 +13,7 @@ import pytz
 input_schedule_raw = "schedule.json"
 output_schedule_app = "schedule-app.json"
 
-rooms = ["moebius", "blin", "202", "204"]
+rooms = ["moebius", "blin", "202", "204", "office"]
 
 talks = []
 
@@ -39,7 +39,7 @@ def extractTalks(day_str, timeslots):
 			talk["roomId"] = "all"
 			talk["sessionId"] = items[0]
 			talks.append(talk)
-		if (len(sessions) == 4):
+		if (len(sessions) == 4 or len(sessions) == 5):
 			for session in sessions:
 				items = session["items"]
 				session_index = sessions.index(session)
