@@ -282,19 +282,14 @@ internal constructor(private val context: Context,
                 }
             }
 
-            //TODO Speakers
-//            val session = AgendaRepository.instance.getSession(scheduleSession.sessionId)
-//            if (session != null && session.speakers != null) {
-//                descriptionBuilder.append('\n')
-//                for (i in session.speakers.indices) {
-//                    val speaker = AgendaRepository.instance.getSpeaker(session.speakers[i])
-//
-//                    if (speaker != null) {
-//                        descriptionBuilder.append(speaker.fullName.trim { it <= ' ' })
-//                        if (i != session.speakers.size - 1) descriptionBuilder.append(", ")
-//                    }
-//                }
-//            }
+            // Speakers
+            if (scheduleSession.speakers.isNotEmpty()) {
+                descriptionBuilder.append('\n')
+                scheduleSession.speakers.forEachIndexed { index, speakerKt ->
+                    descriptionBuilder.append(speakerKt.name?.trim { it <= ' ' })
+                    if (index != scheduleSession.speakers.size - 1) descriptionBuilder.append(", ")
+                }
+            }
 
             sessionDescription.text = descriptionBuilder.toString()
 

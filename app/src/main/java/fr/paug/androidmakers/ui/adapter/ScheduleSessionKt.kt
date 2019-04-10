@@ -1,14 +1,16 @@
 package fr.paug.androidmakers.ui.adapter
 
 import fr.paug.androidmakers.model.ScheduleSlotKt
+import fr.paug.androidmakers.model.SpeakerKt
 import fr.paug.androidmakers.util.EmojiUtils
 import fr.paug.androidmakers.util.TimeUtils
 import java.text.SimpleDateFormat
 
 data class ScheduleSessionKt(
-        var slot: ScheduleSlotKt,
-        val title: String,
-        val language: String
+        var slot: ScheduleSlotKt = ScheduleSlotKt(),
+        val title: String = "",
+        val language: String = "",
+        val speakers: List<SpeakerKt> = mutableListOf()
 ) : Comparable<ScheduleSessionKt> {
 
     val languageInEmoji: String get() = EmojiUtils.getLanguageInEmoji(language)
