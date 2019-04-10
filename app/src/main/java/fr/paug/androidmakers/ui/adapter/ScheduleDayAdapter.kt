@@ -63,8 +63,6 @@ internal constructor(private val context: Context,
         return when (viewType) {
             ITEM_TYPE_SESSION -> SessionItemViewHolder(LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_schedule_session, parent, false), clickListener, context)
-            //            case ITEM_TYPE_BREAK:
-            //                return NonSessionItemViewHolder.newInstance(parent);
             ITEM_TYPE_TIME_HEADER -> TimeSeparatorViewHolder(
                     LayoutInflater.from(parent.context)
                             .inflate(R.layout.schedule_item_time_separator, parent, false))
@@ -78,9 +76,6 @@ internal constructor(private val context: Context,
         val item = mItems[position]
         when (holder.itemViewType) {
             ITEM_TYPE_SESSION -> (holder as SessionItemViewHolder).bind(item as ScheduleSessionKt, daySchedule)
-            //            case ITEM_TYPE_BREAK:
-            //                ((NonSessionItemViewHolder) holder).bind((ScheduleItem) item);
-            //                break;
             ITEM_TYPE_TIME_HEADER -> (holder as TimeSeparatorViewHolder).bind(item as TimeSeparatorItem)
             else -> (holder as TimeSeparatorViewHolder).bind(item as TimeSeparatorItem)
         }
@@ -235,10 +230,10 @@ internal constructor(private val context: Context,
                                                      val clickListener: (ScheduleSessionKt) -> Unit,
                                                      private val context: Context)
         : RecyclerView.ViewHolder(itemView) {
-        internal var sessionLayout: ConstraintLayout
-        internal var sessionTitle: TextView
-        internal var sessionDescription: TextView
-        internal var sessionBookmark: ImageButton
+        private var sessionLayout: ConstraintLayout
+        private var sessionTitle: TextView
+        private var sessionDescription: TextView
+        private var sessionBookmark: ImageButton
 
         init {
             sessionLayout = itemView.findViewById(R.id.sessionItemLayout)
@@ -287,6 +282,7 @@ internal constructor(private val context: Context,
                 }
             }
 
+            //TODO Speakers
 //            val session = AgendaRepository.instance.getSession(scheduleSession.sessionId)
 //            if (session != null && session.speakers != null) {
 //                descriptionBuilder.append('\n')
