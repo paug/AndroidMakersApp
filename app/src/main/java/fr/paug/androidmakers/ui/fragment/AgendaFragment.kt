@@ -119,7 +119,7 @@ class AgendaFragment : Fragment() {
                         allRooms.add(room)
                     }
                     onAgendaLoaded()
-                    initFilters()
+                    //initFilters()
                 }
     }
 
@@ -241,20 +241,23 @@ class AgendaFragment : Fragment() {
         val scheduleSlots = slots
         for (scheduleSlot in scheduleSlots) {
             val agendaScheduleSessions = getAgendaItems(itemByDayOfTheYear, calendar, scheduleSlot)
-            agendaScheduleSessions.add(ScheduleSessionKt(scheduleSlot, getTitle(scheduleSlot.sessionId)!!, getLanguage(scheduleSlot.sessionId)!!))
+            agendaScheduleSessions.add(ScheduleSessionKt(scheduleSlot, getTitle(scheduleSlot.sessionId), getLanguage(scheduleSlot.sessionId)))
         }
 
         val days = getItemsOrdered(itemByDayOfTheYear)
 
-        val adapter = AgendaPagerAdapter(days, activity!!)
-        mViewPager?.adapter = adapter
-        //applyFilters()
+        activity?.let {
+            initFilters()
+            val adapter = AgendaPagerAdapter(days, it)
+            mViewPager?.adapter = adapter
+            //applyFilters()
 
-        val indexOfToday = getTodayIndex(days)
-        if (indexOfToday > 0) {
-            mViewPager!!.setCurrentItem(indexOfToday, true)
+            val indexOfToday = getTodayIndex(days)
+            if (indexOfToday > 0) {
+                mViewPager!!.setCurrentItem(indexOfToday, true)
+            }
+            refreshViewsDisplay()
         }
-        refreshViewsDisplay()
     }
 
     private fun refreshViewsDisplay() {
