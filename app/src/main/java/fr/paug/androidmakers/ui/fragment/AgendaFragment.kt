@@ -2,7 +2,6 @@ package fr.paug.androidmakers.ui.fragment
 
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.util.SparseArray
 import android.view.*
 import android.view.MenuItem.SHOW_AS_ACTION_ALWAYS
@@ -14,10 +13,12 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
-import com.google.firebase.firestore.FirebaseFirestore
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.manager.AndroidMakersStore
-import fr.paug.androidmakers.model.*
+import fr.paug.androidmakers.model.RoomKt
+import fr.paug.androidmakers.model.ScheduleSlotKt
+import fr.paug.androidmakers.model.SessionKt
+import fr.paug.androidmakers.model.SpeakerKt
 import fr.paug.androidmakers.ui.adapter.AgendaPagerAdapter
 import fr.paug.androidmakers.ui.adapter.DayScheduleKt
 import fr.paug.androidmakers.ui.adapter.RoomScheduleKt
@@ -47,9 +48,10 @@ class AgendaFragment : Fragment() {
 
     private val mCheckBoxOnCheckedChangeListener = CompoundButton.OnCheckedChangeListener { buttonView, isChecked -> applyFilters() }
 
-    var sessions = HashMap<String, SessionKt>()
-    var allRooms = mutableListOf<RoomKt>()
-    var slots = mutableListOf<ScheduleSlotKt>()
+    var allSessions = HashMap<String, SessionKt>()
+    var allSlots = listOf<ScheduleSlotKt>()
+    var allRooms = listOf<RoomKt>()
+    var allSpeakers = HashMap<String, SpeakerKt>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,59 +70,23 @@ class AgendaFragment : Fragment() {
         mFiltersView = view.findViewById(R.id.filters)
         mDrawerLayout = view as DrawerLayout
 
-        val firestore = FirebaseFirestore.getInstance()
-
-        // Load Sessions
-        getSessions(firestore)
+        // Load Sessions, slots and rooms
+        AndroidMakersStore().getSessions { sessions ->
+            allSessions = sessions
+            AndroidMakersStore().getSlots { slots ->
+                allSlots = slots
+                AndroidMakersStore().getRooms { rooms ->
+                    allRooms = rooms
+                    //onAgendaLoaded()
+                    AndroidMakersStore().getSpeakers { speakers ->
+                        allSpeakers = speakers
+                        onAgendaLoaded()
+                    }
+                }
+            }
+        }
 
         return view
-    }
-
-    private fun getSessions(firestore: FirebaseFirestore) {
-        firestore.collection("sessions")
-                .get()
-                .addOnSuccessListener { result ->
-                    for (document in result) {
-                        val session = document.toObject(SessionKt::class.java)
-                        sessions[document.id] = session
-                        Log.e("session", session.toString())
-                    }
-                    getSlots(firestore)
-                }
-                .addOnFailureListener { exception ->
-                    Log.w(TAG, "Error getting documents.", exception)
-                }
-    }
-
-    private fun getSlots(firestore: FirebaseFirestore) {
-        firestore.collection("schedule-app").document("slots")
-                .get()
-                .addOnSuccessListener { result ->
-                    val allSlots = result.toObject(ScheduleSlotList::class.java)
-                    for (scheduleSlotKt in allSlots!!.all) {
-                        Log.e("slot", scheduleSlotKt.toString())
-                        slots.add(scheduleSlotKt)
-                    }
-                    getRooms(firestore)
-                }
-                .addOnFailureListener { exception ->
-                    Log.w(TAG, "Error getting documents.", exception)
-                }
-    }
-
-    private fun getRooms(firestore: FirebaseFirestore) {
-        firestore.collection("schedule-app").document("rooms")
-                .get()
-                .addOnSuccessListener { result ->
-                    Log.e("result", result.toString())
-
-                    val rooms = result.toObject(RoomsList::class.java)
-                    for (room in rooms!!.allRooms) {
-                        allRooms.add(room)
-                    }
-                    onAgendaLoaded()
-                    //initFilters()
-                }
     }
 
     //region Filters
@@ -238,10 +204,13 @@ class AgendaFragment : Fragment() {
         val itemByDayOfTheYear = SparseArray<DayScheduleKt>()
 
         val calendar = Calendar.getInstance()
-        val scheduleSlots = slots
+        val scheduleSlots = allSlots
         for (scheduleSlot in scheduleSlots) {
             val agendaScheduleSessions = getAgendaItems(itemByDayOfTheYear, calendar, scheduleSlot)
-            agendaScheduleSessions.add(ScheduleSessionKt(scheduleSlot, getTitle(scheduleSlot.sessionId), getLanguage(scheduleSlot.sessionId)))
+            agendaScheduleSessions.add(ScheduleSessionKt(scheduleSlot,
+                    getTitle(scheduleSlot.sessionId),
+                    getLanguage(scheduleSlot.sessionId),
+                    getSpeakers(scheduleSlot.sessionId)))
         }
 
         val days = getItemsOrdered(itemByDayOfTheYear)
@@ -297,7 +266,8 @@ class AgendaFragment : Fragment() {
     }
 
     private fun getAgendaItems(itemByDayOfTheYear: SparseArray<DayScheduleKt>,
-                               calendar: Calendar, scheduleSlot: ScheduleSlotKt): ArrayList<ScheduleSessionKt> {
+                               calendar: Calendar,
+                               scheduleSlot: ScheduleSlotKt): ArrayList<ScheduleSessionKt> {
         val roomSchedules = getRoomScheduleForDay(itemByDayOfTheYear, calendar, scheduleSlot)
         var roomScheduleForThis: RoomScheduleKt? = null
         for (roomSchedule in roomSchedules) {
@@ -354,13 +324,24 @@ class AgendaFragment : Fragment() {
     }
 
     private fun getTitle(sessionId: String): String {
-        val session = sessions[sessionId]
+        val session = allSessions[sessionId]
         return session!!.title
     }
 
     private fun getLanguage(sessionId: String): String {
-        val session = sessions[sessionId]
+        val session = allSessions[sessionId]
         return session!!.language
     }
 
+    private fun getSpeakers(sessionId: String): ArrayList<SpeakerKt> {
+        val speakers = arrayListOf<SpeakerKt>()
+        val session = allSessions[sessionId]
+        if (session?.speakers?.isNotEmpty() == true) {
+            session?.speakers?.forEachIndexed { index, speakerId ->
+                val speakerOfSession = allSpeakers[speakerId]
+                speakers.add(speakerOfSession!!)
+            }
+        }
+        return speakers
+    }
 }

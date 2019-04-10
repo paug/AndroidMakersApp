@@ -48,17 +48,17 @@ class AndroidMakersStore {
                 }
     }
 
-    fun getSessions(callback: (HashMap<String, SessionKt>?) -> Unit) {
-        val sessions = HashMap<String, SessionKt>()
+    fun getSessions(callback: (HashMap<String, SessionKt>) -> Unit) {
+        val allSessions = HashMap<String, SessionKt>()
         FirebaseFirestore.getInstance().collection("sessions")
                 .get()
                 .addOnSuccessListener { result ->
                     for (document in result) {
                         val session = document.toObject(SessionKt::class.java)
-                        sessions[document.id] = session
+                        allSessions[document.id] = session
                         Log.e("session", session.toString())
                     }
-                    callback.invoke(sessions)
+                    callback.invoke(allSessions)
                 }
                 .addOnFailureListener { exception ->
                     Log.w(TAG, "Error getting documents.", exception)
@@ -83,28 +83,42 @@ class AndroidMakersStore {
                 }
     }
 
-    fun getSlots(callback: (List<ScheduleSlotKt>?) -> Unit) {
-        var slots = mutableListOf<ScheduleSlotKt>()
+    fun getSlots(callback: (List<ScheduleSlotKt>) -> Unit) {
+        var allSlots = mutableListOf<ScheduleSlotKt>()
         FirebaseFirestore.getInstance()
                 .collection("schedule-app").document("slots")
                 .get()
                 .addOnSuccessListener { result ->
-                    val allSlots = result.toObject(ScheduleSlotList::class.java)
-                    for (scheduleSlotKt in allSlots!!.all) {
+                    val slots = result.toObject(ScheduleSlotList::class.java)
+                    for (scheduleSlotKt in slots!!.all) {
                         Log.e("slot", scheduleSlotKt.toString())
-                        slots.add(scheduleSlotKt)
+                        allSlots.add(scheduleSlotKt)
                     }
-                    callback.invoke(slots)
+                    callback.invoke(allSlots)
                 }
                 .addOnFailureListener { exception ->
                     Log.w(TAG, "Error getting documents.", exception)
                 }
     }
 
+    fun getSpeakers(callback: (HashMap<String, SpeakerKt>) -> Unit) {
+        val allSpeakers = HashMap<String, SpeakerKt>()
+        FirebaseFirestore.getInstance().collection("speakers").get()
+                .addOnSuccessListener { result ->
+                    for (document in result) {
+                        val speaker = document.toObject(SpeakerKt::class.java)
+                        allSpeakers[document.id] = speaker
+                        Log.e("speaker", speaker.toString())
+                    }
+                    callback.invoke(allSpeakers)
+                }
+                .addOnFailureListener { exception ->
+                    Log.d(TAG, "get failed with ", exception)
+                }
+    }
+
     fun getSpeaker(id: String, callback: (SpeakerKt?) -> Unit) {
-        val firestore = FirebaseFirestore.getInstance()
-        val docRef = firestore.collection("speakers").document(id)
-        docRef.get()
+        FirebaseFirestore.getInstance().collection("speakers").document(id).get()
                 .addOnSuccessListener { document ->
                     if (document != null) {
                         Log.d(TAG, "DocumentSnapshot data: " + document.data)
@@ -117,13 +131,11 @@ class AndroidMakersStore {
                 .addOnFailureListener { exception ->
                     Log.d(TAG, "get failed with ", exception)
                 }
-
     }
 
-    fun getRooms(callback: (List<RoomKt>?) -> Unit) {
+    fun getRooms(callback: (List<RoomKt>) -> Unit) {
         val allRooms = mutableListOf<RoomKt>()
-        val firestore = FirebaseFirestore.getInstance()
-        firestore.collection("schedule-app").document("rooms")
+        FirebaseFirestore.getInstance().collection("schedule-app").document("rooms")
                 .get()
                 .addOnSuccessListener { result ->
                     Log.e("result", result.toString())
