@@ -34,16 +34,18 @@ public class TimeUtils {
         return formatDuration(context, endTime - startTime);
     }
 
-    public static String formatDuration(@NonNull Context context, long duration) {
+    private static String formatDuration(@NonNull Context context, long duration) {
         Float hours = duration / (float) HOUR;
         if (hours >= 1f) {
             return context.getResources().getQuantityString(R.plurals.duration_hours,
-                    (int) Math.ceil(hours), (hours == hours.intValue()) ?
-                            String.valueOf(hours.intValue()) : hours.toString());
+                    (int) Math.ceil(hours),
+                    (hours == hours.intValue()) ? String.valueOf(hours.intValue()) : String.valueOf(Math.round(hours * 100d)/100d));
         } else {
             long minutes = duration / MINUTE;
             return context.getResources().getQuantityString(
-                    R.plurals.duration_minutes, (int) minutes, minutes);
+                    R.plurals.duration_minutes,
+                    (int) minutes,
+                    minutes);
         }
     }
 

@@ -4,8 +4,6 @@ import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import fr.paug.androidmakers.model.*
 
-//TODO get realtime data https://firebase.google.com/docs/firestore/query-data/listen
-//TODO enable offline https://firebase.google.com/docs/firestore/manage-data/enable-offline
 class AndroidMakersStore {
 
     val TAG = "Firestore"
@@ -50,6 +48,23 @@ class AndroidMakersStore {
                 }
     }
 
+    fun getSessions(callback: (HashMap<String, SessionKt>?) -> Unit) {
+        val sessions = HashMap<String, SessionKt>()
+        FirebaseFirestore.getInstance().collection("sessions")
+                .get()
+                .addOnSuccessListener { result ->
+                    for (document in result) {
+                        val session = document.toObject(SessionKt::class.java)
+                        sessions[document.id] = session
+                        Log.e("session", session.toString())
+                    }
+                    callback.invoke(sessions)
+                }
+                .addOnFailureListener { exception ->
+                    Log.w(TAG, "Error getting documents.", exception)
+                }
+    }
+
     fun getSession(id: String, callback: (SessionKt?) -> Unit) {
         val firestore = FirebaseFirestore.getInstance()
         val docRef = firestore.collection("sessions").document(id)
@@ -65,6 +80,24 @@ class AndroidMakersStore {
                 }
                 .addOnFailureListener { exception ->
                     Log.d(TAG, "get failed with ", exception)
+                }
+    }
+
+    fun getSlots(callback: (List<ScheduleSlotKt>?) -> Unit) {
+        var slots = mutableListOf<ScheduleSlotKt>()
+        FirebaseFirestore.getInstance()
+                .collection("schedule-app").document("slots")
+                .get()
+                .addOnSuccessListener { result ->
+                    val allSlots = result.toObject(ScheduleSlotList::class.java)
+                    for (scheduleSlotKt in allSlots!!.all) {
+                        Log.e("slot", scheduleSlotKt.toString())
+                        slots.add(scheduleSlotKt)
+                    }
+                    callback.invoke(slots)
+                }
+                .addOnFailureListener { exception ->
+                    Log.w(TAG, "Error getting documents.", exception)
                 }
     }
 
