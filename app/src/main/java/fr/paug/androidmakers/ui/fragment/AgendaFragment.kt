@@ -35,8 +35,6 @@ import kotlin.collections.HashMap
 
 class AgendaFragment : Fragment() {
 
-    val TAG = "Agenda"
-
     private var mProgressView: View? = null
     private var mEmptyView: View? = null
     private var mViewPager: ViewPager? = null
@@ -53,6 +51,7 @@ class AgendaFragment : Fragment() {
     var allRooms = listOf<RoomKt>()
     var allSpeakers = HashMap<String, SpeakerKt>()
 
+    //region Fragment Implementation
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -71,6 +70,35 @@ class AgendaFragment : Fragment() {
         mDrawerLayout = view as DrawerLayout
 
         // Load Sessions, slots and rooms
+        loadAgenda()
+
+        return view
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val adapter = mViewPager!!.adapter
+        if (adapter is AgendaPagerAdapter) {
+            adapter.refreshSessionsSelected()
+        }
+    }
+    //endregion
+
+    private fun refreshViewsDisplay() {
+        mProgressView?.visibility = View.GONE
+        val adapter = mViewPager!!.adapter
+        if (adapter == null || adapter.count == 0) {
+            mEmptyView?.visibility = View.VISIBLE
+            mViewPager?.visibility = View.GONE
+        } else {
+            mEmptyView?.visibility = View.GONE
+            mViewPager?.visibility = View.VISIBLE
+        }
+    }
+
+    //region Schedule
+    private fun loadAgenda() {
         AndroidMakersStore().getSessions { sessions ->
             allSessions = sessions
             AndroidMakersStore().getSlots { slots ->
@@ -84,119 +112,6 @@ class AgendaFragment : Fragment() {
                     }
                 }
             }
-        }
-
-        return view
-    }
-
-    //region Filters
-    private fun applyFilters() {
-        val adapter = mViewPager!!.adapter
-        if (adapter is AgendaPagerAdapter) {
-            val sessionFilterList = ArrayList<SessionFilter>()
-
-            for (i in allCheckBoxes.indices) {
-                if (allCheckBoxes[i].isChecked) {
-                    sessionFilterList.add(allSessionFilters[i])
-                }
-            }
-            adapter.setSessionFilterList(sessionFilterList)
-        }
-    }
-
-    private fun initFilters() {
-        mFiltersView?.setOnTouchListener { v, event ->
-            // a dummy touch listener that makes sure we don't click through the filter list
-            true
-        }
-        addFilterHeader(R.string.filter)
-        addFilter(SessionFilter(BOOKMARK, ""), null)
-
-        addFilterHeader(R.string.language)
-        addFilter(SessionFilter(LANGUAGE, "French"), null)
-        addFilter(SessionFilter(LANGUAGE, "English"), null)
-
-        AndroidMakersStore().getRooms { rooms ->
-            addFilterHeader(R.string.rooms)
-            if (rooms != null) {
-                for (room in rooms) {
-                    if (!TextUtils.isEmpty(room.roomName)) {
-                        addFilter(SessionFilter(ROOM, room.roomId), room.roomName)
-                    }
-                }
-            }
-        }
-    }
-
-    private fun addFilter(sessionFilter: SessionFilter, roomName: String?) {
-        val view = LayoutInflater.from(activity).inflate(R.layout.filter_item, mDrawerLayout, false)
-        val checkBox = view.findViewById<CheckBox>(R.id.checkbox)
-        checkBox.setOnCheckedChangeListener(mCheckBoxOnCheckedChangeListener)
-        view.setOnClickListener { checkBox.isChecked = !checkBox.isChecked }
-        mFiltersView!!.addView(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-
-        val context = mFiltersView!!.context
-
-        allCheckBoxes.add(checkBox)
-        allSessionFilters.add(sessionFilter)
-
-        var name: String? = ""
-
-        val bookmark = view.findViewById<View>(R.id.bookmark)
-        val flag = view.findViewById<TextView>(R.id.flag)
-
-        bookmark.visibility = View.GONE
-        flag.visibility = View.GONE
-
-        when (sessionFilter.type) {
-            BOOKMARK -> {
-                name = context.getString(R.string.bookmarked)
-                bookmark.visibility = View.VISIBLE
-            }
-            LANGUAGE -> {
-                val nameResId = if ("French" == sessionFilter.value) R.string.french else R.string.english
-                name = context.getString(nameResId)
-                flag.text = EmojiUtils.getLanguageInEmoji(sessionFilter.value as String)
-                flag.visibility = View.VISIBLE
-            }
-            ROOM -> {
-                bookmark.visibility = View.INVISIBLE
-                name = roomName
-            }
-        }
-
-        (view.findViewById<View>(R.id.name) as TextView).text = name
-    }
-
-    private fun addFilterHeader(@StringRes titleResId: Int) {
-        val view = LayoutInflater.from(activity).inflate(R.layout.filter_header, mDrawerLayout, false)
-        (view as TextView).setText(titleResId)
-        mFiltersView?.addView(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        super.onCreateOptionsMenu(menu, inflater)
-
-        val menuItem = menu?.add(activity!!.getString(R.string.filter))
-        menuItem?.setIcon(R.drawable.ic_filter_list_white_24dp)
-        menuItem?.setShowAsAction(SHOW_AS_ACTION_ALWAYS)
-        menuItem?.setOnMenuItemClickListener {
-            if (mDrawerLayout!!.isDrawerOpen(GravityCompat.END)) {
-                mDrawerLayout!!.closeDrawer(GravityCompat.END)
-            } else {
-                mDrawerLayout!!.openDrawer(GravityCompat.END)
-            }
-            true
-        }
-    }
-    //endregion
-
-    override fun onResume() {
-        super.onResume()
-
-        val adapter = mViewPager!!.adapter
-        if (adapter is AgendaPagerAdapter) {
-            adapter.refreshSessionsSelected()
         }
     }
 
@@ -228,19 +143,7 @@ class AgendaFragment : Fragment() {
             refreshViewsDisplay()
         }
     }
-
-    private fun refreshViewsDisplay() {
-        mProgressView?.visibility = View.GONE
-        val adapter = mViewPager!!.adapter
-        if (adapter == null || adapter.count == 0) {
-            mEmptyView?.visibility = View.VISIBLE
-            mViewPager?.visibility = View.GONE
-        } else {
-            mEmptyView?.visibility = View.GONE
-            mViewPager?.visibility = View.VISIBLE
-        }
-    }
-
+    
     private fun getTodayIndex(items: List<DayScheduleKt>?): Int {
         if (items == null || items.size < 2) {
             return -1
@@ -344,4 +247,107 @@ class AgendaFragment : Fragment() {
         }
         return speakers
     }
+    //endregion
+
+    //region Filters
+    private fun applyFilters() {
+        val adapter = mViewPager!!.adapter
+        if (adapter is AgendaPagerAdapter) {
+            val sessionFilterList = ArrayList<SessionFilter>()
+
+            for (i in allCheckBoxes.indices) {
+                if (allCheckBoxes[i].isChecked) {
+                    sessionFilterList.add(allSessionFilters[i])
+                }
+            }
+            adapter.setSessionFilterList(sessionFilterList)
+        }
+    }
+
+    private fun initFilters() {
+        mFiltersView?.setOnTouchListener { v, event ->
+            // a dummy touch listener that makes sure we don't click through the filter list
+            true
+        }
+        addFilterHeader(R.string.filter)
+        addFilter(SessionFilter(BOOKMARK, ""), null)
+
+        addFilterHeader(R.string.language)
+        addFilter(SessionFilter(LANGUAGE, "French"), null)
+        addFilter(SessionFilter(LANGUAGE, "English"), null)
+
+        AndroidMakersStore().getRooms { rooms ->
+            addFilterHeader(R.string.rooms)
+            if (rooms != null) {
+                for (room in rooms) {
+                    if (!TextUtils.isEmpty(room.roomName)) {
+                        addFilter(SessionFilter(ROOM, room.roomId), room.roomName)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun addFilter(sessionFilter: SessionFilter, roomName: String?) {
+        val view = LayoutInflater.from(activity).inflate(R.layout.filter_item, mDrawerLayout, false)
+        val checkBox = view.findViewById<CheckBox>(R.id.checkbox)
+        checkBox.setOnCheckedChangeListener(mCheckBoxOnCheckedChangeListener)
+        view.setOnClickListener { checkBox.isChecked = !checkBox.isChecked }
+        mFiltersView!!.addView(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+
+        val context = mFiltersView!!.context
+
+        allCheckBoxes.add(checkBox)
+        allSessionFilters.add(sessionFilter)
+
+        var name: String? = ""
+
+        val bookmark = view.findViewById<View>(R.id.bookmark)
+        val flag = view.findViewById<TextView>(R.id.flag)
+
+        bookmark.visibility = View.GONE
+        flag.visibility = View.GONE
+
+        when (sessionFilter.type) {
+            BOOKMARK -> {
+                name = context.getString(R.string.bookmarked)
+                bookmark.visibility = View.VISIBLE
+            }
+            LANGUAGE -> {
+                val nameResId = if ("French" == sessionFilter.value) R.string.french else R.string.english
+                name = context.getString(nameResId)
+                flag.text = EmojiUtils.getLanguageInEmoji(sessionFilter.value as String)
+                flag.visibility = View.VISIBLE
+            }
+            ROOM -> {
+                bookmark.visibility = View.INVISIBLE
+                name = roomName
+            }
+        }
+
+        (view.findViewById<View>(R.id.name) as TextView).text = name
+    }
+
+    private fun addFilterHeader(@StringRes titleResId: Int) {
+        val view = LayoutInflater.from(activity).inflate(R.layout.filter_header, mDrawerLayout, false)
+        (view as TextView).setText(titleResId)
+        mFiltersView?.addView(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        super.onCreateOptionsMenu(menu, inflater)
+
+        val menuItem = menu?.add(activity!!.getString(R.string.filter))
+        menuItem?.setIcon(R.drawable.ic_filter_list_white_24dp)
+        menuItem?.setShowAsAction(SHOW_AS_ACTION_ALWAYS)
+        menuItem?.setOnMenuItemClickListener {
+            if (mDrawerLayout!!.isDrawerOpen(GravityCompat.END)) {
+                mDrawerLayout!!.closeDrawer(GravityCompat.END)
+            } else {
+                mDrawerLayout!!.openDrawer(GravityCompat.END)
+            }
+            true
+        }
+    }
+    //endregion
 }
