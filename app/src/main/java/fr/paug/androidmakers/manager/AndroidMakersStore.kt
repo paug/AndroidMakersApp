@@ -6,11 +6,8 @@ import fr.paug.androidmakers.model.*
 
 class AndroidMakersStore {
 
-    val TAG = "Firestore"
-
     fun getPartners(callback: (PartnerCollection) -> Unit) {
-        val firestore = FirebaseFirestore.getInstance()
-        firestore.collection("partners")
+        FirebaseFirestore.getInstance().collection("partners")
                 .get()
                 .addOnSuccessListener { result ->
                     for (document in result) {
@@ -24,16 +21,8 @@ class AndroidMakersStore {
                 }
     }
 
-    /*
-    rajouter cette règle dans firestore :
-    match /venues/{id} {
-    	allow read;
-    }
-     */
     fun getVenue(document: String, callback: (Venue?) -> Unit) {
-        val firestore = FirebaseFirestore.getInstance()
-        val docRef = firestore.collection("venues").document(document)
-        docRef.get()
+        FirebaseFirestore.getInstance().collection("venues").document(document).get()
                 .addOnSuccessListener { document ->
                     if (document != null) {
                         Log.d(TAG, "DocumentSnapshot data: " + document.data)
@@ -66,9 +55,7 @@ class AndroidMakersStore {
     }
 
     fun getSession(id: String, callback: (SessionKt?) -> Unit) {
-        val firestore = FirebaseFirestore.getInstance()
-        val docRef = firestore.collection("sessions").document(id)
-        docRef.get()
+        FirebaseFirestore.getInstance().collection("sessions").document(id).get()
                 .addOnSuccessListener { document ->
                     if (document != null) {
                         Log.d(TAG, "DocumentSnapshot data: " + document.data)
@@ -84,7 +71,7 @@ class AndroidMakersStore {
     }
 
     fun getSlots(callback: (List<ScheduleSlotKt>) -> Unit) {
-        var allSlots = mutableListOf<ScheduleSlotKt>()
+        val allSlots = mutableListOf<ScheduleSlotKt>()
         FirebaseFirestore.getInstance()
                 .collection("schedule-app").document("slots")
                 .get()
@@ -151,8 +138,7 @@ class AndroidMakersStore {
     }
 
     fun getRoom(roomId: String, callback: (RoomKt?) -> Unit) {
-        val firestore = FirebaseFirestore.getInstance()
-        firestore.collection("schedule-app").document("rooms")
+        FirebaseFirestore.getInstance().collection("schedule-app").document("rooms")
                 .get()
                 .addOnSuccessListener { result ->
                     Log.e("result", result.toString())
@@ -166,6 +152,10 @@ class AndroidMakersStore {
                 .addOnFailureListener { exception ->
                     Log.d(TAG, "get failed with ", exception)
                 }
+    }
+
+    companion object {
+        private const val TAG = "Firestore"
     }
 
 }
