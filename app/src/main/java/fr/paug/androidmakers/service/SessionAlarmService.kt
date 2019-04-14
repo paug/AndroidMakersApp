@@ -19,9 +19,7 @@ import fr.paug.androidmakers.util.SessionSelector
 import fr.paug.androidmakers.util.TimeUtils
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.CountDownLatch
 
-//TODO Kt
 class SessionAlarmService : JobIntentService() {
 
     val format = SimpleDateFormat(TimeUtils.dateFormat)
@@ -63,17 +61,8 @@ class SessionAlarmService : JobIntentService() {
 
     internal fun scheduleAllStarredSessions() {
         logDebug("scheduleAllStarredSessions")
-        val latch = CountDownLatch(1)//
         // need to be sure that the AgendaRepository is loaded in order to schedule all starred sessions
-//        val runnable = Runnable {
-        //TODO use AndroidMakersStore
-        AndroidMakersStore().getSlots {
-            val scheduleSlots = it
-
-
-//            val scheduleSlots = AgendaRepository.instance
-//                    .scheduleSlots
-
+        AndroidMakersStore().getSlots { scheduleSlots ->
             // first unschedule all sessions
             // this is done in case the session slot has changed
             for (scheduleSlot in scheduleSlots) {
@@ -81,33 +70,17 @@ class SessionAlarmService : JobIntentService() {
             }
 
             for (id in SessionSelector.instance.sessionsSelected!!) {
-                //TODO use AndroidMakersStore
-//                    val sessionYearId = id.replace(AgendaRepository.CURRENT_YEAR_NODE + "_", "")
-//                    logDebug("session id without year: $sessionYearId")
-                //TODO use AndroidMakersStore
-
-                val scheduleSlot = scheduleSlots.filter { it.sessionId == id }.get(0)//AgendaRepository.instance.getScheduleSlot(sessionYearId)
+                val scheduleSlot = scheduleSlots.firstOrNull { it.sessionId == id }
 
                 if (scheduleSlot != null) {
                     Log.i("SessionAlarmService", scheduleSlot.toString())
-
-
                     val startTimestamp = format.parse(scheduleSlot.startDate).time
                     val endTimestamp = format.parse(scheduleSlot.endDate).time
                     scheduleAlarm(startTimestamp, endTimestamp,
                             scheduleSlot.sessionId, false)
                 }
             }
-            //latch.countDown()
         }
-//        }
-        //TODO use AndroidMakersStore
-//        AgendaRepository.instance.load(AgendaLoadListener(runnable))
-//        try {
-//            latch.await()
-//        } catch (e: InterruptedException) {
-//        }
-
     }
 
     /**
@@ -142,17 +115,10 @@ class SessionAlarmService : JobIntentService() {
             }
         }
 
-        //TODO AndroidMakersStore
         AndroidMakersStore().getSession(sessionId) { session ->
-
-
-            val sessionToNotify = session//AgendaRepository.instance.getSession(sessionId)
-
             AndroidMakersStore().getSlots { slots ->
-
-
-                val slotToNotify = slots.filter { it.sessionId == sessionId }.get(0)//AgendaRepository.instance.getScheduleSlot(sessionId)
-                if (sessionToNotify == null || slotToNotify == null) {
+                val slotToNotify = slots.firstOrNull { it.sessionId == sessionId }
+                if (session == null || slotToNotify == null) {
                     Log.w(TAG, "Cannot find session $sessionId either in sessions or in slots")
                     return@getSlots
                 }
@@ -166,9 +132,7 @@ class SessionAlarmService : JobIntentService() {
                         endTimestamp,
                         DateUtils.FORMAT_SHOW_WEEKDAY or DateUtils.FORMAT_ABBREV_WEEKDAY or DateUtils.FORMAT_SHOW_TIME, null).toString()
 
-                //TODO AndroidMakersStore
                 AndroidMakersStore().getRoom(slotToNotify.roomId) { room ->
-                    //val room = AgendaRepository.instance.getRoom(slotToNotify.room)
                     val roomName = (if (room != null) room.roomName else "") + " - "
 
                     logDebug("Scheduling alarm for " + alarmTime + " = " + Date(alarmTime).toString())
@@ -183,7 +147,7 @@ class SessionAlarmService : JobIntentService() {
                     notificationIntent.putExtra(EXTRA_SESSION_END, sessionEnd)
                     logDebug("-> Intent extra: session end $sessionEnd")
                     notificationIntent.putExtra(EXTRA_SESSION_ID, sessionId)
-                    notificationIntent.putExtra(EXTRA_NOTIFICATION_TITLE, sessionToNotify.title)
+                    notificationIntent.putExtra(EXTRA_NOTIFICATION_TITLE, session.title)
                     notificationIntent.putExtra(EXTRA_NOTIFICATION_CONTENT, roomName + sessionDate)
 
                     val pendingIntent = PendingIntent.getBroadcast(this, sessionId.hashCode(), notificationIntent, 0)
@@ -263,16 +227,7 @@ class SessionAlarmService : JobIntentService() {
         NotificationManagerCompat.from(this).notify(sessionId.hashCode(), notificationBuilder.build())
     }
 
-//    private class AgendaLoadListener private constructor(private val runnable: Runnable) : AgendaRepository.OnLoadListener {
-//
-//        override fun onAgendaLoaded() {
-//            runnable.run()
-//            AgendaRepository.instance.removeListener(this)
-//        }
-//    }
-
     companion object {
-
         /**
          * Unique job ID for this service.
          */

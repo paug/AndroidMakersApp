@@ -105,12 +105,6 @@ class MainActivity : BaseActivity() {
             val split = uriFragment.split("session-".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             if (split.size > 1 && TextUtils.isDigitsOnly(split[1])) {
                 val sessionId = split[1]
-//                for (scheduleSlot in AgendaRepository.instance.scheduleSlots) {
-//                    if (scheduleSlot.sessionId == sessionId) {
-//                        SessionDetailActivity.startActivity(this, sessionId, scheduleSlot.startDate, scheduleSlot.endDate, scheduleSlot.room)
-//                        break
-//                    }
-//                }
                 AndroidMakersStore().getSlots { slots ->
                     for (scheduleSlot in slots) {
                         if (scheduleSlot.sessionId == sessionId) {
