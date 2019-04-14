@@ -8,10 +8,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import fr.paug.androidmakers.R
-import fr.paug.androidmakers.manager.AgendaRepository
+import fr.paug.androidmakers.manager.AndroidMakersStore
 import fr.paug.androidmakers.ui.fragment.AboutFragment
 import fr.paug.androidmakers.ui.fragment.AgendaFragment
 import fr.paug.androidmakers.ui.fragment.VenuePagerFragment
+import fr.paug.androidmakers.util.TimeUtils
+import java.text.SimpleDateFormat
 
 class MainActivity : BaseActivity() {
 
@@ -102,12 +104,24 @@ class MainActivity : BaseActivity() {
         if (uriFragment != null && uriFragment.startsWith("session-")) {
             val split = uriFragment.split("session-".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             if (split.size > 1 && TextUtils.isDigitsOnly(split[1])) {
-                val sessionId = Integer.valueOf(split[1])
-                for (scheduleSlot in AgendaRepository.instance.scheduleSlots) {
-                    if (scheduleSlot.sessionId == sessionId) {
-                        SessionDetailActivity.startActivity(this, sessionId, scheduleSlot.startDate, scheduleSlot.endDate, scheduleSlot.room)
-                        break
+                val sessionId = split[1]
+//                for (scheduleSlot in AgendaRepository.instance.scheduleSlots) {
+//                    if (scheduleSlot.sessionId == sessionId) {
+//                        SessionDetailActivity.startActivity(this, sessionId, scheduleSlot.startDate, scheduleSlot.endDate, scheduleSlot.room)
+//                        break
+//                    }
+//                }
+                AndroidMakersStore().getSlots { slots ->
+                    for (scheduleSlot in slots) {
+                        if (scheduleSlot.sessionId == sessionId) {
+                            val format = SimpleDateFormat(TimeUtils.dateFormat)
+                            val startTimestamp = format.parse(scheduleSlot.startDate).time
+                            val endTimestamp = format.parse(scheduleSlot.endDate).time
+                            SessionDetailActivity.startActivity(this, sessionId, startTimestamp, endTimestamp, scheduleSlot.roomId)
+                            break
+                        }
                     }
+
                 }
             }
         }

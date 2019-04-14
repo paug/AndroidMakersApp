@@ -27,11 +27,11 @@ public class ScheduleSessionHelper {
         toast = Toast.makeText(context, R.string.session_selected, Toast.LENGTH_SHORT);
         toast.show();
 
-        final Intent scheduleIntent = new Intent(SessionAlarmService.ACTION_SCHEDULE_STARRED_BLOCK);
-        scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_START, sessionStartDateInMillis);
-        scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_END, sessionEndDateInMillis);
-        scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_ID, sessionId);
-        SessionAlarmService.enqueueWork(context, scheduleIntent);
+        final Intent scheduleIntent = new Intent(SessionAlarmService.Companion.getACTION_SCHEDULE_STARRED_BLOCK());
+        scheduleIntent.putExtra(SessionAlarmService.Companion.getEXTRA_SESSION_START(), sessionStartDateInMillis);
+        scheduleIntent.putExtra(SessionAlarmService.Companion.getEXTRA_SESSION_END(), sessionEndDateInMillis);
+        scheduleIntent.putExtra(SessionAlarmService.Companion.getEXTRA_SESSION_ID(), sessionId);
+        SessionAlarmService.Companion.enqueueWork(context, scheduleIntent);
     }
 
     public static void unScheduleSession(Context context, String sessionId) {
@@ -41,9 +41,9 @@ public class ScheduleSessionHelper {
         toast = Toast.makeText(context, R.string.session_deselected, Toast.LENGTH_SHORT);
         toast.show();
 
-        final Intent scheduleIntent = new Intent(SessionAlarmService.ACTION_UNSCHEDULE_UNSTARRED_BLOCK);
-        scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_ID, sessionId);
-        SessionAlarmService.enqueueWork(context, scheduleIntent);
+        final Intent scheduleIntent = new Intent(SessionAlarmService.Companion.getACTION_UNSCHEDULE_UNSTARRED_BLOCK());
+        scheduleIntent.putExtra(SessionAlarmService.Companion.getEXTRA_SESSION_ID(), sessionId);
+        SessionAlarmService.Companion.enqueueWork(context, scheduleIntent);
     }
     //endregion
 

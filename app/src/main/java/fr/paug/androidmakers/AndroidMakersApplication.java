@@ -24,7 +24,7 @@ public class AndroidMakersApplication extends Application {
             Fabric.with(this, new Crashlytics());
         }
 
-        SessionSelector.getInstance().init(this);
+        SessionSelector.Companion.getInstance().init(this);
 
         // Use a downloadable font for EmojiCompat
         setupEmojiCompat();

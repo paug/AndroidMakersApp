@@ -150,7 +150,7 @@ internal constructor(private val context: Context,
                 for (sessionFilter in sessionFilterList) {
                     var matched = when (sessionFilter.type) {
                         SessionFilter.FilterType.BOOKMARK -> {
-                            SessionSelector.getInstance().isSelected(item.sessionId)
+                            SessionSelector.instance.isSelected(item.sessionId)
                         }
                         SessionFilter.FilterType.LANGUAGE -> {
                             sessionFilter.value == item.language
@@ -299,7 +299,7 @@ internal constructor(private val context: Context,
 
             sessionBookmark.setOnClickListener {
                 sessionBookmark.isActivated = !sessionBookmark.isActivated
-                SessionSelector.getInstance().setSessionSelected(scheduleSession.sessionId, sessionBookmark.isActivated)
+                SessionSelector.instance.setSessionSelected(scheduleSession.sessionId, sessionBookmark.isActivated)
                 if (sessionBookmark.isActivated) {
                     ScheduleSessionHelper.scheduleStarredSession(context,
                             scheduleSession.startTimestamp,
@@ -309,7 +309,7 @@ internal constructor(private val context: Context,
                     ScheduleSessionHelper.unScheduleSession(context, scheduleSession.sessionId)
                 }
             }
-            sessionBookmark.isActivated = SessionSelector.getInstance().isSelected(scheduleSession.sessionId)
+            sessionBookmark.isActivated = SessionSelector.instance.isSelected(scheduleSession.sessionId)
         }
 
         private fun getRoomTitle(scheduleSession: ScheduleSessionKt, daySchedule: DayScheduleKt): String {
