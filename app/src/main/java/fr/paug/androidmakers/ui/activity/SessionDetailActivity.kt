@@ -115,7 +115,6 @@ class SessionDetailActivity : BaseActivity(), YouTubeThumbnailView.OnInitialized
         activityDetailBinding.sessionDateAndRoomTextView.text = sessionDateAndRoom
 
         activityDetailBinding.sessionTitleTextView.text = session?.title
-        activityDetailBinding.sessionDescriptionTextView.movementMethod = LinkMovementMethod.getInstance()
         activityDetailBinding.sessionDescriptionTextView.text = if (session?.description != null)
             Html.fromHtml(session?.description?.trim { it <= ' ' })
         else
@@ -176,7 +175,6 @@ class SessionDetailActivity : BaseActivity(), YouTubeThumbnailView.OnInitialized
                         speakerInfoElementBinding.speaker = speaker
 
                         setSpeakerSocialNetworkHandle(speaker, speakerInfoElementBinding)
-    //                        setSpeakerRibbons(speaker, speakerInfoElementBinding)
 
                         sessionSpeakerLayout.addView(speakerInfoElementBinding.root)
                     }
@@ -205,7 +203,7 @@ class SessionDetailActivity : BaseActivity(), YouTubeThumbnailView.OnInitialized
     }
 
     private fun setSpeakerSocialNetworkHandle(speaker: SpeakerKt, speakerInfoElementBinding: DetailViewSpeakerInfoElementBinding) {
-        if (speaker.socials != null && speaker.socials.size > 0) {
+        if (speaker.socials != null && speaker.socials.isNotEmpty()) {
             for (social in speaker.socials) {
                 val socialNetworkHandle = SocialNetworkHandle(social?.icon, social?.link)
                 if (socialNetworkHandle != SocialNetworkHandle.SocialNetworkType.Unknown) {
