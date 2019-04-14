@@ -34,6 +34,7 @@ public final class SessionSelector {
     }
 
     public void setSessionSelected(String id, boolean selected) {
+        //TODO use AndroidMakersStore
         String idString = AgendaRepository.Companion.getCURRENT_YEAR_NODE() + "_" + id;
         if (selected) {
             mSessionsSelected.add(idString);
