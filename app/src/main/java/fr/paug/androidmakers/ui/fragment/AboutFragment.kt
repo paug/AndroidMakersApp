@@ -23,8 +23,6 @@ import fr.paug.androidmakers.databinding.FragmentAboutBinding
 import fr.paug.androidmakers.manager.AndroidMakersStore
 import fr.paug.androidmakers.model.Logo
 import fr.paug.androidmakers.model.PartnerCollection
-import fr.paug.androidmakers.model.PartnerGroup
-import fr.paug.androidmakers.model.Partners
 import fr.paug.androidmakers.util.CustomTabUtil
 import fr.paug.androidmakers.util.WifiUtil
 
@@ -73,15 +71,12 @@ class AboutFragment : Fragment(), View.OnClickListener {
         return fragmentAboutBinding?.root
     }
 
-    override fun onClick(v: View) {
-        if (v === fragmentAboutBinding?.twitterUserButton) {
-            openTwitterUser()
-        } else if (v === fragmentAboutBinding?.twitterHashtagButton) {
-            openTwitterHashtag()
-        } else if (v === fragmentAboutBinding?.youtubeButton) {
-            openYoutube()
-        } else if (v === fragmentAboutBinding?.wifiConnectButton) {
-            connectToVenuesWifi()
+    override fun onClick(view: View) {
+        when (view) {
+            fragmentAboutBinding?.twitterUserButton -> openTwitterUser()
+            fragmentAboutBinding?.twitterHashtagButton -> openTwitterHashtag()
+            fragmentAboutBinding?.youtubeButton -> openYoutube()
+            fragmentAboutBinding?.wifiConnectButton -> connectToVenuesWifi()
         }
     }
 
@@ -155,52 +150,6 @@ class AboutFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    private fun addPartnerTypeToView(partnerGroup: PartnerGroup?) {
-        if (partnerGroup == null) {
-            return
-        }
-
-        val partnersList = partnerGroup.partnersList
-        if (partnersList != null && partnersList.size > 0) {
-            val partnersGroupLinearLayout = LayoutInflater.from(context).inflate(R.layout.partners_group, null) as LinearLayout
-
-            val partnerGroupHeader = partnersGroupLinearLayout.findViewById<TextView>(R.id.partners_title)
-            partnerGroupHeader.setText(partnerGroup.partnerType.getName())
-
-            val partnerLogoLayout = partnersGroupLinearLayout.findViewById<LinearLayout>(R.id.partners_layout)
-            val partnerLogoSizePriority = partnerGroup.partnerType.partnerLogoSizePriority
-
-            var index = 0
-            while (index < partnersList.size) {
-                val partnerRow = LayoutInflater.from(context).inflate(R.layout.partner_row, null) as LinearLayout
-                partnerRow.weightSum = partnerLogoSizePriority.toFloat()
-
-                if (partnerLogoSizePriority > 0) {
-                    val partner1 = partnerRow.findViewById<ImageView>(R.id.partner1)
-                    setLogoInfo(partner1, partnersList[index])
-                    partner1.contentDescription = partnersList[index].name
-                }
-
-                if (partnerLogoSizePriority > 1 && partnersList.size > index + 1) {
-                    val partner2 = partnerRow.findViewById<ImageView>(R.id.partner2)
-                    setLogoInfo(partner2, partnersList[index + 1])
-                    partner2.contentDescription = partnersList[index].name
-                }
-
-                if (partnerLogoSizePriority > 2 && partnersList.size > index + 2) {
-                    val partner3 = partnerRow.findViewById<ImageView>(R.id.partner3)
-                    setLogoInfo(partner3, partnersList[index + 2])
-                    partner3.contentDescription = partnersList[index].name
-                }
-
-                partnerLogoLayout.addView(partnerRow)
-                index += partnerLogoSizePriority
-            }
-
-            fragmentAboutBinding!!.sponsorsLayout.addView(partnersGroupLinearLayout)
-        }
-    }
-
     private fun addPartnerCollectionToView(partnerCollection: PartnerCollection) {
         val partnersList = partnerCollection.logos
         if (partnersList.isNotEmpty()) {
@@ -241,17 +190,6 @@ class AboutFragment : Fragment(), View.OnClickListener {
 
             fragmentAboutBinding!!.sponsorsLayout.addView(partnersGroupLinearLayout)
         }
-    }
-
-    private fun setLogoInfo(partnerLogo: ImageView, partner: Partners) {
-        partnerLogo.visibility = View.VISIBLE
-        val options = RequestOptions()
-                .placeholder(R.color.light_grey)
-        Glide.with(context!!)
-                .load(String.format("http://androidmakers.fr/img/partners/%s", partner.imageUrl))
-                .apply(options)
-                .into(partnerLogo)
-        partnerLogo.setOnClickListener { CustomTabUtil.openChromeTab(context, partner.link) }
     }
 
     private fun setLogo(partnerLogo: ImageView, logo: Logo) {
