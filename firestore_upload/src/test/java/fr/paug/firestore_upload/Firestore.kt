@@ -29,7 +29,7 @@ class Main {
         val docRef = db.collection(collection).document(document)
         val result = docRef.set(slots)
 
-        System.out.println("Update time : " + result.get().getUpdateTime())
+        System.out.println("Update time : " + result.get().updateTime)
     }
 
     @Test
