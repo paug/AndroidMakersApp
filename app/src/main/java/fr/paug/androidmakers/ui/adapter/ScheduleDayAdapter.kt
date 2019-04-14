@@ -29,12 +29,10 @@ internal constructor(private val context: Context,
 
     private val mItems = ArrayList<Any>()
     private val mSessions = ArrayList<ScheduleSessionKt>()
-    private val stuckHeaderElevation: Float
+    private val stuckHeaderElevation: Float = context.resources.getDimension(R.dimen.card_elevation)
     private val sessionFilterList = ArrayList<SessionFilter>()
 
     init {
-        stuckHeaderElevation = context.resources.getDimension(R.dimen.card_elevation)
-
         val sessions = ArrayList<ScheduleSessionKt>()
         for (roomSchedule in daySchedule.roomSchedules) {
             sessions.addAll(roomSchedule.scheduleSessions)
@@ -148,9 +146,9 @@ internal constructor(private val context: Context,
         } else {
             for (item in mSessions) {
                 for (sessionFilter in sessionFilterList) {
-                    var matched = when (sessionFilter.type) {
+                    val matched = when (sessionFilter.type) {
                         SessionFilter.FilterType.BOOKMARK -> {
-                            SessionSelector.instance.isSelected(item.sessionId)
+                            SessionSelector.isSelected(item.sessionId)
                         }
                         SessionFilter.FilterType.LANGUAGE -> {
                             sessionFilter.value == item.language
@@ -190,57 +188,28 @@ internal constructor(private val context: Context,
 
     //region Time Separator
     private class TimeSeparatorViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val mStartTime: TextView
-
-        init {
-            mStartTime = itemView as TextView
-        }
+        val mStartTime: TextView? = itemView as? TextView
 
         internal fun bind(item: TimeSeparatorItem) {
-            mStartTime.text = TimeUtils.formatShortTime(itemView.context, Date(item.startTime))
+            mStartTime?.text = TimeUtils.formatShortTime(itemView.context, Date(item.startTime))
         }
     }
 
-    private class TimeSeparatorItem internal constructor(item: ScheduleSessionKt) {
-        val startTime: Long
-
-        init {
-            this.startTime = item.startTimestamp
-        }
-
-        override fun equals(o: Any?): Boolean {
-            if (this === o) {
-                return true
-            }
-            if (o == null || javaClass != o.javaClass) {
-                return false
-            }
-            val that = o as TimeSeparatorItem?
-            return startTime == that!!.startTime
-        }
-
-        override fun hashCode(): Int {
-            return (startTime xor startTime.ushr(32)).toInt()
-        }
+    private data class TimeSeparatorItem(val item: ScheduleSessionKt) {
+        val startTime: Long = item.startTimestamp
     }
+
     //endregion
 
     //region Session
     class SessionItemViewHolder internal constructor(itemView: View,
-                                                     val clickListener: (ScheduleSessionKt) -> Unit,
+                                                     private val clickListener: (ScheduleSessionKt) -> Unit,
                                                      private val context: Context)
         : RecyclerView.ViewHolder(itemView) {
-        private var sessionLayout: ConstraintLayout
-        private var sessionTitle: TextView
-        private var sessionDescription: TextView
-        private var sessionBookmark: ImageButton
-
-        init {
-            sessionLayout = itemView.findViewById(R.id.sessionItemLayout)
-            sessionTitle = itemView.findViewById(R.id.sessionTitleTextView)
-            sessionDescription = itemView.findViewById(R.id.sessionDescriptionTextView)
-            sessionBookmark = itemView.findViewById(R.id.bookmark)
-        }
+        private var sessionLayout: ConstraintLayout = itemView.findViewById(R.id.sessionItemLayout)
+        private var sessionTitle: TextView = itemView.findViewById(R.id.sessionTitleTextView)
+        private var sessionDescription: TextView = itemView.findViewById(R.id.sessionDescriptionTextView)
+        private var sessionBookmark: ImageButton = itemView.findViewById(R.id.bookmark)
 
         internal fun bind(scheduleSession: ScheduleSessionKt, daySchedule: DayScheduleKt) {
             // Session title
@@ -299,7 +268,7 @@ internal constructor(private val context: Context,
 
             sessionBookmark.setOnClickListener {
                 sessionBookmark.isActivated = !sessionBookmark.isActivated
-                SessionSelector.instance.setSessionSelected(scheduleSession.sessionId, sessionBookmark.isActivated)
+                SessionSelector.setSessionSelected(scheduleSession.sessionId, sessionBookmark.isActivated)
                 if (sessionBookmark.isActivated) {
                     ScheduleSessionHelper.scheduleStarredSession(context,
                             scheduleSession.startTimestamp,
@@ -309,7 +278,7 @@ internal constructor(private val context: Context,
                     ScheduleSessionHelper.unScheduleSession(context, scheduleSession.sessionId)
                 }
             }
-            sessionBookmark.isActivated = SessionSelector.instance.isSelected(scheduleSession.sessionId)
+            sessionBookmark.isActivated = SessionSelector.isSelected(scheduleSession.sessionId)
         }
 
         private fun getRoomTitle(scheduleSession: ScheduleSessionKt, daySchedule: DayScheduleKt): String {
@@ -327,9 +296,9 @@ internal constructor(private val context: Context,
     companion object {
 
         private val ID_ARRAY = LongArray(4)
-        private val ITEM_TYPE_SESSION = 0
-        private val ITEM_TYPE_BREAK = 1
-        private val ITEM_TYPE_TIME_HEADER = 2
+        private const val ITEM_TYPE_SESSION = 0
+        private const val ITEM_TYPE_BREAK = 1
+        private const val ITEM_TYPE_TIME_HEADER = 2
 
         private fun generateIdForScheduleItem(item: ScheduleSessionKt): Long {
             val array = ID_ARRAY
