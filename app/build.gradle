@@ -51,13 +51,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             // Rename output apk (Just for manual signing)
-            applicationVariants.all { variant ->
+            android.applicationVariants.all { variant ->
                 variant.outputs.all { output ->
                     def formattedDate = new Date().format('yyyy-MM-dd_HH-mm-ss')
-                    def newName = output.outputFile.name
-                    newName = newName.replace("app", "AndroidMakers")
-                    newName = newName.replace("-release", "-release-" + versionName + "-" + versionCode + "-" + formattedDate)
-                    outputFileName = newName
+                    def newName = "AndroidMakers-${output.baseName}"
+                    newName = newName.replace("-release", "-release-${versionName}-${versionCode}-${formattedDate}")
+                    outputFileName = "${newName}.apk"
                 }
             }
         }
