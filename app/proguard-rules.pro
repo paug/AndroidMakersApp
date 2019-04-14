@@ -7,3 +7,5 @@
 }
 
 -dontwarn org.slf4j.**
+
+-keep class fr.paug.androidmakers.model.** { *; }
