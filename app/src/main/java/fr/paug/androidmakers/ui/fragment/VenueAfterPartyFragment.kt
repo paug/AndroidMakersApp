@@ -13,7 +13,6 @@ import com.google.android.material.snackbar.Snackbar
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.databinding.VenueItemFragmentBinding
 
-import fr.paug.androidmakers.manager.AgendaRepository
 import fr.paug.androidmakers.manager.AndroidMakersStore
 import fr.paug.androidmakers.model.Venue
 import fr.paug.androidmakers.util.CustomTabUtil

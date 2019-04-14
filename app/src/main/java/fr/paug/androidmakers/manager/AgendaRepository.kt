@@ -3,16 +3,10 @@ package fr.paug.androidmakers.manager
 import android.util.Log
 import android.util.SparseArray
 import com.google.firebase.firestore.FirebaseFirestore
+import fr.paug.androidmakers.model.*
+import java.util.*
 
-import java.util.ArrayList
-import fr.paug.androidmakers.model.FirebaseDataConverted
-import fr.paug.androidmakers.model.PartnerGroup
-import fr.paug.androidmakers.model.Room
-import fr.paug.androidmakers.model.ScheduleSlot
-import fr.paug.androidmakers.model.Session
-import fr.paug.androidmakers.model.Speaker
-import fr.paug.androidmakers.model.Venue
-
+//TODO remove this
 class AgendaRepository private constructor() {
 
     private val mDatabase = FirebaseFirestore.getInstance()

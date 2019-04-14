@@ -150,7 +150,7 @@ class SessionDetailActivity : BaseActivity(), YouTubeThumbnailView.OnInitialized
             }
         }
 
-        val sessionSelected = SessionSelector.getInstance().isSelected(sessionId)
+        val sessionSelected = SessionSelector.instance.isSelected(sessionId)
         activityDetailBinding.scheduleFab.isChecked = sessionSelected
 
         setActionBar(session)
@@ -263,7 +263,7 @@ class SessionDetailActivity : BaseActivity(), YouTubeThumbnailView.OnInitialized
     }
 
     private fun changeSessionSelection(select: Boolean) {
-        SessionSelector.getInstance().setSessionSelected(sessionId, select)
+        SessionSelector.instance.setSessionSelected(sessionId, select)
         toggleScheduleSessionNotification(select)
     }
 
@@ -355,8 +355,8 @@ class SessionDetailActivity : BaseActivity(), YouTubeThumbnailView.OnInitialized
             context.startActivity(intent)
         }
 
-        fun startActivity(context: Context, sessionId: Int, sessionStartDateInMillis: Long,
-                          sessionEndDateInMillis: Long, roomId: Int) {
+        fun startActivity(context: Context, sessionId: String, sessionStartDateInMillis: Long,
+                          sessionEndDateInMillis: Long, roomId: String) {
             val intent = Intent(context, SessionDetailActivity::class.java)
             intent.putExtra(PARAM_SESSION_ID, sessionId)
             intent.putExtra(PARAM_SESSION_START_DATE, sessionStartDateInMillis)

@@ -13,14 +13,14 @@ public class SessionAlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         final String action = intent.getAction();
 
-        if (SessionAlarmService.ACTION_NOTIFY_SESSION.equals(action)) {
-            Intent scheduleIntent = new Intent(SessionAlarmService.ACTION_NOTIFY_SESSION)
+        if (SessionAlarmService.Companion.getACTION_NOTIFY_SESSION().equals(action)) {
+            Intent scheduleIntent = new Intent(SessionAlarmService.Companion.getACTION_NOTIFY_SESSION())
                     .setData(intent.getData())
                     .putExtras(intent);
-            SessionAlarmService.enqueueWork(context, scheduleIntent);
+            SessionAlarmService.Companion.enqueueWork(context, scheduleIntent);
         } else if (Intent.ACTION_BOOT_COMPLETED.equals(action)) {
-            Intent scheduleIntent = new Intent(SessionAlarmService.ACTION_SCHEDULE_ALL_STARRED_BLOCKS);
-            SessionAlarmService.enqueueWork(context, scheduleIntent);
+            Intent scheduleIntent = new Intent(SessionAlarmService.Companion.getACTION_SCHEDULE_ALL_STARRED_BLOCKS());
+            SessionAlarmService.Companion.enqueueWork(context, scheduleIntent);
         }
     }
 
