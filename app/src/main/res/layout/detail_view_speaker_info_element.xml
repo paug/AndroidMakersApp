@@ -8,7 +8,7 @@
 
         <variable
             name="speaker"
-            type="fr.paug.androidmakers.model.Speaker"/>
+            type="fr.paug.androidmakers.model.SpeakerKt"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,20 +22,20 @@
             android:layout_width="@dimen/avatar_size"
             android:layout_height="@dimen/avatar_size"
             android:contentDescription="@string/ImageDesc_speaker_avatar"
-            app:imageUrl="@{speaker.thumbnailUrl}"
+            app:imageUrl="@{speaker.photo}"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/ic_person_black_24dp"/>
 
-        <ImageView
-            android:id="@+id/speakerRibbon"
-            android:layout_width="@dimen/avatar_size"
-            android:layout_height="@dimen/avatar_size"
-            android:contentDescription="@{speaker.mainRibbon.title}"
-            app:img_src="@{speaker.mainRibbon.ribbonType.badgeIcon}"
-            app:layout_constraintLeft_toLeftOf="@+id/speakerAvatar"
-            app:layout_constraintTop_toTopOf="@+id/speakerAvatar"
-            tools:src="@drawable/gdg_badge"/>
+        <!--<ImageView-->
+            <!--android:id="@+id/speakerRibbon"-->
+            <!--android:layout_width="@dimen/avatar_size"-->
+            <!--android:layout_height="@dimen/avatar_size"-->
+            <!--android:contentDescription="@{speaker.mainRibbon.name}"-->
+            <!--app:img_src="@{speaker.mainRibbon.ribbonType.badgeIcon}"-->
+            <!--app:layout_constraintLeft_toLeftOf="@+id/speakerAvatar"-->
+            <!--app:layout_constraintTop_toTopOf="@+id/speakerAvatar"-->
+            <!--tools:src="@drawable/gdg_badge"/>-->
 
         <TextView
             android:id="@+id/speakerName"

@@ -3,8 +3,20 @@ apply plugin: 'kotlin-android'
 apply plugin: 'io.fabric'
 
 def versionMajor = 1
-def versionMinor = 1
-def versionPatch = 8
+def versionMinor = 2
+def versionPatch = 0
+
+def checkGoogleServices(variant) {
+    def target = project.file("src/" + variant + "/google-services.json")
+    def source = project.file("src/" + variant + "/google-services.json.mock")
+    if (!target.exists()) {
+        System.out.println("using mock google-services.json")
+        target << source.bytes
+    }
+}
+
+checkGoogleServices("prod")
+checkGoogleServices("preprod")
 
 android {
     compileSdkVersion 28
@@ -77,10 +89,12 @@ dependencies {
 
     // Firebase
     implementation 'com.google.firebase:firebase-core:16.0.7'
-    implementation 'com.google.firebase:firebase-database:16.0.6'
-    implementation 'com.google.firebase:firebase-messaging:17.3.4'
+    implementation 'com.google.firebase:firebase-messaging:17.4.0'
     implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
+
+    // Firestore
+    implementation 'com.google.firebase:firebase-firestore:18.1.0'
 
     // Image management
     implementation "com.github.bumptech.glide:glide:$glide_version"
