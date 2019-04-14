@@ -12,19 +12,19 @@ object SessionSelector
 
   private var mSharedPreferences: SharedPreferences? = null
 
-  private var mSessionsSelected: MutableSet<String>? = null
+  private var mSessionsSelected: MutableSet<String> = HashSet()
 
   val sessionsSelected: Set<String>?
     get() = mSessionsSelected
 
   fun init(context: Context)
   {
-    mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-    mSessionsSelected = HashSet()
-    val prefSet = mSharedPreferences!!.getStringSet(PREF_SELECTED_SESSIONS, null)
+    val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+    mSharedPreferences = sharedPreferences
+    val prefSet = sharedPreferences.getStringSet(PREF_SELECTED_SESSIONS, null)
     if (prefSet != null)
     {
-      mSessionsSelected!!.addAll(prefSet)
+      mSessionsSelected.addAll(prefSet)
     }
   }
 
@@ -34,25 +34,25 @@ object SessionSelector
     //        val idString = AgendaRepository.CURRENT_YEAR_NODE + "_" + id
     if (selected)
     {
-      mSessionsSelected!!.add(id)
+      mSessionsSelected.add(id)
     }
     else
     {
-      mSessionsSelected!!.remove(id)
+      mSessionsSelected.remove(id)
     }
     save()
   }
 
   fun isSelected(id: String): Boolean
   {
-    return mSessionsSelected!!.contains(id) //contains(AgendaRepository.CURRENT_YEAR_NODE + "_" + id)
+    return mSessionsSelected.contains(id) //contains(AgendaRepository.CURRENT_YEAR_NODE + "_" + id)
   }
 
   private fun save()
   {
-    val editor = mSharedPreferences!!.edit()
-    editor.putStringSet(PREF_SELECTED_SESSIONS, mSessionsSelected)
-    editor.apply()
+    val editor = mSharedPreferences?.edit()
+    editor?.putStringSet(PREF_SELECTED_SESSIONS, mSessionsSelected)
+    editor?.apply()
   }
 
 }
