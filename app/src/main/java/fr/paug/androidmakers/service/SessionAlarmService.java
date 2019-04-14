@@ -110,6 +110,7 @@ public class SessionAlarmService extends JobIntentService {
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
+                //TODO use AndroidMakersStore
                 final List<ScheduleSlot> scheduleSlots = AgendaRepository.Companion.getInstance()
                         .getScheduleSlots();
 
@@ -120,8 +121,10 @@ public class SessionAlarmService extends JobIntentService {
                 }
 
                 for (String id : SessionSelector.getInstance().getSessionsSelected()) {
+                    //TODO use AndroidMakersStore
                     String sessionYearId = id.replace(AgendaRepository.Companion.getCURRENT_YEAR_NODE() + "_", "");
                     logDebug("session id without year: " + sessionYearId);
+                    //TODO use AndroidMakersStore
                     ScheduleSlot scheduleSlot = AgendaRepository.Companion.getInstance().getScheduleSlot(sessionYearId);
 
                     if (scheduleSlot != null) {
@@ -133,6 +136,7 @@ public class SessionAlarmService extends JobIntentService {
                 latch.countDown();
             }
         };
+        //TODO use AndroidMakersStore
         AgendaRepository.Companion.getInstance().load(new AgendaLoadListener(runnable));
         try {
             latch.await();
