@@ -1,5 +1,6 @@
 package fr.paug.androidmakers.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.SparseArray
@@ -19,6 +20,7 @@ import fr.paug.androidmakers.model.RoomKt
 import fr.paug.androidmakers.model.ScheduleSlotKt
 import fr.paug.androidmakers.model.SessionKt
 import fr.paug.androidmakers.model.SpeakerKt
+import fr.paug.androidmakers.service.SessionAlarmService
 import fr.paug.androidmakers.ui.adapter.AgendaPagerAdapter
 import fr.paug.androidmakers.ui.adapter.DayScheduleKt
 import fr.paug.androidmakers.ui.adapter.RoomScheduleKt
@@ -105,7 +107,6 @@ class AgendaFragment : Fragment() {
                 allSlots = slots
                 AndroidMakersStore().getRooms { rooms ->
                     allRooms = rooms
-                    //onAgendaLoaded()
                     AndroidMakersStore().getSpeakers { speakers ->
                         allSpeakers = speakers
                         onAgendaLoaded()
@@ -141,9 +142,10 @@ class AgendaFragment : Fragment() {
                 mViewPager!!.setCurrentItem(indexOfToday, true)
             }
             refreshViewsDisplay()
+            //rescheduleStarredBlocks()
         }
     }
-    
+
     private fun getTodayIndex(items: List<DayScheduleKt>?): Int {
         if (items == null || items.size < 2) {
             return -1
@@ -350,4 +352,10 @@ class AgendaFragment : Fragment() {
         }
     }
     //endregion
+
+    fun rescheduleStarredBlocks() {
+        // reschedule all starred blocks in case one session start or stop time has changed
+        val scheduleIntent = Intent(SessionAlarmService.ACTION_SCHEDULE_ALL_STARRED_BLOCKS)
+        SessionAlarmService.enqueueWork(context!!, scheduleIntent)
+    }
 }
