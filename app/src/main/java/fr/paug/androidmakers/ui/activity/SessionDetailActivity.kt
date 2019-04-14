@@ -162,21 +162,23 @@ class SessionDetailActivity : BaseActivity(), YouTubeThumbnailView.OnInitialized
 
     private fun setSpeakers() {
         val sessionSpeakerLayout = findViewById<ViewGroup>(R.id.sessionSpeakerLayout)
-        if (session?.speakers != null && session?.speakers?.isNotEmpty() == true) {
-            for (speakerId in session!!.speakers) {
-                AndroidMakersStore().getSpeaker(speakerId) { speaker ->
-                    if (speaker != null) {
-                        speakersList.add(speaker.getFullNameAndCompany())
+        session?.speakers?.also { speakers ->
+            if (speakers.isNotEmpty()) {
+                for (speakerId in speakers) {
+                    AndroidMakersStore().getSpeaker(speakerId) { speaker ->
+                        if (speaker != null) {
+                            speakersList.add(speaker.getFullNameAndCompany())
 
-                        val speakerInfoElementBinding = DataBindingUtil.inflate<DetailViewSpeakerInfoElementBinding>(layoutInflater,
+                            val speakerInfoElementBinding = DataBindingUtil.inflate<DetailViewSpeakerInfoElementBinding>(layoutInflater,
                                 R.layout.detail_view_speaker_info_element, null,
                                 false)
-                        speakerInfoElementBinding.speakerBio.movementMethod = LinkMovementMethod.getInstance()
-                        speakerInfoElementBinding.speaker = speaker
+                            speakerInfoElementBinding.speakerBio.movementMethod = LinkMovementMethod.getInstance()
+                            speakerInfoElementBinding.speaker = speaker
 
-                        setSpeakerSocialNetworkHandle(speaker, speakerInfoElementBinding)
+                            setSpeakerSocialNetworkHandle(speaker, speakerInfoElementBinding)
 
-                        sessionSpeakerLayout.addView(speakerInfoElementBinding.root)
+                            sessionSpeakerLayout.addView(speakerInfoElementBinding.root)
+                        }
                     }
                 }
             }
@@ -184,29 +186,30 @@ class SessionDetailActivity : BaseActivity(), YouTubeThumbnailView.OnInitialized
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    internal fun animateFab(fab: CheckableFloatingActionButton, isInSchedule: Boolean?) {
-        val avd = ContextCompat.getDrawable(
-                this, if (isInSchedule!!) R.drawable.avd_bookmark else R.drawable.avd_unbookmark) as AnimatedVectorDrawable?
-        fab.setImageDrawable(avd)
-        val backgroundColor = ObjectAnimator.ofArgb(
-                fab,
-                UIUtils.BACKGROUND_TINT,
-                if (isInSchedule)
-                    Color.WHITE
-                else
-                    ContextCompat.getColor(this, R.color.colorAccent))
-        backgroundColor.duration = 400L
-        backgroundColor.interpolator = AnimationUtils.loadInterpolator(this,
-                android.R.interpolator.fast_out_slow_in)
-        backgroundColor.start()
-        avd!!.start()
+    internal fun animateFab(fab: CheckableFloatingActionButton, isInSchedule: Boolean) {
+        (ContextCompat.getDrawable(
+            this, if (isInSchedule) R.drawable.avd_bookmark else R.drawable.avd_unbookmark) as? AnimatedVectorDrawable)?.also {avd ->
+            fab.setImageDrawable(avd)
+            val backgroundColor = ObjectAnimator.ofArgb(
+                    fab,
+                    UIUtils.BACKGROUND_TINT,
+                    if (isInSchedule)
+                        Color.WHITE
+                    else
+                        ContextCompat.getColor(this, R.color.colorAccent))
+            backgroundColor.duration = 400L
+            backgroundColor.interpolator = AnimationUtils.loadInterpolator(this,
+                    android.R.interpolator.fast_out_slow_in)
+            backgroundColor.start()
+            avd.start()
+        }
     }
 
     private fun setSpeakerSocialNetworkHandle(speaker: SpeakerKt, speakerInfoElementBinding: DetailViewSpeakerInfoElementBinding) {
         if (speaker.socials != null && speaker.socials.isNotEmpty()) {
             for (social in speaker.socials) {
                 val socialNetworkHandle = SocialNetworkHandle(social?.icon, social?.link)
-                if (socialNetworkHandle != SocialNetworkHandle.SocialNetworkType.Unknown) {
+                if (socialNetworkHandle.networkType != SocialNetworkHandle.SocialNetworkType.Unknown) {
                     val smallSocialImageBinding = DataBindingUtil.inflate<SmallSocialImageBinding>(layoutInflater, R.layout.small_social_image, null, false)
                     smallSocialImageBinding.socialHandle = socialNetworkHandle
                     smallSocialImageBinding.image.setOnClickListener {
@@ -339,10 +342,10 @@ class SessionDetailActivity : BaseActivity(), YouTubeThumbnailView.OnInitialized
     // endregion Video management
 
     companion object {
-        private val PARAM_SESSION_ID = "param_session_id"
-        private val PARAM_SESSION_START_DATE = "param_session_start_date"
-        private val PARAM_SESSION_END_DATE = "param_session_end_date"
-        private val PARAM_SESSION_ROOM = "param_session_room"
+        private const val PARAM_SESSION_ID = "param_session_id"
+        private const val PARAM_SESSION_START_DATE = "param_session_start_date"
+        private const val PARAM_SESSION_END_DATE = "param_session_end_date"
+        private const val PARAM_SESSION_ROOM = "param_session_room"
 
         fun startActivity(context: Context, scheduleSession: ScheduleSessionKt) {
             val intent = Intent(context, SessionDetailActivity::class.java)
