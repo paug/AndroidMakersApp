@@ -149,7 +149,7 @@ class SessionDetailActivity : BaseActivity(), YouTubeThumbnailView.OnInitialized
             }
         }
 
-        val sessionSelected = SessionSelector.instance.isSelected(sessionId)
+        val sessionSelected = SessionSelector.isSelected(sessionId)
         activityDetailBinding.scheduleFab.isChecked = sessionSelected
 
         setActionBar(session)
@@ -261,7 +261,7 @@ class SessionDetailActivity : BaseActivity(), YouTubeThumbnailView.OnInitialized
     }
 
     private fun changeSessionSelection(select: Boolean) {
-        SessionSelector.instance.setSessionSelected(sessionId, select)
+        SessionSelector.setSessionSelected(sessionId, select)
         toggleScheduleSessionNotification(select)
     }
 

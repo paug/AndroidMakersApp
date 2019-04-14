@@ -69,7 +69,7 @@ class SessionAlarmService : JobIntentService() {
                 unscheduleAlarm(scheduleSlot.sessionId)
             }
 
-            for (id in SessionSelector.instance.sessionsSelected!!) {
+            for (id in SessionSelector.sessionsSelected!!) {
                 val scheduleSlot = scheduleSlots.firstOrNull { it.sessionId == id }
 
                 if (scheduleSlot != null) {
