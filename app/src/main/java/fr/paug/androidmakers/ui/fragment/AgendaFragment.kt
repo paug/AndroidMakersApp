@@ -184,7 +184,7 @@ class AgendaFragment : Fragment() {
         if (roomScheduleForThis == null) {
             val agendaScheduleSessions = ArrayList<ScheduleSessionKt>()
             val room = allRooms.filter { it.roomId == scheduleSlot.roomId }.first()
-            val titleRoom = room?.roomName
+            val titleRoom = room.roomName
             roomScheduleForThis = RoomScheduleKt(scheduleSlot.roomId, titleRoom, agendaScheduleSessions)
             roomSchedules.add(roomScheduleForThis)
             roomSchedules.sort()
@@ -242,7 +242,7 @@ class AgendaFragment : Fragment() {
         val speakers = arrayListOf<SpeakerKt>()
         val session = allSessions[sessionId]
         if (session?.speakers?.isNotEmpty() == true) {
-            session?.speakers?.forEachIndexed { index, speakerId ->
+            session.speakers.forEachIndexed { index, speakerId ->
                 val speakerOfSession = allSpeakers[speakerId]
                 speakers.add(speakerOfSession!!)
             }

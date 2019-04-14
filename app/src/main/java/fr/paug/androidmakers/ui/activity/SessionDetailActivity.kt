@@ -301,7 +301,7 @@ class SessionDetailActivity : BaseActivity(), YouTubeThumbnailView.OnInitialized
             playButton = activityDetailBinding.playButton
             activityDetailBinding.videoThumbnail.initialize(BuildConfig.YOUTUBE_API_KEY, this)
             activityDetailBinding.videoThumbnail.setOnClickListener {
-                val videoUri = YoutubeUtil.getVideoUri(session!!.videoURL!!)
+                val videoUri = YoutubeUtil.getVideoUri(session!!.videoURL)
                 if (videoUri != null) {
                     startActivity(Intent(Intent.ACTION_VIEW, videoUri))
                 } else {
