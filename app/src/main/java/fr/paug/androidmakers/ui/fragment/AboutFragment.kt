@@ -58,92 +58,100 @@ class AboutFragment : Fragment(), View.OnClickListener {
         intentFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION)
         context?.registerReceiver(wifiStateChangedReceiver, intentFilter)
 
-        fragmentAboutBinding!!.twitterUserButton.setOnClickListener(this)
-        fragmentAboutBinding!!.twitterHashtagButton.setOnClickListener(this)
-        fragmentAboutBinding!!.youtubeButton.setOnClickListener(this)
-        fragmentAboutBinding!!.wifiConnectButton.setOnClickListener(this)
-        fragmentAboutBinding!!.versionTextView.text = String.format(getString(R.string.version), BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)
+        fragmentAboutBinding?.twitterUserButton?.setOnClickListener(this)
+        fragmentAboutBinding?.twitterHashtagButton?.setOnClickListener(this)
+        fragmentAboutBinding?.youtubeButton?.setOnClickListener(this)
+        fragmentAboutBinding?.wifiConnectButton?.setOnClickListener(this)
+        fragmentAboutBinding?.faqButton?.setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://androidmakers.fr/faq")))
+        }
+        fragmentAboutBinding?.codeOfConductButton?.setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://androidmakers.fr/cod")))
+        }
+        fragmentAboutBinding?.versionTextView?.text = String.format(getString(R.string.version), BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)
 
-        return fragmentAboutBinding!!.root
+        return fragmentAboutBinding?.root
     }
 
     override fun onClick(v: View) {
-        if (v === fragmentAboutBinding!!.twitterUserButton) {
+        if (v === fragmentAboutBinding?.twitterUserButton) {
             openTwitterUser()
-        } else if (v === fragmentAboutBinding!!.twitterHashtagButton) {
+        } else if (v === fragmentAboutBinding?.twitterHashtagButton) {
             openTwitterHashtag()
-        } else if (v === fragmentAboutBinding!!.youtubeButton) {
+        } else if (v === fragmentAboutBinding?.youtubeButton) {
             openYoutube()
-        } else if (v === fragmentAboutBinding!!.wifiConnectButton) {
+        } else if (v === fragmentAboutBinding?.wifiConnectButton) {
             connectToVenuesWifi()
         }
     }
 
-    internal fun openTwitterUser() {
+    private fun openTwitterUser() {
         var twitterIntent: Intent
         try {
             // get the Twitter app if possible
-            activity!!.packageManager.getPackageInfo("com.twitter.android", 0)
+            activity?.packageManager?.getPackageInfo("com.twitter.android", 0)
             twitterIntent = Intent(Intent.ACTION_VIEW,
                     Uri.parse("twitter://user?screen_name=" + getString(R.string.twitter_user_name)))
             twitterIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         } catch (e: Exception) {
             // no Twitter app, revert to browser
-            twitterIntent = Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://twitter.com/" + getString(R.string.twitter_user_name)))
+            twitterIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/" + getString(R.string.twitter_user_name)))
         }
 
         startActivity(twitterIntent)
     }
 
-    internal fun openTwitterHashtag() {
+    private fun openTwitterHashtag() {
         var twitterIntent: Intent
         try {
             // get the Twitter app if possible
-            activity!!.packageManager.getPackageInfo("com.twitter.android", 0)
+            activity?.packageManager?.getPackageInfo("com.twitter.android", 0)
             twitterIntent = Intent(Intent.ACTION_VIEW,
                     Uri.parse("twitter://search?query=%23" + getString(R.string.twitter_hashtag_for_query)))
             twitterIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         } catch (e: Exception) {
             // no Twitter app, revert to browser
-            twitterIntent = Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://twitter.com/search?q=%23" + getString(R.string.twitter_hashtag_for_query)))
+            twitterIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/search?q=%23" + getString(R.string.twitter_hashtag_for_query)))
         }
 
         startActivity(twitterIntent)
     }
 
-    internal fun openYoutube() {
+    private fun openYoutube() {
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.youtube_channel))))
     }
 
-    internal fun connectToVenuesWifi() {
+    private fun connectToVenuesWifi() {
         val context = context
         val networkId = WifiUtil.getVenuesWifiNetworkId(context!!)
         if (networkId != -1) {
             if (WifiUtil.connectToWifi(context, networkId)) {
-                fragmentAboutBinding!!.wifiConnectButton.visibility = View.GONE
-                fragmentAboutBinding!!.wifiAutoconnectProgress.visibility = View.VISIBLE
+                fragmentAboutBinding?.wifiConnectButton?.visibility = View.GONE
+                fragmentAboutBinding?.wifiAutoconnectProgress?.visibility = View.VISIBLE
             }
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        context!!.unregisterReceiver(wifiStateChangedReceiver)
+        context?.unregisterReceiver(wifiStateChangedReceiver)
     }
 
     private fun onConnectivityChanged() {
-        if (WifiUtil.isCurrentlyConnectedToVenuesWifi(context!!)) {
-            fragmentAboutBinding!!.wifiConnectButton.visibility = View.INVISIBLE
-            fragmentAboutBinding!!.wifiAutoconnectProgress.visibility = View.GONE
-        } else if (fragmentAboutBinding!!.wifiAutoconnectProgress.visibility == View.GONE) {
-            // case where we are not currently trying to connect to the venue's wifi
-            fragmentAboutBinding!!.wifiConnectButton.visibility = View.VISIBLE
-            fragmentAboutBinding!!.wifiAutoconnectProgress.visibility = View.GONE
-        } else {
-            fragmentAboutBinding!!.wifiConnectButton.visibility = View.GONE
-            fragmentAboutBinding!!.wifiAutoconnectProgress.visibility = View.VISIBLE
+        when {
+            WifiUtil.isCurrentlyConnectedToVenuesWifi(context!!) -> {
+                fragmentAboutBinding?.wifiConnectButton?.visibility = View.INVISIBLE
+                fragmentAboutBinding?.wifiAutoconnectProgress?.visibility = View.GONE
+            }
+            fragmentAboutBinding?.wifiAutoconnectProgress?.visibility == View.GONE -> {
+                // case where we are not currently trying to connect to the venue's wifi
+                fragmentAboutBinding?.wifiConnectButton?.visibility = View.VISIBLE
+                fragmentAboutBinding?.wifiAutoconnectProgress?.visibility = View.GONE
+            }
+            else -> {
+                fragmentAboutBinding?.wifiConnectButton?.visibility = View.GONE
+                fragmentAboutBinding?.wifiAutoconnectProgress?.visibility = View.VISIBLE
+            }
         }
     }
 
