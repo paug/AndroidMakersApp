@@ -81,5 +81,9 @@
     <string name="speaker_sponsor">Sponsor Speaker</string>
     <string name="location_sponsor">Salle</string>
     <string name="specialthanks_sponsor">Remerciement spécial</string>
-  
+
+    <string name="aog_title">Action Google Assistant</string>
+    <string name="aog_description">Découvrez l\'Action pour le Google Assistant !</string>
+    <string name="aog_button">Lancer l\'Action Android Makers</string>
+
 </resources>
