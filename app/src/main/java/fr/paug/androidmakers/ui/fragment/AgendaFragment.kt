@@ -280,11 +280,9 @@ class AgendaFragment : Fragment() {
 
         AndroidMakersStore().getRooms { rooms ->
             addFilterHeader(R.string.rooms)
-            if (rooms != null) {
-                for (room in rooms) {
-                    if (!TextUtils.isEmpty(room.roomName)) {
-                        addFilter(SessionFilter(ROOM, room.roomId), room.roomName)
-                    }
+            for (room in rooms) {
+                if (!TextUtils.isEmpty(room.roomName)) {
+                    addFilter(SessionFilter(ROOM, room.roomId), room.roomName)
                 }
             }
         }
