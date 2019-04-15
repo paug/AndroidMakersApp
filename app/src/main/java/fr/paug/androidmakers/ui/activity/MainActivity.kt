@@ -100,23 +100,21 @@ class MainActivity : BaseActivity() {
         if (navigation != null) {
             navigation!!.selectedItemId = R.id.navigation_agenda
         }
-        val uriFragment = data.fragment
-        if (uriFragment != null && uriFragment.startsWith("session-")) {
-            val split = uriFragment.split("session-".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-            if (split.size > 1 && TextUtils.isDigitsOnly(split[1])) {
-                val sessionId = split[1]
-                AndroidMakersStore().getSlots { slots ->
-                    for (scheduleSlot in slots) {
-                        if (scheduleSlot.sessionId == sessionId) {
-                            val format = SimpleDateFormat(TimeUtils.dateFormat)
-                            val startTimestamp = format.parse(scheduleSlot.startDate).time
-                            val endTimestamp = format.parse(scheduleSlot.endDate).time
-                            SessionDetailActivity.startActivity(this, sessionId, startTimestamp, endTimestamp, scheduleSlot.roomId)
-                            break
-                        }
-                    }
 
+        val sessionId = data.getQueryParameter("sessionId")
+
+        if (sessionId != null) {
+            AndroidMakersStore().getSlots { slots ->
+                for (scheduleSlot in slots) {
+                    if (scheduleSlot.sessionId == sessionId) {
+                        val format = SimpleDateFormat(TimeUtils.dateFormat)
+                        val startTimestamp = format.parse(scheduleSlot.startDate).time
+                        val endTimestamp = format.parse(scheduleSlot.endDate).time
+                        SessionDetailActivity.startActivity(this, sessionId, startTimestamp, endTimestamp, scheduleSlot.roomId)
+                        break
+                    }
                 }
+
             }
         }
     }
