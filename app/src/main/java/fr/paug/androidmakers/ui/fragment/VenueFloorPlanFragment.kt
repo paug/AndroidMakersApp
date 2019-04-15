@@ -11,7 +11,8 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.Fragment
 import fr.paug.androidmakers.R
 
-class VenueFloorPlanFragment: Fragment() {
+class VenueFloorPlanFragment : Fragment() {
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val scrollView = ScrollView(inflater.context)
         val imageView = AppCompatImageView(inflater.context)
@@ -33,4 +34,5 @@ class VenueFloorPlanFragment: Fragment() {
         scrollView.addView(imageView)
         return scrollView
     }
+
 }
