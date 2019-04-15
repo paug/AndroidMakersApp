@@ -69,6 +69,9 @@ class AboutFragment : Fragment(), View.OnClickListener {
         fragmentAboutBinding?.codeOfConductButton?.setOnClickListener {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://androidmakers.fr/cod")))
         }
+        fragmentAboutBinding?.aogButton?.setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://assistant.google.com/services/invoke/uid/000000f1d29aa753")))
+        }
         fragmentAboutBinding?.versionTextView?.text = String.format(getString(R.string.version), BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)
 
         return fragmentAboutBinding?.root

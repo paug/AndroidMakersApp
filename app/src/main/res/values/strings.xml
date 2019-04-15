@@ -95,4 +95,8 @@
     <string name="location_sponsor">Location</string>
     <string name="specialthanks_sponsor">Special Thanks</string>
 
+    <string name="aog_title">Google Assistant Action</string>
+    <string name="aog_description">Discover the Google Assistant Action!</string>
+    <string name="aog_button">Launch Android Makers Action</string>
+
 </resources>
