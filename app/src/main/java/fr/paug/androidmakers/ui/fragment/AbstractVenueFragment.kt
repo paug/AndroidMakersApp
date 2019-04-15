@@ -50,7 +50,7 @@ abstract class AbstractVenueFragment : Fragment(), View.OnClickListener {
                 inflater, R.layout.venue_item_fragment, container, false)
         AndroidMakersStore().getVenue(getVenueDocumentPath()) {
             venueInformation = it
-            venueItemFragmentBinding?.also {fragmentBinding ->
+            venueItemFragmentBinding?.also { fragmentBinding ->
                 fragmentBinding.venue = venueInformation
                 fragmentBinding.venueDirections.text = Html.fromHtml(venueDescription)
                 fragmentBinding.venueLocateButton.setOnClickListener(this)
