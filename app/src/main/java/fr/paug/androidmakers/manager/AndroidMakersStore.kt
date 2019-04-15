@@ -1,8 +1,12 @@
 package fr.paug.androidmakers.manager
 
 import android.util.Log
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import fr.paug.androidmakers.model.*
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.HashMap
 
 class AndroidMakersStore {
 
@@ -71,21 +75,87 @@ class AndroidMakersStore {
     }
 
     fun getSlots(callback: (List<ScheduleSlotKt>) -> Unit) {
-        val allSlots = mutableListOf<ScheduleSlotKt>()
         FirebaseFirestore.getInstance()
-                .collection("schedule-app").document("slots")
+                .collection("schedule").document("2019-04-23")
                 .get()
-                .addOnSuccessListener { result ->
-                    val slots = result.toObject(ScheduleSlotList::class.java)
-                    for (scheduleSlotKt in slots!!.all) {
-                        Log.e("slot", scheduleSlotKt.toString())
-                        allSlots.add(scheduleSlotKt)
-                    }
-                    callback.invoke(allSlots)
+                .addOnSuccessListener { result1 ->
+                    FirebaseFirestore.getInstance()
+                            .collection("schedule").document("2019-04-24")
+                            .get()
+                            .addOnSuccessListener { result2 ->
+                                try {
+                                    convertResults(mapOf(
+                                            "2019-04-23" to result1,
+                                            "2019-04-24" to result2
+                                    ), callback)
+                                } catch (e: Exception) {
+                                    Log.w(TAG, "Cannot convert from schedule", e)
+                                }
+                            }
+                            .addOnFailureListener { exception ->
+                                Log.w(TAG, "Error getting second day.", exception)
+                            }
                 }
                 .addOnFailureListener { exception ->
-                    Log.w(TAG, "Error getting documents.", exception)
+                    Log.w(TAG, "Error getting first day.", exception)
                 }
+    }
+
+    private fun convertResults(results: Map<String, DocumentSnapshot>, callback: (List<ScheduleSlotKt>) -> Unit) {
+        val list = mutableListOf<ScheduleSlotKt>()
+        for (result in results) {
+
+            val day = result.value.data!!
+            val timeSlots = day.getAsListOfMaps("timeslots")
+
+            timeSlots.forEachIndexed { timeSlotIndex, timeSlot ->
+                val sessions = timeSlot.getAsListOfMaps("sessions")
+                sessions.forEachIndexed { index, session ->
+                    val sessionId = session.getAsListOfStrings("items").firstOrNull()
+                    if (sessionId != null) {
+                        val startTime = timeSlot.getAsString("startTime")
+
+                        val extend = (session.get("extend") as Long?)?.toInt()?.minus(1) ?: 0
+                        val endTime = timeSlots[timeSlotIndex + extend].getAsString("endTime")
+                        val roomId = when {
+                            sessions.size == 1 -> "all"
+                            index == 0 -> "moebius"
+                            index == 1 -> "blin"
+                            index == 2 -> "202"
+                            index == 3 -> "204"
+                            index == 4 -> "office"
+                            else -> throw Exception("no room found")
+                        }
+
+                        list.add(ScheduleSlotKt(
+                                startDate = getDate(result.key, startTime),
+                                endDate = getDate(result.key, endTime),
+                                roomId = roomId,
+                                sessionId = sessionId
+                                )
+                        )
+                    }
+                }
+            }
+        }
+
+        callback.invoke(list)
+    }
+
+
+    /**
+     *
+     * @param date the date as YYYY-MM-DD
+     * @param time the time as HH:mm
+     * @return a ISO86-01 String
+     */
+    private fun getDate(date: String, time: String): String {
+        val d = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).parse("$date $time")
+
+        val tz = TimeZone.getTimeZone("UTC")
+        val df = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ",Locale.US)
+        df.timeZone = tz
+        return df.format(d)
     }
 
     fun getSpeakers(callback: (HashMap<String, SpeakerKt>) -> Unit) {
@@ -157,5 +227,20 @@ class AndroidMakersStore {
     companion object {
         private const val TAG = "Firestore"
     }
+}
 
+fun <K> Map<K, *>.getAsMap(k: K): Map<String, *> {
+    return this.get(k) as Map<String, *>
+}
+
+fun <K> Map<K, *>.getAsListOfMaps(k: K): List<Map<String, *>> {
+    return this.get(k) as List<Map<String, *>>
+}
+
+fun <K> Map<K, *>.getAsListOfStrings(k: K): List<String> {
+    return this.get(k) as List<String>
+}
+
+fun <K> Map<K, *>.getAsString(k: K): String {
+    return this.get(k) as String
 }
