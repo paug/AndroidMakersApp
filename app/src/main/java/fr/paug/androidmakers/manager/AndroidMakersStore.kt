@@ -23,10 +23,10 @@ class AndroidMakersStore {
 
     fun getVenue(document: String, callback: (Venue?) -> Unit) {
         FirebaseFirestore.getInstance().collection("venues").document(document).get()
-                .addOnSuccessListener { document ->
-                    if (document != null) {
-                        Log.d(TAG, "DocumentSnapshot data: " + document.data)
-                        val venue = document.toObject(Venue::class.java)
+                .addOnSuccessListener { venueDocument ->
+                    if (venueDocument != null) {
+                        Log.d(TAG, "DocumentSnapshot data: " + venueDocument.data)
+                        val venue = venueDocument.toObject(Venue::class.java)
                         callback.invoke(venue)
                     } else {
                         Log.d(TAG, "No such document")

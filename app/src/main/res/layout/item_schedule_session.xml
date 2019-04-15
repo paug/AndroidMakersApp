@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/sessionItemLayout"
@@ -21,21 +20,21 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0"
         app:layout_constraintVertical_chainStyle="packed"
-        tools:text="What's new in Android ?"/>
+        tools:text="What's new in Android ?" />
 
     <!--Contains the room and the duration of the session, eventually the type of session-->
     <TextView
         android:id="@+id/sessionDescriptionTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/small_padding"
         android:layout_marginTop="@dimen/small_padding"
+        android:layout_marginEnd="@dimen/small_padding"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/bookmark"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sessionTitleTextView"
-        tools:text="50 min / Room machin / FR\nJean Speaker, Romain Speaker"/>
+        tools:text="50 min / Room machin / FR\nJean Speaker, Romain Speaker" />
 
     <ImageButton
         android:id="@+id/bookmark"
@@ -48,6 +47,6 @@
         android:src="@drawable/session_bookmark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sessionTitleTextView"/>
+        app:layout_constraintTop_toBottomOf="@+id/sessionTitleTextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

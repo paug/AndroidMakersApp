@@ -1,5 +1,4 @@
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -36,14 +35,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="64dp"
                         android:layout_marginTop="@dimen/default_padding"
-                        android:src="@drawable/logo_android_makers"/>
+                        android:src="@drawable/logo_android_makers" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/large_padding"
                         android:text="@string/about_android_makers"
-                        android:textColor="@color/black"/>
+                        android:textColor="@color/black" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -61,7 +60,7 @@
                             android:padding="@dimen/default_padding"
                             android:text="FAQ"
                             android:textColor="#03A9F4"
-                            android:textSize="18sp"/>
+                            android:textSize="18sp" />
 
                         <TextView
                             android:id="@+id/code_of_conduct_button"
@@ -73,8 +72,8 @@
                             android:padding="@dimen/default_padding"
                             android:text="Code of conduct"
                             android:textColor="#03A9F4"
-                            android:textSize="18sp"/>
-                        
+                            android:textSize="18sp" />
+
                     </LinearLayout>
 
                 </LinearLayout>
@@ -99,7 +98,7 @@
                         style="@style/SessionTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/social"/>
+                        android:text="@string/social" />
 
                     <TextView
                         android:id="@+id/twitter_hashtag_button"
@@ -111,7 +110,7 @@
                         android:padding="@dimen/default_padding"
                         android:text="@string/twitter_hashtag"
                         android:textColor="#03A9F4"
-                        android:textSize="18sp"/>
+                        android:textSize="18sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -129,7 +128,7 @@
                             android:layout_weight="1"
                             android:background="?selectableItemBackgroundBorderless"
                             android:clickable="true"
-                            android:src="@drawable/ic_network_twitter"/>
+                            android:src="@drawable/ic_network_twitter" />
 
                         <ImageView
                             android:id="@+id/youtube_button"
@@ -138,7 +137,7 @@
                             android:layout_weight="1"
                             android:background="?selectableItemBackgroundBorderless"
                             android:clickable="true"
-                            android:src="@drawable/ic_network_youtube"/>
+                            android:src="@drawable/ic_network_youtube" />
 
                     </LinearLayout>
 
@@ -163,7 +162,7 @@
                         style="@style/SessionTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/wifi"/>
+                        android:text="@string/wifi" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -183,7 +182,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/wifi_network"
-                                android:textColor="@color/black"/>
+                                android:textColor="@color/black" />
 
                             <TextView
                                 android:id="@+id/wifiPasswordTextView"
@@ -191,7 +190,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/wifi_password"
                                 android:textColor="@color/black"
-                                android:textIsSelectable="true"/>
+                                android:textIsSelectable="true" />
 
                         </LinearLayout>
 
@@ -204,7 +203,7 @@
                             android:textColor="@color/white"
                             android:visibility="invisible"
                             app:backgroundTint="?attr/colorPrimary"
-                            tools:visibility="visible"/>
+                            tools:visibility="visible" />
 
                         <ProgressBar
                             android:id="@+id/wifi_autoconnect_progress"
@@ -215,7 +214,7 @@
                             android:indeterminate="true"
                             android:indeterminateTint="@color/colorPrimary"
                             android:visibility="gone"
-                            tools:visibility="visible"/>
+                            tools:visibility="visible" />
 
                     </LinearLayout>
 
@@ -241,7 +240,7 @@
                         style="@style/SessionTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/sponsors"/>
+                        android:text="@string/sponsors" />
 
                 </LinearLayout>
 
@@ -254,7 +253,7 @@
                 android:layout_gravity="center"
                 android:fontFamily="@font/gill_sans_light"
                 android:textSize="16sp"
-                tools:text="Version"/>
+                tools:text="Version" />
 
         </LinearLayout>
 
