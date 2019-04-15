@@ -17,6 +17,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import fr.paug.androidmakers.BuildConfig
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.databinding.FragmentAboutBinding
@@ -50,6 +51,8 @@ class AboutFragment : Fragment(), View.OnClickListener {
         AndroidMakersStore().getPartners { partnerCollection ->
             addPartnerCollectionToView(partnerCollection)
         }
+
+        setUpWifi()
 
         // Listen to network state change
         val intentFilter = IntentFilter()
@@ -202,6 +205,14 @@ class AboutFragment : Fragment(), View.OnClickListener {
                 .apply(options)
                 .into(partnerLogo)
         partnerLogo.setOnClickListener { CustomTabUtil.openChromeTab(context, logo.url) }
+    }
+
+    private fun setUpWifi() {
+        val firebaseRemoteConfiguration = FirebaseRemoteConfig.getInstance()
+        val isVisible = firebaseRemoteConfiguration.getBoolean("isWifiCardEnabled")
+        fragmentAboutBinding?.wifiCard?.visibility = if (isVisible) View.VISIBLE else View.GONE
+        fragmentAboutBinding?.wifiNetworkTextView?.text = firebaseRemoteConfiguration?.getString("wifiNetwork")
+        fragmentAboutBinding?.wifiPasswordTextView?.text = firebaseRemoteConfiguration?.getString("wifiPassword")
     }
 
 }

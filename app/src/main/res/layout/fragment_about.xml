@@ -20,6 +20,7 @@
             android:showDividers="middle">
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/aboutCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardBackgroundColor="@color/white"
@@ -81,6 +82,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/socialCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardBackgroundColor="@color/white"
@@ -129,24 +131,6 @@
                             android:clickable="true"
                             android:src="@drawable/ic_network_twitter"/>
 
-                        <!--<ImageView-->
-                        <!--android:id="@+id/google_plus_button"-->
-                        <!--android:layout_width="0dip"-->
-                        <!--android:layout_height="64dp"-->
-                        <!--android:layout_weight="1"-->
-                        <!--android:background="?selectableItemBackgroundBorderless"-->
-                        <!--android:clickable="true"-->
-                        <!--android:src="@drawable/ic_network_google_plus"/>-->
-
-                        <!--<ImageView-->
-                        <!--android:id="@+id/facebook_button"-->
-                        <!--android:layout_width="0dip"-->
-                        <!--android:layout_height="64dp"-->
-                        <!--android:layout_weight="1"-->
-                        <!--android:background="?selectableItemBackgroundBorderless"-->
-                        <!--android:clickable="true"-->
-                        <!--android:src="@drawable/ic_network_facebook"/>-->
-
                         <ImageView
                             android:id="@+id/youtube_button"
                             android:layout_width="0dip"
@@ -163,6 +147,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/wifiCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardBackgroundColor="@color/white"
@@ -194,12 +179,14 @@
                             android:orientation="vertical">
 
                             <TextView
+                                android:id="@+id/wifiNetworkTextView"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/wifi_network"
                                 android:textColor="@color/black"/>
 
                             <TextView
+                                android:id="@+id/wifiPasswordTextView"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/wifi_password"
@@ -237,6 +224,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/sponsorsCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardBackgroundColor="@color/white"
