@@ -20,8 +20,9 @@
         android:theme="@style/PreviewTheme.AndroidMakers"
         tools:replace="android:theme">
 
-        <!-- We need this to enable manual activation (to avoid reporting in debug) -->
-        <meta-data android:name="firebase_crashlytics_collection_enabled" android:value="false"/>
+        <!-- Disable analytics and advertisingId collection. Google just pushed us out of the store for that -->
+        <meta-data android:name="firebase_crashlytics_collection_enabled" android:value="false" />
+        <meta-data android:name="google_analytics_adid_collection_enabled" android:value="false" />
 
         <activity
             android:name=".ui.activity.MainActivity"
