@@ -14,7 +14,9 @@ import fr.paug.androidmakers.R
 import kotlinx.android.synthetic.main.login_fragment.*
 
 class LoginFragment : Fragment() {
-    private val RC_SIGN_IN = 42
+    companion object {
+        private const val RC_SIGN_IN = 42
+    }
 
     var onLoggedIn: (() -> Unit)? = null
 
