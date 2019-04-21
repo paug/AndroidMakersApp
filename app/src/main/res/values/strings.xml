@@ -100,13 +100,15 @@
     <string name="aog_button">Launch Android Makers Action</string>
 
     <string name="nougat_needed">You need at least Nougat to hunt for desserts...</string>
-    <string name="flash_droid_explanation">14 bugdroids (and their pastries 🍩🍦) are hidden in the Conference.\n\nFlash them all and get a chance to win some chocolate\n🍫🍫\n!!\n\nGood luck!</string>
+    <string name="flash_droid_explanation">14 bugdroids (and their desserts 🍩🍦) are hidden in the Conference.\n\nFlash them all and get a chance to win some chocolate\n🍫🍫\n!!\n\nGood luck!</string>
     <string name="help1">14 desserts 🍩🍦 corresponding each to an android version are hidden in the Conference.\n\nFlash them all and get a chance to win some chocolate 🍫🍫. They look like this: </string>
     <string name="help2">A few rules/tips:</string>
     <string name="help3">  • All the desserts are in public areas (don\'t search the restrooms...)\n  • You don\'t need to move or dissamble anything to find the them (Please stay safe)\n  • Some might be printed, some might be displayed or unlocked in other ways. It depends!\n  • The winner will be random picked between all candidates that found all 14 of them at the end of the conference. Rushing doesn\'t help.\n  • If you don\'t know where to start, you can start by claiming your t-shirt 👕😊.</string>
     <string name="lets_go">Signin with google</string>
     <string name="login_error">Login Error</string>
-    <string name="scanPastry">Flash pastries here</string>
-    <string name="helpTitle">Pastries Hunt</string>
+    <string name="scanPastry">Flash desserts here</string>
+    <string name="helpTitle">Dessert Hunt</string>
+    <string name="congratulations">Congratulations!!</string>
+    <string name="congratulations2">Well done! You found all 14 desserts. The winner will be announced at the end of the conference.\n\nEnjoy the rest of the talks!</string>
 
 </resources>

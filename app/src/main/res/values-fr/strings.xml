@@ -94,6 +94,8 @@
     <string name="lets_go">Login Google</string>
     <string name="login_error">Login Error</string>
     <string name="scanPastry">Par ici les desserts</string>
-    <string name="helpTitle">Pastries Hunt</string>
+    <string name="helpTitle">Dessert Hunt</string>
+    <string name="congratulations">Félicitations !!</string>
+    <string name="congratulations2">Bien joué ! Résultats finaux et annonces du vainqueur à la fin de la conférence.\n\nVous pouvez reprendre une activité normale.</string>
 
 </resources>
