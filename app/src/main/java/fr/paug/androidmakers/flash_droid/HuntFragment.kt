@@ -71,7 +71,7 @@ class HuntFragment : ArFragment() {
         arSceneView.scene.removeOnUpdateListener(this::onUpdateFrame)
     }
 
-    fun getRelaseView(name: String): View {
+    fun getReleaseView(name: String): View {
         val drawableResourceId = resources.getIdentifier(name, "drawable", context!!.packageName)
 
         val releaseView = LayoutInflater.from(context).inflate(R.layout.release, null, false)
@@ -83,11 +83,12 @@ class HuntFragment : ArFragment() {
 
     }
 
-    fun getTshirtView(): View {
+    private fun getTshirtView(): View {
         val imageView = ImageView(context)
         imageView.setImageResource(R.drawable.tshirt)
         return imageView
     }
+
     private fun onUpdateFrame(frameTime: FrameTime) {
         val frame = arSceneView.arFrame
 
@@ -125,7 +126,7 @@ class HuntFragment : ArFragment() {
                             node.localPosition = Vector3(0f, 0f, augmentedImage.extentZ)
                             node.localRotation = Quaternion.axisAngle(Vector3(1.0f, 0f, 0f), -90f)
                             node.localScale = Vector3(augmentedImage.extentX, augmentedImage.extentX, 0f)
-                            getRelaseView(augmentedImage.name)
+                            getReleaseView(augmentedImage.name)
                         } else {
                             node.localPosition = Vector3(0f, 0f, augmentedImage.extentZ/2)
                             node.localRotation = Quaternion.axisAngle(Vector3(1.0f, 0f, 0f), -90f)
