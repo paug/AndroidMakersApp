@@ -83,7 +83,11 @@
             android:name=".flash_droid.FlashDroidActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="userPortrait"/>
-
+        <activity
+            android:theme="@style/Theme.FlashDroid"
+            android:name=".flash_droid.EasterEggActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="userPortrait"/>
         <receiver
             android:name=".receiver.SessionAlarmReceiver"
             android:exported="false">
