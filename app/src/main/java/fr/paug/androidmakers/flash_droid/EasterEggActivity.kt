@@ -4,7 +4,6 @@ import android.app.Activity
 import android.os.Bundle
 import android.widget.ImageView
 import fr.paug.androidmakers.R
-import kotlinx.android.synthetic.main.small_ribbon_image.*
 
 class EasterEggActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -13,7 +12,7 @@ class EasterEggActivity : Activity() {
         val imageView = ImageView(this)
         imageView.scaleType = ImageView.ScaleType.FIT_CENTER
 
-        imageView.setImageResource(R.drawable.oreo)
+        imageView.setImageResource(R.drawable.oreo_poster)
         setContentView(imageView)
     }
 }

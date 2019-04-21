@@ -11,8 +11,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_margin="20dp"
-        android:src="@drawable/ic_thumb_up_black_24dp"
-        android:tint="#1EB6E1"/>
+        android:src="@drawable/ic_thumbs_up" />
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
