@@ -76,17 +76,17 @@ class AndroidMakersStore {
 
     fun getSlots(callback: (List<ScheduleSlotKt>) -> Unit) {
         FirebaseFirestore.getInstance()
-                .collection("schedule").document("2019-04-23")
+                .collection("schedule").document(DAY1)
                 .get()
                 .addOnSuccessListener { result1 ->
                     FirebaseFirestore.getInstance()
-                            .collection("schedule").document("2019-04-24")
+                            .collection("schedule").document(DAY2)
                             .get()
                             .addOnSuccessListener { result2 ->
                                 try {
                                     convertResults(mapOf(
-                                            "2019-04-23" to result1,
-                                            "2019-04-24" to result2
+                                            DAY1 to result1,
+                                            DAY2 to result2
                                     ), callback)
                                 } catch (e: Exception) {
                                     Log.w(TAG, "Cannot convert from schedule", e)
@@ -104,7 +104,6 @@ class AndroidMakersStore {
     private fun convertResults(results: Map<String, DocumentSnapshot>, callback: (List<ScheduleSlotKt>) -> Unit) {
         val list = mutableListOf<ScheduleSlotKt>()
         for (result in results) {
-
             val day = result.value.data!!
             val timeSlots = day.getAsListOfMaps("timeslots")
 
@@ -131,9 +130,7 @@ class AndroidMakersStore {
                                 startDate = getDate(result.key, startTime),
                                 endDate = getDate(result.key, endTime),
                                 roomId = roomId,
-                                sessionId = sessionId
-                                )
-                        )
+                                sessionId = sessionId))
                     }
                 }
             }
@@ -144,7 +141,6 @@ class AndroidMakersStore {
 
 
     /**
-     *
      * @param date the date as YYYY-MM-DD
      * @param time the time as HH:mm
      * @return a ISO86-01 String
@@ -153,7 +149,7 @@ class AndroidMakersStore {
         val d = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).parse("$date $time")
 
         val tz = TimeZone.getTimeZone("UTC")
-        val df = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ",Locale.US)
+        val df = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.US)
         df.timeZone = tz
         return df.format(d)
     }
@@ -225,6 +221,8 @@ class AndroidMakersStore {
     }
 
     companion object {
+        private const val DAY1 = "2019-04-23"
+        private const val DAY2 = "2019-04-24"
         private const val TAG = "Firestore"
     }
 }
