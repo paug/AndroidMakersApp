@@ -23,6 +23,7 @@ android {
     defaultConfig {
         applicationId "fr.paug.androidmakers"
         minSdkVersion 15
+        multiDexEnabled true
         targetSdkVersion 28
         versionCode versionMajor * 1000 + versionMinor * 100 + versionPatch * 10
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
@@ -110,6 +111,8 @@ dependencies {
 
     // For Video preview
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
+
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-alpha-1-SNAPSHOT'
 }
 
 apply plugin: 'com.google.gms.google-services'
