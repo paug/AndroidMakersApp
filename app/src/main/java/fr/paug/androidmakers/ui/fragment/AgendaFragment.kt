@@ -334,20 +334,24 @@ class AgendaFragment : Fragment() {
         mFiltersView?.addView(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater?) {
         super.onCreateOptionsMenu(menu, inflater)
 
-        val menuItem = menu?.add(activity!!.getString(R.string.filter))
-        menuItem?.setIcon(R.drawable.ic_filter_list_white_24dp)
-        menuItem?.setShowAsAction(SHOW_AS_ACTION_ALWAYS)
-        menuItem?.setOnMenuItemClickListener {
+        val menuItem = menu.add(0, R.id.filter, 0, activity!!.getString(R.string.filter))!!
+        menuItem.setIcon(R.drawable.ic_filter_list_white_24dp)
+        menuItem.setShowAsAction(SHOW_AS_ACTION_ALWAYS)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.filter) {
             if (mDrawerLayout!!.isDrawerOpen(GravityCompat.END)) {
                 mDrawerLayout!!.closeDrawer(GravityCompat.END)
             } else {
                 mDrawerLayout!!.openDrawer(GravityCompat.END)
             }
-            true
+            return true
         }
+        return false
     }
     //endregion
 
