@@ -24,6 +24,7 @@ import com.google.ar.sceneform.rendering.ViewRenderable
 import com.google.ar.sceneform.rendering.ViewSizer
 import com.google.ar.sceneform.ux.ArFragment
 import fr.paug.androidmakers.R
+import kotlinx.android.synthetic.main.help_view.*
 import kotlinx.android.synthetic.main.overlay.*
 import java.io.IOException
 import java.util.concurrent.CompletableFuture
@@ -119,23 +120,22 @@ class HuntFragment : ArFragment() {
 
                         val node = Node()
                         node.setParent(base)
-                        node.localPosition = Vector3(0f, 0f, augmentedImage.extentZ / 2)
-                        node.localRotation = Quaternion.axisAngle(Vector3(1.0f, 0f, 0f), -90f)
-                        node.localScale = Vector3(augmentedImage.extentX, augmentedImage.extentZ, 0f)
 
                         val view = if (augmentedImage.index < 14) {
+                            node.localPosition = Vector3(0f, 0f, augmentedImage.extentZ)
+                            node.localRotation = Quaternion.axisAngle(Vector3(1.0f, 0f, 0f), -90f)
+                            node.localScale = Vector3(augmentedImage.extentX, augmentedImage.extentX, 0f)
                             getRelaseView(augmentedImage.name)
                         } else {
+                            node.localPosition = Vector3(0f, 0f, augmentedImage.extentZ/2)
+                            node.localRotation = Quaternion.axisAngle(Vector3(1.0f, 0f, 0f), -90f)
+                            node.localScale = Vector3(augmentedImage.extentX, augmentedImage.extentZ, 0f)
                             getTshirtView()
                         }
                         val completableFuture = ViewRenderable.builder().setView(context, view).build().handle { renderable, throwable ->
                             if (throwable != null) {
                                 Log.e("HuntFragment", "Ooops")
                             } else {
-                                val size = Vector3(1.0f, 1.0f, 1.0f)
-                                renderable.sizer = ViewSizer {
-                                    size
-                                }
                                 node.renderable = renderable
                                 trackedImages.put(augmentedImage.index, ImageState(null, base))
                                 arSceneView.scene.addChild(base)
@@ -147,6 +147,9 @@ class HuntFragment : ArFragment() {
                         if (augmentedImage.index < 14) {
                             User.addDessert(context!!, augmentedImage.name)
                             updateCount()
+                            if (User.desserts().count() == 14) {
+                                showVictory()
+                            }
                         }
 
                         this.view!!.findViewById<View>(R.id.fit).visibility = View.GONE
@@ -203,6 +206,16 @@ class HuntFragment : ArFragment() {
         }
     }
 
+    private fun showVictory() {
+        val frameLayout = view as FrameLayout? ?: return
+
+        val view = LayoutInflater.from(context!!).inflate(R.layout.victory, frameLayout, false)
+        view.findViewById<View>(R.id.close).setOnClickListener {
+            frameLayout.removeView(view)
+        }
+        frameLayout.addView(view)
+    }
+
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         // do nothing, that disables fullscreen mode
     }
@@ -249,6 +262,13 @@ class HuntFragment : ArFragment() {
             frameLayout.removeView(dessertDex)
             return true
         }
+
+        val victory = frameLayout.findViewById<View>(R.id.victory)
+        if (victory != null) {
+            frameLayout.removeView(victory)
+            return true
+        }
+
 
         return false
     }
