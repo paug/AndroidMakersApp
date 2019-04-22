@@ -10,21 +10,6 @@ import kotlin.collections.HashMap
 
 class AndroidMakersStore {
 
-    fun getPartners(callback: (PartnerCollection) -> Unit) {
-        FirebaseFirestore.getInstance().collection("partners")
-                .get()
-                .addOnSuccessListener { result ->
-                    for (document in result) {
-                        Log.d(TAG, document.id + " => " + document.data)
-                        val partnerCollection = document.toObject(PartnerCollection::class.java)
-                        callback.invoke(partnerCollection)
-                    }
-                }
-                .addOnFailureListener { exception ->
-                    Log.w(TAG, "Error getting documents.", exception)
-                }
-    }
-
     fun getVenue(document: String, callback: (Venue?) -> Unit) {
         FirebaseFirestore.getInstance().collection("venues").document(document).get()
                 .addOnSuccessListener { venueDocument ->

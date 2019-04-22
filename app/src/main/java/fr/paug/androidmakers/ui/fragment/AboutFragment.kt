@@ -7,6 +7,7 @@ import android.content.IntentFilter
 import android.net.Uri
 import android.net.wifi.WifiManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import fr.paug.androidmakers.BuildConfig
 import fr.paug.androidmakers.R
@@ -30,6 +33,7 @@ import fr.paug.androidmakers.util.WifiUtil
 
 class AboutFragment : Fragment(), View.OnClickListener {
 
+    private var partnerRegistration: ListenerRegistration? = null
     private var fragmentAboutBinding: FragmentAboutBinding? = null
 
     private val wifiStateChangedReceiver = object : BroadcastReceiver() {
@@ -45,13 +49,32 @@ class AboutFragment : Fragment(), View.OnClickListener {
         retainInstance = true
     }
 
+    override fun onResume() {
+        super.onResume()
+        partnerRegistration = FirebaseFirestore.getInstance().collection("partners")
+                .addSnapshotListener { snapshot, exception ->
+                    if (exception != null) {
+                        exception.printStackTrace()
+                        Log.w("AboutFragment", "Error getting partners.", exception)
+                        return@addSnapshotListener
+                    }
+                    if (snapshot != null) {
+                        for (document in snapshot) {
+                            Log.d("AboutFragment", document.id + " => " + document.data)
+                            val partnerCollection = document.toObject(PartnerCollection::class.java)
+                            addPartnerCollectionToView(partnerCollection)
+                        }
+                    }
+                }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        partnerRegistration?.remove()
+    }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         fragmentAboutBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_about, container, false)
-
-        AndroidMakersStore().getPartners { partnerCollection ->
-            addPartnerCollectionToView(partnerCollection)
-        }
 
         setUpWifi()
 
