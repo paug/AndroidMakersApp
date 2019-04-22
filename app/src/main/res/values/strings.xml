@@ -99,7 +99,7 @@
     <string name="aog_description">Discover the Google Assistant Action!</string>
     <string name="aog_button">Launch Android Makers Action</string>
 
-    <string name="nougat_needed">You need at least Nougat to hunt for desserts...</string>
+    <string name="nougat_needed">Your device is not compatible with ARCore or doesn\'t have the latest ARCore APK.</string>
     <string name="flash_droid_explanation">14 bugdroids (and their desserts 🍩🍦) are hidden in the Conference.\n\nFlash them all and get a chance to win some chocolate\n🍫🍫\n!!\n\nGood luck!</string>
     <string name="help1">14 desserts 🍩🍦 corresponding each to an android version are hidden in the Conference.\n\nFlash them all and get a chance to win some chocolate 🍫🍫. They look like this: </string>
     <string name="help2">A few rules/tips:</string>
