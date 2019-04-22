@@ -82,7 +82,12 @@
             android:theme="@style/Theme.FlashDroid"
             android:name=".flash_droid.FlashDroidActivity"
             android:configChanges="orientation|screenSize"
-            android:screenOrientation="userPortrait"/>
+            android:screenOrientation="userPortrait">
+            <intent-filter>
+                <action android:name="START_DESSERT_HUNT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:theme="@style/Theme.FlashDroid"
             android:name=".flash_droid.EasterEggActivity"
@@ -117,7 +122,7 @@
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/ic_event_note_white_24dp" />
+            android:resource="@drawable/notification" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
