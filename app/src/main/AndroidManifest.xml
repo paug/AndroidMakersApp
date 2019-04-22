@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
-    package="fr.paug.androidmakers"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="fr.paug.androidmakers">
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
 
     <uses-permission android:name="android.permission.VIBRATE"/>
 
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <!-- BOT -->
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
     <!-- AR -->
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-feature android:name="android.hardware.camera.ar" android:required="false"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-feature
+        android:name="android.hardware.camera.ar"
+        android:required="false"/>
 
     <uses-sdk tools:overrideLibrary="com.firebase.ui.auth"/>
     <application
@@ -26,73 +28,81 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/PreviewTheme.AndroidMakers"
-
         tools:replace="android:theme">
 
         <!-- Disable analytics and advertisingId collection. Google just pushed us out of the store for that -->
-        <meta-data android:name="firebase_crashlytics_collection_enabled" android:value="false" />
-        <meta-data android:name="google_analytics_adid_collection_enabled" android:value="false" />
+        <meta-data
+            android:name="firebase_crashlytics_collection_enabled"
+            android:value="false"/>
 
-        <meta-data android:name="com.google.ar.core" android:value="optional" />
+        <meta-data
+            android:name="google_analytics_adid_collection_enabled"
+            android:value="false"/>
+
+        <meta-data
+            android:name="com.google.ar.core"
+            android:value="optional"/>
 
         <activity
             android:name=".ui.activity.MainActivity"
-            android:launchMode="singleTask"
-            android:configChanges="orientation|screenSize">
+            android:configChanges="orientation|screenSize"
+            android:launchMode="singleTask">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
 
             <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.VIEW"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
 
-                <data android:scheme="http" />
-                <data android:scheme="https" />
-                <data android:host="androidmakers.fr" />
-                <data android:path="/" />
+                <data android:scheme="http"/>
+                <data android:scheme="https"/>
+                <data android:host="androidmakers.fr"/>
+                <data android:path="/"/>
             </intent-filter>
 
             <meta-data
                 android:name="default-url"
-                android:value="https://androidmakers.fr/" />
+                android:value="https://androidmakers.fr/"/>
 
             <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.VIEW"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
 
-                <data android:scheme="http" />
-                <data android:scheme="https" />
-                <data android:host="androidmakers.fr" />
-                <data android:pathPrefix="/schedule" />
-                <data android:pathPrefix="/logistics" />
+                <data android:scheme="http"/>
+                <data android:scheme="https"/>
+                <data android:host="androidmakers.fr"/>
+                <data android:pathPrefix="/schedule"/>
+                <data android:pathPrefix="/logistics"/>
             </intent-filter>
-
         </activity>
 
         <activity
             android:name=".ui.activity.SessionDetailActivity"
-            android:configChanges="orientation|screenSize" />
+            android:configChanges="orientation|screenSize"/>
+
         <activity
-            android:theme="@style/Theme.FlashDroid"
             android:name=".flash_droid.FlashDroidActivity"
             android:configChanges="orientation|screenSize"
-            android:screenOrientation="userPortrait">
+            android:screenOrientation="userPortrait"
+            android:theme="@style/Theme.FlashDroid">
             <intent-filter>
-                <action android:name="START_DESSERT_HUNT" />
-                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="START_DESSERT_HUNT"/>
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
+
         <activity
-            android:theme="@style/Theme.FlashDroid"
             android:name=".flash_droid.EasterEggActivity"
             android:configChanges="orientation|screenSize"
-            android:screenOrientation="userPortrait"/>
+            android:screenOrientation="userPortrait"
+            android:theme="@style/Theme.FlashDroid"/>
+
         <receiver
             android:name=".receiver.SessionAlarmReceiver"
             android:exported="false">
@@ -122,11 +132,11 @@
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/notification" />
+            android:resource="@drawable/notification"/>
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/colorAccent" />
+            android:resource="@color/colorAccent"/>
 
     </application>
 
