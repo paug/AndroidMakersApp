@@ -45,6 +45,11 @@ object ScheduleSessionHelper {
         scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_ID, sessionId)
         SessionAlarmService.enqueueWork(context, scheduleIntent)
     }
+
+    fun cancelToast() {
+        toast?.cancel()
+        toast = null
+    }
     //endregion
 
 }

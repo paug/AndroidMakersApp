@@ -2,6 +2,7 @@ package fr.paug.androidmakers.ui.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import fr.paug.androidmakers.util.ScheduleSessionHelper
 
 import fr.paug.androidmakers.util.ThemeUtils
 
@@ -12,4 +13,8 @@ abstract class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        ScheduleSessionHelper.cancelToast()
+    }
 }
