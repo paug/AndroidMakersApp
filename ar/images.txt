@@ -12,4 +12,4 @@ marshmallow|marshmallow.png
 nougat|nougat.png
 oreo|oreo.png
 pie|pie.png
-montrouge|montrouge.png
+montrouge|montrouge.png|8

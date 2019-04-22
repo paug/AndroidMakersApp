@@ -24,7 +24,6 @@ import com.google.ar.sceneform.rendering.ViewRenderable
 import com.google.ar.sceneform.rendering.ViewSizer
 import com.google.ar.sceneform.ux.ArFragment
 import fr.paug.androidmakers.R
-import kotlinx.android.synthetic.main.help_view.*
 import kotlinx.android.synthetic.main.overlay.*
 import java.io.IOException
 import java.util.concurrent.CompletableFuture
@@ -71,13 +70,13 @@ class HuntFragment : ArFragment() {
         arSceneView.scene.removeOnUpdateListener(this::onUpdateFrame)
     }
 
-    fun getReleaseView(name: String): View {
+    private fun getReleaseView(name: String): View {
         val drawableResourceId = resources.getIdentifier(name, "drawable", context!!.packageName)
 
         val releaseView = LayoutInflater.from(context).inflate(R.layout.release, null, false)
         releaseView?.findViewById<ImageView>(R.id.imageView)?.setImageResource(drawableResourceId)
-        releaseView?.findViewById<TextView>(R.id.title)?.setText("Android ${name}")
-        releaseView?.findViewById<TextView>(R.id.description)?.setText("${14 - User.desserts().count()} desserts to go!")
+        releaseView?.findViewById<TextView>(R.id.title)?.text = "Android ${name}"
+        releaseView?.findViewById<TextView>(R.id.description)?.text = "${14 - User.desserts().count()} desserts to go!"
 
         return releaseView
 
@@ -137,13 +136,17 @@ class HuntFragment : ArFragment() {
                             if (throwable != null) {
                                 Log.e("HuntFragment", "Ooops")
                             } else {
+                                if (augmentedImage.index == 14) {
+                                    renderable.sizer = ViewSizer { Vector3(1f, 1f, 1f) }
+                                }
+
                                 node.renderable = renderable
-                                trackedImages.put(augmentedImage.index, ImageState(null, base))
+                                trackedImages[augmentedImage.index] = ImageState(null, base)
                                 arSceneView.scene.addChild(base)
                             }
                         }
 
-                        trackedImages.put(augmentedImage.index, ImageState(completableFuture, null))
+                        trackedImages[augmentedImage.index] = ImageState(completableFuture, null)
 
                         if (augmentedImage.index < 14) {
                             User.addDessert(context!!, augmentedImage.name)
@@ -176,7 +179,7 @@ class HuntFragment : ArFragment() {
 
     private fun updateCount() {
         val desserts = User.desserts()
-        view?.findViewById<TextView>(R.id.count)?.setText("${desserts.count()}/14")
+        view?.findViewById<TextView>(R.id.count)?.text = "${desserts.count()}/14"
     }
 
     override fun onCreateView(
@@ -200,10 +203,10 @@ class HuntFragment : ArFragment() {
         val frameLayout = view as FrameLayout? ?: return
 
         LayoutInflater.from(context!!).inflate(R.layout.help_view, frameLayout, true)
-        val help_view = frameLayout.findViewById<ScrollView>(R.id.help_view)
-        help_view.isFillViewport = true
+        val helpView = frameLayout.findViewById<ScrollView>(R.id.help_view)
+        helpView.isFillViewport = true
         frameLayout.findViewById<View>(R.id.close).setOnClickListener {
-            frameLayout.removeView(help_view)
+            frameLayout.removeView(helpView)
         }
     }
 
