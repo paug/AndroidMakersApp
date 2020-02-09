@@ -27,8 +27,8 @@ extensions.findByType(BaseExtension::class.java)!!.apply {
     compileSdkVersion(28.toString().toInt())
     defaultConfig {
         applicationId = "fr.paug.androidmakers"
-        minSdkVersion(15.toString())
-        targetSdkVersion(28.toString())
+        minSdkVersion(21)
+        targetSdkVersion(28)
         versionCode = versionMajor * 1000 + versionMinor * 100 + versionPatch * 10
         versionName = "${versionMajor}.${versionMinor}.${versionPatch}"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -61,12 +61,19 @@ extensions.findByType(BaseExtension::class.java)!!.apply {
         isEnabled = true
     }
 
+    buildFeatures.compose = true
+
     compileOptions {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 }
 
-val toto:String by extra
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
 dependencies {
     add("testImplementation", "junit:junit:4.12")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.1.1", {
@@ -113,6 +120,14 @@ dependencies {
 
     add("implementation", "com.google.ar.sceneform.ux:sceneform-ux:1.8.0")
     add("implementation", "com.google.ar.sceneform:core:1.8.0")
+
+    implementation("androidx.compose:compose-runtime:${Versions.compose}")
+    implementation("androidx.ui:ui-framework:${Versions.compose}")
+    implementation("androidx.ui:ui-layout:${Versions.compose}")
+    implementation("androidx.ui:ui-material:${Versions.compose}")
+    implementation("androidx.ui:ui-foundation:${Versions.compose}")
+    implementation("androidx.ui:ui-animation:${Versions.compose}")
+    implementation("androidx.ui:ui-tooling:${Versions.compose}")
 }
 
 apply(plugin = "com.google.gms.google-services")
