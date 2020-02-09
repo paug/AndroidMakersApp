@@ -3,15 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <android.support.design.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.design.widget.AppBarLayout
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <android.support.constraint.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_collapseMode="parallax"
@@ -50,11 +50,11 @@
                     tools:ignore="ContentDescription"
                     tools:visibility="visible" />
 
-            </android.support.constraint.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </android.support.design.widget.AppBarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
 
-        <android.support.v4.widget.NestedScrollView
+        <androidx.core.widget.NestedScrollView
             android:id="@+id/sessionInformationsScrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -64,11 +64,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingBottom="72dp"
-                android:paddingEnd="@dimen/large_padding"
+                android:paddingStart="@dimen/large_padding"
                 android:paddingLeft="@dimen/large_padding"
+                android:paddingEnd="@dimen/large_padding"
                 android:paddingRight="@dimen/large_padding"
-                android:paddingStart="@dimen/large_padding">
+                android:paddingBottom="72dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -80,8 +80,8 @@
                         style="@style/SessionTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="@dimen/large_padding"
                         android:paddingTop="@dimen/large_padding"
+                        android:paddingBottom="@dimen/large_padding"
                         tools:text="Title" />
 
                     <TextView
@@ -97,6 +97,7 @@
                         android:id="@+id/sessionDescriptionTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:autoLink="web"
                         android:paddingBottom="2dp"
                         tools:text="Description" />
 
@@ -109,39 +110,45 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/small_padding"
-                            android:background="@drawable/round_rect_grey" />
+                            android:background="@drawable/round_rect_grey"
+                            android:visibility="gone" />
 
                         <TextView
                             android:id="@+id/sessionSubTypeChip"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/small_padding"
-                            android:background="@drawable/round_rect_grey" />
+                            android:background="@drawable/round_rect_grey"
+                            android:visibility="gone" />
 
                         <TextView
                             android:id="@+id/sessionTypeChip"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/small_padding"
-                            android:background="@drawable/round_rect_grey" />
+                            android:background="@drawable/round_rect_grey"
+                            android:visibility="gone" />
 
                         <TextView
                             android:id="@+id/sessionExperienceChip"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/small_padding"
-                            android:background="@drawable/round_rect_grey" />
+                            android:background="@drawable/round_rect_grey"
+                            android:visibility="gone" />
 
                     </org.apmem.tools.layouts.FlowLayout>
 
                 </LinearLayout>
 
                 <View
+                    android:id="@+id/separator"
                     android:layout_width="match_parent"
                     android:layout_height="1dip"
-                    android:layout_marginBottom="@dimen/large_padding"
                     android:layout_marginTop="@dimen/large_padding"
-                    android:background="@color/light_grey" />
+                    android:layout_marginBottom="@dimen/large_padding"
+                    android:background="@color/light_grey"
+                    android:visibility="gone" />
 
                 <LinearLayout
                     android:id="@+id/sessionSpeakerLayout"
@@ -154,7 +161,7 @@
 
             </LinearLayout>
 
-        </android.support.v4.widget.NestedScrollView>
+        </androidx.core.widget.NestedScrollView>
 
         <fr.paug.androidmakers.ui.util.CheckableFloatingActionButton
             android:id="@+id/scheduleFab"
@@ -179,6 +186,6 @@
             android:visibility="gone"
             tools:visibility="gone" />
 
-    </android.support.design.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

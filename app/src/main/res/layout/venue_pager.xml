@@ -6,13 +6,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v4.view.ViewPager
+    <androidx.viewpager.widget.ViewPager
         android:id="@+id/venue_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false">
 
-        <android.support.design.widget.TabLayout
+        <com.google.android.material.tabs.TabLayout
             android:id="@+id/viewpager_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -20,6 +20,6 @@
             app:tabGravity="fill"
             app:tabMode="fixed"/>
 
-    </android.support.v4.view.ViewPager>
+    </androidx.viewpager.widget.ViewPager>
 
 </LinearLayout>
