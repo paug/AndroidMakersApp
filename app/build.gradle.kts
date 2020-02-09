@@ -57,15 +57,14 @@ extensions.findByType(BaseExtension::class.java)!!.apply {
         }
     }
 
-    dataBinding {
-        isEnabled = true
-    }
-
     buildFeatures.compose = true
+    buildFeatures.dataBinding = true
 
     compileOptions {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
+    ndkVersion = "21.0.6011959"
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
