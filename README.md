@@ -16,5 +16,6 @@ Help us improve the app if you want, PR welcome!
 
 <h2>TODO</h2>
 
-- Update for 2019
+- Update for 2020 !
+- Feedback for sessions
 - Go see the dashboard in Projects
