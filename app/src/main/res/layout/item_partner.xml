@@ -10,4 +10,4 @@
     android:padding="@dimen/large_padding"
     android:scaleType="center"
     tools:ignore="ContentDescription"
-    tools:src="@drawable/google_plus" />
+    tools:src="@drawable/ic_network_twitter" />

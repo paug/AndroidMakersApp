@@ -1,7 +1,6 @@
 package fr.paug.androidmakers.ui.util;
 
 import android.content.Context;
-import android.databinding.BindingAdapter;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
@@ -9,6 +8,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 
+import androidx.databinding.BindingAdapter;
 import fr.paug.androidmakers.R;
 
 public final class DataBindingAdapters {
@@ -28,7 +28,7 @@ public final class DataBindingAdapters {
                 .placeholder(R.drawable.ic_person_black_24dp);
 
         Glide.with(context)
-                .load(String.format("http://androidmakers.fr/img/people/%s", url))
+                .load(String.format("https://androidmakers.fr%s", url))
                 .apply(options)
                 .into(imageView);
     }
@@ -42,7 +42,7 @@ public final class DataBindingAdapters {
                     .placeholder(R.color.light_grey);
 
             Glide.with(context)
-                    .load(String.format("http://androidmakers.fr/img/venue/%s", venueImageURL))
+                    .load(venueImageURL)
                     .apply(options)
                     .into(imageView);
         } else {

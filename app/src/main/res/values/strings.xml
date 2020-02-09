@@ -1,13 +1,13 @@
 <resources>
 
-    <string name="app_name" translatable="false">Android Makers Paris 2018</string>
+    <string name="app_name" translatable="false">Android Makers Paris 2019</string>
 
     <string name="version" translatable="false">Version %s (%d)</string>
 
     <string name="title_agenda">Agenda</string>
     <string name="title_venue">Venue</string>
     <string name="title_about">About</string>
-    <string name="title_makerdroid">MakerDroid</string>
+
 
     <string name="english">English</string>
     <string name="french">French</string>
@@ -58,12 +58,13 @@
     <string name="locate_on_map">Locate on map</string>
     <string name="venue_afterparty_tab">Afterparty</string>
     <string name="venue_conference_tab">Conference</string>
+    <string name="venue_floor_plan_tab">Floor Plan</string>
 
     <!--About-->
-    <string name="about_android_makers">Android Makers Paris is a two day event held on April 23rd and 24th, 2018 at Beffroi de Montrouge, in Paris, France.
-        \n\nJoin us in tackling the future of Android with the hottest experts of the domain.
+    <string name="about_android_makers">Android Makers Paris is a two day event held on April 23rd and 24th, 2019 at Le Beffroi de Montrouge, in Paris, France.
+        \n\nJoin us in tackling the present and future of Android with the hottest experts of the domain.
         There\'ll be technical sessions, workshops, debates, networking, plus a chance to demo your project in the Makers Area.
-        The 2nd edition of Android Makers gathers 4 events in 1.
+        Android Makers gathers 4 events in 1.
         \n\n∙ Conferences : 40min Tech Talks by awesome speakers and 20min Lightning Talks on the future of Android.
         \n∙ Workshop : Get trained on new methods, discover and build your app during the workshops.
         \n∙ Makers Area : Walk around, play and discover the latest innovation in hardware and software developed by the makers.
@@ -71,16 +72,16 @@
         \n\nAll the Talks will be recorded, and uploaded on the Youtube channel.</string>
 
     <string name="social">Social</string>
-    <string name="twitter_hashtag" translatable="false">#AndroidMakers2</string>
-    <string name="twitter_hashtag_for_query" translatable="false">AndroidMakers2</string>
+    <string name="twitter_hashtag" translatable="false">#AndroidMakers</string>
+    <string name="twitter_hashtag_for_query" translatable="false">AndroidMakers</string>
     <string name="twitter_user_name" translatable="false">AndroidMakersFR</string>
-    <string name="google_plus" translatable="false">https://plus.google.com/+DroidconParis</string>
-    <string name="facebook_event" translatable="false">https://www.facebook.com/events/392002394567921/</string>
+    <!--<string name="google_plus" translatable="false">https://plus.google.com/+DroidconParis</string>-->
+    <!--<string name="facebook_event" translatable="false">https://www.facebook.com/events/392002394567921/</string>-->
     <string name="youtube_channel" translatable="false">https://www.youtube.com/channel/UCkatLlah5weIpN23LqMgdTg</string>
 
     <string name="wifi">Wifi</string>
     <string name="wifi_network">Network: <b>AndroidMakers</b></string>
-    <string name="wifi_password">Password : <b>Makers2018</b></string>
+    <string name="wifi_password">Password : <b>Makers2019</b></string>
     <string name="wifi_connect_description">Directly connect to the venue\'s wifi</string>
     <string name="wifi_connect">Connect</string>
 
@@ -94,16 +95,20 @@
     <string name="media_sponsor">Media</string>
     <string name="location_sponsor">Location</string>
     <string name="specialthanks_sponsor">Special Thanks</string>
+    <string name="aog_title">Google Assistant Action</string>
+    <string name="aog_description">Discover the Google Assistant Action!</string>
+    <string name="aog_button">Launch Android Makers Action</string>
 
-    <!--Bot-->
-    <string name="bot_hello">Hi! I am MakerDroid. You can ask me questions about the Android Makers agenda, like what are the current sessions, the next sessions or those in English. How can I help you?</string>
-    <string name="bot_text_hint">Ask a question</string>
-    <string name="bot_response_title">Title:</string>
-    <string name="bot_answer_level">Level:</string>
-    <string name="bot_answer_lang">Language:</string>
-    <string name="bot_answer_room">Room:</string>
-    <string name="bot_answer_date">Date:</string>
-    <string name="bot_answer_empty">I don\'t have an answer for that. Please try again.</string>
-    <string name="bot_answer_intro_sessions">Here are the sessions I found:</string>
+    <string name="nougat_needed">Your device is not compatible with ARCore or doesn\'t have the latest ARCore APK.</string>
+    <string name="flash_droid_explanation">14 bugdroids (and their desserts 🍩🍦) are hidden in the Conference.\n\nFlash them all and get a chance to win some chocolate\n🍫🍫\n!!\n\nGood luck!</string>
+    <string name="help1">14 desserts 🍩🍦 corresponding each to an android version are hidden in the Conference.\n\nFlash them all and get a chance to win some chocolate 🍫🍫. They look like this: </string>
+    <string name="help2">A few rules/tips:</string>
+    <string name="help3">  • All the desserts are in public areas (don\'t search the restrooms...)\n  • You don\'t need to move or dissamble anything to find the them (Please stay safe)\n  • Some might be printed, some might be displayed or unlocked in other ways. It depends!\n  • The winner will be random picked between all candidates that found all 14 of them at the end of the conference. Rushing doesn\'t help.\n  • If you don\'t know where to start, you can start by claiming your t-shirt 👕😊.</string>
+    <string name="lets_go">Signin with google</string>
+    <string name="login_error">Login Error</string>
+    <string name="scanPastry">Flash desserts here</string>
+    <string name="helpTitle">Dessert Hunt</string>
+    <string name="congratulations">Congratulations!!</string>
+    <string name="congratulations2">Well done! You found all 14 desserts. The winner will be announced at the end of the conference.\n\nEnjoy the rest of the talks!</string>
 
 </resources>

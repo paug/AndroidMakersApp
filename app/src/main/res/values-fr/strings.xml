@@ -4,7 +4,6 @@
     <string name="title_agenda">Agenda</string>
     <string name="title_venue">Lieu</string>
     <string name="title_about">À propos</string>
-    <string name="title_makerdroid">MakerDroid</string>
 
     <string name="english">Anglais</string>
     <string name="french">Français</string>
@@ -52,12 +51,13 @@
     <string name="locate_on_map">Localiser sur la carte</string>
     <string name="venue_afterparty_tab">After Party</string>
     <string name="venue_conference_tab">Conférence</string>
+    <string name="venue_floor_plan_tab">Plan</string>
 
     <!--About-->
-    <string name="about_android_makers">Android Makers Paris est un événement de deux jours qui se tiendra les 23 et 24 avril 2018 au Beffroi de Montrouge, à Paris, en France.
-        \n\nRejoignez-nous pour aborder le futur d\'Android avec les meilleurs experts du domaine.
+    <string name="about_android_makers">Android Makers Paris est un événement de deux jours qui se tiendra les 23 et 24 avril 2019 au Beffroi de Montrouge, à Paris, en France.
+        \n\nRejoignez-nous pour aborder le présent et futur d\'Android avec les meilleurs experts du domaine.
         Il y aura des sessions techniques, des ateliers, des débats, du réseautage, plus une chance de présenter votre projet dans la zone Makers.
-        La 2ème édition d\'Android Makers rassemble 4 événements en 1.
+        Android Makers rassemble 4 événements en 1.
         \n\n∙ Conférences: Tech Talks de 40min par des super conférenciers et Lightning Talks de 20min sur le futur d\'Android.
         \n∙ Atelier: Entrainez-vous sur les nouvelles méthodes, découvrez et construisez votre application pendant les ateliers.
         \n∙ Makers Area: promenez vous, jouez et découvrez les dernières innovations en matière de matériel et de logiciels développés par les fabricants.
@@ -68,7 +68,7 @@
 
     <string name="wifi">Wifi</string>
     <string name="wifi_network">Réseau: <b>AndroidMakers</b></string>
-    <string name="wifi_password">Mot de passe : <b>Makers2018</b></string>
+    <string name="wifi_password">Mot de passe : <b>Makers2019</b></string>
     <string name="wifi_connect_description">Se connecter directement au Wifi du lieu</string>
     <string name="wifi_connect">Se connecter</string>
 
@@ -81,17 +81,21 @@
     <string name="speaker_sponsor">Sponsor Speaker</string>
     <string name="location_sponsor">Salle</string>
     <string name="specialthanks_sponsor">Remerciement spécial</string>
-  
-    <!--Bot-->
-    <string name="bot_hello">Bonjour ! Je suis MakerDroid. Vous pouvez me poser des questions sur les sessions en cours d\'Android Makers, les prochaines ou celles en Français. Comment puis-je
-        vous aider ?</string>
-    <string name="bot_text_hint">Poser une question</string>
-    <string name="bot_response_title">Titre :</string>
-    <string name="bot_answer_level">Niveau :</string>
-    <string name="bot_answer_lang">Langue :</string>
-    <string name="bot_answer_room">Salle :</string>
-    <string name="bot_answer_date">Date :</string>
-    <string name="bot_answer_empty">Je n\'ai pas de réponse pour cela. Veuillez réessayer.</string>
-    <string name="bot_answer_intro_sessions">Voici les sessions correspondantes :</string>
-  
+
+    <string name="aog_title">Action Google Assistant</string>
+    <string name="aog_description">Découvrez l\'Action pour le Google Assistant !</string>
+    <string name="aog_button">Lancer l\'Action Android Makers</string>
+
+    <string name="nougat_needed">Ce téléphone n\'est pas compatible ARCore ou n\'a pas la dernière version de l\'apk ARCore.</string>
+    <string name="flash_droid_explanation">14 bugdroids se sont cachés avec leurs desserts 🍩🍦 dans la conférence\nFlashe les tous et gagne du chocolat\n🍫🍫\n!!\n\nGood luck!</string>
+    <string name="help1">14 desserts 🍩🍦 correspondant chacuns à une verison d\'Android sont cachés dans la Conférence.\n\nFlash les tous et gagne du chocolat 🍫🍫. Ils ressemblent à ça: </string>
+    <string name="help2">Quelques trucs et astuces:</string>
+    <string name="help3">  • Tous les desserts sont dans des zones accessibles à tous.\n  • Pas besoin de déplacer ou de de démonter quoi que ce soit, le beffroi vous remercie!\n  • Certains sont imprimés mais ils peuvent être affichés d\'autres manières, tout est possible!\n  • Le gagnant sera tiré au sort parmi les vainqueurs. Pas besoin de rusher, le tirage au sort aura lieu à la fin de la conférence.\n  • Si tu ne sais pas par où commencer, ça peut être bien d\'aller récupérer ton t-shirt 👕😊.</string>
+    <string name="lets_go">Login Google</string>
+    <string name="login_error">Login Error</string>
+    <string name="scanPastry">Par ici les desserts</string>
+    <string name="helpTitle">Dessert Hunt</string>
+    <string name="congratulations">Félicitations !!</string>
+    <string name="congratulations2">Bien joué ! Résultats finaux et annonces du vainqueur à la fin de la conférence.\n\nVous pouvez reprendre une activité normale.</string>
+
 </resources>

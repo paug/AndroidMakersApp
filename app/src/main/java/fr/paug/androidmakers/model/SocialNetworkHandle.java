@@ -1,22 +1,20 @@
 package fr.paug.androidmakers.model;
 
-import android.support.annotation.DrawableRes;
 import android.text.TextUtils;
 
+import androidx.annotation.DrawableRes;
 import fr.paug.androidmakers.R;
 
 public class SocialNetworkHandle {
 
     public enum SocialNetworkType {
-        Unknown, Twitter, GooglePlus, Facebook, Website, Github;
+        Unknown, Twitter, Facebook, Website, Github;
 
         @DrawableRes
         public int getSocialNetworkIcon() {
             switch (this) {
                 case Twitter:
                     return R.drawable.ic_network_twitter;
-                case GooglePlus:
-                    return R.drawable.ic_network_google_plus;
                 case Facebook:
                     return R.drawable.ic_network_facebook;
                 case Github:
@@ -41,8 +39,6 @@ public class SocialNetworkHandle {
         if (!TextUtils.isEmpty(networkName)) {
             if (networkName.equalsIgnoreCase("twitter")) {
                 return SocialNetworkType.Twitter;
-            } else if (networkName.equalsIgnoreCase("google-plus")) {
-                return SocialNetworkType.GooglePlus;
             } else if (networkName.equalsIgnoreCase("github")) {
                 return SocialNetworkType.Github;
             } else if (networkName.equalsIgnoreCase("site")) {
