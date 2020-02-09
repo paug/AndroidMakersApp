@@ -1,3 +1,6 @@
+// DEP "com.google.firebase:firebase-admin:6.8.0"
+// DEP "com.squareup.moshi:moshi:1.8.0"
+
 import org.junit.Test
 import com.google.firebase.FirebaseApp
 import com.google.auth.oauth2.GoogleCredentials
