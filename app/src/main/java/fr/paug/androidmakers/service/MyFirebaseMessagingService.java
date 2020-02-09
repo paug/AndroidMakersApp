@@ -25,14 +25,12 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
-
+import androidx.core.app.NotificationCompat;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
 import com.firebase.jobdispatcher.Job;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-
-import androidx.core.app.NotificationCompat;
 import fr.paug.androidmakers.R;
 import fr.paug.androidmakers.ui.activity.MainActivity;
 

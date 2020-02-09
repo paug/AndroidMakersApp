@@ -1,14 +1,12 @@
 package fr.paug.androidmakers;
 
 import android.app.Application;
+import android.util.Log;
 import androidx.annotation.Nullable;
+import androidx.core.provider.FontRequest;
 import androidx.emoji.text.EmojiCompat;
 import androidx.emoji.text.FontRequestEmojiCompatConfig;
-import androidx.core.provider.FontRequest;
-import android.util.Log;
-
 import com.crashlytics.android.Crashlytics;
-
 import fr.paug.androidmakers.util.SessionSelector;
 import io.fabric.sdk.android.Fabric;
 

@@ -1,9 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="filter" type="id"/>
-    <item name="flash_droid_menu" type="id"/>
-    <item
-        type="id"
-        name="flash_droid_framelayout" />
-
 </resources>
