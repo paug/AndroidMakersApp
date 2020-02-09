@@ -1,9 +1,8 @@
 package fr.paug.androidmakers.model;
 
+import android.text.TextUtils;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
-import android.text.TextUtils;
-
 import fr.paug.androidmakers.R;
 
 //TODO display presentation and video link if they exist

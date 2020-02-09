@@ -4,7 +4,6 @@ import android.content.Context;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-
 import fr.paug.androidmakers.R;
 import fr.paug.androidmakers.ui.fragment.VenueAfterPartyFragment;
 import fr.paug.androidmakers.ui.fragment.VenueConferenceFragment;

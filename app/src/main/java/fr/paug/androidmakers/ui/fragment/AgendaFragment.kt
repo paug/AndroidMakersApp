@@ -1,6 +1,5 @@
 package fr.paug.androidmakers.ui.fragment
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.SparseArray
@@ -15,13 +14,11 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import fr.paug.androidmakers.R
-import fr.paug.androidmakers.flash_droid.FlashDroidActivity
 import fr.paug.androidmakers.manager.AndroidMakersStore
 import fr.paug.androidmakers.model.RoomKt
 import fr.paug.androidmakers.model.ScheduleSlotKt
 import fr.paug.androidmakers.model.SessionKt
 import fr.paug.androidmakers.model.SpeakerKt
-import fr.paug.androidmakers.service.SessionAlarmService
 import fr.paug.androidmakers.ui.adapter.AgendaPagerAdapter
 import fr.paug.androidmakers.ui.adapter.DayScheduleKt
 import fr.paug.androidmakers.ui.adapter.RoomScheduleKt
@@ -338,11 +335,7 @@ class AgendaFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater?) {
         super.onCreateOptionsMenu(menu, inflater)
 
-        var menuItem = menu.add(0, R.id.flash_droid_menu, 0, "FlashDroid")!!
-        menuItem.setIcon(R.drawable.ic_egg)
-        menuItem.setShowAsAction(SHOW_AS_ACTION_ALWAYS)
-
-        menuItem = menu.add(0, R.id.filter, 0, activity!!.getString(R.string.filter))!!
+        val menuItem = menu.add(0, R.id.filter, 0, activity!!.getString(R.string.filter))!!
         menuItem.setIcon(R.drawable.ic_filter_list_white_24dp)
         menuItem.setShowAsAction(SHOW_AS_ACTION_ALWAYS)
     }
@@ -357,14 +350,7 @@ class AgendaFragment : Fragment() {
                 }
                 return true
             }
-            R.id.flash_droid_menu -> {
-                val intent = Intent()
-                intent.setClass(context!!, FlashDroidActivity::class.java)
-                startActivity(intent)
-                return true
-            }
         }
         return false
     }
-    //endregion
 }

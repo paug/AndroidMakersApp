@@ -1,7 +1,6 @@
 package fr.paug.androidmakers.service;
 
 import android.util.Log;
-
 import com.firebase.jobdispatcher.JobParameters;
 import com.firebase.jobdispatcher.JobService;
 
