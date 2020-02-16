@@ -1,1 +1,1 @@
-include(":app")
+include(":app", "openfeedback", "openfeedback-ui")

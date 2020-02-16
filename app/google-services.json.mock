@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:38710070893:android:6b110a7749118fff",
         "android_client_info": {
-          "package_name": "fr.paug.androidmakers.preprod"
+          "package_name": "fr.paug.androidmakers"
         }
       },
       "oauth_client": [
