@@ -1,4 +1,5 @@
 import com.android.build.gradle.BaseExtension
+import java.util.Properties
 
 plugins {
     id("com.android.application")
@@ -11,17 +12,16 @@ val versionMajor = 1
 val versionMinor = 2
 val versionPatch = 5
 
-fun checkGoogleServices(variant: String) {
-    val target = project.file("src/$variant/google-services.json")
-    val source = project.file("src/$variant/google-services.json.mock")
+fun checkGoogleServices() {
+    val target = project.file("google-services.json")
+    val source = project.file("google-services.json.mock")
     if (!target.exists()) {
         System.out.println("using mock google-services.json")
         source.copyTo(target)
     }
 }
 
-checkGoogleServices("prod")
-checkGoogleServices("preprod")
+checkGoogleServices()
 
 extensions.findByType(BaseExtension::class.java)!!.apply {
     compileSdkVersion(28.toString().toInt())
@@ -34,18 +34,17 @@ extensions.findByType(BaseExtension::class.java)!!.apply {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled = true
 
-        buildConfigField("String", "YOUTUBE_API_KEY", "\"" + System.getProperty("androidMakersYouTubeApiKey", "dummyAPIKey") + "\"")
-    }
-
-    flavorDimensions("environment")
-
-    productFlavors {
-        create("prod") {
-            setDimension("environment")
+        val properties = try {
+            Properties().apply {
+                load(file("buildconfig.properties").inputStream())
+            }
+        } catch (e: Exception) {
+            null
         }
-        create("preprod") {
-            setDimension("environment")
-            applicationIdSuffix = ".preprod"
+
+        for (key in listOf ("YOUTUBE_API_KEY", "OPENFEEDBACK_API_KEY", "OPENFEEDBACK_PROJECT_ID", "OPENFEEDBACK_APPLICATION_ID")) {
+            val value = (properties?.get(key) as? String) ?: "${key}_DUMMY"
+            buildConfigField("String", key, "\"$value\"")
         }
     }
 
@@ -57,7 +56,6 @@ extensions.findByType(BaseExtension::class.java)!!.apply {
         }
     }
 
-    buildFeatures.compose = true
     buildFeatures.dataBinding = true
 
     compileOptions {
@@ -79,46 +77,49 @@ dependencies {
         exclude(group= "com.android.support", module="support-annotations")
     })
 
-    add("implementation", "com.android.support:multidex:1.0.3")
+    implementation("com.android.support:multidex:1.0.3")
 
     // Kotlin
-    add("implementation", "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlin}")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlin}")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.3.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.3")
+    implementation("com.google.firebase:firebase-firestore-ktx:21.4.0")
 
     // Support
-    add("implementation", "androidx.appcompat:appcompat:1.0.2")
-    add("implementation", "com.google.android.material:material:1.0.0")
-    add("implementation", "androidx.vectordrawable:vectordrawable:1.0.1")
-    add("implementation", "androidx.browser:browser:1.0.0")
-    add("implementation", "androidx.percentlayout:percentlayout:1.0.0")
-    add("implementation", "androidx.cardview:cardview:1.0.0")
-    add("implementation", "androidx.emoji:emoji:1.0.0")
-    add("implementation", "androidx.constraintlayout:constraintlayout:1.1.3")
+    implementation("androidx.appcompat:appcompat:1.0.2")
+    implementation("com.google.android.material:material:1.0.0")
+    implementation("androidx.vectordrawable:vectordrawable:1.0.1")
+    implementation("androidx.browser:browser:1.0.0")
+    implementation("androidx.percentlayout:percentlayout:1.0.0")
+    implementation("androidx.cardview:cardview:1.0.0")
+    implementation("androidx.emoji:emoji:1.0.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.0.0-beta3")
 
     // Firebase
-    add("implementation", "com.google.firebase:firebase-core:16.0.8")
-    add("implementation", "com.google.firebase:firebase-messaging:17.6.0")
-    add("implementation", "com.firebase:firebase-jobdispatcher:0.8.5")
-    add("implementation", "com.crashlytics.sdk.android:crashlytics:2.9.9")
-    add("implementation", "com.google.firebase:firebase-config:16.5.0")
+    implementation("com.google.firebase:firebase-core:16.0.8")
+    implementation("com.google.firebase:firebase-messaging:17.6.0")
+    implementation("com.firebase:firebase-jobdispatcher:0.8.5")
+    implementation("com.crashlytics.sdk.android:crashlytics:2.9.9")
+    implementation("com.google.firebase:firebase-config:16.5.0")
 
     // Firestore
-    add("implementation", "com.google.firebase:firebase-firestore:18.2.0")
-    add("implementation", "com.google.firebase:firebase-auth:16.2.1")
-    add("implementation", "com.firebaseui:firebase-ui-auth:4.3.1")
-    add("implementation", "com.google.android.gms:play-services-auth:16.0.1")
+    implementation("com.google.firebase:firebase-firestore:18.2.0")
+    implementation("com.google.firebase:firebase-auth:16.2.1")
+    implementation("com.firebaseui:firebase-ui-auth:4.3.1")
+    implementation("com.google.android.gms:play-services-auth:16.0.1")
 
     // Image management
-    add("implementation", "com.github.bumptech.glide:glide:${Versions.glide}")
+    implementation("com.github.bumptech.glide:glide:${Versions.glide}")
     add("annotationProcessor", "com.github.bumptech.glide:compiler:${Versions.glide}")
 
     // Used for tags
-    add("implementation", "org.apmem.tools:layouts:1.10@aar")
+    implementation("org.apmem.tools:layouts:1.10@aar")
 
     // For Video preview
-    add("implementation", files("libs/YouTubeAndroidPlayerApi.jar"))
+    implementation(files("libs/YouTubeAndroidPlayerApi.jar"))
 
-    add("implementation", "com.google.ar.sceneform.ux:sceneform-ux:1.8.0")
-    add("implementation", "com.google.ar.sceneform:core:1.8.0")
+    implementation("com.google.ar.sceneform.ux:sceneform-ux:1.8.0")
+    implementation("com.google.ar.sceneform:core:1.8.0")
 
     implementation("androidx.compose:compose-runtime:${Versions.compose}")
     implementation("androidx.ui:ui-framework:${Versions.compose}")
@@ -127,6 +128,9 @@ dependencies {
     implementation("androidx.ui:ui-foundation:${Versions.compose}")
     implementation("androidx.ui:ui-animation:${Versions.compose}")
     implementation("androidx.ui:ui-tooling:${Versions.compose}")
+
+    implementation(project(":openfeedback"))
+    implementation(project(":openfeedback-ui"))
 }
 
 apply(plugin = "com.google.gms.google-services")

@@ -332,7 +332,7 @@ class AgendaFragment : Fragment() {
         mFiltersView?.addView(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater?) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
 
         val menuItem = menu.add(0, R.id.filter, 0, activity!!.getString(R.string.filter))!!

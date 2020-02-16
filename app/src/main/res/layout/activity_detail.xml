@@ -150,6 +150,20 @@
                     android:background="@color/light_grey"
                     android:visibility="gone" />
 
+                <io.openfeedback.android.OpenFeedbackView
+                    android:id="@+id/feedbackContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <View
+                    android:id="@+id/separator2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dip"
+                    android:layout_marginTop="@dimen/large_padding"
+                    android:layout_marginBottom="@dimen/large_padding"
+                    android:background="@color/light_grey"
+                    android:visibility="gone" />
+
                 <LinearLayout
                     android:id="@+id/sessionSpeakerLayout"
                     android:layout_width="match_parent"

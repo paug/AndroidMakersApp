@@ -26,6 +26,7 @@ import androidx.databinding.DataBindingUtil
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubeThumbnailLoader
 import com.google.android.youtube.player.YouTubeThumbnailView
+import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.BuildConfig
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.databinding.ActivityDetailBinding
@@ -40,67 +41,77 @@ import fr.paug.androidmakers.util.ScheduleSessionHelper
 import fr.paug.androidmakers.util.SessionSelector
 import fr.paug.androidmakers.util.UIUtils
 import fr.paug.androidmakers.util.YoutubeUtil
+import io.openfeedback.android.VoteModel
+import io.openfeedback.android.createUIModel
+import io.openfeedback.android.dots
+import io.openfeedback.android.model.Project
+import io.openfeedback.android.model.VoteStatus
+import io.openfeedback.android.updateUIModel
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import java.util.*
 
 /**
  * Details of a session
  *
- * Nice improvements to have : session rate/feedback
  */
 class SessionDetailActivity : BaseActivity(), YouTubeThumbnailView.OnInitializedListener {
 
+    private lateinit var activityDetailBinding: ActivityDetailBinding
     private var sessionId: String = ""
     private var sessionStartDateInMillis: Long = 0
     private var sessionEndDateInMillis: Long = 0
 
-    private var session: SessionKt? = null
-    private var sessionRoom: RoomKt? = RoomKt()
     private var sessionDateAndRoom: String? = null
     private val speakersList = ArrayList<String>()
     private var videoID: String? = null
     private var playButton: ImageView? = null
+    private var sessionForShare: SessionKt? = null
+
+    private val openFeedbackProjectId = "SiXwNLJ0Nrbj5UXvyFpJ"
+    val scope = object : CoroutineScope {
+        override val coroutineContext = Dispatchers.Main + Job()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val activityDetailBinding = DataBindingUtil.setContentView<ActivityDetailBinding>(this, R.layout.activity_detail)
+        activityDetailBinding = DataBindingUtil.setContentView<ActivityDetailBinding>(this, R.layout.activity_detail)
         sessionId = intent.getStringExtra(PARAM_SESSION_ID)
 
-        AndroidMakersStore().getSession(sessionId) { sessionKt ->
-            session = sessionKt
-            AndroidMakersStore().getRoom(intent.getStringExtra(PARAM_SESSION_ROOM)) { roomKt ->
-                sessionRoom = roomKt
-                setUpSession(activityDetailBinding)
+        val openFeedback = (applicationContext as AndroidMakersApplication).openFeedback
+
+        scope.launch {
+            combine(
+                    listOf(
+                            AndroidMakersStore().getSession(sessionId),
+                            AndroidMakersStore().getRoom(intent.getStringExtra(PARAM_SESSION_ROOM)),
+                            openFeedback.getProject(openFeedbackProjectId),
+                            openFeedback.getMyVotes(openFeedbackProjectId, sessionId),
+                            openFeedback.getTotalVotes(openFeedbackProjectId, sessionId)
+                    )
+            ) {
+                it
             }
+                    .first() // listening to updates isn't really working well
+                    .let {
+                        setupUI(
+                                it[0] as SessionKt,
+                                it[1] as RoomKt,
+                                it[2] as Project,
+                                it[3] as List<String>,
+                                it[4] as Map<String, Long>)
+                    }
         }
+
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.detail, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
-        android.R.id.home -> {
-            onBackPressed()
-            true
-        }
-        R.id.share -> {
-            shareSession()
-            true
-        }
-        else -> super.onOptionsItemSelected(item)
-    }
-
-    private fun setUpSession(activityDetailBinding: ActivityDetailBinding) {
+    fun setupUI(session: SessionKt, room: RoomKt, project: Project, userVotes: List<String>, totalVotes: Map<String, Long>) {
+        // small hack for share
+        // Ideally, we should only create the menu when we have the data
+        sessionForShare = session
         sessionStartDateInMillis = intent.getLongExtra(PARAM_SESSION_START_DATE, -1)
         sessionEndDateInMillis = intent.getLongExtra(PARAM_SESSION_END_DATE, -1)
-
-        if (session == null) {
-            // We have a problem !
-            activityDetailBinding.sessionInformationsScrollView.visibility = View.GONE
-            activityDetailBinding.errorMessageTextView.visibility = View.VISIBLE
-            return
-        }
 
         val sessionDate = DateUtils.formatDateRange(this,
                 Formatter(resources.configuration.locale),
@@ -108,34 +119,34 @@ class SessionDetailActivity : BaseActivity(), YouTubeThumbnailView.OnInitialized
                 sessionEndDateInMillis,
                 DateUtils.FORMAT_SHOW_WEEKDAY or DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_YEAR,
                 null).toString()
-        sessionDateAndRoom = if (sessionRoom != null && !TextUtils.isEmpty(sessionRoom?.roomName))
-            getString(R.string.sessionDateWithRoomPlaceholder, sessionDate, sessionRoom?.roomName)
+        sessionDateAndRoom = if (!TextUtils.isEmpty(room.roomName))
+            getString(R.string.sessionDateWithRoomPlaceholder, sessionDate, room.roomName)
         else
             sessionDate
         activityDetailBinding.sessionDateAndRoomTextView.text = sessionDateAndRoom
 
-        activityDetailBinding.sessionTitleTextView.text = session?.title
-        activityDetailBinding.sessionDescriptionTextView.text = if (session?.description != null)
-            Html.fromHtml(session?.description?.trim { it <= ' ' })
+        activityDetailBinding.sessionTitleTextView.text = session.title
+        activityDetailBinding.sessionDescriptionTextView.text = if (session.description != null)
+            Html.fromHtml(session.description.trim { it <= ' ' })
         else
             ""
 
-        val languageFullNameRes = session?.language
-        if (languageFullNameRes?.isNotEmpty() == true) {
+        val languageFullNameRes = session.language
+        if (languageFullNameRes.isNotEmpty() == true) {
             activityDetailBinding.sessionLanguageChip.text = languageFullNameRes
             activityDetailBinding.sessionLanguageChip.visibility = View.VISIBLE
         }
 
         // Tags list
-        if (session?.tags?.isNotEmpty() == true) {
-            if (session?.tags?.first().isNullOrEmpty().not()) {
-                activityDetailBinding.sessionTypeChip.text = session?.tags?.first()
+        if (session.tags.isNotEmpty() == true) {
+            if (session.tags.first().isNotEmpty()) {
+                activityDetailBinding.sessionTypeChip.text = session.tags.first()
                 activityDetailBinding.sessionTypeChip.visibility = View.VISIBLE
             }
         }
 
-        if (session?.complexity?.isNotEmpty() == true) {
-            activityDetailBinding.sessionExperienceChip.text = session?.complexity
+        if (session.complexity.isNotEmpty() == true) {
+            activityDetailBinding.sessionExperienceChip.text = session.complexity
             activityDetailBinding.sessionExperienceChip.visibility = View.VISIBLE
         }
 
@@ -154,15 +165,71 @@ class SessionDetailActivity : BaseActivity(), YouTubeThumbnailView.OnInitialized
 
         setActionBar(session)
 
-        setSpeakers()
+        setSpeakers(session)
         activityDetailBinding.separator.visibility = View.VISIBLE
+        activityDetailBinding.separator2.visibility = View.VISIBLE
 
-        setVideoThumbnail(activityDetailBinding)
+        setVideoThumbnail(activityDetailBinding, session)
+
+        val model = createUIModel(userVotes, totalVotes, project)
+        setFeedback(model, project)
     }
 
-    private fun setSpeakers() {
+    private fun setFeedback(model: List<VoteModel>, project: Project) {
+        activityDetailBinding.feedbackContainer.setVotes(model) { clickedVoteModel ->
+            val newModel = model.map { if (it.id == clickedVoteModel.id) toggleModel(it, project) else it }
+            setFeedback(newModel, project)
+            GlobalScope.launch {
+                (applicationContext as AndroidMakersApplication).openFeedback.setVote(
+                        openFeedbackProjectId,
+                        sessionId,
+                        clickedVoteModel.id,
+                        if (clickedVoteModel.votedByUser) VoteStatus.Deleted else VoteStatus.Active
+                )
+            }
+        }
+    }
+
+    fun toggleModel(voteModel: VoteModel, project: Project): VoteModel {
+        return if (voteModel.votedByUser) {
+            voteModel.copy(
+                    votedByUser = false,
+                    dots = voteModel.dots.dropLast(1)
+            )
+        } else {
+            voteModel.copy(
+                    votedByUser = true,
+                    dots = voteModel.dots + dots(1, project.chipColors)
+            )
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.detail, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
+        android.R.id.home -> {
+            onBackPressed()
+            true
+        }
+        R.id.share -> {
+            sessionForShare?.let { shareSession(it) }
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        scope.cancel()
+    }
+
+    private fun setSpeakers(session: SessionKt) {
         val sessionSpeakerLayout = findViewById<ViewGroup>(R.id.sessionSpeakerLayout)
-        session?.speakers?.also { speakers ->
+        sessionSpeakerLayout.removeAllViews()
+        session.speakers.also { speakers ->
             if (speakers.isNotEmpty()) {
                 for (speakerId in speakers) {
                     AndroidMakersStore().getSpeaker(speakerId) { speaker ->
@@ -170,8 +237,8 @@ class SessionDetailActivity : BaseActivity(), YouTubeThumbnailView.OnInitialized
                             speakersList.add(speaker.getFullNameAndCompany())
 
                             val speakerInfoElementBinding = DataBindingUtil.inflate<DetailViewSpeakerInfoElementBinding>(layoutInflater,
-                                R.layout.detail_view_speaker_info_element, null,
-                                false)
+                                    R.layout.detail_view_speaker_info_element, null,
+                                    false)
                             speakerInfoElementBinding.speakerBio.movementMethod = LinkMovementMethod.getInstance()
                             speakerInfoElementBinding.speaker = speaker
 
@@ -188,7 +255,7 @@ class SessionDetailActivity : BaseActivity(), YouTubeThumbnailView.OnInitialized
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     internal fun animateFab(fab: CheckableFloatingActionButton, isInSchedule: Boolean) {
         (ContextCompat.getDrawable(
-            this, if (isInSchedule) R.drawable.avd_bookmark else R.drawable.avd_unbookmark) as? AnimatedVectorDrawable)?.also {avd ->
+                this, if (isInSchedule) R.drawable.avd_bookmark else R.drawable.avd_unbookmark) as? AnimatedVectorDrawable)?.also { avd ->
             fab.setImageDrawable(avd)
             val backgroundColor = ObjectAnimator.ofArgb(
                     fab,
@@ -276,33 +343,33 @@ class SessionDetailActivity : BaseActivity(), YouTubeThumbnailView.OnInitialized
         }
     }
 
-    private fun shareSession() {
+    private fun shareSession(session: SessionKt) {
         val speakers = TextUtils.join(", ", speakersList)
 
         val shareSessionIntent = Intent(Intent.ACTION_SEND)
-        shareSessionIntent.putExtra(Intent.EXTRA_SUBJECT, session!!.title)
+        shareSessionIntent.putExtra(Intent.EXTRA_SUBJECT, session.title)
         if (speakersList.isEmpty()) {
             shareSessionIntent.putExtra(Intent.EXTRA_TEXT,
-                    String.format("%s: %s (%s)", getString(R.string.app_name), session!!.title, sessionDateAndRoom))
+                    String.format("%s: %s (%s)", getString(R.string.app_name), session.title, sessionDateAndRoom))
         } else {
             shareSessionIntent.putExtra(Intent.EXTRA_TEXT,
-                    String.format("%s: %s (%s, %s, %s)", getString(R.string.app_name), session!!.title, speakers, sessionDateAndRoom, session!!.language))
+                    String.format("%s: %s (%s, %s, %s)", getString(R.string.app_name), session.title, speakers, sessionDateAndRoom, session.language))
         }
         shareSessionIntent.type = "text/plain"
         startActivity(shareSessionIntent)
     }
 
     // region Video management
-    private fun setVideoThumbnail(activityDetailBinding: ActivityDetailBinding) {
-        if (TextUtils.isEmpty(session!!.videoURL))
+    private fun setVideoThumbnail(activityDetailBinding: ActivityDetailBinding, session: SessionKt) {
+        if (TextUtils.isEmpty(session.videoURL))
             return
 
-        videoID = YoutubeUtil.getVideoID(session!!.videoURL)
+        videoID = YoutubeUtil.getVideoID(session.videoURL)
         if (!TextUtils.isEmpty(videoID)) {
             playButton = activityDetailBinding.playButton
             activityDetailBinding.videoThumbnail.initialize(BuildConfig.YOUTUBE_API_KEY, this)
             activityDetailBinding.videoThumbnail.setOnClickListener {
-                val videoUri = YoutubeUtil.getVideoUri(session!!.videoURL)
+                val videoUri = YoutubeUtil.getVideoUri(session.videoURL)
                 if (videoUri != null) {
                     startActivity(Intent(Intent.ACTION_VIEW, videoUri))
                 } else {
