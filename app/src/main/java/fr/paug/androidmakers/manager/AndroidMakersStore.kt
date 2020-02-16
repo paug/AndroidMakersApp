@@ -1,17 +1,24 @@
 package fr.paug.androidmakers.manager
 
 import android.util.Log
+import com.google.firebase.FirebaseApp
+import com.google.firebase.FirebaseOptions
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import fr.paug.androidmakers.model.*
+import io.openfeedback.android.toFlow
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.tasks.await
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashMap
 
 class AndroidMakersStore {
-
     fun getVenue(document: String, callback: (Venue?) -> Unit) {
-        FirebaseFirestore.getInstance().collection("venues").document(document).get()
+        FirebaseSingleton.firestore.collection("venues").document(document).get()
                 .addOnSuccessListener { venueDocument ->
                     if (venueDocument != null) {
                         Log.d(TAG, "DocumentSnapshot data: " + venueDocument.data)
@@ -28,7 +35,7 @@ class AndroidMakersStore {
 
     fun getSessions(callback: (HashMap<String, SessionKt>) -> Unit) {
         val allSessions = HashMap<String, SessionKt>()
-        FirebaseFirestore.getInstance().collection("sessions")
+        FirebaseSingleton.firestore.collection("sessions")
                 .get()
                 .addOnSuccessListener { result ->
                     for (document in result) {
@@ -43,8 +50,17 @@ class AndroidMakersStore {
                 }
     }
 
+    fun getSession(id: String): Flow<SessionKt> {
+        return FirebaseSingleton.firestore.collection("sessions")
+                .document(id)
+                .toFlow()
+                .mapNotNull {
+                    it.toObject(SessionKt::class.java)
+                }
+    }
+
     fun getSession(id: String, callback: (SessionKt?) -> Unit) {
-        FirebaseFirestore.getInstance().collection("sessions").document(id).get()
+        FirebaseSingleton.firestore.collection("sessions").document(id).get()
                 .addOnSuccessListener { document ->
                     if (document != null) {
                         Log.d(TAG, "DocumentSnapshot data: " + document.data)
@@ -60,11 +76,11 @@ class AndroidMakersStore {
     }
 
     fun getSlots(callback: (List<ScheduleSlotKt>) -> Unit) {
-        FirebaseFirestore.getInstance()
+        FirebaseSingleton.firestore
                 .collection("schedule").document(DAY1)
                 .get()
                 .addOnSuccessListener { result1 ->
-                    FirebaseFirestore.getInstance()
+                    FirebaseSingleton.firestore
                             .collection("schedule").document(DAY2)
                             .get()
                             .addOnSuccessListener { result2 ->
@@ -141,7 +157,7 @@ class AndroidMakersStore {
 
     fun getSpeakers(callback: (HashMap<String, SpeakerKt>) -> Unit) {
         val allSpeakers = HashMap<String, SpeakerKt>()
-        FirebaseFirestore.getInstance().collection("speakers").get()
+        FirebaseSingleton.firestore.collection("speakers").get()
                 .addOnSuccessListener { result ->
                     for (document in result) {
                         val speaker = document.toObject(SpeakerKt::class.java)
@@ -156,7 +172,7 @@ class AndroidMakersStore {
     }
 
     fun getSpeaker(id: String, callback: (SpeakerKt?) -> Unit) {
-        FirebaseFirestore.getInstance().collection("speakers").document(id).get()
+        FirebaseSingleton.firestore.collection("speakers").document(id).get()
                 .addOnSuccessListener { document ->
                     if (document != null) {
                         Log.d(TAG, "DocumentSnapshot data: " + document.data)
@@ -173,7 +189,7 @@ class AndroidMakersStore {
 
     fun getRooms(callback: (List<RoomKt>) -> Unit) {
         val allRooms = mutableListOf<RoomKt>()
-        FirebaseFirestore.getInstance().collection("schedule-app").document("rooms")
+        FirebaseSingleton.firestore.collection("schedule-app").document("rooms")
                 .get()
                 .addOnSuccessListener { result ->
                     Log.e("result", result.toString())
@@ -188,8 +204,18 @@ class AndroidMakersStore {
                 }
     }
 
+    fun getRoom(roomId: String): Flow<RoomKt> {
+        return FirebaseSingleton.firestore.collection("schedule-app").document("rooms")
+                .toFlow()
+                .mapNotNull {
+                    it.toObject(RoomsList::class.java)?.allRooms
+                }.mapNotNull {
+                    it.firstOrNull { it.roomId == roomId }
+                }
+    }
+
     fun getRoom(roomId: String, callback: (RoomKt?) -> Unit) {
-        FirebaseFirestore.getInstance().collection("schedule-app").document("rooms")
+        FirebaseSingleton.firestore.collection("schedule-app").document("rooms")
                 .get()
                 .addOnSuccessListener { result ->
                     Log.e("result", result.toString())
