@@ -5,6 +5,7 @@ import androidx.compose.Composable
 import androidx.compose.unaryPlus
 import androidx.ui.core.Draw
 import androidx.ui.core.Text
+import androidx.ui.foundation.Border
 import androidx.ui.foundation.Clickable
 import androidx.ui.foundation.DrawImage
 import androidx.ui.foundation.shape.corner.RoundedCornerShape
@@ -92,8 +93,7 @@ fun VoteCard(voteModel: VoteModel) {
     }
 
     Card(shape = RoundedCornerShape(5.dp),
-            borderWidth = border,
-            borderBrush = SolidColor(Color.Gray),
+            border = Border(border, Color.Gray),
             color = Color(b, b, b, 255),
             modifier = LayoutPadding(5.dp)
     ) {
@@ -117,15 +117,14 @@ fun VoteCard(voteModel: VoteModel) {
                     canvas.drawCircle(offset, 30.dp.value, paint)
                 }
             }
-            Padding(padding = 10.dp) {
-                Text(
-                        text = voteModel.text,
-                        style = TextStyle(
-                                color = Color(0, 0, 0, 200),
-                                textAlign = TextAlign.Center
-                        )
-                )
-            }
+            Text(
+                    modifier = LayoutPadding(10.dp),
+                    text = voteModel.text,
+                    style = TextStyle(
+                            color = Color(0, 0, 0, 200),
+                            textAlign = TextAlign.Center
+                    )
+            )
         }
     }
 }
