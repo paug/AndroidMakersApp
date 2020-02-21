@@ -1,10 +1,12 @@
 package fr.paug.androidmakers.model;
 
 import android.text.TextUtils;
+
 import androidx.annotation.StringRes;
-import fr.paug.androidmakers.R;
 
 import java.util.List;
+
+import fr.paug.androidmakers.R;
 
 //TODO get rid of this, handle localization in Firebase
 public class PartnerGroup {

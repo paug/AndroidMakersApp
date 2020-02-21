@@ -2,6 +2,7 @@ package fr.paug.androidmakers.util;
 
 import android.content.Context;
 import android.util.TypedValue;
+
 import fr.paug.androidmakers.R;
 
 public final class ThemeUtils {

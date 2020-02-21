@@ -20,6 +20,7 @@ package fr.paug.androidmakers.ui.util;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.Checkable;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /**

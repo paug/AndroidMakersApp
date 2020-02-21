@@ -2,8 +2,10 @@ package fr.paug.androidmakers.util;
 
 import android.content.Context;
 import android.net.Uri;
+
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.ContextCompat;
+
 import fr.paug.androidmakers.R;
 
 public final class CustomTabUtil {
