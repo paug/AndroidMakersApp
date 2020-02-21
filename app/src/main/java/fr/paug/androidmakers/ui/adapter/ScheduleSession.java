@@ -1,6 +1,7 @@
 package fr.paug.androidmakers.ui.adapter;
 
 import androidx.annotation.NonNull;
+
 import fr.paug.androidmakers.model.ScheduleSlot;
 import fr.paug.androidmakers.util.EmojiUtils;
 

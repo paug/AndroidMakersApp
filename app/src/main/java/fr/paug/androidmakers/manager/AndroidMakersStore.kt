@@ -1,17 +1,11 @@
 package fr.paug.androidmakers.manager
 
 import android.util.Log
-import com.google.firebase.FirebaseApp
-import com.google.firebase.FirebaseOptions
 import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FirebaseFirestore
 import fr.paug.androidmakers.model.*
 import io.openfeedback.android.toFlow
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
-import kotlinx.coroutines.tasks.await
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashMap

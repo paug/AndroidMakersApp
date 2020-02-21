@@ -46,7 +46,6 @@ import io.openfeedback.android.createUIModel
 import io.openfeedback.android.dots
 import io.openfeedback.android.model.Project
 import io.openfeedback.android.model.VoteStatus
-import io.openfeedback.android.updateUIModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
