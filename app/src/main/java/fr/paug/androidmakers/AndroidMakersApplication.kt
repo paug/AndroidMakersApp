@@ -25,10 +25,14 @@ class AndroidMakersApplication : Application() {
         setupEmojiCompat()
 
         openFeedback = OpenFeedback(this,
-                applicationId = BuildConfig.OPENFEEDBACK_APPLICATION_ID,
-                projectId = BuildConfig.OPENFEEDBACK_PROJECT_ID,
-                apiKey = BuildConfig.OPENFEEDBACK_API_KEY,
-                databaseUrl = "https://${BuildConfig.OPENFEEDBACK_PROJECT_ID}.firebaseio.com")
+                openFeedbackProjectId = "7Hq01JIxGJtCQ7bRGIYN",
+                firebaseConfig = OpenFeedback.FirebaseConfig(
+                        applicationId = BuildConfig.OPENFEEDBACK_APPLICATION_ID,
+                        projectId = BuildConfig.OPENFEEDBACK_PROJECT_ID,
+                        apiKey = BuildConfig.OPENFEEDBACK_API_KEY,
+                        databaseUrl = "https://${BuildConfig.OPENFEEDBACK_PROJECT_ID}.firebaseio.com"
+                )
+        )
     }
 
     private fun setupEmojiCompat() {

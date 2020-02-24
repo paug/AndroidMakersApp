@@ -110,7 +110,7 @@
                     android:background="@color/light_grey"
                     android:visibility="gone" />
 
-                <io.openfeedback.android.OpenFeedbackView
+                <io.openfeedback.android.view.SessionFeedbackView
                     android:id="@+id/feedbackContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>

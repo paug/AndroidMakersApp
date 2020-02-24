@@ -38,20 +38,11 @@ import fr.paug.androidmakers.util.ScheduleSessionHelper
 import fr.paug.androidmakers.util.SessionSelector
 import fr.paug.androidmakers.util.UIUtils
 import fr.paug.androidmakers.util.YoutubeUtil
-import io.openfeedback.android.VoteModel
-import io.openfeedback.android.createUIModel
-import io.openfeedback.android.dots
-import io.openfeedback.android.model.Project
-import io.openfeedback.android.model.VoteStatus
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.first
 import java.util.*
 
-/**
- * Details of a session
- *
- */
 class SessionDetailActivity : BaseActivity() {
 
     private lateinit var activityDetailBinding: ActivityDetailBinding
@@ -65,44 +56,37 @@ class SessionDetailActivity : BaseActivity() {
     private var playButton: ImageView? = null
     private var sessionForShare: SessionKt? = null
 
-    private val openFeedbackProjectId = "SiXwNLJ0Nrbj5UXvyFpJ"
     val scope = object : CoroutineScope {
         override val coroutineContext = Dispatchers.Main + Job()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activityDetailBinding = DataBindingUtil.setContentView<ActivityDetailBinding>(this, R.layout.activity_detail)
+        activityDetailBinding = DataBindingUtil.setContentView(this, R.layout.activity_detail)
         sessionId = intent.getStringExtra(PARAM_SESSION_ID)
 
         val openFeedback = (applicationContext as AndroidMakersApplication).openFeedback
 
+        activityDetailBinding.feedbackContainer.start(openFeedback, sessionId)
         scope.launch {
             combine(
                     listOf(
                             AndroidMakersStore().getSession(sessionId),
-                            AndroidMakersStore().getRoom(intent.getStringExtra(PARAM_SESSION_ROOM)),
-                            openFeedback.getProject(openFeedbackProjectId),
-                            openFeedback.getMyVotes(openFeedbackProjectId, sessionId),
-                            openFeedback.getTotalVotes(openFeedbackProjectId, sessionId)
+                            AndroidMakersStore().getRoom(intent.getStringExtra(PARAM_SESSION_ROOM))
                     )
             ) {
                 it
             }
-                    .first() // listening to updates isn't really working well
-                    .let {
+                    .collect {
                         setupUI(
                                 it[0] as SessionKt,
-                                it[1] as RoomKt,
-                                it[2] as Project,
-                                it[3] as List<String>,
-                                it[4] as Map<String, Long>)
+                                it[1] as RoomKt)
                     }
         }
 
     }
 
-    fun setupUI(session: SessionKt, room: RoomKt, project: Project, userVotes: List<String>, totalVotes: Map<String, Long>) {
+    fun setupUI(session: SessionKt, room: RoomKt) {
         // small hack for share
         // Ideally, we should only create the menu when we have the data
         sessionForShare = session
