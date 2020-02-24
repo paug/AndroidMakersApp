@@ -18,5 +18,9 @@ subprojects {
     repositories {
         google()
         jcenter()
+        // Remove when the open
+        maven {
+            url = uri("https://dl.bintray.com/openfeedback/Android/")
+        }
     }
 }

@@ -116,16 +116,7 @@ dependencies {
     // Used for tags
     implementation("org.apmem.tools:layouts:1.10@aar")
 
-    implementation("androidx.compose:compose-runtime:${Versions.compose}")
-    implementation("androidx.ui:ui-framework:${Versions.compose}")
-    implementation("androidx.ui:ui-layout:${Versions.compose}")
-    implementation("androidx.ui:ui-material:${Versions.compose}")
-    implementation("androidx.ui:ui-foundation:${Versions.compose}")
-    implementation("androidx.ui:ui-animation:${Versions.compose}")
-    implementation("androidx.ui:ui-tooling:${Versions.compose}")
-
-    implementation(project(":openfeedback"))
-    implementation(project(":openfeedback-ui"))
+    implementation("io.openfeedback:feedback-android-sdk-ui:0.0.1")
 }
 
 apply(plugin = "com.google.gms.google-services")
