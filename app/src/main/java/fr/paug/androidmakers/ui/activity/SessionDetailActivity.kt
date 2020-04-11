@@ -18,8 +18,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.widget.ImageView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -37,7 +35,6 @@ import fr.paug.androidmakers.ui.util.CheckableFloatingActionButton
 import fr.paug.androidmakers.util.ScheduleSessionHelper
 import fr.paug.androidmakers.util.SessionSelector
 import fr.paug.androidmakers.util.UIUtils
-import fr.paug.androidmakers.util.YoutubeUtil
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
@@ -52,8 +49,6 @@ class SessionDetailActivity : BaseActivity() {
 
     private var sessionDateAndRoom: String? = null
     private val speakersList = ArrayList<String>()
-    private var videoID: String? = null
-    private var playButton: ImageView? = null
     private var sessionForShare: SessionKt? = null
 
     val scope = object : CoroutineScope {
@@ -64,34 +59,33 @@ class SessionDetailActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         activityDetailBinding = DataBindingUtil.setContentView(this, R.layout.activity_detail)
         sessionId = intent.getStringExtra(PARAM_SESSION_ID)
+        val roomId = intent.getStringExtra(PARAM_SESSION_ROOM)
 
-        val openFeedback = (applicationContext as AndroidMakersApplication).openFeedback
-
-        activityDetailBinding.feedbackContainer.start(openFeedback, sessionId)
         scope.launch {
             combine(
-                    listOf(
-                            AndroidMakersStore().getSession(sessionId),
-                            AndroidMakersStore().getRoom(intent.getStringExtra(PARAM_SESSION_ROOM))
-                    )
-            ) {
-                it
+                    AndroidMakersStore().getSession(sessionId),
+                    AndroidMakersStore().getRoom(roomId)
+            ) { session, room ->
+                session to room
+            }.collect {
+                setupUI(
+                        it.first,
+                        it.second,
+                        roomId)
+
             }
-                    .collect {
-                        setupUI(
-                                it[0] as SessionKt,
-                                it[1] as RoomKt)
-                    }
         }
 
     }
 
-    fun setupUI(session: SessionKt, room: RoomKt) {
+    fun setupUI(session: SessionKt, room: RoomKt, roomId: String) {
         // small hack for share
         // Ideally, we should only create the menu when we have the data
         sessionForShare = session
         sessionStartDateInMillis = intent.getLongExtra(PARAM_SESSION_START_DATE, -1)
         sessionEndDateInMillis = intent.getLongExtra(PARAM_SESSION_END_DATE, -1)
+
+        setupFeedback(session, roomId, sessionStartDateInMillis)
 
         val sessionDate = DateUtils.formatDateRange(this,
                 Formatter(resources.configuration.locale),
@@ -144,10 +138,44 @@ class SessionDetailActivity : BaseActivity() {
         activityDetailBinding.scheduleFab.isChecked = sessionSelected
 
         setActionBar(session)
-
         setSpeakers(session)
-        activityDetailBinding.separator.visibility = View.VISIBLE
+
         activityDetailBinding.separator2.visibility = View.VISIBLE
+    }
+
+    private fun setupFeedback(session: SessionKt, roomId: String, sessionStartDateInMillis: Long) {
+        val openFeedback = (applicationContext as AndroidMakersApplication).openFeedback
+
+        /*val nowMillis = GregorianCalendar.getInstance().apply {
+            set(GregorianCalendar.YEAR, 2020)
+            set(GregorianCalendar.MONTH, 3)
+            set(GregorianCalendar.DAY_OF_MONTH, 20)
+            set(GregorianCalendar.HOUR_OF_DAY, 15)
+            set(GregorianCalendar.MINUTE, 30)
+            timeZone = TimeZone.getTimeZone("GMT+2")
+        }.timeInMillis*/
+
+        val nowMillis = System.currentTimeMillis()
+
+        when {
+            session.speakers.isEmpty() -> {
+                // This is for coffee breaks
+                activityDetailBinding.separator.visibility = View.GONE
+                activityDetailBinding.feedbackContainer.visibility = View.GONE
+                activityDetailBinding.feedbackWaiting.visibility = View.GONE
+            }
+            nowMillis < sessionStartDateInMillis -> {
+                activityDetailBinding.separator.visibility = View.VISIBLE
+                activityDetailBinding.feedbackContainer.visibility = View.GONE
+                activityDetailBinding.feedbackWaiting.visibility = View.VISIBLE
+            }
+            else -> {
+                activityDetailBinding.separator.visibility = View.VISIBLE
+                activityDetailBinding.feedbackContainer.visibility = View.VISIBLE
+                activityDetailBinding.feedbackWaiting.visibility = View.GONE
+                activityDetailBinding.feedbackContainer.start(openFeedback, sessionId)
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

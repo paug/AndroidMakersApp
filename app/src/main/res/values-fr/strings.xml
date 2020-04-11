@@ -85,5 +85,6 @@
     <string name="aog_title">Action Google Assistant</string>
     <string name="aog_description">Découvrez l\'Action pour le Google Assistant !</string>
     <string name="aog_button">Lancer l\'Action Android Makers</string>
+    <string name="feedbackWaiting">Revenez plus tard pour donner votre retour.</string>
 
 </resources>
