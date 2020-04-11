@@ -1,5 +1,7 @@
 package fr.paug.androidmakers.ui.fragment
 
+import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.SparseArray
@@ -9,6 +11,7 @@ import android.widget.CheckBox
 import android.widget.CompoundButton
 import android.widget.TextView
 import androidx.annotation.StringRes
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -19,6 +22,7 @@ import fr.paug.androidmakers.model.Room
 import fr.paug.androidmakers.model.RoomKt
 import fr.paug.androidmakers.model.ScheduleSlotKt
 import fr.paug.androidmakers.model.SpeakerKt
+import fr.paug.androidmakers.ui.activity.AboutActivity
 import fr.paug.androidmakers.ui.adapter.AgendaPagerAdapter
 import fr.paug.androidmakers.ui.adapter.DayScheduleKt
 import fr.paug.androidmakers.ui.adapter.RoomScheduleKt
@@ -316,8 +320,15 @@ class AgendaFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
 
-        val menuItem = menu.add(0, R.id.filter, 0, activity!!.getString(R.string.filter))!!
+        var menuItem = menu.add(0, R.id.filter, 0, activity!!.getString(R.string.filter))!!
         menuItem.setIcon(R.drawable.ic_filter_list_white_24dp)
+        menuItem.setShowAsAction(SHOW_AS_ACTION_ALWAYS)
+
+        menuItem = menu.add(0, R.id.about, 0, activity!!.getString(R.string.title_about))!!
+
+        val drawable = resources.getDrawable(R.drawable.ic_info_outline_black_24dp)
+        DrawableCompat.setTint(drawable, Color.WHITE)
+        menuItem.setIcon(drawable)
         menuItem.setShowAsAction(SHOW_AS_ACTION_ALWAYS)
     }
 
@@ -330,6 +341,11 @@ class AgendaFragment : Fragment() {
                     mDrawerLayout!!.openDrawer(GravityCompat.END)
                 }
                 return true
+            }
+            R.id.about -> {
+                startActivity(Intent().apply {
+                    setClass(context, AboutActivity::class.java)
+                })
             }
         }
         return false
