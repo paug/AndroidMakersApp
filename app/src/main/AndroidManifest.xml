@@ -38,11 +38,7 @@
         <meta-data
             android:name="google_analytics_adid_collection_enabled"
             android:value="false"/>
-
-        <meta-data
-            android:name="com.google.ar.core"
-            android:value="optional"/>
-
+        
         <activity
             android:name=".ui.activity.MainActivity"
             android:configChanges="orientation|screenSize"

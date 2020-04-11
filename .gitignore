@@ -31,7 +31,9 @@ build/
 app/google-services.json
 
 app/prod/release/output.json
-keystore.jks
+/app/keystore.jks
+/app/keystore.properties
+
 /ar/*.png
 /app/prod
 /captures
