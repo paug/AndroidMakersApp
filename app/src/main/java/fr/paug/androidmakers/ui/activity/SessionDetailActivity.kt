@@ -146,16 +146,18 @@ class SessionDetailActivity : BaseActivity() {
     private fun setupFeedback(session: SessionKt, roomId: String, sessionStartDateInMillis: Long) {
         val openFeedback = (applicationContext as AndroidMakersApplication).openFeedback
 
-        /*val nowMillis = GregorianCalendar.getInstance().apply {
-            set(GregorianCalendar.YEAR, 2020)
-            set(GregorianCalendar.MONTH, 3)
-            set(GregorianCalendar.DAY_OF_MONTH, 20)
-            set(GregorianCalendar.HOUR_OF_DAY, 15)
-            set(GregorianCalendar.MINUTE, 30)
-            timeZone = TimeZone.getTimeZone("GMT+2")
-        }.timeInMillis*/
-
-        val nowMillis = System.currentTimeMillis()
+        val nowMillis = if (BuildConfig.DEBUG) {
+            GregorianCalendar.getInstance().apply {
+                set(GregorianCalendar.YEAR, 2020)
+                set(GregorianCalendar.MONTH, 3)
+                set(GregorianCalendar.DAY_OF_MONTH, 20)
+                set(GregorianCalendar.HOUR_OF_DAY, 15)
+                set(GregorianCalendar.MINUTE, 30)
+                timeZone = TimeZone.getTimeZone("GMT+2")
+            }.timeInMillis
+        } else {
+            System.currentTimeMillis()
+        }
 
         when {
             session.speakers.isEmpty() -> {
@@ -170,10 +172,11 @@ class SessionDetailActivity : BaseActivity() {
                 activityDetailBinding.feedbackWaiting.visibility = View.VISIBLE
             }
             else -> {
+                val language = Locale.getDefault().language
                 activityDetailBinding.separator.visibility = View.VISIBLE
                 activityDetailBinding.feedbackContainer.visibility = View.VISIBLE
                 activityDetailBinding.feedbackWaiting.visibility = View.GONE
-                activityDetailBinding.feedbackContainer.start(openFeedback, sessionId)
+                activityDetailBinding.feedbackContainer.start(openFeedback, sessionId, language)
             }
         }
     }
