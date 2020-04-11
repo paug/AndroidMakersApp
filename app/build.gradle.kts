@@ -48,11 +48,28 @@ extensions.findByType(BaseExtension::class.java)!!.apply {
         }
     }
 
+    val f = project.file("keystore.properties")
+    signingConfigs {
+        val props = Properties()
+        if (f.exists()) {
+            props.load(f.reader())
+        }
+        create("release") {
+            keyAlias = props.getProperty("keyAlias")
+            keyPassword = props.getProperty("keyAliasPassword")
+            storeFile = project.file("keystore.jks")
+            storePassword = props.getProperty("keyAliasPassword")
+        }
+    }
+
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+            if (f.exists()) {
+                signingConfig = signingConfigs.getByName("release")
+            }
         }
     }
 
