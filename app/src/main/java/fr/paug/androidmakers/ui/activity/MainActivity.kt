@@ -12,6 +12,11 @@ import fr.paug.androidmakers.ui.fragment.AboutFragment
 import fr.paug.androidmakers.ui.fragment.AgendaFragment
 import fr.paug.androidmakers.ui.fragment.VenuePagerFragment
 import fr.paug.androidmakers.util.TimeUtils
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 
 class MainActivity : BaseActivity() {
@@ -19,6 +24,10 @@ class MainActivity : BaseActivity() {
     private var fragment: Fragment? = null
     private var fragmentManager: FragmentManager? = null
     private var navigation: BottomNavigationView? = null
+
+    private var scope = object : CoroutineScope {
+        override val coroutineContext = Dispatchers.Main
+    }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         val tag = when (item.itemId) {
@@ -103,19 +112,27 @@ class MainActivity : BaseActivity() {
         val sessionId = data.getQueryParameter("sessionId")
 
         if (sessionId != null) {
-            AndroidMakersStore().getSlots { slots ->
+            scope.launch {
+                val slots = AndroidMakersStore()
+                        .getSlotsFlow()
+                        .first()
+
                 for (scheduleSlot in slots) {
                     if (scheduleSlot.sessionId == sessionId) {
                         val format = SimpleDateFormat(TimeUtils.dateFormat)
                         val startTimestamp = format.parse(scheduleSlot.startDate).time
                         val endTimestamp = format.parse(scheduleSlot.endDate).time
-                        SessionDetailActivity.startActivity(this, sessionId, startTimestamp, endTimestamp, scheduleSlot.roomId)
+                        SessionDetailActivity.startActivity(this@MainActivity, sessionId, startTimestamp, endTimestamp, scheduleSlot.roomId)
                         break
                     }
                 }
-
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        scope.cancel()
     }
 
     companion object {
