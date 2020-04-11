@@ -190,6 +190,7 @@ class AboutFragment : Fragment(), View.OnClickListener {
             val partnerLogoSizePriority = 1 //partnerGroup.partnerType.partnerLogoSizePriority
 
             var index = 0
+            partnerLogoLayout.removeAllViews()
             while (index < partnersList.size) {
                 val partnerRow = LayoutInflater.from(context).inflate(R.layout.partner_row, null) as LinearLayout
                 partnerRow.weightSum = partnerLogoSizePriority.toFloat()
