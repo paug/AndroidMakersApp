@@ -320,15 +320,16 @@ class AgendaFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
 
-        var menuItem = menu.add(0, R.id.filter, 0, activity!!.getString(R.string.filter))!!
-        menuItem.setIcon(R.drawable.ic_filter_list_white_24dp)
-        menuItem.setShowAsAction(SHOW_AS_ACTION_ALWAYS)
+        var menuItem: MenuItem
 
         menuItem = menu.add(0, R.id.about, 0, activity!!.getString(R.string.title_about))!!
-
         val drawable = resources.getDrawable(R.drawable.ic_info_outline_black_24dp)
         DrawableCompat.setTint(drawable, Color.WHITE)
         menuItem.setIcon(drawable)
+        menuItem.setShowAsAction(SHOW_AS_ACTION_ALWAYS)
+
+        menuItem = menu.add(0, R.id.filter, 0, activity!!.getString(R.string.filter))!!
+        menuItem.setIcon(R.drawable.ic_filter_list_white_24dp)
         menuItem.setShowAsAction(SHOW_AS_ACTION_ALWAYS)
     }
 
