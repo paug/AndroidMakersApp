@@ -116,7 +116,7 @@ dependencies {
     // Used for tags
     implementation("org.apmem.tools:layouts:1.10@aar")
 
-    implementation("io.openfeedback:feedback-android-sdk-ui:0.0.1")
+    implementation("io.openfeedback:feedback-android-sdk-ui:0.0.4")
 }
 
 apply(plugin = "com.google.gms.google-services")

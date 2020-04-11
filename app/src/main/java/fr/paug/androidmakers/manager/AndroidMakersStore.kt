@@ -30,23 +30,6 @@ class AndroidMakersStore {
                 }
     }
 
-    fun getSessions(callback: (HashMap<String, SessionKt>) -> Unit) {
-        val allSessions = HashMap<String, SessionKt>()
-        FirebaseSingleton.firestore.collection("sessions")
-                .get()
-                .addOnSuccessListener { result ->
-                    for (document in result) {
-                        val session = document.toObject(SessionKt::class.java)
-                        allSessions[document.id] = session
-                        Log.e("session", session.toString())
-                    }
-                    callback.invoke(allSessions)
-                }
-                .addOnFailureListener { exception ->
-                    Log.w(TAG, "Error getting documents.", exception)
-                }
-    }
-
     fun getSession(id: String): Flow<SessionKt> {
         return FirebaseSingleton.firestore.collection("sessions")
                 .document(id)
@@ -89,13 +72,16 @@ class AndroidMakersStore {
         }
     }
 
-
     val allRooms = mapOf(
             "0" to RoomKt("Track 1"),
             "1" to RoomKt("Track 2"),
             "2" to RoomKt("Track 3"),
             "3" to RoomKt("Track 4"),
-            "all" to RoomKt("All")
+            "4" to RoomKt("Track 5"), // not needed theorically but added in case we decide to add new tracks
+            "5" to RoomKt("Track 6"),
+            "6" to RoomKt("Track 7"),
+            "6" to RoomKt("Track 8"),
+            ROOM_ID_ALL to RoomKt("All")
     )
 
     class Agenda(
@@ -167,7 +153,9 @@ class AndroidMakersStore {
             }
         }
 
-        return list
+        return list.filter {
+            it.sessionId != "no-op"
+        }
     }
 
 
@@ -222,6 +210,7 @@ class AndroidMakersStore {
     }
 
     companion object {
+        const val ROOM_ID_ALL = "all"
         private const val DAY1 = "2020-04-20"
         private const val DAY2 = "2020-04-21"
         private const val TAG = "Firestore"
