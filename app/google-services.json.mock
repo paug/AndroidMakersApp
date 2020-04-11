@@ -1,14 +1,14 @@
 {
   "project_info": {
-    "project_number": "38710070893",
-    "firebase_url": "https://android-makers-2019.firebaseio.com",
-    "project_id": "android-makers-2019",
-    "storage_bucket": "android-makers-2019.appspot.com"
+    "project_number": "205006455301",
+    "firebase_url": "https://android-makers-2020.firebaseio.com",
+    "project_id": "android-makers-2020",
+    "storage_bucket": "android-makers-2020.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:38710070893:android:6b110a7749118fff",
+        "mobilesdk_app_id": "1:205006455301:android:953bb836d54fc8bb99926c",
         "android_client_info": {
           "package_name": "fr.paug.androidmakers"
         }

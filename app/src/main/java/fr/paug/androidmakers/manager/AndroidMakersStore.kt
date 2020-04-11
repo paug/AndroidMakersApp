@@ -4,8 +4,10 @@ import android.util.Log
 import com.google.firebase.firestore.DocumentSnapshot
 import fr.paug.androidmakers.model.*
 import io.openfeedback.android.toFlow
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashMap
@@ -69,34 +71,67 @@ class AndroidMakersStore {
                 }
     }
 
-    fun getSlots(callback: (List<ScheduleSlotKt>) -> Unit) {
-        FirebaseSingleton.firestore
+    fun getSlotsFlow(): Flow<List<ScheduleSlotKt>> {
+        val flow1 = FirebaseSingleton.firestore
                 .collection("schedule").document(DAY1)
-                .get()
-                .addOnSuccessListener { result1 ->
-                    FirebaseSingleton.firestore
-                            .collection("schedule").document(DAY2)
-                            .get()
-                            .addOnSuccessListener { result2 ->
-                                try {
-                                    convertResults(mapOf(
-                                            DAY1 to result1,
-                                            DAY2 to result2
-                                    ), callback)
-                                } catch (e: Exception) {
-                                    Log.w(TAG, "Cannot convert from schedule", e)
-                                }
-                            }
-                            .addOnFailureListener { exception ->
-                                Log.w(TAG, "Error getting second day.", exception)
-                            }
-                }
-                .addOnFailureListener { exception ->
-                    Log.w(TAG, "Error getting first day.", exception)
-                }
+                .toFlow()
+
+        val flow2 = FirebaseSingleton.firestore
+                .collection("schedule").document(DAY2)
+                .toFlow()
+
+        return combine(flow1, flow2) { result1, result2 ->
+            convertResults(mapOf(
+                    DAY1 to result1,
+                    DAY2 to result2
+            ))
+        }
     }
 
-    private fun convertResults(results: Map<String, DocumentSnapshot>, callback: (List<ScheduleSlotKt>) -> Unit) {
+    class Agenda(
+            val sessions: Map<String, SessionKt>,
+            val slots: List<ScheduleSlotKt>,
+            val rooms: List<RoomKt>,
+            val speakers: Map<String, SpeakerKt>
+    )
+
+    fun getAgendaFlow(): Flow<Agenda> {
+        val sessionsFlow = FirebaseSingleton.firestore.collection("sessions")
+                .toFlow()
+                .map { result ->
+                    result.map { it.id to it.toObject(SessionKt::class.java) }
+                            .toMap()
+                }
+        val slotsFlow = getSlotsFlow()
+
+        val roomsFlow = FirebaseSingleton.firestore.collection("schedule-app").document("rooms")
+                .toFlow()
+                .map { result ->
+                    result.toObject(RoomsList::class.java)!!.allRooms
+                }
+
+        val speakersFlow = FirebaseSingleton.firestore.collection("speakers")
+                .toFlow()
+                .map { result ->
+                    result.map { it.id to it.toObject(SpeakerKt::class.java) }
+                            .toMap()
+                }
+
+        return combine(sessionsFlow, slotsFlow, roomsFlow, speakersFlow) { sessions, slots, rooms, speakers ->
+            Agenda(sessions, slots, rooms, speakers)
+        }
+
+    }
+
+    @Deprecated(message = "Use the coroutines version instead", replaceWith = ReplaceWith("getSlots()"))
+    fun getSlotsFlow(callback: (List<ScheduleSlotKt>) -> Unit) {
+        GlobalScope.launch(Dispatchers.Main) {
+            val slots = getSlotsFlow().first()
+            callback(slots)
+        }
+    }
+
+    private fun convertResults(results: Map<String, DocumentSnapshot>): List<ScheduleSlotKt> {
         val list = mutableListOf<ScheduleSlotKt>()
         for (result in results) {
             val day = result.value.data!!
@@ -131,7 +166,7 @@ class AndroidMakersStore {
             }
         }
 
-        callback.invoke(list)
+        return list
     }
 
 
@@ -226,8 +261,8 @@ class AndroidMakersStore {
     }
 
     companion object {
-        private const val DAY1 = "2019-04-23"
-        private const val DAY2 = "2019-04-24"
+        private const val DAY1 = "2020-04-20"
+        private const val DAY2 = "2020-04-21"
         private const val TAG = "Firestore"
     }
 }

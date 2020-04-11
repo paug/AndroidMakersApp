@@ -81,7 +81,7 @@ dependencies {
 
     // Kotlin
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlin}")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.3.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.3.5")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.5")
     implementation("com.google.firebase:firebase-firestore-ktx:21.4.2")
 
