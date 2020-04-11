@@ -17,6 +17,10 @@ import fr.paug.androidmakers.receiver.SessionAlarmReceiver
 import fr.paug.androidmakers.ui.activity.MainActivity
 import fr.paug.androidmakers.util.SessionSelector
 import fr.paug.androidmakers.util.TimeUtils
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -132,15 +136,17 @@ class SessionAlarmService : JobIntentService() {
                         endTimestamp,
                         DateUtils.FORMAT_SHOW_WEEKDAY or DateUtils.FORMAT_ABBREV_WEEKDAY or DateUtils.FORMAT_SHOW_TIME, null).toString()
 
-                AndroidMakersStore().getRoom(slotToNotify.roomId) { room ->
-                    val roomName = (if (room != null) room.roomName else "") + " - "
+                GlobalScope.launch(Dispatchers.Main) {
+                    val room = AndroidMakersStore().getRoom(slotToNotify.roomId).first()
+
+                    val roomName = (if (room != null) room.name else "") + " - "
 
                     logDebug("Scheduling alarm for " + alarmTime + " = " + Date(alarmTime).toString())
 
                     val notificationIntent = Intent(
                             ACTION_NOTIFY_SESSION,
                             Uri.parse(sessionId),
-                            this,
+                            this@SessionAlarmService,
                             SessionAlarmReceiver::class.java)
                     notificationIntent.putExtra(EXTRA_SESSION_START, sessionStart)
                     logDebug("-> Intent extra: session start $sessionStart")
@@ -150,7 +156,7 @@ class SessionAlarmService : JobIntentService() {
                     notificationIntent.putExtra(EXTRA_NOTIFICATION_TITLE, session.title)
                     notificationIntent.putExtra(EXTRA_NOTIFICATION_CONTENT, roomName + sessionDate)
 
-                    val pendingIntent = PendingIntent.getBroadcast(this, sessionId.hashCode(), notificationIntent, 0)
+                    val pendingIntent = PendingIntent.getBroadcast(this@SessionAlarmService, sessionId.hashCode(), notificationIntent, 0)
 
                     val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
                     // Schedule an alarm to be fired to notify user of added sessions are about to begin.
