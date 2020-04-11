@@ -82,6 +82,7 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ui.activity.AboutActivity"/>
         <activity
             android:name=".ui.activity.SessionDetailActivity"
             android:configChanges="orientation|screenSize"/>
