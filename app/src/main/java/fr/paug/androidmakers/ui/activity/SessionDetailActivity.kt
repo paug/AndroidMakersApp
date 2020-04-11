@@ -23,9 +23,6 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import com.google.android.youtube.player.YouTubeInitializationResult
-import com.google.android.youtube.player.YouTubeThumbnailLoader
-import com.google.android.youtube.player.YouTubeThumbnailView
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.BuildConfig
 import fr.paug.androidmakers.R
@@ -55,7 +52,7 @@ import java.util.*
  * Details of a session
  *
  */
-class SessionDetailActivity : BaseActivity(), YouTubeThumbnailView.OnInitializedListener {
+class SessionDetailActivity : BaseActivity() {
 
     private lateinit var activityDetailBinding: ActivityDetailBinding
     private var sessionId: String = ""
@@ -167,8 +164,6 @@ class SessionDetailActivity : BaseActivity(), YouTubeThumbnailView.OnInitialized
         setSpeakers(session)
         activityDetailBinding.separator.visibility = View.VISIBLE
         activityDetailBinding.separator2.visibility = View.VISIBLE
-
-        setVideoThumbnail(activityDetailBinding, session)
 
         val model = createUIModel(userVotes, totalVotes, project)
         setFeedback(model, project)
@@ -357,55 +352,6 @@ class SessionDetailActivity : BaseActivity(), YouTubeThumbnailView.OnInitialized
         shareSessionIntent.type = "text/plain"
         startActivity(shareSessionIntent)
     }
-
-    // region Video management
-    private fun setVideoThumbnail(activityDetailBinding: ActivityDetailBinding, session: SessionKt) {
-        if (TextUtils.isEmpty(session.videoURL))
-            return
-
-        videoID = YoutubeUtil.getVideoID(session.videoURL)
-        if (!TextUtils.isEmpty(videoID)) {
-            playButton = activityDetailBinding.playButton
-            activityDetailBinding.videoThumbnail.initialize(BuildConfig.YOUTUBE_API_KEY, this)
-            activityDetailBinding.videoThumbnail.setOnClickListener {
-                val videoUri = YoutubeUtil.getVideoUri(session.videoURL)
-                if (videoUri != null) {
-                    startActivity(Intent(Intent.ACTION_VIEW, videoUri))
-                } else {
-                    Toast.makeText(this@SessionDetailActivity, R.string.unable_to_launch_video_intent, Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-    }
-
-    override fun onInitializationSuccess(youTubeThumbnailView: YouTubeThumbnailView, youTubeThumbnailLoader: YouTubeThumbnailLoader) {
-        youTubeThumbnailLoader.setOnThumbnailLoadedListener(object : YouTubeThumbnailLoader.OnThumbnailLoadedListener {
-            override fun onThumbnailLoaded(youTubeThumbnailView: YouTubeThumbnailView, s: String) {
-                if (BuildConfig.DEBUG) {
-                    Log.d(SessionDetailActivity::class.java.name, "onThumbnailLoaded")
-                }
-                youTubeThumbnailLoader.release()
-            }
-
-            override fun onThumbnailError(youTubeThumbnailView: YouTubeThumbnailView, errorReason: YouTubeThumbnailLoader.ErrorReason) {
-                if (BuildConfig.DEBUG) {
-                    Log.d(SessionDetailActivity::class.java.name, "onThumbnailError")
-                }
-                youTubeThumbnailLoader.release()
-            }
-        })
-        // TODO : placeholder ?
-        youTubeThumbnailLoader.setVideo(videoID)
-        youTubeThumbnailView.visibility = View.VISIBLE
-        playButton!!.visibility = View.VISIBLE
-    }
-
-    override fun onInitializationFailure(youTubeThumbnailView: YouTubeThumbnailView, youTubeInitializationResult: YouTubeInitializationResult) {
-        youTubeThumbnailView.visibility = View.GONE
-        playButton!!.visibility = View.GONE
-    }
-
-    // endregion Video management
 
     companion object {
         private const val PARAM_SESSION_ID = "param_session_id"

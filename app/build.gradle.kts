@@ -81,32 +81,33 @@ dependencies {
 
     // Kotlin
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlin}")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.3.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.3")
-    implementation("com.google.firebase:firebase-firestore-ktx:21.4.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.3.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.5")
+    implementation("com.google.firebase:firebase-firestore-ktx:21.4.2")
 
     // Support
-    implementation("androidx.appcompat:appcompat:1.0.2")
-    implementation("com.google.android.material:material:1.0.0")
-    implementation("androidx.vectordrawable:vectordrawable:1.0.1")
-    implementation("androidx.browser:browser:1.0.0")
+    implementation("androidx.appcompat:appcompat:1.1.0")
+    implementation("com.google.android.material:material:1.1.0")
+    implementation("androidx.vectordrawable:vectordrawable:1.1.0")
+    implementation("androidx.browser:browser:1.2.0")
+    implementation("com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava")
     implementation("androidx.percentlayout:percentlayout:1.0.0")
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("androidx.emoji:emoji:1.0.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.0.0-beta3")
+    implementation("androidx.constraintlayout:constraintlayout:2.0.0-beta4")
 
     // Firebase
-    implementation("com.google.firebase:firebase-core:16.0.8")
-    implementation("com.google.firebase:firebase-messaging:17.6.0")
+    implementation("com.google.firebase:firebase-core:17.3.0")
+    implementation("com.google.firebase:firebase-messaging:20.1.5")
     implementation("com.firebase:firebase-jobdispatcher:0.8.5")
-    implementation("com.crashlytics.sdk.android:crashlytics:2.9.9")
-    implementation("com.google.firebase:firebase-config:16.5.0")
+    implementation("com.crashlytics.sdk.android:crashlytics:2.10.1")
+    implementation("com.google.firebase:firebase-config:19.1.3")
 
     // Firestore
-    implementation("com.google.firebase:firebase-firestore:18.2.0")
-    implementation("com.google.firebase:firebase-auth:16.2.1")
+    implementation("com.google.firebase:firebase-firestore:21.4.2")
+    implementation("com.google.firebase:firebase-auth:19.3.0")
     implementation("com.firebaseui:firebase-ui-auth:4.3.1")
-    implementation("com.google.android.gms:play-services-auth:16.0.1")
+    implementation("com.google.android.gms:play-services-auth:18.0.0")
 
     // Image management
     implementation("com.github.bumptech.glide:glide:${Versions.glide}")
@@ -114,12 +115,6 @@ dependencies {
 
     // Used for tags
     implementation("org.apmem.tools:layouts:1.10@aar")
-
-    // For Video preview
-    implementation(files("libs/YouTubeAndroidPlayerApi.jar"))
-
-    implementation("com.google.ar.sceneform.ux:sceneform-ux:1.8.0")
-    implementation("com.google.ar.sceneform:core:1.8.0")
 
     implementation("androidx.compose:compose-runtime:${Versions.compose}")
     implementation("androidx.ui:ui-framework:${Versions.compose}")
@@ -134,4 +129,3 @@ dependencies {
 }
 
 apply(plugin = "com.google.gms.google-services")
-apply(plugin = "com.google.ar.sceneform.plugin")
