@@ -62,7 +62,7 @@ class SessionAlarmService : JobIntentService() {
     internal fun scheduleAllStarredSessions() {
         logDebug("scheduleAllStarredSessions")
         // need to be sure that the AgendaRepository is loaded in order to schedule all starred sessions
-        AndroidMakersStore().getSlots { scheduleSlots ->
+        AndroidMakersStore().getSlotsFlow { scheduleSlots ->
             // first unschedule all sessions
             // this is done in case the session slot has changed
             for (scheduleSlot in scheduleSlots) {
@@ -116,11 +116,11 @@ class SessionAlarmService : JobIntentService() {
         }
 
         AndroidMakersStore().getSession(sessionId) { session ->
-            AndroidMakersStore().getSlots { slots ->
+            AndroidMakersStore().getSlotsFlow { slots ->
                 val slotToNotify = slots.firstOrNull { it.sessionId == sessionId }
                 if (session == null || slotToNotify == null) {
                     Log.w(TAG, "Cannot find session $sessionId either in sessions or in slots")
-                    return@getSlots
+                    return@getSlotsFlow
                 }
 
                 val startTimestamp = format.parse(slotToNotify.startDate).time

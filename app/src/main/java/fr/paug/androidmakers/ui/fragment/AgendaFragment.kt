@@ -17,7 +17,6 @@ import fr.paug.androidmakers.R
 import fr.paug.androidmakers.manager.AndroidMakersStore
 import fr.paug.androidmakers.model.RoomKt
 import fr.paug.androidmakers.model.ScheduleSlotKt
-import fr.paug.androidmakers.model.SessionKt
 import fr.paug.androidmakers.model.SpeakerKt
 import fr.paug.androidmakers.ui.adapter.AgendaPagerAdapter
 import fr.paug.androidmakers.ui.adapter.DayScheduleKt
@@ -27,11 +26,14 @@ import fr.paug.androidmakers.ui.util.SessionFilter
 import fr.paug.androidmakers.ui.util.SessionFilter.FilterType.*
 import fr.paug.androidmakers.util.EmojiUtils
 import fr.paug.androidmakers.util.TimeUtils
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 class AgendaFragment : Fragment() {
 
@@ -46,10 +48,9 @@ class AgendaFragment : Fragment() {
 
     private val mCheckBoxOnCheckedChangeListener = CompoundButton.OnCheckedChangeListener { buttonView, isChecked -> applyFilters() }
 
-    var allSessions = HashMap<String, SessionKt>()
-    var allSlots = listOf<ScheduleSlotKt>()
-    var allRooms = listOf<RoomKt>()
-    var allSpeakers = HashMap<String, SpeakerKt>()
+    private var scope = object : CoroutineScope {
+        override val coroutineContext = Dispatchers.Main
+    }
 
     //region Fragment Implementation
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,32 +100,28 @@ class AgendaFragment : Fragment() {
 
     //region Schedule
     private fun loadAgenda() {
-        AndroidMakersStore().getSessions { sessions ->
-            allSessions = sessions
-            AndroidMakersStore().getSlots { slots ->
-                allSlots = slots
-                AndroidMakersStore().getRooms { rooms ->
-                    allRooms = rooms
-                    AndroidMakersStore().getSpeakers { speakers ->
-                        allSpeakers = speakers
-                        onAgendaLoaded()
-                    }
-                }
+        scope.launch {
+            AndroidMakersStore().getAgendaFlow().collect {
+                onAgendaLoaded(it)
             }
         }
     }
 
-    private fun onAgendaLoaded() {
+    private fun onAgendaLoaded(agenda: AndroidMakersStore.Agenda) {
         val itemByDayOfTheYear = SparseArray<DayScheduleKt>()
 
         val calendar = Calendar.getInstance()
-        val scheduleSlots = allSlots
+        val scheduleSlots = agenda.slots
         for (scheduleSlot in scheduleSlots) {
-            val agendaScheduleSessions = getAgendaItems(itemByDayOfTheYear, calendar, scheduleSlot)
+            val agendaScheduleSessions = getAgendaItems(
+                    itemByDayOfTheYear = itemByDayOfTheYear,
+                    calendar = calendar,
+                    scheduleSlot = scheduleSlot,
+                    rooms = agenda.rooms)
             agendaScheduleSessions.add(ScheduleSessionKt(scheduleSlot,
-                    getTitle(scheduleSlot.sessionId),
-                    getLanguage(scheduleSlot.sessionId),
-                    getSpeakers(scheduleSlot.sessionId)))
+                    agenda.sessions.get(scheduleSlot.sessionId)!!.title,
+                    agenda.sessions.get(scheduleSlot.sessionId)!!.language,
+                    getSpeakers(agenda, scheduleSlot.sessionId)))
         }
 
         val days = getItemsOrdered(itemByDayOfTheYear)
@@ -170,7 +167,8 @@ class AgendaFragment : Fragment() {
 
     private fun getAgendaItems(itemByDayOfTheYear: SparseArray<DayScheduleKt>,
                                calendar: Calendar,
-                               scheduleSlot: ScheduleSlotKt): ArrayList<ScheduleSessionKt> {
+                               scheduleSlot: ScheduleSlotKt,
+                               rooms: List<RoomKt>): ArrayList<ScheduleSessionKt> {
         val roomSchedules = getRoomScheduleForDay(itemByDayOfTheYear, calendar, scheduleSlot)
         var roomScheduleForThis: RoomScheduleKt? = null
         for (roomSchedule in roomSchedules) {
@@ -181,7 +179,7 @@ class AgendaFragment : Fragment() {
         }
         if (roomScheduleForThis == null) {
             val agendaScheduleSessions = ArrayList<ScheduleSessionKt>()
-            val room = allRooms.filter { it.roomId == scheduleSlot.roomId }.first()
+            val room = rooms.filter { it.roomId == scheduleSlot.roomId }.first()
             val titleRoom = room.roomName
             roomScheduleForThis = RoomScheduleKt(scheduleSlot.roomId, titleRoom, agendaScheduleSessions)
             roomSchedules.add(roomScheduleForThis)
@@ -226,26 +224,10 @@ class AgendaFragment : Fragment() {
         return items
     }
 
-    private fun getTitle(sessionId: String): String {
-        val session = allSessions[sessionId]
-        return session!!.title
-    }
-
-    private fun getLanguage(sessionId: String): String {
-        val session = allSessions[sessionId]
-        return session!!.language
-    }
-
-    private fun getSpeakers(sessionId: String): ArrayList<SpeakerKt> {
-        val speakers = arrayListOf<SpeakerKt>()
-        val session = allSessions[sessionId]
-        if (session?.speakers?.isNotEmpty() == true) {
-            session.speakers.forEachIndexed { index, speakerId ->
-                val speakerOfSession = allSpeakers[speakerId]
-                speakers.add(speakerOfSession!!)
-            }
+    private fun getSpeakers(agenda: AndroidMakersStore.Agenda, sessionId: String): List<SpeakerKt> {
+        return agenda.sessions.get(sessionId)!!.speakers.map { speakerId ->
+            agenda.speakers.get(speakerId)!!
         }
-        return speakers
     }
     //endregion
 
@@ -341,7 +323,7 @@ class AgendaFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
+        when (item.itemId) {
             R.id.filter -> {
                 if (mDrawerLayout!!.isDrawerOpen(GravityCompat.END)) {
                     mDrawerLayout!!.closeDrawer(GravityCompat.END)
