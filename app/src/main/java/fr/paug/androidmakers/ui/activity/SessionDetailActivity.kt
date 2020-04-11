@@ -148,38 +148,6 @@ class SessionDetailActivity : BaseActivity() {
         setSpeakers(session)
         activityDetailBinding.separator.visibility = View.VISIBLE
         activityDetailBinding.separator2.visibility = View.VISIBLE
-
-        val model = createUIModel(userVotes, totalVotes, project)
-        setFeedback(model, project)
-    }
-
-    private fun setFeedback(model: List<VoteModel>, project: Project) {
-        activityDetailBinding.feedbackContainer.setVotes(model) { clickedVoteModel ->
-            val newModel = model.map { if (it.id == clickedVoteModel.id) toggleModel(it, project) else it }
-            setFeedback(newModel, project)
-            GlobalScope.launch {
-                (applicationContext as AndroidMakersApplication).openFeedback.setVote(
-                        openFeedbackProjectId,
-                        sessionId,
-                        clickedVoteModel.id,
-                        if (clickedVoteModel.votedByUser) VoteStatus.Deleted else VoteStatus.Active
-                )
-            }
-        }
-    }
-
-    fun toggleModel(voteModel: VoteModel, project: Project): VoteModel {
-        return if (voteModel.votedByUser) {
-            voteModel.copy(
-                    votedByUser = false,
-                    dots = voteModel.dots.dropLast(1)
-            )
-        } else {
-            voteModel.copy(
-                    votedByUser = true,
-                    dots = voteModel.dots + dots(1, project.chipColors)
-            )
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
