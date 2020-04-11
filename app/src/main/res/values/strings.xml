@@ -1,6 +1,6 @@
 <resources>
 
-    <string name="app_name" translatable="false">Android Makers Paris 2019</string>
+    <string name="app_name" translatable="false">Android Makers Paris 2020</string>
 
     <string name="version" translatable="false">Version %s (%d)</string>
 
@@ -61,7 +61,7 @@
     <string name="venue_floor_plan_tab">Floor Plan</string>
 
     <!--About-->
-    <string name="about_android_makers">Android Makers Paris is a two day event held on April 23rd and 24th, 2019 at Le Beffroi de Montrouge, in Paris, France.
+    <string name="about_android_makers">Android Makers Paris is a two day event held online on April 20th and 21st.
         \n\nJoin us in tackling the present and future of Android with the hottest experts of the domain.
         There\'ll be technical sessions, workshops, debates, networking, plus a chance to demo your project in the Makers Area.
         Android Makers gathers 4 events in 1.
