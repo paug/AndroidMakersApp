@@ -1,6 +1,7 @@
 package fr.paug.androidmakers.manager
 
 import android.util.Log
+import androidx.core.view.OneShotPreDrawListener.add
 import com.google.firebase.firestore.DocumentSnapshot
 import fr.paug.androidmakers.model.*
 import io.openfeedback.android.toFlow
@@ -88,10 +89,19 @@ class AndroidMakersStore {
         }
     }
 
+
+    val allRooms = mapOf(
+            "0" to RoomKt("Track 1"),
+            "1" to RoomKt("Track 2"),
+            "2" to RoomKt("Track 3"),
+            "3" to RoomKt("Track 4"),
+            "all" to RoomKt("All")
+    )
+
     class Agenda(
             val sessions: Map<String, SessionKt>,
             val slots: List<ScheduleSlotKt>,
-            val rooms: List<RoomKt>,
+            val rooms: Map<String, RoomKt>,
             val speakers: Map<String, SpeakerKt>
     )
 
@@ -104,11 +114,7 @@ class AndroidMakersStore {
                 }
         val slotsFlow = getSlotsFlow()
 
-        val roomsFlow = FirebaseSingleton.firestore.collection("schedule-app").document("rooms")
-                .toFlow()
-                .map { result ->
-                    result.toObject(RoomsList::class.java)!!.allRooms
-                }
+        val roomsFlow = flowOf(allRooms)
 
         val speakersFlow = FirebaseSingleton.firestore.collection("speakers")
                 .toFlow()
@@ -148,12 +154,7 @@ class AndroidMakersStore {
                         val endTime = timeSlots[timeSlotIndex + extend].getAsString("endTime")
                         val roomId = when {
                             sessions.size == 1 -> "all"
-                            index == 0 -> "moebius"
-                            index == 1 -> "blin"
-                            index == 2 -> "202"
-                            index == 3 -> "204"
-                            index == 4 -> "office"
-                            else -> throw Exception("no room found")
+                            else -> index.toString()
                         }
 
                         list.add(ScheduleSlotKt(
@@ -216,48 +217,8 @@ class AndroidMakersStore {
                 }
     }
 
-    fun getRooms(callback: (List<RoomKt>) -> Unit) {
-        val allRooms = mutableListOf<RoomKt>()
-        FirebaseSingleton.firestore.collection("schedule-app").document("rooms")
-                .get()
-                .addOnSuccessListener { result ->
-                    Log.e("result", result.toString())
-                    val rooms = result.toObject(RoomsList::class.java)
-                    for (room in rooms!!.allRooms) {
-                        allRooms.add(room)
-                    }
-                    callback.invoke(allRooms)
-                }
-                .addOnFailureListener { exception ->
-                    Log.d(TAG, "get failed with ", exception)
-                }
-    }
-
     fun getRoom(roomId: String): Flow<RoomKt> {
-        return FirebaseSingleton.firestore.collection("schedule-app").document("rooms")
-                .toFlow()
-                .mapNotNull {
-                    it.toObject(RoomsList::class.java)?.allRooms
-                }.mapNotNull {
-                    it.firstOrNull { it.roomId == roomId }
-                }
-    }
-
-    fun getRoom(roomId: String, callback: (RoomKt?) -> Unit) {
-        FirebaseSingleton.firestore.collection("schedule-app").document("rooms")
-                .get()
-                .addOnSuccessListener { result ->
-                    Log.e("result", result.toString())
-                    val rooms = result.toObject(RoomsList::class.java)
-                    for (room in rooms!!.allRooms) {
-                        if (room.roomId == roomId) {
-                            callback.invoke(room)
-                        }
-                    }
-                }
-                .addOnFailureListener { exception ->
-                    Log.d(TAG, "get failed with ", exception)
-                }
+        return flowOf(allRooms[roomId]!!)
     }
 
     companion object {

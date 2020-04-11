@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.manager.AndroidMakersStore
+import fr.paug.androidmakers.model.Room
 import fr.paug.androidmakers.model.RoomKt
 import fr.paug.androidmakers.model.ScheduleSlotKt
 import fr.paug.androidmakers.model.SpeakerKt
@@ -127,7 +128,6 @@ class AgendaFragment : Fragment() {
         val days = getItemsOrdered(itemByDayOfTheYear)
 
         activity?.let {
-            initFilters()
             val adapter = AgendaPagerAdapter(days, it)
             mViewPager?.adapter = adapter
             //applyFilters()
@@ -139,6 +139,8 @@ class AgendaFragment : Fragment() {
             refreshViewsDisplay()
             //rescheduleStarredBlocks()
         }
+
+        updateFilters(agenda.rooms)
     }
 
     private fun getTodayIndex(items: List<DayScheduleKt>?): Int {
@@ -168,7 +170,7 @@ class AgendaFragment : Fragment() {
     private fun getAgendaItems(itemByDayOfTheYear: SparseArray<DayScheduleKt>,
                                calendar: Calendar,
                                scheduleSlot: ScheduleSlotKt,
-                               rooms: List<RoomKt>): ArrayList<ScheduleSessionKt> {
+                               rooms: Map<String, RoomKt>): ArrayList<ScheduleSessionKt> {
         val roomSchedules = getRoomScheduleForDay(itemByDayOfTheYear, calendar, scheduleSlot)
         var roomScheduleForThis: RoomScheduleKt? = null
         for (roomSchedule in roomSchedules) {
@@ -179,8 +181,8 @@ class AgendaFragment : Fragment() {
         }
         if (roomScheduleForThis == null) {
             val agendaScheduleSessions = ArrayList<ScheduleSessionKt>()
-            val room = rooms.filter { it.roomId == scheduleSlot.roomId }.first()
-            val titleRoom = room.roomName
+            val room = rooms.get(scheduleSlot.roomId)!!
+            val titleRoom = room.name
             roomScheduleForThis = RoomScheduleKt(scheduleSlot.roomId, titleRoom, agendaScheduleSessions)
             roomSchedules.add(roomScheduleForThis)
             roomSchedules.sort()
@@ -246,7 +248,8 @@ class AgendaFragment : Fragment() {
         }
     }
 
-    private fun initFilters() {
+    private fun updateFilters(rooms: Map<String, RoomKt>) {
+        mFiltersView?.removeAllViews()
         mFiltersView?.setOnTouchListener { v, event ->
             // a dummy touch listener that makes sure we don't click through the filter list
             true
@@ -258,13 +261,9 @@ class AgendaFragment : Fragment() {
         addFilter(SessionFilter(LANGUAGE, "French"), null)
         addFilter(SessionFilter(LANGUAGE, "English"), null)
 
-        AndroidMakersStore().getRooms { rooms ->
-            addFilterHeader(R.string.rooms)
-            for (room in rooms) {
-                if (!TextUtils.isEmpty(room.roomName)) {
-                    addFilter(SessionFilter(ROOM, room.roomId), room.roomName)
-                }
-            }
+        addFilterHeader(R.string.rooms)
+        rooms.forEach {
+            addFilter(SessionFilter(ROOM, it.key), it.value.name)
         }
     }
 
