@@ -44,6 +44,6 @@
             android:textColor="#fff"
             app:layout_constraintLeft_toRightOf="@+id/imageView"
             app:layout_constraintTop_toBottomOf="@+id/title"
-            tools:text="Apr, 2th 2019" />
+            tools:text="Apr, 2th 2020" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
