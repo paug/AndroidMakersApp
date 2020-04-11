@@ -12,11 +12,8 @@ import fr.paug.androidmakers.ui.fragment.AboutFragment
 import fr.paug.androidmakers.ui.fragment.AgendaFragment
 import fr.paug.androidmakers.ui.fragment.VenuePagerFragment
 import fr.paug.androidmakers.util.TimeUtils
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 
 class MainActivity : BaseActivity() {
@@ -26,7 +23,7 @@ class MainActivity : BaseActivity() {
     private var navigation: BottomNavigationView? = null
 
     private var scope = object : CoroutineScope {
-        override val coroutineContext = Dispatchers.Main
+        override val coroutineContext = Dispatchers.Main + Job()
     }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
