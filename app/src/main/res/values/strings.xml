@@ -98,4 +98,5 @@
     <string name="aog_title">Google Assistant Action</string>
     <string name="aog_description">Discover the Google Assistant Action!</string>
     <string name="aog_button">Launch Android Makers Action</string>
+    <string name="feedbackWaiting">This talk cannot be reviewed yet. Please come back after attending it.</string>
 </resources>

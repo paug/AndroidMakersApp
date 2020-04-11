@@ -113,7 +113,15 @@
                 <io.openfeedback.android.view.SessionFeedbackView
                     android:id="@+id/feedbackContainer"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/feedbackWaiting"
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:text="@string/feedbackWaiting" />
 
                 <View
                     android:id="@+id/separator2"

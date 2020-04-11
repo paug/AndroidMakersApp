@@ -31,10 +31,8 @@ import fr.paug.androidmakers.ui.util.SessionFilter
 import fr.paug.androidmakers.ui.util.SessionFilter.FilterType.*
 import fr.paug.androidmakers.util.EmojiUtils
 import fr.paug.androidmakers.util.TimeUtils
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -54,7 +52,7 @@ class AgendaFragment : Fragment() {
     private val mCheckBoxOnCheckedChangeListener = CompoundButton.OnCheckedChangeListener { buttonView, isChecked -> applyFilters() }
 
     private var scope = object : CoroutineScope {
-        override val coroutineContext = Dispatchers.Main
+        override val coroutineContext = Dispatchers.Main + Job()
     }
 
     //region Fragment Implementation
@@ -309,6 +307,11 @@ class AgendaFragment : Fragment() {
         }
 
         (view.findViewById<View>(R.id.name) as TextView).text = name
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        scope.cancel()
     }
 
     private fun addFilterHeader(@StringRes titleResId: Int) {
