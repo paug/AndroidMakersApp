@@ -115,8 +115,8 @@ class SessionDetailActivity : BaseActivity() {
                 sessionEndDateInMillis,
                 DateUtils.FORMAT_SHOW_WEEKDAY or DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_YEAR,
                 null).toString()
-        sessionDateAndRoom = if (!TextUtils.isEmpty(room.roomName))
-            getString(R.string.sessionDateWithRoomPlaceholder, sessionDate, room.roomName)
+        sessionDateAndRoom = if (!TextUtils.isEmpty(room.name))
+            getString(R.string.sessionDateWithRoomPlaceholder, sessionDate, room.name)
         else
             sessionDate
         activityDetailBinding.sessionDateAndRoomTextView.text = sessionDateAndRoom
@@ -369,7 +369,7 @@ class SessionDetailActivity : BaseActivity() {
         }
 
         fun startActivity(context: Context, sessionId: String, sessionStartDateInMillis: Long,
-                          sessionEndDateInMillis: Long, roomId: String) {
+                          sessionEndDateInMillis: Long, roomId: String?) {
             val intent = Intent(context, SessionDetailActivity::class.java)
             intent.putExtra(PARAM_SESSION_ID, sessionId)
             intent.putExtra(PARAM_SESSION_START_DATE, sessionStartDateInMillis)
