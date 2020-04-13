@@ -57,6 +57,9 @@ class AboutFragment : Fragment(), View.OnClickListener {
                         return@addSnapshotListener
                     }
                     if (snapshot != null) {
+                        while (fragmentAboutBinding!!.sponsorsLayout.childCount > 1) {
+                            fragmentAboutBinding!!.sponsorsLayout.removeViewAt(fragmentAboutBinding!!.sponsorsLayout.childCount - 1)
+                        }
                         for (document in snapshot) {
                             Log.d("AboutFragment", document.id + " => " + document.data)
                             val partnerCollection = document.toObject(PartnerCollection::class.java)
