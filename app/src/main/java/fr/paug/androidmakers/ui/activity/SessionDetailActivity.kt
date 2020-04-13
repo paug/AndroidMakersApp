@@ -140,6 +140,20 @@ class SessionDetailActivity : BaseActivity() {
         setActionBar(session)
         setSpeakers(session)
 
+        if (session.platformUrl  != null) {
+            activityDetailBinding.watchButton.visibility = View.VISIBLE
+            activityDetailBinding.watchButton.setOnClickListener {
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(session.platformUrl)))
+            }
+        }
+
+        if (session.slido  != null) {
+            activityDetailBinding.slidoButton.visibility = View.VISIBLE
+            activityDetailBinding.slidoButton.setOnClickListener {
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(session.slido)))
+            }
+        }
+
         activityDetailBinding.separator2.visibility = View.VISIBLE
     }
 

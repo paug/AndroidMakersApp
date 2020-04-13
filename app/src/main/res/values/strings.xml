@@ -94,4 +94,6 @@
     <string name="aog_description">Discover the Google Assistant Action!</string>
     <string name="aog_button">Launch Android Makers Action</string>
     <string name="feedbackWaiting">This talk cannot be reviewed yet. Please come back after attending it.</string>
+    <string name="watchOnThePlatform">Watch this talk on the platform</string>
+    <string name="askAQuestionOnSlido">Ask a question to the speaker on Slido</string>
 </resources>

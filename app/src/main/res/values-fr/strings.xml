@@ -82,4 +82,7 @@
     <string name="aog_button">Lancer l\'Action Android Makers</string>
     <string name="feedbackWaiting">Revenez plus tard pour donner votre retour.</string>
 
+    <string name="watchOnThePlatform">Regarder sur la plateforme</string>
+    <string name="askAQuestionOnSlido">Poser une question sur Slido</string>
+
 </resources>

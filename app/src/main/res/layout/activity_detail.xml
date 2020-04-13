@@ -53,6 +53,13 @@
                         android:textStyle="bold"
                         tools:text="Date" />
 
+                    <Button
+                        android:id="@+id/watchButton"
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/watchOnThePlatform"
+                        />
                     <TextView
                         android:id="@+id/sessionDescriptionTextView"
                         android:layout_width="wrap_content"
@@ -100,6 +107,16 @@
                     </org.apmem.tools.layouts.FlowLayout>
 
                 </LinearLayout>
+
+                <Button
+                    android:id="@+id/slidoButton"
+                    android:visibility="visible"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#fff"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:text="@string/askAQuestionOnSlido"
+                    />
 
                 <View
                     android:id="@+id/separator"
