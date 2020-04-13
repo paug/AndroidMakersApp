@@ -264,7 +264,8 @@ class AgendaFragment : Fragment() {
         addFilter(SessionFilter(LANGUAGE, "English"), null)
 
         addFilterHeader(R.string.rooms)
-        rooms.forEach {
+        // 4 because the rooms are hardcoded and we don't want to display too many
+        rooms.entries.take(4).forEach {
             addFilter(SessionFilter(ROOM, it.key), it.value.name)
         }
     }
