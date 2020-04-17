@@ -147,7 +147,7 @@ class SessionDetailActivity : BaseActivity() {
             }
         }
 
-        if (session.slido  != null) {
+        if (session.slido != null) {
             activityDetailBinding.slidoButton.visibility = View.VISIBLE
             activityDetailBinding.slidoButton.setOnClickListener {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(session.slido)))
