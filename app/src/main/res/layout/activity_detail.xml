@@ -117,7 +117,7 @@
                     android:backgroundTint="@color/colorPrimary"
                     android:text="@string/askAQuestionOnSlido"
                     android:textColor="#fff"
-                    android:visibility="visible" />
+                    android:visibility="gone" />
 
                 <View
                     android:id="@+id/separator"

@@ -10,7 +10,7 @@ plugins {
 
 val versionMajor = 1
 val versionMinor = 2
-val versionPatch = 8
+val versionPatch = 9
 
 fun checkGoogleServices() {
     val target = project.file("google-services.json")
