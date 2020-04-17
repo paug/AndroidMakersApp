@@ -53,13 +53,6 @@
                         android:textStyle="bold"
                         tools:text="Date" />
 
-                    <Button
-                        android:id="@+id/watchButton"
-                        android:visibility="gone"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/watchOnThePlatform"
-                        />
                     <TextView
                         android:id="@+id/sessionDescriptionTextView"
                         android:layout_width="wrap_content"
@@ -109,14 +102,22 @@
                 </LinearLayout>
 
                 <Button
-                    android:id="@+id/slidoButton"
-                    android:visibility="visible"
+                    android:id="@+id/watchButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:text="@string/watchOnThePlatform"
                     android:textColor="#fff"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/slidoButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:backgroundTint="@color/colorPrimary"
                     android:text="@string/askAQuestionOnSlido"
-                    />
+                    android:textColor="#fff"
+                    android:visibility="visible" />
 
                 <View
                     android:id="@+id/separator"
@@ -135,10 +136,10 @@
                 <TextView
                     android:id="@+id/feedbackWaiting"
                     android:layout_width="match_parent"
-                    android:visibility="gone"
-                    android:gravity="center"
                     android:layout_height="wrap_content"
-                    android:text="@string/feedbackWaiting" />
+                    android:gravity="center"
+                    android:text="@string/feedbackWaiting"
+                    android:visibility="gone" />
 
                 <View
                     android:id="@+id/separator2"
