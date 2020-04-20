@@ -64,8 +64,8 @@ extensions.findByType(BaseExtension::class.java)!!.apply {
 
     buildTypes {
         getByName("release") {
-            isMinifyEnabled = false
-            isShrinkResources = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
             if (f.exists()) {
                 signingConfig = signingConfigs.getByName("release")
