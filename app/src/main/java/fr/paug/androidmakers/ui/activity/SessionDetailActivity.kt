@@ -140,7 +140,7 @@ class SessionDetailActivity : BaseActivity() {
         setActionBar(session)
         setSpeakers(session)
 
-        if (session.platformUrl  != null) {
+        if (session.platformUrl != null) {
             activityDetailBinding.watchButton.visibility = View.VISIBLE
             activityDetailBinding.watchButton.setOnClickListener {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(session.platformUrl)))
@@ -218,27 +218,30 @@ class SessionDetailActivity : BaseActivity() {
     }
 
     private fun setSpeakers(session: SessionKt) {
-        val sessionSpeakerLayout = findViewById<ViewGroup>(R.id.sessionSpeakerLayout)
-        sessionSpeakerLayout.removeAllViews()
-        session.speakers.also { speakers ->
-            if (speakers.isNotEmpty()) {
-                for (speakerId in speakers) {
-                    AndroidMakersStore().getSpeaker(speakerId) { speaker ->
-                        if (speaker != null) {
-                            speakersList.add(speaker.getFullNameAndCompany())
 
-                            val speakerInfoElementBinding = DataBindingUtil.inflate<DetailViewSpeakerInfoElementBinding>(layoutInflater,
-                                    R.layout.detail_view_speaker_info_element, null,
-                                    false)
-                            speakerInfoElementBinding.speakerBio.movementMethod = LinkMovementMethod.getInstance()
-                            speakerInfoElementBinding.speaker = speaker
-
-                            setSpeakerSocialNetworkHandle(speaker, speakerInfoElementBinding)
-
-                            sessionSpeakerLayout.addView(speakerInfoElementBinding.root)
+        scope.launch(Dispatchers.Main) {
+            val speakers = session.speakers.filter { !it.isNullOrBlank() }
+                    .map {
+                        async {
+                            AndroidMakersStore().getSpeaker(it)
                         }
                     }
-                }
+                    .awaitAll()
+                    .filterNotNull()
+            val sessionSpeakerLayout = findViewById<ViewGroup>(R.id.sessionSpeakerLayout)
+            sessionSpeakerLayout.removeAllViews()
+
+            speakers.forEach {speaker ->
+                speakersList.add(speaker.getFullNameAndCompany())
+
+                val speakerInfoElementBinding = DataBindingUtil.inflate<DetailViewSpeakerInfoElementBinding>(layoutInflater,
+                        R.layout.detail_view_speaker_info_element, null,
+                        false)
+                speakerInfoElementBinding.speakerBio.movementMethod = LinkMovementMethod.getInstance()
+                speakerInfoElementBinding.speaker = speaker
+
+                setSpeakerSocialNetworkHandle(speaker, speakerInfoElementBinding)
+                sessionSpeakerLayout.addView(speakerInfoElementBinding.root)
             }
         }
     }

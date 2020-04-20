@@ -9,6 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashMap
@@ -173,36 +174,10 @@ class AndroidMakersStore {
         return df.format(d)
     }
 
-    fun getSpeakers(callback: (HashMap<String, SpeakerKt>) -> Unit) {
-        val allSpeakers = HashMap<String, SpeakerKt>()
-        FirebaseSingleton.firestore.collection("speakers").get()
-                .addOnSuccessListener { result ->
-                    for (document in result) {
-                        val speaker = document.toObject(SpeakerKt::class.java)
-                        allSpeakers[document.id] = speaker
-                        Log.e("speaker", speaker.toString())
-                    }
-                    callback.invoke(allSpeakers)
-                }
-                .addOnFailureListener { exception ->
-                    Log.d(TAG, "get failed with ", exception)
-                }
-    }
-
-    fun getSpeaker(id: String, callback: (SpeakerKt?) -> Unit) {
-        FirebaseSingleton.firestore.collection("speakers").document(id).get()
-                .addOnSuccessListener { document ->
-                    if (document != null) {
-                        Log.d(TAG, "DocumentSnapshot data: " + document.data)
-                        val speaker = document.toObject(SpeakerKt::class.java)
-                        callback.invoke(speaker)
-                    } else {
-                        Log.d(TAG, "No such document")
-                    }
-                }
-                .addOnFailureListener { exception ->
-                    Log.d(TAG, "get failed with ", exception)
-                }
+    suspend fun getSpeaker(id: String): SpeakerKt? {
+        return FirebaseSingleton.firestore.collection("speakers").document(id).get()
+                .await()
+                .toObject(SpeakerKt::class.java)
     }
 
     fun getRoom(roomId: String): Flow<RoomKt> {
