@@ -10,7 +10,7 @@ plugins {
 
 val versionMajor = 1
 val versionMinor = 2
-val versionPatch = 9
+val versionPatch = 10
 
 fun checkGoogleServices() {
     val target = project.file("google-services.json")
@@ -64,8 +64,8 @@ extensions.findByType(BaseExtension::class.java)!!.apply {
 
     buildTypes {
         getByName("release") {
-            isMinifyEnabled = true
-            isShrinkResources = true
+            isMinifyEnabled = false
+            isShrinkResources = false
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
             if (f.exists()) {
                 signingConfig = signingConfigs.getByName("release")
