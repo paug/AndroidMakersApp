@@ -235,9 +235,9 @@ class AgendaFragment : Fragment() {
     }
 
     private fun getSpeakers(agenda: AndroidMakersStore.Agenda, sessionId: String): List<SpeakerKt> {
-        return agenda.sessions.get(sessionId)!!.speakers.map { speakerId ->
-            agenda.speakers.get(speakerId)!!
-        }
+        return agenda.sessions.get(sessionId)?.speakers?.mapNotNull { speakerId ->
+            agenda.speakers.get(speakerId)
+        } ?: emptyList()
     }
     //endregion
 
