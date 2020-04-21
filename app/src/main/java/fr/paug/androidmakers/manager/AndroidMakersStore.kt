@@ -70,7 +70,7 @@ class AndroidMakersStore {
                     DAY1 to result1,
                     DAY2 to result2
             ))
-        }
+        }.filterNotNull()
     }
 
     val allRooms = mapOf(
@@ -124,10 +124,13 @@ class AndroidMakersStore {
         }
     }
 
-    private fun convertResults(results: Map<String, DocumentSnapshot>): List<ScheduleSlotKt> {
+    private fun convertResults(results: Map<String, DocumentSnapshot>): List<ScheduleSlotKt>? {
         val list = mutableListOf<ScheduleSlotKt>()
         for (result in results) {
-            val day = result.value.data!!
+            val day = result.value.data
+            if (day == null) {
+                return null
+            }
             val timeSlots = day.getAsListOfMaps("timeslots")
 
             timeSlots.forEachIndexed { timeSlotIndex, timeSlot ->
@@ -181,7 +184,7 @@ class AndroidMakersStore {
     }
 
     fun getRoom(roomId: String): Flow<RoomKt> {
-        return flowOf(allRooms[roomId]!!)
+        return flowOf(allRooms[roomId]).filterNotNull()
     }
 
     companion object {
