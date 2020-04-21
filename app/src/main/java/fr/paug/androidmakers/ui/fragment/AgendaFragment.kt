@@ -121,9 +121,15 @@ class AgendaFragment : Fragment() {
                     calendar = calendar,
                     scheduleSlot = scheduleSlot,
                     rooms = agenda.rooms)
+
+            val session = agenda.sessions.get(scheduleSlot.sessionId)
+            if (session == null) {
+                // this session has disappeared, skip it
+                continue
+            }
             agendaScheduleSessions.add(ScheduleSessionKt(scheduleSlot,
-                    agenda.sessions.get(scheduleSlot.sessionId)!!.title,
-                    agenda.sessions.get(scheduleSlot.sessionId)!!.language,
+                    session.title,
+                    session.language,
                     getSpeakers(agenda, scheduleSlot.sessionId)))
         }
 
