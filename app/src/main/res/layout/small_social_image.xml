@@ -1,34 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.percentlayout.widget.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:padding="5dip">
 
-    <data>
-
-        <import type="android.text.Html" />
-
-        <variable
-            name="socialHandle"
-            type="fr.paug.androidmakers.model.SocialNetworkHandle" />
-    </data>
-
-    <androidx.percentlayout.widget.PercentRelativeLayout
+    <ImageView
+        android:id="@+id/image"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:padding="5dip">
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:contentDescription="@string/ImageDesc_social_network_image"
+        android:scaleType="fitCenter"
+        app:layout_aspectRatio="100%"
+        app:layout_heightPercent="100%" />
 
-        <ImageView
-            android:id="@+id/image"
-            android:background="?selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:contentDescription="@string/ImageDesc_social_network_image"
-            app:img_src="@{socialHandle.networkType.getSocialNetworkIcon}"
-            android:scaleType="fitCenter"
-            app:layout_aspectRatio="100%"
-            app:layout_heightPercent="100%"
-            tools:src="@drawable/google_plus"/>
-
-    </androidx.percentlayout.widget.PercentRelativeLayout>
-
-</layout>
+</androidx.percentlayout.widget.PercentRelativeLayout>
