@@ -332,13 +332,13 @@ class AgendaFragment : Fragment() {
 
         var menuItem: MenuItem
 
-        menuItem = menu.add(0, R.id.about, 0, activity!!.getString(R.string.title_about))!!
+        menuItem = menu.add(0, R.id.about, 0, requireActivity().getString(R.string.title_about))!!
         val drawable = resources.getDrawable(R.drawable.ic_info_outline_black_24dp)
         DrawableCompat.setTint(drawable, Color.WHITE)
         menuItem.setIcon(drawable)
         menuItem.setShowAsAction(SHOW_AS_ACTION_ALWAYS)
 
-        menuItem = menu.add(0, R.id.filter, 0, activity!!.getString(R.string.filter))!!
+        menuItem = menu.add(0, R.id.filter, 0, requireActivity().getString(R.string.filter))!!
         menuItem.setIcon(R.drawable.ic_filter_list_white_24dp)
         menuItem.setShowAsAction(SHOW_AS_ACTION_ALWAYS)
     }
@@ -355,7 +355,7 @@ class AgendaFragment : Fragment() {
             }
             R.id.about -> {
                 startActivity(Intent().apply {
-                    setClass(context, AboutActivity::class.java)
+                    setClass(requireContext(), AboutActivity::class.java)
                 })
             }
         }
