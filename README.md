@@ -14,8 +14,3 @@ This app uses Firebase realtime database for the content
 This app was built by Paug members.<br>
 Help us improve the app if you want, PR welcome!
 
-<h2>TODO</h2>
-
-- Update for 2020 !
-- Feedback for sessions
-- Go see the dashboard in Projects

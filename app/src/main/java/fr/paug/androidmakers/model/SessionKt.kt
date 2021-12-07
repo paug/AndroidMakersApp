@@ -7,5 +7,7 @@ data class SessionKt(
         val language: String = "",
         val title: String = "",
         val tags: List<String> = listOf(),
-        val videoURL: String = ""
+        val videoURL: String = "",
+        val slido: String? = null,
+        val platformUrl: String? = null
 )

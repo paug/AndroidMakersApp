@@ -1,7 +1,8 @@
 package fr.paug.androidmakers.util.sticky_headers;
 
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * From https://github.com/Doist/RecyclerViewExtensions

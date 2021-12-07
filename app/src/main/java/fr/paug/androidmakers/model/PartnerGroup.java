@@ -1,7 +1,8 @@
 package fr.paug.androidmakers.model;
 
-import androidx.annotation.StringRes;
 import android.text.TextUtils;
+
+import androidx.annotation.StringRes;
 
 import java.util.List;
 
