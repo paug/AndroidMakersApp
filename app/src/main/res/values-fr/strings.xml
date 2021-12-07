@@ -54,14 +54,9 @@
     <string name="venue_floor_plan_tab">Plan</string>
 
     <!--About-->
-    <string name="about_android_makers">Android Makers Paris est un événement de deux jours qui se tiendra les 23 et 24 avril 2019 au Beffroi de Montrouge, à Paris, en France.
+    <string name="about_android_makers">Android Makers Paris est un événement 100% en ligne de deux jours qui se tiendra les 20 et 21 avril.
         \n\nRejoignez-nous pour aborder le présent et futur d\'Android avec les meilleurs experts du domaine.
-        Il y aura des sessions techniques, des ateliers, des débats, du réseautage, plus une chance de présenter votre projet dans la zone Makers.
-        Android Makers rassemble 4 événements en 1.
-        \n\n∙ Conférences: Tech Talks de 40min par des super conférenciers et Lightning Talks de 20min sur le futur d\'Android.
-        \n∙ Atelier: Entrainez-vous sur les nouvelles méthodes, découvrez et construisez votre application pendant les ateliers.
-        \n∙ Makers Area: promenez vous, jouez et découvrez les dernières innovations en matière de matériel et de logiciels développés par les fabricants.
-        \n∙ Party! : Rencontrons nous, parlons, buvons et faisons la fête!
+        Il y aura des sessions techniques, des ateliers et des rencontres 1:1 avec vos speakers préférés.
         \n\nTous les talks seront enregistrées, et mis sur la chaîne YouTube.</string>
 
     <string name="social">Social</string>
@@ -85,17 +80,9 @@
     <string name="aog_title">Action Google Assistant</string>
     <string name="aog_description">Découvrez l\'Action pour le Google Assistant !</string>
     <string name="aog_button">Lancer l\'Action Android Makers</string>
+    <string name="feedbackWaiting">Revenez plus tard pour donner votre retour.</string>
 
-    <string name="nougat_needed">Ce téléphone n\'est pas compatible ARCore ou n\'a pas la dernière version de l\'apk ARCore.</string>
-    <string name="flash_droid_explanation">14 bugdroids se sont cachés avec leurs desserts 🍩🍦 dans la conférence\nFlashe les tous et gagne du chocolat\n🍫🍫\n!!\n\nGood luck!</string>
-    <string name="help1">14 desserts 🍩🍦 correspondant chacuns à une verison d\'Android sont cachés dans la Conférence.\n\nFlash les tous et gagne du chocolat 🍫🍫. Ils ressemblent à ça: </string>
-    <string name="help2">Quelques trucs et astuces:</string>
-    <string name="help3">  • Tous les desserts sont dans des zones accessibles à tous.\n  • Pas besoin de déplacer ou de de démonter quoi que ce soit, le beffroi vous remercie!\n  • Certains sont imprimés mais ils peuvent être affichés d\'autres manières, tout est possible!\n  • Le gagnant sera tiré au sort parmi les vainqueurs. Pas besoin de rusher, le tirage au sort aura lieu à la fin de la conférence.\n  • Si tu ne sais pas par où commencer, ça peut être bien d\'aller récupérer ton t-shirt 👕😊.</string>
-    <string name="lets_go">Login Google</string>
-    <string name="login_error">Login Error</string>
-    <string name="scanPastry">Par ici les desserts</string>
-    <string name="helpTitle">Dessert Hunt</string>
-    <string name="congratulations">Félicitations !!</string>
-    <string name="congratulations2">Bien joué ! Résultats finaux et annonces du vainqueur à la fin de la conférence.\n\nVous pouvez reprendre une activité normale.</string>
+    <string name="watchOnThePlatform">Regarder sur la plateforme</string>
+    <string name="askAQuestionOnSlido">Poser une question sur Slido</string>
 
 </resources>

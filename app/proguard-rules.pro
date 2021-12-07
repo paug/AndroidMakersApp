@@ -9,8 +9,8 @@
 -dontwarn org.slf4j.**
 
 -keep class fr.paug.androidmakers.model.** { *; }
+-keep class io.openfeedback.android.model.** { *; }
 
--keep class com.google.ar.** { *; }
--keep class com.google.vr.** { *; }
+-keepattributes Signature
 
 -dontwarn com.google.ar.**

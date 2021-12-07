@@ -1,6 +1,7 @@
 package fr.paug.androidmakers.ui.fragment
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.SparseArray
@@ -10,18 +11,18 @@ import android.widget.CheckBox
 import android.widget.CompoundButton
 import android.widget.TextView
 import androidx.annotation.StringRes
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import fr.paug.androidmakers.R
-import fr.paug.androidmakers.flash_droid.FlashDroidActivity
 import fr.paug.androidmakers.manager.AndroidMakersStore
+import fr.paug.androidmakers.model.Room
 import fr.paug.androidmakers.model.RoomKt
 import fr.paug.androidmakers.model.ScheduleSlotKt
-import fr.paug.androidmakers.model.SessionKt
 import fr.paug.androidmakers.model.SpeakerKt
-import fr.paug.androidmakers.service.SessionAlarmService
+import fr.paug.androidmakers.ui.activity.AboutActivity
 import fr.paug.androidmakers.ui.adapter.AgendaPagerAdapter
 import fr.paug.androidmakers.ui.adapter.DayScheduleKt
 import fr.paug.androidmakers.ui.adapter.RoomScheduleKt
@@ -30,11 +31,12 @@ import fr.paug.androidmakers.ui.util.SessionFilter
 import fr.paug.androidmakers.ui.util.SessionFilter.FilterType.*
 import fr.paug.androidmakers.util.EmojiUtils
 import fr.paug.androidmakers.util.TimeUtils
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 class AgendaFragment : Fragment() {
 
@@ -49,10 +51,9 @@ class AgendaFragment : Fragment() {
 
     private val mCheckBoxOnCheckedChangeListener = CompoundButton.OnCheckedChangeListener { buttonView, isChecked -> applyFilters() }
 
-    var allSessions = HashMap<String, SessionKt>()
-    var allSlots = listOf<ScheduleSlotKt>()
-    var allRooms = listOf<RoomKt>()
-    var allSpeakers = HashMap<String, SpeakerKt>()
+    private var scope = object : CoroutineScope {
+        override val coroutineContext = Dispatchers.Main + Job()
+    }
 
     //region Fragment Implementation
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -102,38 +103,39 @@ class AgendaFragment : Fragment() {
 
     //region Schedule
     private fun loadAgenda() {
-        AndroidMakersStore().getSessions { sessions ->
-            allSessions = sessions
-            AndroidMakersStore().getSlots { slots ->
-                allSlots = slots
-                AndroidMakersStore().getRooms { rooms ->
-                    allRooms = rooms
-                    AndroidMakersStore().getSpeakers { speakers ->
-                        allSpeakers = speakers
-                        onAgendaLoaded()
-                    }
-                }
+        scope.launch {
+            AndroidMakersStore().getAgendaFlow().collect {
+                onAgendaLoaded(it)
             }
         }
     }
 
-    private fun onAgendaLoaded() {
+    private fun onAgendaLoaded(agenda: AndroidMakersStore.Agenda) {
         val itemByDayOfTheYear = SparseArray<DayScheduleKt>()
 
         val calendar = Calendar.getInstance()
-        val scheduleSlots = allSlots
+        val scheduleSlots = agenda.slots
         for (scheduleSlot in scheduleSlots) {
-            val agendaScheduleSessions = getAgendaItems(itemByDayOfTheYear, calendar, scheduleSlot)
+            val agendaScheduleSessions = getAgendaItems(
+                    itemByDayOfTheYear = itemByDayOfTheYear,
+                    calendar = calendar,
+                    scheduleSlot = scheduleSlot,
+                    rooms = agenda.rooms)
+
+            val session = agenda.sessions.get(scheduleSlot.sessionId)
+            if (session == null) {
+                // this session has disappeared, skip it
+                continue
+            }
             agendaScheduleSessions.add(ScheduleSessionKt(scheduleSlot,
-                    getTitle(scheduleSlot.sessionId),
-                    getLanguage(scheduleSlot.sessionId),
-                    getSpeakers(scheduleSlot.sessionId)))
+                    session.title,
+                    session.language,
+                    getSpeakers(agenda, scheduleSlot.sessionId)))
         }
 
         val days = getItemsOrdered(itemByDayOfTheYear)
 
         activity?.let {
-            initFilters()
             val adapter = AgendaPagerAdapter(days, it)
             mViewPager?.adapter = adapter
             //applyFilters()
@@ -145,6 +147,8 @@ class AgendaFragment : Fragment() {
             refreshViewsDisplay()
             //rescheduleStarredBlocks()
         }
+
+        updateFilters(agenda.rooms)
     }
 
     private fun getTodayIndex(items: List<DayScheduleKt>?): Int {
@@ -173,7 +177,8 @@ class AgendaFragment : Fragment() {
 
     private fun getAgendaItems(itemByDayOfTheYear: SparseArray<DayScheduleKt>,
                                calendar: Calendar,
-                               scheduleSlot: ScheduleSlotKt): ArrayList<ScheduleSessionKt> {
+                               scheduleSlot: ScheduleSlotKt,
+                               rooms: Map<String, RoomKt>): ArrayList<ScheduleSessionKt> {
         val roomSchedules = getRoomScheduleForDay(itemByDayOfTheYear, calendar, scheduleSlot)
         var roomScheduleForThis: RoomScheduleKt? = null
         for (roomSchedule in roomSchedules) {
@@ -184,8 +189,8 @@ class AgendaFragment : Fragment() {
         }
         if (roomScheduleForThis == null) {
             val agendaScheduleSessions = ArrayList<ScheduleSessionKt>()
-            val room = allRooms.filter { it.roomId == scheduleSlot.roomId }.first()
-            val titleRoom = room.roomName
+            val room = rooms.get(scheduleSlot.roomId)!!
+            val titleRoom = room.name
             roomScheduleForThis = RoomScheduleKt(scheduleSlot.roomId, titleRoom, agendaScheduleSessions)
             roomSchedules.add(roomScheduleForThis)
             roomSchedules.sort()
@@ -229,26 +234,10 @@ class AgendaFragment : Fragment() {
         return items
     }
 
-    private fun getTitle(sessionId: String): String {
-        val session = allSessions[sessionId]
-        return session!!.title
-    }
-
-    private fun getLanguage(sessionId: String): String {
-        val session = allSessions[sessionId]
-        return session!!.language
-    }
-
-    private fun getSpeakers(sessionId: String): ArrayList<SpeakerKt> {
-        val speakers = arrayListOf<SpeakerKt>()
-        val session = allSessions[sessionId]
-        if (session?.speakers?.isNotEmpty() == true) {
-            session.speakers.forEachIndexed { index, speakerId ->
-                val speakerOfSession = allSpeakers[speakerId]
-                speakers.add(speakerOfSession!!)
-            }
-        }
-        return speakers
+    private fun getSpeakers(agenda: AndroidMakersStore.Agenda, sessionId: String): List<SpeakerKt> {
+        return agenda.sessions.get(sessionId)?.speakers?.mapNotNull { speakerId ->
+            agenda.speakers.get(speakerId)
+        } ?: emptyList()
     }
     //endregion
 
@@ -267,7 +256,8 @@ class AgendaFragment : Fragment() {
         }
     }
 
-    private fun initFilters() {
+    private fun updateFilters(rooms: Map<String, RoomKt>) {
+        mFiltersView?.removeAllViews()
         mFiltersView?.setOnTouchListener { v, event ->
             // a dummy touch listener that makes sure we don't click through the filter list
             true
@@ -279,13 +269,10 @@ class AgendaFragment : Fragment() {
         addFilter(SessionFilter(LANGUAGE, "French"), null)
         addFilter(SessionFilter(LANGUAGE, "English"), null)
 
-        AndroidMakersStore().getRooms { rooms ->
-            addFilterHeader(R.string.rooms)
-            for (room in rooms) {
-                if (!TextUtils.isEmpty(room.roomName)) {
-                    addFilter(SessionFilter(ROOM, room.roomId), room.roomName)
-                }
-            }
+        addFilterHeader(R.string.rooms)
+        // 4 because the rooms are hardcoded and we don't want to display too many
+        rooms.entries.take(4).forEach {
+            addFilter(SessionFilter(ROOM, it.key), it.value.name)
         }
     }
 
@@ -329,17 +316,26 @@ class AgendaFragment : Fragment() {
         (view.findViewById<View>(R.id.name) as TextView).text = name
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        scope.cancel()
+    }
+
     private fun addFilterHeader(@StringRes titleResId: Int) {
         val view = LayoutInflater.from(activity).inflate(R.layout.filter_header, mDrawerLayout, false)
         (view as TextView).setText(titleResId)
         mFiltersView?.addView(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater?) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
 
-        var menuItem = menu.add(0, R.id.flash_droid_menu, 0, "FlashDroid")!!
-        menuItem.setIcon(R.drawable.ic_egg)
+        var menuItem: MenuItem
+
+        menuItem = menu.add(0, R.id.about, 0, activity!!.getString(R.string.title_about))!!
+        val drawable = resources.getDrawable(R.drawable.ic_info_outline_black_24dp)
+        DrawableCompat.setTint(drawable, Color.WHITE)
+        menuItem.setIcon(drawable)
         menuItem.setShowAsAction(SHOW_AS_ACTION_ALWAYS)
 
         menuItem = menu.add(0, R.id.filter, 0, activity!!.getString(R.string.filter))!!
@@ -348,7 +344,7 @@ class AgendaFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
+        when (item.itemId) {
             R.id.filter -> {
                 if (mDrawerLayout!!.isDrawerOpen(GravityCompat.END)) {
                     mDrawerLayout!!.closeDrawer(GravityCompat.END)
@@ -357,14 +353,12 @@ class AgendaFragment : Fragment() {
                 }
                 return true
             }
-            R.id.flash_droid_menu -> {
-                val intent = Intent()
-                intent.setClass(context!!, FlashDroidActivity::class.java)
-                startActivity(intent)
-                return true
+            R.id.about -> {
+                startActivity(Intent().apply {
+                    setClass(context, AboutActivity::class.java)
+                })
             }
         }
         return false
     }
-    //endregion
 }

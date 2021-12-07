@@ -1,4 +1,5 @@
-#Global git ignore file, which should be the only file which contains ignored items
+buildconfig.properties
+
 .DS_Store
 .DS_Store?
 
@@ -27,11 +28,12 @@ build/
 
 *.apk
 
-app/src/prod/google-services.json
-app/src/preprod/google-services.json
+app/google-services.json
 
 app/prod/release/output.json
-keystore.jks
+/app/keystore.jks
+/app/keystore.properties
+
 /ar/*.png
 /app/prod
 /captures

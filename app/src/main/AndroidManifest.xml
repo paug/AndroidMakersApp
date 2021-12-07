@@ -39,10 +39,6 @@
             android:name="google_analytics_adid_collection_enabled"
             android:value="false"/>
 
-        <meta-data
-            android:name="com.google.ar.core"
-            android:value="optional"/>
-
         <activity
             android:name=".ui.activity.MainActivity"
             android:configChanges="orientation|screenSize"
@@ -82,26 +78,10 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ui.activity.AboutActivity"/>
         <activity
             android:name=".ui.activity.SessionDetailActivity"
             android:configChanges="orientation|screenSize"/>
-
-        <activity
-            android:name=".flash_droid.FlashDroidActivity"
-            android:configChanges="orientation|screenSize"
-            android:screenOrientation="userPortrait"
-            android:theme="@style/Theme.FlashDroid">
-            <intent-filter>
-                <action android:name="START_DESSERT_HUNT"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".flash_droid.EasterEggActivity"
-            android:configChanges="orientation|screenSize"
-            android:screenOrientation="userPortrait"
-            android:theme="@style/Theme.FlashDroid"/>
 
         <receiver
             android:name=".receiver.SessionAlarmReceiver"
@@ -120,13 +100,6 @@
             android:name=".service.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
-            </intent-filter>
-        </service>
-
-        <service
-            android:name=".service.MyFirebaseInstanceIDService">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
 

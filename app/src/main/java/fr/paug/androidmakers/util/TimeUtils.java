@@ -2,11 +2,12 @@ package fr.paug.androidmakers.util;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-import androidx.annotation.NonNull;
 import fr.paug.androidmakers.R;
 
 public class TimeUtils {
