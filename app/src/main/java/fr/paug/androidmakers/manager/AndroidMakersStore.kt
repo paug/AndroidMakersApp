@@ -1,10 +1,9 @@
 package fr.paug.androidmakers.manager
 
 import android.util.Log
-import androidx.core.view.OneShotPreDrawListener.add
 import com.google.firebase.firestore.DocumentSnapshot
 import fr.paug.androidmakers.model.*
-import io.openfeedback.android.toFlow
+import fr.paug.androidmakers.util.toFlow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.*
@@ -12,7 +11,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.HashMap
 
 class AndroidMakersStore {
     fun getVenue(document: String, callback: (Venue?) -> Unit) {

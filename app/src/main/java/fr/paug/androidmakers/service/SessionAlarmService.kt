@@ -37,13 +37,13 @@ class SessionAlarmService : JobIntentService() {
             return
         }
 
-        val sessionEnd = intent.getLongExtra(SessionAlarmService.EXTRA_SESSION_END, UNDEFINED_VALUE)
-        val sessionStart = intent.getLongExtra(SessionAlarmService.EXTRA_SESSION_START, UNDEFINED_VALUE)
-        val sessionId = intent.getStringExtra(SessionAlarmService.EXTRA_SESSION_ID)
+        val sessionEnd = intent.getLongExtra(EXTRA_SESSION_END, UNDEFINED_VALUE)
+        val sessionStart = intent.getLongExtra(EXTRA_SESSION_START, UNDEFINED_VALUE)
+        val sessionId = intent.getStringExtra(EXTRA_SESSION_ID)!!
 
         if (ACTION_NOTIFY_SESSION == action) {
-            val notificationTitle = intent.getStringExtra(SessionAlarmService.EXTRA_NOTIFICATION_TITLE)
-            val notificationContent = intent.getStringExtra(SessionAlarmService.EXTRA_NOTIFICATION_CONTENT)
+            val notificationTitle = intent.getStringExtra(EXTRA_NOTIFICATION_TITLE)
+            val notificationContent = intent.getStringExtra(EXTRA_NOTIFICATION_CONTENT)
             if (notificationTitle == null || notificationContent == null) {
                 Log.w(TAG, "Title or content of the notification is null.")
                 return

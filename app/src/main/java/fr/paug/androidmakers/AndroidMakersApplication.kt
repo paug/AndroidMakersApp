@@ -6,33 +6,16 @@ import androidx.core.provider.FontRequest
 import androidx.emoji.text.EmojiCompat
 import androidx.emoji.text.EmojiCompat.InitCallback
 import androidx.emoji.text.FontRequestEmojiCompatConfig
-import com.crashlytics.android.Crashlytics
 import fr.paug.androidmakers.util.SessionSelector.init
-import io.fabric.sdk.android.Fabric
-import io.openfeedback.android.OpenFeedback
 
 class AndroidMakersApplication : Application() {
-    lateinit var openFeedback: OpenFeedback
 
     override fun onCreate() {
         instance_ = this
         super.onCreate()
-        if (!BuildConfig.DEBUG) {
-            Fabric.with(this, Crashlytics())
-        }
         init(this)
         // Use a downloadable font for EmojiCompat
         setupEmojiCompat()
-
-        openFeedback = OpenFeedback(this,
-                openFeedbackProjectId = "mMHR63ARZQpPidFQISyc",
-                firebaseConfig = OpenFeedback.FirebaseConfig(
-                        applicationId = BuildConfig.OPENFEEDBACK_APPLICATION_ID,
-                        projectId = BuildConfig.OPENFEEDBACK_PROJECT_ID,
-                        apiKey = BuildConfig.OPENFEEDBACK_API_KEY,
-                        databaseUrl = "https://${BuildConfig.OPENFEEDBACK_PROJECT_ID}.firebaseio.com"
-                )
-        )
     }
 
     private fun setupEmojiCompat() {

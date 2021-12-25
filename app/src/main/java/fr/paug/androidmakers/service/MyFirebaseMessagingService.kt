@@ -24,8 +24,6 @@ import android.media.RingtoneManager
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import com.firebase.jobdispatcher.FirebaseJobDispatcher
-import com.firebase.jobdispatcher.GooglePlayDriver
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import fr.paug.androidmakers.R
@@ -56,13 +54,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         // Check if message contains a data payload.
         if (remoteMessage.data.size > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.data)
-            if ( /* Check if data needs to be processed by long running job */true) {
-                // For long-running tasks (10 seconds or more) use Firebase Job Dispatcher.
-                scheduleJob()
-            } else {
-                // Handle message within 10 seconds
-                handleNow()
-            }
+            handleNow()
         }
 
         // Check if message contains a notification payload.
@@ -74,19 +66,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         // message, here is where that should be initiated. See sendNotification method below.
     }
     // [END receive_message]
-    /**
-     * Schedule a job using FirebaseJobDispatcher.
-     */
-    private fun scheduleJob() {
-        // [START dispatch_job]
-        val dispatcher = FirebaseJobDispatcher(GooglePlayDriver(this))
-        val myJob = dispatcher.newJobBuilder()
-                .setService(MyJobService::class.java)
-                .setTag("android-makers-job-tag")
-                .build()
-        dispatcher.schedule(myJob)
-        // [END dispatch_job]
-    }
 
     /**
      * Handle time allotted to BroadcastReceivers.
