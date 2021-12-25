@@ -13,7 +13,7 @@ import fr.paug.androidmakers.ui.util.SessionFilter
 import fr.paug.androidmakers.util.sticky_headers.StickyHeadersLinearLayoutManager
 import java.util.*
 
-class AgendaPagerAdapter(private val mAgenda: List<DayScheduleKt>, private val activity: Activity) : PagerAdapter() {
+class AgendaPagerAdapter(private val mAgenda: List<DaySchedule>, private val activity: Activity) : PagerAdapter() {
     private val mAgendaViews = SparseArray<View>()
 
     private var sessionFilterList: List<SessionFilter> = ArrayList()
@@ -72,7 +72,7 @@ class AgendaPagerAdapter(private val mAgenda: List<DayScheduleKt>, private val a
         return getItems(position).title
     }
 
-    private fun getItems(position: Int): DayScheduleKt {
+    private fun getItems(position: Int): DaySchedule {
         return mAgenda[position]
     }
 

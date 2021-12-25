@@ -1,3 +1,4 @@
 package fr.paug.androidmakers.model
 
-class Room(val name: String)
+
+data class Room(val name: String = "")

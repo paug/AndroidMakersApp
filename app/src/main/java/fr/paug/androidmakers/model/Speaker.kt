@@ -1,45 +1,29 @@
 package fr.paug.androidmakers.model
 
 import android.text.TextUtils
-import androidx.annotation.StringRes
-import fr.paug.androidmakers.R
-import fr.paug.androidmakers.model.SocialNetworkHandle
-import fr.paug.androidmakers.model.Ribbon
-import androidx.annotation.DrawableRes
-import fr.paug.androidmakers.model.SocialNetworkHandle.SocialNetworkType
 
-class Speaker(
-    val name: String,
-    val bio: String,
-    val company: String,
-    val surname: String,
-    val thumbnailUrl: String,
-    rockstar: String?,
-    socialNetworkHandleList: List<SocialNetworkHandle>,
-    ribbonList: List<Ribbon>?
+data class Speaker(
+        val badges: List<BadgesItem?>? = null,
+        val country: String? = null,
+        val featured: Boolean? = null,
+        val companyLogo: String? = null,
+        val name: String? = null,
+        val photo: String? = null,
+        val bio: String? = null,
+        val shortBio: String? = null,
+        val company: String? = null,
+        val socials: List<SocialsItem?>? = null,
+        val order: Int? = null
 ) {
-    val ribbonList: List<Ribbon>?
-    val rockstar: Boolean
-    val socialNetworkHandles: List<SocialNetworkHandle>
-    val fullNameAndCompany: String
-        get() = name + " " + surname + if (TextUtils.isEmpty(company)) "" else ", " + company
-    val fullName: String
-        get() = name + " " + surname
 
-    /**
-     * Gets the main ribbon.
-     * The main ribbon is the first ribbon of the list.
-     *
-     * @return the main ribbon, or null if the ribbon list is empty or null.
-     */
-    val mainRibbon: Ribbon?
-        get() = if (ribbonList != null && !ribbonList.isEmpty()) {
-            ribbonList[0]
-        } else null
-
-    init {
-        this.rockstar = java.lang.Boolean.parseBoolean(rockstar)
-        socialNetworkHandles = socialNetworkHandleList
-        this.ribbonList = ribbonList
+    fun getFullNameAndCompany(): String {
+        return this.name + if (TextUtils.isEmpty(company)) "" else ", " + this.company
     }
+
+    fun getMainRibbon(): BadgesItem? {
+        return if (badges != null && !badges.isEmpty()) {
+            badges.get(0)
+        } else null
+    }
+
 }

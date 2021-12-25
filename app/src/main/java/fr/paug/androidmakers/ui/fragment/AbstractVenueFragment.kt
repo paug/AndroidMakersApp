@@ -16,6 +16,7 @@ import fr.paug.androidmakers.databinding.VenueItemFragmentBinding
 import fr.paug.androidmakers.manager.AndroidMakersStore
 import fr.paug.androidmakers.model.Venue
 import fr.paug.androidmakers.util.CustomTabUtil
+import kotlinx.coroutines.flow.first
 import java.util.*
 
 abstract class AbstractVenueFragment : Fragment(), View.OnClickListener {
@@ -49,7 +50,7 @@ abstract class AbstractVenueFragment : Fragment(), View.OnClickListener {
         venueItemFragmentBinding = VenueItemFragmentBinding.inflate(
                 inflater,  container, false)
         lifecycleScope.launchWhenCreated {
-            AndroidMakersStore().getVenue(getVenueDocumentPath()).let {
+            AndroidMakersStore().getVenue(getVenueDocumentPath()).first().let {
                 venueInformation = it
                 venueItemFragmentBinding?.also { fragmentBinding ->
                     fragmentBinding.venueDirections.text = Html.fromHtml(venueDescription)

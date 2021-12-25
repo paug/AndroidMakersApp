@@ -20,16 +20,14 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
-import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.BuildConfig
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.databinding.ActivityDetailBinding
 import fr.paug.androidmakers.databinding.DetailViewSpeakerInfoElementBinding
-import fr.paug.androidmakers.databinding.SmallRibbonImageBinding
 import fr.paug.androidmakers.databinding.SmallSocialImageBinding
 import fr.paug.androidmakers.manager.AndroidMakersStore
 import fr.paug.androidmakers.model.*
-import fr.paug.androidmakers.ui.adapter.ScheduleSessionKt
+import fr.paug.androidmakers.ui.adapter.ScheduleSession
 import fr.paug.androidmakers.ui.util.CheckableFloatingActionButton
 import fr.paug.androidmakers.util.ScheduleSessionHelper
 import fr.paug.androidmakers.util.SessionSelector
@@ -37,6 +35,7 @@ import fr.paug.androidmakers.util.UIUtils
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import java.util.*
 
 class SessionDetailActivity : BaseActivity() {
@@ -48,7 +47,7 @@ class SessionDetailActivity : BaseActivity() {
 
     private var sessionDateAndRoom: String? = null
     private val speakersList = ArrayList<String>()
-    private var sessionForShare: SessionKt? = null
+    private var sessionForShare: Session? = null
 
     val scope = object : CoroutineScope {
         override val coroutineContext = Dispatchers.Main + Job()
@@ -77,7 +76,7 @@ class SessionDetailActivity : BaseActivity() {
         }
     }
 
-    fun setupUI(session: SessionKt, room: RoomKt, roomId: String) {
+    fun setupUI(session: Session, room: Room, roomId: String) {
         // small hack for share
         // Ideally, we should only create the menu when we have the data
         sessionForShare = session
@@ -156,7 +155,7 @@ class SessionDetailActivity : BaseActivity() {
         activityDetailBinding.separator2.visibility = View.VISIBLE
     }
 
-    private fun setupFeedback(session: SessionKt, roomId: String, sessionStartDateInMillis: Long) {
+    private fun setupFeedback(session: Session, roomId: String, sessionStartDateInMillis: Long) {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -181,13 +180,13 @@ class SessionDetailActivity : BaseActivity() {
         scope.cancel()
     }
 
-    private fun setSpeakers(session: SessionKt) {
+    private fun setSpeakers(session: Session) {
 
         scope.launch(Dispatchers.Main) {
             val speakers = session.speakers.filter { !it.isNullOrBlank() }
                     .map {
                         async {
-                            AndroidMakersStore().getSpeaker(it)
+                            AndroidMakersStore().getSpeaker(it).first()
                         }
                     }
                     .awaitAll()
@@ -229,7 +228,7 @@ class SessionDetailActivity : BaseActivity() {
         }
     }
 
-    private fun setSpeakerSocialNetworkHandle(speaker: SpeakerKt, speakerInfoElementBinding: DetailViewSpeakerInfoElementBinding) {
+    private fun setSpeakerSocialNetworkHandle(speaker: Speaker, speakerInfoElementBinding: DetailViewSpeakerInfoElementBinding) {
         if (speaker.socials != null && speaker.socials.isNotEmpty()) {
             for (social in speaker.socials) {
                 val socialNetworkHandle = SocialNetworkHandle(social?.icon, social?.link)
@@ -253,32 +252,7 @@ class SessionDetailActivity : BaseActivity() {
         }
     }
 
-    private fun setSpeakerRibbons(speaker: Speaker, speakerInfoElementBinding: DetailViewSpeakerInfoElementBinding) {
-        if (speaker.ribbonList != null && speaker.ribbonList.size > 0) {
-            for (ribbon in speaker.ribbonList) {
-                if (ribbon.ribbonType != Ribbon.RibbonType.NONE) {
-                    val smallRibbonImageBinding = SmallRibbonImageBinding.inflate(layoutInflater, null, false)
-                    smallRibbonImageBinding.image.setOnClickListener {
-                        if (BuildConfig.DEBUG) {
-                            Log.d(SessionDetailActivity::class.java.name, "User clicked on ribbon with name=" + ribbon.ribbonType?.name)
-                        }
-                        try {
-                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(ribbon.link)))
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-                    }
-                    speakerInfoElementBinding.speakerRibbonLayout.addView(smallRibbonImageBinding.root)
-                } else {
-                    speakerInfoElementBinding.speakerRibbonLayout.visibility = View.GONE
-                }
-            }
-        } else {
-            speakerInfoElementBinding.speakerRibbonLayout.visibility = View.GONE
-        }
-    }
-
-    private fun setActionBar(session: SessionKt?) {
+    private fun setActionBar(session: Session?) {
         if (supportActionBar != null) {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
             supportActionBar?.title = session?.title
@@ -298,7 +272,7 @@ class SessionDetailActivity : BaseActivity() {
         }
     }
 
-    private fun shareSession(session: SessionKt) {
+    private fun shareSession(session: Session) {
         val speakers = TextUtils.join(", ", speakersList)
 
         val shareSessionIntent = Intent(Intent.ACTION_SEND)
@@ -320,7 +294,7 @@ class SessionDetailActivity : BaseActivity() {
         private const val PARAM_SESSION_END_DATE = "param_session_end_date"
         private const val PARAM_SESSION_ROOM = "param_session_room"
 
-        fun startActivity(context: Context, scheduleSession: ScheduleSessionKt) {
+        fun startActivity(context: Context, scheduleSession: ScheduleSession) {
             val intent = Intent(context, SessionDetailActivity::class.java)
             intent.putExtra(PARAM_SESSION_ID, scheduleSession.sessionId)
             intent.putExtra(PARAM_SESSION_START_DATE, scheduleSession.startTimestamp)
