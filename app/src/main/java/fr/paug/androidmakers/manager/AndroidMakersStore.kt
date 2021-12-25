@@ -1,6 +1,8 @@
 package fr.paug.androidmakers.manager
 
 import android.util.Log
+import com.google.android.gms.tasks.Continuation
+import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentSnapshot
 import fr.paug.androidmakers.model.*
 import fr.paug.androidmakers.util.toFlow
@@ -13,100 +15,104 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class AndroidMakersStore {
-    fun getVenue(document: String, callback: (Venue?) -> Unit) {
-        FirebaseSingleton.firestore.collection("venues").document(document).get()
-                .addOnSuccessListener { venueDocument ->
-                    Log.d(TAG, "DocumentSnapshot data: " + venueDocument.data)
-                    val venue = venueDocument.toObject(Venue::class.java)
-                    callback.invoke(venue)
-                }
-                .addOnFailureListener { exception ->
-                    Log.d(TAG, "get failed with ", exception)
-                }
+    suspend fun getVenue(document: String): Venue {
+        return FirebaseSingleton.firestore.collection("venues").document(document).get()
+            .continueWith { it.result.toObject(Venue::class.java)!! }
+            .await()
     }
 
     fun getSession(id: String): Flow<SessionKt> {
         return FirebaseSingleton.firestore.collection("sessions")
-                .document(id)
-                .toFlow()
-                .mapNotNull {
-                    it.toObject(SessionKt::class.java)
-                }
+            .document(id)
+            .toFlow()
+            .mapNotNull {
+                it.toObject(SessionKt::class.java)
+            }
     }
 
     fun getSession(id: String, callback: (SessionKt?) -> Unit) {
         FirebaseSingleton.firestore.collection("sessions").document(id).get()
-                .addOnSuccessListener { document ->
-                    Log.d(TAG, "DocumentSnapshot data: " + document.data)
-                    val session = document.toObject(SessionKt::class.java)
-                    callback.invoke(session)
-                }
-                .addOnFailureListener { exception ->
-                    Log.d(TAG, "get failed with ", exception)
-                }
+            .addOnSuccessListener { document ->
+                Log.d(TAG, "DocumentSnapshot data: " + document.data)
+                val session = document.toObject(SessionKt::class.java)
+                callback.invoke(session)
+            }
+            .addOnFailureListener { exception ->
+                Log.d(TAG, "get failed with ", exception)
+            }
     }
 
     fun getSlotsFlow(): Flow<List<ScheduleSlotKt>> {
         val flow1 = FirebaseSingleton.firestore
-                .collection("schedule").document(DAY1)
-                .toFlow()
+            .collection("schedule").document(DAY1)
+            .toFlow()
 
         val flow2 = FirebaseSingleton.firestore
-                .collection("schedule").document(DAY2)
-                .toFlow()
+            .collection("schedule").document(DAY2)
+            .toFlow()
 
         return combine(flow1, flow2) { result1, result2 ->
-            convertResults(mapOf(
+            convertResults(
+                mapOf(
                     DAY1 to result1,
                     DAY2 to result2
-            ))
+                )
+            )
         }.filterNotNull()
     }
 
     val allRooms = mapOf(
-            "0" to RoomKt("Track 1"),
-            "1" to RoomKt("Track 2"),
-            "2" to RoomKt("Track 3"),
-            "3" to RoomKt("Track 4"),
-            "4" to RoomKt("Track 5"), // not needed theorically but added in case we decide to add new tracks
-            "5" to RoomKt("Track 6"),
-            "6" to RoomKt("Track 7"),
-            "6" to RoomKt("Track 8"),
-            ROOM_ID_ALL to RoomKt("All")
+        "0" to RoomKt("Track 1"),
+        "1" to RoomKt("Track 2"),
+        "2" to RoomKt("Track 3"),
+        "3" to RoomKt("Track 4"),
+        "4" to RoomKt("Track 5"), // not needed theorically but added in case we decide to add new tracks
+        "5" to RoomKt("Track 6"),
+        "6" to RoomKt("Track 7"),
+        "6" to RoomKt("Track 8"),
+        ROOM_ID_ALL to RoomKt("All")
     )
 
     class Agenda(
-            val sessions: Map<String, SessionKt>,
-            val slots: List<ScheduleSlotKt>,
-            val rooms: Map<String, RoomKt>,
-            val speakers: Map<String, SpeakerKt>
+        val sessions: Map<String, SessionKt>,
+        val slots: List<ScheduleSlotKt>,
+        val rooms: Map<String, RoomKt>,
+        val speakers: Map<String, SpeakerKt>
     )
 
     fun getAgendaFlow(): Flow<Agenda> {
         val sessionsFlow = FirebaseSingleton.firestore.collection("sessions")
-                .toFlow()
-                .map { result ->
-                    result.map { it.id to it.toObject(SessionKt::class.java) }
-                            .toMap()
-                }
+            .toFlow()
+            .map { result ->
+                result.map { it.id to it.toObject(SessionKt::class.java) }
+                    .toMap()
+            }
         val slotsFlow = getSlotsFlow()
 
         val roomsFlow = flowOf(allRooms)
 
         val speakersFlow = FirebaseSingleton.firestore.collection("speakers")
-                .toFlow()
-                .map { result ->
-                    result.map { it.id to it.toObject(SpeakerKt::class.java) }
-                            .toMap()
-                }
+            .toFlow()
+            .map { result ->
+                result.map { it.id to it.toObject(SpeakerKt::class.java) }
+                    .toMap()
+            }
 
-        return combine(sessionsFlow, slotsFlow, roomsFlow, speakersFlow) { sessions, slots, rooms, speakers ->
+        return combine(
+            sessionsFlow,
+            slotsFlow,
+            roomsFlow,
+            speakersFlow
+        ) { sessions, slots, rooms, speakers ->
             Agenda(sessions, slots, rooms, speakers)
         }
 
     }
 
-    @Deprecated(message = "Use the coroutines version instead", replaceWith = ReplaceWith("getSlots()"))
+    @Deprecated(
+        message = "Use the coroutines version instead",
+        replaceWith = ReplaceWith("getSlots()")
+    )
     fun getSlotsFlow(callback: (List<ScheduleSlotKt>) -> Unit) {
         GlobalScope.launch(Dispatchers.Main) {
             val slots = getSlotsFlow().first()
@@ -137,11 +143,14 @@ class AndroidMakersStore {
                             else -> index.toString()
                         }
 
-                        list.add(ScheduleSlotKt(
+                        list.add(
+                            ScheduleSlotKt(
                                 startDate = getDate(result.key, startTime),
                                 endDate = getDate(result.key, endTime),
                                 roomId = roomId,
-                                sessionId = sessionId))
+                                sessionId = sessionId
+                            )
+                        )
                     }
                 }
             }
@@ -169,8 +178,8 @@ class AndroidMakersStore {
 
     suspend fun getSpeaker(id: String): SpeakerKt? {
         return FirebaseSingleton.firestore.collection("speakers").document(id).get()
-                .await()
-                .toObject(SpeakerKt::class.java)
+            .await()
+            .toObject(SpeakerKt::class.java)
     }
 
     fun getRoom(roomId: String): Flow<RoomKt> {

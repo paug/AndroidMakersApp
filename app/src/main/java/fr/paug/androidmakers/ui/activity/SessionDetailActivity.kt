@@ -75,7 +75,6 @@ class SessionDetailActivity : BaseActivity() {
 
             }
         }
-
     }
 
     fun setupUI(session: SessionKt, room: RoomKt, roomId: String) {

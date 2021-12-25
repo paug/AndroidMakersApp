@@ -34,6 +34,7 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
 
     implementation(libs.play.services.auth)
+    implementation(libs.lifecycle.runtime.ktx)
 
     // Image management
     implementation(libs.glide.runtime)
