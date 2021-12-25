@@ -17,7 +17,6 @@ dependencies {
     implementation(libs.material)
     implementation(libs.vectordrawable)
     implementation(libs.browser)
-    implementation(libs.listenablefuture)
     implementation(libs.percentlayout)
     implementation(libs.cardview)
     implementation(libs.emoji)
