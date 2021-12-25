@@ -20,7 +20,6 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.BuildConfig
 import fr.paug.androidmakers.R
@@ -57,14 +56,15 @@ class SessionDetailActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activityDetailBinding = DataBindingUtil.setContentView(this, R.layout.activity_detail)
-        sessionId = intent.getStringExtra(PARAM_SESSION_ID)
+        activityDetailBinding = ActivityDetailBinding.inflate(layoutInflater)
+        setContentView(activityDetailBinding.root)
+        sessionId = intent.getStringExtra(PARAM_SESSION_ID)!!
         val roomId = intent.getStringExtra(PARAM_SESSION_ROOM)
 
         scope.launch {
             combine(
                     AndroidMakersStore().getSession(sessionId),
-                    AndroidMakersStore().getRoom(roomId)
+                    AndroidMakersStore().getRoom(roomId!!)
             ) { session, room ->
                 session to room
             }.collect {
@@ -158,41 +158,6 @@ class SessionDetailActivity : BaseActivity() {
     }
 
     private fun setupFeedback(session: SessionKt, roomId: String, sessionStartDateInMillis: Long) {
-        val openFeedback = (applicationContext as AndroidMakersApplication).openFeedback
-
-        val nowMillis = if (BuildConfig.DEBUG) {
-            GregorianCalendar.getInstance().apply {
-                set(GregorianCalendar.YEAR, 2020)
-                set(GregorianCalendar.MONTH, 3)
-                set(GregorianCalendar.DAY_OF_MONTH, 20)
-                set(GregorianCalendar.HOUR_OF_DAY, 15)
-                set(GregorianCalendar.MINUTE, 30)
-                timeZone = TimeZone.getTimeZone("GMT+2")
-            }.timeInMillis
-        } else {
-            System.currentTimeMillis()
-        }
-
-        when {
-            session.speakers.isEmpty() -> {
-                // This is for coffee breaks
-                activityDetailBinding.separator.visibility = View.GONE
-                activityDetailBinding.feedbackContainer.visibility = View.GONE
-                activityDetailBinding.feedbackWaiting.visibility = View.GONE
-            }
-            nowMillis < sessionStartDateInMillis -> {
-                activityDetailBinding.separator.visibility = View.VISIBLE
-                activityDetailBinding.feedbackContainer.visibility = View.GONE
-                activityDetailBinding.feedbackWaiting.visibility = View.VISIBLE
-            }
-            else -> {
-                val language = Locale.getDefault().language
-                activityDetailBinding.separator.visibility = View.VISIBLE
-                activityDetailBinding.feedbackContainer.visibility = View.VISIBLE
-                activityDetailBinding.feedbackWaiting.visibility = View.GONE
-                activityDetailBinding.feedbackContainer.start(openFeedback, sessionId, language)
-            }
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -234,11 +199,10 @@ class SessionDetailActivity : BaseActivity() {
             speakers.forEach {speaker ->
                 speakersList.add(speaker.getFullNameAndCompany())
 
-                val speakerInfoElementBinding = DataBindingUtil.inflate<DetailViewSpeakerInfoElementBinding>(layoutInflater,
-                        R.layout.detail_view_speaker_info_element, null,
+                val speakerInfoElementBinding = DetailViewSpeakerInfoElementBinding.inflate(layoutInflater,
+                        null,
                         false)
                 speakerInfoElementBinding.speakerBio.movementMethod = LinkMovementMethod.getInstance()
-                speakerInfoElementBinding.speaker = speaker
 
                 setSpeakerSocialNetworkHandle(speaker, speakerInfoElementBinding)
                 sessionSpeakerLayout.addView(speakerInfoElementBinding.root)
@@ -271,8 +235,7 @@ class SessionDetailActivity : BaseActivity() {
             for (social in speaker.socials) {
                 val socialNetworkHandle = SocialNetworkHandle(social?.icon, social?.link)
                 if (socialNetworkHandle.networkType != SocialNetworkHandle.SocialNetworkType.Unknown) {
-                    val smallSocialImageBinding = DataBindingUtil.inflate<SmallSocialImageBinding>(layoutInflater, R.layout.small_social_image, null, false)
-                    smallSocialImageBinding.socialHandle = socialNetworkHandle
+                    val smallSocialImageBinding = SmallSocialImageBinding.inflate(layoutInflater, null, false)
                     smallSocialImageBinding.image.setOnClickListener {
                         if (BuildConfig.DEBUG) {
                             Log.d(SessionDetailActivity::class.java.name, "User clicked on social handle with name=" + socialNetworkHandle.networkType)
@@ -295,8 +258,7 @@ class SessionDetailActivity : BaseActivity() {
         if (speaker.ribbonList != null && speaker.ribbonList.size > 0) {
             for (ribbon in speaker.ribbonList) {
                 if (ribbon.ribbonType != Ribbon.RibbonType.NONE) {
-                    val smallRibbonImageBinding = DataBindingUtil.inflate<SmallRibbonImageBinding>(layoutInflater, R.layout.small_ribbon_image, null, false)
-                    smallRibbonImageBinding.ribbon = ribbon
+                    val smallRibbonImageBinding = SmallRibbonImageBinding.inflate(layoutInflater, null, false)
                     smallRibbonImageBinding.image.setOnClickListener {
                         if (BuildConfig.DEBUG) {
                             Log.d(SessionDetailActivity::class.java.name, "User clicked on ribbon with name=" + ribbon.ribbonType.name)

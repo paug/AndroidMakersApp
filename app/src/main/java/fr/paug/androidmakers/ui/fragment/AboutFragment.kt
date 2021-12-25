@@ -14,7 +14,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -75,7 +74,8 @@ class AboutFragment : Fragment(), View.OnClickListener {
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        fragmentAboutBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_about, container, false)
+        fragmentAboutBinding = FragmentAboutBinding.inflate(inflater, container, false)
+
 
         setUpWifi()
 
@@ -165,7 +165,7 @@ class AboutFragment : Fragment(), View.OnClickListener {
 
     private fun onConnectivityChanged() {
         when {
-            WifiUtil.isCurrentlyConnectedToVenuesWifi(context!!) -> {
+            WifiUtil.isCurrentlyConnectedToVenuesWifi(requireContext()) -> {
                 fragmentAboutBinding?.wifiConnectButton?.visibility = View.INVISIBLE
                 fragmentAboutBinding?.wifiAutoconnectProgress?.visibility = View.GONE
             }
@@ -229,7 +229,7 @@ class AboutFragment : Fragment(), View.OnClickListener {
         val options = RequestOptions()
                 .placeholder(R.color.light_grey)
         val imageUrl = String.format("https://androidmakers.fr%s", logo.logoUrl.replace("..", "").replace(".svg", ".png"))
-        Glide.with(context!!)
+        Glide.with(requireContext())
                 .load(imageUrl)
                 .apply(options)
                 .into(partnerLogo)
