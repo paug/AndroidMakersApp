@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.databinding.VenueItemFragmentBinding
@@ -47,11 +48,13 @@ abstract class AbstractVenueFragment : Fragment(), View.OnClickListener {
         // Inflate the layout for this fragment
         venueItemFragmentBinding = VenueItemFragmentBinding.inflate(
                 inflater,  container, false)
-        AndroidMakersStore().getVenue(getVenueDocumentPath()) {
-            venueInformation = it
-            venueItemFragmentBinding?.also { fragmentBinding ->
-                fragmentBinding.venueDirections.text = Html.fromHtml(venueDescription)
-                fragmentBinding.venueLocateButton.setOnClickListener(this)
+        lifecycleScope.launchWhenCreated {
+            AndroidMakersStore().getVenue(getVenueDocumentPath()).let {
+                venueInformation = it
+                venueItemFragmentBinding?.also { fragmentBinding ->
+                    fragmentBinding.venueDirections.text = Html.fromHtml(venueDescription)
+                    fragmentBinding.venueLocateButton.setOnClickListener(this@AbstractVenueFragment)
+                }
             }
         }
         return venueItemFragmentBinding?.root

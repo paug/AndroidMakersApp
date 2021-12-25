@@ -16,3 +16,4 @@ pluginManagement {
     includeBuild("build-logic")
 }
 include(":app")
+include(":store")
