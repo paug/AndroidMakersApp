@@ -139,7 +139,7 @@ class SessionAlarmService : JobIntentService() {
                 GlobalScope.launch(Dispatchers.Main) {
                     val room = AndroidMakersStore().getRoom(slotToNotify.roomId).first()
 
-                    val roomName = (if (room != null) room.name else "") + " - "
+                    val roomName = room.name + " - "
 
                     logDebug("Scheduling alarm for " + alarmTime + " = " + Date(alarmTime).toString())
 
