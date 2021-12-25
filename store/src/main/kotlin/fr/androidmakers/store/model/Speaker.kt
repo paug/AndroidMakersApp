@@ -1,4 +1,4 @@
-package fr.paug.androidmakers.model
+package fr.androidmakers.store.model
 
 import android.text.TextUtils
 

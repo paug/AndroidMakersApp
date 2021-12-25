@@ -7,7 +7,6 @@ import android.content.IntentFilter
 import android.net.Uri
 import android.net.wifi.WifiManager
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,22 +14,22 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import fr.androidmakers.store.manager.AndroidMakersStore
+import fr.androidmakers.store.model.Logo
+import fr.androidmakers.store.model.Partner
 import fr.paug.androidmakers.BuildConfig
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.databinding.FragmentAboutBinding
-import fr.paug.androidmakers.model.Logo
-import fr.paug.androidmakers.model.PartnerCollection
 import fr.paug.androidmakers.util.CustomTabUtil
 import fr.paug.androidmakers.util.WifiUtil
+import kotlinx.coroutines.flow.collect
 
 class AboutFragment : Fragment(), View.OnClickListener {
 
-    private var partnerRegistration: ListenerRegistration? = null
     private var fragmentAboutBinding: FragmentAboutBinding? = null
 
     private val wifiStateChangedReceiver = object : BroadcastReceiver() {
@@ -48,32 +47,24 @@ class AboutFragment : Fragment(), View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
-        partnerRegistration = FirebaseFirestore.getInstance().collection("partners")
-                .addSnapshotListener { snapshot, exception ->
-                    if (exception != null) {
-                        exception.printStackTrace()
-                        Log.w("AboutFragment", "Error getting partners.", exception)
-                        return@addSnapshotListener
-                    }
-                    if (snapshot != null) {
-                        while (fragmentAboutBinding!!.sponsorsLayout.childCount > 1) {
-                            fragmentAboutBinding!!.sponsorsLayout.removeViewAt(fragmentAboutBinding!!.sponsorsLayout.childCount - 1)
-                        }
-                        for (document in snapshot) {
-                            Log.d("AboutFragment", document.id + " => " + document.data)
-                            val partnerCollection = document.toObject(PartnerCollection::class.java)
-                            addPartnerCollectionToView(partnerCollection)
-                        }
+        lifecycleScope.launchWhenCreated {
+            AndroidMakersStore().getPartners()
+                .collect {
+                    for (partner in it) {
+                        addPartnerCollectionToView(partner)
                     }
                 }
+        }
     }
 
     override fun onPause() {
         super.onPause()
-        partnerRegistration?.remove()
     }
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         fragmentAboutBinding = FragmentAboutBinding.inflate(inflater, container, false)
 
 
@@ -95,9 +86,18 @@ class AboutFragment : Fragment(), View.OnClickListener {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://androidmakers.fr/cod")))
         }
         fragmentAboutBinding?.aogButton?.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://assistant.google.com/services/invoke/uid/000000f1d29aa753")))
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://assistant.google.com/services/invoke/uid/000000f1d29aa753")
+                )
+            )
         }
-        fragmentAboutBinding?.versionTextView?.text = String.format(getString(R.string.version), BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)
+        fragmentAboutBinding?.versionTextView?.text = String.format(
+            getString(R.string.version),
+            BuildConfig.VERSION_NAME,
+            BuildConfig.VERSION_CODE
+        )
 
         return fragmentAboutBinding?.root
     }
@@ -116,12 +116,17 @@ class AboutFragment : Fragment(), View.OnClickListener {
         try {
             // get the Twitter app if possible
             activity?.packageManager?.getPackageInfo("com.twitter.android", 0)
-            twitterIntent = Intent(Intent.ACTION_VIEW,
-                    Uri.parse("twitter://user?screen_name=" + getString(R.string.twitter_user_name)))
+            twitterIntent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("twitter://user?screen_name=" + getString(R.string.twitter_user_name))
+            )
             twitterIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         } catch (e: Exception) {
             // no Twitter app, revert to browser
-            twitterIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/" + getString(R.string.twitter_user_name)))
+            twitterIntent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("https://twitter.com/" + getString(R.string.twitter_user_name))
+            )
         }
 
         startActivity(twitterIntent)
@@ -132,12 +137,17 @@ class AboutFragment : Fragment(), View.OnClickListener {
         try {
             // get the Twitter app if possible
             activity?.packageManager?.getPackageInfo("com.twitter.android", 0)
-            twitterIntent = Intent(Intent.ACTION_VIEW,
-                    Uri.parse("twitter://search?query=%23" + getString(R.string.twitter_hashtag_for_query)))
+            twitterIntent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("twitter://search?query=%23" + getString(R.string.twitter_hashtag_for_query))
+            )
             twitterIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         } catch (e: Exception) {
             // no Twitter app, revert to browser
-            twitterIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/search?q=%23" + getString(R.string.twitter_hashtag_for_query)))
+            twitterIntent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("https://twitter.com/search?q=%23" + getString(R.string.twitter_hashtag_for_query))
+            )
         }
 
         startActivity(twitterIntent)
@@ -181,21 +191,25 @@ class AboutFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    private fun addPartnerCollectionToView(partnerCollection: PartnerCollection) {
+    private fun addPartnerCollectionToView(partnerCollection: Partner) {
         val partnersList = partnerCollection.logos
         if (partnersList.isNotEmpty()) {
-            val partnersGroupLinearLayout = LayoutInflater.from(context).inflate(R.layout.partners_group, null) as LinearLayout
+            val partnersGroupLinearLayout =
+                LayoutInflater.from(context).inflate(R.layout.partners_group, null) as LinearLayout
 
-            val partnerGroupHeader = partnersGroupLinearLayout.findViewById<TextView>(R.id.partners_title)
+            val partnerGroupHeader =
+                partnersGroupLinearLayout.findViewById<TextView>(R.id.partners_title)
             partnerGroupHeader.text = partnerCollection.title
 
-            val partnerLogoLayout = partnersGroupLinearLayout.findViewById<LinearLayout>(R.id.partners_layout)
+            val partnerLogoLayout =
+                partnersGroupLinearLayout.findViewById<LinearLayout>(R.id.partners_layout)
             val partnerLogoSizePriority = 1 //partnerGroup.partnerType.partnerLogoSizePriority
 
             var index = 0
             partnerLogoLayout.removeAllViews()
             while (index < partnersList.size) {
-                val partnerRow = LayoutInflater.from(context).inflate(R.layout.partner_row, null) as LinearLayout
+                val partnerRow =
+                    LayoutInflater.from(context).inflate(R.layout.partner_row, null) as LinearLayout
                 partnerRow.weightSum = partnerLogoSizePriority.toFloat()
 
                 if (partnerLogoSizePriority > 0) {
@@ -227,12 +241,15 @@ class AboutFragment : Fragment(), View.OnClickListener {
     private fun setLogo(partnerLogo: ImageView, logo: Logo) {
         partnerLogo.visibility = View.VISIBLE
         val options = RequestOptions()
-                .placeholder(R.color.light_grey)
-        val imageUrl = String.format("https://androidmakers.fr%s", logo.logoUrl.replace("..", "").replace(".svg", ".png"))
+            .placeholder(R.color.light_grey)
+        val imageUrl = String.format(
+            "https://androidmakers.fr%s",
+            logo.logoUrl.replace("..", "").replace(".svg", ".png")
+        )
         Glide.with(requireContext())
-                .load(imageUrl)
-                .apply(options)
-                .into(partnerLogo)
+            .load(imageUrl)
+            .apply(options)
+            .into(partnerLogo)
         partnerLogo.setOnClickListener { CustomTabUtil.openChromeTab(context, logo.url) }
     }
 
@@ -240,8 +257,10 @@ class AboutFragment : Fragment(), View.OnClickListener {
         val firebaseRemoteConfiguration = FirebaseRemoteConfig.getInstance()
         val isVisible = firebaseRemoteConfiguration.getBoolean("isWifiCardEnabled")
         fragmentAboutBinding?.wifiCard?.visibility = if (isVisible) View.VISIBLE else View.GONE
-        fragmentAboutBinding?.wifiNetworkTextView?.text = firebaseRemoteConfiguration?.getString("wifiNetwork")
-        fragmentAboutBinding?.wifiPasswordTextView?.text = firebaseRemoteConfiguration?.getString("wifiPassword")
+        fragmentAboutBinding?.wifiNetworkTextView?.text =
+            firebaseRemoteConfiguration?.getString("wifiNetwork")
+        fragmentAboutBinding?.wifiPasswordTextView?.text =
+            firebaseRemoteConfiguration?.getString("wifiPassword")
     }
 
 }

@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import fr.paug.androidmakers.R
-import fr.paug.androidmakers.manager.AndroidMakersStore
+import fr.androidmakers.store.manager.AndroidMakersStore
 import fr.paug.androidmakers.ui.fragment.AboutFragment
 import fr.paug.androidmakers.ui.fragment.AgendaFragment
 import fr.paug.androidmakers.ui.fragment.VenuePagerFragment
