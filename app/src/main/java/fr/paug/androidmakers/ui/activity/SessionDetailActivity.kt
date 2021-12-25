@@ -25,8 +25,8 @@ import fr.paug.androidmakers.R
 import fr.paug.androidmakers.databinding.ActivityDetailBinding
 import fr.paug.androidmakers.databinding.DetailViewSpeakerInfoElementBinding
 import fr.paug.androidmakers.databinding.SmallSocialImageBinding
-import fr.paug.androidmakers.manager.AndroidMakersStore
-import fr.paug.androidmakers.model.*
+import fr.androidmakers.store.manager.AndroidMakersStore
+import fr.androidmakers.store.model.*
 import fr.paug.androidmakers.ui.adapter.ScheduleSession
 import fr.paug.androidmakers.ui.util.CheckableFloatingActionButton
 import fr.paug.androidmakers.util.ScheduleSessionHelper
@@ -229,8 +229,8 @@ class SessionDetailActivity : BaseActivity() {
     }
 
     private fun setSpeakerSocialNetworkHandle(speaker: Speaker, speakerInfoElementBinding: DetailViewSpeakerInfoElementBinding) {
-        if (speaker.socials != null && speaker.socials.isNotEmpty()) {
-            for (social in speaker.socials) {
+        if (speaker.socials != null && speaker.socials!!.isNotEmpty()) {
+            for (social in speaker.socials!!) {
                 val socialNetworkHandle = SocialNetworkHandle(social?.icon, social?.link)
                 if (socialNetworkHandle.networkType != SocialNetworkHandle.SocialNetworkType.Unknown) {
                     val smallSocialImageBinding = SmallSocialImageBinding.inflate(layoutInflater, null, false)

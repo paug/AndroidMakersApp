@@ -1,6 +1,6 @@
-package fr.paug.androidmakers.model
+package fr.androidmakers.store.model
 
-data class PartnerCollection(
+data class Partner(
         val order: Int = 0,
         val title: String = "",
         val logos: List<Logo> = arrayListOf()

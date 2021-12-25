@@ -16,11 +16,11 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import fr.paug.androidmakers.R
-import fr.paug.androidmakers.model.Agenda
-import fr.paug.androidmakers.manager.AndroidMakersStore
-import fr.paug.androidmakers.model.Room
-import fr.paug.androidmakers.model.ScheduleSlot
-import fr.paug.androidmakers.model.Speaker
+import fr.androidmakers.store.model.Agenda
+import fr.androidmakers.store.manager.AndroidMakersStore
+import fr.androidmakers.store.model.Room
+import fr.androidmakers.store.model.ScheduleSlot
+import fr.androidmakers.store.model.Speaker
 import fr.paug.androidmakers.ui.activity.AboutActivity
 import fr.paug.androidmakers.ui.adapter.AgendaPagerAdapter
 import fr.paug.androidmakers.ui.adapter.DaySchedule

@@ -1,4 +1,4 @@
-package fr.paug.androidmakers.model
+package fr.androidmakers.store.model
 
 class Partners(val name: String?, val imageUrl: String?, val link: String?, val description: String?) {
     override fun toString(): String {

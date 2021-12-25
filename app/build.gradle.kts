@@ -3,6 +3,7 @@ plugins {
 }
 
 dependencies {
+    implementation(project(":store"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.espresso.core)
 
@@ -26,11 +27,9 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation("com.google.firebase:firebase-crashlytics-ktx")
     implementation("com.google.firebase:firebase-analytics-ktx")
-    implementation("com.google.firebase:firebase-firestore-ktx")
     implementation("com.google.firebase:firebase-core")
     implementation("com.google.firebase:firebase-messaging")
     implementation("com.google.firebase:firebase-config")
-    implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-auth")
 
     implementation(libs.play.services.auth)

@@ -12,7 +12,7 @@ import androidx.core.app.JobIntentService
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import fr.paug.androidmakers.R
-import fr.paug.androidmakers.manager.AndroidMakersStore
+import fr.androidmakers.store.manager.AndroidMakersStore
 import fr.paug.androidmakers.receiver.SessionAlarmReceiver
 import fr.paug.androidmakers.ui.activity.MainActivity
 import fr.paug.androidmakers.util.SessionSelector

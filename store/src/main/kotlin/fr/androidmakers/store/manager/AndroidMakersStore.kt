@@ -1,8 +1,7 @@
-package fr.paug.androidmakers.manager
+package fr.androidmakers.store.manager
 
 import com.google.firebase.firestore.DocumentSnapshot
-import fr.paug.androidmakers.model.*
-import fr.paug.androidmakers.util.toFlow
+import fr.androidmakers.store.model.*
 import kotlinx.coroutines.flow.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -39,6 +38,14 @@ class AndroidMakersStore {
             }
     }
 
+    fun getPartners(): Flow<List<Partner>> {
+        return FirebaseSingleton.firestore.collection("partners")
+            .toFlow()
+            .map {
+                it.documents.mapNotNull { it.toObject(Partner::class.java) }
+            }
+    }
+
     fun getSlotsFlow(): Flow<List<ScheduleSlot>> {
         val flow1 = FirebaseSingleton.firestore
             .collection("schedule").document(DAY1)
@@ -63,7 +70,7 @@ class AndroidMakersStore {
         "1" to Room("Track 2"),
         "2" to Room("Track 3"),
         "3" to Room("Track 4"),
-        "4" to Room("Track 5"), // not needed theorically but added in case we decide to add new tracks
+        "4" to Room("Track 5"), // not needed theoretically but added in case we decide to add new tracks
         "5" to Room("Track 6"),
         "6" to Room("Track 7"),
         "6" to Room("Track 8"),
@@ -74,8 +81,7 @@ class AndroidMakersStore {
         val sessionsFlow = FirebaseSingleton.firestore.collection("sessions")
             .toFlow()
             .map { result ->
-                result.map { it.id to it.toObject(Session::class.java) }
-                    .toMap()
+                result.associate { it.id to it.toObject(Session::class.java) }
             }
         val slotsFlow = getSlotsFlow()
 
@@ -84,8 +90,7 @@ class AndroidMakersStore {
         val speakersFlow = FirebaseSingleton.firestore.collection("speakers")
             .toFlow()
             .map { result ->
-                result.map { it.id to it.toObject(Speaker::class.java) }
-                    .toMap()
+                result.associate { it.id to it.toObject(Speaker::class.java) }
             }
 
         return combine(
@@ -102,10 +107,7 @@ class AndroidMakersStore {
     private fun convertResults(results: Map<String, DocumentSnapshot>): List<ScheduleSlot>? {
         val list = mutableListOf<ScheduleSlot>()
         for (result in results) {
-            val day = result.value.data
-            if (day == null) {
-                return null
-            }
+            val day = result.value.data ?: return null
             val timeSlots = day.getAsListOfMaps("timeslots")
 
             timeSlots.forEachIndexed { timeSlotIndex, timeSlot ->
@@ -117,8 +119,8 @@ class AndroidMakersStore {
 
                         val extend = (session.get("extend") as Long?)?.toInt()?.minus(1) ?: 0
                         val endTime = timeSlots[timeSlotIndex + extend].getAsString("endTime")
-                        val roomId = when {
-                            sessions.size == 1 -> "all"
+                        val roomId = when (sessions.size) {
+                            1 -> "all"
                             else -> index.toString()
                         }
 
@@ -146,7 +148,7 @@ class AndroidMakersStore {
      * @return a ISO86-01 String
      */
     private fun getDate(date: String, time: String): String {
-        val d = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).parse("$date $time")
+        val d = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).parse("$date $time") ?: error("Cannot parse $date")
 
         val tz = TimeZone.getTimeZone("UTC")
         val df = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.US)
@@ -164,14 +166,17 @@ class AndroidMakersStore {
 }
 
 fun <K> Map<K, *>.getAsMap(k: K): Map<String, *> {
+    @Suppress("UNCHECKED_CAST")
     return this.get(k) as Map<String, *>
 }
 
 fun <K> Map<K, *>.getAsListOfMaps(k: K): List<Map<String, *>> {
+    @Suppress("UNCHECKED_CAST")
     return this.get(k) as List<Map<String, *>>
 }
 
 fun <K> Map<K, *>.getAsListOfStrings(k: K): List<String> {
+    @Suppress("UNCHECKED_CAST")
     return this.get(k) as List<String>
 }
 

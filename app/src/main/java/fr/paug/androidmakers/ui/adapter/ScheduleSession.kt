@@ -1,7 +1,7 @@
 package fr.paug.androidmakers.ui.adapter
 
-import fr.paug.androidmakers.model.ScheduleSlot
-import fr.paug.androidmakers.model.Speaker
+import fr.androidmakers.store.model.ScheduleSlot
+import fr.androidmakers.store.model.Speaker
 import fr.paug.androidmakers.util.EmojiUtils
 import fr.paug.androidmakers.util.TimeUtils
 import java.text.SimpleDateFormat
