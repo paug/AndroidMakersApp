@@ -21,7 +21,7 @@ class VenuePagerFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewPager!!.adapter = VenuePagerAdapter(context, childFragmentManager)
+        viewPager!!.adapter = VenuePagerAdapter(requireContext(), childFragmentManager)
     }
 
 }

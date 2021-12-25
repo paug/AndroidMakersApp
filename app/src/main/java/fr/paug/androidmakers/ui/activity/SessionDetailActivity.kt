@@ -261,7 +261,7 @@ class SessionDetailActivity : BaseActivity() {
                     val smallRibbonImageBinding = SmallRibbonImageBinding.inflate(layoutInflater, null, false)
                     smallRibbonImageBinding.image.setOnClickListener {
                         if (BuildConfig.DEBUG) {
-                            Log.d(SessionDetailActivity::class.java.name, "User clicked on ribbon with name=" + ribbon.ribbonType.name)
+                            Log.d(SessionDetailActivity::class.java.name, "User clicked on ribbon with name=" + ribbon.ribbonType?.name)
                         }
                         try {
                             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(ribbon.link)))
