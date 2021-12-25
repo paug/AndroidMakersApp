@@ -11,7 +11,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.android.tools.build:gradle:7.2.0-alpha05")
+    implementation("com.android.tools.build:gradle:7.2.0-alpha06")
     implementation("com.google.gms:google-services:4.3.10")
     implementation("com.google.firebase:firebase-crashlytics-gradle:2.8.1")
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:${getKotlinPluginVersion()}")
