@@ -3,7 +3,6 @@ package fr.paug.androidmakers.ui.fragment
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.text.TextUtils
 import android.util.SparseArray
 import android.view.*
 import android.view.MenuItem.SHOW_AS_ACTION_ALWAYS
@@ -17,16 +16,16 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import fr.paug.androidmakers.R
+import fr.paug.androidmakers.model.Agenda
 import fr.paug.androidmakers.manager.AndroidMakersStore
 import fr.paug.androidmakers.model.Room
-import fr.paug.androidmakers.model.RoomKt
-import fr.paug.androidmakers.model.ScheduleSlotKt
-import fr.paug.androidmakers.model.SpeakerKt
+import fr.paug.androidmakers.model.ScheduleSlot
+import fr.paug.androidmakers.model.Speaker
 import fr.paug.androidmakers.ui.activity.AboutActivity
 import fr.paug.androidmakers.ui.adapter.AgendaPagerAdapter
-import fr.paug.androidmakers.ui.adapter.DayScheduleKt
-import fr.paug.androidmakers.ui.adapter.RoomScheduleKt
-import fr.paug.androidmakers.ui.adapter.ScheduleSessionKt
+import fr.paug.androidmakers.ui.adapter.DaySchedule
+import fr.paug.androidmakers.ui.adapter.RoomSchedule
+import fr.paug.androidmakers.ui.adapter.ScheduleSession
 import fr.paug.androidmakers.ui.util.SessionFilter
 import fr.paug.androidmakers.ui.util.SessionFilter.FilterType.*
 import fr.paug.androidmakers.util.EmojiUtils
@@ -110,8 +109,8 @@ class AgendaFragment : Fragment() {
         }
     }
 
-    private fun onAgendaLoaded(agenda: AndroidMakersStore.Agenda) {
-        val itemByDayOfTheYear = SparseArray<DayScheduleKt>()
+    private fun onAgendaLoaded(agenda: Agenda) {
+        val itemByDayOfTheYear = SparseArray<DaySchedule>()
 
         val calendar = Calendar.getInstance()
         val scheduleSlots = agenda.slots
@@ -127,7 +126,7 @@ class AgendaFragment : Fragment() {
                 // this session has disappeared, skip it
                 continue
             }
-            agendaScheduleSessions.add(ScheduleSessionKt(scheduleSlot,
+            agendaScheduleSessions.add(ScheduleSession(scheduleSlot,
                     session.title,
                     session.language,
                     getSpeakers(agenda, scheduleSlot.sessionId)))
@@ -151,7 +150,7 @@ class AgendaFragment : Fragment() {
         updateFilters(agenda.rooms)
     }
 
-    private fun getTodayIndex(items: List<DayScheduleKt>?): Int {
+    private fun getTodayIndex(items: List<DaySchedule>?): Int {
         if (items == null || items.size < 2) {
             return -1
         }
@@ -175,12 +174,12 @@ class AgendaFragment : Fragment() {
         return -1
     }
 
-    private fun getAgendaItems(itemByDayOfTheYear: SparseArray<DayScheduleKt>,
+    private fun getAgendaItems(itemByDayOfTheYear: SparseArray<DaySchedule>,
                                calendar: Calendar,
-                               scheduleSlot: ScheduleSlotKt,
-                               rooms: Map<String, RoomKt>): ArrayList<ScheduleSessionKt> {
+                               scheduleSlot: ScheduleSlot,
+                               rooms: Map<String, Room>): ArrayList<ScheduleSession> {
         val roomSchedules = getRoomScheduleForDay(itemByDayOfTheYear, calendar, scheduleSlot)
-        var roomScheduleForThis: RoomScheduleKt? = null
+        var roomScheduleForThis: RoomSchedule? = null
         for (roomSchedule in roomSchedules) {
             if (roomSchedule.roomId == scheduleSlot.roomId) {
                 roomScheduleForThis = roomSchedule
@@ -188,10 +187,10 @@ class AgendaFragment : Fragment() {
             }
         }
         if (roomScheduleForThis == null) {
-            val agendaScheduleSessions = ArrayList<ScheduleSessionKt>()
+            val agendaScheduleSessions = ArrayList<ScheduleSession>()
             val room = rooms.get(scheduleSlot.roomId)!!
             val titleRoom = room.name
-            roomScheduleForThis = RoomScheduleKt(scheduleSlot.roomId, titleRoom, agendaScheduleSessions)
+            roomScheduleForThis = RoomSchedule(scheduleSlot.roomId, titleRoom, agendaScheduleSessions)
             roomSchedules.add(roomScheduleForThis)
             roomSchedules.sort()
             return agendaScheduleSessions
@@ -200,19 +199,19 @@ class AgendaFragment : Fragment() {
         }
     }
 
-    private fun getRoomScheduleForDay(itemByDayOfTheYear: SparseArray<DayScheduleKt>,
+    private fun getRoomScheduleForDay(itemByDayOfTheYear: SparseArray<DaySchedule>,
                                       calendar: Calendar,
-                                      scheduleSlot: ScheduleSlotKt): MutableList<RoomScheduleKt> {
+                                      scheduleSlot: ScheduleSlot): MutableList<RoomSchedule> {
         val format = SimpleDateFormat(TimeUtils.dateFormat)
         val date = format.parse(scheduleSlot.startDate)
 
         calendar.timeInMillis = date.time
         val dayIndex = calendar.get(Calendar.DAY_OF_YEAR) + calendar.get(Calendar.YEAR) * 1000
-        var daySchedule: DayScheduleKt? = itemByDayOfTheYear.get(dayIndex)
+        var daySchedule: DaySchedule? = itemByDayOfTheYear.get(dayIndex)
         if (daySchedule == null) {
-            val roomSchedule = ArrayList<RoomScheduleKt>()
+            val roomSchedule = ArrayList<RoomSchedule>()
             val title = DateFormat.getDateInstance().format(calendar.time)
-            daySchedule = DayScheduleKt(title, roomSchedule)
+            daySchedule = DaySchedule(title, roomSchedule)
             itemByDayOfTheYear.put(dayIndex, daySchedule)
             return roomSchedule
         } else {
@@ -220,21 +219,21 @@ class AgendaFragment : Fragment() {
         }
     }
 
-    private fun getItemsOrdered(itemByDayOfTheYear: SparseArray<DayScheduleKt>): List<DayScheduleKt> {
+    private fun getItemsOrdered(itemByDayOfTheYear: SparseArray<DaySchedule>): List<DaySchedule> {
         val size = itemByDayOfTheYear.size()
         val keysSorted = IntArray(size)
         for (i in 0 until size) {
             keysSorted[i] = itemByDayOfTheYear.keyAt(i)
         }
         Arrays.sort(keysSorted)
-        val items = ArrayList<DayScheduleKt>(size)
+        val items = ArrayList<DaySchedule>(size)
         for (key in keysSorted) {
             items.add(itemByDayOfTheYear.get(key))
         }
         return items
     }
 
-    private fun getSpeakers(agenda: AndroidMakersStore.Agenda, sessionId: String): List<SpeakerKt> {
+    private fun getSpeakers(agenda: Agenda, sessionId: String): List<Speaker> {
         return agenda.sessions.get(sessionId)?.speakers?.mapNotNull { speakerId ->
             agenda.speakers.get(speakerId)
         } ?: emptyList()
@@ -256,7 +255,7 @@ class AgendaFragment : Fragment() {
         }
     }
 
-    private fun updateFilters(rooms: Map<String, RoomKt>) {
+    private fun updateFilters(rooms: Map<String, Room>) {
         mFiltersView?.removeAllViews()
         mFiltersView?.setOnTouchListener { v, event ->
             // a dummy touch listener that makes sure we don't click through the filter list

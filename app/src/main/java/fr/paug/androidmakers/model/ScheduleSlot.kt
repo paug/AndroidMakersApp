@@ -1,12 +1,8 @@
 package fr.paug.androidmakers.model
 
-class ScheduleSlot(val room: Int, val sessionId: Int, val startDate: Long, val endDate: Long) {
-    override fun toString(): String {
-        return "ScheduleSlot{" +
-                "room=" + room +
-                ", sessionId=" + sessionId +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                '}'
-    }
-}
+data class ScheduleSlot(
+        val endDate: String = "",
+        val sessionId: String = "",
+        val roomId: String = "",
+        val startDate: String = ""
+)

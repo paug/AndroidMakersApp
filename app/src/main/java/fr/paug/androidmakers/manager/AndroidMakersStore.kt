@@ -1,48 +1,45 @@
 package fr.paug.androidmakers.manager
 
-import android.util.Log
-import com.google.android.gms.tasks.Continuation
-import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentSnapshot
 import fr.paug.androidmakers.model.*
 import fr.paug.androidmakers.util.toFlow
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 import java.text.SimpleDateFormat
 import java.util.*
 
 class AndroidMakersStore {
-    suspend fun getVenue(document: String): Venue {
-        return FirebaseSingleton.firestore.collection("venues").document(document).get()
-            .continueWith { it.result.toObject(Venue::class.java)!! }
-            .await()
+    fun getVenue(document: String): Flow<Venue> {
+        return FirebaseSingleton.firestore.collection("venues")
+            .document(document)
+            .toFlow()
+            .mapNotNull {
+                it.toObject(Venue::class.java)
+            }
     }
 
-    fun getSession(id: String): Flow<SessionKt> {
+    fun getSpeaker(id: String): Flow<Speaker> {
+        return FirebaseSingleton.firestore.collection("speakers")
+            .document(id)
+            .toFlow()
+            .mapNotNull {
+                it.toObject(Speaker::class.java)
+            }
+    }
+
+    fun getRoom(roomId: String): Flow<Room> {
+        return flowOf(allRooms[roomId]).filterNotNull()
+    }
+
+    fun getSession(id: String): Flow<Session> {
         return FirebaseSingleton.firestore.collection("sessions")
             .document(id)
             .toFlow()
             .mapNotNull {
-                it.toObject(SessionKt::class.java)
+                it.toObject(Session::class.java)
             }
     }
 
-    fun getSession(id: String, callback: (SessionKt?) -> Unit) {
-        FirebaseSingleton.firestore.collection("sessions").document(id).get()
-            .addOnSuccessListener { document ->
-                Log.d(TAG, "DocumentSnapshot data: " + document.data)
-                val session = document.toObject(SessionKt::class.java)
-                callback.invoke(session)
-            }
-            .addOnFailureListener { exception ->
-                Log.d(TAG, "get failed with ", exception)
-            }
-    }
-
-    fun getSlotsFlow(): Flow<List<ScheduleSlotKt>> {
+    fun getSlotsFlow(): Flow<List<ScheduleSlot>> {
         val flow1 = FirebaseSingleton.firestore
             .collection("schedule").document(DAY1)
             .toFlow()
@@ -61,30 +58,23 @@ class AndroidMakersStore {
         }.filterNotNull()
     }
 
-    val allRooms = mapOf(
-        "0" to RoomKt("Track 1"),
-        "1" to RoomKt("Track 2"),
-        "2" to RoomKt("Track 3"),
-        "3" to RoomKt("Track 4"),
-        "4" to RoomKt("Track 5"), // not needed theorically but added in case we decide to add new tracks
-        "5" to RoomKt("Track 6"),
-        "6" to RoomKt("Track 7"),
-        "6" to RoomKt("Track 8"),
-        ROOM_ID_ALL to RoomKt("All")
-    )
-
-    class Agenda(
-        val sessions: Map<String, SessionKt>,
-        val slots: List<ScheduleSlotKt>,
-        val rooms: Map<String, RoomKt>,
-        val speakers: Map<String, SpeakerKt>
+    private val allRooms = mapOf(
+        "0" to Room("Track 1"),
+        "1" to Room("Track 2"),
+        "2" to Room("Track 3"),
+        "3" to Room("Track 4"),
+        "4" to Room("Track 5"), // not needed theorically but added in case we decide to add new tracks
+        "5" to Room("Track 6"),
+        "6" to Room("Track 7"),
+        "6" to Room("Track 8"),
+        ROOM_ID_ALL to Room("All")
     )
 
     fun getAgendaFlow(): Flow<Agenda> {
         val sessionsFlow = FirebaseSingleton.firestore.collection("sessions")
             .toFlow()
             .map { result ->
-                result.map { it.id to it.toObject(SessionKt::class.java) }
+                result.map { it.id to it.toObject(Session::class.java) }
                     .toMap()
             }
         val slotsFlow = getSlotsFlow()
@@ -94,7 +84,7 @@ class AndroidMakersStore {
         val speakersFlow = FirebaseSingleton.firestore.collection("speakers")
             .toFlow()
             .map { result ->
-                result.map { it.id to it.toObject(SpeakerKt::class.java) }
+                result.map { it.id to it.toObject(Speaker::class.java) }
                     .toMap()
             }
 
@@ -109,19 +99,8 @@ class AndroidMakersStore {
 
     }
 
-    @Deprecated(
-        message = "Use the coroutines version instead",
-        replaceWith = ReplaceWith("getSlots()")
-    )
-    fun getSlotsFlow(callback: (List<ScheduleSlotKt>) -> Unit) {
-        GlobalScope.launch(Dispatchers.Main) {
-            val slots = getSlotsFlow().first()
-            callback(slots)
-        }
-    }
-
-    private fun convertResults(results: Map<String, DocumentSnapshot>): List<ScheduleSlotKt>? {
-        val list = mutableListOf<ScheduleSlotKt>()
+    private fun convertResults(results: Map<String, DocumentSnapshot>): List<ScheduleSlot>? {
+        val list = mutableListOf<ScheduleSlot>()
         for (result in results) {
             val day = result.value.data
             if (day == null) {
@@ -144,7 +123,7 @@ class AndroidMakersStore {
                         }
 
                         list.add(
-                            ScheduleSlotKt(
+                            ScheduleSlot(
                                 startDate = getDate(result.key, startTime),
                                 endDate = getDate(result.key, endTime),
                                 roomId = roomId,
@@ -161,7 +140,6 @@ class AndroidMakersStore {
         }
     }
 
-
     /**
      * @param date the date as YYYY-MM-DD
      * @param time the time as HH:mm
@@ -176,15 +154,6 @@ class AndroidMakersStore {
         return df.format(d)
     }
 
-    suspend fun getSpeaker(id: String): SpeakerKt? {
-        return FirebaseSingleton.firestore.collection("speakers").document(id).get()
-            .await()
-            .toObject(SpeakerKt::class.java)
-    }
-
-    fun getRoom(roomId: String): Flow<RoomKt> {
-        return flowOf(allRooms[roomId]).filterNotNull()
-    }
 
     companion object {
         const val ROOM_ID_ALL = "all"
