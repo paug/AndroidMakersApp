@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.combine
  *
  */
 interface AndroidMakersStore {
+    fun getVenue(document: String): Flow<Venue>
     fun getSpeaker(id: String): Flow<Speaker>
     fun getRoom(roomId: String): Flow<Room>
     fun getSession(id: String): Flow<Session>

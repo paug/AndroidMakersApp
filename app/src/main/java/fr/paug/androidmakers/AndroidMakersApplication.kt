@@ -7,6 +7,7 @@ import androidx.emoji.text.EmojiCompat
 import androidx.emoji.text.EmojiCompat.InitCallback
 import androidx.emoji.text.FontRequestEmojiCompatConfig
 import fr.androidmakers.store.AndroidMakersStore
+import fr.androidmakers.store.firebase.FirebaseStore
 import fr.paug.androidmakers.util.SessionSelector
 
 class AndroidMakersApplication : Application() {
@@ -14,6 +15,8 @@ class AndroidMakersApplication : Application() {
 
     override fun onCreate() {
         instance_ = this
+
+        // Replace with proper dependency injection
         store = FirebaseStore()
 
         super.onCreate()
