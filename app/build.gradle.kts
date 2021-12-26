@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":store-firebase"))
+    implementation(project(":store-graphql"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.espresso.core)
 

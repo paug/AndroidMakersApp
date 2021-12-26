@@ -3,14 +3,15 @@ package fr.androidmakers.store
 import fr.androidmakers.store.model.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.onEach
 
 /**
  *
  */
 interface AndroidMakersStore {
-    fun getVenue(document: String): Flow<Venue>
+    fun getVenue(id: String): Flow<Venue>
     fun getSpeaker(id: String): Flow<Speaker>
-    fun getRoom(roomId: String): Flow<Room>
+    fun getRoom(id: String): Flow<Room>
     fun getSession(id: String): Flow<Session>
     fun getPartners(): Flow<List<Partner>>
     fun getScheduleSlots(): Flow<List<ScheduleSlot>>
@@ -19,10 +20,18 @@ interface AndroidMakersStore {
     fun getRooms(): Flow<List<Room>>
 
     fun getAgenda(): Flow<Agenda> {
-        val sessionsFlow = getSessions()
-        val slotsFlow = getScheduleSlots()
-        val roomsFlow = getRooms()
-        val speakersFlow = getSpeakers()
+        val sessionsFlow = getSessions().onEach {
+            println(it)
+        }
+        val slotsFlow = getScheduleSlots().onEach {
+            println(it)
+        }
+        val roomsFlow = getRooms().onEach {
+            println(it)
+        }
+        val speakersFlow = getSpeakers().onEach {
+            println(it)
+        }
 
         return combine(
             sessionsFlow,

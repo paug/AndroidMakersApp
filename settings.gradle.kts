@@ -18,3 +18,4 @@ pluginManagement {
 include(":app")
 include(":store")
 include(":store-firebase")
+include(":store-graphql")
