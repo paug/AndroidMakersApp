@@ -6,14 +6,18 @@ import androidx.core.provider.FontRequest
 import androidx.emoji.text.EmojiCompat
 import androidx.emoji.text.EmojiCompat.InitCallback
 import androidx.emoji.text.FontRequestEmojiCompatConfig
-import fr.paug.androidmakers.util.SessionSelector.init
+import fr.androidmakers.store.AndroidMakersStore
+import fr.paug.androidmakers.util.SessionSelector
 
 class AndroidMakersApplication : Application() {
+    lateinit var store: AndroidMakersStore
 
     override fun onCreate() {
         instance_ = this
+        store = FirebaseStore()
+
         super.onCreate()
-        init(this)
+        SessionSelector.init(this)
         // Use a downloadable font for EmojiCompat
         setupEmojiCompat()
     }

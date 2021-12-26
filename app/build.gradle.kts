@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":store"))
+    implementation(project(":store-firebase"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.espresso.core)
 
