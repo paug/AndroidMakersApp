@@ -8,9 +8,9 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class FirebaseStore : AndroidMakersStore {
-    override fun getVenue(document: String): Flow<Venue> {
+    override fun getVenue(id: String): Flow<Venue> {
         return FirebaseSingleton.firestore.collection("venues")
-            .document(document)
+            .document(id)
             .toFlow()
             .mapNotNull {
                 it.toObject(Venue::class.java)
@@ -26,8 +26,8 @@ class FirebaseStore : AndroidMakersStore {
             }
     }
 
-    override fun getRoom(roomId: String): Flow<Room> {
-        return flowOf(allRooms.first { it.id == roomId })
+    override fun getRoom(id: String): Flow<Room> {
+        return flowOf(allRooms.first { it.id == id })
     }
 
     override fun getRooms(): Flow<List<Room>> {
