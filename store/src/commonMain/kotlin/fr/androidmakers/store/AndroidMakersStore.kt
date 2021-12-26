@@ -1,9 +1,8 @@
-package fr.androidmakers.store.manager
+package fr.androidmakers.store
 
 import fr.androidmakers.store.model.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flowOf
 
 /**
  *

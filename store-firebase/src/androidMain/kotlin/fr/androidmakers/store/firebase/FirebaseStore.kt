@@ -1,7 +1,8 @@
-package fr.androidmakers.store.manager
+package fr.androidmakers.store.firebase
 
 import com.google.firebase.firestore.DocumentSnapshot
 import fr.androidmakers.store.model.*
+import fr.androidmakers.store.*
 import kotlinx.coroutines.flow.*
 import java.text.SimpleDateFormat
 import java.util.*
