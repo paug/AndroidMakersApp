@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class FirebaseStore : AndroidMakersStore {
-    fun getVenue(document: String): Flow<Venue> {
+    override fun getVenue(document: String): Flow<Venue> {
         return FirebaseSingleton.firestore.collection("venues")
             .document(document)
             .toFlow()

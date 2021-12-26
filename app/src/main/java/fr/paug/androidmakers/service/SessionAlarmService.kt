@@ -11,8 +11,8 @@ import androidx.core.app.AlarmManagerCompat
 import androidx.core.app.JobIntentService
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.R
-import fr.androidmakers.store.manager.FirebaseStore
 import fr.paug.androidmakers.receiver.SessionAlarmReceiver
 import fr.paug.androidmakers.ui.activity.MainActivity
 import fr.paug.androidmakers.util.SessionSelector
@@ -72,7 +72,7 @@ class SessionAlarmService : JobIntentService() {
         logDebug("scheduleAllStarredSessions")
         // need to be sure that the AgendaRepository is loaded in order to schedule all starred sessions
         GlobalScope.launch {
-            FirebaseStore().getScheduleSlots().collect { scheduleSlots ->
+            AndroidMakersApplication.instance().store.getScheduleSlots().collect { scheduleSlots ->
                 // first unschedule all sessions
                 // this is done in case the session slot has changed
                 for (scheduleSlot in scheduleSlots) {
@@ -131,8 +131,8 @@ class SessionAlarmService : JobIntentService() {
         }
 
         GlobalScope.launch(Dispatchers.Main) {
-            FirebaseStore().getSession(sessionId).first().let { session ->
-                FirebaseStore().getScheduleSlots().collect { slots ->
+            AndroidMakersApplication.instance().store.getSession(sessionId).first().let { session ->
+                AndroidMakersApplication.instance().store.getScheduleSlots().collect { slots ->
                     val slotToNotify = slots.firstOrNull { it.sessionId == sessionId }
                     if (slotToNotify == null) {
                         Log.w(TAG, "Cannot find session $sessionId either in sessions or in slots")
@@ -151,7 +151,7 @@ class SessionAlarmService : JobIntentService() {
                         null
                     ).toString()
 
-                    val room = FirebaseStore().getRoom(slotToNotify.roomId).first()
+                    val room = AndroidMakersApplication.instance().store.getRoom(slotToNotify.roomId).first()
 
                     val roomName = room.name + " - "
 
