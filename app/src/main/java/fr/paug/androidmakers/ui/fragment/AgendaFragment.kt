@@ -17,7 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import fr.paug.androidmakers.R
 import fr.androidmakers.store.model.Agenda
-import fr.androidmakers.store.manager.AndroidMakersStore
+import fr.androidmakers.store.manager.FirebaseStore
 import fr.androidmakers.store.model.Room
 import fr.androidmakers.store.model.ScheduleSlot
 import fr.androidmakers.store.model.Speaker
@@ -103,7 +103,7 @@ class AgendaFragment : Fragment() {
     //region Schedule
     private fun loadAgenda() {
         scope.launch {
-            AndroidMakersStore().getAgendaFlow().collect {
+            FirebaseStore().getAgenda().collect {
                 onAgendaLoaded(it)
             }
         }

@@ -3,6 +3,7 @@ package fr.androidmakers.store.model
 import android.text.TextUtils
 
 data class Speaker(
+        val id: String = "",
         val badges: List<BadgesItem?>? = null,
         val country: String? = null,
         val featured: Boolean? = null,

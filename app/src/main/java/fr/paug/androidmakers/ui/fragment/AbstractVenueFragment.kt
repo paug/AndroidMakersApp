@@ -13,7 +13,7 @@ import com.google.android.material.snackbar.Snackbar
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.databinding.VenueItemFragmentBinding
 
-import fr.androidmakers.store.manager.AndroidMakersStore
+import fr.androidmakers.store.manager.FirebaseStore
 import fr.androidmakers.store.model.Venue
 import fr.paug.androidmakers.util.CustomTabUtil
 import kotlinx.coroutines.flow.first
@@ -50,7 +50,7 @@ abstract class AbstractVenueFragment : Fragment(), View.OnClickListener {
         venueItemFragmentBinding = VenueItemFragmentBinding.inflate(
                 inflater,  container, false)
         lifecycleScope.launchWhenCreated {
-            AndroidMakersStore().getVenue(getVenueDocumentPath()).first().let {
+            FirebaseStore().getVenue(getVenueDocumentPath()).first().let {
                 venueInformation = it
                 venueItemFragmentBinding?.also { fragmentBinding ->
                     fragmentBinding.venueDirections.text = Html.fromHtml(venueDescription)
