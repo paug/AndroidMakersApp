@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import fr.paug.androidmakers.R
-import fr.androidmakers.store.manager.AndroidMakersStore
+import fr.androidmakers.store.manager.FirebaseStore
 import fr.paug.androidmakers.ui.fragment.AboutFragment
 import fr.paug.androidmakers.ui.fragment.AgendaFragment
 import fr.paug.androidmakers.ui.fragment.VenuePagerFragment
@@ -110,8 +110,8 @@ class MainActivity : BaseActivity() {
 
         if (sessionId != null) {
             scope.launch {
-                val slots = AndroidMakersStore()
-                        .getSlotsFlow()
+                val slots = FirebaseStore()
+                        .getScheduleSlots()
                         .first()
 
                 for (scheduleSlot in slots) {

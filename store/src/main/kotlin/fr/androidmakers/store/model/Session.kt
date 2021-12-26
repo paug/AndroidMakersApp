@@ -1,6 +1,7 @@
 package fr.androidmakers.store.model
 
 data class Session(
+        val id: String = "",
         val complexity: String = "",
         val speakers: List<String> = listOf(),
         val description: String = "",
