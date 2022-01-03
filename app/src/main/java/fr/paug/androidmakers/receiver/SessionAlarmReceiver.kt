@@ -11,15 +11,12 @@ import fr.paug.androidmakers.service.SessionAlarmService
 // On boot, reschedule all favorites sessions
 class SessionAlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        val action = intent.action
-        if (ACTION_NOTIFY_SESSION == action) {
-            val scheduleIntent = Intent(ACTION_NOTIFY_SESSION)
+        val scheduleIntent = when (intent.action) {
+            ACTION_NOTIFY_SESSION -> Intent(ACTION_NOTIFY_SESSION)
                 .setData(intent.data)
                 .putExtras(intent)
-            enqueueWork(context, scheduleIntent)
-        } else if (Intent.ACTION_BOOT_COMPLETED == action) {
-            val scheduleIntent = Intent(ACTION_SCHEDULE_ALL_STARRED_BLOCKS)
-            enqueueWork(context, scheduleIntent)
+             ACTION_BOOT_COMPLETED -> Intent(ACTION_SCHEDULE_ALL_STARRED_BLOCKS)
         }
+        enqueueWork(context, scheduleIntent)
     }
 }
