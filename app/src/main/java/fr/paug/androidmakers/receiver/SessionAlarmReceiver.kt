@@ -6,6 +6,7 @@ import fr.paug.androidmakers.service.SessionAlarmService.Companion.ACTION_SCHEDU
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.ACTION_BOOT_COMPLETED
 import fr.paug.androidmakers.service.SessionAlarmService
 
 // On boot, reschedule all favorites sessions
