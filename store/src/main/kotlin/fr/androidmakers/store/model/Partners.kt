@@ -1,12 +1,3 @@
 package fr.androidmakers.store.model
 
-class Partners(val name: String?, val imageUrl: String?, val link: String?, val description: String?) {
-    override fun toString(): String {
-        return "Partners{" +
-                "name='" + name + '\'' +
-                ", imageUrl='" + imageUrl + '\'' +
-                ", link='" + link + '\'' +
-                ", description='" + description + '\'' +
-                '}'
-    }
-}
+data class Partners(val name: String?, val imageUrl: String?, val link: String?, val description: String?)
