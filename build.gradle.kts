@@ -1,7 +1,1 @@
 
-subprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
