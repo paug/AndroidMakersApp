@@ -8,13 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.databinding.VenueItemFragmentBinding
 
-import fr.paug.androidmakers.manager.AndroidMakersStore
-import fr.paug.androidmakers.model.Venue
+import fr.androidmakers.store.manager.AndroidMakersStore
+import fr.androidmakers.store.model.Venue
 import fr.paug.androidmakers.util.CustomTabUtil
+import kotlinx.coroutines.flow.first
 import java.util.*
 
 abstract class AbstractVenueFragment : Fragment(), View.OnClickListener {
@@ -47,11 +49,13 @@ abstract class AbstractVenueFragment : Fragment(), View.OnClickListener {
         // Inflate the layout for this fragment
         venueItemFragmentBinding = VenueItemFragmentBinding.inflate(
                 inflater,  container, false)
-        AndroidMakersStore().getVenue(getVenueDocumentPath()) {
-            venueInformation = it
-            venueItemFragmentBinding?.also { fragmentBinding ->
-                fragmentBinding.venueDirections.text = Html.fromHtml(venueDescription)
-                fragmentBinding.venueLocateButton.setOnClickListener(this)
+        lifecycleScope.launchWhenCreated {
+            AndroidMakersStore().getVenue(getVenueDocumentPath()).first().let {
+                venueInformation = it
+                venueItemFragmentBinding?.also { fragmentBinding ->
+                    fragmentBinding.venueDirections.text = Html.fromHtml(venueDescription)
+                    fragmentBinding.venueLocateButton.setOnClickListener(this@AbstractVenueFragment)
+                }
             }
         }
         return venueItemFragmentBinding?.root

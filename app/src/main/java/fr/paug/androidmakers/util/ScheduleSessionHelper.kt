@@ -7,7 +7,7 @@ import android.widget.Toast
 
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.service.SessionAlarmService
-import fr.paug.androidmakers.ui.adapter.ScheduleSessionKt
+import fr.paug.androidmakers.ui.adapter.ScheduleSession
 
 object ScheduleSessionHelper {
 
@@ -15,7 +15,7 @@ object ScheduleSessionHelper {
 
     private var toast: Toast? = null
 
-    fun sameStartTime(block1: ScheduleSessionKt, block2: ScheduleSessionKt, useOverlap: Boolean): Boolean {
+    fun sameStartTime(block1: ScheduleSession, block2: ScheduleSession, useOverlap: Boolean): Boolean {
         return Math.abs(block1.startTimestamp - block2.startTimestamp) <= if (useOverlap) ALLOWED_OVERLAP else 0
     }
 

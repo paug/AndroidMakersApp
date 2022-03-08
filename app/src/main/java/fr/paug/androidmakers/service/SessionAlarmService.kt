@@ -12,13 +12,14 @@ import androidx.core.app.JobIntentService
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import fr.paug.androidmakers.R
-import fr.paug.androidmakers.manager.AndroidMakersStore
+import fr.androidmakers.store.manager.AndroidMakersStore
 import fr.paug.androidmakers.receiver.SessionAlarmReceiver
 import fr.paug.androidmakers.ui.activity.MainActivity
 import fr.paug.androidmakers.util.SessionSelector
 import fr.paug.androidmakers.util.TimeUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -48,13 +49,17 @@ class SessionAlarmService : JobIntentService() {
                 Log.w(TAG, "Title or content of the notification is null.")
                 return
             }
-            logDebug("Notifying about sessions starting at " +
-                    sessionStart + " = " + Date(sessionStart).toString())
+            logDebug(
+                "Notifying about sessions starting at " +
+                        sessionStart + " = " + Date(sessionStart).toString()
+            )
             notifySession(sessionId, notificationTitle, notificationContent)
         } else if (ACTION_SCHEDULE_STARRED_BLOCK == action) {
             logDebug("Scheduling session alarm.")
-            logDebug("-> Session start: $sessionStart = " + Date(sessionStart)
-                    .toString())
+            logDebug(
+                "-> Session start: $sessionStart = " + Date(sessionStart)
+                    .toString()
+            )
             logDebug("-> Session end: " + sessionEnd + " = " + Date(sessionEnd).toString())
             scheduleAlarm(sessionStart, sessionEnd, sessionId, true)
         } else if (ACTION_UNSCHEDULE_UNSTARRED_BLOCK == action) {
@@ -66,22 +71,26 @@ class SessionAlarmService : JobIntentService() {
     internal fun scheduleAllStarredSessions() {
         logDebug("scheduleAllStarredSessions")
         // need to be sure that the AgendaRepository is loaded in order to schedule all starred sessions
-        AndroidMakersStore().getSlotsFlow { scheduleSlots ->
-            // first unschedule all sessions
-            // this is done in case the session slot has changed
-            for (scheduleSlot in scheduleSlots) {
-                unscheduleAlarm(scheduleSlot.sessionId)
-            }
+        GlobalScope.launch {
+            AndroidMakersStore().getSlotsFlow().collect { scheduleSlots ->
+                // first unschedule all sessions
+                // this is done in case the session slot has changed
+                for (scheduleSlot in scheduleSlots) {
+                    unscheduleAlarm(scheduleSlot.sessionId)
+                }
 
-            for (id in SessionSelector.sessionsSelected!!) {
-                val scheduleSlot = scheduleSlots.firstOrNull { it.sessionId == id }
+                for (id in SessionSelector.sessionsSelected!!) {
+                    val scheduleSlot = scheduleSlots.firstOrNull { it.sessionId == id }
 
-                if (scheduleSlot != null) {
-                    Log.i("SessionAlarmService", scheduleSlot.toString())
-                    val startTimestamp = format.parse(scheduleSlot.startDate).time
-                    val endTimestamp = format.parse(scheduleSlot.endDate).time
-                    scheduleAlarm(startTimestamp, endTimestamp,
-                            scheduleSlot.sessionId, false)
+                    if (scheduleSlot != null) {
+                        Log.i("SessionAlarmService", scheduleSlot.toString())
+                        val startTimestamp = format.parse(scheduleSlot.startDate).time
+                        val endTimestamp = format.parse(scheduleSlot.endDate).time
+                        scheduleAlarm(
+                            startTimestamp, endTimestamp,
+                            scheduleSlot.sessionId, false
+                        )
+                    }
                 }
             }
         }
@@ -96,10 +105,12 @@ class SessionAlarmService : JobIntentService() {
      * @param allowLastMinute allow or not the alarm to be set if the delay between the alarm and
      * the session start is over.
      */
-    private fun scheduleAlarm(sessionStart: Long,
-                              sessionEnd: Long,
-                              sessionId: String,
-                              allowLastMinute: Boolean) {
+    private fun scheduleAlarm(
+        sessionStart: Long,
+        sessionEnd: Long,
+        sessionId: String,
+        allowLastMinute: Boolean
+    ) {
         val currentTime = System.currentTimeMillis()
 
         Log.i("Time", "current: $currentTime, session start: $sessionStart")
@@ -119,24 +130,27 @@ class SessionAlarmService : JobIntentService() {
             }
         }
 
-        AndroidMakersStore().getSession(sessionId) { session ->
-            AndroidMakersStore().getSlotsFlow { slots ->
-                val slotToNotify = slots.firstOrNull { it.sessionId == sessionId }
-                if (session == null || slotToNotify == null) {
-                    Log.w(TAG, "Cannot find session $sessionId either in sessions or in slots")
-                    return@getSlotsFlow
-                }
+        GlobalScope.launch(Dispatchers.Main) {
+            AndroidMakersStore().getSession(sessionId).first().let { session ->
+                AndroidMakersStore().getSlotsFlow().collect { slots ->
+                    val slotToNotify = slots.firstOrNull { it.sessionId == sessionId }
+                    if (slotToNotify == null) {
+                        Log.w(TAG, "Cannot find session $sessionId either in sessions or in slots")
+                        return@collect
+                    }
 
-                val startTimestamp = format.parse(slotToNotify.startDate).time
-                val endTimestamp = format.parse(slotToNotify.endDate).time
+                    val startTimestamp = format.parse(slotToNotify.startDate).time
+                    val endTimestamp = format.parse(slotToNotify.endDate).time
 
-                val sessionDate = DateUtils.formatDateRange(this,
+                    val sessionDate = DateUtils.formatDateRange(
+                        this@SessionAlarmService,
                         Formatter(Locale.getDefault()),
                         startTimestamp,
                         endTimestamp,
-                        DateUtils.FORMAT_SHOW_WEEKDAY or DateUtils.FORMAT_ABBREV_WEEKDAY or DateUtils.FORMAT_SHOW_TIME, null).toString()
+                        DateUtils.FORMAT_SHOW_WEEKDAY or DateUtils.FORMAT_ABBREV_WEEKDAY or DateUtils.FORMAT_SHOW_TIME,
+                        null
+                    ).toString()
 
-                GlobalScope.launch(Dispatchers.Main) {
                     val room = AndroidMakersStore().getRoom(slotToNotify.roomId).first()
 
                     val roomName = room.name + " - "
@@ -144,10 +158,11 @@ class SessionAlarmService : JobIntentService() {
                     logDebug("Scheduling alarm for " + alarmTime + " = " + Date(alarmTime).toString())
 
                     val notificationIntent = Intent(
-                            ACTION_NOTIFY_SESSION,
-                            Uri.parse(sessionId),
-                            this@SessionAlarmService,
-                            SessionAlarmReceiver::class.java)
+                        ACTION_NOTIFY_SESSION,
+                        Uri.parse(sessionId),
+                        this@SessionAlarmService,
+                        SessionAlarmReceiver::class.java
+                    )
                     notificationIntent.putExtra(EXTRA_SESSION_START, sessionStart)
                     logDebug("-> Intent extra: session start $sessionStart")
                     notificationIntent.putExtra(EXTRA_SESSION_END, sessionEnd)
@@ -156,12 +171,22 @@ class SessionAlarmService : JobIntentService() {
                     notificationIntent.putExtra(EXTRA_NOTIFICATION_TITLE, session.title)
                     notificationIntent.putExtra(EXTRA_NOTIFICATION_CONTENT, roomName + sessionDate)
 
-                    val pendingIntent = PendingIntent.getBroadcast(this@SessionAlarmService, sessionId.hashCode(), notificationIntent, 0)
+                    val pendingIntent = PendingIntent.getBroadcast(
+                        this@SessionAlarmService,
+                        sessionId.hashCode(),
+                        notificationIntent,
+                        0
+                    )
 
                     val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
                     // Schedule an alarm to be fired to notify user of added sessions are about to begin.
                     logDebug("-> Scheduling RTC_WAKEUP alarm at $alarmTime")
-                    AlarmManagerCompat.setExact(alarmManager, AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent)
+                    AlarmManagerCompat.setExact(
+                        alarmManager,
+                        AlarmManager.RTC_WAKEUP,
+                        alarmTime,
+                        pendingIntent
+                    )
                 }
             }
         }
@@ -175,52 +200,59 @@ class SessionAlarmService : JobIntentService() {
     private fun unscheduleAlarm(sessionId: String) {
         val am = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val notifIntent = Intent(
-                ACTION_NOTIFY_SESSION,
-                Uri.parse(sessionId),
-                this,
-                SessionAlarmReceiver::class.java)
+            ACTION_NOTIFY_SESSION,
+            Uri.parse(sessionId),
+            this,
+            SessionAlarmReceiver::class.java
+        )
         val pi = PendingIntent.getBroadcast(this, sessionId.hashCode(), notifIntent, 0)
 
         am.cancel(pi)
     }
 
     // Starred sessions are about to begin. Constructs and triggers system notification.
-    private fun notifySession(sessionId: String,
-                              notificationTitle: String,
-                              notificationContent: String) {
+    private fun notifySession(
+        sessionId: String,
+        notificationTitle: String,
+        notificationContent: String
+    ) {
         // Generates the pending intent which gets fired when the user taps on the notification.
         val resultIntent = Intent(this, MainActivity::class.java)
         val resultPendingIntent = PendingIntent.getActivity(
-                this,
-                0,
-                resultIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT
+            this,
+            0,
+            resultIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT
         )
 
         val channelId = "Sessions"
 
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
-                .setContentTitle(notificationTitle)
-                .setContentText(notificationContent)
-                .setColor(resources.getColor(R.color.colorPrimary))
-                .setDefaults(Notification.DEFAULT_SOUND or Notification.DEFAULT_VIBRATE)
-                .setLights(
-                        SessionAlarmService.NOTIFICATION_ARGB_COLOR,
-                        SessionAlarmService.NOTIFICATION_LED_ON_MS,
-                        SessionAlarmService.NOTIFICATION_LED_OFF_MS)
-                .setSmallIcon(R.drawable.ic_event_note_white_24dp)
-                .setContentIntent(resultPendingIntent)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setCategory(NotificationCompat.CATEGORY_EVENT)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setAutoCancel(true)
+            .setContentTitle(notificationTitle)
+            .setContentText(notificationContent)
+            .setColor(resources.getColor(R.color.colorPrimary))
+            .setDefaults(Notification.DEFAULT_SOUND or Notification.DEFAULT_VIBRATE)
+            .setLights(
+                SessionAlarmService.NOTIFICATION_ARGB_COLOR,
+                SessionAlarmService.NOTIFICATION_LED_ON_MS,
+                SessionAlarmService.NOTIFICATION_LED_OFF_MS
+            )
+            .setSmallIcon(R.drawable.ic_event_note_white_24dp)
+            .setContentIntent(resultPendingIntent)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setCategory(NotificationCompat.CATEGORY_EVENT)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setAutoCancel(true)
 
         // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            val channel = NotificationChannel(channelId,
-                    "Sessions about to begin",
-                    NotificationManager.IMPORTANCE_HIGH)
+            val notificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val channel = NotificationChannel(
+                channelId,
+                "Sessions about to begin",
+                NotificationManager.IMPORTANCE_HIGH
+            )
             channel.setShowBadge(false)
             channel.enableLights(true)
             channel.lightColor = SessionAlarmService.NOTIFICATION_ARGB_COLOR
@@ -230,7 +262,8 @@ class SessionAlarmService : JobIntentService() {
         }
 
         logDebug("Now showing notification.")
-        NotificationManagerCompat.from(this).notify(sessionId.hashCode(), notificationBuilder.build())
+        NotificationManagerCompat.from(this)
+            .notify(sessionId.hashCode(), notificationBuilder.build())
     }
 
     companion object {

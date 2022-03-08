@@ -1,8 +1,8 @@
-package fr.paug.androidmakers.model
+package fr.androidmakers.store.model
 
 import android.text.TextUtils
 
-data class SpeakerKt(
+data class Speaker(
         val badges: List<BadgesItem?>? = null,
         val country: String? = null,
         val featured: Boolean? = null,

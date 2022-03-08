@@ -1,8 +1,8 @@
 package fr.paug.androidmakers.util
 
-import fr.paug.androidmakers.model.Partners
-import fr.paug.androidmakers.model.Ribbon
-import fr.paug.androidmakers.model.SocialNetworkHandle
+import fr.androidmakers.store.model.Partners
+import fr.androidmakers.store.model.Ribbon
+import fr.androidmakers.store.model.SocialNetworkHandle
 import java.util.*
 
 object MapUtil {

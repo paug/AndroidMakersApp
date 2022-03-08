@@ -1,26 +1,10 @@
-package fr.paug.androidmakers.model
+package fr.androidmakers.store.model
 
 import android.text.TextUtils
-import androidx.annotation.StringRes
-import fr.paug.androidmakers.R
-import fr.paug.androidmakers.model.SocialNetworkHandle
-import fr.paug.androidmakers.model.Ribbon
-import androidx.annotation.DrawableRes
-import fr.paug.androidmakers.model.SocialNetworkHandle.SocialNetworkType
 
 class SocialNetworkHandle(name: String?, link: String?) {
     enum class SocialNetworkType {
         Unknown, Twitter, Facebook, Website, Github;
-
-        @get:DrawableRes
-        val socialNetworkIcon: Int
-            get() = when (this) {
-                Twitter -> R.drawable.ic_network_twitter
-                Facebook -> R.drawable.ic_network_facebook
-                Github -> R.drawable.ic_network_github
-                Website -> R.drawable.ic_network_web
-                else -> R.drawable.ic_network_web
-            }
     }
 
     val networkType: SocialNetworkType

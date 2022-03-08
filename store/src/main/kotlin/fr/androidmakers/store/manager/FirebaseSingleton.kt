@@ -1,4 +1,4 @@
-package fr.paug.androidmakers.manager
+package fr.androidmakers.store.manager
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
@@ -9,7 +9,6 @@ object FirebaseSingleton {
             firestoreSettings = FirebaseFirestoreSettings.Builder()
                     .setPersistenceEnabled(true)
                     .build()
-
         }
     }
 }
