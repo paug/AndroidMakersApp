@@ -21,8 +21,8 @@ browser = "androidx.browser:browser:1.4.0"
 percentlayout = "androidx.percentlayout:percentlayout:1.0.0"
 cardview = "androidx.cardview:cardview:1.0.0"
 emoji = "androidx.emoji:emoji:1.1.0"
+lifecycle-runtime-ktx = "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0"
 constraintlayout = "androidx.constraintlayout:constraintlayout:2.1.2"
-test = "com.martin:martin:2.2.1"
 
 firebase-bom = "com.google.firebase:firebase-bom:29.0.1"
 

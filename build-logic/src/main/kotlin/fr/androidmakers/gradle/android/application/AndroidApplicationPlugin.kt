@@ -1,6 +1,8 @@
 package fr.androidmakers.gradle.android.application
 
 import com.android.build.gradle.BaseExtension
+import fr.androidmakers.gradle.addRepositories
+import fr.androidmakers.gradle.android.configureAndroidCompileSdk
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import java.util.*
@@ -16,16 +18,12 @@ class AndroidApplicationPlugin : Plugin<Project> {
         project.apply(mapOf("plugin" to "kotlin-android"))
         project.apply(mapOf("plugin" to "com.google.firebase.crashlytics"))
 
-        project.repositories.apply {
-            google()
-            mavenCentral()
-        }
-
+        addRepositories(project)
         checkGoogleServices(project)
 
-        project.extensions.findByType(BaseExtension::class.java)!!.apply {
-            compileSdkVersion(31)
+        configureAndroidCompileSdk(project)
 
+        project.extensions.findByType(BaseExtension::class.java)!!.apply {
             defaultConfig.apply {
                 applicationId = "fr.paug.androidmakers"
                 minSdk = 21

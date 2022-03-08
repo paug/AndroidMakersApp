@@ -1,6 +1,6 @@
-package fr.paug.androidmakers.model
+package fr.androidmakers.store.model
 
-data class ScheduleSlotKt(
+data class ScheduleSlot(
         val endDate: String = "",
         val sessionId: String = "",
         val roomId: String = "",
