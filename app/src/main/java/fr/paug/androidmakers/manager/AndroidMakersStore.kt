@@ -16,13 +16,9 @@ class AndroidMakersStore {
     fun getVenue(document: String, callback: (Venue?) -> Unit) {
         FirebaseSingleton.firestore.collection("venues").document(document).get()
                 .addOnSuccessListener { venueDocument ->
-                    if (venueDocument != null) {
-                        Log.d(TAG, "DocumentSnapshot data: " + venueDocument.data)
-                        val venue = venueDocument.toObject(Venue::class.java)
-                        callback.invoke(venue)
-                    } else {
-                        Log.d(TAG, "No such document")
-                    }
+                    Log.d(TAG, "DocumentSnapshot data: " + venueDocument.data)
+                    val venue = venueDocument.toObject(Venue::class.java)
+                    callback.invoke(venue)
                 }
                 .addOnFailureListener { exception ->
                     Log.d(TAG, "get failed with ", exception)
@@ -41,13 +37,9 @@ class AndroidMakersStore {
     fun getSession(id: String, callback: (SessionKt?) -> Unit) {
         FirebaseSingleton.firestore.collection("sessions").document(id).get()
                 .addOnSuccessListener { document ->
-                    if (document != null) {
-                        Log.d(TAG, "DocumentSnapshot data: " + document.data)
-                        val session = document.toObject(SessionKt::class.java)
-                        callback.invoke(session)
-                    } else {
-                        Log.d(TAG, "No such document")
-                    }
+                    Log.d(TAG, "DocumentSnapshot data: " + document.data)
+                    val session = document.toObject(SessionKt::class.java)
+                    callback.invoke(session)
                 }
                 .addOnFailureListener { exception ->
                     Log.d(TAG, "get failed with ", exception)

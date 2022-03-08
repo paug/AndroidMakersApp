@@ -123,16 +123,12 @@ internal constructor(private val context: Context,
         return getItemViewType(position) == ITEM_TYPE_TIME_HEADER
     }
 
-    override fun setupStickyHeaderView(stickyHeader: View) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            stickyHeader.translationZ = stuckHeaderElevation
-        }
+    override fun setupStickyHeaderView(stickyHeader: View?) {
+        stickyHeader?.translationZ = stuckHeaderElevation
     }
 
-    override fun teardownStickyHeaderView(stickyHeader: View) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            stickyHeader.translationZ = 0f
-        }
+    override fun teardownStickyHeaderView(stickyHeader: View?) {
+        stickyHeader?.translationZ = 0f
     }
     //endregion
 
@@ -222,7 +218,7 @@ internal constructor(private val context: Context,
             val descriptionBuilder = StringBuilder()
             val resources = itemView.resources
 
-            if (EmojiCompat.get().loadState == EmojiCompat.LOAD_STATE_SUCCEEDED && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            if (EmojiCompat.get().loadState == EmojiCompat.LOAD_STATE_SUCCEEDED) {
                 if (roomTitle.isEmpty()) {
                     descriptionBuilder.append(resources.getString(R.string.session_description_placeholder,
                             sessionDuration, EmojiCompat.get().process(scheduleSession.languageInEmoji)))
