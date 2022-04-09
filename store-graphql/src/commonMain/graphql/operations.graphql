@@ -63,3 +63,16 @@ fragment RoomDetails on Room {
     name
     capacity
 }
+
+query GetPartnerGroups {
+  partnerGroups {
+    order
+    title
+    partners {
+      order
+      name
+      logoUrl
+      url
+    }
+  }
+}

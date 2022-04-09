@@ -40,8 +40,7 @@ object CachedData {
     return resourceCache.get(resourceName)?.data as? T ?: error("Error getting $resourceName")
   }
 
-  val rooms: List<Room>
-    get() {
+  fun rooms(): List<Room> {
       return getResource("rooms.json") {
         json.decodeFromStream<JsonRoomData>(it)
             .map {
@@ -63,8 +62,7 @@ object CachedData {
             )
       }
     }
-  val sessions: List<Session>
-    get() {
+  fun sessions(): List<Session> {
       val slots = getResource("schedule.json") {
         json.decodeFromStream<JsonSchedule>(it).toSlots()
       }
@@ -100,9 +98,8 @@ object CachedData {
       }
     }
 
-  val speakers: List<Speaker>
-    get() {
-      return getResource("speakers.json") {
+  fun speakers(): List<Speaker>   {
+    return getResource("speakers.json") {
         json.decodeFromStream<JsonSpeakerData>(it)
             .map {
               Speaker(
@@ -126,6 +123,25 @@ object CachedData {
             }
       }
     }
+
+  fun partners(): List<PartnerGroup> {
+    return getResource("partners.json") {
+      json.decodeFromStream<JsonPartnerData>(it).map {
+        PartnerGroup(
+            it.order,
+            it.title,
+            it.items.map {
+              Partner(
+                  it.order,
+                  it.name,
+                  it.logoUrl,
+                  it.url
+              )
+            }
+        )
+      }
+    }
+  }
 }
 
 private class Slot(
