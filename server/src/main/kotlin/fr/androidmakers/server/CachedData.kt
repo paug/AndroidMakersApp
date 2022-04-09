@@ -8,6 +8,8 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.InputStream
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.ZoneId
 import java.util.*
 
 @OptIn(ExperimentalSerializationApi::class)
@@ -195,11 +197,8 @@ private fun JsonSchedule.toSlots(): List<Slot> {
  * @return a ISO86-01 String
  */
 private fun getDate(date: String, time: String): String {
-  val d = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).parse("$date $time")
-      ?: error("Cannot parse $date")
-
-  val tz = TimeZone.getTimeZone("UTC")
-  val df = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.US)
-  df.timeZone = tz
-  return df.format(d)
+  val localDate = LocalDateTime.parse("${date}T$time")
+  return localDate.atZone(ZoneId.of("Europe/Paris"))
+      .toOffsetDateTime()
+      .toString()
 }

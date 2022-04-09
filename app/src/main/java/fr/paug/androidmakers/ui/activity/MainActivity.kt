@@ -116,9 +116,8 @@ class MainActivity : BaseActivity() {
 
                 for (scheduleSlot in slots) {
                     if (scheduleSlot.sessionId == sessionId) {
-                        val format = SimpleDateFormat(TimeUtils.dateFormat)
-                        val startTimestamp = format.parse(scheduleSlot.startDate).time
-                        val endTimestamp = format.parse(scheduleSlot.endDate).time
+                        val startTimestamp = TimeUtils.parseIso8601(scheduleSlot.startDate).time
+                        val endTimestamp = TimeUtils.parseIso8601(scheduleSlot.endDate).time
                         SessionDetailActivity.startActivity(this@MainActivity, sessionId, startTimestamp, endTimestamp, scheduleSlot.roomId)
                         break
                     }

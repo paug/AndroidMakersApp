@@ -15,16 +15,16 @@ data class ScheduleSession(
 
     val languageInEmoji: String get() = EmojiUtils.getLanguageInEmoji(language)
 
-    val format = SimpleDateFormat(TimeUtils.dateFormat)
 
-    val startTimestamp get() = format.parse(slot.startDate).time
-    val endTimestamp get() = format.parse(slot.endDate).time
+
+    val startTimestamp get() = TimeUtils.parseIso8601(slot.startDate).time
+    val endTimestamp get() = TimeUtils.parseIso8601(slot.endDate).time
     val sessionId get() = slot.sessionId
     val roomId get() = slot.roomId
 
     override fun compareTo(other: ScheduleSession): Int {
-        val slotDate = format.parse(slot.startDate)
-        val otherDate = format.parse(other.slot.startDate)
+        val slotDate = TimeUtils.parseIso8601(slot.startDate)
+        val otherDate = TimeUtils.parseIso8601(other.slot.startDate)
         return slotDate.time.compareTo(otherDate.time)
     }
 

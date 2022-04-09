@@ -27,8 +27,6 @@ import java.util.*
 
 class SessionAlarmService : JobIntentService() {
 
-    val format = SimpleDateFormat(TimeUtils.dateFormat)
-
     override fun onHandleWork(intent: Intent) {
         val action = intent.action
         logDebug("Session alarm : " + action!!)
@@ -84,8 +82,8 @@ class SessionAlarmService : JobIntentService() {
 
                     if (scheduleSlot != null) {
                         Log.i("SessionAlarmService", scheduleSlot.toString())
-                        val startTimestamp = format.parse(scheduleSlot.startDate).time
-                        val endTimestamp = format.parse(scheduleSlot.endDate).time
+                        val startTimestamp = TimeUtils.parseIso8601(scheduleSlot.startDate).time
+                        val endTimestamp = TimeUtils.parseIso8601(scheduleSlot.endDate).time
                         scheduleAlarm(
                             startTimestamp, endTimestamp,
                             scheduleSlot.sessionId, false
@@ -139,8 +137,8 @@ class SessionAlarmService : JobIntentService() {
                         return@collect
                     }
 
-                    val startTimestamp = format.parse(slotToNotify.startDate).time
-                    val endTimestamp = format.parse(slotToNotify.endDate).time
+                    val startTimestamp = TimeUtils.parseIso8601(slotToNotify.startDate).time
+                    val endTimestamp = TimeUtils.parseIso8601(slotToNotify.endDate).time
 
                     val sessionDate = DateUtils.formatDateRange(
                         this@SessionAlarmService,
