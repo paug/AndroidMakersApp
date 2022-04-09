@@ -23,27 +23,27 @@ object ScheduleSessionHelper {
     fun scheduleStarredSession(context: Context, sessionStartDateInMillis: Long, sessionEndDateInMillis: Long, sessionId: String) {
         Log.d("Schedule session", "Scheduling notification for session $sessionId")
 
-        if (toast != null) toast?.cancel()
-        toast = Toast.makeText(context, R.string.session_selected, Toast.LENGTH_SHORT)
-        toast?.show()
-
-        val scheduleIntent = Intent(SessionAlarmService.ACTION_SCHEDULE_STARRED_BLOCK)
-        scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_START, sessionStartDateInMillis)
-        scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_END, sessionEndDateInMillis)
-        scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_ID, sessionId)
-        SessionAlarmService.enqueueWork(context, scheduleIntent)
+//        if (toast != null) toast?.cancel()
+//        toast = Toast.makeText(context, R.string.session_selected, Toast.LENGTH_SHORT)
+//        toast?.show()
+//
+//        val scheduleIntent = Intent(SessionAlarmService.ACTION_SCHEDULE_STARRED_BLOCK)
+//        scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_START, sessionStartDateInMillis)
+//        scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_END, sessionEndDateInMillis)
+//        scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_ID, sessionId)
+//        SessionAlarmService.enqueueWork(context, scheduleIntent)
     }
 
     fun unScheduleSession(context: Context, sessionId: String) {
         Log.d("Schedule session", "Unscheduling notification for session $sessionId")
 
-        if (toast != null) toast?.cancel()
-        toast = Toast.makeText(context, R.string.session_deselected, Toast.LENGTH_SHORT)
-        toast?.show()
-
-        val scheduleIntent = Intent(SessionAlarmService.ACTION_UNSCHEDULE_UNSTARRED_BLOCK)
-        scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_ID, sessionId)
-        SessionAlarmService.enqueueWork(context, scheduleIntent)
+//        if (toast != null) toast?.cancel()
+//        toast = Toast.makeText(context, R.string.session_deselected, Toast.LENGTH_SHORT)
+//        toast?.show()
+//
+//        val scheduleIntent = Intent(SessionAlarmService.ACTION_UNSCHEDULE_UNSTARRED_BLOCK)
+//        scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_ID, sessionId)
+//        SessionAlarmService.enqueueWork(context, scheduleIntent)
     }
 
     fun cancelToast() {

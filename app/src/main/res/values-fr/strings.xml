@@ -54,9 +54,9 @@
     <string name="venue_floor_plan_tab">Plan</string>
 
     <!--About-->
-    <string name="about_android_makers">Android Makers Paris est un événement 100% en ligne de deux jours qui se tiendra les 20 et 21 avril.
+    <string name="about_android_makers">Android Makers Paris est un événement de deux jours qui se tiendra les 25 et 26 avril.
         \n\nRejoignez-nous pour aborder le présent et futur d\'Android avec les meilleurs experts du domaine.
-        Il y aura des sessions techniques, des ateliers et des rencontres 1:1 avec vos speakers préférés.
+        Il y aura des sessions techniques, des ateliers et des rencontres avec vos speakers préférés.
         \n\nTous les talks seront enregistrées, et mis sur la chaîne YouTube.</string>
 
     <string name="social">Social</string>
@@ -77,12 +77,6 @@
     <string name="location_sponsor">Salle</string>
     <string name="specialthanks_sponsor">Remerciement spécial</string>
 
-    <string name="aog_title">Action Google Assistant</string>
-    <string name="aog_description">Découvrez l\'Action pour le Google Assistant !</string>
-    <string name="aog_button">Lancer l\'Action Android Makers</string>
     <string name="feedbackWaiting">Revenez plus tard pour donner votre retour.</string>
-
-    <string name="watchOnThePlatform">Regarder sur la plateforme</string>
-    <string name="askAQuestionOnSlido">Poser une question sur Slido</string>
 
 </resources>

@@ -75,3 +75,20 @@ data class JsonTrack(
   val title: String,
   val infos: String,
 )
+
+typealias JsonPartnerData = List<JsonPartnerGroup>
+
+@Serializable
+data class JsonPartnerGroup(
+    val order: Int,
+    val title: String,
+    val items: List<JsonPartner>
+)
+
+@Serializable
+data class JsonPartner(
+    val order: Int,
+    val name: String,
+    val logoUrl: String,
+    val url: String
+)
