@@ -33,11 +33,9 @@ data class JsonSpeaker(
   val featured: Boolean = false,
   val name: String,
   val bio: String,
-  val shortBio: String,
   val country: String?,
   val companyLogo: String? = null,
   val company: String? = null,
-  val photo: String,
   val socials: List<JsonSocial>,
   val photoUrl: String
 )

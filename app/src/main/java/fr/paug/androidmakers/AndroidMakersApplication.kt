@@ -7,6 +7,7 @@ import androidx.emoji.text.EmojiCompat
 import androidx.emoji.text.EmojiCompat.InitCallback
 import androidx.emoji.text.FontRequestEmojiCompatConfig
 import fr.androidmakers.store.AndroidMakersStore
+import fr.androidmakers.store.firebase.FirebaseStore
 import fr.androidmakers.store.graphql.GraphQLStore
 import fr.paug.androidmakers.util.SessionSelector
 

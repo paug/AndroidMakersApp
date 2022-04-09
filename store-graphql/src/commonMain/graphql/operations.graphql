@@ -44,7 +44,6 @@ fragment SpeakerDetails on Speaker {
     featured
     order
     bio
-    shortBio
     socials {
         name
         link

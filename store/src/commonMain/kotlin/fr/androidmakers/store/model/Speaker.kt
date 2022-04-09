@@ -9,7 +9,6 @@ data class Speaker(
         val name: String? = null,
         val photo: String? = null,
         val bio: String? = null,
-        val shortBio: String? = null,
         val company: String? = null,
         val socials: List<SocialsItem?>? = null,
         val order: Int? = null
