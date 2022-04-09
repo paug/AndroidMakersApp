@@ -31,9 +31,10 @@ data class Session(
         speakerIds.contains(it.id)
       }
     }
-  val room: Room
+  // A session might not have a room yet
+  val room: Room?
     get() {
-      return CachedData.rooms.single {
+      return CachedData.rooms.singleOrNull() {
         it.id == roomId
       }
     }
@@ -45,11 +46,9 @@ data class Speaker(
   val featured: Boolean,
   val name: String,
   val bio: String,
-  val shortBio: String,
   val country: String?,
   val companyLogo: String?,
   val company: String?,
-  val photo: String,
   val socials: List<Social>,
   val photoUrl: String
 )

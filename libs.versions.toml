@@ -1,7 +1,7 @@
 [versions]
 kotlin = "1.6.10"
 glide = "4.12.0"
-apollo = "3.0.0"
+apollo = "3.2.1"
 
 [libraries]
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
