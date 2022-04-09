@@ -1,7 +1,5 @@
 package fr.androidmakers.store.model
 
-import android.text.TextUtils
-
 class SocialNetworkHandle(name: String?, link: String?) {
     enum class SocialNetworkType {
         Unknown, Twitter, Facebook, Website, Github;
@@ -12,7 +10,7 @@ class SocialNetworkHandle(name: String?, link: String?) {
 
     companion object {
         private fun getSocialNetworkType(networkName: String?): SocialNetworkType {
-            if (!TextUtils.isEmpty(networkName)) {
+            if (!networkName.isNullOrBlank()) {
                 if (networkName.equals("twitter", ignoreCase = true)) {
                     return SocialNetworkType.Twitter
                 } else if (networkName.equals("github", ignoreCase = true)) {

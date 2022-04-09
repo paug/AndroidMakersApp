@@ -1,10 +1,11 @@
 [versions]
 kotlin = "1.6.10"
 glide = "4.12.0"
+apollo = "3.0.0"
 
 [libraries]
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-android-gradle-plugin = "com.android.tools.build:gradle:7.2.0-alpha06"
+android-gradle-plugin = "com.android.tools.build:gradle:7.0.4"
 google-services = "com.google.gms:google-services:4.3.10"
 firebase-crashlytics-gradle = "com.google.firebase:firebase-crashlytics-gradle:2.8.1"
 glide-runtime = { module = "com.github.bumptech.glide:glide", version.ref = "glide"}
@@ -14,6 +15,7 @@ espresso-core = "androidx.test.espresso:espresso-core:3.1.1"
 multidex = "com.android.support:multidex:1.0.3"
 kotlinx-coroutines-play-services = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.3.5"
 kotlinx-coroutines-android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2"
+kotlinx-coroutines-core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2"
 appcompat = "androidx.appcompat:appcompat:1.4.0"
 material = "com.google.android.material:material:1.4.0"
 vectordrawable = "androidx.vectordrawable:vectordrawable:1.1.0"
@@ -28,6 +30,11 @@ firebase-bom = "com.google.firebase:firebase-bom:29.0.1"
 
 play-services-auth = "com.google.android.gms:play-services-auth:20.0.0"
 layouts = "org.apmem.tools:layouts:1.10"
+apollo-runtime = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "apollo" }
+apollo-normalized-cache = { module = "com.apollographql.apollo3:apollo-normalized-cache", version.ref = "apollo" }
+apollo-normalized-cache-sqlite = { module = "com.apollographql.apollo3:apollo-normalized-cache-sqlite", version.ref = "apollo" }
+
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+apollo = { id = "com.apollographql.apollo3", version.ref = "apollo" }

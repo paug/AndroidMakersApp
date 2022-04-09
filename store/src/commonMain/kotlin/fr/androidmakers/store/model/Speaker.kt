@@ -1,8 +1,7 @@
 package fr.androidmakers.store.model
 
-import android.text.TextUtils
-
 data class Speaker(
+        val id: String = "",
         val badges: List<BadgesItem?>? = null,
         val country: String? = null,
         val featured: Boolean? = null,
@@ -17,11 +16,11 @@ data class Speaker(
 ) {
 
     fun getFullNameAndCompany(): String {
-        return this.name + if (TextUtils.isEmpty(company)) "" else ", " + this.company
+        return this.name + if (company.isNullOrBlank()) "" else ", " + this.company
     }
 
     fun getMainRibbon(): BadgesItem? {
-        return if (badges != null && !badges.isEmpty()) {
+        return if (badges != null && badges.isNotEmpty()) {
             badges.get(0)
         } else null
     }

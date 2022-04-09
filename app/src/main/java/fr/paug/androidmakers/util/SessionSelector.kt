@@ -13,7 +13,7 @@ object SessionSelector {
 
     private var mSessionsSelected: MutableSet<String> = HashSet()
 
-    val sessionsSelected: Set<String>?
+    val sessionsSelected: Set<String>
         get() = mSessionsSelected
 
     fun init(context: Context) {

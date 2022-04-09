@@ -1,4 +1,4 @@
-package fr.androidmakers.store.manager
+package fr.androidmakers.store.firebase
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
