@@ -12,7 +12,7 @@ import java.util.*
 class AndroidApplicationPlugin : Plugin<Project> {
   private val versionMajor = 1
   private val versionMinor = 4
-  private val versionPatch = 0
+  private val versionPatch = 1
 
   override fun apply(project: Project) {
     project.apply(mapOf("plugin" to "com.android.application"))
