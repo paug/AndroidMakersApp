@@ -25,8 +25,8 @@ import fr.paug.androidmakers.R
 import fr.paug.androidmakers.databinding.ActivityDetailBinding
 import fr.paug.androidmakers.databinding.DetailViewSpeakerInfoElementBinding
 import fr.paug.androidmakers.databinding.SmallSocialImageBinding
-import fr.androidmakers.store.manager.AndroidMakersStore
 import fr.androidmakers.store.model.*
+import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.ui.adapter.ScheduleSession
 import fr.paug.androidmakers.ui.util.CheckableFloatingActionButton
 import fr.paug.androidmakers.util.ScheduleSessionHelper
@@ -62,8 +62,8 @@ class SessionDetailActivity : BaseActivity() {
 
         scope.launch {
             combine(
-                    AndroidMakersStore().getSession(sessionId),
-                    AndroidMakersStore().getRoom(roomId!!)
+                    AndroidMakersApplication.instance().store.getSession(sessionId),
+                    AndroidMakersApplication.instance().store.getRoom(roomId!!)
             ) { session, room ->
                 session to room
             }.collect {
@@ -186,7 +186,7 @@ class SessionDetailActivity : BaseActivity() {
             val speakers = session.speakers.filter { !it.isNullOrBlank() }
                     .map {
                         async {
-                            AndroidMakersStore().getSpeaker(it).first()
+                            AndroidMakersApplication.instance().store.getSpeaker(it).first()
                         }
                     }
                     .awaitAll()

@@ -25,9 +25,13 @@ gradlePlugin {
             id = "fr.androidmakers.gradle.android.library"
             implementationClass = "fr.androidmakers.gradle.android.library.AndroidLibraryPlugin"
         }
-        create("fr.androidmakers.gradle.library") {
-            id = "fr.androidmakers.gradle.library"
-            implementationClass = "fr.androidmakers.gradle.library.LibraryPlugin"
+        create("fr.androidmakers.gradle.jvm.library") {
+            id = "fr.androidmakers.gradle.jvm.library"
+            implementationClass = "fr.androidmakers.gradle.jvm.library.JvmLibraryPlugin"
+        }
+        create("fr.androidmakers.gradle.multiplatform.library") {
+            id = "fr.androidmakers.gradle.multiplatform.library"
+            implementationClass = "fr.androidmakers.gradle.multiplatform.library.MultiplatformLibraryPlugin"
         }
     }
 }

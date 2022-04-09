@@ -17,10 +17,10 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import fr.paug.androidmakers.R
 import fr.androidmakers.store.model.Agenda
-import fr.androidmakers.store.manager.AndroidMakersStore
 import fr.androidmakers.store.model.Room
 import fr.androidmakers.store.model.ScheduleSlot
 import fr.androidmakers.store.model.Speaker
+import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.ui.activity.AboutActivity
 import fr.paug.androidmakers.ui.adapter.AgendaPagerAdapter
 import fr.paug.androidmakers.ui.adapter.DaySchedule
@@ -32,6 +32,7 @@ import fr.paug.androidmakers.util.EmojiUtils
 import fr.paug.androidmakers.util.TimeUtils
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -103,7 +104,7 @@ class AgendaFragment : Fragment() {
     //region Schedule
     private fun loadAgenda() {
         scope.launch {
-            AndroidMakersStore().getAgendaFlow().collect {
+            AndroidMakersApplication.instance().store.getAgenda().collect {
                 onAgendaLoaded(it)
             }
         }

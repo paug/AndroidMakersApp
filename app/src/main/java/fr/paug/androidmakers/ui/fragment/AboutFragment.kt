@@ -18,9 +18,9 @@ import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import fr.androidmakers.store.manager.AndroidMakersStore
 import fr.androidmakers.store.model.Logo
 import fr.androidmakers.store.model.Partner
+import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.BuildConfig
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.databinding.FragmentAboutBinding
@@ -48,7 +48,7 @@ class AboutFragment : Fragment(), View.OnClickListener {
     override fun onResume() {
         super.onResume()
         lifecycleScope.launchWhenCreated {
-            AndroidMakersStore().getPartners()
+            AndroidMakersApplication.instance().store.getPartners()
                 .collect {
                     for (partner in it) {
                         addPartnerCollectionToView(partner)

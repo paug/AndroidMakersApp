@@ -1,22 +1,23 @@
-package fr.androidmakers.store.manager
+package fr.androidmakers.store.firebase
 
 import com.google.firebase.firestore.DocumentSnapshot
 import fr.androidmakers.store.model.*
+import fr.androidmakers.store.*
 import kotlinx.coroutines.flow.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AndroidMakersStore {
-    fun getVenue(document: String): Flow<Venue> {
+class FirebaseStore : AndroidMakersStore {
+    override fun getVenue(id: String): Flow<Venue> {
         return FirebaseSingleton.firestore.collection("venues")
-            .document(document)
+            .document(id)
             .toFlow()
             .mapNotNull {
                 it.toObject(Venue::class.java)
             }
     }
 
-    fun getSpeaker(id: String): Flow<Speaker> {
+    override fun getSpeaker(id: String): Flow<Speaker> {
         return FirebaseSingleton.firestore.collection("speakers")
             .document(id)
             .toFlow()
@@ -25,11 +26,15 @@ class AndroidMakersStore {
             }
     }
 
-    fun getRoom(roomId: String): Flow<Room> {
-        return flowOf(allRooms[roomId]).filterNotNull()
+    override fun getRoom(id: String): Flow<Room> {
+        return flowOf(allRooms.first { it.id == id })
     }
 
-    fun getSession(id: String): Flow<Session> {
+    override fun getRooms(): Flow<List<Room>> {
+        return flowOf(allRooms)
+    }
+
+    override fun getSession(id: String): Flow<Session> {
         return FirebaseSingleton.firestore.collection("sessions")
             .document(id)
             .toFlow()
@@ -38,7 +43,7 @@ class AndroidMakersStore {
             }
     }
 
-    fun getPartners(): Flow<List<Partner>> {
+    override fun getPartners(): Flow<List<Partner>> {
         return FirebaseSingleton.firestore.collection("partners")
             .toFlow()
             .map {
@@ -46,7 +51,7 @@ class AndroidMakersStore {
             }
     }
 
-    fun getSlotsFlow(): Flow<List<ScheduleSlot>> {
+    override fun getScheduleSlots(): Flow<List<ScheduleSlot>> {
         val flow1 = FirebaseSingleton.firestore
             .collection("schedule").document(DAY1)
             .toFlow()
@@ -65,43 +70,32 @@ class AndroidMakersStore {
         }.filterNotNull()
     }
 
-    private val allRooms = mapOf(
-        "0" to Room("Track 1"),
-        "1" to Room("Track 2"),
-        "2" to Room("Track 3"),
-        "3" to Room("Track 4"),
-        "4" to Room("Track 5"), // not needed theoretically but added in case we decide to add new tracks
-        "5" to Room("Track 6"),
-        "6" to Room("Track 7"),
-        "6" to Room("Track 8"),
-        ROOM_ID_ALL to Room("All")
+    private val allRooms = listOf(
+        Room("0", "Track 1"),
+        Room("1", "Track 2"),
+        Room("2", "Track 3"),
+        Room("3", "Track 4"),
+        Room("4", "Track 5"), // not needed theoretically but added in case we decide to add new tracks
+        Room("5", "Track 6"),
+        Room("6", "Track 7"),
+        Room("7", "Track 8"),
+        Room(ROOM_ID_ALL,"All")
     )
 
-    fun getAgendaFlow(): Flow<Agenda> {
-        val sessionsFlow = FirebaseSingleton.firestore.collection("sessions")
+    override fun getSessions(): Flow<List<Session>> {
+        return FirebaseSingleton.firestore.collection("sessions")
             .toFlow()
             .map { result ->
-                result.associate { it.id to it.toObject(Session::class.java) }
+                result.documents.mapNotNull { it.toObject(Session::class.java)?.copy(id = it.id) }
             }
-        val slotsFlow = getSlotsFlow()
+    }
 
-        val roomsFlow = flowOf(allRooms)
-
-        val speakersFlow = FirebaseSingleton.firestore.collection("speakers")
+    override fun getSpeakers(): Flow<List<Speaker>> {
+        return FirebaseSingleton.firestore.collection("speakers")
             .toFlow()
             .map { result ->
-                result.associate { it.id to it.toObject(Speaker::class.java) }
+                result.documents.mapNotNull { it.toObject(Speaker::class.java)?.copy(id = it.id) }
             }
-
-        return combine(
-            sessionsFlow,
-            slotsFlow,
-            roomsFlow,
-            speakersFlow
-        ) { sessions, slots, rooms, speakers ->
-            Agenda(sessions, slots, rooms, speakers)
-        }
-
     }
 
     private fun convertResults(results: Map<String, DocumentSnapshot>): List<ScheduleSlot>? {
@@ -165,17 +159,17 @@ class AndroidMakersStore {
     }
 }
 
-fun <K> Map<K, *>.getAsMap(k: K): Map<String, *> {
+private fun <K> Map<K, *>.getAsMap(k: K): Map<String, *> {
     @Suppress("UNCHECKED_CAST")
     return this.get(k) as Map<String, *>
 }
 
-fun <K> Map<K, *>.getAsListOfMaps(k: K): List<Map<String, *>> {
+private fun <K> Map<K, *>.getAsListOfMaps(k: K): List<Map<String, *>> {
     @Suppress("UNCHECKED_CAST")
     return this.get(k) as List<Map<String, *>>
 }
 
-fun <K> Map<K, *>.getAsListOfStrings(k: K): List<String> {
+private fun <K> Map<K, *>.getAsListOfStrings(k: K): List<String> {
     @Suppress("UNCHECKED_CAST")
     return this.get(k) as List<String>
 }

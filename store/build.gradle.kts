@@ -1,10 +1,13 @@
 plugins {
-    id("fr.androidmakers.gradle.android.library")
+    id("fr.androidmakers.gradle.multiplatform.library")
 }
 
-dependencies {
-    implementation(platform(libs.firebase.bom))
-    implementation("com.google.firebase:firebase-firestore")
-    implementation("com.google.firebase:firebase-firestore-ktx")
-    implementation(libs.kotlinx.coroutines.android)
+kotlin {
+    sourceSets {
+        getByName("commonMain").apply {
+            dependencies {
+                implementation(libs.kotlinx.coroutines.core)
+            }
+        }
+    }
 }
