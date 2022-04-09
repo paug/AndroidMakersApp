@@ -11,8 +11,8 @@ fun GraphQLStore(context: Context): GraphQLStore {
     val cacheFactory = MemoryCacheFactory(20_000_000).chain(SqlNormalizedCacheFactory(context))
     val apolloClient = ApolloClient.Builder()
             .serverUrl("https://kiki-conf.ew.r.appspot.com/graphql")
+            //.serverUrl("http://10.0.2.2:8080/graphql")
             .normalizedCache(cacheFactory)
             .build()
-    apolloClient.apolloStore.clearAll()
     return GraphQLStore(apolloClient)
 }

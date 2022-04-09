@@ -10,7 +10,6 @@ class DefaultApplication {
 }
 
 fun runServer(): ConfigurableApplicationContext {
-  CachedData.initialize()
   return runApplication<DefaultApplication>()
 }
 

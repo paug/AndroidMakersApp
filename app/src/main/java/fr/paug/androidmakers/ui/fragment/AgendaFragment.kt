@@ -203,8 +203,7 @@ class AgendaFragment : Fragment() {
     private fun getRoomScheduleForDay(itemByDayOfTheYear: SparseArray<DaySchedule>,
                                       calendar: Calendar,
                                       scheduleSlot: ScheduleSlot): MutableList<RoomSchedule> {
-        val format = SimpleDateFormat(TimeUtils.dateFormat)
-        val date = format.parse(scheduleSlot.startDate)
+        val date = TimeUtils.parseIso8601(scheduleSlot.startDate)
 
         calendar.timeInMillis = date.time
         val dayIndex = calendar.get(Calendar.DAY_OF_YEAR) + calendar.get(Calendar.YEAR) * 1000

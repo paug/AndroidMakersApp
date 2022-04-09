@@ -3,14 +3,18 @@ package fr.paug.androidmakers.util
 import android.content.Context
 import android.text.format.DateFormat
 import fr.paug.androidmakers.R
+import java.time.OffsetDateTime
 import java.util.*
 
 object TimeUtils {
-    var dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
     const val SECOND = 1000
     const val MINUTE = 60 * SECOND
     const val HOUR = 60 * MINUTE
     const val DAY = 24 * HOUR
+
+    fun parseIso8601(iso8601: String): Date {
+        return Date(OffsetDateTime.parse(iso8601).toEpochSecond() * 1000)
+    }
     fun formatShortTime(context: Context?, time: Date?): String {
         // Android DateFormatter will honor the user's current settings.
         val dateFormat = DateFormat.getTimeFormat(context)

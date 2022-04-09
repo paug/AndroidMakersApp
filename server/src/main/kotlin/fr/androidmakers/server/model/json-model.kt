@@ -33,11 +33,9 @@ data class JsonSpeaker(
   val featured: Boolean = false,
   val name: String,
   val bio: String,
-  val shortBio: String,
   val country: String?,
   val companyLogo: String? = null,
   val company: String? = null,
-  val photo: String,
   val socials: List<JsonSocial>,
   val photoUrl: String
 )
@@ -76,4 +74,21 @@ data class JsonTimeslotSession(
 data class JsonTrack(
   val title: String,
   val infos: String,
+)
+
+typealias JsonPartnerData = List<JsonPartnerGroup>
+
+@Serializable
+data class JsonPartnerGroup(
+    val order: Int,
+    val title: String,
+    val items: List<JsonPartner>
+)
+
+@Serializable
+data class JsonPartner(
+    val order: Int,
+    val name: String,
+    val logoUrl: String,
+    val url: String
 )
