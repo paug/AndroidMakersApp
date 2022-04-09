@@ -44,7 +44,6 @@ fragment SpeakerDetails on Speaker {
     featured
     order
     bio
-    shortBio
     socials {
         name
         link
@@ -63,4 +62,17 @@ fragment RoomDetails on Room {
     id
     name
     capacity
+}
+
+query GetPartnerGroups {
+  partnerGroups {
+    order
+    title
+    partners {
+      order
+      name
+      logoUrl
+      url
+    }
+  }
 }

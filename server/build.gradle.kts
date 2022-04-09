@@ -10,9 +10,9 @@ dependencies {
   implementation(libs.graphql.kotlin.spring.server)
   implementation(libs.kotlinx.datetime)
   implementation(libs.kotlinx.serialization)
+  implementation(libs.okhttp)
 
   testImplementation(libs.kotlin.test.junit)
-  testImplementation(libs.okhttp)
 }
 
 appengine {

@@ -4,6 +4,7 @@ plugins {
 
 dependencies {
     implementation(project(":store-graphql"))
+    implementation(project(":store-firebase"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.espresso.core)
 
@@ -41,4 +42,6 @@ dependencies {
 
     // Used for tags
     implementation(libs.layouts)
+
+    coreLibraryDesugaring ("com.android.tools:desugar_jdk_libs:1.1.5")
 }

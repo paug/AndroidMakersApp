@@ -17,7 +17,6 @@ fun SpeakerDetails.toSpeaker(): Speaker {
             featured = featured,
             order = order?.toInt(),
             photo = photoUrl,
-            shortBio = shortBio,
             socials = socials.map {
                 it.toSocialsItem()
             }

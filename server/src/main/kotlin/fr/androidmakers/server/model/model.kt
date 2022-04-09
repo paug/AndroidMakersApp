@@ -27,13 +27,14 @@ data class Session(
 ) {
   val speakers: List<Speaker>
     get() {
-      return CachedData.speakers.filter {
+      return CachedData.speakers().filter {
         speakerIds.contains(it.id)
       }
     }
+  // A session might not have a room yet
   val room: Room
     get() {
-      return CachedData.rooms.single {
+      return CachedData.rooms().single {
         it.id == roomId
       }
     }
@@ -45,11 +46,9 @@ data class Speaker(
   val featured: Boolean,
   val name: String,
   val bio: String,
-  val shortBio: String,
   val country: String?,
   val companyLogo: String?,
   val company: String?,
-  val photo: String,
   val socials: List<Social>,
   val photoUrl: String
 )
@@ -60,4 +59,15 @@ data class Social(
   val name: String
 )
 
+data class PartnerGroup(
+    val order: Int,
+    val title: String,
+    val partners: List<Partner>
+)
 
+data class Partner(
+    val order: Int,
+    val name: String,
+    val logoUrl: String,
+    val url: String
+)

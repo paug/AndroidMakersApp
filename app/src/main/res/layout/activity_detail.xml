@@ -98,24 +98,6 @@
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/watchButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/colorPrimary"
-                android:text="@string/watchOnThePlatform"
-                android:textColor="#fff"
-                android:visibility="gone" />
-
-            <Button
-                android:id="@+id/slidoButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/colorPrimary"
-                android:text="@string/askAQuestionOnSlido"
-                android:textColor="#fff"
-                android:visibility="gone" />
-
             <View
                 android:id="@+id/separator"
                 android:layout_width="match_parent"
@@ -150,6 +132,7 @@
             <LinearLayout
                 android:id="@+id/sessionSpeakerLayout"
                 android:layout_width="match_parent"
+                android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:divider="@drawable/divider15dip"
                 android:orientation="vertical"
