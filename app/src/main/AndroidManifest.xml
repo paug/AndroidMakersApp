@@ -40,9 +40,10 @@
             android:value="false" />
 
         <activity
-            android:name=".ui.activity.MainActivity"
+            android:name=".ui.activity.Main2Activity"
             android:configChanges="orientation|screenSize"
             android:exported="true"
+            android:theme="@style/Theme.AndroidMakers.NoActionBar"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
