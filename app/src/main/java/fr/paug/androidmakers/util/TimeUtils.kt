@@ -31,7 +31,7 @@ object TimeUtils {
         return formatDuration(context, endTime - startTime)
     }
 
-    private fun formatDuration(context: Context, duration: Long): String {
+    fun formatDuration(context: Context, duration: Long): String {
         val hours = duration / HOUR.toFloat()
         return if (hours >= 1f) {
             context.resources.getQuantityString(

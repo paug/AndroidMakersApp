@@ -13,9 +13,7 @@ data class ScheduleSession(
     val speakers: List<Speaker> = mutableListOf()
 ) : Comparable<ScheduleSession> {
 
-    val languageInEmoji: String get() = EmojiUtils.getLanguageInEmoji(language)
-
-
+    val languageInEmoji: String get() = EmojiUtils.getLanguageInEmoji(language) ?: ""
 
     val startTimestamp get() = TimeUtils.parseIso8601(slot.startDate).time
     val endTimestamp get() = TimeUtils.parseIso8601(slot.endDate).time
