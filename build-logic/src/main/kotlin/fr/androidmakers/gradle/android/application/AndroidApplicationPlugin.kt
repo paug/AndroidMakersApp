@@ -68,9 +68,12 @@ class AndroidApplicationPlugin : Plugin<Project> {
             .named("libs")
             .findVersion("compose")
             .get()
-            .strictVersion
+            .displayName
+        println("composeVersion $composeVersion")
         it.kotlinCompilerExtensionVersion = composeVersion
       }
+
+      buildFeatures.compose = true
 
       val f = project.file("keystore.properties")
       signingConfigs.apply {
