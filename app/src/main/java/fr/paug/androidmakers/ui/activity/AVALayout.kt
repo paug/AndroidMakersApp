@@ -5,17 +5,17 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.DrawerState
+import androidx.compose.material.DrawerValue
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
+import androidx.compose.material.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,6 +26,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.navigation.AVANavigationRoute
+import fr.paug.androidmakers.ui.theme.AndroidMakersTheme
+import kotlinx.coroutines.launch
 
 /**
  * AVA stands for Agenda/Venue/About.
@@ -40,16 +42,23 @@ fun AVALayout(
     val navBackStackEntry by avaNavController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    MaterialTheme { // TODO replace with app's Theme
+    val agendaFilterDrawerState = rememberDrawerState(DrawerValue.Closed)
+
+    AndroidMakersTheme {
         Scaffold(
             topBar = {
                 TopAppBar(
                     title = { Text(stringResource(R.string.app_name)) },
                     actions = {
                         if (currentRoute == AVANavigationRoute.AGENDA.name) {
-                            // TODO propagate up the click event
-                            var filterMenuOpened by remember { mutableStateOf(false) }
-                            IconButton(onClick = { filterMenuOpened = true }) {
+                            val scope = rememberCoroutineScope()
+                            IconButton(
+                                onClick = {
+                                    scope.launch {
+                                        if (agendaFilterDrawerState.isClosed) agendaFilterDrawerState.open() else agendaFilterDrawerState.close()
+                                    }
+                                }
+                            ) {
                                 Icon(painter = painterResource(R.drawable.ic_filter_list_white_24dp), contentDescription = stringResource(R.string.filter))
                             }
                         }
@@ -82,9 +91,18 @@ fun AVALayout(
                     )
 
                 }
-            }
+            },
+
+            drawerContent = {
+                Text("Hello, World!")
+            },
+            drawerGesturesEnabled = true
         ) {
-            AVANavHost(avaNavController = avaNavController, onSessionClick = onSessionClick)
+            AVANavHost(
+                avaNavController = avaNavController,
+                onSessionClick = onSessionClick,
+                agendaFilterDrawerState = agendaFilterDrawerState
+            )
         }
     }
 }
@@ -117,11 +135,12 @@ private fun RowScope.BottomNavigationItem(
 @Composable
 private fun AVANavHost(
     avaNavController: NavHostController,
-    onSessionClick: (sessionId: String) -> Unit
+    onSessionClick: (sessionId: String) -> Unit,
+    agendaFilterDrawerState: DrawerState
 ) {
     NavHost(avaNavController, startDestination = AVANavigationRoute.AGENDA.name) {
         composable(route = AVANavigationRoute.AGENDA.name) {
-            AgendaLayout(onSessionClick = onSessionClick)
+            AgendaLayout(agendaFilterDrawerState = agendaFilterDrawerState, onSessionClick = onSessionClick)
         }
         composable(route = AVANavigationRoute.VENUE.name) {
             VenueLayout()
