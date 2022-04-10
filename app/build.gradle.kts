@@ -33,6 +33,11 @@ dependencies {
     implementation("com.google.firebase:firebase-config")
     implementation("com.google.firebase:firebase-auth")
 
+    implementation(libs.lifecycle.viewmodel.compose)
+    implementation(libs.compose.material)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.ui.tooling)
+
     implementation(libs.play.services.auth)
     implementation(libs.lifecycle.runtime.ktx)
 
