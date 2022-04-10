@@ -69,7 +69,6 @@ class AndroidApplicationPlugin : Plugin<Project> {
             .findVersion("compose")
             .get()
             .displayName
-        println("composeVersion $composeVersion")
         it.kotlinCompilerExtensionVersion = composeVersion
       }
 
