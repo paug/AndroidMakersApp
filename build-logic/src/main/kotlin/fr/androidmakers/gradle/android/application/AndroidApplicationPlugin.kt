@@ -6,6 +6,7 @@ import fr.androidmakers.gradle.android.configureAndroidCompileSdk
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.artifacts.VersionCatalogsExtension
 import java.util.*
 
 @Suppress("unused")
@@ -59,6 +60,16 @@ class AndroidApplicationPlugin : Plugin<Project> {
         // Sets Java compatibility to Java 8
         it.sourceCompatibility = JavaVersion.VERSION_1_8
         it.targetCompatibility = JavaVersion.VERSION_1_8
+      }
+
+      @Suppress("UnstableApiUsage")
+      composeOptions {
+        val composeVersion = project.extensions.findByType(VersionCatalogsExtension::class.java)!!
+            .named("libs")
+            .findVersion("compose")
+            .get()
+            .strictVersion
+        it.kotlinCompilerExtensionVersion = composeVersion
       }
 
       val f = project.file("keystore.properties")
