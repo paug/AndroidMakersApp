@@ -46,6 +46,8 @@ lifecycle-viewmodel-compose = "androidx.lifecycle:lifecycle-viewmodel-compose:2.
 compose-material = { module = "androidx.compose.material:material", version.ref = "compose" }
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
+navigation-compose = "androidx.navigation:navigation-compose:2.4.2"
+
 #// Weird but necessary for the compose preview.
 #debugImplementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
 #debugImplementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0")
