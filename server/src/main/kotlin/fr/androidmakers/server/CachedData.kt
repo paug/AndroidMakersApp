@@ -64,6 +64,24 @@ object CachedData {
             )
       }
     }
+
+  fun venue(id: String): Venue {
+    return getResource("venues.json") {
+      json.decodeFromStream<JsonVenueData>(it)
+          .get(id)!!
+          .let {
+            Venue(
+                name = it.name,
+                address = it.address,
+                description = it.description,
+                descriptionFr = it.descriptionFr,
+                coordinates = it.coordinates,
+                imageUrl = it.imageUrl
+            )
+          }
+    }
+  }
+
   fun sessions(): List<Session> {
       val slots = getResource("schedule.json") {
         json.decodeFromStream<JsonSchedule>(it).toSlots()

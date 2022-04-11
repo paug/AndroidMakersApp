@@ -1,6 +1,7 @@
 package fr.androidmakers.server.model
 
 import fr.androidmakers.server.CachedData
+import kotlinx.serialization.Serializable
 
 data class Room(
   val id: String,
@@ -70,4 +71,14 @@ data class Partner(
     val name: String,
     val logoUrl: String,
     val url: String
+)
+
+
+data class Venue(
+    val name: String,
+    val address: String? = null,
+    val coordinates: String? = null,
+    val description: String,
+    val descriptionFr: String,
+    val imageUrl: String,
 )

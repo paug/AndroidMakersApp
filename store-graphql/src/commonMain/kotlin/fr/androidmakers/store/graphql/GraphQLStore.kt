@@ -16,7 +16,11 @@ import okio.utf8Size
 
 class GraphQLStore(val apolloClient: ApolloClient) : AndroidMakersStore {
   override fun getVenue(id: String): Flow<Venue> {
-    return flowOf(Venue())
+    return apolloClient.query(GetVenueQuery(id))
+        .fetchPolicy(FetchPolicy.CacheAndNetwork)
+        .watch().map {
+          it.dataAssertNoErrors.venue.toVenue()
+        }
   }
 
   override fun getSpeaker(id: String): Flow<Speaker> {
