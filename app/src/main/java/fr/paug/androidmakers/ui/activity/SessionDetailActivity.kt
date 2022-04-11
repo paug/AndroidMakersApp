@@ -28,6 +28,7 @@ import fr.paug.androidmakers.databinding.SmallSocialImageBinding
 import fr.androidmakers.store.model.*
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.ui.adapter.ScheduleSession
+import fr.paug.androidmakers.ui.model.UISession
 import fr.paug.androidmakers.ui.util.CheckableFloatingActionButton
 import fr.paug.androidmakers.util.ScheduleSessionHelper
 import fr.paug.androidmakers.util.SessionSelector
@@ -281,12 +282,12 @@ class SessionDetailActivity : BaseActivity() {
         private const val PARAM_SESSION_END_DATE = "param_session_end_date"
         private const val PARAM_SESSION_ROOM = "param_session_room"
 
-        fun startActivity(context: Context, scheduleSession: ScheduleSession) {
+        fun startActivity(context: Context, uiSession: UISession) {
             val intent = Intent(context, SessionDetailActivity::class.java)
-            intent.putExtra(PARAM_SESSION_ID, scheduleSession.sessionId)
-            intent.putExtra(PARAM_SESSION_START_DATE, scheduleSession.startTimestamp)
-            intent.putExtra(PARAM_SESSION_END_DATE, scheduleSession.endTimestamp)
-            intent.putExtra(PARAM_SESSION_ROOM, scheduleSession.roomId)
+            intent.putExtra(PARAM_SESSION_ID, uiSession.id)
+            intent.putExtra(PARAM_SESSION_START_DATE, uiSession.startDate.toEpochMilli())
+            intent.putExtra(PARAM_SESSION_END_DATE, uiSession.endDate.toEpochMilli())
+            intent.putExtra(PARAM_SESSION_ROOM, uiSession.roomId)
             context.startActivity(intent)
         }
 

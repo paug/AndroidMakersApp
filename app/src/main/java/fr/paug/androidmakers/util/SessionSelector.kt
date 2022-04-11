@@ -17,9 +17,7 @@ object SessionSelector {
 
     private var mSessionsSelected: MutableSet<String> = HashSet()
 
-    private val selectedSessionIds = MutableStateFlow(
-        emptySet<String>(),
-    )
+    private lateinit var selectedSessionIds: MutableStateFlow<Set<String>>
 
     val sessionsSelected: Set<String>
         get() = mSessionsSelected
@@ -31,6 +29,12 @@ object SessionSelector {
         if (prefSet != null) {
             mSessionsSelected.addAll(prefSet)
         }
+
+        selectedSessionIds = MutableStateFlow(
+            mutableSetOf<String>().apply {
+                addAll(mSessionsSelected)
+            }
+        )
     }
 
     fun setSessionSelected(id: String, selected: Boolean) {

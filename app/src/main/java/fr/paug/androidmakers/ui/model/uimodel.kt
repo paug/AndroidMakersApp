@@ -8,7 +8,8 @@ class UISession(
     public val startDate: Instant,
     public val endDate: Instant,
     public val language: String?,
-    public val room: String?,
+    public val room: String,
+    public val roomId: String,
     public val speakers: List<Speaker>,
 ) {
 
