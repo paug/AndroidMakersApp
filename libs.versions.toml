@@ -57,6 +57,9 @@ accompanist-pager-indicators = "com.google.accompanist:accompanist-pager-indicat
 #debugImplementation("androidx.savedstate:savedstate-ktx:1.1.0")
 #debugImplementation("androidx.core:core-ktx:1.7.0")
 
+coil-compose = "io.coil-kt:coil-compose:2.0.0-rc02"
+
+
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 apollo = { id = "com.apollographql.apollo3", version.ref = "apollo" }
