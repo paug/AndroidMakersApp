@@ -61,3 +61,14 @@ fun SessionDetails.toSlot(): ScheduleSlot {
             endDate = endDate
     )
 }
+
+fun GetVenueQuery.Venue.toVenue(): Venue {
+    return Venue(
+        name = name,
+        address = address ?: "",
+        coordinates = coordinates ?:"",
+        descriptionFr = descriptionFr ,
+        description = description ,
+        imageUrl = imageUrl
+    )
+}

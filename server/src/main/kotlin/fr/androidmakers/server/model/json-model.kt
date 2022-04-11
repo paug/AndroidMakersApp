@@ -92,3 +92,15 @@ data class JsonPartner(
     val logoUrl: String,
     val url: String
 )
+
+typealias JsonVenueData = Map<String, JsonVenue>
+
+@Serializable
+data class JsonVenue(
+    val name: String,
+    val address: String? = null,
+    val coordinates: String? = null,
+    val description: String,
+    val descriptionFr: String,
+    val imageUrl: String,
+)

@@ -76,3 +76,14 @@ query GetPartnerGroups {
     }
   }
 }
+
+query GetVenue($id: String!) {
+    venue(id: $id) {
+        name
+        address
+        coordinates
+        description
+        descriptionFr
+        imageUrl
+    }
+}

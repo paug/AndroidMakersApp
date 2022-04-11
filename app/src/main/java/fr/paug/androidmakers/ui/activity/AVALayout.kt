@@ -30,6 +30,7 @@ import androidx.navigation.compose.rememberNavController
 import fr.androidmakers.store.model.Logo
 import fr.androidmakers.store.model.Partner
 import fr.paug.androidmakers.R
+import fr.paug.androidmakers.ui.components.VenuePager
 import fr.paug.androidmakers.ui.navigation.AVANavigationRoute
 import fr.paug.androidmakers.ui.theme.AndroidMakersTheme
 import kotlinx.coroutines.launch
@@ -145,7 +146,7 @@ private fun AVANavHost(
             AgendaLayout(agendaFilterDrawerState = agendaFilterDrawerState, onSessionClick = onSessionClick)
         }
         composable(route = AVANavigationRoute.VENUE.name) {
-            VenueLayout()
+            VenuePager()
         }
         composable(route = AVANavigationRoute.ABOUT.name) {
             AboutLayout(

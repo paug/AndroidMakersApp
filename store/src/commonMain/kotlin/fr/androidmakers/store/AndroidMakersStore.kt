@@ -20,18 +20,10 @@ interface AndroidMakersStore {
     fun getRooms(): Flow<List<Room>>
 
     fun getAgenda(): Flow<Agenda> {
-        val sessionsFlow = getSessions().onEach {
-            println(it)
-        }
-        val slotsFlow = getScheduleSlots().onEach {
-            println(it)
-        }
-        val roomsFlow = getRooms().onEach {
-            println(it)
-        }
-        val speakersFlow = getSpeakers().onEach {
-            println(it)
-        }
+        val sessionsFlow = getSessions()
+        val slotsFlow = getScheduleSlots()
+        val roomsFlow = getRooms()
+        val speakersFlow = getSpeakers()
 
         return combine(
             sessionsFlow,
