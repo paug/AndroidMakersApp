@@ -45,6 +45,7 @@ private fun findStartIndex(sessionsPerStartTime: Map<String, List<UISession>>): 
   return 0
 }
 
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AgendaColumn(
