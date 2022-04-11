@@ -59,11 +59,14 @@
         Il y aura des sessions techniques, des ateliers et des rencontres avec vos speakers préférés.
         \n\nTous les talks seront enregistrées, et mis sur la chaîne YouTube.</string>
 
+    <string name="faq">FAQ</string>
+    <string name="code_of_conduct">Code de conduite</string>
+
     <string name="social">Social</string>
 
     <string name="wifi">Wifi</string>
-    <string name="wifi_network">Réseau: <b>AndroidMakers</b></string>
-    <string name="wifi_password">Mot de passe : <b>Makers2019</b></string>
+    <string name="wifi_network">Réseau: <b>%1$s</b></string>
+    <string name="wifi_password">Mot de passe : <b>%1$s</b></string>
     <string name="wifi_connect_description">Se connecter directement au Wifi du lieu</string>
     <string name="wifi_connect">Se connecter</string>
 
