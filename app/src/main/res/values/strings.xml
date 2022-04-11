@@ -65,6 +65,9 @@
         There\'ll be technical sessions, workshops and opportunities to meet your favorites speakers.
         \n\nAll the Talks will be recorded, and uploaded on the Youtube channel.</string>
 
+    <string name="faq">FAQ</string>
+    <string name="code_of_conduct">Code of conduct</string>
+
     <string name="social">Social</string>
     <string name="twitter_hashtag" translatable="false">#AndroidMakers</string>
     <string name="twitter_hashtag_for_query" translatable="false">AndroidMakers</string>
@@ -74,8 +77,8 @@
     <string name="youtube_channel" translatable="false">https://www.youtube.com/channel/UCkatLlah5weIpN23LqMgdTg</string>
 
     <string name="wifi">Wifi</string>
-    <string name="wifi_network">Network: <b>AndroidMakers</b></string>
-    <string name="wifi_password">Password : <b>Makers2019</b></string>
+    <string name="wifi_network">Network: <b>%1$s</b></string>
+    <string name="wifi_password">Password: <b>%1$s</b></string>
     <string name="wifi_connect_description">Directly connect to the venue\'s wifi</string>
     <string name="wifi_connect">Connect</string>
 

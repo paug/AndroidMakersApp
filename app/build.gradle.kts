@@ -45,6 +45,7 @@ dependencies {
     // Image management
     implementation(libs.glide.runtime)
     add("annotationProcessor", libs.glide.compiler)
+    implementation(libs.coil.compose)
 
     // Used for tags
     implementation(libs.layouts)
