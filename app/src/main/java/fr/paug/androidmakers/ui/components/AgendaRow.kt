@@ -3,10 +3,7 @@ package fr.paug.androidmakers.ui.components
 import android.content.Context
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
-import androidx.compose.material.IconToggleButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Star
@@ -18,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,55 +30,67 @@ import java.time.OffsetDateTime
 
 @Composable
 fun AgendaRow(
-    uiSession: UISession
+    uiSession: UISession,
+    modifier: Modifier = Modifier
 ) {
-  Column(
-      modifier = Modifier.padding(12.dp)
-  ) {
-    Text(
-        text = uiSession.title,
-        style = MaterialTheme.typography.h6
-    )
-    Row {
-      Column {
-        Text(
-            text = uiSession.subtitle(LocalContext.current),
-            style = MaterialTheme.typography.subtitle1,
-            modifier = Modifier.padding(top = 4.dp)
+  Column(modifier = modifier) {
+    Column(
+        modifier = Modifier.padding(
+            start = 12.dp,
+            end = 12.dp,
+            top = 12.dp,
+            bottom = 4.dp
         )
-
-        val speakers = uiSession.speakers
-            .map { it.name }
-            .joinToString(", ")
-        if (speakers.isNotBlank()) {
+    ) {
+      Text(
+          text = uiSession.title,
+          style = MaterialTheme.typography.h6
+      )
+      Row {
+        Column {
           Text(
-              text = speakers,
+              text = uiSession.subtitle(LocalContext.current),
               style = MaterialTheme.typography.subtitle1,
-              //modifier = Modifier.padding(top = 4.dp)
+              modifier = Modifier.padding(top = 4.dp)
           )
-        }
-      }
-      Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
-        val isBookmarked = SessionSelector.selected(uiSession.id).collectAsState(false)
-        val tint by animateColorAsState(
-            if (isBookmarked.value) Color(0xffffdd1c)
-            else Color.LightGray
-        )
 
-        IconToggleButton(
-            checked = isBookmarked.value,
-            onCheckedChange = {
-              SessionSelector.setSessionSelected(uiSession.id, it)
-            },
-        ) {
-          Icon(
-              imageVector = Icons.Default.Star,
-              contentDescription = "favorite",
-              tint = tint
+          val speakers = uiSession.speakers
+              .map { it.name }
+              .joinToString(", ")
+          if (speakers.isNotBlank()) {
+            Text(
+                text = speakers,
+                style = MaterialTheme.typography.subtitle1,
+                //modifier = Modifier.padding(top = 4.dp)
+            )
+          }
+        }
+        Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
+          val isBookmarked = SessionSelector.selected(uiSession.id).collectAsState(false)
+          val tint by animateColorAsState(
+              if (isBookmarked.value) Color(0xffffdd1c)
+              else Color.LightGray
           )
+
+          IconToggleButton(
+              checked = isBookmarked.value,
+              onCheckedChange = {
+                SessionSelector.setSessionSelected(uiSession.id, it)
+              },
+          ) {
+            Icon(
+                imageVector = Icons.Default.Star,
+                contentDescription = "favorite",
+                tint = tint
+            )
+          }
         }
       }
     }
+    Surface(
+        modifier = Modifier.height(1.dp).fillMaxWidth(),
+        color = Color.DarkGray
+    ){}
   }
 }
 
@@ -112,6 +122,7 @@ private val fakeUiSession = UISession(
     title = "Why did the chicken cross the road?",
     language = "french",
     speakers = listOf(UISession.Speaker("chicken1")),
+    roomId = "1",
     room = "Moebius",
     startDate = OffsetDateTime.parse("2022-04-25T09:00:00+02:00").toInstant(),
     endDate = OffsetDateTime.parse("2022-04-25T10:00:00+02:00").toInstant(),
