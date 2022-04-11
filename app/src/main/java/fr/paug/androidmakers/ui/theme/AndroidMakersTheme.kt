@@ -17,6 +17,11 @@ val GillSans = FontFamily(
     Font(R.font.gill_sans_light, FontWeight.Light),
 )
 
+object AMColor {
+  val lightGray = Color(0xffF0F0F0)
+  val gray = Color(0xffbbbbbb)
+}
+
 @OptIn(ExperimentalUnitApi::class)
 @Composable
 fun AndroidMakersTheme(content: @Composable () -> Unit) {
