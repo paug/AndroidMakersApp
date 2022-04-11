@@ -15,10 +15,14 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fr.paug.androidmakers.ui.model.UISession
+import fr.paug.androidmakers.ui.theme.AMColor
+import separatorColor
+import separatorHeight
 
 private fun findStartIndex(sessionsPerStartTime: Map<String, List<UISession>>): Int {
   val now = System.currentTimeMillis()
@@ -77,17 +81,20 @@ fun TimeSeparator(prettyTime: String) {
   Column(
       modifier = Modifier
           .fillMaxWidth()
-          .background(Color.LightGray)
+          .background(AMColor.lightGray)
   ) {
     Text(
         modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
-        text = prettyTime
+        text = prettyTime,
+        style = TextStyle(
+            fontFeatureSettings = "smcp"
+        )
     )
     Surface(
         modifier = Modifier
-            .height(1.dp)
+            .height(separatorHeight)
             .fillMaxWidth(),
-        color = Color.DarkGray
+        color = separatorColor
     ) {}
   }
 }

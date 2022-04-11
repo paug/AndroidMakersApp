@@ -5,27 +5,24 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.outlined.Favorite
-import androidx.compose.material.icons.outlined.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fr.paug.androidmakers.ui.model.UISession
+import fr.paug.androidmakers.ui.theme.AMColor
 import fr.paug.androidmakers.ui.theme.AndroidMakersTheme
 import fr.paug.androidmakers.util.EmojiUtils
 import fr.paug.androidmakers.util.SessionSelector
 import fr.paug.androidmakers.util.TimeUtils
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.flow
+import separatorColor
+import separatorHeight
 import java.time.OffsetDateTime
 
 @Composable
@@ -88,8 +85,8 @@ fun AgendaRow(
       }
     }
     Surface(
-        modifier = Modifier.height(1.dp).fillMaxWidth(),
-        color = Color.DarkGray
+        modifier = Modifier.height(separatorHeight).fillMaxWidth(),
+        color = separatorColor
     ){}
   }
 }
