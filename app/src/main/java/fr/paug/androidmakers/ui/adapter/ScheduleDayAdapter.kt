@@ -91,6 +91,7 @@ internal constructor(private val context: Context,
                     startDate = OffsetDateTime.parse(item.slot.startDate).toInstant(),
                     endDate = OffsetDateTime.parse(item.slot.endDate).toInstant(),
                     room = getRoomTitle(item, daySchedule),
+                    roomId = item.roomId,
                     speakers = item.speakers.map {
                       UISession.Speaker(it.name ?: "")
                     },
@@ -311,7 +312,7 @@ internal constructor(private val context: Context,
     private const val ITEM_TYPE_BREAK = 1
     private const val ITEM_TYPE_TIME_HEADER = 2
 
-    private fun getRoomTitle(scheduleSession: ScheduleSession, daySchedule: DaySchedule): String {
+    fun getRoomTitle(scheduleSession: ScheduleSession, daySchedule: DaySchedule): String {
       var roomTitle = ""
       for (roomSchedule in daySchedule.roomSchedules) {
         if (roomSchedule.roomId == scheduleSession.roomId) {
