@@ -2,7 +2,9 @@ package fr.paug.androidmakers.ui.activity
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.DrawerState
@@ -16,6 +18,7 @@ import androidx.compose.material.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,6 +27,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import fr.androidmakers.store.model.Logo
+import fr.androidmakers.store.model.Partner
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.navigation.AVANavigationRoute
 import fr.paug.androidmakers.ui.theme.AndroidMakersTheme
@@ -36,7 +41,7 @@ import kotlinx.coroutines.launch
  */
 @Composable
 fun AVALayout(
-    onSessionClick: (sessionId: String) -> Unit
+    onSessionClick: (sessionId: String) -> Unit,
 ) {
     val avaNavController = rememberNavController()
     val navBackStackEntry by avaNavController.currentBackStackEntryAsState()
@@ -92,17 +97,14 @@ fun AVALayout(
 
                 }
             },
-
-            drawerContent = {
-                Text("Hello, World!")
-            },
-            drawerGesturesEnabled = true
-        ) {
-            AVANavHost(
-                avaNavController = avaNavController,
-                onSessionClick = onSessionClick,
-                agendaFilterDrawerState = agendaFilterDrawerState
-            )
+        ) { innerPadding ->
+            Box(Modifier.padding(innerPadding)) {
+                AVANavHost(
+                    avaNavController = avaNavController,
+                    onSessionClick = onSessionClick,
+                    agendaFilterDrawerState = agendaFilterDrawerState
+                )
+            }
         }
     }
 }
@@ -113,7 +115,7 @@ private fun RowScope.BottomNavigationItem(
     @DrawableRes iconResId: Int,
     @StringRes labelResId: Int,
     currentRoute: String?,
-    destinationRoute: AVANavigationRoute
+    destinationRoute: AVANavigationRoute,
 ) {
     BottomNavigationItem(
         icon = { Icon(painter = painterResource(iconResId), contentDescription = stringResource(labelResId)) },
@@ -136,7 +138,7 @@ private fun RowScope.BottomNavigationItem(
 private fun AVANavHost(
     avaNavController: NavHostController,
     onSessionClick: (sessionId: String) -> Unit,
-    agendaFilterDrawerState: DrawerState
+    agendaFilterDrawerState: DrawerState,
 ) {
     NavHost(avaNavController, startDestination = AVANavigationRoute.AGENDA.name) {
         composable(route = AVANavigationRoute.AGENDA.name) {
@@ -146,7 +148,61 @@ private fun AVANavHost(
             VenueLayout()
         }
         composable(route = AVANavigationRoute.ABOUT.name) {
-            AboutLayout()
+            AboutLayout(
+                wifiNetwork = "TODO",
+                wifiPassword = "TODO",
+
+                // TODO
+                partnerList = listOf(
+                    Partner(
+                        order = 0,
+                        title = "Event Organizers",
+                        logos = listOf(
+                            Logo(
+                                logoUrl = "../images/logos/babbel.jpeg",
+                                name = "Babbel",
+                                url = "https://babbel.com/"
+                            ),
+                            Logo(
+                                logoUrl = "../images/logos/coyote.png",
+                                name = "Coyote",
+                                url = "https://corporate.moncoyote.com/"
+                            ),
+                        )
+                    ),
+                    Partner(
+                        order = 1,
+                        title = "Gold sponsors",
+                        logos = listOf(
+                            Logo(
+                                logoUrl = "../images/logos/deezer.png",
+                                name = "Deezer",
+                                url = "https://www.deezer.com/en/company/about"
+                            ),
+                        )
+                    ),
+                ),
+
+                onFaqClick = {
+                    // TODO
+                },
+                onCodeOfConductClick = {
+                    // TODO
+                },
+                onTwitterHashtagClick = {
+                    // TODO
+                },
+                onTwitterLogoClick = {
+                    // TODO
+                },
+                onYouTubeLogoClick = {
+                    // TODO
+                },
+                onSponsorClick = {
+                    // TODO
+                    println(it)
+                }
+            )
         }
     }
 }
