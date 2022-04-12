@@ -50,6 +50,7 @@ navigation-compose = "androidx.navigation:navigation-compose:2.4.2"
 
 accompanist-pager = "com.google.accompanist:accompanist-pager:0.24.6-alpha"
 accompanist-pager-indicators = "com.google.accompanist:accompanist-pager-indicators:0.24.6-alpha"
+accompanist-flowlayout = "com.google.accompanist:accompanist-flowlayout:0.24.6-alpha"
 
 #// Weird but necessary for the compose preview.
 #debugImplementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
