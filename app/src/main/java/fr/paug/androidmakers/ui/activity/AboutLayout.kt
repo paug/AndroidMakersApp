@@ -250,9 +250,9 @@ private fun ClickableText(
 }
 
 
-@Composable
 @Preview
-fun AboutLayoutLoadingPreview() {
+@Composable
+private fun AboutLayoutLoadingPreview() {
     AboutLayout(
         wifiInfo = WifiInfo(
             network = "AndroidMakers",
@@ -264,9 +264,9 @@ fun AboutLayoutLoadingPreview() {
 }
 
 
-@Composable
 @Preview
-fun AboutLayoutLoadedPreview() {
+@Composable
+private fun AboutLayoutLoadedPreview() {
     AboutLayout(
         wifiInfo = WifiInfo(
             network = "AndroidMakers",

@@ -119,10 +119,10 @@ private fun UISession.subtitle(context: Context) = buildString {
 
 @Preview
 @Composable
-fun AgendaRowPreview() {
-  AndroidMakersTheme {
-    AgendaRow(fakeUiSession)
-  }
+private fun AgendaRowPreview() {
+    AndroidMakersTheme {
+        AgendaRow(fakeUiSession)
+    }
 }
 
 private val fakeUiSession = UISession(
