@@ -3,6 +3,7 @@ package fr.paug.androidmakers.ui.activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -42,10 +43,6 @@ fun AgendaLayout(
     agendaFilterDrawerState: DrawerState,
     onSessionClick: (sessionId: String) -> Unit
 ) {
-    Button(onClick = { onSessionClick("42") }) {
-        Text(text = "Agenda")
-    }
-
     var sessionFilters: List<SessionFilter> by remember { mutableStateOf(listOf()) }
 
     // XXX This is a hack to make the drawer appear from the right
@@ -67,7 +64,16 @@ fun AgendaLayout(
                     )
                 }
             },
-            content = {}
+            content = {
+                // XXX Go back to left to right for the contents
+                CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
+                    Box(modifier = Modifier.fillMaxWidth()) {
+                        Button(onClick = { onSessionClick("42") }) {
+                            Text(text = "Agenda")
+                        }
+                    }
+                }
+            }
         )
     }
 }

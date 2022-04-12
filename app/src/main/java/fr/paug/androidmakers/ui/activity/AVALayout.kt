@@ -16,19 +16,19 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import fr.androidmakers.store.model.Logo
-import fr.androidmakers.store.model.Partner
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.components.VenuePager
 import fr.paug.androidmakers.ui.navigation.AVANavigationRoute
@@ -43,6 +43,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun AVALayout(
     onSessionClick: (sessionId: String) -> Unit,
+    aboutActions: AboutActions,
 ) {
     val avaNavController = rememberNavController()
     val navBackStackEntry by avaNavController.currentBackStackEntryAsState()
@@ -103,7 +104,8 @@ fun AVALayout(
                 AVANavHost(
                     avaNavController = avaNavController,
                     onSessionClick = onSessionClick,
-                    agendaFilterDrawerState = agendaFilterDrawerState
+                    agendaFilterDrawerState = agendaFilterDrawerState,
+                    aboutActions = aboutActions,
                 )
             }
         }
@@ -140,6 +142,7 @@ private fun AVANavHost(
     avaNavController: NavHostController,
     onSessionClick: (sessionId: String) -> Unit,
     agendaFilterDrawerState: DrawerState,
+    aboutActions: AboutActions,
 ) {
     NavHost(avaNavController, startDestination = AVANavigationRoute.AGENDA.name) {
         composable(route = AVANavigationRoute.AGENDA.name) {
@@ -149,60 +152,12 @@ private fun AVANavHost(
             VenuePager()
         }
         composable(route = AVANavigationRoute.ABOUT.name) {
+            val aboutViewModel: AboutViewModel = viewModel()
+            val partnerList: PartnerListState by aboutViewModel.partnerList.collectAsState(PartnerListState.Loading)
             AboutLayout(
-                wifiNetwork = "TODO",
-                wifiPassword = "TODO",
-
-                // TODO
-                partnerList = listOf(
-                    Partner(
-                        order = 0,
-                        title = "Event Organizers",
-                        logos = listOf(
-                            Logo(
-                                logoUrl = "../images/logos/babbel.jpeg",
-                                name = "Babbel",
-                                url = "https://babbel.com/"
-                            ),
-                            Logo(
-                                logoUrl = "../images/logos/coyote.png",
-                                name = "Coyote",
-                                url = "https://corporate.moncoyote.com/"
-                            ),
-                        )
-                    ),
-                    Partner(
-                        order = 1,
-                        title = "Gold sponsors",
-                        logos = listOf(
-                            Logo(
-                                logoUrl = "../images/logos/deezer.png",
-                                name = "Deezer",
-                                url = "https://www.deezer.com/en/company/about"
-                            ),
-                        )
-                    ),
-                ),
-
-                onFaqClick = {
-                    // TODO
-                },
-                onCodeOfConductClick = {
-                    // TODO
-                },
-                onTwitterHashtagClick = {
-                    // TODO
-                },
-                onTwitterLogoClick = {
-                    // TODO
-                },
-                onYouTubeLogoClick = {
-                    // TODO
-                },
-                onSponsorClick = {
-                    // TODO
-                    println(it)
-                }
+                wifiInfo = aboutViewModel.getWifiInfo(),
+                partnerList = partnerList,
+                aboutActions = aboutActions
             )
         }
     }
@@ -212,5 +167,5 @@ private fun AVANavHost(
 @Preview
 @Composable
 private fun AVALayoutPreview() {
-    AVALayout(onSessionClick = {})
+    AVALayout(onSessionClick = {}, aboutActions = AboutActions())
 }

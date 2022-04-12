@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,9 +17,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -34,17 +37,28 @@ import fr.paug.androidmakers.BuildConfig
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.theme.AndroidMakersTheme
 
+
+data class WifiInfo(val network: String, val password: String)
+
+sealed class PartnerListState {
+    object Loading : PartnerListState()
+    data class Loaded(val data: List<Partner>) : PartnerListState()
+}
+
+class AboutActions(
+    val onFaqClick: () -> Unit = {},
+    val onCodeOfConductClick: () -> Unit = {},
+    val onTwitterHashtagClick: () -> Unit = {},
+    val onTwitterLogoClick: () -> Unit = {},
+    val onYouTubeLogoClick: () -> Unit = {},
+    val onSponsorClick: (url: String) -> Unit = {},
+)
+
 @Composable
 fun AboutLayout(
-    wifiNetwork: String?,
-    wifiPassword: String?,
-    partnerList: List<Partner>,
-    onFaqClick: () -> Unit,
-    onCodeOfConductClick: () -> Unit,
-    onTwitterHashtagClick: () -> Unit,
-    onTwitterLogoClick: () -> Unit,
-    onYouTubeLogoClick: () -> Unit,
-    onSponsorClick: (url: String) -> Unit,
+    wifiInfo: WifiInfo?,
+    partnerList: PartnerListState,
+    aboutActions: AboutActions,
 ) {
     AndroidMakersTheme {
         Column(
@@ -54,18 +68,19 @@ fun AboutLayout(
                 .verticalScroll(state = rememberScrollState())
                 .padding(16.dp)
         ) {
-            IntroCard(onFaqClick, onCodeOfConductClick)
+            IntroCard(aboutActions.onFaqClick, aboutActions.onCodeOfConductClick)
             Spacer(Modifier.height(16.dp))
-            SocialCard(onTwitterHashtagClick, onTwitterLogoClick, onYouTubeLogoClick)
-            if (wifiNetwork != null && wifiPassword != null) {
+            SocialCard(aboutActions.onTwitterHashtagClick, aboutActions.onTwitterLogoClick, aboutActions.onYouTubeLogoClick)
+
+            if (wifiInfo != null) {
                 Spacer(Modifier.height(16.dp))
                 WifiCard(
-                    wifiNetwork = wifiNetwork,
-                    wifiPassword = wifiPassword
+                    wifiNetwork = wifiInfo.network,
+                    wifiPassword = wifiInfo.password
                 )
             }
             Spacer(Modifier.height(16.dp))
-            SponsorsCard(partnerList = partnerList, onSponsorClick = onSponsorClick)
+            SponsorsCard(partnerList = partnerList, onSponsorClick = aboutActions.onSponsorClick)
             Spacer(Modifier.height(16.dp))
             Text(
                 modifier = Modifier.fillMaxWidth(),
@@ -163,7 +178,7 @@ private fun WifiCard(wifiNetwork: String, wifiPassword: String) {
 }
 
 @Composable
-private fun SponsorsCard(partnerList: List<Partner>, onSponsorClick: (url: String) -> Unit) {
+private fun SponsorsCard(partnerList: PartnerListState, onSponsorClick: (url: String) -> Unit) {
     Card(Modifier.fillMaxWidth()) {
         Column(Modifier.padding(8.dp)) {
             Text(
@@ -171,33 +186,47 @@ private fun SponsorsCard(partnerList: List<Partner>, onSponsorClick: (url: Strin
                 style = MaterialTheme.typography.h6
             )
 
-            for (partner in partnerList) {
-                // Sponsor "group" (e.g. Organizers, Gold, etc.)
-                Text(
-                    modifier = Modifier
-                        .padding(top = 16.dp, bottom = 8.dp)
-                        .fillMaxWidth(),
-                    textAlign = TextAlign.Center,
-                    text = partner.title,
-                )
+            when (partnerList) {
+                is PartnerListState.Loading -> {
+                    Box(modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
 
-                // Sponsor logo
-                for (logo in partner.logos) {
-                    val imageUrl = String.format(
-                        "https://androidmakers.fr%s",
-                        logo.logoUrl.replace("..", "").replace(".svg", ".png")
-                    )
-                    AsyncImage(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(80.dp)
-                            .clickable {
-                                onSponsorClick(logo.url)
-                            }
-                            .padding(horizontal = 16.dp, vertical = 8.dp),
-                        model = imageUrl,
-                        contentDescription = logo.name
-                    )
+                }
+                is PartnerListState.Loaded -> {
+                    for (partner in partnerList.data) {
+                        // Sponsor "group" (e.g. Organizers, Gold, etc.)
+                        Text(
+                            modifier = Modifier
+                                .padding(top = 16.dp, bottom = 8.dp)
+                                .fillMaxWidth(),
+                            textAlign = TextAlign.Center,
+                            text = partner.title,
+                        )
+
+                        // Sponsor logo
+                        for (logo in partner.logos) {
+                            val imageUrl = String.format(
+                                "https://androidmakers.fr%s",
+                                logo.logoUrl.replace("..", "").replace(".svg", ".png")
+                            )
+                            AsyncImage(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(80.dp)
+                                    .clickable {
+                                        onSponsorClick(logo.url)
+                                    }
+                                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                                model = imageUrl,
+                                contentDescription = logo.name
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -223,44 +252,57 @@ private fun ClickableText(
 
 @Composable
 @Preview
-fun AboutLayoutPreview() {
+fun AboutLayoutLoadingPreview() {
     AboutLayout(
-        wifiNetwork = "AndroidMakers",
-        wifiPassword = "MayTheForceBeWithYou42",
-        partnerList = listOf(
-            Partner(
-                order = 0,
-                title = "Event Organizers",
-                logos = listOf(
-                    Logo(
-                        logoUrl = "../images/logos/babbel.jpeg",
-                        name = "Babbel",
-                        url = "https://babbel.com/"
-                    ),
-                    Logo(
-                        logoUrl = "../images/logos/coyote.png",
-                        name = "Coyote",
-                        url = "https://corporate.moncoyote.com/"
-                    ),
-                )
-            ),
-            Partner(
-                order = 1,
-                title = "Gold sponsors",
-                logos = listOf(
-                    Logo(
-                        logoUrl = "../images/logos/deezer.png",
-                        name = "Deezer",
-                        url = "https://www.deezer.com/en/company/about"
-                    ),
-                )
-            ),
+        wifiInfo = WifiInfo(
+            network = "AndroidMakers",
+            password = "MayTheForceBeWithYou42",
         ),
-        onFaqClick = {},
-        onCodeOfConductClick = {},
-        onTwitterHashtagClick = {},
-        onTwitterLogoClick = {},
-        onYouTubeLogoClick = {},
-        onSponsorClick = {},
+        partnerList = PartnerListState.Loading,
+        aboutActions = AboutActions()
+    )
+}
+
+
+@Composable
+@Preview
+fun AboutLayoutLoadedPreview() {
+    AboutLayout(
+        wifiInfo = WifiInfo(
+            network = "AndroidMakers",
+            password = "MayTheForceBeWithYou42",
+        ),
+        partnerList = PartnerListState.Loaded(
+            listOf(
+                Partner(
+                    order = 0,
+                    title = "Event Organizers",
+                    logos = listOf(
+                        Logo(
+                            logoUrl = "../images/logos/babbel.jpeg",
+                            name = "Babbel",
+                            url = "https://babbel.com/"
+                        ),
+                        Logo(
+                            logoUrl = "../images/logos/coyote.png",
+                            name = "Coyote",
+                            url = "https://corporate.moncoyote.com/"
+                        ),
+                    )
+                ),
+                Partner(
+                    order = 1,
+                    title = "Gold sponsors",
+                    logos = listOf(
+                        Logo(
+                            logoUrl = "../images/logos/deezer.png",
+                            name = "Deezer",
+                            url = "https://www.deezer.com/en/company/about"
+                        ),
+                    )
+                ),
+            )
+        ),
+        aboutActions = AboutActions()
     )
 }
