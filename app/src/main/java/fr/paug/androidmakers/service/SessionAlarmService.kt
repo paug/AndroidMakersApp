@@ -14,15 +14,13 @@ import androidx.core.app.NotificationManagerCompat
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.receiver.SessionAlarmReceiver
-import fr.paug.androidmakers.ui.activity.MainActivity
+import fr.paug.androidmakers.ui.activity.Main2Activity
 import fr.paug.androidmakers.util.SessionSelector
 import fr.paug.androidmakers.util.TimeUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
 import java.util.*
 
 class SessionAlarmService : JobIntentService() {
@@ -221,7 +219,7 @@ class SessionAlarmService : JobIntentService() {
         notificationContent: String
     ) {
         // Generates the pending intent which gets fired when the user taps on the notification.
-        val resultIntent = Intent(this, MainActivity::class.java)
+        val resultIntent = Intent(this, Main2Activity::class.java)
         val resultPendingIntent = PendingIntent.getActivity(
             this,
             0,
