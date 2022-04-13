@@ -3,25 +3,9 @@ package fr.paug.androidmakers.ui.activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.material.Button
-import androidx.compose.material.Checkbox
-import androidx.compose.material.DrawerState
-import androidx.compose.material.DrawerValue
-import androidx.compose.material.ModalDrawer
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -33,8 +17,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fr.androidmakers.store.model.Agenda
 import fr.androidmakers.store.model.Room
+import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.R
+import fr.paug.androidmakers.ui.components.AgendaPager
+import fr.paug.androidmakers.ui.components.LoadingLayout
+import fr.paug.androidmakers.ui.fragment.agendaToDays
 import fr.paug.androidmakers.ui.util.SessionFilter
 import fr.paug.androidmakers.util.EmojiUtils
 
@@ -67,10 +56,23 @@ fun AgendaLayout(
             content = {
                 // XXX Go back to left to right for the contents
                 CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
-                    Box(modifier = Modifier.fillMaxWidth()) {
-                        Button(onClick = { onSessionClick("DIA-1089", "0", 0L, 0L) }) {
-                            Text(text = "Session Detail")
-                        }
+                    val agenda = AndroidMakersApplication.instance().store.getAgenda().collectAsState(initial = Unit)
+
+                    val value = agenda.value
+                    if (value is Agenda) {
+                      val days = agendaToDays(value)
+
+                      AgendaPager(
+                          days = days,
+                          filterList = sessionFilters,
+                          onSessionClicked = {
+                            onSessionClick(
+                                it.id, it.roomId, it.startDate.toEpochMilli(), it.endDate.toEpochMilli()
+                            )
+                          }
+                      )
+                    } else {
+                        LoadingLayout()
                     }
                 }
             }
@@ -157,7 +159,7 @@ private fun FilterItem(
         modifier = Modifier
             .fillMaxWidth()
             .clickable {
-                onCheck(!checked)
+              onCheck(!checked)
             },
         verticalAlignment = Alignment.CenterVertically,
     ) {
