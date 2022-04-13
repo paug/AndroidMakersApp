@@ -1,7 +1,7 @@
 package fr.androidmakers.gradle
 
 import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
+import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.jetbrains.kotlin.gradle.dsl.kotlinExtension
 
 fun addRepositories(project: Project) {
@@ -18,3 +18,18 @@ fun configureKotlinCompiler(project: Project) {
         }
     }
 }
+
+fun Project.catalogVersion(name: String): String = extensions.findByType(VersionCatalogsExtension::class.java)!!
+    .named("libs")
+    .findVersion("compose")
+    .get()
+    .displayName
+
+fun Project.catalogDependency(name: String): String = extensions.findByType(VersionCatalogsExtension::class.java)!!
+    .named("libs")
+    .findDependency(name)
+    .get()
+    .get()
+    .run {
+        "$module:${versionConstraint.displayName}"
+    }

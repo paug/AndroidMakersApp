@@ -1,8 +1,7 @@
 package fr.androidmakers.gradle.android.library
 
 import fr.androidmakers.gradle.addRepositories
-import fr.androidmakers.gradle.android.configureAndroidCompileSdk
-import fr.androidmakers.gradle.configureKotlinCompiler
+import fr.androidmakers.gradle.androidSetup
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -11,8 +10,7 @@ class AndroidLibraryPlugin: Plugin<Project> {
         project.apply(mapOf("plugin" to "com.android.library"))
         project.apply(mapOf("plugin" to "kotlin-android"))
 
-        configureKotlinCompiler(project)
-        configureAndroidCompileSdk(project)
+        project.androidSetup()
 
         addRepositories(project)
     }

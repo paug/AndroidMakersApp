@@ -59,6 +59,7 @@ accompanist-pager-indicators = "com.google.accompanist:accompanist-pager-indicat
 
 coil-compose = "io.coil-kt:coil-compose:2.0.0-rc02"
 
+desugar-jdk-libs = "com.android.tools:desugar_jdk_libs:1.1.5"
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

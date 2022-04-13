@@ -4,6 +4,7 @@ import fr.androidmakers.store.model.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.toList
 
 /**
  *
