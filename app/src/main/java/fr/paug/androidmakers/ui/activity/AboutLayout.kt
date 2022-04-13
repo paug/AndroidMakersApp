@@ -125,7 +125,7 @@ private fun SocialCard(onTwitterHashtagClick: () -> Unit, onTwitterLogoClick: ()
         Column(Modifier.padding(8.dp)) {
             Text(
                 text = stringResource(R.string.social),
-                style = MaterialTheme.typography.h6
+                style = MaterialTheme.typography.h5
             )
             Row(
                 Modifier.fillMaxWidth(),
@@ -164,7 +164,7 @@ private fun WifiCard(wifiNetwork: String, wifiPassword: String) {
         Column(Modifier.padding(8.dp)) {
             Text(
                 text = stringResource(R.string.wifi),
-                style = MaterialTheme.typography.h6
+                style = MaterialTheme.typography.h5
             )
             Text(
                 modifier = Modifier.padding(top = 8.dp),
@@ -184,7 +184,7 @@ private fun SponsorsCard(partnerList: PartnerListState, onSponsorClick: (url: St
         Column(Modifier.padding(8.dp)) {
             Text(
                 text = stringResource(R.string.sponsors),
-                style = MaterialTheme.typography.h6
+                style = MaterialTheme.typography.h5
             )
 
             when (partnerList) {
@@ -251,9 +251,9 @@ private fun ClickableText(
 }
 
 
-@Composable
 @Preview
-fun AboutLayoutLoadingPreview() {
+@Composable
+private fun AboutLayoutLoadingPreview() {
     AboutLayout(
         wifiInfo = WifiInfo(
             network = "AndroidMakers",
@@ -265,9 +265,9 @@ fun AboutLayoutLoadingPreview() {
 }
 
 
-@Composable
 @Preview
-fun AboutLayoutLoadedPreview() {
+@Composable
+private fun AboutLayoutLoadedPreview() {
     AboutLayout(
         wifiInfo = WifiInfo(
             network = "AndroidMakers",
