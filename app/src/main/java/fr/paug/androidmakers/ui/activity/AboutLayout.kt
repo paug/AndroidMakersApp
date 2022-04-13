@@ -35,8 +35,8 @@ import fr.androidmakers.store.model.Logo
 import fr.androidmakers.store.model.Partner
 import fr.paug.androidmakers.BuildConfig
 import fr.paug.androidmakers.R
-import fr.paug.androidmakers.ui.fragment.imageUrl
 import fr.paug.androidmakers.ui.theme.AndroidMakersTheme
+import fr.paug.androidmakers.ui.util.imageUrl
 
 
 data class WifiInfo(val network: String, val password: String)

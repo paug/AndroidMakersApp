@@ -27,7 +27,7 @@ import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import fr.paug.androidmakers.R
-import fr.paug.androidmakers.ui.activity.MainActivity
+import fr.paug.androidmakers.ui.activity.Main2Activity
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
     /**
@@ -80,7 +80,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
      * @param messageBody FCM message body received.
      */
     private fun sendNotification(messageBody: String) {
-        val intent = Intent(this, MainActivity::class.java)
+        val intent = Intent(this, Main2Activity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         //TODO Pending intent
         val pendingIntent = PendingIntent.getActivity(
