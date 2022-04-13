@@ -165,7 +165,7 @@ class FirebaseStore : AndroidMakersStore {
    * @return a ISO86-01 String
    */
   private fun getDate(date: String, time: String): String {
-    return LocalDateTime.parse("${date}T$time").atOffset(ZoneOffset.UTC).toInstant().toString()
+    return LocalDateTime.parse("${date}T$time").atOffset(ZoneOffset.ofHours(2)).toInstant().toString()
   }
 }
 
