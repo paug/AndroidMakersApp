@@ -42,7 +42,7 @@ import kotlinx.coroutines.launch
  */
 @Composable
 fun AVALayout(
-    onSessionClick: (sessionId: String) -> Unit,
+    onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
     aboutActions: AboutActions,
 ) {
     val avaNavController = rememberNavController()
@@ -140,7 +140,7 @@ private fun RowScope.BottomNavigationItem(
 @Composable
 private fun AVANavHost(
     avaNavController: NavHostController,
-    onSessionClick: (sessionId: String) -> Unit,
+    onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
     agendaFilterDrawerState: DrawerState,
     aboutActions: AboutActions,
 ) {
@@ -167,5 +167,5 @@ private fun AVANavHost(
 @Preview
 @Composable
 private fun AVALayoutPreview() {
-    AVALayout(onSessionClick = {}, aboutActions = AboutActions())
+    AVALayout(onSessionClick = { _, _, _, _ -> }, aboutActions = AboutActions())
 }

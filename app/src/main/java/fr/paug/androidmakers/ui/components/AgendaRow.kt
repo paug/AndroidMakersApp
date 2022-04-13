@@ -2,8 +2,17 @@ package fr.paug.androidmakers.ui.components
 
 import android.content.Context
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Icon
+import androidx.compose.material.IconToggleButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
@@ -16,7 +25,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fr.paug.androidmakers.ui.model.UISession
-import fr.paug.androidmakers.ui.theme.AMColor
 import fr.paug.androidmakers.ui.theme.AndroidMakersTheme
 import fr.paug.androidmakers.util.EmojiUtils
 import fr.paug.androidmakers.util.SessionSelector
@@ -24,8 +32,6 @@ import fr.paug.androidmakers.util.TimeUtils
 import separatorColor
 import separatorHeight
 import java.time.OffsetDateTime
-import java.util.*
-
 
 
 @Composable
@@ -44,7 +50,7 @@ fun AgendaRow(
     ) {
       Text(
           text = uiSession.title,
-          style = MaterialTheme.typography.h6
+          style = MaterialTheme.typography.h5
       )
       Row {
         Column {
@@ -88,7 +94,9 @@ fun AgendaRow(
       }
     }
     Surface(
-        modifier = Modifier.height(separatorHeight).fillMaxWidth(),
+        modifier = Modifier
+            .height(separatorHeight)
+            .fillMaxWidth(),
         color = separatorColor
     ){}
   }
@@ -111,10 +119,10 @@ private fun UISession.subtitle(context: Context) = buildString {
 
 @Preview
 @Composable
-fun AgendaRowPreview() {
-  AndroidMakersTheme {
-    AgendaRow(fakeUiSession)
-  }
+private fun AgendaRowPreview() {
+    AndroidMakersTheme {
+        AgendaRow(fakeUiSession)
+    }
 }
 
 private val fakeUiSession = UISession(

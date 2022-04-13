@@ -16,7 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fr.paug.androidmakers.ui.model.UISession
@@ -102,6 +101,6 @@ fun TimeSeparator(prettyTime: String) {
 
 @Preview
 @Composable
-fun TimeSeparatorPreview() {
-  TimeSeparator(prettyTime = "3:25 pm")
+private fun TimeSeparatorPreview() {
+    TimeSeparator(prettyTime = "3:25 pm")
 }
