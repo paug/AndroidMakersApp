@@ -6,11 +6,13 @@ import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.*
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontSynthesis
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
-import androidx.compose.ui.unit.sp
 import fr.paug.androidmakers.R
 
 val GillSans = FontFamily(
@@ -30,7 +32,7 @@ fun AndroidMakersTheme(content: @Composable () -> Unit) {
           primary = Color(0xff1EB6E1)
       ),
       typography = Typography(
-          h6 = TextStyle(
+          h5 = TextStyle(
               fontFamily = GillSans,
               color = Color(0xff1EB6E1),
               fontSynthesis = FontSynthesis.Weight,

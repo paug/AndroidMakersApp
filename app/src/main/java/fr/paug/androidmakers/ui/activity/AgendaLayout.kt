@@ -41,7 +41,7 @@ import fr.paug.androidmakers.util.EmojiUtils
 @Composable
 fun AgendaLayout(
     agendaFilterDrawerState: DrawerState,
-    onSessionClick: (sessionId: String) -> Unit
+    onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
 ) {
     var sessionFilters: List<SessionFilter> by remember { mutableStateOf(listOf()) }
 
@@ -68,8 +68,8 @@ fun AgendaLayout(
                 // XXX Go back to left to right for the contents
                 CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
                     Box(modifier = Modifier.fillMaxWidth()) {
-                        Button(onClick = { onSessionClick("42") }) {
-                            Text(text = "Agenda")
+                        Button(onClick = { onSessionClick("DIA-1089", "0", 0L, 0L) }) {
+                            Text(text = "Session Detail")
                         }
                     }
                 }
@@ -224,6 +224,6 @@ private fun AgendaFilterDrawerPreview() {
 private fun AgendaLayoutPreview() {
     AgendaLayout(
         agendaFilterDrawerState = DrawerState(DrawerValue.Closed, confirmStateChange = { true }),
-        onSessionClick = {}
+        onSessionClick = { _, _, _, _ -> }
     )
 }
