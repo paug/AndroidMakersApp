@@ -234,10 +234,7 @@ class AboutFragment : Fragment(), View.OnClickListener {
         partnerLogo.visibility = View.VISIBLE
         val options = RequestOptions()
             .placeholder(R.color.light_grey)
-        val imageUrl = String.format(
-            "https://androidmakers.fr%s",
-            logo.logoUrl.replace("..", "").replace(".svg", ".png")
-        )
+        val imageUrl = imageUrl(logo.logoUrl)
         Glide.with(requireContext())
             .load(imageUrl)
             .apply(options)
@@ -255,4 +252,11 @@ class AboutFragment : Fragment(), View.OnClickListener {
             firebaseRemoteConfiguration?.getString("wifiPassword")
     }
 
+}
+
+internal fun imageUrl(relativeUrl: String): String {
+    return "https://raw.githubusercontent.com/paug/android-makers-2022/main/$relativeUrl"
+        .replace("..", "")
+        .replace(".svg", ".svg.png")
+        .replace("logos/", "logos/pngs/")
 }

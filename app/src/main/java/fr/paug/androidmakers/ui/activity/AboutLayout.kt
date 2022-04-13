@@ -35,6 +35,7 @@ import fr.androidmakers.store.model.Logo
 import fr.androidmakers.store.model.Partner
 import fr.paug.androidmakers.BuildConfig
 import fr.paug.androidmakers.R
+import fr.paug.androidmakers.ui.fragment.imageUrl
 import fr.paug.androidmakers.ui.theme.AndroidMakersTheme
 
 
@@ -212,7 +213,7 @@ private fun SponsorsCard(partnerList: PartnerListState, onSponsorClick: (url: St
                         for (logo in partner.logos) {
                             val imageUrl = String.format(
                                 "https://androidmakers.fr%s",
-                                logo.logoUrl.replace("..", "").replace(".svg", ".png")
+                                imageUrl(logo.logoUrl)
                             )
                             AsyncImage(
                                 modifier = Modifier
