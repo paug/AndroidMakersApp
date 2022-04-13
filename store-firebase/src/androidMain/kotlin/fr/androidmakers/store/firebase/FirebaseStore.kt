@@ -1,14 +1,11 @@
 package fr.androidmakers.store.firebase
 
-import com.google.firebase.firestore.DocumentSnapshot
+import fr.androidmakers.store.AndroidMakersStore
 import fr.androidmakers.store.model.*
-import fr.androidmakers.store.*
 import kotlinx.coroutines.flow.*
-import java.text.SimpleDateFormat
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneOffset
-import java.util.*
+
 
 class FirebaseStore : AndroidMakersStore {
   override fun getVenue(id: String): Flow<Venue> {
@@ -16,7 +13,14 @@ class FirebaseStore : AndroidMakersStore {
         .document(id)
         .toFlow()
         .mapNotNull {
-          it.toObject(Venue::class.java)
+          Venue(
+              address = it.get("address") as? String ?: "",
+              name = it.get("name") as? String ?: "",
+              description = it.get("description") as? String ?: "",
+              descriptionFr = it.get("descriptionFr") as? String ?: "",
+              coordinates = it.get("coordinates") as? String ?: "",
+              imageUrl = it.get("imageUrl") as? String ?: "",
+          )
         }
   }
 
@@ -60,7 +64,22 @@ class FirebaseStore : AndroidMakersStore {
     return FirebaseSingleton.firestore.collection("partners")
         .toFlow()
         .map {
-          it.documents.mapNotNull { it.toObject(Partner::class.java) }
+          it.documents.flatMap {
+            val partner = it.toObject(Partner::class.java)!!
+
+            FirebaseSingleton.firestore
+                .collection("partners")
+                .document(it.id)
+                .collection("items")
+                .toFlow()
+                .map {
+                  partner.copy(
+                      logos = it.documents.map {
+                        it.toObject(Logo::class.java)!!
+                      }
+                  )
+                }.toList()
+          }
         }
   }
 
