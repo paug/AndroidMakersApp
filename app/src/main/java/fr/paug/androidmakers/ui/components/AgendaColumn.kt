@@ -54,8 +54,7 @@ fun AgendaColumn(
   val listState = rememberLazyListState()
 
   LaunchedEffect(sessionsPerStartTime) {
-    // Animate scroll to the 10th item
-    listState.scrollToItem(index = findStartIndex(sessionsPerStartTime))
+    //listState.scrollToItem(index = findStartIndex(sessionsPerStartTime))
   }
 
   LazyColumn(state = listState) {
