@@ -26,12 +26,6 @@ class AndroidMakersApplication : Application() {
         // Replace with proper dependency injection
         store = FirebaseStore()
 
-//        GlobalScope.launch {
-//            println("Martin - Helloooooooo")
-//            val list = store.getScheduleSlots().first()
-//            error("Martin - $list")
-//        }
-
         super.onCreate()
         SessionSelector.init(this)
         // Use a downloadable font for EmojiCompat
