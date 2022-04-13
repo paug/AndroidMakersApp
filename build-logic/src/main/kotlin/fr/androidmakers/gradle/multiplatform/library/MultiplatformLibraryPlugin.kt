@@ -1,8 +1,7 @@
 package fr.androidmakers.gradle.multiplatform.library
 
 import fr.androidmakers.gradle.addRepositories
-import fr.androidmakers.gradle.android.configureAndroidCompileSdk
-import fr.androidmakers.gradle.configureKotlinCompiler
+import fr.androidmakers.gradle.androidSetup
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
@@ -14,8 +13,8 @@ class MultiplatformLibraryPlugin: Plugin<Project> {
         project.apply(mapOf("plugin" to "org.jetbrains.kotlin.multiplatform"))
 
         addRepositories(project)
-        configureAndroidCompileSdk(project)
-        configureKotlinCompiler(project)
+        project.androidSetup()
+
         (project.kotlinExtension as KotlinMultiplatformExtension).apply {
             android()
         }

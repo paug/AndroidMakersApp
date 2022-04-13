@@ -10,6 +10,12 @@ import fr.androidmakers.store.AndroidMakersStore
 import fr.androidmakers.store.firebase.FirebaseStore
 import fr.androidmakers.store.graphql.GraphQLStore
 import fr.paug.androidmakers.util.SessionSelector
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class AndroidMakersApplication : Application() {
     lateinit var store: AndroidMakersStore
@@ -18,7 +24,13 @@ class AndroidMakersApplication : Application() {
         instance_ = this
 
         // Replace with proper dependency injection
-        store = GraphQLStore(this)
+        store = FirebaseStore()
+
+//        GlobalScope.launch {
+//            println("Martin - Helloooooooo")
+//            val list = store.getScheduleSlots().first()
+//            error("Martin - $list")
+//        }
 
         super.onCreate()
         SessionSelector.init(this)
