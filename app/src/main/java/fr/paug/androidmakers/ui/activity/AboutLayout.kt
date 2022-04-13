@@ -203,7 +203,7 @@ private fun SponsorsCard(partnerList: PartnerListState, onSponsorClick: (url: St
                         // Sponsor "group" (e.g. Organizers, Gold, etc.)
                         Text(
                             modifier = Modifier
-                                .padding(top = 16.dp, bottom = 8.dp)
+                                .padding(top = 32.dp, bottom = 8.dp)
                                 .fillMaxWidth(),
                             textAlign = TextAlign.Center,
                             text = partner.title,
@@ -211,10 +211,7 @@ private fun SponsorsCard(partnerList: PartnerListState, onSponsorClick: (url: St
 
                         // Sponsor logo
                         for (logo in partner.logos) {
-                            val imageUrl = String.format(
-                                "https://androidmakers.fr%s",
-                                imageUrl(logo.logoUrl)
-                            )
+                            Spacer(modifier = Modifier.height(16.dp))
                             AsyncImage(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -223,7 +220,7 @@ private fun SponsorsCard(partnerList: PartnerListState, onSponsorClick: (url: St
                                         onSponsorClick(logo.url)
                                     }
                                     .padding(horizontal = 16.dp, vertical = 8.dp),
-                                model = imageUrl,
+                                model = imageUrl(logo.logoUrl),
                                 contentDescription = logo.name
                             )
                         }
