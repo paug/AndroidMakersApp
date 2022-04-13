@@ -14,6 +14,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -22,9 +23,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.model.UISession
+import fr.paug.androidmakers.ui.theme.AMColor
 import fr.paug.androidmakers.ui.theme.AndroidMakersTheme
 import fr.paug.androidmakers.util.EmojiUtils
 import fr.paug.androidmakers.util.SessionSelector
@@ -73,8 +77,11 @@ fun AgendaRow(
         }
         Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
           val isBookmarked = SessionSelector.selected(uiSession.id).collectAsState(false)
+          val icon = if (isBookmarked.value) R.drawable.ic_bookmarked
+              else R.drawable.ic_bookmark
+
           val tint by animateColorAsState(
-              if (isBookmarked.value) Color(0xffffdd1c)
+              if (isBookmarked.value) AMColor.bookmarked
               else Color.LightGray
           )
 
@@ -85,7 +92,7 @@ fun AgendaRow(
               },
           ) {
             Icon(
-                imageVector = Icons.Default.Star,
+                painter = painterResource(id = icon),
                 contentDescription = "favorite",
                 tint = tint
             )

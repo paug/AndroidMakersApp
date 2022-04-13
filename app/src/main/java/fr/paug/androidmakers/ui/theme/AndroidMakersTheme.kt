@@ -22,6 +22,7 @@ val GillSans = FontFamily(
 object AMColor {
   val lightGray = Color(0xffF0F0F0)
   val gray = Color(0xffbbbbbb)
+  val bookmarked = Color(0xffE85145)
 }
 
 @OptIn(ExperimentalUnitApi::class)
