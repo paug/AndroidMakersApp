@@ -2,6 +2,7 @@ package fr.androidmakers.store.firebase
 
 import fr.androidmakers.store.AndroidMakersStore
 import fr.androidmakers.store.model.*
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import java.time.LocalDateTime
 import java.time.ZoneOffset
@@ -60,27 +61,35 @@ class FirebaseStore : AndroidMakersStore {
         }
   }
 
+  @OptIn(FlowPreview::class)
   override fun getPartners(): Flow<List<Partner>> {
     return FirebaseSingleton.firestore.collection("partners")
         .toFlow()
         .map {
-          it.documents.flatMap {
+          it.documents.map {
             val partner = it.toObject(Partner::class.java)!!
-
             FirebaseSingleton.firestore
                 .collection("partners")
                 .document(it.id)
                 .collection("items")
                 .toFlow()
                 .map {
+                  it.documents.map {
+                    it.toObject(Logo::class.java)!!
+                  }
+                }.map {
                   partner.copy(
-                      logos = it.documents.map {
-                        it.toObject(Logo::class.java)!!
-                      }
+                      logos = it
                   )
-                }.toList()
+                }
+
+          }
+        }.map {
+          combine(it) {
+            it.toList()
           }
         }
+        .flattenConcat()
   }
 
   override fun getScheduleSlots(): Flow<List<ScheduleSlot>> {
