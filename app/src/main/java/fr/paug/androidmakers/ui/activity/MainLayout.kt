@@ -59,7 +59,8 @@ private fun MainNavHost(
             val sessionDetailState by sessionDetailViewModel.sessionDetailState.collectAsState(initial = SessionDetailState.Loading)
             SessionDetailLayout(
                 sessionDetailState = sessionDetailState,
-                onBackClick = { mainNavController.popBackStack() }
+                onBackClick = { mainNavController.popBackStack() },
+                onBookmarkClick = { bookmarked -> sessionDetailViewModel.bookmark(bookmarked) },
             )
         }
     }

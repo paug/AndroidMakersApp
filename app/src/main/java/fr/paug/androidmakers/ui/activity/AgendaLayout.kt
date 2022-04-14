@@ -4,24 +4,9 @@ import android.util.SparseArray
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.material.Checkbox
-import androidx.compose.material.DrawerState
-import androidx.compose.material.DrawerValue
-import androidx.compose.material.ModalDrawer
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -49,8 +34,7 @@ import fr.paug.androidmakers.util.EmojiUtils
 import fr.paug.androidmakers.util.TimeUtils
 import kotlinx.coroutines.flow.Flow
 import java.text.DateFormat
-import java.util.Arrays
-import java.util.Calendar
+import java.util.*
 
 @Composable
 fun AgendaLayout(
@@ -58,6 +42,7 @@ fun AgendaLayout(
     onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
 ) {
     var sessionFilters: List<SessionFilter> by remember { mutableStateOf(listOf()) }
+    val rooms = AndroidMakersApplication.instance().store.getRooms()
 
     // XXX This is a hack to make the drawer appear from the right
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
@@ -67,12 +52,7 @@ fun AgendaLayout(
                 // XXX Go back to left to right for the contents
                 CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
                     AgendaFilterDrawer(
-                        rooms = listOf(
-                            Room("", "Room 1"),
-                            Room("", "Room 2"),
-                            Room("", "Room 3"),
-                            Room("", "Room 4")
-                        ), // TODO get values from store
+                        rooms = rooms.collectAsState(initial = emptyList()).value,
                         sessionFilters = sessionFilters,
                         onFiltersChanged = { newFilters -> sessionFilters = newFilters }
                     )
@@ -170,11 +150,11 @@ private fun AgendaFilterDrawer(
         for (room in rooms) {
             FilterItem(
                 text = room.name,
-                checked = sessionFilters.any { it.type == SessionFilter.FilterType.ROOM && it.value == room.name },
+                checked = sessionFilters.any { it.type == SessionFilter.FilterType.ROOM && it.value == room.id },
                 onCheck = { checked ->
                     val newSessionFilters = sessionFilters.toMutableList().apply {
-                        removeAll { it.type == SessionFilter.FilterType.ROOM && it.value == room.name }
-                        if (checked) add(SessionFilter(SessionFilter.FilterType.ROOM, room.name))
+                        removeAll { it.type == SessionFilter.FilterType.ROOM && it.value == room.id }
+                        if (checked) add(SessionFilter(SessionFilter.FilterType.ROOM, room.id))
                     }
                     onFiltersChanged(newSessionFilters)
                 }
