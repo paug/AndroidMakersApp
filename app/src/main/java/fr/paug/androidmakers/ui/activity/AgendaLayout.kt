@@ -4,9 +4,24 @@ import android.util.SparseArray
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.Checkbox
+import androidx.compose.material.DrawerState
+import androidx.compose.material.DrawerValue
+import androidx.compose.material.ModalDrawer
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -32,8 +47,10 @@ import fr.paug.androidmakers.ui.components.LoadingLayout
 import fr.paug.androidmakers.ui.util.SessionFilter
 import fr.paug.androidmakers.util.EmojiUtils
 import fr.paug.androidmakers.util.TimeUtils
+import kotlinx.coroutines.flow.Flow
 import java.text.DateFormat
-import java.util.*
+import java.util.Arrays
+import java.util.Calendar
 
 @Composable
 fun AgendaLayout(
@@ -64,27 +81,38 @@ fun AgendaLayout(
             content = {
                 // XXX Go back to left to right for the contents
                 CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
-                    val agenda = AndroidMakersApplication.instance().store.getAgenda().collectAsState(initial = Unit)
-
-                    val value = agenda.value
-                    if (value is Agenda) {
-                      val days = agendaToDays(value)
-
-                      AgendaPager(
-                          days = days,
-                          filterList = sessionFilters,
-                          onSessionClicked = {
-                            onSessionClick(
-                                it.id, it.roomId, it.startDate.toEpochMilli(), it.endDate.toEpochMilli()
-                            )
-                          }
-                      )
-                    } else {
-                        LoadingLayout()
-                    }
+                    val agenda = AndroidMakersApplication.instance().store.getAgenda()
+                    AgendaPagerOrLoading(agenda, sessionFilters, onSessionClick)
                 }
             }
         )
+    }
+}
+
+@Composable
+private fun AgendaPagerOrLoading(
+    agendaFlow: Flow<Agenda>,
+    sessionFilters: List<SessionFilter>,
+    onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
+) {
+    val agenda by agendaFlow.collectAsState(initial = Unit)
+    when (agenda) {
+        is Agenda -> {
+            val days = agendaToDays(agenda as Agenda)
+
+            AgendaPager(
+                days = days,
+                filterList = sessionFilters,
+                onSessionClicked = {
+                    onSessionClick(
+                        it.id, it.roomId, it.startDate.toEpochMilli(), it.endDate.toEpochMilli()
+                    )
+                }
+            )
+        }
+        else -> {
+            LoadingLayout()
+        }
     }
 }
 
@@ -167,7 +195,7 @@ private fun FilterItem(
         modifier = Modifier
             .fillMaxWidth()
             .clickable {
-              onCheck(!checked)
+                onCheck(!checked)
             },
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -239,117 +267,121 @@ private fun AgendaLayoutPreview() {
 }
 
 
-private fun getRoomScheduleForDay(itemByDayOfTheYear: SparseArray<DaySchedule>,
-                                  calendar: Calendar,
-                                  scheduleSlot: ScheduleSlot): MutableList<RoomSchedule> {
-  val date = TimeUtils.parseIso8601(scheduleSlot.startDate)
+private fun getRoomScheduleForDay(
+    itemByDayOfTheYear: SparseArray<DaySchedule>,
+    calendar: Calendar,
+    scheduleSlot: ScheduleSlot,
+): MutableList<RoomSchedule> {
+    val date = TimeUtils.parseIso8601(scheduleSlot.startDate)
 
-  calendar.timeInMillis = date.time
-  val dayIndex = calendar.get(Calendar.DAY_OF_YEAR) + calendar.get(Calendar.YEAR) * 1000
-  var daySchedule: DaySchedule? = itemByDayOfTheYear.get(dayIndex)
-  if (daySchedule == null) {
-    val roomSchedule = ArrayList<RoomSchedule>()
-    val title = DateFormat.getDateInstance().format(calendar.time)
-    daySchedule = DaySchedule(title, roomSchedule)
-    itemByDayOfTheYear.put(dayIndex, daySchedule)
-    return roomSchedule
-  } else {
-    return daySchedule.roomSchedules
-  }
+    calendar.timeInMillis = date.time
+    val dayIndex = calendar.get(Calendar.DAY_OF_YEAR) + calendar.get(Calendar.YEAR) * 1000
+    var daySchedule: DaySchedule? = itemByDayOfTheYear.get(dayIndex)
+    if (daySchedule == null) {
+        val roomSchedule = ArrayList<RoomSchedule>()
+        val title = DateFormat.getDateInstance().format(calendar.time)
+        daySchedule = DaySchedule(title, roomSchedule)
+        itemByDayOfTheYear.put(dayIndex, daySchedule)
+        return roomSchedule
+    } else {
+        return daySchedule.roomSchedules
+    }
 }
 
 private fun getItemsOrdered(itemByDayOfTheYear: SparseArray<DaySchedule>): List<DaySchedule> {
-  val size = itemByDayOfTheYear.size()
-  val keysSorted = IntArray(size)
-  for (i in 0 until size) {
-    keysSorted[i] = itemByDayOfTheYear.keyAt(i)
-  }
-  Arrays.sort(keysSorted)
-  val items = ArrayList<DaySchedule>(size)
-  for (key in keysSorted) {
-    items.add(itemByDayOfTheYear.get(key))
-  }
-  return items
+    val size = itemByDayOfTheYear.size()
+    val keysSorted = IntArray(size)
+    for (i in 0 until size) {
+        keysSorted[i] = itemByDayOfTheYear.keyAt(i)
+    }
+    Arrays.sort(keysSorted)
+    val items = ArrayList<DaySchedule>(size)
+    for (key in keysSorted) {
+        items.add(itemByDayOfTheYear.get(key))
+    }
+    return items
 }
 
 private fun getSpeakers(agenda: Agenda, sessionId: String): List<Speaker> {
-  return agenda.sessions.get(sessionId)?.speakers?.mapNotNull { speakerId ->
-    agenda.speakers.get(speakerId)
-  } ?: emptyList()
+    return agenda.sessions.get(sessionId)?.speakers?.mapNotNull { speakerId ->
+        agenda.speakers.get(speakerId)
+    } ?: emptyList()
 }
 
 internal fun agendaToDays(agenda: Agenda): List<DaySchedule> {
-  val itemByDayOfTheYear = SparseArray<DaySchedule>()
+    val itemByDayOfTheYear = SparseArray<DaySchedule>()
 
-  val calendar = Calendar.getInstance()
-  val scheduleSlots = agenda.slots
-  for (scheduleSlot in scheduleSlots) {
-    val agendaScheduleSessions = getAgendaItems(
-        itemByDayOfTheYear = itemByDayOfTheYear,
-        calendar = calendar,
-        scheduleSlot = scheduleSlot,
-        rooms = agenda.rooms)
+    val calendar = Calendar.getInstance()
+    val scheduleSlots = agenda.slots
+    for (scheduleSlot in scheduleSlots) {
+        val agendaScheduleSessions = getAgendaItems(
+            itemByDayOfTheYear = itemByDayOfTheYear,
+            calendar = calendar,
+            scheduleSlot = scheduleSlot,
+            rooms = agenda.rooms)
 
-    val session = agenda.sessions.get(scheduleSlot.sessionId)
-    if (session == null) {
-      // this session has disappeared, skip it
-      continue
+        val session = agenda.sessions.get(scheduleSlot.sessionId)
+        if (session == null) {
+            // this session has disappeared, skip it
+            continue
+        }
+        agendaScheduleSessions.add(ScheduleSession(scheduleSlot,
+            session.title,
+            session.language,
+            getSpeakers(agenda, scheduleSlot.sessionId)))
     }
-    agendaScheduleSessions.add(ScheduleSession(scheduleSlot,
-        session.title,
-        session.language,
-        getSpeakers(agenda, scheduleSlot.sessionId)))
-  }
 
-  return getItemsOrdered(itemByDayOfTheYear)
+    return getItemsOrdered(itemByDayOfTheYear)
 }
 
 
 private fun getTodayIndex(items: List<DaySchedule>?): Int {
-  if (items == null || items.size < 2) {
-    return -1
-  }
-  val calendar = Calendar.getInstance()
-  val dayOfYear = calendar.get(Calendar.DAY_OF_YEAR)
-  val year = calendar.get(Calendar.YEAR)
-  for (i in 1 until items.size) {
-    val agendaDaySchedule = items[i]
-    val roomSchedules = agendaDaySchedule.roomSchedules
-    if (!roomSchedules.isEmpty()) {
-      val scheduleSessionList = roomSchedules[0].scheduleSessions
-      if (!scheduleSessionList.isEmpty()) {
-        val scheduleSession = scheduleSessionList[0]
-        calendar.timeInMillis = scheduleSession.startTimestamp
-        if (calendar.get(Calendar.YEAR) == year && calendar.get(Calendar.DAY_OF_YEAR) == dayOfYear) {
-          return i
-        }
-      }
+    if (items == null || items.size < 2) {
+        return -1
     }
-  }
-  return -1
+    val calendar = Calendar.getInstance()
+    val dayOfYear = calendar.get(Calendar.DAY_OF_YEAR)
+    val year = calendar.get(Calendar.YEAR)
+    for (i in 1 until items.size) {
+        val agendaDaySchedule = items[i]
+        val roomSchedules = agendaDaySchedule.roomSchedules
+        if (!roomSchedules.isEmpty()) {
+            val scheduleSessionList = roomSchedules[0].scheduleSessions
+            if (!scheduleSessionList.isEmpty()) {
+                val scheduleSession = scheduleSessionList[0]
+                calendar.timeInMillis = scheduleSession.startTimestamp
+                if (calendar.get(Calendar.YEAR) == year && calendar.get(Calendar.DAY_OF_YEAR) == dayOfYear) {
+                    return i
+                }
+            }
+        }
+    }
+    return -1
 }
 
-private fun getAgendaItems(itemByDayOfTheYear: SparseArray<DaySchedule>,
-                           calendar: Calendar,
-                           scheduleSlot: ScheduleSlot,
-                           rooms: Map<String, Room>): ArrayList<ScheduleSession> {
-  val roomSchedules = getRoomScheduleForDay(itemByDayOfTheYear, calendar, scheduleSlot)
-  var roomScheduleForThis: RoomSchedule? = null
-  for (roomSchedule in roomSchedules) {
-    if (roomSchedule.roomId == scheduleSlot.roomId) {
-      roomScheduleForThis = roomSchedule
-      break
+private fun getAgendaItems(
+    itemByDayOfTheYear: SparseArray<DaySchedule>,
+    calendar: Calendar,
+    scheduleSlot: ScheduleSlot,
+    rooms: Map<String, Room>,
+): ArrayList<ScheduleSession> {
+    val roomSchedules = getRoomScheduleForDay(itemByDayOfTheYear, calendar, scheduleSlot)
+    var roomScheduleForThis: RoomSchedule? = null
+    for (roomSchedule in roomSchedules) {
+        if (roomSchedule.roomId == scheduleSlot.roomId) {
+            roomScheduleForThis = roomSchedule
+            break
+        }
     }
-  }
-  if (roomScheduleForThis == null) {
-    val agendaScheduleSessions = ArrayList<ScheduleSession>()
-    val room = rooms.get(scheduleSlot.roomId)!!
-    val titleRoom = room.name
-    roomScheduleForThis = RoomSchedule(scheduleSlot.roomId, titleRoom, agendaScheduleSessions)
-    roomSchedules.add(roomScheduleForThis)
-    roomSchedules.sort()
-    return agendaScheduleSessions
-  } else {
-    return roomScheduleForThis.scheduleSessions
-  }
+    if (roomScheduleForThis == null) {
+        val agendaScheduleSessions = ArrayList<ScheduleSession>()
+        val room = rooms.get(scheduleSlot.roomId)!!
+        val titleRoom = room.name
+        roomScheduleForThis = RoomSchedule(scheduleSlot.roomId, titleRoom, agendaScheduleSessions)
+        roomSchedules.add(roomScheduleForThis)
+        roomSchedules.sort()
+        return agendaScheduleSessions
+    } else {
+        return roomScheduleForThis.scheduleSessions
+    }
 }
