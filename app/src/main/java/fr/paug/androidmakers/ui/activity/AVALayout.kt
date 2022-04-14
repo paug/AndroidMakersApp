@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -69,7 +70,8 @@ fun AVALayout(
                                 Icon(painter = painterResource(R.drawable.ic_filter_list_white_24dp), contentDescription = stringResource(R.string.filter))
                             }
                         }
-                    }
+                    },
+                    elevation = 0.dp
                 )
             },
 
