@@ -20,9 +20,11 @@ val GillSans = FontFamily(
 )
 
 object AMColor {
+  val primary = Color(0xff1EB6E1)
+  val secondary = Color(0xffE85145)
   val lightGray = Color(0xffF0F0F0)
   val gray = Color(0xffbbbbbb)
-  val bookmarked = Color(0xffE85145)
+  val bookmarked = secondary
 }
 
 @OptIn(ExperimentalUnitApi::class)
@@ -30,12 +32,13 @@ object AMColor {
 fun AndroidMakersTheme(content: @Composable () -> Unit) {
   MaterialTheme(
       colors = lightColors(
-          primary = Color(0xff1EB6E1)
+          primary = AMColor.primary,
+          secondary = AMColor.secondary
       ),
       typography = Typography(
           h5 = TextStyle(
               fontFamily = GillSans,
-              color = Color(0xff1EB6E1),
+              color = AMColor.primary,
               fontSynthesis = FontSynthesis.Weight,
               fontWeight = FontWeight.Bold,
               fontSize = TextUnit(24f, TextUnitType.Sp)
