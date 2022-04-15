@@ -14,16 +14,11 @@
 
     <string name="no_maps_app_found">Error: No maps app found</string>
 
-    <!--Agenda-->
-    <plurals name="duration_hours">
-        <item quantity="one">%s hour</item>
-        <item quantity="other">%s hours</item>
-    </plurals>
-
     <plurals name="duration_minutes">
         <item quantity="one">%s minute</item>
         <item quantity="other">%s minutes</item>
     </plurals>
+    <string name="many_minutes">Many minutes</string>
 
     <string name="ImageDesc_speaker_avatar">Speaker picture</string>
     <string name="ImageDesc_social_network_image">social network image</string>
