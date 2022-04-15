@@ -6,9 +6,11 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import fr.paug.androidmakers.R
+import fr.paug.androidmakers.ui.components.AboutActions
+import fr.paug.androidmakers.ui.components.MainLayout
 import fr.paug.androidmakers.util.CustomTabUtil
 
-class Main2Activity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

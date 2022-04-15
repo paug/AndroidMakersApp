@@ -18,7 +18,6 @@ import com.google.accompanist.pager.rememberPagerState
 import fr.androidmakers.store.model.Venue
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.R
-import fr.paug.androidmakers.ui.activity.VenueLayout
 import fr.paug.androidmakers.ui.model.UIVenue
 import kotlinx.coroutines.launch
 

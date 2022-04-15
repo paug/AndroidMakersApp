@@ -1,4 +1,4 @@
-package fr.paug.androidmakers.ui.activity
+package fr.paug.androidmakers.ui.components
 
 import android.util.SparseArray
 import androidx.compose.foundation.Image
@@ -27,8 +27,6 @@ import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.adapter.DaySchedule
 import fr.paug.androidmakers.ui.adapter.RoomSchedule
 import fr.paug.androidmakers.ui.adapter.ScheduleSession
-import fr.paug.androidmakers.ui.components.AgendaPager
-import fr.paug.androidmakers.ui.components.LoadingLayout
 import fr.paug.androidmakers.ui.util.SessionFilter
 import fr.paug.androidmakers.util.EmojiUtils
 import fr.paug.androidmakers.util.TimeUtils
