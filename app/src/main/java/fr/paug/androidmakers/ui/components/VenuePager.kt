@@ -88,7 +88,11 @@ fun VenuePager() {
             LoadingLayout()
           }
         }
+        else -> {
+          FloorPlan()
+        }
       }
     }
   }
 }
+
