@@ -8,6 +8,7 @@ import androidx.compose.material.TabRowDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -19,6 +20,9 @@ import fr.androidmakers.store.model.Venue
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.model.UIVenue
+import fr.paug.androidmakers.ui.viewmodel.Lce
+import fr.paug.androidmakers.ui.viewmodel.toLce
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagerApi::class)
@@ -69,11 +73,14 @@ fun VenuePager() {
           } else {
             "afterparty"
           }
-          val venueState = AndroidMakersApplication.instance().store.getVenue(venueId)
-              .collectAsState(initial = Unit)
 
-          val venue = venueState.value
-          if (venue is Venue) {
+          val flow = remember {
+            AndroidMakersApplication.instance().store.getVenue(venueId)
+                .map { it.toLce() }
+          }
+          val venueState = flow.collectAsState(initial = Lce.Loading)
+
+          LceLayout(lce = venueState.value) { venue ->
             val uiVenue = UIVenue(
                 imageUrl = venue.imageUrl,
                 descriptionEn = venue.description,
@@ -83,8 +90,6 @@ fun VenuePager() {
                 coordinates = venue.coordinates,
             )
             VenueLayout(uiVenue)
-          } else {
-            LoadingLayout()
           }
         }
         else -> {

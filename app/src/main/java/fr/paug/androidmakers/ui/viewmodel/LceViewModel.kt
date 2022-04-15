@@ -7,7 +7,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-abstract class LceViewModel<T>() : ViewModel() {
+abstract class LceViewModel<T> : ViewModel() {
   abstract fun produce(): Flow<Result<T>>
 
   private val _mutableSharedState = MutableStateFlow<Lce<T>>(Lce.Loading)
@@ -53,4 +53,9 @@ sealed interface Lce<out T> {
   object Error : Lce<Nothing>
 }
 
+fun <T> Result<T>.toLce(): Lce<T> = if (isSuccess) {
+  Lce.Content(getOrThrow())
+} else {
+  Lce.Error
+}
 
