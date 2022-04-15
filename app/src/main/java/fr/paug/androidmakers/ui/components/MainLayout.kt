@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import fr.paug.androidmakers.ui.navigation.MainNavigationRoute
+import fr.paug.androidmakers.ui.viewmodel.Lce
 
 /**
  * The main layout: entry point of the application
@@ -56,7 +57,7 @@ private fun MainNavHost(
             }
           }
       )
-      val sessionDetailState by sessionDetailViewModel.sessionDetailState.collectAsState(initial = SessionDetailState.Loading)
+      val sessionDetailState by sessionDetailViewModel.sessionDetailState.collectAsState(initial = Lce.Loading)
       SessionDetailLayout(
           sessionDetailState = sessionDetailState,
           onBackClick = { mainNavController.popBackStack() },

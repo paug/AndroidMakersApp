@@ -39,32 +39,30 @@ import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.theme.AMColor
 import fr.paug.androidmakers.ui.theme.AndroidMakersTheme
 import fr.paug.androidmakers.ui.util.imageUrl
+import fr.paug.androidmakers.ui.viewmodel.Lce
 import io.openfeedback.android.components.SessionFeedbackContainer
 import java.util.*
 
-sealed class SessionDetailState {
-  object Loading : SessionDetailState()
-  data class Loaded(
-      val session: Session,
-      val speakers: List<Speaker>,
-      val room: Room,
-      val startTimestamp: Long,
-      val endTimestamp: Long,
-      val isBookmarked: Boolean,
-  ) : SessionDetailState()
-}
+class SessionDetailState(
+    val session: Session,
+    val speakers: List<Speaker>,
+    val room: Room,
+    val startTimestamp: Long,
+    val endTimestamp: Long,
+    val isBookmarked: Boolean,
+)
 
 @Composable
 fun SessionDetailLayout(
-    sessionDetailState: SessionDetailState,
+    sessionDetailState: Lce<SessionDetailState>,
     onBackClick: () -> Unit,
     onBookmarkClick: (bookmarked: Boolean) -> Unit,
 ) {
-  val formattedDateAndRoom: String? = if (sessionDetailState is SessionDetailState.Loaded) {
+  val formattedDateAndRoom: String? = if (sessionDetailState is Lce.Content) {
     getFormattedDateAndRoom(
-        room = sessionDetailState.room,
-        startTimestamp = sessionDetailState.startTimestamp,
-        endTimestamp = sessionDetailState.endTimestamp,
+        room = sessionDetailState.content.room,
+        startTimestamp = sessionDetailState.content.startTimestamp,
+        endTimestamp = sessionDetailState.content.endTimestamp,
     )
   } else {
     null
@@ -80,21 +78,21 @@ fun SessionDetailLayout(
                 }
               },
               title = {
-                if (sessionDetailState is SessionDetailState.Loaded) {
-                  Text(sessionDetailState.session.title, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                if (sessionDetailState is Lce.Content) {
+                  Text(sessionDetailState.content.session.title, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 }
               },
               actions = {
-                if (sessionDetailState is SessionDetailState.Loaded) {
+                if (sessionDetailState is Lce.Content) {
                   val context = LocalContext.current
                   IconButton(
                       onClick = {
                         // TODO Ideally this should not be handled here but by the caller
                         shareSession(
                             context = context,
-                            session = sessionDetailState.session,
+                            session = sessionDetailState.content.session,
                             sessionDateAndRoom = formattedDateAndRoom!!,
-                            speakersList = sessionDetailState.speakers,
+                            speakersList = sessionDetailState.content.speakers,
                         )
                       }
                   ) {
@@ -105,17 +103,17 @@ fun SessionDetailLayout(
           )
         },
         floatingActionButton = {
-          if (sessionDetailState is SessionDetailState.Loaded) {
+          if (sessionDetailState is Lce.Content) {
             val backgroundColor by animateColorAsState(
-                if (sessionDetailState.isBookmarked) Color.White else AMColor.secondary
+                if (sessionDetailState.content.isBookmarked) Color.White else AMColor.secondary
             )
             FloatingActionButton(
                 backgroundColor = backgroundColor,
                 onClick = {
-                  onBookmarkClick(!sessionDetailState.isBookmarked)
+                  onBookmarkClick(!sessionDetailState.content.isBookmarked)
                 }
             ) {
-              Crossfade(sessionDetailState.isBookmarked) { isBookmarked ->
+              Crossfade(sessionDetailState.content.isBookmarked) { isBookmarked ->
                 Image(
                     painterResource(
                         if (isBookmarked) R.drawable.ic_bookmarked_fab else R.drawable.ic_bookmark_fab
@@ -129,9 +127,8 @@ fun SessionDetailLayout(
     ) { innerPadding ->
       Box(Modifier.padding(innerPadding)) {
         when (sessionDetailState) {
-          is SessionDetailState.Loading -> LoadingLayout()
-          is SessionDetailState.Loaded -> SessionDetails(sessionDetailState, formattedDateAndRoom!!)
-
+          is Lce.Loading, Lce.Error -> LoadingLayout()
+          is Lce.Content -> SessionDetails(sessionDetailState.content, formattedDateAndRoom!!)
         }
       }
     }
@@ -139,7 +136,7 @@ fun SessionDetailLayout(
 }
 
 @Composable
-private fun SessionDetails(sessionDetails: SessionDetailState.Loaded, formattedDateAndRoom: String) {
+private fun SessionDetails(sessionDetails: SessionDetailState, formattedDateAndRoom: String) {
   Column(Modifier
       .verticalScroll(state = rememberScrollState())
       .padding(16.dp)
@@ -200,7 +197,7 @@ private fun String.asLanguageResource(): String? {
 }
 
 @Composable
-private fun ChipList(sessionDetails: SessionDetailState.Loaded) {
+private fun ChipList(sessionDetails: SessionDetailState) {
   FlowRow(
       modifier = Modifier.padding(top = 16.dp),
       mainAxisSpacing = 8.dp,
@@ -338,7 +335,7 @@ private fun openSocialLink(context: Context, link: String) {
 @Composable
 private fun SessionDetailLayoutLoadingPreview() {
   SessionDetailLayout(
-      sessionDetailState = SessionDetailState.Loading,
+      sessionDetailState = Lce.Loading,
       onBackClick = {},
       onBookmarkClick = {},
   )
@@ -348,61 +345,63 @@ private fun SessionDetailLayoutLoadingPreview() {
 @Composable
 private fun SessionDetailLayoutLoadedPreview() {
   SessionDetailLayout(
-      sessionDetailState = SessionDetailState.Loaded(
-          session = Session(
-              id = "42",
-              complexity = "Intermediate",
-              speakers = listOf("John Smith", "Jane Doe"),
-              description = "Ever wish you could just use a lambda as an onClickListener? Or change the View visibility by modifying a simple \"isVisible\" boolean? Or how about using a doOnLayout{} method to run a block of code after view layout?\r\n\r\nThese are just a few examples of how Android KTX extensions help solve common problems. They improve the existing Jetpack and Android platform APIs so you can consume them from Kotlin in a concise and idiomatic way.\r\n\r\nThis talk will discuss what KTX extensions are and explore the most useful extensions that you can use in your daily workflow.",
-              language = "English",
-              title = "The title of this session",
-              tags = listOf("Tools", "Fun"),
-              videoURL = "",
-              slido = null,
-              platformUrl = null
-          ),
-          room = Room(
-              id = "13",
-              name = "The Big Room"
-          ),
-          speakers = listOf(
-              Speaker(
-                  id = "0",
-                  badges = listOf(
-                      BadgesItem(name = "gdg", link = "https://www.meetup.com/Android-Paris/", description = "Paris Android User Group")
-                  ),
-                  country = "",
-                  featured = false,
-                  companyLogo = null,
-                  name = "Martin Bonnin",
-                  photoUrl = null,
-                  bio = "Martin is a maintainer of Apollo Kotlin. He has been writing Android applications since Cupcake and fell in love with Kotlin in 2017. Martin loves naming things and the sound of his laptop fan compiling all these type-safe programs. When not busy rewriting all his bash scripts in Kotlin, Martin loves to hike the Pyrénées or play a good game of Hearthstone.",
-                  company = "Apollo GraphQL",
-                  socials = listOf(
-                      SocialsItem(name = "Website", icon = "website", link = "https://mbonnin.net")
-                  ),
-                  order = 17
+      sessionDetailState = Lce.Content(
+          SessionDetailState(
+              session = Session(
+                  id = "42",
+                  complexity = "Intermediate",
+                  speakers = listOf("John Smith", "Jane Doe"),
+                  description = "Ever wish you could just use a lambda as an onClickListener? Or change the View visibility by modifying a simple \"isVisible\" boolean? Or how about using a doOnLayout{} method to run a block of code after view layout?\r\n\r\nThese are just a few examples of how Android KTX extensions help solve common problems. They improve the existing Jetpack and Android platform APIs so you can consume them from Kotlin in a concise and idiomatic way.\r\n\r\nThis talk will discuss what KTX extensions are and explore the most useful extensions that you can use in your daily workflow.",
+                  language = "English",
+                  title = "The title of this session",
+                  tags = listOf("Tools", "Fun"),
+                  videoURL = "",
+                  slido = null,
+                  platformUrl = null
               ),
-              Speaker(
-                  id = "1",
-                  badges = null,
-                  country = "",
-                  featured = false,
-                  companyLogo = null,
-                  name = "Benoit Lubek",
-                  photoUrl = null,
-                  bio = "Currently working on Apollo-Kotlin, the Kotlin SDK for GraphQL, Benoit has been writing software for 20 years, with a focus on Android since its v1. When he’s not coding, you can find him enjoying movies or geocaching.",
-                  company = "Apollo GraphQL",
-                  socials = listOf(
-                      SocialsItem(name = "SocialNetworkHandle.SocialNetworkType.Twitter", icon = "twitter", link = "https://twitter.com/BoD"),
-                      SocialsItem(name = "Website", icon = "website", link = "https://JRAF.org")
+              room = Room(
+                  id = "13",
+                  name = "The Big Room"
+              ),
+              speakers = listOf(
+                  Speaker(
+                      id = "0",
+                      badges = listOf(
+                          BadgesItem(name = "gdg", link = "https://www.meetup.com/Android-Paris/", description = "Paris Android User Group")
+                      ),
+                      country = "",
+                      featured = false,
+                      companyLogo = null,
+                      name = "Martin Bonnin",
+                      photoUrl = null,
+                      bio = "Martin is a maintainer of Apollo Kotlin. He has been writing Android applications since Cupcake and fell in love with Kotlin in 2017. Martin loves naming things and the sound of his laptop fan compiling all these type-safe programs. When not busy rewriting all his bash scripts in Kotlin, Martin loves to hike the Pyrénées or play a good game of Hearthstone.",
+                      company = "Apollo GraphQL",
+                      socials = listOf(
+                          SocialsItem(name = "Website", icon = "website", link = "https://mbonnin.net")
+                      ),
+                      order = 17
                   ),
-                  order = 18
-              )
-          ),
-          startTimestamp = Date(122, 4, 26, 13, 30).time,
-          endTimestamp = Date(122, 4, 26, 14, 15).time,
-          isBookmarked = false,
+                  Speaker(
+                      id = "1",
+                      badges = null,
+                      country = "",
+                      featured = false,
+                      companyLogo = null,
+                      name = "Benoit Lubek",
+                      photoUrl = null,
+                      bio = "Currently working on Apollo-Kotlin, the Kotlin SDK for GraphQL, Benoit has been writing software for 20 years, with a focus on Android since its v1. When he’s not coding, you can find him enjoying movies or geocaching.",
+                      company = "Apollo GraphQL",
+                      socials = listOf(
+                          SocialsItem(name = "SocialNetworkHandle.SocialNetworkType.Twitter", icon = "twitter", link = "https://twitter.com/BoD"),
+                          SocialsItem(name = "Website", icon = "website", link = "https://JRAF.org")
+                      ),
+                      order = 18
+                  )
+              ),
+              startTimestamp = Date(122, 4, 26, 13, 30).time,
+              endTimestamp = Date(122, 4, 26, 14, 15).time,
+              isBookmarked = false,
+          )
       ),
       onBackClick = {},
       onBookmarkClick = {},
