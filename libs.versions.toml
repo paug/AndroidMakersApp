@@ -23,7 +23,6 @@ vectordrawable = "androidx.vectordrawable:vectordrawable:1.1.0"
 browser = "androidx.browser:browser:1.4.0"
 percentlayout = "androidx.percentlayout:percentlayout:1.0.0"
 cardview = "androidx.cardview:cardview:1.0.0"
-emoji = "androidx.emoji:emoji:1.1.0"
 lifecycle-runtime-ktx = "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0"
 constraintlayout = "androidx.constraintlayout:constraintlayout:2.1.2"
 
@@ -52,15 +51,10 @@ accompanist-pager = "com.google.accompanist:accompanist-pager:0.24.6-alpha"
 accompanist-pager-indicators = "com.google.accompanist:accompanist-pager-indicators:0.24.6-alpha"
 accompanist-flowlayout = "com.google.accompanist:accompanist-flowlayout:0.24.6-alpha"
 
-#// Weird but necessary for the compose preview.
-#debugImplementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
-#debugImplementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0")
-#debugImplementation("androidx.savedstate:savedstate-ktx:1.1.0")
-#debugImplementation("androidx.core:core-ktx:1.7.0")
-
 coil-compose = "io.coil-kt:coil-compose:2.0.0-rc02"
-
 desugar-jdk-libs = "com.android.tools:desugar_jdk_libs:1.1.5"
+openfeedback = "io.openfeedback:feedback-android-sdk-ui:0.0.7"
+
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

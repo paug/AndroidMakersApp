@@ -21,7 +21,6 @@ dependencies {
     implementation(libs.browser)
     implementation(libs.percentlayout)
     implementation(libs.cardview)
-    implementation(libs.emoji)
     implementation(libs.constraintlayout)
 
     // Firebase
@@ -52,4 +51,5 @@ dependencies {
 
     // Used for tags
     implementation(libs.layouts)
+    implementation(libs.openfeedback)
 }
