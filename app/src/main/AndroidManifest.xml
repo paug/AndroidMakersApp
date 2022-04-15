@@ -43,6 +43,7 @@
             android:name=".ui.activity.Main2Activity"
             android:configChanges="orientation|screenSize"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AndroidMakers.NoActionBar"
             android:launchMode="singleTask">
             <intent-filter>
