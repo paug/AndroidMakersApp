@@ -50,9 +50,10 @@ fun AgendaColumn(
 ) {
   val listState = rememberLazyListState()
 
-  LaunchedEffect(sessionsPerStartTime) {
-    //listState.scrollToItem(index = findStartIndex(sessionsPerStartTime))
-  }
+  // Scroll to current time
+//  LaunchedEffect(sessionsPerStartTime) {
+//    listState.scrollToItem(index = findStartIndex(sessionsPerStartTime))
+//  }
 
   LazyColumn(
       state = listState,
