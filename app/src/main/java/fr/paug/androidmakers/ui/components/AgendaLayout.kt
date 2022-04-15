@@ -33,6 +33,7 @@ import fr.paug.androidmakers.ui.viewmodel.LceViewModel
 import fr.paug.androidmakers.util.EmojiUtils
 import fr.paug.androidmakers.util.TimeUtils
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import java.text.DateFormat
 import java.util.*
 
@@ -52,7 +53,9 @@ fun AgendaLayout(
                 // XXX Go back to left to right for the contents
                 CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
                     AgendaFilterDrawer(
-                        rooms = rooms.collectAsState(initial = emptyList()).value,
+                        rooms = rooms.collectAsState(initial = Result.success(emptyList())).value
+                            .recover { emptyList() }
+                            .getOrThrow(),
                         sessionFilters = sessionFilters,
                         onFiltersChanged = { newFilters -> sessionFilters = newFilters }
                     )

@@ -9,7 +9,7 @@ import java.time.ZoneOffset
 
 
 class FirebaseStore : AndroidMakersStore {
-  override fun getVenue(id: String): Flow<Venue> {
+  override fun getVenue(id: String): Flow<Result<Venue>> {
     return FirebaseSingleton.firestore.collection("venues")
         .document(id)
         .toFlow()
@@ -22,23 +22,25 @@ class FirebaseStore : AndroidMakersStore {
               coordinates = it.get("coordinates") as? String ?: "",
               imageUrl = it.get("imageUrl") as? String ?: "",
           )
-        }
+        }.toResultFlow()
   }
 
-  override fun getSpeaker(id: String): Flow<Speaker> {
+  override fun getSpeaker(id: String): Flow<Result<Speaker>> {
     return FirebaseSingleton.firestore.collection("speakers")
         .document(id)
         .toFlow()
         .mapNotNull {
           it.toObject(Speaker::class.java)
-        }
+        }.toResultFlow()
   }
 
-  override fun getRoom(id: String): Flow<Room> {
-    return getRooms().map { it.filter { it.id == id }.single() }
+  override fun getRoom(id: String): Flow<Result<Room>> {
+    return getRooms().map {
+      it.map { it.single { it.id == id } }
+    }
   }
 
-  override fun getRooms(): Flow<List<Room>> {
+  override fun getRooms(): Flow<Result<List<Room>>> {
     return FirebaseSingleton.firestore.collection("rooms")
         .toFlow()
         .mapNotNull {
@@ -49,20 +51,21 @@ class FirebaseStore : AndroidMakersStore {
                   name = "Service",
               )
           )
-        }
+        }.toResultFlow()
   }
 
-  override fun getSession(id: String): Flow<Session> {
+  override fun getSession(id: String): Flow<Result<Session>> {
     return FirebaseSingleton.firestore.collection("sessions")
         .document(id)
         .toFlow()
         .mapNotNull {
           it.toObject(Session::class.java)?.copy(id = it.id)
         }
+        .toResultFlow()
   }
 
   @OptIn(FlowPreview::class)
-  override fun getPartners(): Flow<List<Partner>> {
+  override fun getPartners(): Flow<Result<List<Partner>>> {
     return FirebaseSingleton.firestore.collection("partners")
         .toFlow()
         .map {
@@ -90,9 +93,10 @@ class FirebaseStore : AndroidMakersStore {
           }
         }
         .flattenConcat()
+        .toResultFlow()
   }
 
-  override fun getScheduleSlots(): Flow<List<ScheduleSlot>> {
+  override fun getScheduleSlots(): Flow<Result<List<ScheduleSlot>>> {
     return FirebaseSingleton.firestore
         .collection("schedule")
         .toFlow()
@@ -102,26 +106,32 @@ class FirebaseStore : AndroidMakersStore {
                 it.id to it.data!!
               }.toMap()
           )!!
-        }
+        }.toResultFlow()
   }
 
-  override fun getSessions(): Flow<List<Session>> {
+  override fun getSessions(): Flow<Result<List<Session>>> {
     return FirebaseSingleton.firestore.collection("sessions")
         .toFlow()
         .map { result ->
           result.documents.mapNotNull { it.toObject(Session::class.java)?.copy(id = it.id) }
-        }
+        }.toResultFlow()
   }
 
-  override fun getSpeakers(): Flow<List<Speaker>> {
+  override fun getSpeakers(): Flow<Result<List<Speaker>>> {
     return FirebaseSingleton.firestore.collection("speakers")
         .toFlow()
         .map { result ->
           result.documents.mapNotNull { it.toObject(Speaker::class.java)?.copy(id = it.id) }
-        }
+        }.toResultFlow()
   }
 
-  private fun convertResults(results: Map<String, Map<String, Any?>>): List<ScheduleSlot>? {
+  private fun <T> Flow<T>.toResultFlow(): Flow<Result<T>> = this.map {
+    Result.success(it)
+  }.catch {
+    Result.failure<T>(it)
+  }
+
+  private fun convertResults(results: Map<String, Map<String, Any?>>): List<ScheduleSlot> {
     val list = mutableListOf<ScheduleSlot>()
     for (result in results) {
       val day = result.value
@@ -169,10 +179,6 @@ class FirebaseStore : AndroidMakersStore {
   }
 }
 
-private fun <K> Map<K, *>.getAsMap(k: K): Map<String, *> {
-  @Suppress("UNCHECKED_CAST")
-  return this.get(k) as Map<String, *>
-}
 
 private fun <K> Map<K, *>.getAsListOfMaps(k: K): List<Map<String, *>> {
   @Suppress("UNCHECKED_CAST")

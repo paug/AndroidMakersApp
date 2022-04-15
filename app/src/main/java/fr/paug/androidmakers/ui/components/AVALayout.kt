@@ -21,9 +21,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import fr.androidmakers.store.model.Partner
+import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.navigation.AVANavigationRoute
 import fr.paug.androidmakers.ui.theme.AndroidMakersTheme
+import fr.paug.androidmakers.ui.viewmodel.LceViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 /**
@@ -145,7 +149,8 @@ private fun AVANavHost(
         }
         composable(route = AVANavigationRoute.ABOUT.name) {
             val aboutViewModel: AboutViewModel = viewModel()
-            val partnerList: PartnerListState by aboutViewModel.partnerList.collectAsState(PartnerListState.Loading)
+            val partnerList by viewModel<PartnersViewModel>().values.collectAsState()
+
             AboutLayout(
                 wifiInfo = aboutViewModel.getWifiInfo(),
                 partnerList = partnerList,
@@ -155,6 +160,11 @@ private fun AVANavHost(
     }
 }
 
+class PartnersViewModel: LceViewModel<List<Partner>>() {
+    override fun produce(): Flow<Result<List<Partner>>> {
+        return AndroidMakersApplication.instance().store.getPartners()
+    }
+}
 
 @Preview
 @Composable

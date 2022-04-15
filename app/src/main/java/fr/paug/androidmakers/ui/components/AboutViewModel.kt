@@ -17,9 +17,4 @@ class AboutViewModel(application: Application) : AndroidViewModel(application) {
     if (wifiNetwork == null || wifiPassword == null) return null
     return WifiInfo(network = wifiNetwork, password = wifiPassword)
   }
-
-  val partnerList: Flow<PartnerListState> = AndroidMakersApplication.instance().store.getPartners()
-      .map {
-        PartnerListState.Loaded(it)
-      }
 }

@@ -37,14 +37,10 @@ import fr.paug.androidmakers.BuildConfig
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.theme.AndroidMakersTheme
 import fr.paug.androidmakers.ui.util.imageUrl
+import fr.paug.androidmakers.ui.viewmodel.Lce
 
 
 data class WifiInfo(val network: String, val password: String)
-
-sealed class PartnerListState {
-    object Loading : PartnerListState()
-    data class Loaded(val data: List<Partner>) : PartnerListState()
-}
 
 class AboutActions(
     val onFaqClick: () -> Unit = {},
@@ -58,7 +54,7 @@ class AboutActions(
 @Composable
 fun AboutLayout(
     wifiInfo: WifiInfo?,
-    partnerList: PartnerListState,
+    partnerList: Lce<List<Partner>>,
     aboutActions: AboutActions,
 ) {
     AndroidMakersTheme {
@@ -179,7 +175,7 @@ private fun WifiCard(wifiNetwork: String, wifiPassword: String) {
 }
 
 @Composable
-private fun SponsorsCard(partnerList: PartnerListState, onSponsorClick: (url: String) -> Unit) {
+private fun SponsorsCard(partnerList: Lce<List<Partner>>, onSponsorClick: (url: String) -> Unit) {
     Card(Modifier.fillMaxWidth()) {
         Column(Modifier.padding(8.dp)) {
             Text(
@@ -188,7 +184,7 @@ private fun SponsorsCard(partnerList: PartnerListState, onSponsorClick: (url: St
             )
 
             when (partnerList) {
-                is PartnerListState.Loading -> {
+                is Lce.Loading, Lce.Error -> {
                     Box(modifier = Modifier
                         .fillMaxWidth()
                         .padding(8.dp),
@@ -198,8 +194,8 @@ private fun SponsorsCard(partnerList: PartnerListState, onSponsorClick: (url: St
                     }
 
                 }
-                is PartnerListState.Loaded -> {
-                    for (partner in partnerList.data) {
+                is Lce.Content -> {
+                    for (partner in partnerList.content) {
                         // Sponsor "group" (e.g. Organizers, Gold, etc.)
                         Text(
                             modifier = Modifier
@@ -256,7 +252,7 @@ private fun AboutLayoutLoadingPreview() {
             network = "AndroidMakers",
             password = "MayTheForceBeWithYou42",
         ),
-        partnerList = PartnerListState.Loading,
+        partnerList = Lce.Loading,
         aboutActions = AboutActions()
     )
 }
@@ -270,7 +266,7 @@ private fun AboutLayoutLoadedPreview() {
             network = "AndroidMakers",
             password = "MayTheForceBeWithYou42",
         ),
-        partnerList = PartnerListState.Loaded(
+        partnerList = Lce.Content(
             listOf(
                 Partner(
                     order = 0,
