@@ -75,7 +75,7 @@ fun AgendaRow(
         Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
           val isBookmarked = BookmarksStore.subscribe(uiSession.id).collectAsState(false)
           val icon = if (isBookmarked.value) R.drawable.ic_bookmarked
-              else R.drawable.ic_bookmark
+          else R.drawable.ic_bookmark
 
           val tint by animateColorAsState(
               if (isBookmarked.value) AMColor.bookmarked
@@ -102,19 +102,19 @@ fun AgendaRow(
             .height(separatorHeight)
             .fillMaxWidth(),
         color = separatorColor
-    ){}
+    ) {}
   }
 }
 
 private fun UISession.subtitle(context: Context) = buildString {
+  val millis = endDate.toEpochMilli() - startDate.toEpochMilli()
   val duration = TimeUtils.formatDuration(
       context = context,
-      endDate.toEpochMilli() - startDate.toEpochMilli()
+      millis
   )
+
   append(duration)
-  if (room != null) {
-    append(" / ${room}")
-  }
+  append(" / ${room}")
   val emoji = EmojiUtils.getLanguageInEmoji(language)
   if (emoji != null) {
     append(" / $emoji")
@@ -124,9 +124,9 @@ private fun UISession.subtitle(context: Context) = buildString {
 @Preview
 @Composable
 private fun AgendaRowPreview() {
-    AndroidMakersTheme {
-        AgendaRow(fakeUiSession)
-    }
+  AndroidMakersTheme {
+    AgendaRow(fakeUiSession)
+  }
 }
 
 private val fakeUiSession = UISession(

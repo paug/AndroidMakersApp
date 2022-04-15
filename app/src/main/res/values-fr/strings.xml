@@ -10,16 +10,11 @@
 
     <string name="no_maps_app_found">Erreur: Pas d\'application de carte trouvée</string>
 
-    <!--Agenda-->
-    <plurals name="duration_hours">
-        <item quantity="one">%s heure</item>
-        <item quantity="other">%s heures</item>
-    </plurals>
-
     <plurals name="duration_minutes">
         <item quantity="one">%s minute</item>
         <item quantity="other">%s minutes</item>
     </plurals>
+    <string name="many_minutes">Beaucoup de minutes</string>
 
     <string name="Detail_sessionNotFound">Impossible de récuperer les informations sur cette
         session.
