@@ -2,14 +2,12 @@ package fr.paug.androidmakers.ui.components
 
 import android.content.Context
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
 import androidx.compose.material.TabRowDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -17,15 +15,11 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.google.accompanist.pager.rememberPagerState
-import fr.androidmakers.store.model.Venue
-import fr.paug.androidmakers.AndroidMakersApplication
-import fr.paug.androidmakers.ui.activity.VenueLayout
 import fr.paug.androidmakers.ui.adapter.DaySchedule
 import fr.paug.androidmakers.ui.adapter.ScheduleSession
 import fr.paug.androidmakers.ui.model.UISession
-import fr.paug.androidmakers.ui.model.UIVenue
 import fr.paug.androidmakers.ui.util.SessionFilter
-import fr.paug.androidmakers.util.SessionSelector
+import fr.paug.androidmakers.util.BookmarksStore
 import fr.paug.androidmakers.util.TimeUtils
 import kotlinx.coroutines.launch
 import java.time.OffsetDateTime
@@ -123,7 +117,7 @@ private fun List<ScheduleSession>.filterSessions(
       for (sessionFilter in filterList) {
         val matched = when (sessionFilter.type) {
           SessionFilter.FilterType.BOOKMARK -> {
-            SessionSelector.isSelected(item.sessionId)
+            BookmarksStore.isBookmarked(item.sessionId)
           }
           SessionFilter.FilterType.LANGUAGE -> {
             sessionFilter.value == item.language

@@ -27,14 +27,11 @@ import fr.paug.androidmakers.databinding.DetailViewSpeakerInfoElementBinding
 import fr.paug.androidmakers.databinding.SmallSocialImageBinding
 import fr.androidmakers.store.model.*
 import fr.paug.androidmakers.AndroidMakersApplication
-import fr.paug.androidmakers.ui.adapter.ScheduleSession
 import fr.paug.androidmakers.ui.model.UISession
 import fr.paug.androidmakers.ui.util.CheckableFloatingActionButton
-import fr.paug.androidmakers.util.ScheduleSessionHelper
-import fr.paug.androidmakers.util.SessionSelector
+import fr.paug.androidmakers.util.BookmarksStore
 import fr.paug.androidmakers.util.UIUtils
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import java.util.*
@@ -133,7 +130,7 @@ class SessionDetailActivity : BaseActivity() {
             }
         }
 
-        val sessionSelected = SessionSelector.isSelected(sessionId)
+        val sessionSelected = BookmarksStore.isBookmarked(sessionId)
         activityDetailBinding.scheduleFab.isChecked = sessionSelected
 
         setActionBar(session)
@@ -248,16 +245,11 @@ class SessionDetailActivity : BaseActivity() {
     }
 
     private fun changeSessionSelection(select: Boolean) {
-        SessionSelector.setSessionSelected(sessionId, select)
+        BookmarksStore.setBookmarked(sessionId, select)
         toggleScheduleSessionNotification(select)
     }
 
     private fun toggleScheduleSessionNotification(select: Boolean) {
-        if (select) {
-            ScheduleSessionHelper.scheduleStarredSession(this, sessionStartDateInMillis, sessionEndDateInMillis, sessionId)
-        } else {
-            ScheduleSessionHelper.unScheduleSession(this, sessionId)
-        }
     }
 
     private fun shareSession(session: Session) {

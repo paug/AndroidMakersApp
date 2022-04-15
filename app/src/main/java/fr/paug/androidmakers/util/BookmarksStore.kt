@@ -3,63 +3,55 @@ package fr.paug.androidmakers.util
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
-import java.util.*
 
-object SessionSelector {
+object BookmarksStore {
 
     private const val PREF_SELECTED_SESSIONS = "selected_sessions"
 
     private var mSharedPreferences: SharedPreferences? = null
 
-    private var mSessionsSelected: MutableSet<String> = HashSet()
+    private var bookmarkedSessions: MutableSet<String> = HashSet()
 
     private lateinit var selectedSessionIds: MutableStateFlow<Set<String>>
-
-    val sessionsSelected: Set<String>
-        get() = mSessionsSelected
 
     fun init(context: Context) {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         mSharedPreferences = sharedPreferences
         val prefSet = sharedPreferences.getStringSet(PREF_SELECTED_SESSIONS, null)
         if (prefSet != null) {
-            mSessionsSelected.addAll(prefSet)
+            bookmarkedSessions.addAll(prefSet)
         }
 
         selectedSessionIds = MutableStateFlow(
             mutableSetOf<String>().apply {
-                addAll(mSessionsSelected)
+                addAll(bookmarkedSessions)
             }
         )
     }
 
-    fun setSessionSelected(id: String, selected: Boolean) {
-        if (selected) {
-            mSessionsSelected.add(id)
+    fun setBookmarked(sessionId: String, bookmarked: Boolean) {
+        if (bookmarked) {
+            bookmarkedSessions.add(sessionId)
         } else {
-            mSessionsSelected.remove(id)
+            bookmarkedSessions.remove(sessionId)
         }
-        selectedSessionIds.value = mutableSetOf<String>().apply { addAll(mSessionsSelected) }
+        selectedSessionIds.value = mutableSetOf<String>().apply { addAll(bookmarkedSessions) }
         save()
     }
 
-    private var index = 0
-    fun isSelected(id: String): Boolean {
-        return mSessionsSelected.contains(id)
+    fun isBookmarked(id: String): Boolean {
+        return bookmarkedSessions.contains(id)
     }
 
-    fun selected(id: String): Flow<Boolean> {
+    fun subscribe(id: String): Flow<Boolean> {
         return MappedStateFlow(selectedSessionIds.asStateFlow()) {
             it.contains(id)
         }
     }
     private fun save() {
         val editor = mSharedPreferences?.edit()
-        editor?.putStringSet(PREF_SELECTED_SESSIONS, mSessionsSelected)
+        editor?.putStringSet(PREF_SELECTED_SESSIONS, bookmarkedSessions)
         editor?.apply()
     }
 }
