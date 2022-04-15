@@ -1,4 +1,4 @@
-package fr.paug.androidmakers.ui.activity
+package fr.paug.androidmakers.ui.components
 
 import android.text.Html
 import androidx.compose.foundation.layout.*

@@ -1,4 +1,4 @@
-package fr.paug.androidmakers.ui.activity
+package fr.paug.androidmakers.ui.components
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -22,7 +22,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import fr.paug.androidmakers.R
-import fr.paug.androidmakers.ui.components.VenuePager
 import fr.paug.androidmakers.ui.navigation.AVANavigationRoute
 import fr.paug.androidmakers.ui.theme.AndroidMakersTheme
 import kotlinx.coroutines.launch

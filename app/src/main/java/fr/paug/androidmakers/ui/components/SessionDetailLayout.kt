@@ -1,4 +1,4 @@
-package fr.paug.androidmakers.ui.activity
+package fr.paug.androidmakers.ui.components
 
 import android.content.Context
 import android.content.Intent
@@ -36,7 +36,6 @@ import com.google.accompanist.flowlayout.FlowRow
 import fr.androidmakers.store.model.*
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.R
-import fr.paug.androidmakers.ui.components.LoadingLayout
 import fr.paug.androidmakers.ui.theme.AMColor
 import fr.paug.androidmakers.ui.theme.AndroidMakersTheme
 import fr.paug.androidmakers.ui.util.imageUrl

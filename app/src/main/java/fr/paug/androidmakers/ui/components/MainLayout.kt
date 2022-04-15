@@ -1,4 +1,4 @@
-package fr.paug.androidmakers.ui.activity
+package fr.paug.androidmakers.ui.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState

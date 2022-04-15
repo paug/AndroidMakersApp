@@ -1,4 +1,4 @@
-package fr.paug.androidmakers.ui.activity
+package fr.paug.androidmakers.ui.components
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
