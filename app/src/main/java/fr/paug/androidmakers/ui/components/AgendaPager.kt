@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.pagerTabIndicatorOffset
@@ -26,17 +27,15 @@ import java.time.OffsetDateTime
 import java.util.*
 
 
-
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun AgendaPager(
-    days: List<DaySchedule>,
+    days: List<String>,
     onSessionClicked: (UISession) -> Unit,
     filterList: List<SessionFilter>
 ) {
   Column(modifier = Modifier.fillMaxWidth()) {
     val pagerState = rememberPagerState()
-
 
     TabRow(
         // Our selected tab is our current page
@@ -52,7 +51,7 @@ fun AgendaPager(
         val coroutineScope = rememberCoroutineScope()
 
         Tab(
-            text = { Text(days[it].title) },
+            text = { Text(days[it]) },
             selected = pagerState.currentPage == it,
             onClick = {
               coroutineScope.launch {
@@ -67,28 +66,32 @@ fun AgendaPager(
         count = days.size,
         state = pagerState,
     ) { page ->
-      val items = days[page].roomSchedules.flatMap { it.scheduleSessions }
-          .filterSessions(filterList)
-          .sorted()
-          .map { item ->
-            UISession(
-                id = item.sessionId,
-                title = item.title,
-                language = item.language,
-                startDate = OffsetDateTime.parse(item.slot.startDate).toInstant(),
-                endDate = OffsetDateTime.parse(item.slot.endDate).toInstant(),
-                room = getRoomTitle(item, days[page]),
-                roomId = item.roomId,
-                speakers = item.speakers.map {
-                  UISession.Speaker(it.name ?: "")
-                },
-            )
-          }
+      val viewModel = viewModel<AgendLayoutViewModel>()
+      SwipeRefreshableLceLayout(viewModel = viewModel) {
+        val days = agendaToDays(it)
+        val items = days[page].roomSchedules.flatMap { it.scheduleSessions }
+            .filterSessions(filterList)
+            .sorted()
+            .map { item ->
+              UISession(
+                  id = item.sessionId,
+                  title = item.title,
+                  language = item.language,
+                  startDate = OffsetDateTime.parse(item.slot.startDate).toInstant(),
+                  endDate = OffsetDateTime.parse(item.slot.endDate).toInstant(),
+                  room = getRoomTitle(item, days[page]),
+                  roomId = item.roomId,
+                  speakers = item.speakers.map {
+                    UISession.Speaker(it.name ?: "")
+                  },
+              )
+            }
 
-      AgendaColumn(
-          sessionsPerStartTime = addSeparators(LocalContext.current, items),
-          onSessionClicked = onSessionClicked
-      )
+        AgendaColumn(
+            sessionsPerStartTime = addSeparators(LocalContext.current, items),
+            onSessionClicked = onSessionClicked
+        )
+      }
     }
   }
 }
@@ -98,7 +101,7 @@ private fun addSeparators(context: Context, sessions: List<UISession>): Map<Stri
     TimeUtils.formatShortTime(context, Date(it.startDate.toEpochMilli())) to it
   }
       .groupBy(
-          keySelector =  { it.first }
+          keySelector = { it.first }
       ) {
         it.second
       }

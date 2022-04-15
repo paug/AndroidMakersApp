@@ -1,10 +1,7 @@
 package fr.androidmakers.store
 
 import fr.androidmakers.store.model.*
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.flow.*
 
 /**
  *
@@ -20,7 +17,7 @@ interface AndroidMakersStore {
     fun getSpeakers(): Flow<List<Speaker>>
     fun getRooms(): Flow<List<Room>>
 
-    fun getAgenda(): Flow<Agenda> {
+    fun getAgenda(): Flow<Result<Agenda>> {
         val sessionsFlow = getSessions()
         val slotsFlow = getScheduleSlots()
         val roomsFlow = getRooms()
@@ -33,6 +30,10 @@ interface AndroidMakersStore {
             speakersFlow
         ) { sessions, slots, rooms, speakers ->
             Agenda(sessions.associateBy { it.id }, slots, rooms.associateBy { it.id }, speakers.associateBy { it.id })
+        }.map {
+            Result.success(it)
+        }.catch {
+            Result.failure<Agenda>(it)
         }
     }
 }

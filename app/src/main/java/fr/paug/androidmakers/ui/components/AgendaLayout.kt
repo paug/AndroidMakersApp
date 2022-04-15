@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import fr.androidmakers.store.model.Agenda
 import fr.androidmakers.store.model.Room
 import fr.androidmakers.store.model.ScheduleSlot
@@ -28,6 +29,7 @@ import fr.paug.androidmakers.ui.adapter.DaySchedule
 import fr.paug.androidmakers.ui.adapter.RoomSchedule
 import fr.paug.androidmakers.ui.adapter.ScheduleSession
 import fr.paug.androidmakers.ui.util.SessionFilter
+import fr.paug.androidmakers.ui.viewmodel.LceViewModel
 import fr.paug.androidmakers.util.EmojiUtils
 import fr.paug.androidmakers.util.TimeUtils
 import kotlinx.coroutines.flow.Flow
@@ -59,38 +61,36 @@ fun AgendaLayout(
             content = {
                 // XXX Go back to left to right for the contents
                 CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
-                    val agenda = AndroidMakersApplication.instance().store.getAgenda()
-                    AgendaPagerOrLoading(agenda, sessionFilters, onSessionClick)
+                    AgendaPagerOrLoading(sessionFilters, onSessionClick)
                 }
             }
         )
     }
 }
 
+class AgendLayoutViewModel: LceViewModel<Agenda>() {
+    override fun produce(): Flow<Result<Agenda>> {
+        return AndroidMakersApplication.instance().store.getAgenda()
+    }
+}
+
 @Composable
 private fun AgendaPagerOrLoading(
-    agendaFlow: Flow<Agenda>,
     sessionFilters: List<SessionFilter>,
     onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
 ) {
-    val agenda by agendaFlow.collectAsState(initial = Unit)
-    when (agenda) {
-        is Agenda -> {
-            val days = agendaToDays(agenda as Agenda)
+    ButtonRefreshableLceLayout(viewModel<AgendLayoutViewModel>()){
+        val days = agendaToDays(it)
 
-            AgendaPager(
-                days = days,
-                filterList = sessionFilters,
-                onSessionClicked = {
-                    onSessionClick(
-                        it.id, it.roomId, it.startDate.toEpochMilli(), it.endDate.toEpochMilli()
-                    )
-                }
-            )
-        }
-        else -> {
-            LoadingLayout()
-        }
+        AgendaPager(
+            days = days.map { it.title },
+            filterList = sessionFilters,
+            onSessionClicked = {
+                onSessionClick(
+                    it.id, it.roomId, it.startDate.toEpochMilli(), it.endDate.toEpochMilli()
+                )
+            }
+        )
     }
 }
 
