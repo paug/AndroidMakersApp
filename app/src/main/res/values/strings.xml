@@ -90,4 +90,6 @@
     <string name="feedbackWaiting">This talk cannot be reviewed yet. Please come back after attending it.</string>
 
     <string name="back">Back</string>
+    <string name="ohno">Oh no! 😕 \nSomething wrong happened...</string>
+    <string name="retry">Retry</string>
 </resources>

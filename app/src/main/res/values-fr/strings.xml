@@ -78,4 +78,6 @@
     <string name="feedbackWaiting">Revenez plus tard pour donner votre retour.</string>
 
     <string name="back">Retour</string>
+    <string name="ohno">Oh no !\nC\'est tout cassé\n😕 …</string>
+    <string name="retry">Réessayer</string>
 </resources>

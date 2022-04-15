@@ -40,6 +40,7 @@ dependencies {
     implementation(libs.accompanist.pager)
     implementation(libs.accompanist.pager.indicators)
     implementation(libs.accompanist.flowlayout)
+    implementation(libs.accompanist.swiperefresh)
 
     implementation(libs.play.services.auth)
     implementation(libs.lifecycle.runtime.ktx)
