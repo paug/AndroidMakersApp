@@ -8,14 +8,7 @@ import androidx.emoji.text.EmojiCompat.InitCallback
 import androidx.emoji.text.FontRequestEmojiCompatConfig
 import fr.androidmakers.store.AndroidMakersStore
 import fr.androidmakers.store.firebase.FirebaseStore
-import fr.androidmakers.store.graphql.GraphQLStore
-import fr.paug.androidmakers.util.SessionSelector
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import fr.paug.androidmakers.util.BookmarksStore
 
 class AndroidMakersApplication : Application() {
     lateinit var store: AndroidMakersStore
@@ -27,7 +20,7 @@ class AndroidMakersApplication : Application() {
         store = FirebaseStore()
 
         super.onCreate()
-        SessionSelector.init(this)
+        BookmarksStore.init(this)
         // Use a downloadable font for EmojiCompat
         setupEmojiCompat()
     }
