@@ -57,7 +57,7 @@ class FirebaseStore : AndroidMakersStore {
         .document(id)
         .toFlow()
         .mapNotNull {
-          it.toObject(Session::class.java)
+          it.toObject(Session::class.java)?.copy(id = it.id)
         }
   }
 

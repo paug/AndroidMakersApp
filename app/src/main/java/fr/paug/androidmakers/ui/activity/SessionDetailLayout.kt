@@ -6,13 +6,10 @@ import android.text.TextUtils
 import android.text.format.DateUtils
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -26,6 +23,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,10 +31,14 @@ import com.google.accompanist.flowlayout.FlowRow
 import fr.androidmakers.store.model.Room
 import fr.androidmakers.store.model.Session
 import fr.androidmakers.store.model.Speaker
+import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.components.LoadingLayout
 import fr.paug.androidmakers.ui.theme.AMColor
 import fr.paug.androidmakers.ui.theme.AndroidMakersTheme
+import fr.paug.androidmakers.util.TimeUtils
+import io.openfeedback.android.components.SessionFeedbackContainer
+import java.time.Instant
 import java.util.*
 
 sealed class SessionDetailState {
@@ -163,6 +165,31 @@ private fun SessionDetails(sessionDetails: SessionDetailState.Loaded, formattedD
       }
       if (sessionDetails.session.complexity.isNotEmpty()) {
         Chip(sessionDetails.session.complexity)
+      }
+    }
+
+    Box(modifier = Modifier
+        .fillMaxWidth()
+        .height(16.dp))
+
+    if (System.currentTimeMillis() > sessionDetails.startTimestamp) {
+      SessionFeedbackContainer(
+          openFeedback = AndroidMakersApplication.instance().openFeedback,
+          sessionId = sessionDetails.session.id,
+          language = Locale.getDefault().language,
+      )
+    } else {
+      Surface(
+          shape = RoundedCornerShape(5.dp),
+          border = BorderStroke(1.dp, MaterialTheme.colors.onSurface.copy(alpha = .2f)),
+          modifier = Modifier.fillMaxWidth()
+      ) {
+        Text(
+            modifier = Modifier.padding(horizontal = 4.dp, vertical = 8.dp),
+            text = stringResource(id = R.string.feedbackWaiting),
+            style = MaterialTheme.typography.body1,
+            textAlign = TextAlign.Center
+        )
       }
     }
     // To account for the FAB

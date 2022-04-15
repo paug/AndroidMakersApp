@@ -21,7 +21,7 @@ fun configureKotlinCompiler(project: Project) {
 
 fun Project.catalogVersion(name: String): String = extensions.findByType(VersionCatalogsExtension::class.java)!!
     .named("libs")
-    .findVersion("compose")
+    .findVersion(name)
     .get()
     .displayName
 
