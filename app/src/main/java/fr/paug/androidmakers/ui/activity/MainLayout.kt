@@ -18,14 +18,14 @@ import fr.paug.androidmakers.ui.navigation.MainNavigationRoute
  */
 @Composable
 fun MainLayout(aboutActions: AboutActions) {
-    val mainNavController = rememberNavController()
-    MainNavHost(
-        mainNavController = mainNavController,
-        onSessionClick = { sessionId, roomId, startTimestamp, endTimestamp ->
-            mainNavController.navigate("${MainNavigationRoute.SESSION_DETAIL.name}/$sessionId/$roomId/$startTimestamp/$endTimestamp")
-        },
-        aboutActions
-    )
+  val mainNavController = rememberNavController()
+  MainNavHost(
+      mainNavController = mainNavController,
+      onSessionClick = { sessionId, roomId, startTimestamp, endTimestamp ->
+        mainNavController.navigate("${MainNavigationRoute.SESSION_DETAIL.name}/$sessionId/$roomId/$startTimestamp/$endTimestamp")
+      },
+      aboutActions
+  )
 }
 
 @Composable
@@ -34,40 +34,40 @@ private fun MainNavHost(
     onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
     aboutActions: AboutActions,
 ) {
-    NavHost(mainNavController, startDestination = MainNavigationRoute.AVA.name) {
-        composable(route = MainNavigationRoute.AVA.name) {
-            AVALayout(onSessionClick = onSessionClick, aboutActions = aboutActions)
-        }
-        composable(route = "${MainNavigationRoute.SESSION_DETAIL.name}/{sessionId}/{roomId}/{startTimestamp}/{endTimestamp}") { backStackEntry ->
-            val sessionId = backStackEntry.arguments!!.getString("sessionId")!!
-            val roomId = backStackEntry.arguments!!.getString("roomId")!!
-            val startTimestamp = backStackEntry.arguments!!.getString("startTimestamp")!!.toLong()
-            val endTimestamp = backStackEntry.arguments!!.getString("endTimestamp")!!.toLong()
-            val sessionDetailViewModel: SessionDetailViewModel = viewModel(
-                factory = object : ViewModelProvider.Factory {
-                    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                        @Suppress("UNCHECKED_CAST")
-                        return SessionDetailViewModel(
-                            sessionId = sessionId,
-                            roomId = roomId,
-                            startTimestamp = startTimestamp,
-                            endTimestamp = endTimestamp
-                        ) as T
-                    }
-                }
-            )
-            val sessionDetailState by sessionDetailViewModel.sessionDetailState.collectAsState(initial = SessionDetailState.Loading)
-            SessionDetailLayout(
-                sessionDetailState = sessionDetailState,
-                onBackClick = { mainNavController.popBackStack() },
-                onBookmarkClick = { bookmarked -> sessionDetailViewModel.bookmark(bookmarked) },
-            )
-        }
+  NavHost(mainNavController, startDestination = MainNavigationRoute.AVA.name) {
+    composable(route = MainNavigationRoute.AVA.name) {
+      AVALayout(onSessionClick = onSessionClick, aboutActions = aboutActions)
     }
+    composable(route = "${MainNavigationRoute.SESSION_DETAIL.name}/{sessionId}/{roomId}/{startTimestamp}/{endTimestamp}") { backStackEntry ->
+      val sessionId = backStackEntry.arguments!!.getString("sessionId")!!
+      val roomId = backStackEntry.arguments!!.getString("roomId")!!
+      val startTimestamp = backStackEntry.arguments!!.getString("startTimestamp")!!.toLong()
+      val endTimestamp = backStackEntry.arguments!!.getString("endTimestamp")!!.toLong()
+      val sessionDetailViewModel: SessionDetailViewModel = viewModel(
+          factory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+              @Suppress("UNCHECKED_CAST")
+              return SessionDetailViewModel(
+                  sessionId = sessionId,
+                  roomId = roomId,
+                  startTimestamp = startTimestamp,
+                  endTimestamp = endTimestamp
+              ) as T
+            }
+          }
+      )
+      val sessionDetailState by sessionDetailViewModel.sessionDetailState.collectAsState(initial = SessionDetailState.Loading)
+      SessionDetailLayout(
+          sessionDetailState = sessionDetailState,
+          onBackClick = { mainNavController.popBackStack() },
+          onBookmarkClick = { bookmarked -> sessionDetailViewModel.bookmark(bookmarked) },
+      )
+    }
+  }
 }
 
 @Preview
 @Composable
 private fun MainLayoutPreview() {
-    MainLayout(aboutActions = AboutActions())
+  MainLayout(aboutActions = AboutActions())
 }
