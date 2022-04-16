@@ -14,16 +14,11 @@
 
     <string name="no_maps_app_found">Error: No maps app found</string>
 
-    <!--Agenda-->
-    <plurals name="duration_hours">
-        <item quantity="one">%s hour</item>
-        <item quantity="other">%s hours</item>
-    </plurals>
-
     <plurals name="duration_minutes">
         <item quantity="one">%s minute</item>
         <item quantity="other">%s minutes</item>
     </plurals>
+    <string name="many_minutes">Many minutes</string>
 
     <string name="ImageDesc_speaker_avatar">Speaker picture</string>
     <string name="ImageDesc_social_network_image">social network image</string>
@@ -65,6 +60,9 @@
         There\'ll be technical sessions, workshops and opportunities to meet your favorites speakers.
         \n\nAll the Talks will be recorded, and uploaded on the Youtube channel.</string>
 
+    <string name="faq">FAQ</string>
+    <string name="code_of_conduct">Code of conduct</string>
+
     <string name="social">Social</string>
     <string name="twitter_hashtag" translatable="false">#AndroidMakers</string>
     <string name="twitter_hashtag_for_query" translatable="false">AndroidMakers</string>
@@ -74,8 +72,8 @@
     <string name="youtube_channel" translatable="false">https://www.youtube.com/channel/UCkatLlah5weIpN23LqMgdTg</string>
 
     <string name="wifi">Wifi</string>
-    <string name="wifi_network">Network: <b>AndroidMakers</b></string>
-    <string name="wifi_password">Password : <b>Makers2019</b></string>
+    <string name="wifi_network">Network: <b>%1$s</b></string>
+    <string name="wifi_password">Password: <b>%1$s</b></string>
     <string name="wifi_connect_description">Directly connect to the venue\'s wifi</string>
     <string name="wifi_connect">Connect</string>
 
@@ -90,4 +88,8 @@
     <string name="location_sponsor">Location</string>
     <string name="specialthanks_sponsor">Special Thanks</string>
     <string name="feedbackWaiting">This talk cannot be reviewed yet. Please come back after attending it.</string>
+
+    <string name="back">Back</string>
+    <string name="ohno">Oh no! 😕 \nSomething wrong happened...</string>
+    <string name="retry">Retry</string>
 </resources>

@@ -21,7 +21,6 @@ dependencies {
     implementation(libs.browser)
     implementation(libs.percentlayout)
     implementation(libs.cardview)
-    implementation(libs.emoji)
     implementation(libs.constraintlayout)
 
     // Firebase
@@ -33,15 +32,25 @@ dependencies {
     implementation("com.google.firebase:firebase-config")
     implementation("com.google.firebase:firebase-auth")
 
+    implementation(libs.lifecycle.viewmodel.compose)
+    implementation(libs.compose.material)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.ui.tooling)
+    implementation(libs.navigation.compose)
+    implementation(libs.accompanist.pager)
+    implementation(libs.accompanist.pager.indicators)
+    implementation(libs.accompanist.flowlayout)
+    implementation(libs.accompanist.swiperefresh)
+
     implementation(libs.play.services.auth)
     implementation(libs.lifecycle.runtime.ktx)
 
     // Image management
     implementation(libs.glide.runtime)
     add("annotationProcessor", libs.glide.compiler)
+    implementation(libs.coil.compose)
 
     // Used for tags
     implementation(libs.layouts)
-
-    coreLibraryDesugaring ("com.android.tools:desugar_jdk_libs:1.1.5")
+    implementation(libs.openfeedback)
 }

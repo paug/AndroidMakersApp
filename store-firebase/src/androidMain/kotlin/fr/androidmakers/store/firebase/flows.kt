@@ -23,7 +23,7 @@ fun DocumentReference.toFlow(metadataChanges: MetadataChanges = MetadataChanges.
             trySendBlocking(value)
         }
         if (error != null) {
-            cancel(CancellationException("Error getting DocumentReference snapshot", error))
+          error("Error getting DocumentReference snapshot for ${this@toFlow}")
         }
     }
 
@@ -41,7 +41,7 @@ fun Query.toFlow(metadataChanges: MetadataChanges = MetadataChanges.EXCLUDE): Fl
             trySendBlocking(value)
         }
         if (error != null) {
-            cancel(CancellationException("Error getting Query snapshot", error))
+          error("Error getting Query snapshot for ${this@toFlow}")
         }
     }
 

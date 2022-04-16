@@ -1,37 +1,27 @@
 package fr.androidmakers.store
 
 import fr.androidmakers.store.model.*
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 
 /**
  *
  */
 interface AndroidMakersStore {
-    fun getVenue(id: String): Flow<Venue>
-    fun getSpeaker(id: String): Flow<Speaker>
-    fun getRoom(id: String): Flow<Room>
-    fun getSession(id: String): Flow<Session>
-    fun getPartners(): Flow<List<Partner>>
-    fun getScheduleSlots(): Flow<List<ScheduleSlot>>
-    fun getSessions(): Flow<List<Session>>
-    fun getSpeakers(): Flow<List<Speaker>>
-    fun getRooms(): Flow<List<Room>>
+    fun getVenue(id: String): Flow<Result<Venue>>
+    fun getSpeaker(id: String): Flow<Result<Speaker>>
+    fun getRoom(id: String): Flow<Result<Room>>
+    fun getSession(id: String): Flow<Result<Session>>
+    fun getPartners(): Flow<Result<List<Partner>>>
+    fun getScheduleSlots(): Flow<Result<List<ScheduleSlot>>>
+    fun getSessions(): Flow<Result<List<Session>>>
+    fun getSpeakers(): Flow<Result<List<Speaker>>>
+    fun getRooms(): Flow<Result<List<Room>>>
 
-    fun getAgenda(): Flow<Agenda> {
-        val sessionsFlow = getSessions().onEach {
-            println(it)
-        }
-        val slotsFlow = getScheduleSlots().onEach {
-            println(it)
-        }
-        val roomsFlow = getRooms().onEach {
-            println(it)
-        }
-        val speakersFlow = getSpeakers().onEach {
-            println(it)
-        }
+    fun getAgenda(): Flow<Result<Agenda>> {
+        val sessionsFlow = getSessions()
+        val slotsFlow = getScheduleSlots()
+        val roomsFlow = getRooms()
+        val speakersFlow = getSpeakers()
 
         return combine(
             sessionsFlow,
@@ -39,7 +29,23 @@ interface AndroidMakersStore {
             roomsFlow,
             speakersFlow
         ) { sessions, slots, rooms, speakers ->
-            Agenda(sessions.associateBy { it.id }, slots, rooms.associateBy { it.id }, speakers.associateBy { it.id })
+            val exception = sessions.exceptionOrNull()
+                ?: slots.exceptionOrNull()
+                ?: rooms.exceptionOrNull()
+                ?: speakers.exceptionOrNull()
+
+            if (exception != null) {
+                Result.failure(exception)
+            } else {
+                Result.success(
+                    Agenda(
+                    sessions.getOrThrow().associateBy { it.id },
+                    slots.getOrThrow(),
+                    rooms.getOrThrow().associateBy { it.id },
+                    speakers.getOrThrow().associateBy { it.id }
+                )
+                )
+            }
         }
     }
 }

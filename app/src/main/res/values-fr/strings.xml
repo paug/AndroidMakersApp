@@ -10,16 +10,11 @@
 
     <string name="no_maps_app_found">Erreur: Pas d\'application de carte trouvée</string>
 
-    <!--Agenda-->
-    <plurals name="duration_hours">
-        <item quantity="one">%s heure</item>
-        <item quantity="other">%s heures</item>
-    </plurals>
-
     <plurals name="duration_minutes">
         <item quantity="one">%s minute</item>
         <item quantity="other">%s minutes</item>
     </plurals>
+    <string name="many_minutes">Beaucoup de minutes</string>
 
     <string name="Detail_sessionNotFound">Impossible de récuperer les informations sur cette
         session.
@@ -59,11 +54,14 @@
         Il y aura des sessions techniques, des ateliers et des rencontres avec vos speakers préférés.
         \n\nTous les talks seront enregistrées, et mis sur la chaîne YouTube.</string>
 
+    <string name="faq">FAQ</string>
+    <string name="code_of_conduct">Code de conduite</string>
+
     <string name="social">Social</string>
 
     <string name="wifi">Wifi</string>
-    <string name="wifi_network">Réseau: <b>AndroidMakers</b></string>
-    <string name="wifi_password">Mot de passe : <b>Makers2019</b></string>
+    <string name="wifi_network">Réseau: <b>%1$s</b></string>
+    <string name="wifi_password">Mot de passe : <b>%1$s</b></string>
     <string name="wifi_connect_description">Se connecter directement au Wifi du lieu</string>
     <string name="wifi_connect">Se connecter</string>
 
@@ -79,4 +77,7 @@
 
     <string name="feedbackWaiting">Revenez plus tard pour donner votre retour.</string>
 
+    <string name="back">Retour</string>
+    <string name="ohno">Oh no !\nC\'est tout cassé\n😕 …</string>
+    <string name="retry">Réessayer</string>
 </resources>

@@ -2,7 +2,9 @@ package fr.paug.androidmakers.util
 
 import android.content.Context
 import android.text.format.DateFormat
+import androidx.compose.material.contentColorFor
 import fr.paug.androidmakers.R
+import java.time.Duration
 import java.time.OffsetDateTime
 import java.util.*
 
@@ -10,7 +12,6 @@ object TimeUtils {
     const val SECOND = 1000
     const val MINUTE = 60 * SECOND
     const val HOUR = 60 * MINUTE
-    const val DAY = 24 * HOUR
 
     fun parseIso8601(iso8601: String): Date {
         return Date(OffsetDateTime.parse(iso8601).toEpochSecond() * 1000)
@@ -27,24 +28,15 @@ object TimeUtils {
         return dateFormat.format(time).lowercase(Locale.getDefault())
     }
 
-    fun formatDuration(context: Context, startTime: Long, endTime: Long): String {
-        return formatDuration(context, endTime - startTime)
-    }
-
-    private fun formatDuration(context: Context, duration: Long): String {
-        val hours = duration / HOUR.toFloat()
-        return if (hours >= 1f) {
-            context.resources.getQuantityString(
-                R.plurals.duration_hours, Math.ceil(hours.toDouble()).toInt(),
-                if (hours == hours.toInt().toFloat()) hours.toInt()
-                    .toString() else (Math.round(hours * 100.0) / 100.0).toString()
-            )
-        } else {
-            val minutes = duration / MINUTE
+    fun formatDuration(context: Context, duration: Long): String {
+        val minutes = duration / MINUTE
+        return if (minutes <= 120) {
             context.resources.getQuantityString(
                 R.plurals.duration_minutes, minutes.toInt(),
                 minutes
             )
+        } else {
+            context.resources.getString(R.string.many_minutes)
         }
     }
 }
