@@ -2,7 +2,8 @@ package fr.androidmakers.gradle.android.application
 
 import com.android.build.gradle.BaseExtension
 import fr.androidmakers.gradle.addRepositories
-import fr.androidmakers.gradle.android.configureAndroidCompileSdk
+import fr.androidmakers.gradle.androidSetup
+import fr.androidmakers.gradle.catalogVersion
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -12,19 +13,21 @@ import java.util.*
 class AndroidApplicationPlugin : Plugin<Project> {
   private val versionMajor = 1
   private val versionMinor = 4
-  private val versionPatch = 1
+  private val versionPatch = 2
 
   override fun apply(project: Project) {
     project.apply(mapOf("plugin" to "com.android.application"))
     project.apply(mapOf("plugin" to "kotlin-android"))
     project.apply(mapOf("plugin" to "com.google.firebase.crashlytics"))
+    project.apply(mapOf("plugin" to "com.google.gms.google-services"))
 
     addRepositories(project)
     checkGoogleServices(project)
 
-    configureAndroidCompileSdk(project)
+    project.androidSetup()
 
-    project.extensions.findByType(BaseExtension::class.java)!!.apply {
+    project.extensions.findByName("android")!!.apply {
+      this as BaseExtension
       defaultConfig.apply {
         applicationId = "fr.paug.androidmakers"
         minSdk = 21
@@ -32,7 +35,6 @@ class AndroidApplicationPlugin : Plugin<Project> {
         versionCode = versionMajor * 1000 + versionMinor * 100 + versionPatch * 10
         versionName = "${versionMajor}.${versionMinor}.${versionPatch}"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        multiDexEnabled = true
 
         val properties = try {
           Properties().apply {
@@ -54,12 +56,18 @@ class AndroidApplicationPlugin : Plugin<Project> {
       }
 
       compileOptions {
-        // Flag to enable support for the new language APIs
-        it.isCoreLibraryDesugaringEnabled = true
         // Sets Java compatibility to Java 8
         it.sourceCompatibility = JavaVersion.VERSION_1_8
         it.targetCompatibility = JavaVersion.VERSION_1_8
       }
+
+      @Suppress("UnstableApiUsage")
+      composeOptions {
+        val composeVersion = project.catalogVersion("compose")
+        it.kotlinCompilerExtensionVersion = composeVersion
+      }
+
+      buildFeatures.compose = true
 
       val f = project.file("keystore.properties")
       signingConfigs.apply {
@@ -70,8 +78,15 @@ class AndroidApplicationPlugin : Plugin<Project> {
         create("release").apply {
           keyAlias = props.getProperty("keyAlias")
           keyPassword = props.getProperty("keyAliasPassword")
-          storeFile = project.file("keystore.jks")
+          storeFile = project.file("keystore.release")
           storePassword = props.getProperty("keyAliasPassword")
+        }
+
+        getByName("debug").apply {
+          keyAlias = "debug"
+          keyPassword = "androidmakers"
+          storeFile = project.file("keystore.debug")
+          storePassword = "androidmakers"
         }
       }
 
@@ -92,8 +107,6 @@ class AndroidApplicationPlugin : Plugin<Project> {
       @Suppress("UnstableApiUsage")
       this.buildFeatures.viewBinding = true
     }
-
-    project.apply(mapOf("plugin" to "com.google.gms.google-services"))
   }
 
   private fun checkGoogleServices(project: Project) {

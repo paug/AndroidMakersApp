@@ -3,138 +3,85 @@ package fr.paug.androidmakers.ui.activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import fr.paug.androidmakers.AndroidMakersApplication
+import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
 import fr.paug.androidmakers.R
-import fr.paug.androidmakers.ui.fragment.AboutFragment
-import fr.paug.androidmakers.ui.fragment.AgendaFragment
-import fr.paug.androidmakers.ui.fragment.VenuePagerFragment
-import fr.paug.androidmakers.util.TimeUtils
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.first
-import java.text.SimpleDateFormat
+import fr.paug.androidmakers.ui.components.AboutActions
+import fr.paug.androidmakers.ui.components.MainLayout
+import fr.paug.androidmakers.util.CustomTabUtil
 
-class MainActivity : BaseActivity() {
-
-    private var fragment: Fragment? = null
-    private var fragmentManager: FragmentManager? = null
-    private var navigation: BottomNavigationView? = null
-
-    private var scope = object : CoroutineScope {
-        override val coroutineContext = Dispatchers.Main + Job()
-    }
-
-    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        val tag = when (item.itemId) {
-            R.id.navigation_agenda -> TAG_FRAGMENT_AGENDA
-            R.id.navigation_venue -> TAG_FRAGMENT_VENUE
-            R.id.navigation_about -> TAG_FRAGMENT_ABOUT
-            else -> return@OnNavigationItemSelectedListener false
-        }
-
-        fragment = fragmentManager?.findFragmentByTag(tag)
-
-        if (fragment == null)
-            fragment = newFragmentByTag(tag)
-
-        val transaction = fragmentManager!!.beginTransaction()
-        transaction.replace(R.id.fragment_container, fragment!!, tag)
-        transaction.commit()
-        true
-    }
-
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        fragmentManager = supportFragmentManager
 
-        if (savedInstanceState == null) {
-            addAgenda()
-        }
-
-        navigation = findViewById(R.id.navigation)
-        navigation?.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-        handleURLLink(intent)
-    }
-
-    private fun addAgenda() {
-        fragment = AgendaFragment()
-        val transaction = fragmentManager!!.beginTransaction()
-        transaction.add(R.id.fragment_container, fragment!!, TAG_FRAGMENT_AGENDA).commit()
-    }
-
-    private fun newFragmentByTag(tag: String): Fragment = when (tag) {
-        TAG_FRAGMENT_VENUE -> VenuePagerFragment()
-        TAG_FRAGMENT_ABOUT -> AboutFragment()
-        TAG_FRAGMENT_AGENDA -> AgendaFragment()
-        else -> AgendaFragment()
-    }
-
-    override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
-        handleURLLink(intent)
-    }
-
-    private fun handleURLLink(intent: Intent) {
-        // Do not handle the Deep link if user is coming from recent tasks
-        if (intent.flags != Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) {
-            val data = intent.data
-            if (data != null && data.host!!.equals("androidmakers.fr", ignoreCase = true)) {
-                val pathSegments = data.pathSegments
-                if (pathSegments != null && pathSegments.size > 0) {
-                    val path = pathSegments[0]
-                    if (path.equals("schedule", ignoreCase = true)) {
-                        handleScheduleLink(data)
-                    } else if (path.equals("logistics", ignoreCase = true)) {
-                        handleLogisticsLink()
-                    }
-                }
-            }
+        setContent {
+            MainLayout(aboutActions = AboutActions(
+                onFaqClick = ::onFaqClick,
+                onCodeOfConductClick = ::onCodeOfConductClick,
+                onTwitterHashtagClick = ::onTwitterHashtagClick,
+                onTwitterLogoClick = ::onTwitterLogoClick,
+                onYouTubeLogoClick = ::onYouTubeLogoClick,
+                onSponsorClick = ::onSponsorClick
+            ))
         }
     }
 
-    private fun handleLogisticsLink() {
-        if (navigation != null) {
-            navigation!!.selectedItemId = R.id.navigation_venue
-        }
+    private fun onFaqClick() {
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://androidmakers.fr/faq")))
     }
 
-    private fun handleScheduleLink(data: Uri) {
-        if (navigation != null) {
-            navigation!!.selectedItemId = R.id.navigation_agenda
-        }
-
-        val sessionId = data.getQueryParameter("sessionId")
-
-        if (sessionId != null) {
-            scope.launch {
-                val slots = AndroidMakersApplication.instance().store
-                        .getScheduleSlots()
-                        .first()
-
-                for (scheduleSlot in slots) {
-                    if (scheduleSlot.sessionId == sessionId) {
-                        val startTimestamp = TimeUtils.parseIso8601(scheduleSlot.startDate).time
-                        val endTimestamp = TimeUtils.parseIso8601(scheduleSlot.endDate).time
-                        SessionDetailActivity.startActivity(this@MainActivity, sessionId, startTimestamp, endTimestamp, scheduleSlot.roomId)
-                        break
-                    }
-                }
-            }
-        }
+    private fun onCodeOfConductClick() {
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://androidmakers.fr/coc")))
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        scope.cancel()
+    private fun onTwitterHashtagClick() {
+        var twitterIntent: Intent
+        try {
+            // get the Twitter app if possible
+            packageManager?.getPackageInfo("com.twitter.android", 0)
+            twitterIntent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("twitter://search?query=%23" + getString(R.string.twitter_hashtag_for_query))
+            )
+            twitterIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        } catch (e: Exception) {
+            // no Twitter app, revert to browser
+            twitterIntent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("https://twitter.com/search?q=%23" + getString(R.string.twitter_hashtag_for_query))
+            )
+        }
+
+        startActivity(twitterIntent)
     }
 
-    companion object {
-        private val TAG_FRAGMENT_AGENDA = "TAG_FRAGMENT_AGENDA"
-        private val TAG_FRAGMENT_VENUE = "TAG_FRAGMENT_VENUE"
-        private val TAG_FRAGMENT_ABOUT = "TAG_FRAGMENT_ABOUT"
+    private fun onTwitterLogoClick() {
+        var twitterIntent: Intent
+        try {
+            // get the Twitter app if possible
+            packageManager?.getPackageInfo("com.twitter.android", 0)
+            twitterIntent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("twitter://user?screen_name=" + getString(R.string.twitter_user_name))
+            )
+            twitterIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        } catch (e: Exception) {
+            // no Twitter app, revert to browser
+            twitterIntent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("https://twitter.com/" + getString(R.string.twitter_user_name))
+            )
+        }
+
+        startActivity(twitterIntent)
+    }
+
+    private fun onYouTubeLogoClick() {
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.youtube_channel))))
+    }
+
+    private fun onSponsorClick(url: String) {
+        CustomTabUtil.openChromeTab(this, url)
     }
 
 }

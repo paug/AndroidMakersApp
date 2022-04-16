@@ -21,6 +21,7 @@ apollo {
 
     introspection {
         schemaFile.set(file("src/commonMain/graphql/schema.graphqls"))
-        endpointUrl.set("https://kiki-conf.ew.r.appspot.com/graphql")
+        //endpointUrl.set("https://kiki-conf.ew.r.appspot.com/graphql")
+        endpointUrl.set("http://localhost:8080/graphql")
     }
 }

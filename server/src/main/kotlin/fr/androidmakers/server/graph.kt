@@ -1,10 +1,7 @@
 package fr.androidmakers.server
 
 import com.expediagroup.graphql.server.operations.Query
-import fr.androidmakers.server.model.PartnerGroup
-import fr.androidmakers.server.model.Room
-import fr.androidmakers.server.model.Session
-import fr.androidmakers.server.model.Speaker
+import fr.androidmakers.server.model.*
 import org.springframework.stereotype.Component
 
 @Component
@@ -17,6 +14,10 @@ class RootQuery : Query {
   }
   fun speakers(): List<Speaker> {
     return CachedData.speakers()
+  }
+
+  fun venue(id: String): Venue {
+    return CachedData.venue(id)
   }
 
   fun partnerGroups(): List<PartnerGroup> {
