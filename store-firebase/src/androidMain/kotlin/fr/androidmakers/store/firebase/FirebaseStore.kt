@@ -128,6 +128,7 @@ class FirebaseStore : AndroidMakersStore {
   private fun <T> Flow<T>.toResultFlow(): Flow<Result<T>> = this.map {
     Result.success(it)
   }.catch {
+    it.printStackTrace()
     Result.failure<T>(it)
   }
 
