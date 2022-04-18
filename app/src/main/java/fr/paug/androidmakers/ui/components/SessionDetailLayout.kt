@@ -70,68 +70,66 @@ fun SessionDetailLayout(
     null
   }
 
-  AndroidMakersTheme {
-    Scaffold(
-        topBar = {
-          TopAppBar(
-              navigationIcon = {
-                IconButton(onClick = onBackClick) {
-                  Icon(Icons.Default.ArrowBack, contentDescription = stringResource(R.string.back))
-                }
-              },
-              title = {
-                if (sessionDetailState is Lce.Content) {
-                  Text(sessionDetailState.content.session.title, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                }
-              },
-              actions = {
-                if (sessionDetailState is Lce.Content) {
-                  val context = LocalContext.current
-                  IconButton(
-                      onClick = {
-                        // TODO Ideally this should not be handled here but by the caller
-                        shareSession(
-                            context = context,
-                            session = sessionDetailState.content.session,
-                            sessionDateAndRoom = formattedDateAndRoom!!,
-                            speakersList = sessionDetailState.content.speakers,
-                        )
-                      }
-                  ) {
-                    Icon(Icons.Default.Share, contentDescription = stringResource(R.string.share))
-                  }
+  Scaffold(
+      topBar = {
+        TopAppBar(
+            navigationIcon = {
+              IconButton(onClick = onBackClick) {
+                Icon(Icons.Default.ArrowBack, contentDescription = stringResource(R.string.back))
+              }
+            },
+            title = {
+              if (sessionDetailState is Lce.Content) {
+                Text(sessionDetailState.content.session.title, maxLines = 1, overflow = TextOverflow.Ellipsis)
+              }
+            },
+            actions = {
+              if (sessionDetailState is Lce.Content) {
+                val context = LocalContext.current
+                IconButton(
+                    onClick = {
+                      // TODO Ideally this should not be handled here but by the caller
+                      shareSession(
+                          context = context,
+                          session = sessionDetailState.content.session,
+                          sessionDateAndRoom = formattedDateAndRoom!!,
+                          speakersList = sessionDetailState.content.speakers,
+                      )
+                    }
+                ) {
+                  Icon(Icons.Default.Share, contentDescription = stringResource(R.string.share))
                 }
               }
+            }
+        )
+      },
+      floatingActionButton = {
+        if (sessionDetailState is Lce.Content) {
+          val backgroundColor by animateColorAsState(
+              if (sessionDetailState.content.isBookmarked) Color.White else AMColor.amRed
           )
-        },
-        floatingActionButton = {
-          if (sessionDetailState is Lce.Content) {
-            val backgroundColor by animateColorAsState(
-                if (sessionDetailState.content.isBookmarked) Color.White else AMColor.amRed
-            )
-            FloatingActionButton(
-                backgroundColor = backgroundColor,
-                onClick = {
-                  onBookmarkClick(!sessionDetailState.content.isBookmarked)
-                }
-            ) {
-              Crossfade(sessionDetailState.content.isBookmarked) { isBookmarked ->
-                Image(
-                    painterResource(
-                        if (isBookmarked) R.drawable.ic_bookmarked_fab else R.drawable.ic_bookmark_fab
-                    ),
-                    contentDescription = stringResource(R.string.bookmarked)
-                )
+          FloatingActionButton(
+              backgroundColor = backgroundColor,
+              onClick = {
+                onBookmarkClick(!sessionDetailState.content.isBookmarked)
               }
+          ) {
+            Crossfade(sessionDetailState.content.isBookmarked) { isBookmarked ->
+              Image(
+                  painterResource(
+                      if (isBookmarked) R.drawable.ic_bookmarked_fab else R.drawable.ic_bookmark_fab
+                  ),
+                  contentDescription = stringResource(R.string.bookmarked)
+              )
             }
           }
         }
-    ) { innerPadding ->
-      Box(Modifier.padding(innerPadding)) {
-        when (sessionDetailState) {
-          is Lce.Loading, Lce.Error -> LoadingLayout()
-          is Lce.Content -> SessionDetails(sessionDetailState.content, formattedDateAndRoom!!)
-        }
+      }
+  ) { innerPadding ->
+    Box(Modifier.padding(innerPadding)) {
+      when (sessionDetailState) {
+        is Lce.Loading, Lce.Error -> LoadingLayout()
+        is Lce.Content -> SessionDetails(sessionDetailState.content, formattedDateAndRoom!!)
       }
     }
   }
