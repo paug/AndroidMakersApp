@@ -24,7 +24,7 @@ class AndroidMakersApplication : Application() {
             firebaseConfig = OpenFeedback.FirebaseConfig(
                 projectId = "openfeedback-am-2022",
                 applicationId = "1:378302699578:web:35d970e43cb3207eeebd03",
-                apiKey = "AIzaSyASFyfnUmcSvBoCl4JPYKXAvymo-SpjnDs",
+                apiKey = BuildConfig.OPENFEEDBACK_API_KEY,
                 databaseUrl = "https://openfeedback-am-2022.firebaseio.com"
             )
         )

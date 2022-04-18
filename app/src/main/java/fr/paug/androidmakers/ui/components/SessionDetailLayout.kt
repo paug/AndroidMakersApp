@@ -163,7 +163,7 @@ private fun SessionDetails(sessionDetails: SessionDetailState, formattedDateAndR
         .fillMaxWidth()
         .height(16.dp))
 
-    if (true || System.currentTimeMillis() > sessionDetails.startTimestamp) {
+    if (System.currentTimeMillis() > sessionDetails.startTimestamp) {
       SessionFeedbackContainer(
           openFeedback = AndroidMakersApplication.instance().openFeedback,
           sessionId = sessionDetails.session.id,
