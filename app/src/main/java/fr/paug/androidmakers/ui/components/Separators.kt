@@ -8,7 +8,7 @@ import fr.paug.androidmakers.ui.theme.AMColor
 fun separatorColor() = MaterialTheme.colors.onSurface.copy(alpha = AMAlpha.big)
 
 /**
- * A surface that's a bit darker or light to distinguish from the background
+ * A surface that's a bit darker or lighter to distinguish from the background
  */
 @Composable
 fun surfaceColor2() = MaterialTheme.colors.onSurface.copy(alpha = AMAlpha.small)
