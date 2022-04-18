@@ -101,7 +101,7 @@ fun AgendaRow(
         modifier = Modifier
             .height(separatorHeight)
             .fillMaxWidth(),
-        color = separatorColor
+        color = separatorColor()
     ) {}
   }
 }

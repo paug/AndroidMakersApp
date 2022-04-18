@@ -14,7 +14,9 @@ import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import fr.paug.androidmakers.ui.model.UIVenue
+import fr.paug.androidmakers.ui.theme.AMAlpha
 import fr.paug.androidmakers.ui.theme.AMColor
+import surfaceColor2
 
 @Composable
 fun VenueLayout(uiVenue: UIVenue) {
@@ -26,7 +28,7 @@ fun VenueLayout(uiVenue: UIVenue) {
   ) {
     AsyncImage(
         model = uiVenue.imageUrl,
-        placeholder = ColorPainter(AMColor.lightGray),
+        placeholder = ColorPainter(surfaceColor2()),
         contentDescription = null,
         contentScale = ContentScale.FillWidth,
         modifier = Modifier
