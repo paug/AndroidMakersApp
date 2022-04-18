@@ -41,6 +41,8 @@ import fr.paug.androidmakers.ui.theme.AndroidMakersTheme
 import fr.paug.androidmakers.ui.util.imageUrl
 import fr.paug.androidmakers.ui.viewmodel.Lce
 import io.openfeedback.android.components.SessionFeedbackContainer
+import separatorColor
+import surfaceColor2
 import java.util.*
 
 class SessionDetailState(
@@ -105,7 +107,7 @@ fun SessionDetailLayout(
         floatingActionButton = {
           if (sessionDetailState is Lce.Content) {
             val backgroundColor by animateColorAsState(
-                if (sessionDetailState.content.isBookmarked) Color.White else AMColor.secondary
+                if (sessionDetailState.content.isBookmarked) Color.White else AMColor.amRed
             )
             FloatingActionButton(
                 backgroundColor = backgroundColor,
@@ -161,7 +163,7 @@ private fun SessionDetails(sessionDetails: SessionDetailState, formattedDateAndR
         .fillMaxWidth()
         .height(16.dp))
 
-    if (System.currentTimeMillis() > sessionDetails.startTimestamp) {
+    if (true || System.currentTimeMillis() > sessionDetails.startTimestamp) {
       SessionFeedbackContainer(
           openFeedback = AndroidMakersApplication.instance().openFeedback,
           sessionId = sessionDetails.session.id,
@@ -170,7 +172,7 @@ private fun SessionDetails(sessionDetails: SessionDetailState, formattedDateAndR
     } else {
       Surface(
           shape = RoundedCornerShape(5.dp),
-          border = BorderStroke(1.dp, MaterialTheme.colors.onSurface.copy(alpha = .2f)),
+          border = BorderStroke(1.dp, separatorColor()),
           modifier = Modifier.fillMaxWidth()
       ) {
         Text(
@@ -220,7 +222,7 @@ private fun Chip(text: String) {
       modifier = Modifier
           .background(
               shape = RoundedCornerShape(corner = CornerSize(16.dp)),
-              color = colorResource(R.color.light_grey)
+              color = surfaceColor2()
           )
           .padding(8.dp),
       text = text
