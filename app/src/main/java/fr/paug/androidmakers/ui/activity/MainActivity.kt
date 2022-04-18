@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.components.AboutActions
 import fr.paug.androidmakers.ui.components.MainLayout
+import fr.paug.androidmakers.ui.theme.AndroidMakersTheme
 import fr.paug.androidmakers.util.CustomTabUtil
 
 class MainActivity : AppCompatActivity() {
@@ -15,14 +16,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            MainLayout(aboutActions = AboutActions(
-                onFaqClick = ::onFaqClick,
-                onCodeOfConductClick = ::onCodeOfConductClick,
-                onTwitterHashtagClick = ::onTwitterHashtagClick,
-                onTwitterLogoClick = ::onTwitterLogoClick,
-                onYouTubeLogoClick = ::onYouTubeLogoClick,
-                onSponsorClick = ::onSponsorClick
-            ))
+            AndroidMakersTheme {
+                MainLayout(aboutActions = AboutActions(
+                    onFaqClick = ::onFaqClick,
+                    onCodeOfConductClick = ::onCodeOfConductClick,
+                    onTwitterHashtagClick = ::onTwitterHashtagClick,
+                    onTwitterLogoClick = ::onTwitterLogoClick,
+                    onYouTubeLogoClick = ::onYouTubeLogoClick,
+                    onSponsorClick = ::onSponsorClick
+                ))
+            }
         }
     }
 
