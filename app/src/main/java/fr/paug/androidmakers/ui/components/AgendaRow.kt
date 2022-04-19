@@ -101,7 +101,7 @@ fun AgendaRow(
         modifier = Modifier
             .height(separatorHeight)
             .fillMaxWidth(),
-        color = separatorColor
+        color = separatorColor()
     ) {}
   }
 }
@@ -124,9 +124,7 @@ private fun UISession.subtitle(context: Context) = buildString {
 @Preview
 @Composable
 private fun AgendaRowPreview() {
-  AndroidMakersTheme {
-    AgendaRow(fakeUiSession)
-  }
+  AgendaRow(fakeUiSession)
 }
 
 private val fakeUiSession = UISession(
