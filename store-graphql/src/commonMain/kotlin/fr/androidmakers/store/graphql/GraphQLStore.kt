@@ -47,12 +47,10 @@ class GraphQLStore(val apolloClient: ApolloClient) : AndroidMakersStore {
   }
 
   override fun getSession(id: String): Flow<Result<Session>> {
-    return apolloClient.query(GetSessionsQuery())
+    return apolloClient.query(GetSessionQuery(id))
         .fetchPolicy(FetchPolicy.CacheAndNetwork)
         .watch().map {
-          it.dataAssertNoErrors.sessions.map { it.sessionDetails.toSession() }
-        }.map {
-          it.single { it.id == id }
+          it.dataAssertNoErrors.session.sessionDetails.toSession()
         }
         .toResultFlow()
   }
