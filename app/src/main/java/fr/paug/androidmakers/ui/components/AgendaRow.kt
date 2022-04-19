@@ -54,7 +54,7 @@ fun AgendaRow(
           style = MaterialTheme.typography.h5
       )
       Row {
-        Column {
+        Column(Modifier.weight(1F)) {
           Text(
               text = uiSession.subtitle(LocalContext.current),
               style = MaterialTheme.typography.subtitle1,
@@ -72,7 +72,7 @@ fun AgendaRow(
             )
           }
         }
-        Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
+        Box {
           val isBookmarked = BookmarksStore.subscribe(uiSession.id).collectAsState(false)
           val icon = if (isBookmarked.value) R.drawable.ic_bookmarked
           else R.drawable.ic_bookmark
