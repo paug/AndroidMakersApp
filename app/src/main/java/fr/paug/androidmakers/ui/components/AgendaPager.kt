@@ -30,12 +30,13 @@ import java.util.*
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun AgendaPager(
+    initialPageIndex: Int,
     days: List<String>,
     onSessionClicked: (UISession) -> Unit,
     filterList: List<SessionFilter>
 ) {
   Column(modifier = Modifier.fillMaxWidth()) {
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState(initialPage = initialPageIndex)
 
     TabRow(
         // Our selected tab is our current page

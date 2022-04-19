@@ -4,9 +4,24 @@ import android.util.SparseArray
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.Checkbox
+import androidx.compose.material.DrawerState
+import androidx.compose.material.DrawerValue
+import androidx.compose.material.ModalDrawer
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -34,7 +49,10 @@ import fr.paug.androidmakers.util.EmojiUtils
 import fr.paug.androidmakers.util.TimeUtils
 import kotlinx.coroutines.flow.Flow
 import java.text.DateFormat
-import java.util.*
+import java.time.Instant
+import java.time.ZoneId
+import java.util.Arrays
+import java.util.Calendar
 
 @Composable
 fun AgendaLayout(
@@ -85,6 +103,7 @@ private fun AgendaPagerOrLoading(
         val days = agendaToDays(it)
 
         AgendaPager(
+            initialPageIndex = days.todayPageIndex(),
             days = days.map { it.title },
             filterList = sessionFilters,
             onSessionClicked = {
@@ -94,6 +113,14 @@ private fun AgendaPagerOrLoading(
             }
         )
     }
+}
+
+/** Returns the index of today's [DaySchedule] in `this`, or zero. */
+private fun List<DaySchedule>.todayPageIndex(): Int{
+    val todayPageIndex = indexOfLast { (startDayInEpochMillis, _, _) ->
+        System.currentTimeMillis() >= startDayInEpochMillis
+    }
+    return if (todayPageIndex < 0) 0 else todayPageIndex
 }
 
 @Composable
@@ -260,7 +287,7 @@ private fun getRoomScheduleForDay(
     if (daySchedule == null) {
         val roomSchedule = ArrayList<RoomSchedule>()
         val title = DateFormat.getDateInstance().format(calendar.time)
-        daySchedule = DaySchedule(title, roomSchedule)
+        daySchedule = DaySchedule(calendar.timeInMillis, title, roomSchedule)
         itemByDayOfTheYear.put(dayIndex, daySchedule)
         return roomSchedule
     } else {
@@ -312,31 +339,6 @@ internal fun agendaToDays(agenda: Agenda): List<DaySchedule> {
     }
 
     return getItemsOrdered(itemByDayOfTheYear)
-}
-
-
-private fun getTodayIndex(items: List<DaySchedule>?): Int {
-    if (items == null || items.size < 2) {
-        return -1
-    }
-    val calendar = Calendar.getInstance()
-    val dayOfYear = calendar.get(Calendar.DAY_OF_YEAR)
-    val year = calendar.get(Calendar.YEAR)
-    for (i in 1 until items.size) {
-        val agendaDaySchedule = items[i]
-        val roomSchedules = agendaDaySchedule.roomSchedules
-        if (!roomSchedules.isEmpty()) {
-            val scheduleSessionList = roomSchedules[0].scheduleSessions
-            if (!scheduleSessionList.isEmpty()) {
-                val scheduleSession = scheduleSessionList[0]
-                calendar.timeInMillis = scheduleSession.startTimestamp
-                if (calendar.get(Calendar.YEAR) == year && calendar.get(Calendar.DAY_OF_YEAR) == dayOfYear) {
-                    return i
-                }
-            }
-        }
-    }
-    return -1
 }
 
 private fun getAgendaItems(

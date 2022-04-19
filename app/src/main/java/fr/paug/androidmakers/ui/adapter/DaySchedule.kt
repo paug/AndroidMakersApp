@@ -1,6 +1,7 @@
 package fr.paug.androidmakers.ui.adapter
 
 data class DaySchedule(
-        val title: String = "",
-        var roomSchedules: MutableList<RoomSchedule> = arrayListOf()
+  val startDayInEpochMillis: Long,
+  val title: String,
+  val roomSchedules: MutableList<RoomSchedule>,
 )
