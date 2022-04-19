@@ -33,7 +33,6 @@ import fr.paug.androidmakers.ui.viewmodel.LceViewModel
 import fr.paug.androidmakers.util.EmojiUtils
 import fr.paug.androidmakers.util.TimeUtils
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import java.text.DateFormat
 import java.util.*
 
@@ -71,7 +70,7 @@ fun AgendaLayout(
     }
 }
 
-class AgendLayoutViewModel: LceViewModel<Agenda>() {
+class AgendaLayoutViewModel: LceViewModel<Agenda>() {
     override fun produce(): Flow<Result<Agenda>> {
         return AndroidMakersApplication.instance().store.getAgenda()
     }
@@ -82,7 +81,7 @@ private fun AgendaPagerOrLoading(
     sessionFilters: List<SessionFilter>,
     onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
 ) {
-    ButtonRefreshableLceLayout(viewModel<AgendLayoutViewModel>()){
+    ButtonRefreshableLceLayout(viewModel<AgendaLayoutViewModel>()){
         val days = agendaToDays(it)
 
         AgendaPager(
