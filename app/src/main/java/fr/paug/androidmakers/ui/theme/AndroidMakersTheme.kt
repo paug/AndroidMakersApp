@@ -1,9 +1,11 @@
 package fr.paug.androidmakers.ui.theme
 
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Typography
-import androidx.compose.material.lightColors
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.LocalIndication
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.text.selection.LocalTextSelectionColors
+import androidx.compose.material.*
+import androidx.compose.material.ripple.LocalRippleTheme
+import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -20,30 +22,50 @@ val GillSans = FontFamily(
 )
 
 object AMColor {
-  val primary = Color(0xff1EB6E1)
-  val secondary = Color(0xffE85145)
-  val lightGray = Color(0xffF0F0F0)
-  val gray = Color(0xffbbbbbb)
-  val bookmarked = secondary
+  val amBlue = Color(0xff1EB6E1)
+  val amRed = Color(0xffE85145)
+  val bookmarked = amRed
 }
+
+class AMAlphas(
+    val small: Float,
+    val big: Float
+)
+
+val AMAlpha = AMAlphas(
+    15f/255,
+    50f/255
+)
+
 
 @OptIn(ExperimentalUnitApi::class)
 @Composable
-fun AndroidMakersTheme(content: @Composable () -> Unit) {
+fun AndroidMakersTheme(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable () -> Unit
+) {
+  val colors = if (darkTheme) {
+    darkColors(
+        primary = AMColor.amBlue,
+        secondary = AMColor.amRed
+    )
+  } else {
+    lightColors(
+        primary = AMColor.amBlue,
+        secondary = AMColor.amRed
+    )
+  }
   MaterialTheme(
-      colors = lightColors(
-          primary = AMColor.primary,
-          secondary = AMColor.secondary
-      ),
+      colors = colors,
       typography = Typography(
           h5 = TextStyle(
               fontFamily = GillSans,
-              color = AMColor.primary,
+              color = AMColor.amBlue,
               fontSynthesis = FontSynthesis.Weight,
               fontWeight = FontWeight.Bold,
               fontSize = TextUnit(24f, TextUnitType.Sp)
           )
       ),
-      content = content
+      content = content,
   )
 }

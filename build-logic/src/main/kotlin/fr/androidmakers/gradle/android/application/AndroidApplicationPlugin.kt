@@ -45,12 +45,9 @@ class AndroidApplicationPlugin : Plugin<Project> {
         }
 
         for (key in listOf(
-            "YOUTUBE_API_KEY",
             "OPENFEEDBACK_API_KEY",
-            "OPENFEEDBACK_PROJECT_ID",
-            "OPENFEEDBACK_APPLICATION_ID"
         )) {
-          val value = (properties?.get(key) as? String) ?: "${key}_DUMMY"
+          val value = System.getenv(key) ?: "${key}_PLACEHOLDER"
           buildConfigField("String", key, "\"$value\"")
         }
       }
