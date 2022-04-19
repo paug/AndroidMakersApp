@@ -1,7 +1,14 @@
 package fr.androidmakers.store
 
-import fr.androidmakers.store.model.*
-import kotlinx.coroutines.flow.*
+import fr.androidmakers.store.model.Agenda
+import fr.androidmakers.store.model.Partner
+import fr.androidmakers.store.model.Room
+import fr.androidmakers.store.model.ScheduleSlot
+import fr.androidmakers.store.model.Session
+import fr.androidmakers.store.model.Speaker
+import fr.androidmakers.store.model.Venue
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 
 /**
  *
@@ -39,11 +46,11 @@ interface AndroidMakersStore {
             } else {
                 Result.success(
                     Agenda(
-                    sessions.getOrThrow().associateBy { it.id },
-                    slots.getOrThrow(),
-                    rooms.getOrThrow().associateBy { it.id },
-                    speakers.getOrThrow().associateBy { it.id }
-                )
+                        sessions.getOrThrow().associateBy { it.id },
+                        slots.getOrThrow(),
+                        rooms.getOrThrow().associateBy { it.id },
+                        speakers.getOrThrow().associateBy { it.id }
+                    )
                 )
             }
         }

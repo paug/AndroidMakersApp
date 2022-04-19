@@ -66,7 +66,7 @@ fun AgendaPager(
         count = days.size,
         state = pagerState,
     ) { page ->
-      val viewModel = viewModel<AgendLayoutViewModel>()
+      val viewModel = viewModel<AgendaLayoutViewModel>()
       SwipeRefreshableLceLayout(viewModel = viewModel) {
         val days = agendaToDays(it)
         val items = days[page].roomSchedules.flatMap { it.scheduleSessions }
