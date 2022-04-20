@@ -1,5 +1,6 @@
 package fr.androidmakers.store.firebase
 
+import com.google.firebase.firestore.SetOptions
 import fr.androidmakers.store.AndroidMakersStore
 import fr.androidmakers.store.model.*
 import kotlinx.coroutines.FlowPreview
@@ -66,6 +67,26 @@ class FirebaseStore : AndroidMakersStore {
             null
           }
         }.toResultFlow()
+
+  override fun getBookmarks(userId: String): Flow<Result<Set<String>>> {
+    return FirebaseSingleton.firestore.collection("featuredSessions")
+        .document(userId)
+        .toFlow()
+        .mapNotNull {
+          it.data?.entries?.filter { it.value == true }?.map { it.key }?.toSet()
+        }
+        .toResultFlow()
+  }
+
+  override suspend fun setBookmark(userId: String, sessionId: String, value: Boolean) {
+    try {
+      FirebaseSingleton.firestore.collection("featuredSessions")
+          .document(userId)
+          .set(mapOf(sessionId to value), SetOptions.merge())
+          .await()
+    } catch (e: Exception) {
+      e.printStackTrace()
+    }
   }
 
   override fun getSession(id: String): Flow<Result<Session>> {

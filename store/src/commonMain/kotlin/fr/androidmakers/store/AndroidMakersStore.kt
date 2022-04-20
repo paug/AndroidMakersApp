@@ -18,6 +18,8 @@ interface AndroidMakersStore {
     fun getSpeakers(): Flow<Result<List<Speaker>>>
     fun getRooms(): Flow<Result<List<Room>>>
     fun getWifiInfo(): Flow<Result<WifiInfo?>>
+    fun getBookmarks(userId: String): Flow<Result<Set<String>>>
+    suspend fun setBookmark(userId: String, sessionId: String, value: Boolean)
 
     fun getAgenda(): Flow<Result<Agenda>> {
         val sessionsFlow = getSessions()

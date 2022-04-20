@@ -25,6 +25,7 @@ import fr.androidmakers.store.model.Partner
 import fr.androidmakers.store.model.WifiInfo
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.R
+import fr.paug.androidmakers.ui.activity.AMUser
 import fr.paug.androidmakers.ui.navigation.AVANavigationRoute
 import fr.paug.androidmakers.ui.theme.AndroidMakersTheme
 import fr.paug.androidmakers.ui.viewmodel.Lce
@@ -41,6 +42,7 @@ import kotlinx.coroutines.launch
 fun AVALayout(
     onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
     aboutActions: AboutActions,
+    user: AMUser?,
 ) {
   val avaNavController = rememberNavController()
   val navBackStackEntry by avaNavController.currentBackStackEntryAsState()
@@ -65,6 +67,7 @@ fun AVALayout(
                   Icon(painter = painterResource(R.drawable.ic_filter_list_white_24dp), contentDescription = stringResource(R.string.filter))
                 }
               }
+              SigninButton(user)
             },
             elevation = if (currentRoute == AVANavigationRoute.ABOUT.name) AppBarDefaults.TopAppBarElevation else 0.dp
         )
@@ -172,5 +175,5 @@ class PartnersViewModel : LceViewModel<List<Partner>>() {
 @Preview
 @Composable
 private fun AVALayoutPreview() {
-  AVALayout(onSessionClick = { _, _, _, _ -> }, aboutActions = AboutActions())
+  AVALayout(onSessionClick = { _, _, _, _ -> }, aboutActions = AboutActions(), user = null)
 }
