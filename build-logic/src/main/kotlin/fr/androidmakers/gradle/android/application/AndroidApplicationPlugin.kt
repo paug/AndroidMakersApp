@@ -22,34 +22,18 @@ class AndroidApplicationPlugin : Plugin<Project> {
     project.apply(mapOf("plugin" to "com.google.gms.google-services"))
 
     addRepositories(project)
-    checkGoogleServices(project)
 
     project.androidSetup()
 
     project.extensions.findByName("android")!!.apply {
       this as BaseExtension
       defaultConfig.apply {
-        applicationId = "fr.paug.androidmakers"
+        namespace = "fr.paug.androidmakers"
         minSdk = 21
         targetSdk = 31
         versionCode = versionMajor * 1000 + versionMinor * 100 + versionPatch * 10
         versionName = "${versionMajor}.${versionMinor}.${versionPatch}"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-        val properties = try {
-          Properties().apply {
-            load(project.file("buildconfig.properties").inputStream())
-          }
-        } catch (e: Exception) {
-          null
-        }
-
-        for (key in listOf(
-            "OPENFEEDBACK_API_KEY",
-        )) {
-          val value = System.getenv(key) ?: "${key}_PLACEHOLDER"
-          buildConfigField("String", key, "\"$value\"")
-        }
       }
 
       compileOptions {
@@ -103,15 +87,6 @@ class AndroidApplicationPlugin : Plugin<Project> {
 
       @Suppress("UnstableApiUsage")
       this.buildFeatures.viewBinding = true
-    }
-  }
-
-  private fun checkGoogleServices(project: Project) {
-    val target = project.file("google-services.json")
-    val source = project.file("google-services.json.mock")
-    if (!target.exists()) {
-      println("using mock google-services.json")
-      source.copyTo(target)
     }
   }
 }
