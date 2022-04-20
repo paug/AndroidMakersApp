@@ -20,7 +20,6 @@ class GraphQLStore(val apolloClient: ApolloClient) : AndroidMakersStore {
         .toResultFlow()
   }
 
-
   override fun getSpeaker(id: String): Flow<Result<Speaker>> {
     return apolloClient.query(GetSpeakersQuery())
         .fetchPolicy(FetchPolicy.CacheAndNetwork)
@@ -47,6 +46,14 @@ class GraphQLStore(val apolloClient: ApolloClient) : AndroidMakersStore {
   }
 
   override fun getWifiInfo(): Flow<Result<WifiInfo?>> {
+    TODO("Not yet implemented")
+  }
+
+  override fun getBookmarks(userId: String): Flow<Result<Set<String>>> {
+    TODO("Not yet implemented")
+  }
+
+  override suspend fun setBookmark(userId: String, sessionId: String, value: Boolean) {
     TODO("Not yet implemented")
   }
 

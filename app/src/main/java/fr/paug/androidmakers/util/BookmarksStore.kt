@@ -3,7 +3,11 @@ package fr.paug.androidmakers.util
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
+import com.google.firebase.auth.FirebaseAuth
+import fr.paug.androidmakers.AndroidMakersApplication
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 
 object BookmarksStore {
 
@@ -38,6 +42,14 @@ object BookmarksStore {
         }
         selectedSessionIds.value = mutableSetOf<String>().apply { addAll(bookmarkedSessions) }
         save()
+
+        // YOLO 🙌
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+        if (userId != null) {
+            GlobalScope.launch {
+                AndroidMakersApplication.instance().store.setBookmark(userId, sessionId, bookmarked)
+            }
+        }
     }
 
     fun isBookmarked(id: String): Boolean {
@@ -53,6 +65,17 @@ object BookmarksStore {
         val editor = mSharedPreferences?.edit()
         editor?.putStringSet(PREF_SELECTED_SESSIONS, bookmarkedSessions)
         editor?.apply()
+    }
+
+    /**
+     * This is called after a successful signin or at startup to merge the remote bookmarks into
+     * the local ones
+     */
+    fun merge(bookmarks: Set<String>) {
+        bookmarkedSessions.addAll(bookmarks)
+
+        selectedSessionIds.value = mutableSetOf<String>().apply { addAll(bookmarkedSessions) }
+        save()
     }
 }
 
