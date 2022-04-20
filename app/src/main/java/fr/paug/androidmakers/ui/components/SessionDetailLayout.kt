@@ -3,6 +3,7 @@ package fr.paug.androidmakers.ui.components
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.text.Html
 import android.text.TextUtils
 import android.text.format.DateUtils
 import androidx.compose.animation.Crossfade
@@ -36,6 +37,7 @@ import fr.androidmakers.store.model.*
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.theme.AMColor
+import fr.paug.androidmakers.ui.util.discardHtmlTags
 import fr.paug.androidmakers.ui.util.imageUrl
 import fr.paug.androidmakers.ui.viewmodel.Lce
 import io.openfeedback.android.components.SessionFeedbackContainer
@@ -148,7 +150,7 @@ private fun SessionDetails(sessionDetails: SessionDetailState, formattedDateAndR
     )
     Text(
         modifier = Modifier.padding(top = 16.dp),
-        text = sessionDetails.session.description,
+        text = sessionDetails.session.description.discardHtmlTags(),
         style = MaterialTheme.typography.body1
     )
     ChipList(sessionDetails)

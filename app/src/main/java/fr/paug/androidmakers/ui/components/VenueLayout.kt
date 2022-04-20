@@ -24,6 +24,7 @@ import coil.compose.AsyncImage
 import com.google.android.material.snackbar.Snackbar
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.model.UIVenue
+import fr.paug.androidmakers.ui.util.discardHtmlTags
 import fr.paug.androidmakers.util.CustomTabUtil
 import surfaceColor2
 
@@ -62,7 +63,7 @@ fun VenueLayout(uiVenue: UIVenue) {
         uiVenue.descriptionEn
     }
     Text(
-        text = Html.fromHtml(description).toString(),
+        text = description.discardHtmlTags(),
         modifier = Modifier.padding(8.dp),
         style = MaterialTheme.typography.body1,
     )
