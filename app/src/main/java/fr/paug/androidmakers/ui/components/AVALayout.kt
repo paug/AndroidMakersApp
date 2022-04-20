@@ -22,10 +22,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import fr.androidmakers.store.model.Partner
+import fr.androidmakers.store.model.WifiInfo
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.navigation.AVANavigationRoute
 import fr.paug.androidmakers.ui.theme.AndroidMakersTheme
+import fr.paug.androidmakers.ui.viewmodel.Lce
 import fr.paug.androidmakers.ui.viewmodel.LceViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -146,11 +148,14 @@ private fun AVANavHost(
       VenuePager()
     }
     composable(route = AVANavigationRoute.ABOUT.name) {
-      val aboutViewModel: AboutViewModel = viewModel()
       val partnerList by viewModel<PartnersViewModel>().values.collectAsState()
+      val wifiInfoLce by viewModel<WifiViewModel>().values.collectAsState()
+
+
+      val wifiInfo = (wifiInfoLce as? Lce.Content<WifiInfo>)?.content
 
       AboutLayout(
-          wifiInfo = aboutViewModel.getWifiInfo(),
+          wifiInfo = wifiInfo,
           partnerList = partnerList,
           aboutActions = aboutActions
       )
