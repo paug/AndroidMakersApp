@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "956721515752",
+    "project_id": "android-makers-2022",
+    "storage_bucket": "android-makers-2022.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:956721515752:android:f074fbf74cf13a06ed4d5d",
+        "android_client_info": {
+          "package_name": "fr.paug.androidmakers"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "956721515752-s37et6oaa07k570r96liuv1knsovtpc6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrsk1zKgYqRM0MlQ7xznuvYQzdhAnSF1M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "956721515752-s37et6oaa07k570r96liuv1knsovtpc6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "956721515752-rgqej3sodfba8olmg59bkneagvci1pn4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.paug.RobotConf",
+                "app_store_id": "1502020576"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
