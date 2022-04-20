@@ -105,7 +105,7 @@ class FirebaseStore : AndroidMakersStore {
               it.documents.map {
                 it.id to it.data!!
               }.toMap()
-          )!!
+          )
         }.toResultFlow()
   }
 

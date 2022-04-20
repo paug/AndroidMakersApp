@@ -28,8 +28,6 @@ build/
 
 *.apk
 
-app/google-services.json
-
 app/prod/release/output.json
 /app/keystore.jks
 /app/keystore.properties

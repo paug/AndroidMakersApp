@@ -15,6 +15,8 @@ dependencies {
     implementation(libs.kotlin.gradle.plugin)
 }
 
+group = "fr.paug.androidmakers.build"
+
 gradlePlugin {
     plugins {
         create("fr.androidmakers.gradle.android.application") {
