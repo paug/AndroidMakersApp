@@ -79,24 +79,26 @@ fun AgendaColumn(
 
 @Composable
 fun TimeSeparator(prettyTime: String) {
-  Column(
-      modifier = Modifier
-          .fillMaxWidth()
-          .background(surfaceColor2())
-  ) {
-    Text(
-        modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
-        text = prettyTime,
-        style = TextStyle(
-            fontFeatureSettings = "smcp"
-        )
-    )
-    Surface(
+  Surface(color = MaterialTheme.colors.background) {
+    Column(
         modifier = Modifier
-            .height(separatorHeight)
-            .fillMaxWidth(),
-        color = separatorColor()
-    ) {}
+            .fillMaxWidth()
+            .background(surfaceColor2())
+    ) {
+      Text(
+          modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
+          text = prettyTime,
+          style = TextStyle(
+              fontFeatureSettings = "smcp"
+          )
+      )
+      Surface(
+          modifier = Modifier
+              .height(separatorHeight)
+              .fillMaxWidth(),
+          color = separatorColor()
+      ) {}
+    }
   }
 }
 

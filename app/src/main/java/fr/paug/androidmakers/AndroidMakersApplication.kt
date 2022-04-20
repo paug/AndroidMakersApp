@@ -24,14 +24,13 @@ class AndroidMakersApplication : Application() {
             firebaseConfig = OpenFeedback.FirebaseConfig(
                 projectId = "openfeedback-am-2022",
                 applicationId = "1:378302699578:web:35d970e43cb3207eeebd03",
-                apiKey = BuildConfig.OPENFEEDBACK_API_KEY,
+                apiKey = "AIzaSyAd3HgjDN3II5NrE97myBQkWNUrky3A70I",
                 databaseUrl = "https://openfeedback-am-2022.firebaseio.com"
             )
         )
     }
 
     companion object {
-      const val TAG = "AndroidMakersApp"
         private var instance_: AndroidMakersApplication? = null
         fun instance(): AndroidMakersApplication {
             return instance_!!
