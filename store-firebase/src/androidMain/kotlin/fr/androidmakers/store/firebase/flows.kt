@@ -4,13 +4,13 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.MetadataChanges
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlin.coroutines.cancellation.CancellationException
 
 /**
  * Attach a snapshotListener to a [DocumentReference] and use it as a coroutine [Flow]
@@ -23,7 +23,7 @@ fun DocumentReference.toFlow(metadataChanges: MetadataChanges = MetadataChanges.
             trySendBlocking(value)
         }
         if (error != null) {
-          error("Error getting DocumentReference snapshot for ${this@toFlow}")
+            cancel(CancellationException("Error getting document ${this@toFlow}", error))
         }
     }
 
@@ -41,7 +41,7 @@ fun Query.toFlow(metadataChanges: MetadataChanges = MetadataChanges.EXCLUDE): Fl
             trySendBlocking(value)
         }
         if (error != null) {
-          error("Error getting Query snapshot for ${this@toFlow}")
+            cancel(CancellationException("Error getting query ${this@toFlow}", error))
         }
     }
 

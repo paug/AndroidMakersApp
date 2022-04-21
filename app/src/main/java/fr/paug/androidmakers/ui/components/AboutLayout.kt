@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import fr.androidmakers.store.model.Logo
 import fr.androidmakers.store.model.Partner
+import fr.androidmakers.store.model.WifiInfo
 import fr.paug.androidmakers.BuildConfig
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.theme.AndroidMakersTheme
@@ -40,8 +41,6 @@ import fr.paug.androidmakers.ui.util.imageUrl
 import fr.paug.androidmakers.ui.viewmodel.Lce
 import surfaceColor2
 
-
-data class WifiInfo(val network: String, val password: String)
 
 class AboutActions(
     val onFaqClick: () -> Unit = {},

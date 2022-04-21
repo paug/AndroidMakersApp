@@ -46,6 +46,10 @@ class GraphQLStore(val apolloClient: ApolloClient) : AndroidMakersStore {
         .toResultFlow()
   }
 
+  override fun getWifiInfo(): Flow<Result<WifiInfo?>> {
+    TODO("Not yet implemented")
+  }
+
   override fun getSession(id: String): Flow<Result<Session>> {
     return apolloClient.query(GetSessionQuery(id))
         .fetchPolicy(FetchPolicy.CacheAndNetwork)

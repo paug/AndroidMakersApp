@@ -54,6 +54,20 @@ class FirebaseStore : AndroidMakersStore {
         }.toResultFlow()
   }
 
+  override fun getWifiInfo(): Flow<Result<WifiInfo?>> {
+    return FirebaseSingleton.firestore.collection("wifi").document("config")
+        .toFlow()
+        .mapNotNull {
+          val name = it["name"]
+          val password = it["password"]
+          if (name != null && password != null) {
+            WifiInfo( name.toString(), password.toString())
+          } else {
+            null
+          }
+        }.toResultFlow()
+  }
+
   override fun getSession(id: String): Flow<Result<Session>> {
     return FirebaseSingleton.firestore.collection("sessions")
         .document(id)
