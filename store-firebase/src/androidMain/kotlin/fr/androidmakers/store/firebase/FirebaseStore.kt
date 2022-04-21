@@ -62,11 +62,12 @@ class FirebaseStore : AndroidMakersStore {
           val name = it["name"]
           val password = it["password"]
           if (name != null && password != null) {
-            WifiInfo( name.toString(), password.toString())
+            WifiInfo(name.toString(), password.toString())
           } else {
             null
           }
         }.toResultFlow()
+  }
 
   override fun getBookmarks(userId: String): Flow<Result<Set<String>>> {
     return FirebaseSingleton.firestore.collection("featuredSessions")
