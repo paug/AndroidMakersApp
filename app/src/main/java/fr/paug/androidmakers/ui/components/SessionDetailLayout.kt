@@ -302,7 +302,7 @@ private fun getFormattedDateAndRoom(room: Room, startTimestamp: Long, endTimesta
       startTimestamp,
       endTimestamp,
       DateUtils.FORMAT_SHOW_WEEKDAY or DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_YEAR,
-      null).toString()
+      "Europe/Paris").toString()
   return if (room.name.isNotEmpty()) {
     stringResource(R.string.sessionDateWithRoomPlaceholder, sessionDate, room.name)
   } else {

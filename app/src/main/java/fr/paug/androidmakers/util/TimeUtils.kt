@@ -6,6 +6,7 @@ import androidx.compose.material.contentColorFor
 import fr.paug.androidmakers.R
 import java.time.Duration
 import java.time.OffsetDateTime
+import java.time.ZoneId
 import java.util.*
 
 object TimeUtils {
@@ -16,12 +17,18 @@ object TimeUtils {
     fun parseIso8601(iso8601: String): Date {
         return Date(OffsetDateTime.parse(iso8601).toEpochSecond() * 1000)
     }
+
+    /**
+     * format the time as HH:mm in the timezone of the event
+     */
     fun formatShortTime(context: Context?, time: Date?): String {
+
         // Android DateFormatter will honor the user's current settings.
         val dateFormat = DateFormat.getTimeFormat(context)
-        // Override with Timezone based on settings since users can override their phone's timezone
-        // with Pacific time zones.
-        val tz = TimeZone.getDefault()
+
+        // Display the time in the local time as everyone will be on site so it makes
+        // planning in advance easier
+        val tz = TimeZone.getTimeZone(ZoneId.of("Europe/Paris"))
         if (tz != null) {
             dateFormat.timeZone = tz
         }
