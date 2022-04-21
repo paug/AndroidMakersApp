@@ -18,7 +18,7 @@ abstract class LceViewModel<T> : ViewModel() {
 
   private var job: Job? = null
 
-  private fun launch() {
+  private fun launch(isRefresh: Boolean) {
     job?.cancel()
     job = viewModelScope.launch {
       produce().map {
@@ -27,7 +27,9 @@ abstract class LceViewModel<T> : ViewModel() {
             onFailure = { Lce.Error }
         )
       }.onStart {
-        emit(Lce.Loading)
+        if (!isRefresh) {
+          emit(Lce.Loading)
+        }
       }.collect {
         _mutableSharedState.value = it
         if (it != Lce.Loading) {
@@ -39,11 +41,11 @@ abstract class LceViewModel<T> : ViewModel() {
 
   fun refresh() {
     _isRefreshing.value = true
-    launch()
+    launch(true)
   }
 
   init {
-    launch()
+    launch(false)
   }
 }
 
