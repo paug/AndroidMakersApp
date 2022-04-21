@@ -5,7 +5,6 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.MetadataChanges
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
@@ -23,12 +22,11 @@ import kotlin.coroutines.suspendCoroutine
 @OptIn(ExperimentalCoroutinesApi::class)
 fun DocumentReference.toFlow(metadataChanges: MetadataChanges = MetadataChanges.EXCLUDE) = callbackFlow {
   val listener = addSnapshotListener(metadataChanges) { value, error ->
-      if (value != null) {
-          trySendBlocking(value)
-      }
-      if (error != null) {
-          cancel(CancellationException("Error getting document ${this@toFlow}", error))
-      }
+    if (value != null) {
+      trySendBlocking(value)
+    }
+    if (error != null) {
+      cancel(CancellationException("Error getting document ${this@toFlow}", error))
     }
   }
 
@@ -48,12 +46,11 @@ suspend fun <TResult> Task<TResult>.await() = suspendCoroutine<TResult> { contin
 @OptIn(ExperimentalCoroutinesApi::class)
 fun Query.toFlow(metadataChanges: MetadataChanges = MetadataChanges.EXCLUDE): Flow<QuerySnapshot> = callbackFlow {
   val listener = addSnapshotListener(metadataChanges) { value, error ->
-      if (value != null) {
-          trySendBlocking(value)
-      }
-      if (error != null) {
-          cancel(CancellationException("Error getting query ${this@toFlow}", error))
-      }
+    if (value != null) {
+      trySendBlocking(value)
+    }
+    if (error != null) {
+      cancel(CancellationException("Error getting query ${this@toFlow}", error))
     }
   }
 
