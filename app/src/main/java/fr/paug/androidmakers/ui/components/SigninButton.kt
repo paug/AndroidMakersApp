@@ -31,7 +31,7 @@ fun SigninButton(user: AMUser?) {
     if (user == null) {
       Icon(
           imageVector = Icons.Filled.Person,
-          contentDescription = stringResource(R.string.login)
+          contentDescription = stringResource(R.string.signin)
       )
     } else {
       AsyncImage(
@@ -39,7 +39,7 @@ fun SigninButton(user: AMUser?) {
               .data(user.photoUrl)
               .build(),
           modifier = Modifier.clip(CircleShape),
-          contentDescription = stringResource(R.string.logout)
+          contentDescription = stringResource(R.string.signout)
       )
     }
   }
@@ -53,14 +53,14 @@ fun SigninButton(user: AMUser?) {
         expandedState.value = false
         activity.signin()
       }) {
-        Text(stringResource(id = R.string.login))
+        Text(stringResource(id = R.string.signin))
       }
     } else {
       DropdownMenuItem(onClick = {
         expandedState.value = false
         activity.signout()
       }) {
-        Text(stringResource(id = R.string.logout))
+        Text(stringResource(id = R.string.signout))
       }
     }
   }
