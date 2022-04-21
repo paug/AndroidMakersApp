@@ -80,4 +80,7 @@
     <string name="back">Retour</string>
     <string name="ohno">Oh no !\nC\'est tout cassé\n😕 …</string>
     <string name="retry">Réessayer</string>
+
+    <string name="signin">Connexion</string>
+    <string name="signout">Déconnexion</string>
 </resources>
