@@ -1,4 +1,4 @@
-package fr.paug.androidmakers.ui.util
+package fr.paug.androidmakers.util
 
 internal fun imageUrl(relativeUrl: String): String {
   return "https://raw.githubusercontent.com/paug/android-makers-2022/main/$relativeUrl"

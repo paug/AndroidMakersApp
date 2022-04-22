@@ -2,7 +2,6 @@ package fr.paug.androidmakers.ui.components
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -36,10 +35,8 @@ import fr.androidmakers.store.model.Partner
 import fr.androidmakers.store.model.WifiInfo
 import fr.paug.androidmakers.BuildConfig
 import fr.paug.androidmakers.R
-import fr.paug.androidmakers.ui.theme.AndroidMakersTheme
-import fr.paug.androidmakers.ui.util.imageUrl
+import fr.paug.androidmakers.util.imageUrl
 import fr.paug.androidmakers.ui.viewmodel.Lce
-import surfaceColor2
 
 
 class AboutActions(
