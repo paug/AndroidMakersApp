@@ -27,9 +27,9 @@ cardview = "androidx.cardview:cardview:1.0.0"
 lifecycle-runtime-ktx = "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0"
 constraintlayout = "androidx.constraintlayout:constraintlayout:2.1.2"
 
-firebase-bom = "com.google.firebase:firebase-bom:29.2.1"
+firebase-bom = "com.google.firebase:firebase-bom:29.3.1"
 
-play-services-auth = "com.google.android.gms:play-services-auth:20.0.0"
+play-services-auth = "com.google.android.gms:play-services-auth:20.1.0"
 layouts = "org.apmem.tools:layouts:1.10"
 apollo-runtime = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "apollo" }
 apollo-normalized-cache = { module = "com.apollographql.apollo3:apollo-normalized-cache", version.ref = "apollo" }

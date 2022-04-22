@@ -38,7 +38,7 @@ import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.theme.AMColor
 import fr.paug.androidmakers.ui.util.discardHtmlTags
-import fr.paug.androidmakers.ui.util.imageUrl
+import fr.paug.androidmakers.util.imageUrl
 import fr.paug.androidmakers.ui.viewmodel.Lce
 import io.openfeedback.android.components.SessionFeedbackContainer
 import separatorColor

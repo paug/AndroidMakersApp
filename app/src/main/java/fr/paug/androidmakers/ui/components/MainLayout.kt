@@ -11,6 +11,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import fr.paug.androidmakers.ui.activity.AMUser
 import fr.paug.androidmakers.ui.navigation.MainNavigationRoute
 import fr.paug.androidmakers.ui.viewmodel.Lce
 
@@ -18,14 +19,15 @@ import fr.paug.androidmakers.ui.viewmodel.Lce
  * The main layout: entry point of the application
  */
 @Composable
-fun MainLayout(aboutActions: AboutActions) {
+fun MainLayout(aboutActions: AboutActions, user: AMUser?) {
   val mainNavController = rememberNavController()
   MainNavHost(
       mainNavController = mainNavController,
       onSessionClick = { sessionId, roomId, startTimestamp, endTimestamp ->
         mainNavController.navigate("${MainNavigationRoute.SESSION_DETAIL.name}/$sessionId/$roomId/$startTimestamp/$endTimestamp")
       },
-      aboutActions
+      aboutActions,
+      user
   )
 }
 
@@ -34,10 +36,11 @@ private fun MainNavHost(
     mainNavController: NavHostController,
     onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
     aboutActions: AboutActions,
+    user: AMUser?,
 ) {
   NavHost(mainNavController, startDestination = MainNavigationRoute.AVA.name) {
     composable(route = MainNavigationRoute.AVA.name) {
-      AVALayout(onSessionClick = onSessionClick, aboutActions = aboutActions)
+      AVALayout(onSessionClick = onSessionClick, aboutActions = aboutActions, user = user)
     }
     composable(route = "${MainNavigationRoute.SESSION_DETAIL.name}/{sessionId}/{roomId}/{startTimestamp}/{endTimestamp}") { backStackEntry ->
       val sessionId = backStackEntry.arguments!!.getString("sessionId")!!
@@ -70,5 +73,5 @@ private fun MainNavHost(
 @Preview
 @Composable
 private fun MainLayoutPreview() {
-  MainLayout(aboutActions = AboutActions())
+  MainLayout(aboutActions = AboutActions(), user = null)
 }

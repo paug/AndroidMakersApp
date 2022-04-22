@@ -92,4 +92,6 @@
     <string name="back">Back</string>
     <string name="ohno">Oh no! 😕 \nSomething wrong happened...</string>
     <string name="retry">Retry</string>
+    <string name="signin">Sign in</string>
+    <string name="signout">Sign out</string>
 </resources>

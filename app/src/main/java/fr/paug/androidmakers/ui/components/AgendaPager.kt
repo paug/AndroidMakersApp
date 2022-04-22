@@ -19,7 +19,7 @@ import com.google.accompanist.pager.rememberPagerState
 import fr.paug.androidmakers.ui.adapter.DaySchedule
 import fr.paug.androidmakers.ui.adapter.ScheduleSession
 import fr.paug.androidmakers.ui.model.UISession
-import fr.paug.androidmakers.ui.util.SessionFilter
+import fr.paug.androidmakers.util.SessionFilter
 import fr.paug.androidmakers.util.BookmarksStore
 import fr.paug.androidmakers.util.TimeUtils
 import kotlinx.coroutines.launch
