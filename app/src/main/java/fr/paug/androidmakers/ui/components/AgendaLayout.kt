@@ -4,28 +4,12 @@ import android.util.SparseArray
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.material.Checkbox
-import androidx.compose.material.DrawerState
-import androidx.compose.material.DrawerValue
-import androidx.compose.material.ModalDrawer
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -43,16 +27,14 @@ import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.adapter.DaySchedule
 import fr.paug.androidmakers.ui.adapter.RoomSchedule
 import fr.paug.androidmakers.ui.adapter.ScheduleSession
-import fr.paug.androidmakers.util.SessionFilter
 import fr.paug.androidmakers.ui.viewmodel.LceViewModel
 import fr.paug.androidmakers.util.EmojiUtils
+import fr.paug.androidmakers.util.SessionFilter
 import fr.paug.androidmakers.util.TimeUtils
 import kotlinx.coroutines.flow.Flow
+import surfaceColor2
 import java.text.DateFormat
-import java.time.Instant
-import java.time.ZoneOffset
-import java.util.Arrays
-import java.util.Calendar
+import java.util.*
 
 @Composable
 fun AgendaLayout(
@@ -202,7 +184,7 @@ private fun FilterItem(
       modifier = Modifier
           .fillMaxWidth()
           .clickable {
-              onCheck(!checked)
+            onCheck(!checked)
           },
       verticalAlignment = Alignment.CenterVertically,
   ) {
@@ -238,7 +220,7 @@ private fun HeaderItem(text: Int) {
   Text(
       modifier = Modifier
           .fillMaxWidth()
-          .background(color = colorResource(R.color.light_grey))
+          .background(color = surfaceColor2())
           .padding(12.dp),
       fontSize = 16.sp,
       text = stringResource(text)
