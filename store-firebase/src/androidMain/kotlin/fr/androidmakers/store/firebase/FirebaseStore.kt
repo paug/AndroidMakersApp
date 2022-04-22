@@ -74,7 +74,7 @@ class FirebaseStore : AndroidMakersStore {
         .document(userId)
         .toFlow()
         .mapNotNull {
-          it.data?.entries?.filter { it.value == true }?.map { it.key }?.toSet()
+          it.data?.entries?.filter { it.value == true }?.map { it.key }?.toSet() ?: emptySet()
         }
         .toResultFlow()
   }
