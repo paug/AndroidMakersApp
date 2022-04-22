@@ -1,7 +1,6 @@
 package fr.paug.androidmakers.ui.components
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
@@ -14,7 +13,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.google.android.datatransport.runtime.retries.Retries.retry
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.viewmodel.Lce
 import fr.paug.androidmakers.ui.viewmodel.LceViewModel
@@ -111,4 +109,20 @@ fun ErrorLayout(
       }
     }
   }
+}
+
+@Composable
+fun EmptyLayout(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
+            .padding(16.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = stringResource(id = R.string.empty_events),
+            textAlign = TextAlign.Center
+        )
+    }
 }
