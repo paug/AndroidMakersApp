@@ -3,8 +3,12 @@ package fr.paug.androidmakers
 import android.app.Application
 import fr.androidmakers.store.AndroidMakersStore
 import fr.androidmakers.store.firebase.FirebaseStore
+import fr.androidmakers.store.graphql.GraphQLStore
 import fr.paug.androidmakers.util.BookmarksStore
 import io.openfeedback.android.OpenFeedback
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 
 class AndroidMakersApplication : Application() {
@@ -15,7 +19,7 @@ class AndroidMakersApplication : Application() {
         instance_ = this
 
         // Replace with proper dependency injection
-        store = FirebaseStore()
+        store = GraphQLStore(this)
 
         super.onCreate()
         BookmarksStore.init(this)

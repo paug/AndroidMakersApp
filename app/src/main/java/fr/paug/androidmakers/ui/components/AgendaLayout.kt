@@ -32,6 +32,7 @@ import fr.paug.androidmakers.util.EmojiUtils
 import fr.paug.androidmakers.util.SessionFilter
 import fr.paug.androidmakers.util.TimeUtils
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import surfaceColor2
 import java.text.DateFormat
 import java.util.*

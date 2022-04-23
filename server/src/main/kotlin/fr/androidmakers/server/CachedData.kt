@@ -6,6 +6,11 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okio.Buffer
+import okio.ByteString.Companion.toByteString
+import okio.buffer
+import okio.internal.commonToUtf8String
+import okio.source
 import java.io.InputStream
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
@@ -43,114 +48,117 @@ object CachedData {
   }
 
   fun rooms(): List<Room> {
-      return getResource("rooms.json") {
-        json.decodeFromStream<JsonRoomData>(it)
-            .map {
-              Room(
-                  id = it.key,
-                  capacity = it.value.capacity,
-                  name = it.value.name,
-                  level = it.value.level,
-              )
-            }
-            .plus(
-                // A failsafe "all" room
-                Room(
-                    id = "all",
-                    capacity = Int.MAX_VALUE,
-                    name = "Service",
-                    level = "1"
-                )
+    return getResource("rooms.json") {
+      json.decodeFromStream<JsonRoomData>(it)
+          .map {
+            Room(
+                id = it.key,
+                capacity = it.value.capacity,
+                name = it.value.name,
+                level = it.value.level,
             )
-      }
+          }
+          .plus(
+              // A failsafe "all" room
+              Room(
+                  id = "all",
+                  capacity = Int.MAX_VALUE,
+                  name = "Service",
+                  level = "1"
+              )
+          )
     }
+  }
 
   fun venue(id: String): Venue {
-    return getResource("venues.json") {
-      json.decodeFromStream<JsonVenueData>(it)
-          .get(id)!!
-          .let {
-            Venue(
-                name = it.name,
-                address = it.address,
-                description = it.description,
-                descriptionFr = it.descriptionFr,
-                coordinates = it.coordinates,
-                imageUrl = it.imageUrl
+    val venues = getResource("venues.json") {
+      val byteString = it.source().buffer().readByteArray().commonToUtf8String()
+      val inputStream = Buffer().writeUtf8(byteString).inputStream()
+      json.decodeFromStream<JsonVenueData>(inputStream)
+    }
+
+    return venues.get(id)!!
+        .let {
+          Venue(
+              name = it.name,
+              address = it.address,
+              description = it.description,
+              descriptionFr = it.descriptionFr,
+              coordinates = it.coordinates,
+              imageUrl = it.imageUrl
+          )
+        }
+  }
+
+  fun sessions(): List<Session> {
+    val slots = getResource("schedule.json") {
+      json.decodeFromStream<JsonSchedule>(it).toSlots()
+    }
+    return getResource("sessions.json") {
+      json.decodeFromStream<JsonSessionData>(it)
+          .mapNotNull { entry ->
+            val slot = slots.firstOrNull {
+              it.sessionId == entry.key
+            }
+
+            if (slot == null) {
+              println("No slot found for session ${entry.key}")
+              return@mapNotNull null
+            }
+
+            Session(
+                id = entry.key,
+                title = entry.value.title,
+                complexity = entry.value.complexity,
+                description = entry.value.description,
+                feedback = entry.value.feedback,
+                icon = entry.value.icon,
+                language = entry.value.language,
+                platformUrl = entry.value.platformUrl,
+                slido = entry.value.slido,
+                speakerIds = entry.value.speakers.toSet(),
+                tags = entry.value.tags,
+                startDate = slot.startDate,
+                endDate = slot.endDate,
+                roomId = slot.roomId
             )
           }
     }
   }
 
-  fun sessions(): List<Session> {
-      val slots = getResource("schedule.json") {
-        json.decodeFromStream<JsonSchedule>(it).toSlots()
-      }
-      return getResource("sessions.json") {
-        json.decodeFromStream<JsonSessionData>(it)
-            .mapNotNull { entry ->
-              val slot = slots.firstOrNull {
-                it.sessionId == entry.key
-              }
-
-              if (slot == null) {
-                println("No slot found for session ${entry.key}")
-                return@mapNotNull null
-              }
-
-              Session(
-                  id = entry.key,
-                  title = entry.value.title,
-                  complexity = entry.value.complexity,
-                  description = entry.value.description,
-                  feedback = entry.value.feedback,
-                  icon = entry.value.icon,
-                  language = entry.value.language,
-                  platformUrl = entry.value.platformUrl,
-                  slido = entry.value.slido,
-                  speakerIds = entry.value.speakers.toSet(),
-                  tags = entry.value.tags,
-                  startDate = slot.startDate,
-                  endDate = slot.endDate,
-                  roomId = slot.roomId
-              )
-            }
-      }
-    }
-
-  fun speakers(): List<Speaker>   {
+  fun speakers(): List<Speaker> {
     return getResource("speakers.json") {
-        json.decodeFromStream<JsonSpeakerData>(it)
-            .map {
-              Speaker(
-                  id = it.key,
-                  name = it.value.name,
-                  bio = it.value.bio,
-                  photoUrl = it.value.photoUrl,
-                  company = it.value.company,
-                  companyLogo = it.value.companyLogo,
-                  country = it.value.country,
-                  featured = it.value.featured,
-                  order = it.value.order,
-                  socials = it.value.socials.map { jsonSocial ->
-                    Social(
-                        icon = jsonSocial.icon,
-                        name = jsonSocial.name,
-                        link = jsonSocial.link
-                    )
-                  }
-              )
-            }
-      }
+      json.decodeFromStream<JsonSpeakerData>(it)
+          .map {
+            Speaker(
+                id = it.key,
+                name = it.value.name,
+                bio = it.value.bio,
+                photoUrl = it.value.photoUrl,
+                company = it.value.company,
+                companyLogo = it.value.companyLogo,
+                country = it.value.country,
+                featured = it.value.featured,
+                order = it.value.order,
+                socials = it.value.socials.map { jsonSocial ->
+                  Social(
+                      icon = jsonSocial.icon,
+                      name = jsonSocial.name,
+                      link = jsonSocial.link
+                  )
+                }
+            )
+          }
     }
+  }
 
   fun partners(): List<PartnerGroup> {
     return getResource("partners.json") {
-      json.decodeFromStream<JsonPartnerData>(it).map {
+      json.decodeFromStream<JsonPartnerData>(it).values.map {
         PartnerGroup(
             it.order,
             it.title,
-            it.items.map {
+            it.items.values.map {
               Partner(
                   it.order,
                   it.name,

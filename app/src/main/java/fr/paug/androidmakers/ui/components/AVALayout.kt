@@ -67,7 +67,7 @@ fun AVALayout(
                   Icon(painter = painterResource(R.drawable.ic_filter_list_white_24dp), contentDescription = stringResource(R.string.filter))
                 }
               }
-              SigninButton(user)
+              //SigninButton(user)
             },
             elevation = if (currentRoute == AVANavigationRoute.ABOUT.name) AppBarDefaults.TopAppBarElevation else 0.dp
         )

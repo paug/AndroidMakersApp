@@ -1,5 +1,6 @@
 package fr.androidmakers.server.model
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -76,13 +77,14 @@ data class JsonTrack(
   val infos: String,
 )
 
-typealias JsonPartnerData = List<JsonPartnerGroup>
+typealias JsonPartnerData = Map<String, JsonPartnerGroup>
 
 @Serializable
 data class JsonPartnerGroup(
     val order: Int,
     val title: String,
-    val items: List<JsonPartner>
+    @SerialName("items-firestoreCollection")
+    val items: Map<String, JsonPartner>
 )
 
 @Serializable
