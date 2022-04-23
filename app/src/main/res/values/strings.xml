@@ -47,6 +47,7 @@
     <string name="language">Language</string>
     <string name="room">Room</string>
     <string name="rooms">Rooms</string>
+    <string name="empty_events">Sorry, there is nothing conference available for currently selected filters.</string>
 
     <!--Venue-->
     <string name="locate_on_map">Locate on map</string>

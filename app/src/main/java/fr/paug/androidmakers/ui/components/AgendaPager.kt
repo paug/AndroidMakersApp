@@ -19,8 +19,8 @@ import com.google.accompanist.pager.rememberPagerState
 import fr.paug.androidmakers.ui.adapter.DaySchedule
 import fr.paug.androidmakers.ui.adapter.ScheduleSession
 import fr.paug.androidmakers.ui.model.UISession
-import fr.paug.androidmakers.util.SessionFilter
 import fr.paug.androidmakers.util.BookmarksStore
+import fr.paug.androidmakers.util.SessionFilter
 import fr.paug.androidmakers.util.TimeUtils
 import kotlinx.coroutines.launch
 import java.time.OffsetDateTime
@@ -87,11 +87,14 @@ fun AgendaPager(
                   },
               )
             }
-
-        AgendaColumn(
-            sessionsPerStartTime = addSeparators(LocalContext.current, items),
-            onSessionClicked = onSessionClicked
-        )
+        if (items.isEmpty()) {
+           EmptyLayout()
+        } else {
+            AgendaColumn(
+                sessionsPerStartTime = addSeparators(LocalContext.current, items),
+                onSessionClicked = onSessionClicked
+            )
+        }
       }
     }
   }
@@ -108,37 +111,50 @@ private fun addSeparators(context: Context, sessions: List<UISession>): Map<Stri
       }
 }
 
-
+// algorithm to filter sessions by applying filters, if the filters is same category we keep
+// the combined logic (OR) otherwise it's AND with category filters
+// example: Language English && (Rooms Moebius || Rooms A...)
+// the algorithm is inspired by Inverted index
+// time complexity is O(n * m) where n is the number of sessions and m is the number of filters
 private fun List<ScheduleSession>.filterSessions(
     filterList: List<SessionFilter>
-): List<ScheduleSession> {
-  val filteredSessions = mutableListOf<ScheduleSession>()
-
-  if (filterList.isEmpty()) {
-    filteredSessions.addAll(this)
-  } else {
-    for (item in this) {
-      for (sessionFilter in filterList) {
-        val matched = when (sessionFilter.type) {
-          SessionFilter.FilterType.BOOKMARK -> {
-            BookmarksStore.isBookmarked(item.sessionId)
-          }
-          SessionFilter.FilterType.LANGUAGE -> {
-            sessionFilter.value == item.language
-          }
-          SessionFilter.FilterType.ROOM -> {
-            sessionFilter.value == item.roomId
-          }
-        }
-
-        if (matched) {
-          filteredSessions.add(item)
-        }
-      }
+): Set<ScheduleSession> {
+    val filteredSessions = hashSetOf<ScheduleSession>()
+    if (filterList.isEmpty()) {
+        filteredSessions.addAll(this)
+        return filteredSessions
     }
-  }
-
-  return filteredSessions
+    val sessionsByFilterType = mutableMapOf<SessionFilter.FilterType, MutableList<ScheduleSession>>()
+    for (filter in filterList) {
+        if (!sessionsByFilterType.containsKey(filter.type)) {
+            sessionsByFilterType[filter.type] = mutableListOf()
+        }
+    }
+    for (session in this) {
+        for (filter in filterList) {
+            when (filter.type) {
+                SessionFilter.FilterType.BOOKMARK -> {
+                    if (BookmarksStore.isBookmarked(session.sessionId)) {
+                        sessionsByFilterType[filter.type]?.add(session)
+                    }
+                }
+                SessionFilter.FilterType.LANGUAGE -> {
+                    if (filter.value == session.language) {
+                        sessionsByFilterType[filter.type]?.add(session)
+                    }
+                }
+                SessionFilter.FilterType.ROOM -> {
+                    if (filter.value == session.roomId) {
+                        sessionsByFilterType[filter.type]?.add(session)
+                    }
+                }
+            }
+        }
+    }
+    //get union join of all ScheduleSessions
+    val origin = sessionsByFilterType.values.flatten().toMutableSet()
+    sessionsByFilterType.values.forEach { origin.retainAll(it) }
+    return origin
 }
 
 private fun getRoomTitle(scheduleSession: ScheduleSession, daySchedule: DaySchedule): String {
