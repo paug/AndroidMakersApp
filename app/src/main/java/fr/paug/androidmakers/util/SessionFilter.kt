@@ -1,6 +1,10 @@
 package fr.paug.androidmakers.util
 
-class SessionFilter(val type: FilterType, val value: Any) {
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+class SessionFilter(val type: FilterType, val value: String) : Parcelable {
     enum class FilterType {
         BOOKMARK,
         LANGUAGE,
