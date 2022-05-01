@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -41,7 +42,7 @@ fun AgendaLayout(
     agendaFilterDrawerState: DrawerState,
     onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
 ) {
-  var sessionFilters: List<SessionFilter> by remember { mutableStateOf(listOf()) }
+  var sessionFilters: List<SessionFilter> by rememberSaveable { mutableStateOf(listOf()) }
   val rooms = AndroidMakersApplication.instance().store.getRooms()
 
   // XXX This is a hack to make the drawer appear from the right
