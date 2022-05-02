@@ -23,12 +23,12 @@ fun runServer(): ConfigurableApplicationContext {
 
 class CustomSchemaGeneratorHooks : SchemaGeneratorHooks {
   override fun willGenerateGraphQLType(type: KType): GraphQLType? = when (type.classifier as? KClass<*>) {
-    Instant::class -> graphqlUUIDType
+    Instant::class -> graphqlInstantType
     else -> null
   }
 }
 
-val graphqlUUIDType = GraphQLScalarType.newScalar()
+val graphqlInstantType = GraphQLScalarType.newScalar()
     .name("Instant")
     .description("A type representing a formatted kotlinx.datetime.Instant")
     .coercing(InstantCoercing)
