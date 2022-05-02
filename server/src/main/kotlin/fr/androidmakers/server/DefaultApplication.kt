@@ -4,6 +4,8 @@ import com.expediagroup.graphql.generator.hooks.SchemaGeneratorHooks
 import graphql.language.StringValue
 import graphql.schema.*
 import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.ConfigurableApplicationContext
