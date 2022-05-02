@@ -2,6 +2,9 @@ package fr.androidmakers.server.model
 
 import fr.androidmakers.server.CachedData
 import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 data class Room(
   val id: String,
@@ -86,4 +89,8 @@ data class Venue(
     val description: String,
     val descriptionFr: String,
     val imageUrl: String,
+)
+
+data class Configuration(
+    val timezone: String
 )
