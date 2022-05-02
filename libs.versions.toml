@@ -40,6 +40,7 @@ kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.3.1"
 kotlinx-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2"
 
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 okhttp = "com.squareup.okhttp3:okhttp:4.9.3"
 
 lifecycle-viewmodel-compose = "androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1"
