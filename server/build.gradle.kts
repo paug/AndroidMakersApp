@@ -11,6 +11,7 @@ dependencies {
   implementation(libs.kotlinx.datetime)
   implementation(libs.kotlinx.serialization)
   implementation(libs.okhttp)
+  implementation(libs.kotlin.reflect)
 
   testImplementation(libs.kotlin.test.junit)
 }
