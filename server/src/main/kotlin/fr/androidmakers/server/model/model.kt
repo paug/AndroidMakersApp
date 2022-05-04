@@ -1,7 +1,10 @@
 package fr.androidmakers.server.model
 
 import fr.androidmakers.server.CachedData
-import kotlinx.serialization.Serializable
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 data class Room(
   val id: String,
@@ -22,10 +25,15 @@ data class Session(
   val platformUrl: String?,
   val feedback: String?,
   val slido: String?,
+  @Deprecated("Use startInstant instead")
   val startDate: String,
+  @Deprecated("Use endInstant instead")
   val endDate: String,
   private val roomId: String,
 ) {
+  val startInstant: Instant = Instant.parse(startDate)
+  val endInstant: Instant = Instant.parse(endDate)
+
   val speakers: List<Speaker>
     get() {
       return CachedData.speakers().filter {
@@ -81,4 +89,8 @@ data class Venue(
     val description: String,
     val descriptionFr: String,
     val imageUrl: String,
+)
+
+data class Configuration(
+    val timezone: String
 )

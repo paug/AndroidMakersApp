@@ -27,4 +27,10 @@ class RootQuery : Query {
   fun session(id: String): Session {
     return CachedData.sessions().first { it.id == id }
   }
+
+  fun config(): Configuration {
+    return Configuration(
+        timezone = "Europe/Paris"
+    )
+  }
 }
