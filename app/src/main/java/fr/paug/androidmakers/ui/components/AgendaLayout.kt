@@ -7,7 +7,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -42,8 +41,8 @@ fun AgendaLayout(
     agendaFilterDrawerState: DrawerState,
     onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
 ) {
-  var sessionFilters: List<SessionFilter> by rememberSaveable { mutableStateOf(listOf()) }
-  val rooms = AndroidMakersApplication.instance().store.getRooms()
+  val agendaLayoutViewModel = viewModel<AgendaLayoutViewModel>()
+  val agendaLayoutState by agendaLayoutViewModel.state.collectAsState()
 
   // XXX This is a hack to make the drawer appear from the right
   CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
@@ -53,25 +52,23 @@ fun AgendaLayout(
           // XXX Go back to left to right for the contents
           CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
             AgendaFilterDrawer(
-                rooms = rooms.collectAsState(initial = Result.success(emptyList())).value
-                    .recover { emptyList() }
-                    .getOrThrow(),
-                sessionFilters = sessionFilters,
-                onFiltersChanged = { newFilters -> sessionFilters = newFilters }
+                rooms = agendaLayoutState.rooms,
+                sessionFilters = agendaLayoutState.sessionFilters,
+                onFiltersChanged = agendaLayoutViewModel::onFiltersChanged
             )
           }
         },
         content = {
           // XXX Go back to left to right for the contents
           CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
-            AgendaPagerOrLoading(sessionFilters, onSessionClick)
+            AgendaPagerOrLoading(agendaLayoutState.sessionFilters, onSessionClick)
           }
         }
     )
   }
 }
 
-class AgendaLayoutViewModel : LceViewModel<Agenda>() {
+class AgendaPagerViewModel : LceViewModel<Agenda>() {
   override fun produce(): Flow<Result<Agenda>> {
     return AndroidMakersApplication.instance().store.getAgenda()
   }
@@ -82,7 +79,7 @@ private fun AgendaPagerOrLoading(
     sessionFilters: List<SessionFilter>,
     onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
 ) {
-  ButtonRefreshableLceLayout(viewModel<AgendaLayoutViewModel>()) {
+  ButtonRefreshableLceLayout(viewModel<AgendaPagerViewModel>()) {
     val days = agendaToDays(it)
 
     AgendaPager(
@@ -185,7 +182,7 @@ private fun FilterItem(
       modifier = Modifier
           .fillMaxWidth()
           .clickable {
-            onCheck(!checked)
+              onCheck(!checked)
           },
       verticalAlignment = Alignment.CenterVertically,
   ) {
