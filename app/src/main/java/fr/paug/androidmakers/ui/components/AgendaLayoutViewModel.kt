@@ -6,6 +6,7 @@ import fr.androidmakers.store.AndroidMakersStore
 import fr.androidmakers.store.model.Room
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.util.SessionFilter
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -19,7 +20,8 @@ data class AgendaLayoutState(
 )
 
 class AgendaLayoutViewModel(
-  store: AndroidMakersStore = AndroidMakersApplication.instance().store
+  store: AndroidMakersStore = AndroidMakersApplication.instance().store,
+  scope: ViewModel.() -> CoroutineScope = { viewModelScope }
 ) : ViewModel() {
   private val sessionFilters = MutableStateFlow(emptyList<SessionFilter>())
 
@@ -27,7 +29,7 @@ class AgendaLayoutViewModel(
     store.getRooms().map { rooms -> rooms.recover { emptyList() }.getOrThrow() },
     sessionFilters,
     ::AgendaLayoutState
-  ).stateIn(viewModelScope, SharingStarted.WhileSubscribed(), AgendaLayoutState())
+  ).stateIn(scope(), SharingStarted.WhileSubscribed(), AgendaLayoutState())
 
   fun onFiltersChanged(sessionFilters: List<SessionFilter>) {
     this.sessionFilters.value = sessionFilters
