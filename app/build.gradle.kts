@@ -1,6 +1,5 @@
 plugins {
     id("fr.androidmakers.gradle.android.application")
-    id("kotlin-parcelize")
 }
 
 dependencies {
