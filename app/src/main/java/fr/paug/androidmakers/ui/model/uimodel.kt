@@ -1,6 +1,6 @@
 package fr.paug.androidmakers.ui.model
 
-import java.time.Instant
+import kotlinx.datetime.Instant
 
 class UISession(
     public val id: String,

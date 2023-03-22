@@ -1,7 +1,6 @@
 package fr.androidmakers.store.model
 
 data class Partner(
-        val order: Int = 0,
         val title: String = "",
         val logos: List<Logo> = arrayListOf()
 )

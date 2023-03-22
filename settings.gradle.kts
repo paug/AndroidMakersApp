@@ -1,5 +1,3 @@
-enableFeaturePreview("VERSION_CATALOGS")
-
 dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
@@ -9,10 +7,13 @@ dependencyResolutionManagement {
 }
 
 pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        google()
-        mavenCentral()
+    listOf(repositories, dependencyResolutionManagement.repositories).forEach {
+        it.apply {
+            google()
+            mavenCentral()
+            maven("https://androidx.dev/storage/compose-compiler/repository")
+            gradlePluginPortal()
+        }
     }
     resolutionStrategy {
         eachPlugin {
@@ -27,4 +28,3 @@ include(":app")
 include(":store")
 include(":store-firebase")
 include(":store-graphql")
-include(":server")
