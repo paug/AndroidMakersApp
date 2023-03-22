@@ -37,7 +37,7 @@ class GraphQLStore(val apolloClient: ApolloClient) : AndroidMakersStore {
 
   override fun getRooms(): Flow<Result<List<Room>>> {
     return apolloClient.query(GetRoomsQuery())
-        .fetchPolicy(FetchPolicy.CacheAndNetwork)
+        .fetchPolicy(FetchPolicy.NetworkFirst)
         .watch()
         .map {
           it.dataAssertNoErrors.rooms.map { it.roomDetails.toRoom() }
@@ -72,9 +72,8 @@ class GraphQLStore(val apolloClient: ApolloClient) : AndroidMakersStore {
         .watch().map {
           it.dataAssertNoErrors.partnerGroups.map {
             Partner(
-                it.order,
-                it.title,
-                it.partners.map {
+                title = it.title,
+                logos = it.partners.map {
                   Logo(
                       logoUrl = it.logoUrl,
                       name = it.name,
@@ -92,7 +91,7 @@ class GraphQLStore(val apolloClient: ApolloClient) : AndroidMakersStore {
         .fetchPolicy(FetchPolicy.CacheAndNetwork)
         .watch()
         .map {
-          it.dataAssertNoErrors.sessions.map { it.sessionDetails.toSlot() }
+          it.dataAssertNoErrors.sessions.nodes.map { it.sessionDetails.toSlot() }
         }
         .toResultFlow()
   }
@@ -103,7 +102,7 @@ class GraphQLStore(val apolloClient: ApolloClient) : AndroidMakersStore {
         .fetchPolicy(FetchPolicy.CacheAndNetwork)
         .watch()
         .map {
-          it.dataAssertNoErrors.sessions.map { it.sessionDetails.toSession() }
+          it.dataAssertNoErrors.sessions.nodes.map { it.sessionDetails.toSession() }
         }
         .toResultFlow()
   }

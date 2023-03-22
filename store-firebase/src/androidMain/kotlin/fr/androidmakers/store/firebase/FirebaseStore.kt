@@ -188,14 +188,15 @@ class FirebaseStore : AndroidMakersStore {
               else -> index.toString()
             }
 
-            list.add(
-                ScheduleSlot(
-                    startDate = getDate(result.key, startTime),
-                    endDate = getDate(result.key, endTime),
-                    roomId = roomId,
-                    sessionId = sessionId
-                )
-            )
+            TODO()
+//            list.add(
+//                ScheduleSlot(
+//                    startDate = getDate(result.key, startTime),
+//                    endDate = getDate(result.key, endTime),
+//                    roomId = roomId,
+//                    sessionId = sessionId
+//                )
+//            )
           }
         }
       }
