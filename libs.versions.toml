@@ -1,5 +1,5 @@
 [versions]
-kotlin = "1.8.20-RC" # bumping to 1.6.20 breaks IDE autocomplete
+kotlin = "1.8.20-RC" 
 glide = "4.12.0"
 apollo = "3.7.5"
 compose = "1.4.0-rc01"
