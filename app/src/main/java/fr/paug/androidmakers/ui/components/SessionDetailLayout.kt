@@ -150,7 +150,7 @@ private fun SessionDetails(sessionDetails: SessionDetailState, formattedDateAndR
     )
     Text(
         modifier = Modifier.padding(top = 16.dp),
-        text = sessionDetails.session.description.discardHtmlTags(),
+        text = sessionDetails.session.description?.discardHtmlTags() ?: "",
         style = MaterialTheme.typography.body1
     )
     ChipList(sessionDetails)

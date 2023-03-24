@@ -23,6 +23,8 @@ import fr.paug.androidmakers.util.BookmarksStore
 import fr.paug.androidmakers.util.SessionFilter
 import fr.paug.androidmakers.util.TimeUtils
 import kotlinx.coroutines.launch
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
 import java.time.OffsetDateTime
 import java.util.*
 
@@ -78,8 +80,8 @@ fun AgendaPager(
                   id = item.sessionId,
                   title = item.title,
                   language = item.language,
-                  startDate = OffsetDateTime.parse(item.slot.startDate).toInstant(),
-                  endDate = OffsetDateTime.parse(item.slot.endDate).toInstant(),
+                  startDate = item.slot.startDate.toInstant(TimeZone.UTC),
+                  endDate = item.slot.startDate.toInstant(TimeZone.UTC),
                   room = getRoomTitle(item, days[page]),
                   roomId = item.roomId,
                   speakers = item.speakers.map {
@@ -102,7 +104,7 @@ fun AgendaPager(
 
 private fun addSeparators(context: Context, sessions: List<UISession>): Map<String, List<UISession>> {
   return sessions.map {
-    TimeUtils.formatShortTime(context, Date(it.startDate.toEpochMilli())) to it
+    TimeUtils.formatShortTime(context, Date(it.startDate.toEpochMilliseconds())) to it
   }
       .groupBy(
           keySelector = { it.first }

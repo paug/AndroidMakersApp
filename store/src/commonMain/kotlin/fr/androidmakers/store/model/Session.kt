@@ -4,7 +4,7 @@ data class Session(
         val id: String = "",
         val complexity: String = "",
         val speakers: List<String> = listOf(),
-        val description: String = "",
+        val description: String? = null,
         val language: String = "",
         val title: String = "",
         val tags: List<String> = listOf(),

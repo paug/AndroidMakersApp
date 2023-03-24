@@ -30,6 +30,7 @@ import fr.paug.androidmakers.ui.theme.AndroidMakersTheme
 import fr.paug.androidmakers.util.EmojiUtils
 import fr.paug.androidmakers.util.BookmarksStore
 import fr.paug.androidmakers.util.TimeUtils
+import kotlinx.datetime.Instant
 import separatorColor
 import separatorHeight
 import java.time.OffsetDateTime
@@ -107,7 +108,7 @@ fun AgendaRow(
 }
 
 private fun UISession.subtitle(context: Context) = buildString {
-  val millis = endDate.toEpochMilli() - startDate.toEpochMilli()
+  val millis = endDate.toEpochMilliseconds() - startDate.toEpochMilliseconds()
   val duration = TimeUtils.formatDuration(
       context = context,
       millis
@@ -134,6 +135,6 @@ private val fakeUiSession = UISession(
     speakers = listOf(UISession.Speaker("chicken1")),
     roomId = "1",
     room = "Moebius",
-    startDate = OffsetDateTime.parse("2022-04-25T09:00:00+02:00").toInstant(),
-    endDate = OffsetDateTime.parse("2022-04-25T10:00:00+02:00").toInstant(),
+    startDate = Instant.parse("2022-04-25T09:00:00+02:00"),
+    endDate = Instant.parse("2022-04-25T10:00:00+02:00"),
 )

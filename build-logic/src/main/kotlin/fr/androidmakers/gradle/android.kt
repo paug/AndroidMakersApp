@@ -10,7 +10,7 @@ internal val Project.androidExtension: BaseExtension
   }
 
 private fun configureAndroidCompileSdk(project: Project) {
-  project.androidExtension.compileSdkVersion(31)
+  project.androidExtension.compileSdkVersion(33)
 }
 
 fun Project.androidSetup() {

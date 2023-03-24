@@ -32,6 +32,8 @@ import fr.paug.androidmakers.util.EmojiUtils
 import fr.paug.androidmakers.util.SessionFilter
 import fr.paug.androidmakers.util.TimeUtils
 import kotlinx.coroutines.flow.Flow
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
 import surfaceColor2
 import java.text.DateFormat
 import java.util.*
@@ -88,7 +90,7 @@ private fun AgendaPagerOrLoading(
         filterList = sessionFilters,
         onSessionClicked = {
           onSessionClick(
-              it.id, it.roomId, it.startDate.toEpochMilli(), it.endDate.toEpochMilli()
+              it.id, it.roomId, it.startDate.toEpochMilliseconds(), it.endDate.toEpochMilliseconds()
           )
         }
     )
@@ -259,9 +261,8 @@ private fun getRoomScheduleForDay(
     calendar: Calendar,
     scheduleSlot: ScheduleSlot,
 ): MutableList<RoomSchedule> {
-  val date = TimeUtils.parseIso8601(scheduleSlot.startDate)
 
-  calendar.timeInMillis = date.time
+  calendar.timeInMillis = scheduleSlot.startDate.toInstant(TimeZone.UTC).toEpochMilliseconds()
   val dayIndex = calendar.get(Calendar.DAY_OF_YEAR) + calendar.get(Calendar.YEAR) * 1000
   var daySchedule: DaySchedule? = itemByDayOfTheYear.get(dayIndex)
   if (daySchedule == null) {
