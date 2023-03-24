@@ -1,9 +1,9 @@
-package fr.androidmakers.gradle.android.application
+package fr.androidmakers.gradle.plugin
 
 import com.android.build.gradle.BaseExtension
-import fr.androidmakers.gradle.addRepositories
 import fr.androidmakers.gradle.androidSetup
 import fr.androidmakers.gradle.catalogVersion
+import fr.androidmakers.gradle.commonSetup
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -21,8 +21,7 @@ class AndroidApplicationPlugin : Plugin<Project> {
     project.apply(mapOf("plugin" to "com.google.firebase.crashlytics"))
     project.apply(mapOf("plugin" to "com.google.gms.google-services"))
 
-    addRepositories(project)
-
+    project.commonSetup()
     project.androidSetup()
 
     project.extensions.findByName("android")!!.apply {
@@ -44,7 +43,7 @@ class AndroidApplicationPlugin : Plugin<Project> {
 
       @Suppress("UnstableApiUsage")
       composeOptions {
-        val composeVersion = project.catalogVersion("compose")
+        val composeVersion = project.catalogVersion("compose.compiler")
         it.kotlinCompilerExtensionVersion = composeVersion
       }
 

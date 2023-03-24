@@ -9,6 +9,7 @@ kotlin {
             dependencies {
                 api(project(":store"))
                 implementation(libs.apollo.runtime)
+                implementation(libs.apollo.adapters)
                 implementation(libs.apollo.normalized.cache.sqlite)
                 implementation(libs.apollo.normalized.cache)
             }
@@ -17,11 +18,13 @@ kotlin {
 }
 
 apollo {
-    packageName.set("fr.androidmakers.store.graphql")
+    service("service") {
+        packageName.set("fr.androidmakers.store.graphql")
+        mapScalar("LocalDateTime", "kotlinx.datetime.LocalDateTime", "com.apollographql.apollo3.adapter.KotlinxLocalDateTimeAdapter")
 
-    introspection {
-        schemaFile.set(file("src/commonMain/graphql/schema.graphqls"))
-        //endpointUrl.set("https://kiki-conf.ew.r.appspot.com/graphql")
-        endpointUrl.set("http://localhost:8080/graphql")
+        introspection {
+            schemaFile.set(file("src/commonMain/graphql/schema.graphqls"))
+            endpointUrl.set("https://confetti-app.dev/graphql")
+        }
     }
 }

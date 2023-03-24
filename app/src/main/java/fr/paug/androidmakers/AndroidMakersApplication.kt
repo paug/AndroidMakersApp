@@ -3,6 +3,7 @@ package fr.paug.androidmakers
 import android.app.Application
 import fr.androidmakers.store.AndroidMakersStore
 import fr.androidmakers.store.firebase.FirebaseStore
+import fr.androidmakers.store.graphql.GraphQLStore
 import fr.paug.androidmakers.util.BookmarksStore
 import io.openfeedback.android.OpenFeedback
 
@@ -14,19 +15,18 @@ class AndroidMakersApplication : Application() {
     override fun onCreate() {
         instance_ = this
 
-        // Replace with proper dependency injection
-        store = FirebaseStore()
+        store = GraphQLStore(this)
 
         super.onCreate()
         BookmarksStore.init(this)
 
         openFeedback = OpenFeedback(context = this,
-            openFeedbackProjectId = "am-2022",
+            openFeedbackProjectId = "am2023",
             firebaseConfig = OpenFeedback.FirebaseConfig(
-                projectId = "openfeedback-am-2022",
-                applicationId = "1:378302699578:web:35d970e43cb3207eeebd03",
-                apiKey = "AIzaSyAd3HgjDN3II5NrE97myBQkWNUrky3A70I",
-                databaseUrl = "https://openfeedback-am-2022.firebaseio.com"
+                projectId = "open-feedback-42",
+                applicationId = "1:635903227116:web:31de912f8bf29befb1e1c9",
+                apiKey = "AIzaSyB3ELJsaiItrln0uDGSuuHE1CfOJO67Hb4",
+                databaseUrl = "https://open-feedback-42.firebaseio.com"
             )
         )
     }

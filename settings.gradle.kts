@@ -1,18 +1,11 @@
-enableFeaturePreview("VERSION_CATALOGS")
-
-dependencyResolutionManagement {
-    versionCatalogs {
-        create("libs") {
-            from(files("libs.versions.toml"))
-        }
-    }
-}
-
 pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        google()
-        mavenCentral()
+    listOf(repositories, dependencyResolutionManagement.repositories).forEach {
+        it.apply {
+            google()
+            mavenCentral()
+            maven("https://androidx.dev/storage/compose-compiler/repository")
+            gradlePluginPortal()
+        }
     }
     resolutionStrategy {
         eachPlugin {
@@ -23,8 +16,22 @@ pluginManagement {
     }
     includeBuild("build-logic")
 }
+
+plugins {
+    id("com.gradle.enterprise") version "3.12.4"
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.4.0"
+}
+
+dependencyResolutionManagement {
+    versionCatalogs {
+        create("libs") {
+            from(files("libs.versions.toml"))
+        }
+    }
+}
+
+
 include(":app")
 include(":store")
 include(":store-firebase")
 include(":store-graphql")
-include(":server")

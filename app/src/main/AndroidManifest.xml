@@ -10,7 +10,6 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:supportsRtl="true"
         android:theme="@style/PreviewTheme.AndroidMakers"
-        tools:replace="android:theme"
         tools:ignore="UnusedAttribute">
 
         <!-- Disable analytics and advertisingId collection. Google just pushed us out of the store for that -->

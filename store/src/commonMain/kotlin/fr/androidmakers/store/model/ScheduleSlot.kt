@@ -1,8 +1,10 @@
 package fr.androidmakers.store.model
 
+import kotlinx.datetime.LocalDateTime
+
 data class ScheduleSlot(
-        val endDate: String = "",
+        val endDate: LocalDateTime,
         val sessionId: String = "",
-        val roomId: String = "",
-        val startDate: String = ""
+        val roomId: String,
+        val startDate: LocalDateTime,
 )

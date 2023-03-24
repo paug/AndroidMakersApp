@@ -25,12 +25,11 @@ dependencies {
 
     // Firebase
     implementation(platform(libs.firebase.bom))
-    implementation("com.google.firebase:firebase-crashlytics-ktx")
-    implementation("com.google.firebase:firebase-analytics-ktx")
-    implementation("com.google.firebase:firebase-core")
-    implementation("com.google.firebase:firebase-messaging")
-    implementation("com.google.firebase:firebase-config")
-    implementation("com.google.firebase:firebase-auth")
+    implementation(libs.firebase.crashlytics.ktx)
+    implementation(libs.firebase.analytics.ktx)
+    implementation(libs.firebase.messaging)
+    implementation(libs.firebase.config)
+    implementation(libs.firebase.auth)
 
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.compose.material)
@@ -43,7 +42,6 @@ dependencies {
     implementation(libs.accompanist.swiperefresh)
 
     implementation(libs.play.services.auth)
-    implementation(libs.lifecycle.runtime.ktx)
 
     // Image management
     implementation(libs.glide.runtime)

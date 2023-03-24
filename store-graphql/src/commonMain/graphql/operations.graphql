@@ -1,6 +1,8 @@
 query GetSessions {
-    sessions {
-        ...SessionDetails
+    sessions(first: 1000) {
+        nodes {
+            ...SessionDetails
+        }
     }
 }
 
@@ -16,8 +18,8 @@ fragment SessionDetails on Session {
     complexity
     description
     language
-    startDate
-    endDate
+    startsAt
+    endsAt
     room {
         id
     }
@@ -39,10 +41,7 @@ fragment SpeakerDetails on Speaker {
     name
     photoUrl
     company
-    companyLogo
-    country
-    featured
-    order
+    companyLogoUrl
     bio
     socials {
         name
@@ -66,10 +65,8 @@ fragment RoomDetails on Room {
 
 query GetPartnerGroups {
   partnerGroups {
-    order
     title
     partners {
-      order
       name
       logoUrl
       url

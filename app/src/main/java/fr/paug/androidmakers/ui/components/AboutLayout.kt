@@ -249,7 +249,6 @@ private fun AboutLayoutLoadedPreview() {
       partnerList = Lce.Content(
           listOf(
               Partner(
-                  order = 0,
                   title = "Event Organizers",
                   logos = listOf(
                       Logo(
@@ -265,7 +264,6 @@ private fun AboutLayoutLoadedPreview() {
                   )
               ),
               Partner(
-                  order = 1,
                   title = "Gold sponsors",
                   logos = listOf(
                       Logo(

@@ -30,9 +30,9 @@ private fun findStartIndex(sessionsPerStartTime: Map<String, List<UISession>>): 
 
   for (i in items.indices.reversed()) {
     val item = items[i]
-    if (item is UISession && item.startDate.toEpochMilli() < now) {
+    if (item is UISession && item.startDate.toEpochMilliseconds() < now) {
       found = true
-    } else if( item is String) {
+    } else if (item is String) {
       if (found) {
         return i
       }
@@ -105,5 +105,5 @@ fun TimeSeparator(prettyTime: String) {
 @Preview
 @Composable
 private fun TimeSeparatorPreview() {
-    TimeSeparator(prettyTime = "3:25 pm")
+  TimeSeparator(prettyTime = "3:25 pm")
 }
