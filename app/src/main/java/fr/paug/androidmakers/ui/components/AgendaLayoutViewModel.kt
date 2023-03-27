@@ -15,20 +15,20 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
 data class AgendaLayoutState(
-  val rooms: List<Room> = emptyList(),
-  val sessionFilters: List<SessionFilter> = emptyList()
+    val rooms: List<Room> = emptyList(),
+    val sessionFilters: List<SessionFilter> = emptyList()
 )
 
 class AgendaLayoutViewModel(
-  store: AndroidMakersStore = AndroidMakersApplication.instance().store,
-  scope: ViewModel.() -> CoroutineScope = { viewModelScope }
+    store: AndroidMakersStore = AndroidMakersApplication.instance().store,
+    scope: ViewModel.() -> CoroutineScope = { viewModelScope }
 ) : ViewModel() {
   private val sessionFilters = MutableStateFlow(emptyList<SessionFilter>())
 
   val state: StateFlow<AgendaLayoutState> = combine(
-    store.getRooms().map { rooms -> rooms.recover { emptyList() }.getOrThrow() },
-    sessionFilters,
-    ::AgendaLayoutState
+      store.getRooms().map { rooms -> rooms.recover { emptyList() }.getOrThrow() },
+      sessionFilters,
+      ::AgendaLayoutState
   ).stateIn(scope(), SharingStarted.WhileSubscribed(), AgendaLayoutState())
 
   fun onFiltersChanged(sessionFilters: List<SessionFilter>) {

@@ -1,29 +1,35 @@
 package fr.paug.androidmakers.ui.theme
 
-import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.text.selection.LocalTextSelectionColors
-import androidx.compose.material.*
-import androidx.compose.material.ripple.LocalRippleTheme
-import androidx.compose.runtime.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Typography
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontSynthesis
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.ExperimentalUnitApi
-import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.TextUnitType
+import androidx.compose.ui.unit.sp
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import fr.paug.androidmakers.R
 
 val GillSans = FontFamily(
     Font(R.font.gill_sans_light, FontWeight.Light),
 )
 
+val Inter = FontFamily(
+    Font(R.font.inter_bold, FontWeight.Bold),
+    Font(R.font.inter_light, FontWeight.Light),
+    Font(R.font.inter_semibold, FontWeight.SemiBold),
+    Font(R.font.inter_medium, FontWeight.Medium),
+    Font(R.font.inter_regular, FontWeight.Normal)
+)
+
 object AMColor {
-  val amBlue = Color(0xff1EB6E1)
-  val amRed = Color(0xffE85145)
+  val amBlue = Color(0xff4eb6e3)
+  val amBlueNavy = Color(0xff0014e6)
+  val amRed = Color(0xffff5641)
   val bookmarked = amRed
 }
 
@@ -33,39 +39,83 @@ class AMAlphas(
 )
 
 val AMAlpha = AMAlphas(
-    15f/255,
-    50f/255
+    15f / 255,
+    50f / 255
 )
 
 
-@OptIn(ExperimentalUnitApi::class)
+val AndroidMakersTypography = Typography(
+
+    titleLarge = TextStyle(
+        fontFamily = GillSans,
+//        color = AMColor.amBlue,
+        fontWeight = FontWeight.Bold,
+        fontSize = 22.sp
+    ),
+    displayLarge = TextStyle(
+        fontFamily = GillSans
+    ),
+    displayMedium = TextStyle(
+        fontFamily = GillSans
+    ),
+    displaySmall = TextStyle(
+        fontFamily = GillSans
+    ),
+    headlineLarge = TextStyle(
+        fontFamily = GillSans
+    ),
+    headlineMedium = TextStyle(
+        fontFamily = GillSans
+    ),
+    headlineSmall = TextStyle(
+        fontFamily = GillSans
+    ),
+    titleMedium = TextStyle(
+        fontFamily = GillSans
+    ),
+    titleSmall = TextStyle(
+        fontFamily = GillSans
+    ),
+    bodyLarge = TextStyle(
+        fontFamily = Inter
+    ),
+    bodyMedium = TextStyle(
+        fontFamily = Inter
+    ),
+    bodySmall = TextStyle(
+        fontFamily = Inter
+    ),
+    labelLarge = TextStyle(
+        fontFamily = GillSans
+    ),
+    labelMedium = TextStyle(
+        fontFamily = GillSans
+    ),
+)
+
+
 @Composable
 fun AndroidMakersTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    useDarkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-  val colors = if (darkTheme) {
-    darkColors(
-        primary = AMColor.amBlue,
-        secondary = AMColor.amRed
+
+  val systemUiController = rememberSystemUiController()
+
+  DisposableEffect(systemUiController) {
+    systemUiController.setStatusBarColor(
+        color = Color.Transparent,
+        darkIcons = !useDarkTheme
     )
-  } else {
-    lightColors(
-        primary = AMColor.amBlue,
-        secondary = AMColor.amRed
-    )
+
+    onDispose {}
   }
+
+  val colorSchemeColors = if (!useDarkTheme) LightDefaultColorScheme else DarkDefaultColorScheme
+
   MaterialTheme(
-      colors = colors,
-      typography = Typography(
-          h5 = TextStyle(
-              fontFamily = GillSans,
-              color = AMColor.amBlue,
-              fontSynthesis = FontSynthesis.Weight,
-              fontWeight = FontWeight.Bold,
-              fontSize = TextUnit(24f, TextUnitType.Sp)
-          )
-      ),
+      colorScheme = colorSchemeColors,
+      typography = AndroidMakersTypography,
       content = content,
   )
 }

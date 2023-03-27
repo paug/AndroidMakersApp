@@ -1,9 +1,26 @@
 package fr.paug.androidmakers.ui.components
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Card
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,7 +64,11 @@ fun AboutLayout(
   ) {
     IntroCard(aboutActions.onFaqClick, aboutActions.onCodeOfConductClick)
     Spacer(Modifier.height(16.dp))
-    SocialCard(aboutActions.onTwitterHashtagClick, aboutActions.onTwitterLogoClick, aboutActions.onYouTubeLogoClick)
+    SocialCard(
+        aboutActions.onTwitterHashtagClick,
+        aboutActions.onTwitterLogoClick,
+        aboutActions.onYouTubeLogoClick
+    )
 
     if (wifiInfo != null) {
       Spacer(Modifier.height(16.dp))
@@ -62,7 +83,11 @@ fun AboutLayout(
     Text(
         modifier = Modifier.fillMaxWidth(),
         textAlign = TextAlign.Center,
-        text = stringResource(R.string.version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE),
+        text = stringResource(
+            R.string.version,
+            BuildConfig.VERSION_NAME,
+            BuildConfig.VERSION_CODE
+        ),
         color = colorResource(R.color.grey)
     )
   }
@@ -76,7 +101,8 @@ private fun IntroCard(onFaqClick: () -> Unit, onCocClick: () -> Unit) {
           modifier = Modifier
               .height(64.dp)
               .fillMaxWidth(),
-          painter = painterResource(R.drawable.logo_android_makers), contentDescription = "Logo"
+          painter = painterResource(R.drawable.logo_android_makers),
+          contentDescription = "Logo"
       )
       Text(
           modifier = Modifier.padding(16.dp),
@@ -95,7 +121,11 @@ private fun IntroCard(onFaqClick: () -> Unit, onCocClick: () -> Unit) {
 }
 
 @Composable
-private fun SocialCard(onTwitterHashtagClick: () -> Unit, onTwitterLogoClick: () -> Unit, onYouTubeLogoClick: () -> Unit) {
+private fun SocialCard(
+    onTwitterHashtagClick: () -> Unit,
+    onTwitterLogoClick: () -> Unit,
+    onYouTubeLogoClick: () -> Unit
+) {
   Card(Modifier.fillMaxWidth()) {
     Column(Modifier.padding(8.dp)) {
       Text(
@@ -164,15 +194,17 @@ private fun SponsorsCard(partnerList: Lce<List<Partner>>, onSponsorClick: (url: 
 
       when (partnerList) {
         is Lce.Loading, Lce.Error -> {
-          Box(modifier = Modifier
-              .fillMaxWidth()
-              .padding(8.dp),
+          Box(
+              modifier = Modifier
+                  .fillMaxWidth()
+                  .padding(8.dp),
               contentAlignment = Alignment.Center
           ) {
             CircularProgressIndicator()
           }
 
         }
+
         is Lce.Content -> {
           for (partner in partnerList.content) {
             // Sponsor "group" (e.g. Organizers, Gold, etc.)
