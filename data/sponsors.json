@@ -1,0 +1,88 @@
+[
+  {
+    "kind": "gold",
+    "items": [
+      {
+        "name": "Embrace",
+        "url": "https://embrace.io/",
+        "photoUrl": "https://androidmakers.droidcon.com/wp-content/uploads/sites/5/2022/10/embrace.png"
+      },
+      {
+        "name": "RevenueCat",
+        "url": "https://www.revenuecat.com/",
+        "photoUrl": "https://androidmakers.droidcon.com/wp-content/uploads/sites/5/2023/01/revenue-cat-1.png"
+      },
+      {
+        "name": "MWM",
+        "url": "https://mwm.io/",
+        "photoUrl": "https://androidmakers.droidcon.com/wp-content/uploads/sites/5/2023/02/Unknown-1.png"
+      }
+    ]
+  },
+  {
+    "kind": "silver",
+    "items": [
+      {
+        "name": "Vonage",
+        "url": "https://developer.vonage.com/en/home",
+        "photoUrl": "https://androidmakers.droidcon.com/wp-content/uploads/sites/5/2022/05/Vonage.png"
+      }
+    ]
+  },
+  {
+    "kind": "startup",
+    "items": [
+      {
+        "name": "Vonage",
+        "url": "https://glassfy.io/",
+        "photoUrl": "https://androidmakers.droidcon.com/wp-content/uploads/sites/5/2023/03/glassfy.png"
+      },
+      {
+        "name": "Koin",
+        "url": "https://insert-koin.io/",
+        "photoUrl": "https://androidmakers.droidcon.com/wp-content/uploads/sites/5/2023/03/kotzilla.png"
+      }
+    ]
+  },
+  {
+    "kind": "community",
+    "items": [
+      {
+        "name": "StickerMule",
+        "url": "https://www.stickermule.com/eu/uses/laptop-stickers?utm_source=google&utm_campaign=AndroidMakers23&utm_id=AndroidMakers23",
+        "photoUrl": "https://androidmakers.droidcon.com/wp-content/uploads/sites/5/2022/05/Sticker-Mule.png"
+      },
+      {
+        "name": "GroundBreaker",
+        "url": "https://groundbreaker.org/",
+        "photoUrl": "https://androidmakers.droidcon.com/wp-content/uploads/sites/5/2023/03/groundbreaker.png"
+      },
+      {
+        "name": "Women Techmakers",
+        "url": "https://developers.google.com/womentechmakers",
+        "photoUrl": "https://androidmakers.droidcon.com/wp-content/uploads/sites/5/2022/10/womentechmakers.png"
+      }
+    ]
+  },
+  {
+    "kind": "party",
+    "items": [
+      {
+        "name": "Datadog",
+        "url": "https://www.datadoghq.com/product/real-user-monitoring/",
+        "photoUrl": "https://androidmakers.droidcon.com/wp-content/uploads/sites/5/2023/03/datadog.png"
+      }
+    ]
+  },
+  {
+    "kind": "media",
+    "items": [
+      {
+        "name": "Apiumhub",
+        "url": "https://apiumhub.com/media-kit/",
+        "photoUrl": "https://androidmakers.droidcon.com/wp-content/uploads/sites/5/2023/02/apiumhub.png"
+      }
+    ]
+  }
+]
+
