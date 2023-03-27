@@ -4,36 +4,30 @@ import android.content.Context
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Icon
-import androidx.compose.material.IconToggleButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.BookmarkAdd
+import androidx.compose.material.icons.rounded.BookmarkRemove
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconToggleButton
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.model.UISession
 import fr.paug.androidmakers.ui.theme.AMColor
-import fr.paug.androidmakers.ui.theme.AndroidMakersTheme
-import fr.paug.androidmakers.util.EmojiUtils
 import fr.paug.androidmakers.util.BookmarksStore
+import fr.paug.androidmakers.util.EmojiUtils
 import fr.paug.androidmakers.util.TimeUtils
 import kotlinx.datetime.Instant
-import separatorColor
-import separatorHeight
-import java.time.OffsetDateTime
 
 
 @Composable
@@ -41,42 +35,53 @@ fun AgendaRow(
     uiSession: UISession,
     modifier: Modifier = Modifier
 ) {
-  Column(modifier = modifier) {
-    Column(
-        modifier = Modifier.padding(
-            start = 12.dp,
-            end = 12.dp,
-            top = 12.dp,
-            bottom = 4.dp
+  ListItem(
+      modifier = modifier,
+      headlineContent = {
+        Text(
+            text = uiSession.title,
+            style = MaterialTheme.typography.titleMedium.copy(
+                fontWeight = FontWeight.Bold
+            )
         )
-    ) {
-      Text(
-          text = uiSession.title,
-          style = MaterialTheme.typography.h5
-      )
-      Row {
-        Column(Modifier.weight(1F)) {
-          Text(
-              text = uiSession.subtitle(LocalContext.current),
-              style = MaterialTheme.typography.subtitle1,
-              modifier = Modifier.padding(top = 4.dp)
-          )
+      },
 
-          val speakers = uiSession.speakers
-              .map { it.name }
-              .joinToString(", ")
+      supportingContent = {
+        Column {
+          val speakers = uiSession.speakers.joinToString(", ") { it.name }
           if (speakers.isNotBlank()) {
             Text(
                 text = speakers,
-                style = MaterialTheme.typography.subtitle1,
-                //modifier = Modifier.padding(top = 4.dp)
+                style = MaterialTheme.typography.labelMedium,
             )
           }
+
+          Text(
+              text = uiSession.subtitle(LocalContext.current),
+              style = MaterialTheme.typography.labelMedium,
+              modifier = Modifier.padding(top = 4.dp)
+          )
+//
+//                Text(
+//                    modifier = Modifier
+//                        .background(
+//                            color = MaterialTheme.colorScheme.primary,
+//                            shape = RoundedCornerShape(6.dp)
+//                        )
+//                        .padding(4.dp),
+//                    text = "Lightning",
+//                    style = MaterialTheme.typography.labelSmall.copy(
+//                        color = MaterialTheme.colorScheme.onPrimary
+//                    )
+//                )
         }
+      },
+      trailingContent = {
         Box {
-          val isBookmarked = BookmarksStore.subscribe(uiSession.id).collectAsState(false)
-          val icon = if (isBookmarked.value) R.drawable.ic_bookmarked
-          else R.drawable.ic_bookmark
+          val isBookmarked =
+              BookmarksStore.subscribe(uiSession.id).collectAsState(false)
+          val imageVector = if (isBookmarked.value) Icons.Rounded.BookmarkRemove
+          else Icons.Rounded.BookmarkAdd
 
           val tint by animateColorAsState(
               if (isBookmarked.value) AMColor.bookmarked
@@ -90,21 +95,20 @@ fun AgendaRow(
               },
           ) {
             Icon(
-                painter = painterResource(id = icon),
+                imageVector = imageVector,
                 contentDescription = "favorite",
                 tint = tint
             )
           }
         }
-      }
-    }
-    Surface(
-        modifier = Modifier
-            .height(separatorHeight)
-            .fillMaxWidth(),
-        color = separatorColor()
-    ) {}
-  }
+      },
+      leadingContent = {
+        // Nothing to do
+      },
+      overlineContent = {
+        // Nothing to do
+      },
+  )
 }
 
 private fun UISession.subtitle(context: Context) = buildString {
@@ -115,7 +119,7 @@ private fun UISession.subtitle(context: Context) = buildString {
   )
 
   append(duration)
-  append(" / ${room}")
+  append(" / $room")
   val emoji = EmojiUtils.getLanguageInEmoji(language)
   if (emoji != null) {
     append(" / $emoji")

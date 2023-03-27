@@ -6,7 +6,7 @@ import fr.paug.androidmakers.ui.viewmodel.LceViewModel
 import kotlinx.coroutines.flow.Flow
 
 class WifiViewModel : LceViewModel<WifiInfo?>() {
-    override fun produce(): Flow<Result<WifiInfo?>> {
+  override fun produce(): Flow<Result<WifiInfo?>> {
     return AndroidMakersApplication.instance().store.getWifiInfo()
   }
 }

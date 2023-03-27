@@ -12,6 +12,9 @@ import fr.paug.androidmakers.R
 @Composable
 fun FloorPlan() {
   Box(modifier = Modifier.verticalScroll(rememberScrollState())) {
-    Image(painter = painterResource(id = R.drawable.beffroi1800px), contentDescription = "floor plan")
+    Image(
+        painter = painterResource(id = R.drawable.beffroi1800px),
+        contentDescription = "floor plan"
+    )
   }
 }

@@ -2,19 +2,28 @@ package fr.paug.androidmakers.ui.components
 
 import android.util.SparseArray
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.DrawerState
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -30,13 +39,12 @@ import fr.paug.androidmakers.ui.adapter.ScheduleSession
 import fr.paug.androidmakers.ui.viewmodel.LceViewModel
 import fr.paug.androidmakers.util.EmojiUtils
 import fr.paug.androidmakers.util.SessionFilter
-import fr.paug.androidmakers.util.TimeUtils
 import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
-import surfaceColor2
 import java.text.DateFormat
-import java.util.*
+import java.util.Arrays
+import java.util.Calendar
 
 @Composable
 fun AgendaLayout(
@@ -46,28 +54,21 @@ fun AgendaLayout(
   val agendaLayoutViewModel = viewModel<AgendaLayoutViewModel>()
   val agendaLayoutState by agendaLayoutViewModel.state.collectAsState()
 
-  // XXX This is a hack to make the drawer appear from the right
-  CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
-    ModalDrawer(
-        drawerState = agendaFilterDrawerState,
-        drawerContent = {
-          // XXX Go back to left to right for the contents
-          CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
-            AgendaFilterDrawer(
-                rooms = agendaLayoutState.rooms,
-                sessionFilters = agendaLayoutState.sessionFilters,
-                onFiltersChanged = agendaLayoutViewModel::onFiltersChanged
-            )
-          }
-        },
-        content = {
-          // XXX Go back to left to right for the contents
-          CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
-            AgendaPagerOrLoading(agendaLayoutState.sessionFilters, onSessionClick)
-          }
+  ModalNavigationDrawer(
+      drawerState = agendaFilterDrawerState,
+      drawerContent = {
+        ModalDrawerSheet {
+          AgendaFilterDrawer(
+              rooms = agendaLayoutState.rooms,
+              sessionFilters = agendaLayoutState.sessionFilters,
+              onFiltersChanged = agendaLayoutViewModel::onFiltersChanged
+          )
         }
-    )
-  }
+      },
+      content = {
+        AgendaPagerOrLoading(agendaLayoutState.sessionFilters, onSessionClick)
+      }
+  )
 }
 
 class AgendaPagerViewModel : LceViewModel<Agenda>() {
@@ -90,7 +91,10 @@ private fun AgendaPagerOrLoading(
         filterList = sessionFilters,
         onSessionClicked = {
           onSessionClick(
-              it.id, it.roomId, it.startDate.toEpochMilliseconds(), it.endDate.toEpochMilliseconds()
+              it.id,
+              it.roomId,
+              it.startDate.toEpochMilliseconds(),
+              it.endDate.toEpochMilliseconds()
           )
         }
     )
@@ -209,9 +213,13 @@ private fun FilterItem(
         text = text,
         fontSize = 14.sp
     )
-    Checkbox(modifier = Modifier
-        .width(48.dp)
-        .height(48.dp), checked = checked, onCheckedChange = null)
+    Checkbox(
+        modifier = Modifier
+            .width(48.dp)
+            .height(48.dp),
+        checked = checked,
+        onCheckedChange = null
+    )
   }
 }
 
@@ -220,7 +228,7 @@ private fun HeaderItem(text: Int) {
   Text(
       modifier = Modifier
           .fillMaxWidth()
-          .background(color = surfaceColor2())
+//            .background(color = MaterialTheme.colorScheme.surfaceVariant)
           .padding(12.dp),
       fontSize = 16.sp,
       text = stringResource(text)
@@ -306,17 +314,22 @@ internal fun agendaToDays(agenda: Agenda): List<DaySchedule> {
         itemByDayOfTheYear = itemByDayOfTheYear,
         calendar = calendar,
         scheduleSlot = scheduleSlot,
-        rooms = agenda.rooms)
+        rooms = agenda.rooms
+    )
 
     val session = agenda.sessions.get(scheduleSlot.sessionId)
     if (session == null) {
       // this session has disappeared, skip it
       continue
     }
-    agendaScheduleSessions.add(ScheduleSession(scheduleSlot,
-        session.title,
-        session.language,
-        getSpeakers(agenda, scheduleSlot.sessionId)))
+    agendaScheduleSessions.add(
+        ScheduleSession(
+            scheduleSlot,
+            session.title,
+            session.language,
+            getSpeakers(agenda, scheduleSlot.sessionId)
+        )
+    )
   }
 
   return getItemsOrdered(itemByDayOfTheYear)
