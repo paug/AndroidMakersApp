@@ -1,33 +1,33 @@
 pluginManagement {
-    listOf(repositories, dependencyResolutionManagement.repositories).forEach {
-        it.apply {
-            google()
-            mavenCentral()
-            maven("https://androidx.dev/storage/compose-compiler/repository")
-            gradlePluginPortal()
-        }
+  listOf(repositories, dependencyResolutionManagement.repositories).forEach {
+    it.apply {
+      google()
+      mavenCentral()
+      maven("https://androidx.dev/storage/compose-compiler/repository")
+      gradlePluginPortal()
     }
-    resolutionStrategy {
-        eachPlugin {
-            if (requested.id.id.startsWith("com.google.cloud.tools.appengine")) {
-                useModule("com.google.cloud.tools:appengine-gradle-plugin:${requested.version}")
-            }
-        }
+  }
+  resolutionStrategy {
+    eachPlugin {
+      if (requested.id.id.startsWith("com.google.cloud.tools.appengine")) {
+        useModule("com.google.cloud.tools:appengine-gradle-plugin:${requested.version}")
+      }
     }
-    includeBuild("build-logic")
+  }
+  includeBuild("build-logic")
 }
 
 plugins {
-    id("com.gradle.enterprise") version "3.12.4"
-    id("org.gradle.toolchains.foojay-resolver-convention") version "0.4.0"
+  id("com.gradle.enterprise") version "3.12.4"
+  id("org.gradle.toolchains.foojay-resolver-convention") version "0.4.0"
 }
 
 dependencyResolutionManagement {
-    versionCatalogs {
-        create("libs") {
-            from(files("libs.versions.toml"))
-        }
+  versionCatalogs {
+    create("libs") {
+      from(files("libs.versions.toml"))
     }
+  }
 }
 
 

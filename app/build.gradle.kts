@@ -1,56 +1,56 @@
 plugins {
-    id("fr.androidmakers.gradle.android.application")
+  id("fr.androidmakers.gradle.android.application")
 }
 
 dependencies {
-    implementation(project(":store-graphql"))
-    implementation(project(":store-firebase"))
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.espresso.core)
+  implementation(project(":store-graphql"))
+  implementation(project(":store-firebase"))
+  testImplementation(libs.junit)
+  androidTestImplementation(libs.espresso.core)
 
-    implementation(libs.multidex)
+  implementation(libs.multidex)
 
-    // Kotlin
-    implementation(libs.kotlinx.coroutines.play.services)
-    implementation(libs.kotlinx.coroutines.android)
+  // Kotlin
+  implementation(libs.kotlinx.coroutines.play.services)
+  implementation(libs.kotlinx.coroutines.android)
 
-    // Support
-    implementation(libs.appcompat)
-    implementation(libs.material)
-    implementation(libs.vectordrawable)
-    implementation(libs.browser)
-    implementation(libs.percentlayout)
-    implementation(libs.cardview)
-    implementation(libs.constraintlayout)
+  // Support
+  implementation(libs.appcompat)
+  implementation(libs.material)
+  implementation(libs.vectordrawable)
+  implementation(libs.browser)
+  implementation(libs.percentlayout)
+  implementation(libs.cardview)
+  implementation(libs.constraintlayout)
 
-    // Firebase
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.crashlytics.ktx)
-    implementation(libs.firebase.analytics.ktx)
-    implementation(libs.firebase.messaging)
-    implementation(libs.firebase.config)
-    implementation(libs.firebase.auth)
+  // Firebase
+  implementation(platform(libs.firebase.bom))
+  implementation(libs.firebase.crashlytics.ktx)
+  implementation(libs.firebase.analytics.ktx)
+  implementation(libs.firebase.messaging)
+  implementation(libs.firebase.config)
+  implementation(libs.firebase.auth)
 
-    implementation(libs.lifecycle.viewmodel.compose)
-    implementation(libs.compose.material3)
-    implementation(libs.compose.material.icons.extended)
-    implementation(libs.compose.ui)
-    implementation(libs.compose.ui.tooling)
-    implementation(libs.navigation.compose)
-    implementation(libs.accompanist.pager)
-    implementation(libs.accompanist.systemuicontroller)
-    implementation(libs.accompanist.pager.indicators)
-    implementation(libs.accompanist.flowlayout)
-    implementation(libs.accompanist.swiperefresh)
+  implementation(libs.lifecycle.viewmodel.compose)
+  implementation(libs.compose.material3)
+  implementation(libs.compose.material.icons.extended)
+  implementation(libs.compose.ui)
+  implementation(libs.compose.ui.tooling)
+  implementation(libs.navigation.compose)
+  implementation(libs.accompanist.pager)
+  implementation(libs.accompanist.systemuicontroller)
+  implementation(libs.accompanist.pager.indicators)
+  implementation(libs.accompanist.flowlayout)
+  implementation(libs.accompanist.swiperefresh)
 
-    implementation(libs.play.services.auth)
+  implementation(libs.play.services.auth)
 
-    // Image management
-    implementation(libs.glide.runtime)
-    add("annotationProcessor", libs.glide.compiler)
-    implementation(libs.coil.compose)
+  // Image management
+  implementation(libs.glide.runtime)
+  add("annotationProcessor", libs.glide.compiler)
+  implementation(libs.coil.compose)
 
-    // Used for tags
-    implementation(libs.layouts)
-    implementation(libs.openfeedback)
+  // Used for tags
+  implementation(libs.layouts)
+  implementation(libs.openfeedback)
 }
