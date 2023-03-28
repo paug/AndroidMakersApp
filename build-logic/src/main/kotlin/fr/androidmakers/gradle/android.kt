@@ -6,7 +6,7 @@ import org.gradle.api.Project
 internal val Project.androidExtension: BaseExtension
   get() {
     return extensions.findByName("android") as BaseExtension?
-      ?: error("no 'android' extension found")
+        ?: error("no 'android' extension found")
   }
 
 private fun configureAndroidCompileSdk(project: Project) {
@@ -29,7 +29,7 @@ fun Project.enableCoreLibraryDesugaring() {
   }
 
   dependencies.add(
-    "coreLibraryDesugaring",
-    dependencies.create(catalogDependency("desugar-jdk-libs"))
+      "coreLibraryDesugaring",
+      dependencies.create(catalogDependency("desugar-jdk-libs"))
   )
 }

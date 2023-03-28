@@ -14,14 +14,14 @@ data class Speaker(
     val order: Int? = null
 ) {
 
-    fun getFullNameAndCompany(): String {
-        return this.name + if (company.isNullOrBlank()) "" else ", " + this.company
-    }
+  fun getFullNameAndCompany(): String {
+    return this.name + if (company.isNullOrBlank()) "" else ", " + this.company
+  }
 
-    fun getMainRibbon(): BadgesItem? {
-        return if (badges != null && badges.isNotEmpty()) {
-            badges.get(0)
-        } else null
-    }
+  fun getMainRibbon(): BadgesItem? {
+    return if (badges != null && badges.isNotEmpty()) {
+      badges.get(0)
+    } else null
+  }
 
 }
