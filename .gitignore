@@ -36,3 +36,11 @@ app/prod/release/output.json
 /app/prod
 /captures
 /app/src/main/assets/images.imgdb-imglist.txt
+
+# Idea
+**/.idea/*
+!**/.idea/codeStyles
+!**/.idea/icon.png
+!**/.idea/runConfigurations
+!**/.idea/scopes
+*.iml

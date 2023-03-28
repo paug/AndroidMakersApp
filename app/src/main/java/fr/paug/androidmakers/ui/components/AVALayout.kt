@@ -1,20 +1,38 @@
 package fr.paug.androidmakers.ui.components
 
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.FilterList
+import androidx.compose.material.icons.rounded.Info
+import androidx.compose.material.icons.rounded.ListAlt
+import androidx.compose.material.icons.rounded.LocationCity
+import androidx.compose.material3.DrawerState
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -27,7 +45,6 @@ import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.activity.AMUser
 import fr.paug.androidmakers.ui.navigation.AVANavigationRoute
-import fr.paug.androidmakers.ui.theme.AndroidMakersTheme
 import fr.paug.androidmakers.ui.viewmodel.Lce
 import fr.paug.androidmakers.ui.viewmodel.LceViewModel
 import kotlinx.coroutines.flow.Flow
@@ -38,6 +55,7 @@ import kotlinx.coroutines.launch
  *
  * This layout contains the bottom bar, and the selected layout.
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AVALayout(
     onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
@@ -49,11 +67,21 @@ fun AVALayout(
   val currentRoute = navBackStackEntry?.destination?.route
 
   val agendaFilterDrawerState = rememberDrawerState(DrawerValue.Closed)
-
+  val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
   Scaffold(
+      modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+      contentWindowInsets = WindowInsets(0, 0, 0, 0),
       topBar = {
         TopAppBar(
-            title = { Text(stringResource(R.string.app_name)) },
+            scrollBehavior = scrollBehavior,
+            title = {
+              Text(
+                  text = stringResource(R.string.app_name),
+                  style = MaterialTheme.typography.titleLarge,
+                  maxLines = 1,
+                  overflow = TextOverflow.Ellipsis
+              )
+            },
             actions = {
               if (currentRoute == AVANavigationRoute.AGENDA.name) {
                 val scope = rememberCoroutineScope()
@@ -64,34 +92,36 @@ fun AVALayout(
                       }
                     }
                 ) {
-                  Icon(painter = painterResource(R.drawable.ic_filter_list_white_24dp), contentDescription = stringResource(R.string.filter))
+                  Icon(
+                      imageVector = Icons.Rounded.FilterList,
+                      contentDescription = stringResource(R.string.filter),
+                  )
                 }
               }
               SigninButton(user)
-            },
-            elevation = if (currentRoute == AVANavigationRoute.ABOUT.name) AppBarDefaults.TopAppBarElevation else 0.dp
+            }
         )
       },
 
       bottomBar = {
-        BottomNavigation {
-          BottomNavigationItem(
+        NavigationBar {
+          NavigationBarItem(
               avaNavController = avaNavController,
-              iconResId = R.drawable.ic_event_note_white_24dp,
+              imageVector = Icons.Rounded.ListAlt,
               labelResId = R.string.title_agenda,
               currentRoute = currentRoute,
               destinationRoute = AVANavigationRoute.AGENDA
           )
-          BottomNavigationItem(
+          NavigationBarItem(
               avaNavController = avaNavController,
-              iconResId = R.drawable.ic_location_city_black_24dp,
+              imageVector = Icons.Rounded.LocationCity,
               labelResId = R.string.title_venue,
               currentRoute = currentRoute,
               destinationRoute = AVANavigationRoute.VENUE
           )
-          BottomNavigationItem(
+          NavigationBarItem(
               avaNavController = avaNavController,
-              iconResId = R.drawable.ic_info_outline_black_24dp,
+              imageVector = Icons.Rounded.Info,
               labelResId = R.string.title_about,
               currentRoute = currentRoute,
               destinationRoute = AVANavigationRoute.ABOUT
@@ -112,15 +142,20 @@ fun AVALayout(
 }
 
 @Composable
-private fun RowScope.BottomNavigationItem(
+private fun RowScope.NavigationBarItem(
     avaNavController: NavHostController,
-    @DrawableRes iconResId: Int,
+    imageVector: ImageVector,
     @StringRes labelResId: Int,
     currentRoute: String?,
     destinationRoute: AVANavigationRoute,
 ) {
-  BottomNavigationItem(
-      icon = { Icon(painter = painterResource(iconResId), contentDescription = stringResource(labelResId)) },
+  this@NavigationBarItem.NavigationBarItem(
+      icon = {
+        Icon(
+            imageVector = imageVector,
+            contentDescription = stringResource(labelResId)
+        )
+      },
       label = { Text(stringResource(labelResId)) },
       selected = currentRoute == destinationRoute.name,
       onClick = {
@@ -145,7 +180,10 @@ private fun AVANavHost(
 ) {
   NavHost(avaNavController, startDestination = AVANavigationRoute.AGENDA.name) {
     composable(route = AVANavigationRoute.AGENDA.name) {
-      AgendaLayout(agendaFilterDrawerState = agendaFilterDrawerState, onSessionClick = onSessionClick)
+      AgendaLayout(
+          agendaFilterDrawerState = agendaFilterDrawerState,
+          onSessionClick = onSessionClick
+      )
     }
     composable(route = AVANavigationRoute.VENUE.name) {
       VenuePager()
@@ -153,7 +191,6 @@ private fun AVANavHost(
     composable(route = AVANavigationRoute.ABOUT.name) {
       val partnerList by viewModel<PartnersViewModel>().values.collectAsState()
       val wifiInfoLce by viewModel<WifiViewModel>().values.collectAsState()
-
 
       val wifiInfo = (wifiInfoLce as? Lce.Content<WifiInfo>)?.content
 

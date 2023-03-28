@@ -1,22 +1,19 @@
 package fr.paug.androidmakers.ui.components
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Tab
-import androidx.compose.material.TabRow
-import androidx.compose.material.TabRowDefaults
-import androidx.compose.material.Text
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.pagerTabIndicatorOffset
-import com.google.accompanist.pager.rememberPagerState
-import fr.androidmakers.store.model.Venue
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.model.UIVenue
@@ -25,7 +22,7 @@ import fr.paug.androidmakers.ui.viewmodel.toLce
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun VenuePager() {
   Column(modifier = Modifier.fillMaxWidth()) {
@@ -40,12 +37,6 @@ fun VenuePager() {
     TabRow(
         // Our selected tab is our current page
         selectedTabIndex = pagerState.currentPage,
-        // Override the indicator, using the provided pagerTabIndicatorOffset modifier
-        indicator = { tabPositions ->
-          TabRowDefaults.Indicator(
-              Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
-          )
-        }
     ) {
       repeat(titles.size) {
         val coroutineScope = rememberCoroutineScope()
@@ -63,10 +54,10 @@ fun VenuePager() {
     }
 
     HorizontalPager(
-        count = titles.size,
+        pageCount = titles.size,
         state = pagerState,
     ) { page ->
-      when(page) {
+      when (page) {
         0, 1 -> {
           val venueId = if (page == 0) {
             "conference"
@@ -92,6 +83,7 @@ fun VenuePager() {
             VenueLayout(uiVenue)
           }
         }
+
         else -> {
           FloorPlan()
         }

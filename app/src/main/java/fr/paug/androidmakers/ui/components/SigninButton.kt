@@ -1,9 +1,13 @@
 package fr.paug.androidmakers.ui.components
 
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.rounded.AccountCircle
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,7 +34,7 @@ fun SigninButton(user: AMUser?) {
   ) {
     if (user == null) {
       Icon(
-          imageVector = Icons.Filled.Person,
+          imageVector = Icons.Rounded.AccountCircle,
           contentDescription = stringResource(R.string.signin)
       )
     } else {
@@ -49,19 +53,25 @@ fun SigninButton(user: AMUser?) {
       onDismissRequest = { expandedState.value = false }
   ) {
     if (user == null) {
-      DropdownMenuItem(onClick = {
-        expandedState.value = false
-        activity.signin()
-      }) {
-        Text(stringResource(id = R.string.signin))
-      }
+      DropdownMenuItem(
+          text = {
+            Text(stringResource(id = R.string.signin))
+          },
+          onClick = {
+            expandedState.value = false
+            activity.signin()
+          }
+      )
     } else {
-      DropdownMenuItem(onClick = {
-        expandedState.value = false
-        activity.signout()
-      }) {
-        Text(stringResource(id = R.string.signout))
-      }
+      DropdownMenuItem(
+          text = {
+            Text(stringResource(id = R.string.signout))
+          },
+          onClick = {
+            expandedState.value = false
+            activity.signout()
+          }
+      )
     }
   }
 }

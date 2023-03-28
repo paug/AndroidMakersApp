@@ -5,7 +5,11 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.runtime.*
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -53,6 +57,8 @@ class MainActivity : AppCompatActivity() {
       }
     }
 
+    WindowCompat.setDecorFitsSystemWindows(window, false)
+
     setContent {
       val rememberedActivity = remember { this }
 
@@ -72,7 +78,7 @@ class MainActivity : AppCompatActivity() {
                   onSponsorClick = ::onSponsorClick,
               ),
               user = userState.value,
-              )
+          )
         }
       }
     }
@@ -133,7 +139,8 @@ class MainActivity : AppCompatActivity() {
 
     when (requestCode) {
       REQ_SIGNIN -> {
-        val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
+        val task: Task<GoogleSignInAccount> =
+            GoogleSignIn.getSignedInAccountFromIntent(data)
         try {
           val account: GoogleSignInAccount = task.getResult(ApiException::class.java)
           val idToken = account.idToken
@@ -163,6 +170,7 @@ class MainActivity : AppCompatActivity() {
                     }
                   }
             }
+
             else -> {
               _user.value = null
               // Shouldn't happen.
@@ -177,11 +185,13 @@ class MainActivity : AppCompatActivity() {
   }
 
   suspend fun mergeBookmarks(userId: String) {
-    val bookmarks = AndroidMakersApplication.instance().store.getBookmarks(userId).first().getOrNull()
+    val bookmarks =
+        AndroidMakersApplication.instance().store.getBookmarks(userId).first().getOrNull()
     if (bookmarks != null) {
       BookmarksStore.merge(bookmarks)
     }
   }
+
   private fun onYouTubeLogoClick() {
     startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.youtube_channel))))
   }
@@ -195,7 +205,7 @@ class MainActivity : AppCompatActivity() {
     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
         .requestIdToken(activity.getString(R.string.default_web_client_id))
         .build()
-    val googleSignInClient = GoogleSignIn.getClient(activity, gso);
+    val googleSignInClient = GoogleSignIn.getClient(activity, gso)
 
     FirebaseAuth.getInstance().signOut()
     googleSignInClient.signOut()
@@ -208,10 +218,11 @@ class MainActivity : AppCompatActivity() {
     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
         .requestIdToken(activity.getString(R.string.default_web_client_id))
         .build()
-    val googleSignInClient = GoogleSignIn.getClient(activity, gso);
+    val googleSignInClient = GoogleSignIn.getClient(activity, gso)
 
     activity.startActivityForResult(googleSignInClient.signInIntent, REQ_SIGNIN)
   }
+
   companion object {
     const val REQ_SIGNIN = 33
   }

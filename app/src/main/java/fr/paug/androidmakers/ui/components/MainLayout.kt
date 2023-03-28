@@ -60,7 +60,9 @@ private fun MainNavHost(
             }
           }
       )
-      val sessionDetailState by sessionDetailViewModel.sessionDetailState.collectAsState(initial = Lce.Loading)
+      val sessionDetailState by sessionDetailViewModel.sessionDetailState.collectAsState(
+          initial = Lce.Loading
+      )
       SessionDetailLayout(
           sessionDetailState = sessionDetailState,
           onBackClick = { mainNavController.popBackStack() },
