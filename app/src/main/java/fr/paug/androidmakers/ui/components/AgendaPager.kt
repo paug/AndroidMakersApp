@@ -1,21 +1,19 @@
 package fr.paug.androidmakers.ui.components
 
 import android.content.Context
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Tab
-import androidx.compose.material.TabRow
-import androidx.compose.material.TabRowDefaults
-import androidx.compose.material.Text
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.pagerTabIndicatorOffset
-import com.google.accompanist.pager.rememberPagerState
 import fr.paug.androidmakers.ui.adapter.DaySchedule
 import fr.paug.androidmakers.ui.adapter.ScheduleSession
 import fr.paug.androidmakers.ui.model.UISession
@@ -25,11 +23,10 @@ import fr.paug.androidmakers.util.TimeUtils
 import kotlinx.coroutines.launch
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
-import java.time.OffsetDateTime
 import java.util.*
 
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AgendaPager(
     initialPageIndex: Int,
@@ -37,18 +34,14 @@ fun AgendaPager(
     onSessionClicked: (UISession) -> Unit,
     filterList: List<SessionFilter>
 ) {
-  Column(modifier = Modifier.fillMaxWidth()) {
+  Column(
+      modifier = Modifier.fillMaxWidth()
+  ) {
+
     val pagerState = rememberPagerState(initialPage = initialPageIndex)
 
     TabRow(
-        // Our selected tab is our current page
         selectedTabIndex = pagerState.currentPage,
-        // Override the indicator, using the provided pagerTabIndicatorOffset modifier
-        indicator = { tabPositions ->
-          TabRowDefaults.Indicator(
-              Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
-          )
-        }
     ) {
       repeat(days.size) {
         val coroutineScope = rememberCoroutineScope()
@@ -66,7 +59,7 @@ fun AgendaPager(
     }
 
     HorizontalPager(
-        count = days.size,
+        pageCount = days.size,
         state = pagerState,
     ) { page ->
       val viewModel = viewModel<AgendaPagerViewModel>()
@@ -90,19 +83,22 @@ fun AgendaPager(
               )
             }
         if (items.isEmpty()) {
-           EmptyLayout()
+          EmptyLayout()
         } else {
-            AgendaColumn(
-                sessionsPerStartTime = addSeparators(LocalContext.current, items),
-                onSessionClicked = onSessionClicked
-            )
+          AgendaColumn(
+              sessionsPerStartTime = addSeparators(LocalContext.current, items),
+              onSessionClicked = onSessionClicked
+          )
         }
       }
     }
   }
 }
 
-private fun addSeparators(context: Context, sessions: List<UISession>): Map<String, List<UISession>> {
+private fun addSeparators(
+    context: Context,
+    sessions: List<UISession>
+): Map<String, List<UISession>> {
   return sessions.map {
     TimeUtils.formatShortTime(context, Date(it.startDate.toEpochMilliseconds())) to it
   }
@@ -121,42 +117,45 @@ private fun addSeparators(context: Context, sessions: List<UISession>): Map<Stri
 private fun List<ScheduleSession>.filterSessions(
     filterList: List<SessionFilter>
 ): Set<ScheduleSession> {
-    val filteredSessions = hashSetOf<ScheduleSession>()
-    if (filterList.isEmpty()) {
-        filteredSessions.addAll(this)
-        return filteredSessions
+  val filteredSessions = hashSetOf<ScheduleSession>()
+  if (filterList.isEmpty()) {
+    filteredSessions.addAll(this)
+    return filteredSessions
+  }
+  val sessionsByFilterType =
+      mutableMapOf<SessionFilter.FilterType, MutableList<ScheduleSession>>()
+  for (filter in filterList) {
+    if (!sessionsByFilterType.containsKey(filter.type)) {
+      sessionsByFilterType[filter.type] = mutableListOf()
     }
-    val sessionsByFilterType = mutableMapOf<SessionFilter.FilterType, MutableList<ScheduleSession>>()
+  }
+  for (session in this) {
     for (filter in filterList) {
-        if (!sessionsByFilterType.containsKey(filter.type)) {
-            sessionsByFilterType[filter.type] = mutableListOf()
+      when (filter.type) {
+        SessionFilter.FilterType.BOOKMARK -> {
+          if (BookmarksStore.isBookmarked(session.sessionId)) {
+            sessionsByFilterType[filter.type]?.add(session)
+          }
         }
-    }
-    for (session in this) {
-        for (filter in filterList) {
-            when (filter.type) {
-                SessionFilter.FilterType.BOOKMARK -> {
-                    if (BookmarksStore.isBookmarked(session.sessionId)) {
-                        sessionsByFilterType[filter.type]?.add(session)
-                    }
-                }
-                SessionFilter.FilterType.LANGUAGE -> {
-                    if (filter.value == session.language) {
-                        sessionsByFilterType[filter.type]?.add(session)
-                    }
-                }
-                SessionFilter.FilterType.ROOM -> {
-                    if (filter.value == session.roomId) {
-                        sessionsByFilterType[filter.type]?.add(session)
-                    }
-                }
-            }
+
+        SessionFilter.FilterType.LANGUAGE -> {
+          if (filter.value == session.language) {
+            sessionsByFilterType[filter.type]?.add(session)
+          }
         }
+
+        SessionFilter.FilterType.ROOM -> {
+          if (filter.value == session.roomId) {
+            sessionsByFilterType[filter.type]?.add(session)
+          }
+        }
+      }
     }
-    //get union join of all ScheduleSessions
-    val origin = sessionsByFilterType.values.flatten().toMutableSet()
-    sessionsByFilterType.values.forEach { origin.retainAll(it) }
-    return origin
+  }
+  //get union join of all ScheduleSessions
+  val origin = sessionsByFilterType.values.flatten().toMutableSet()
+  sessionsByFilterType.values.forEach { origin.retainAll(it) }
+  return origin
 }
 
 private fun getRoomTitle(scheduleSession: ScheduleSession, daySchedule: DaySchedule): String {

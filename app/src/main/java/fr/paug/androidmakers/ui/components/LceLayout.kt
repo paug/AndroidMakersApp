@@ -1,9 +1,14 @@
 package fr.paug.androidmakers.ui.components
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -19,9 +24,10 @@ import fr.paug.androidmakers.ui.viewmodel.LceViewModel
 
 @Composable
 fun LoadingLayout() {
-  Box(modifier = Modifier
-      .fillMaxWidth()
-      .fillMaxHeight(),
+  Box(
+      modifier = Modifier
+          .fillMaxWidth()
+          .fillMaxHeight(),
       contentAlignment = Alignment.Center
   ) {
     CircularProgressIndicator()
@@ -75,20 +81,22 @@ fun <T> ButtonRefreshableLceLayout(
 
   LceLayout(
       lce = lce.value,
-      onRetry = {viewModel.refresh()},
+      onRetry = { viewModel.refresh() },
       isRefreshing = isRefreshing.value
   ) {
     content(it)
   }
 }
+
 @Composable
 fun ErrorLayout(
     enabled: Boolean,
     onClick: (() -> Unit)? = null
 ) {
-  Box(modifier = Modifier
-      .fillMaxWidth()
-      .fillMaxHeight(),
+  Box(
+      modifier = Modifier
+          .fillMaxWidth()
+          .fillMaxHeight(),
       contentAlignment = Alignment.Center
   ) {
     Column(
@@ -113,16 +121,16 @@ fun ErrorLayout(
 
 @Composable
 fun EmptyLayout(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
-            .padding(16.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = stringResource(id = R.string.empty_events),
-            textAlign = TextAlign.Center
-        )
-    }
+  Box(
+      modifier = modifier
+          .fillMaxWidth()
+          .fillMaxHeight()
+          .padding(16.dp),
+      contentAlignment = Alignment.Center
+  ) {
+    Text(
+        text = stringResource(id = R.string.empty_events),
+        textAlign = TextAlign.Center
+    )
+  }
 }
