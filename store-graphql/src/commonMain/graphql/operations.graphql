@@ -64,14 +64,14 @@ fragment RoomDetails on Room {
 }
 
 query GetPartnerGroups {
-  partnerGroups {
-    title
-    partners {
-      name
-      logoUrl
-      url
+    partnerGroups {
+        title
+        partners {
+            name
+            logoUrl
+            url
+        }
     }
-  }
 }
 
 query GetVenue($id: String!) {
