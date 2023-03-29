@@ -188,7 +188,7 @@ private fun FilterItem(
       modifier = Modifier
           .fillMaxWidth()
           .clickable {
-              onCheck(!checked)
+            onCheck(!checked)
           },
       verticalAlignment = Alignment.CenterVertically,
   ) {

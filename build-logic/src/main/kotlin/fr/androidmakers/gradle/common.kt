@@ -14,11 +14,11 @@ import org.jetbrains.kotlin.gradle.dsl.kotlinExtension
 
 
 fun configureKotlinCompiler(project: Project) {
-    project.kotlinExtension.sourceSets.all {
-        it.languageSettings {
-            optIn("kotlin.RequiresOptIn")
-        }
+  project.kotlinExtension.sourceSets.all {
+    it.languageSettings {
+      optIn("kotlin.RequiresOptIn")
     }
+  }
 }
 
 fun Project.catalogVersion(name: String): String = extensions.findByType(VersionCatalogsExtension::class.java)!!
@@ -33,34 +33,34 @@ fun Project.catalogDependency(name: String): String = extensions.findByType(Vers
     .get()
     .get()
     .run {
-        "$module:${versionConstraint.displayName}"
+      "$module:${versionConstraint.displayName}"
     }
 
 fun Project.commonSetup() {
-    val bytecodeVersion = "1.8"
+  val bytecodeVersion = "1.8"
 
-    extensions.findByType(JavaPluginExtension::class.java)!!.apply {
-        toolchain {
-            it.languageVersion.set(JavaLanguageVersion.of(19))
-        }
-
-        sourceCompatibility = JavaVersion.toVersion(bytecodeVersion)
-        targetCompatibility = JavaVersion.toVersion(bytecodeVersion)
+  extensions.findByType(JavaPluginExtension::class.java)!!.apply {
+    toolchain {
+      it.languageVersion.set(JavaLanguageVersion.of(19))
     }
 
-    tasks.withType(KotlinCompile::class.java).configureEach {
-        it.kotlinOptions {
-            if (this is KotlinJvmOptions) {
-                jvmTarget = bytecodeVersion
-            }
-        }
-    }
+    sourceCompatibility = JavaVersion.toVersion(bytecodeVersion)
+    targetCompatibility = JavaVersion.toVersion(bytecodeVersion)
+  }
 
-    extensions.findByName("android").apply {
-        this as BaseExtension
-        compileOptions {
-            it.sourceCompatibility = JavaVersion.toVersion(bytecodeVersion)
-            it.targetCompatibility = JavaVersion.toVersion(bytecodeVersion)
-        }
+  tasks.withType(KotlinCompile::class.java).configureEach {
+    it.kotlinOptions {
+      if (this is KotlinJvmOptions) {
+        jvmTarget = bytecodeVersion
+      }
     }
+  }
+
+  extensions.findByName("android").apply {
+    this as BaseExtension
+    compileOptions {
+      it.sourceCompatibility = JavaVersion.toVersion(bytecodeVersion)
+      it.targetCompatibility = JavaVersion.toVersion(bytecodeVersion)
+    }
+  }
 }
