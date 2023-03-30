@@ -37,8 +37,8 @@
 
     <!--Filters-->
     <string name="filter">Filtres</string>
-    <string name="bookmarked">Favori</string>
-    <string name="language">Langue</string>
+    <string name="bookmarked">Favoris</string>
+    <string name="language">Langues</string>
     <string name="room">Salle</string>
     <string name="rooms">Salles</string>
     <string name="empty_events">Désolé, aucune conférence n\'est disponible pour les filtres actuellement sélectionnés.</string>
