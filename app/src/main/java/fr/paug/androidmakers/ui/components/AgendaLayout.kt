@@ -1,17 +1,22 @@
 package fr.paug.androidmakers.ui.components
 
 import android.util.SparseArray
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Bookmark
+import androidx.compose.material.icons.rounded.Room
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Text
@@ -20,7 +25,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -57,7 +63,10 @@ fun AgendaLayout(
   ModalNavigationDrawer(
       drawerState = agendaFilterDrawerState,
       drawerContent = {
-        ModalDrawerSheet {
+        ModalDrawerSheet(
+            drawerShape = RectangleShape,
+            windowInsets = WindowInsets(0, 0, 0, 0),
+        ) {
           AgendaFilterDrawer(
               rooms = agendaLayoutState.rooms,
               sessionFilters = agendaLayoutState.sessionFilters,
@@ -119,7 +128,7 @@ private fun AgendaFilterDrawer(
     HeaderItem(R.string.filter)
     FilterItem(
         text = stringResource(R.string.bookmarked),
-        image = R.drawable.ic_bookmarked,
+        imageVector = Icons.Rounded.Bookmark,
         checked = sessionFilters.any { it.type == SessionFilter.FilterType.BOOKMARK },
         onCheck = { checked ->
           val newSessionFilters = sessionFilters.toMutableList().apply {
@@ -130,7 +139,7 @@ private fun AgendaFilterDrawer(
         }
     )
 
-    HeaderItem(R.string.language)
+    HeaderItem(R.string.filter_language_header)
     val french = "French"
     FilterItem(
         text = stringResource(R.string.french),
@@ -163,6 +172,7 @@ private fun AgendaFilterDrawer(
     for (room in rooms) {
       FilterItem(
           text = room.name,
+          imageVector = Icons.Rounded.Room,
           checked = sessionFilters.any { it.type == SessionFilter.FilterType.ROOM && it.value == room.id },
           onCheck = { checked ->
             val newSessionFilters = sessionFilters.toMutableList().apply {
@@ -179,7 +189,7 @@ private fun AgendaFilterDrawer(
 @Composable
 private fun FilterItem(
     text: String,
-    image: Int? = null,
+    imageVector: ImageVector? = null,
     language: String? = null,
     checked: Boolean,
     onCheck: (checked: Boolean) -> Unit,
@@ -193,10 +203,12 @@ private fun FilterItem(
       verticalAlignment = Alignment.CenterVertically,
   ) {
     val textLeftMargin = 48.dp
-    if (image != null) {
-      Image(
+    if (imageVector != null) {
+      Icon(
           modifier = Modifier.width(textLeftMargin),
-          painter = painterResource(image), contentDescription = text
+          imageVector = imageVector,
+          tint = MaterialTheme.colorScheme.onSurface,
+          contentDescription = text
       )
     }
     if (language != null) {
@@ -209,9 +221,8 @@ private fun FilterItem(
     Text(
         modifier = Modifier
             .weight(1f)
-            .padding(start = if (image == null && language == null) textLeftMargin else 0.dp),
-        text = text,
-        fontSize = 14.sp
+            .padding(start = if (imageVector == null && language == null) textLeftMargin else 0.dp),
+        text = text
     )
     Checkbox(
         modifier = Modifier
@@ -228,10 +239,9 @@ private fun HeaderItem(text: Int) {
   Text(
       modifier = Modifier
           .fillMaxWidth()
-//            .background(color = MaterialTheme.colorScheme.surfaceVariant)
           .padding(12.dp),
-      fontSize = 16.sp,
-      text = stringResource(text)
+      text = stringResource(text),
+      style = MaterialTheme.typography.headlineLarge
   )
 }
 

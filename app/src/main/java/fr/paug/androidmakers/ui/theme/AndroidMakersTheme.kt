@@ -13,6 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import fr.paug.androidmakers.R
+import java.util.Date
 
 val GillSans = FontFamily(
     Font(R.font.gill_sans_light, FontWeight.Light),
