@@ -9,6 +9,7 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,31 +28,31 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.BookmarkAdd
 import androidx.compose.material.icons.rounded.BookmarkRemove
+import androidx.compose.material.icons.rounded.Public
 import androidx.compose.material.icons.rounded.Share
-import androidx.compose.material3.ElevatedSuggestionChip
+import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.google.accompanist.flowlayout.FlowRow
@@ -63,7 +64,6 @@ import fr.androidmakers.store.model.Speaker
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.theme.AMColor
-import fr.paug.androidmakers.ui.theme.Inter
 import fr.paug.androidmakers.ui.util.discardHtmlTags
 import fr.paug.androidmakers.ui.viewmodel.Lce
 import fr.paug.androidmakers.util.imageUrl
@@ -113,13 +113,7 @@ fun SessionDetailLayout(
               }
             },
             title = {
-              if (sessionDetailState is Lce.Content) {
-                Text(
-                    sessionDetailState.content.session.title,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-              }
+              // Nothing to do
             },
             actions = {
               if (sessionDetailState is Lce.Content) {
@@ -176,6 +170,7 @@ fun SessionDetailLayout(
 
 @Composable
 private fun SessionDetails(sessionDetails: SessionDetailState, formattedDateAndRoom: String) {
+
   Column(
       Modifier
           .verticalScroll(state = rememberScrollState())
@@ -184,24 +179,19 @@ private fun SessionDetails(sessionDetails: SessionDetailState, formattedDateAndR
 
     Text(
         text = sessionDetails.session.title,
-        style = MaterialTheme.typography.titleLarge.copy(
-            fontFamily = Inter,
-            fontWeight = FontWeight.Light,
-            letterSpacing = (0.5).sp,
-        )
+        style = MaterialTheme.typography.titleLarge
     )
-
     Text(
         modifier = Modifier.padding(top = 16.dp),
         text = formattedDateAndRoom,
-        style = MaterialTheme.typography.headlineMedium,
-        fontWeight = FontWeight.Bold
+        style = MaterialTheme.typography.labelMedium,
     )
 
     Text(
         modifier = Modifier.padding(top = 16.dp),
         text = sessionDetails.session.description?.discardHtmlTags() ?: "",
-        style = MaterialTheme.typography.bodyMedium
+        textAlign = TextAlign.Start,
+        style = MaterialTheme.typography.bodyMedium,
     )
 
     ChipList(sessionDetails)
@@ -238,6 +228,7 @@ private fun SessionDetails(sessionDetails: SessionDetailState, formattedDateAndR
     // To account for the FAB
     Spacer(modifier = Modifier.height(64.dp))
   }
+
 }
 
 @Composable
@@ -256,21 +247,21 @@ private fun ChipList(sessionDetails: SessionDetailState) {
       mainAxisSpacing = 8.dp,
   ) {
     sessionDetails.session.language.asLanguageResource()?.let { language ->
-      ElevatedSuggestionChip(
+      SuggestionChip(
           onClick = {},
           label = { Text(text = language) },
           enabled = true
       )
     }
     for (tag in sessionDetails.session.tags) {
-      ElevatedSuggestionChip(
+      SuggestionChip(
           onClick = {},
           label = { Text(text = tag) },
           enabled = true
       )
     }
     if (sessionDetails.session.complexity.isNotEmpty()) {
-      ElevatedSuggestionChip(
+      SuggestionChip(
           onClick = {},
           label = { Text(text = sessionDetails.session.complexity) },
           enabled = true
@@ -281,66 +272,80 @@ private fun ChipList(sessionDetails: SessionDetailState) {
 
 @Composable
 private fun Speakers(speakers: List<Speaker>) {
-  Column(Modifier.padding(top = 16.dp)) {
+  Column(
+      modifier = Modifier.padding(top = 16.dp),
+      verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically)
+  ) {
     for (speaker in speakers) {
       Speaker(speaker)
     }
   }
+
 }
 
 @Composable
 private fun Speaker(speaker: Speaker) {
-  Column(Modifier.padding(top = 16.dp)) {
-    Row {
-      AsyncImage(
-          modifier = Modifier
-              .size(64.dp)
-              .clip(CircleShape),
-          placeholder = painterResource(R.drawable.ic_person_black_24dp),
-          error = painterResource(R.drawable.ic_person_black_24dp),
-          model = ImageRequest.Builder(LocalContext.current)
-              .data(speaker.photoUrl?.let { imageUrl(it) })
-              .crossfade(true)
-              .build(),
-          contentDescription = speaker.name
-      )
-
-      Column(Modifier.padding(horizontal = 8.dp)) {
-        Text(
-            text = speaker.getFullNameAndCompany(),
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold
+  Card() {
+    Column(Modifier.padding(top = 16.dp)) {
+      Row {
+        AsyncImage(
+            modifier = Modifier
+                .size(64.dp)
+                .clip(CircleShape),
+            placeholder = painterResource(R.drawable.ic_person_black_24dp),
+            error = painterResource(R.drawable.ic_person_black_24dp),
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(speaker.photoUrl?.let { imageUrl(it) })
+                .crossfade(true)
+                .build(),
+            contentDescription = speaker.name
         )
-        speaker.bio?.let { bio ->
-          Text(
-              modifier = Modifier.padding(top = 12.dp),
-              text = bio,
-              style = MaterialTheme.typography.bodyMedium,
-          )
-        }
-      }
-    }
 
-    Row(Modifier.padding(start = 58.dp, top = 4.dp)) {
-      val context = LocalContext.current
-      for (socialsItem in speaker.socials.orEmpty().filterNotNull()) {
-        IconButton(
-            onClick = {
-              // TODO Ideally this should not be handled here but by the caller
-              openSocialLink(context, socialsItem.link!!)
-            }
+        Column(
+            modifier = Modifier.padding(horizontal = 8.dp)
         ) {
-          Icon(
-              painter = painterResource(
-                  if (socialsItem.icon == "twitter") {
-                    R.drawable.ic_network_twitter
-                  } else {
-                    R.drawable.ic_network_web
-                  }
-              ), contentDescription = socialsItem.icon
+
+          Text(
+              text = speaker.getFullNameAndCompany(),
+              style = MaterialTheme.typography.titleMedium,
           )
+
+          speaker.bio?.let { bio ->
+            Text(
+                modifier = Modifier.padding(),
+                text = bio,
+                style = MaterialTheme.typography.bodyMedium,
+            )
+          }
+
+          Row {
+            val context = LocalContext.current
+            for (socialsItem in speaker.socials.orEmpty().filterNotNull()) {
+              IconButton(
+                  onClick = {
+                    // TODO Ideally this should not be handled here but by the caller
+                    openSocialLink(context, socialsItem.link!!)
+                  }
+              ) {
+                if (socialsItem.icon == "twitter") {
+                  Icon(
+                      painter = painterResource(R.drawable.ic_network_twitter),
+                      contentDescription = socialsItem.icon
+                  )
+                } else {
+                  Icon(
+                      imageVector = Icons.Rounded.Public,
+                      contentDescription = socialsItem.icon
+                  )
+                }
+              }
+            }
+          }
+
+
         }
       }
+
     }
   }
 }
