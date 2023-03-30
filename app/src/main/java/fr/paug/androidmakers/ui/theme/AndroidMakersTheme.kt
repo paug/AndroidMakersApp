@@ -45,52 +45,90 @@ val AMAlpha = AMAlphas(
 
 
 val AndroidMakersTypography = Typography(
-
-    titleLarge = TextStyle(
-        fontFamily = GillSans,
-//        color = AMColor.amBlue,
-        fontWeight = FontWeight.Bold,
-        fontSize = 22.sp
-    ),
     displayLarge = TextStyle(
-        fontFamily = GillSans
+        fontFamily = GillSans,
+        fontWeight = FontWeight.Bold,
+        fontSize = 57.sp,
+        letterSpacing = (0.5).sp,
     ),
     displayMedium = TextStyle(
-        fontFamily = GillSans
+        fontFamily = GillSans,
+        fontWeight = FontWeight.Bold,
+        fontSize = 45.sp,
+        letterSpacing = (0.5).sp,
     ),
     displaySmall = TextStyle(
-        fontFamily = GillSans
+        fontFamily = GillSans,
+        fontWeight = FontWeight.Normal,
+        fontSize = 36.sp,
+        letterSpacing = (0.5).sp,
     ),
     headlineLarge = TextStyle(
-        fontFamily = GillSans
+        fontFamily = GillSans,
+        fontWeight = FontWeight.Bold,
+        fontSize = 32.sp,
+        letterSpacing = (0.5).sp,
     ),
     headlineMedium = TextStyle(
-        fontFamily = GillSans
+        fontFamily = GillSans,
+        fontWeight = FontWeight.Bold,
+        fontSize = 28.sp,
+        letterSpacing = (0.5).sp,
     ),
     headlineSmall = TextStyle(
-        fontFamily = GillSans
+        fontFamily = GillSans,
+        fontWeight = FontWeight.Bold,
+        fontSize = 24.sp,
+        letterSpacing = (0.5).sp,
+    ),
+    titleLarge = TextStyle(
+        fontFamily = GillSans,
+        fontSize = 22.sp,
+        fontWeight = FontWeight.Light,
+        letterSpacing = (0.5).sp,
     ),
     titleMedium = TextStyle(
-        fontFamily = GillSans
+        fontFamily = GillSans,
+        fontWeight = FontWeight.Light,
+        fontSize = 16.sp,
+        letterSpacing = (0.5).sp,
     ),
     titleSmall = TextStyle(
-        fontFamily = GillSans
-    ),
-    bodyLarge = TextStyle(
-        fontFamily = Inter
-    ),
-    bodyMedium = TextStyle(
-        fontFamily = Inter
-    ),
-    bodySmall = TextStyle(
-        fontFamily = Inter
+        fontFamily = GillSans,
+        fontWeight = FontWeight.Light,
+        fontSize = 14.sp,
+        letterSpacing = (0.5).sp,
     ),
     labelLarge = TextStyle(
-        fontFamily = GillSans
+        fontFamily = GillSans,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 14.sp,
+        letterSpacing = (0.5).sp,
     ),
     labelMedium = TextStyle(
-        fontFamily = GillSans
+        fontFamily = GillSans,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 12.sp,
+        letterSpacing = (0.5).sp,
     ),
+    bodyLarge = TextStyle(
+        fontFamily = Inter,
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp,
+        letterSpacing = (0.5).sp,
+    ),
+    bodyMedium = TextStyle(
+        fontFamily = Inter,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp,
+        letterSpacing = (0.5).sp,
+    ),
+    bodySmall = TextStyle(
+        fontFamily = Inter,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp,
+        letterSpacing = (0.5).sp,
+    )
 )
 
 
