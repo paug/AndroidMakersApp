@@ -31,7 +31,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import fr.androidmakers.store.model.Agenda
 import fr.androidmakers.store.model.Room
@@ -215,7 +214,8 @@ private fun FilterItem(
       Text(
           modifier = Modifier.width(textLeftMargin),
           textAlign = TextAlign.Center,
-          text = EmojiUtils.getLanguageInEmoji(language)!!
+          text = EmojiUtils.getLanguageInEmoji(language)!!,
+          style = MaterialTheme.typography.bodyMedium
       )
     }
     Text(
@@ -241,7 +241,7 @@ private fun HeaderItem(text: Int) {
           .fillMaxWidth()
           .padding(12.dp),
       text = stringResource(text),
-      style = MaterialTheme.typography.headlineLarge
+      style = MaterialTheme.typography.titleMedium
   )
 }
 
