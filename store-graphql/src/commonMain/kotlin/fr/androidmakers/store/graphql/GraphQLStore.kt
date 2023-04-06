@@ -12,7 +12,6 @@ import fr.androidmakers.store.model.ScheduleSlot
 import fr.androidmakers.store.model.Session
 import fr.androidmakers.store.model.Speaker
 import fr.androidmakers.store.model.Venue
-import fr.androidmakers.store.model.WifiInfo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
@@ -53,10 +52,6 @@ class GraphQLStore(
           it.dataAssertNoErrors.rooms.map { it.roomDetails.toRoom() }
         }
         .toResultFlow()
-  }
-
-  override fun getWifiInfo(): Flow<Result<WifiInfo?>> {
-    TODO("Not yet implemented")
   }
 
   override fun getBookmarks(userId: String): Flow<Result<Set<String>>> {

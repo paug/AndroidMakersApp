@@ -34,7 +34,6 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import fr.androidmakers.store.model.Logo
 import fr.androidmakers.store.model.Partner
-import fr.androidmakers.store.model.WifiInfo
 import fr.paug.androidmakers.BuildConfig
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.viewmodel.Lce
@@ -52,7 +51,6 @@ class AboutActions(
 
 @Composable
 fun AboutLayout(
-    wifiInfo: WifiInfo?,
     partnerList: Lce<List<Partner>>,
     aboutActions: AboutActions,
 ) {
@@ -70,13 +68,6 @@ fun AboutLayout(
         aboutActions.onYouTubeLogoClick
     )
 
-    if (wifiInfo != null) {
-      Spacer(Modifier.height(16.dp))
-      WifiCard(
-          wifiNetwork = wifiInfo.network,
-          wifiPassword = wifiInfo.password
-      )
-    }
     Spacer(Modifier.height(16.dp))
     SponsorsCard(partnerList = partnerList, onSponsorClick = aboutActions.onSponsorClick)
     Spacer(Modifier.height(16.dp))
@@ -164,26 +155,6 @@ private fun SocialCard(
 }
 
 @Composable
-private fun WifiCard(wifiNetwork: String, wifiPassword: String) {
-  Card(Modifier.fillMaxWidth()) {
-    Column(Modifier.padding(8.dp)) {
-      Text(
-          text = stringResource(R.string.wifi),
-          style = MaterialTheme.typography.h5
-      )
-      Text(
-          modifier = Modifier.padding(top = 8.dp),
-          text = stringResource(R.string.wifi_network, wifiNetwork)
-      )
-      Text(
-          modifier = Modifier.padding(top = 8.dp),
-          text = stringResource(R.string.wifi_password, wifiPassword)
-      )
-    }
-  }
-}
-
-@Composable
 private fun SponsorsCard(partnerList: Lce<List<Partner>>, onSponsorClick: (url: String) -> Unit) {
   Card(Modifier.fillMaxWidth()) {
     Column(Modifier.padding(8.dp)) {
@@ -260,10 +231,6 @@ private fun ClickableText(
 @Composable
 private fun AboutLayoutLoadingPreview() {
   AboutLayout(
-      wifiInfo = WifiInfo(
-          network = "AndroidMakers",
-          password = "MayTheForceBeWithYou42",
-      ),
       partnerList = Lce.Loading,
       aboutActions = AboutActions()
   )
@@ -274,10 +241,6 @@ private fun AboutLayoutLoadingPreview() {
 @Composable
 private fun AboutLayoutLoadedPreview() {
   AboutLayout(
-      wifiInfo = WifiInfo(
-          network = "AndroidMakers",
-          password = "MayTheForceBeWithYou42",
-      ),
       partnerList = Lce.Content(
           listOf(
               Partner(
