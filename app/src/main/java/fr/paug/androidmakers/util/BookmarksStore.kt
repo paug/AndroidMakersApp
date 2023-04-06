@@ -2,7 +2,7 @@ package fr.paug.androidmakers.util
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import com.google.firebase.auth.FirebaseAuth
 import fr.paug.androidmakers.AndroidMakersApplication
 import kotlinx.coroutines.GlobalScope

@@ -22,6 +22,7 @@ dependencies {
   implementation(libs.percentlayout)
   implementation(libs.cardview)
   implementation(libs.constraintlayout)
+  implementation(libs.shared.preferences)
 
   // Firebase
   implementation(platform(libs.firebase.bom))
