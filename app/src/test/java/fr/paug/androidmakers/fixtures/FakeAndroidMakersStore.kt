@@ -7,7 +7,6 @@ import fr.androidmakers.store.model.ScheduleSlot
 import fr.androidmakers.store.model.Session
 import fr.androidmakers.store.model.Speaker
 import fr.androidmakers.store.model.Venue
-import fr.androidmakers.store.model.WifiInfo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
@@ -45,10 +44,6 @@ class FakeAndroidMakersStore : AndroidMakersStore {
   }
 
   override fun getSpeakers(): Flow<Result<List<Speaker>>> {
-    TODO("Not yet implemented")
-  }
-
-  override fun getWifiInfo(): Flow<Result<WifiInfo?>> {
     TODO("Not yet implemented")
   }
 
