@@ -145,6 +145,9 @@ fun AndroidMakersTheme(
         color = Color.Transparent,
         darkIcons = !useDarkTheme
     )
+    systemUiController.setNavigationBarColor(
+        color = Color.Transparent
+    )
 
     onDispose {}
   }
