@@ -77,7 +77,7 @@ fun AgendaPager(
                   title = item.title,
                   language = item.language,
                   startDate = item.slot.startDate.toInstant(TimeZone.UTC),
-                  endDate = item.slot.startDate.toInstant(TimeZone.UTC),
+                  endDate = item.slot.endDate.toInstant(TimeZone.UTC),
                   room = getRoomTitle(item, days[page]),
                   roomId = item.roomId,
                   speakers = item.speakers.map {

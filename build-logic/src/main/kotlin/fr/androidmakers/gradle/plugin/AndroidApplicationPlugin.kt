@@ -11,10 +11,6 @@ import java.util.*
 
 @Suppress("unused")
 class AndroidApplicationPlugin : Plugin<Project> {
-  private val versionMajor = 1
-  private val versionMinor = 4
-  private val versionPatch = 5
-
   override fun apply(project: Project) {
     project.apply(mapOf("plugin" to "com.android.application"))
     project.apply(mapOf("plugin" to "kotlin-android"))
@@ -30,8 +26,8 @@ class AndroidApplicationPlugin : Plugin<Project> {
         namespace = "fr.paug.androidmakers"
         minSdk = 21
         targetSdk = 31
-        versionCode = versionMajor * 1000 + versionMinor * 100 + versionPatch * 10
-        versionName = "${versionMajor}.${versionMinor}.${versionPatch}"
+        versionCode = 1451
+        versionName = versionCode.toString()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
       }
 
