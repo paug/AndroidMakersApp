@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import fr.paug.androidmakers.ui.activity.AMUser
+import fr.paug.androidmakers.ui.components.about.AboutActions
 import fr.paug.androidmakers.ui.navigation.MainNavigationRoute
 import fr.paug.androidmakers.ui.viewmodel.Lce
 

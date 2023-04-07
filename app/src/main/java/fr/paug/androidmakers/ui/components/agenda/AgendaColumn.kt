@@ -1,4 +1,4 @@
-package fr.paug.androidmakers.ui.components
+package fr.paug.androidmakers.ui.components.agenda
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
@@ -6,6 +6,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Schedule
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -14,11 +17,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fr.paug.androidmakers.R
+import fr.paug.androidmakers.ui.components.AgendaRow
 import fr.paug.androidmakers.ui.model.UISession
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -57,20 +64,30 @@ fun AgendaColumn(
 
 @Composable
 fun TimeSeparator(prettyTime: String) {
-  Surface(
-      modifier = Modifier.fillMaxWidth()
-  ) {
-    Text(
-        modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
-        text = prettyTime,
-        style = MaterialTheme.typography.titleMedium.copy(
-            color = MaterialTheme.colorScheme.primary,
-            fontWeight = FontWeight.Bold,
-            fontSize = 18.sp
-        )
-    )
+  Surface {
+    Row(
+        modifier = Modifier
+            .padding(horizontal = 12.dp, vertical = 8.dp)
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+      Icon(
+          modifier = Modifier.size(18.dp),
+          imageVector = Icons.Rounded.Schedule,
+          tint = MaterialTheme.colorScheme.primary,
+          contentDescription = stringResource(R.string.filter),
+      )
+      Text(
+          text = prettyTime,
+          style = MaterialTheme.typography.titleMedium.copy(
+              color = MaterialTheme.colorScheme.primary,
+              fontWeight = FontWeight.Bold,
+              fontSize = 18.sp
+          )
+      )
+    }
   }
-
 }
 
 @Preview

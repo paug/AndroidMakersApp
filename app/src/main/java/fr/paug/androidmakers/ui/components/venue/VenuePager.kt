@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.R
+import fr.paug.androidmakers.ui.components.venue.VenueLayout
 import fr.paug.androidmakers.ui.model.UIVenue
 import fr.paug.androidmakers.ui.viewmodel.Lce
 import fr.paug.androidmakers.ui.viewmodel.toLce

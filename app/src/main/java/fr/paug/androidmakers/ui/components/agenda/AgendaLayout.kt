@@ -1,4 +1,4 @@
-package fr.paug.androidmakers.ui.components
+package fr.paug.androidmakers.ui.components.agenda
 
 import android.util.SparseArray
 import androidx.compose.foundation.clickable
@@ -41,6 +41,9 @@ import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.adapter.DaySchedule
 import fr.paug.androidmakers.ui.adapter.RoomSchedule
 import fr.paug.androidmakers.ui.adapter.ScheduleSession
+import fr.paug.androidmakers.ui.components.AgendaLayoutViewModel
+import fr.paug.androidmakers.ui.components.AgendaPager
+import fr.paug.androidmakers.ui.components.ButtonRefreshableLceLayout
 import fr.paug.androidmakers.ui.viewmodel.LceViewModel
 import fr.paug.androidmakers.util.EmojiUtils
 import fr.paug.androidmakers.util.SessionFilter

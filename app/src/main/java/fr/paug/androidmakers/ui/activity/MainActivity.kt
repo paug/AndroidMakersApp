@@ -21,13 +21,12 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.R
-import fr.paug.androidmakers.ui.components.AboutActions
 import fr.paug.androidmakers.ui.components.MainLayout
+import fr.paug.androidmakers.ui.components.about.AboutActions
 import fr.paug.androidmakers.ui.theme.AndroidMakersTheme
 import fr.paug.androidmakers.util.BookmarksStore
 import fr.paug.androidmakers.util.CustomTabUtil
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
@@ -187,7 +186,7 @@ class MainActivity : AppCompatActivity() {
         .store
         .getBookmarks(userId)
         .firstOrNull()
-        ?.getOrNull()?: error("no bookmarks")
+        ?.getOrNull() ?: error("no bookmarks")
     if (bookmarks != null) {
       BookmarksStore.merge(bookmarks)
     }
