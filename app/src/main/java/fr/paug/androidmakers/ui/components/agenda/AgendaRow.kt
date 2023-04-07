@@ -109,7 +109,7 @@ fun AgendaRow(
 }
 
 private fun UISession.subtitle(context: Context) = buildString {
-  val millis = endDate.toEpochMilliseconds() - startDate.toEpochMilliseconds()
+  val millis = endDate - startDate
   val duration = TimeUtils.formatDuration(
       context = context,
       millis

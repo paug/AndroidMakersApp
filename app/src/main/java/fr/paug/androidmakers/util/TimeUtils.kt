@@ -8,6 +8,7 @@ import java.time.ZoneId
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
+import kotlin.time.Duration
 
 object TimeUtils {
   const val SECOND = 1000
@@ -35,8 +36,8 @@ object TimeUtils {
     return dateFormat.format(time).lowercase(Locale.getDefault())
   }
 
-  fun formatDuration(context: Context, duration: Long): String {
-    val minutes = duration / MINUTE
+  fun formatDuration(context: Context, duration: Duration): String {
+    val minutes = duration.inWholeMinutes
     return if (minutes <= 120) {
       context.resources.getQuantityString(
           R.plurals.duration_minutes, minutes.toInt(),
