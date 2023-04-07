@@ -16,6 +16,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import fr.paug.androidmakers.ui.adapter.DaySchedule
 import fr.paug.androidmakers.ui.adapter.ScheduleSession
+import fr.paug.androidmakers.ui.components.agenda.AgendaColumn
+import fr.paug.androidmakers.ui.components.agenda.AgendaPagerViewModel
+import fr.paug.androidmakers.ui.components.agenda.agendaToDays
 import fr.paug.androidmakers.ui.model.UISession
 import fr.paug.androidmakers.util.BookmarksStore
 import fr.paug.androidmakers.util.SessionFilter
