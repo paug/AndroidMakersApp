@@ -42,7 +42,6 @@ dependencies {
   implementation(libs.accompanist.systemuicontroller)
   implementation(libs.accompanist.pager.indicators)
   implementation(libs.accompanist.flowlayout)
-  implementation(libs.accompanist.swiperefresh)
 
   implementation(libs.play.services.auth)
 

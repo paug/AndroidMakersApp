@@ -4,10 +4,15 @@ import android.content.Context
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.BookmarkAdd
 import androidx.compose.material.icons.rounded.BookmarkRemove
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.ListItem
@@ -37,6 +42,15 @@ fun AgendaRow(
 ) {
   ListItem(
       modifier = modifier,
+      leadingContent = {
+        Divider(
+            modifier = Modifier
+                .fillMaxHeight()
+                .width(4.dp),
+            thickness = 80.dp,
+            color = MaterialTheme.colorScheme.primary
+        )
+      },
       headlineContent = {
         Text(
             text = uiSession.title,
@@ -45,7 +59,6 @@ fun AgendaRow(
             )
         )
       },
-
       supportingContent = {
         Column {
           val speakers = uiSession.speakers.joinToString(", ") { it.name }
@@ -61,19 +74,6 @@ fun AgendaRow(
               style = MaterialTheme.typography.labelMedium,
               modifier = Modifier.padding(top = 4.dp)
           )
-//
-//                Text(
-//                    modifier = Modifier
-//                        .background(
-//                            color = MaterialTheme.colorScheme.primary,
-//                            shape = RoundedCornerShape(6.dp)
-//                        )
-//                        .padding(4.dp),
-//                    text = "Lightning",
-//                    style = MaterialTheme.typography.labelSmall.copy(
-//                        color = MaterialTheme.colorScheme.onPrimary
-//                    )
-//                )
         }
       },
       trailingContent = {
@@ -101,9 +101,6 @@ fun AgendaRow(
             )
           }
         }
-      },
-      leadingContent = {
-        // Nothing to do
       },
       overlineContent = {
         // Nothing to do
