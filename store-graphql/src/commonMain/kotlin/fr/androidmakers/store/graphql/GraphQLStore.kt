@@ -1,10 +1,15 @@
 package fr.androidmakers.store.graphql
 
 import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.api.Mutation
 import com.apollographql.apollo3.cache.normalized.FetchPolicy
+import com.apollographql.apollo3.cache.normalized.apolloStore
 import com.apollographql.apollo3.cache.normalized.fetchPolicy
+import com.apollographql.apollo3.cache.normalized.optimisticUpdates
+import com.apollographql.apollo3.cache.normalized.refetchPolicy
 import com.apollographql.apollo3.cache.normalized.watch
 import fr.androidmakers.store.AndroidMakersStore
+import fr.androidmakers.store.graphql.type.buildBookmarks
 import fr.androidmakers.store.model.Logo
 import fr.androidmakers.store.model.Partner
 import fr.androidmakers.store.model.Room
@@ -12,7 +17,6 @@ import fr.androidmakers.store.model.ScheduleSlot
 import fr.androidmakers.store.model.Session
 import fr.androidmakers.store.model.Speaker
 import fr.androidmakers.store.model.Venue
-import fr.androidmakers.store.model.WifiInfo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
@@ -33,15 +37,15 @@ class GraphQLStore(
     return apolloClient.query(GetSpeakersQuery())
         .fetchPolicy(FetchPolicy.CacheAndNetwork)
         .watch().map {
-          it.dataAssertNoErrors.speakers.map { it.speakerDetails }.single { it.id == id }
-              .toSpeaker()
+          it.dataAssertNoErrors.speakers.map { it.speakerDetails }.singleOrNull { it.id == id }?.toSpeaker()
+              ?: error("no speaker")
         }
         .toResultFlow()
   }
 
   override fun getRoom(id: String): Flow<Result<Room>> {
     return getRooms().map {
-      it.map { it.single { it.id == id } }
+      it.map { it.singleOrNull { it.id == id } ?: error("Not Room") }
     }
   }
 
@@ -55,16 +59,63 @@ class GraphQLStore(
         .toResultFlow()
   }
 
-  override fun getWifiInfo(): Flow<Result<WifiInfo?>> {
-    TODO("Not yet implemented")
+  override fun getBookmarks(uid: String): Flow<Result<Set<String>>> {
+    return apolloClient.query(BookmarksQuery())
+        .fetchPolicy(FetchPolicy.NetworkOnly)
+        .refetchPolicy(FetchPolicy.CacheOnly)
+        .watch().map {
+          it.data!!.bookmarks!!.sessionIds.toSet()
+        }.toResultFlow()
   }
 
-  override fun getBookmarks(userId: String): Flow<Result<Set<String>>> {
-    TODO("Not yet implemented")
+  private suspend fun <D : Mutation.Data> modifyBookmarks(
+      uid: String?,
+      mutation: Mutation<D>,
+      data: (sessionIds: List<String>, id: String) -> D
+  ): Boolean {
+    val optimisticData = try {
+      val bookmarks = apolloClient.apolloStore.readOperation(BookmarksQuery()).bookmarks
+      data(bookmarks!!.sessionIds, bookmarks.id)
+    } catch (e: Exception) {
+      null
+    }
+    val response = apolloClient.mutation(mutation)
+        .apply {
+          if (optimisticData != null) {
+            optimisticUpdates(optimisticData)
+          }
+        }
+        .execute()
+
+    return response.data != null
+  }
+
+  suspend fun addBookmark(uid: String?, sessionId: String): Boolean {
+    return modifyBookmarks(uid, AddBookmarkMutation(sessionId)) { sessionIds, id ->
+      AddBookmarkMutation.Data {
+        addBookmark = buildBookmarks {
+          this.id = id
+          this.sessionIds = sessionIds + sessionId
+        }
+      }
+    }
+  }
+
+  suspend fun removeBookmark(uid: String?, sessionId: String): Boolean {
+    return modifyBookmarks(uid, RemoveBookmarkMutation(sessionId)) { sessionIds, id ->
+      RemoveBookmarkMutation.Data {
+        removeBookmark = buildBookmarks {
+          this.id = id
+          this.sessionIds = sessionIds - sessionId
+        }
+      }
+    }
   }
 
   override suspend fun setBookmark(userId: String, sessionId: String, value: Boolean) {
-    TODO("Not yet implemented")
+    if (value) {
+      addBookmark(userId, sessionId)
+    }
   }
 
   override fun getSession(id: String): Flow<Result<Session>> {
@@ -126,7 +177,7 @@ class GraphQLStore(
   private fun <T> Flow<T>.toResultFlow(): Flow<Result<T>> = this.map {
     Result.success(it)
   }.catch {
-    Result.failure<T>(it)
+    emit(Result.failure<T>(it))
   }
 
 }

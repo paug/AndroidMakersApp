@@ -1,42 +1,50 @@
 {
   "project_info": {
-    "project_number": "956721515752",
-    "project_id": "android-makers-2022",
-    "storage_bucket": "android-makers-2022.appspot.com"
+    "project_number": "127852231544",
+    "project_id": "androidmakers-2023",
+    "storage_bucket": "androidmakers-2023.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:956721515752:android:f074fbf74cf13a06ed4d5d",
+        "mobilesdk_app_id": "1:127852231544:android:36ae3551145453a9e6e68d",
         "android_client_info": {
           "package_name": "fr.paug.androidmakers"
         }
       },
       "oauth_client": [
         {
-          "client_id": "956721515752-s37et6oaa07k570r96liuv1knsovtpc6.apps.googleusercontent.com",
+          "client_id": "127852231544-bmorteqbdjjjffq7uirf6i8db0t4bo71.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "fr.paug.androidmakers",
+            "certificate_hash": "a1eb323c4b06a569e8db487bb03a65d2ea649f48"
+          }
+        },
+        {
+          "client_id": "127852231544-nislnj6eo41sbj5f9mmbeedcqdrk1pib.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "fr.paug.androidmakers",
+            "certificate_hash": "ff357f347e107c052e57095034000d9a312275a5"
+          }
+        },
+        {
+          "client_id": "127852231544-1nj0bjn8v2h7psd1lnf8ppovoe3k245b.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBrsk1zKgYqRM0MlQ7xznuvYQzdhAnSF1M"
+          "current_key": "AIzaSyD0MDezelAjCX4IaK2Me-NSX0GSKFmMxHc"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "956721515752-s37et6oaa07k570r96liuv1knsovtpc6.apps.googleusercontent.com",
+              "client_id": "127852231544-119kptis2pedq9rav7s8jto1mlnp208o.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "956721515752-rgqej3sodfba8olmg59bkneagvci1pn4.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.paug.RobotConf",
-                "app_store_id": "1502020576"
-              }
             }
           ]
         }

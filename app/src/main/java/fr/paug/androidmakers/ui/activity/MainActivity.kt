@@ -28,6 +28,7 @@ import fr.paug.androidmakers.util.BookmarksStore
 import fr.paug.androidmakers.util.CustomTabUtil
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
 
@@ -148,7 +149,6 @@ class MainActivity : AppCompatActivity() {
             idToken != null -> {
               // Got an ID token from Google. Use it to authenticate
               // with Firebase.
-              println("Got ID token")
               // Got an ID token from Google. Use it to authenticate
               // with Firebase.
               val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
@@ -158,7 +158,6 @@ class MainActivity : AppCompatActivity() {
                   .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                       // Sign in success, update UI with the signed-in user's information
-                      println("signInWithCredential:success")
                       lifecycleScope.launch {
                         mergeBookmarks(auth.currentUser!!.uid)
                         _user.value = auth.currentUser?.toAMUser()
@@ -174,7 +173,6 @@ class MainActivity : AppCompatActivity() {
             else -> {
               _user.value = null
               // Shouldn't happen.
-              println("No ID token :(")
             }
           }
         } catch (e: ApiException) {
@@ -185,8 +183,11 @@ class MainActivity : AppCompatActivity() {
   }
 
   suspend fun mergeBookmarks(userId: String) {
-    val bookmarks =
-        AndroidMakersApplication.instance().store.getBookmarks(userId).first().getOrNull()
+    val bookmarks = AndroidMakersApplication.instance()
+        .store
+        .getBookmarks(userId)
+        .firstOrNull()
+        ?.getOrNull()?: error("no bookmarks")
     if (bookmarks != null) {
       BookmarksStore.merge(bookmarks)
     }
