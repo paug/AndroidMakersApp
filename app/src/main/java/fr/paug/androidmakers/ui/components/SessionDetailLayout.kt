@@ -285,7 +285,7 @@ private fun Speakers(speakers: List<Speaker>) {
 
 @Composable
 private fun Speaker(speaker: Speaker) {
-  Card() {
+  Card {
     Column(Modifier.padding(top = 16.dp)) {
       Row {
         AsyncImage(

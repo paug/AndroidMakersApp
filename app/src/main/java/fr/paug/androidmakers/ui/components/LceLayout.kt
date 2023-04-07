@@ -6,6 +6,10 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
@@ -16,8 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.viewmodel.Lce
 import fr.paug.androidmakers.ui.viewmodel.LceViewModel
@@ -51,6 +53,7 @@ fun <T> LceLayout(
   }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun <T> SwipeRefreshableLceLayout(
     viewModel: LceViewModel<T>,
@@ -58,16 +61,15 @@ fun <T> SwipeRefreshableLceLayout(
 ) {
   val isRefreshing = viewModel.isRefreshing.collectAsState()
   val lce = viewModel.values.collectAsState()
+  val pullRefreshState = rememberPullRefreshState(isRefreshing.value, { viewModel.refresh() })
 
-  SwipeRefresh(
-      state = rememberSwipeRefreshState(isRefreshing.value),
-      onRefresh = { viewModel.refresh() },
-  ) {
+  Box(Modifier.pullRefresh(pullRefreshState)) {
     LceLayout(
         lce = lce.value,
     ) {
       content(it)
     }
+    PullRefreshIndicator(isRefreshing.value, pullRefreshState, Modifier.align(Alignment.TopCenter))
   }
 }
 

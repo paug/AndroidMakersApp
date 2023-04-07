@@ -6,9 +6,10 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.CalendarMonth
+import androidx.compose.material.icons.rounded.Diamond
 import androidx.compose.material.icons.rounded.FilterList
 import androidx.compose.material.icons.rounded.Info
-import androidx.compose.material.icons.rounded.ListAlt
 import androidx.compose.material.icons.rounded.LocationCity
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
@@ -43,6 +44,10 @@ import fr.androidmakers.store.model.Partner
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.activity.AMUser
+import fr.paug.androidmakers.ui.components.about.AboutActions
+import fr.paug.androidmakers.ui.components.about.AboutLayout
+import fr.paug.androidmakers.ui.components.agenda.AgendaLayout
+import fr.paug.androidmakers.ui.components.sponsors.SponsorsScreen
 import fr.paug.androidmakers.ui.navigation.AVANavigationRoute
 import fr.paug.androidmakers.ui.viewmodel.LceViewModel
 import kotlinx.coroutines.flow.Flow
@@ -105,7 +110,7 @@ fun AVALayout(
         NavigationBar {
           NavigationBarItem(
               avaNavController = avaNavController,
-              imageVector = Icons.Rounded.ListAlt,
+              imageVector = Icons.Rounded.CalendarMonth,
               labelResId = R.string.title_agenda,
               currentRoute = currentRoute,
               destinationRoute = AVANavigationRoute.AGENDA
@@ -119,12 +124,18 @@ fun AVALayout(
           )
           NavigationBarItem(
               avaNavController = avaNavController,
+              imageVector = Icons.Rounded.Diamond,
+              labelResId = R.string.title_sponsors,
+              currentRoute = currentRoute,
+              destinationRoute = AVANavigationRoute.SPONSORS
+          )
+          NavigationBarItem(
+              avaNavController = avaNavController,
               imageVector = Icons.Rounded.Info,
               labelResId = R.string.title_about,
               currentRoute = currentRoute,
               destinationRoute = AVANavigationRoute.ABOUT
           )
-
         }
       },
   ) { innerPadding ->
@@ -177,15 +188,18 @@ private fun AVANavHost(
     aboutActions: AboutActions,
 ) {
   NavHost(avaNavController, startDestination = AVANavigationRoute.AGENDA.name) {
+
     composable(route = AVANavigationRoute.AGENDA.name) {
       AgendaLayout(
           agendaFilterDrawerState = agendaFilterDrawerState,
           onSessionClick = onSessionClick
       )
     }
+
     composable(route = AVANavigationRoute.VENUE.name) {
       VenuePager()
     }
+
     composable(route = AVANavigationRoute.ABOUT.name) {
       val partnerList by viewModel<PartnersViewModel>().values.collectAsState()
 
@@ -194,6 +208,15 @@ private fun AVANavHost(
           aboutActions = aboutActions
       )
     }
+
+    composable(route = AVANavigationRoute.SPONSORS.name) {
+      val partnerList by viewModel<PartnersViewModel>().values.collectAsState()
+      SponsorsScreen(
+          partnerList = partnerList,
+          onSponsorClick = aboutActions.onSponsorClick
+      )
+    }
+
   }
 }
 

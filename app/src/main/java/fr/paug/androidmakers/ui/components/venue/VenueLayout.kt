@@ -1,4 +1,4 @@
-package fr.paug.androidmakers.ui.components
+package fr.paug.androidmakers.ui.components.venue
 
 import android.content.Context
 import android.content.Intent
