@@ -137,6 +137,8 @@ type Session {
 
   id: String!
 
+  isServiceSession: Boolean!
+
   """
   An [IETF language code](https://en.wikipedia.org/wiki/IETF_language_tag) like en-US
   """
