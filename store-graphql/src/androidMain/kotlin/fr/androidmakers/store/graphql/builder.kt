@@ -1,6 +1,7 @@
 package fr.androidmakers.store.graphql
 
 import android.content.Context
+import android.os.Build
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.http.HttpRequest
 import com.apollographql.apollo3.api.http.HttpResponse
@@ -17,8 +18,13 @@ import kotlinx.coroutines.runBlocking
 fun GraphQLStore(context: Context): GraphQLStore {
   val cacheFactory = MemoryCacheFactory(20_000_000).chain(SqlNormalizedCacheFactory(context))
   val apolloClient = ApolloClient.Builder()
-      //.serverUrl("https://confetti-app.dev/graphql")
-      .serverUrl("https://androidmakers-2023.ew.r.appspot.com/graphql")
+      .apply {
+        if (Build.PRODUCT == "sdk_gphone64_arm64") {
+          serverUrl("http://10.0.2.2:8080/graphql")
+        } else {
+          serverUrl("https://androidmakers-2023.ew.r.appspot.com/graphql")
+        }
+      }
       .addHttpInterceptor(object : HttpInterceptor {
         override suspend fun intercept(request: HttpRequest, chain: HttpInterceptorChain): HttpResponse {
           return chain.proceed(
