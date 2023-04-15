@@ -36,7 +36,7 @@ apollo {
 
     introspection {
       schemaFile.set(file("src/commonMain/graphql/schema.graphqls"))
-      endpointUrl.set("https://confetti-app.dev/graphql")
+      endpointUrl.set("https://androidmakers-2023.ew.r.appspot.com/graphql")
     }
   }
 }
