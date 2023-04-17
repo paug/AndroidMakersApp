@@ -11,18 +11,11 @@ dependencies/
 .classpath
 .settings
 
-#IntelliJ IDEA
-.idea
-*.iml
-*.ipr
-*.iws
-
 #Ant
 build.xml
 local.properties
 
 #Android Studio
-.idea
 .gradle
 build/
 
@@ -41,6 +34,7 @@ app/prod/release/output.json
 **/.idea/*
 !**/.idea/codeStyles
 !**/.idea/icon.png
+!**/.idea/icon.svg
 !**/.idea/runConfigurations
 !**/.idea/scopes
 *.iml
