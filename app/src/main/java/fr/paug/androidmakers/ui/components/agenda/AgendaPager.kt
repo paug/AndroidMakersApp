@@ -23,6 +23,7 @@ import fr.paug.androidmakers.ui.model.UISession
 import fr.paug.androidmakers.util.BookmarksStore
 import fr.paug.androidmakers.util.SessionFilter
 import fr.paug.androidmakers.util.TimeUtils
+import fr.paug.androidmakers.util.eventTimeZone
 import kotlinx.coroutines.launch
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
@@ -76,8 +77,8 @@ fun AgendaPager(
                   id = item.sessionId,
                   title = item.title,
                   language = item.language,
-                  startDate = item.slot.startDate.toInstant(TimeZone.UTC),
-                  endDate = item.slot.endDate.toInstant(TimeZone.UTC),
+                  startDate = item.slot.startDate.toInstant(eventTimeZone),
+                  endDate = item.slot.endDate.toInstant(eventTimeZone),
                   room = getRoomTitle(item, days[page]),
                   roomId = item.roomId,
                   speakers = item.speakers.map {

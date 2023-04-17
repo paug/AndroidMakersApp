@@ -47,6 +47,7 @@ import fr.paug.androidmakers.ui.components.ButtonRefreshableLceLayout
 import fr.paug.androidmakers.ui.viewmodel.LceViewModel
 import fr.paug.androidmakers.util.EmojiUtils
 import fr.paug.androidmakers.util.SessionFilter
+import fr.paug.androidmakers.util.eventTimeZone
 import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
@@ -283,7 +284,7 @@ private fun getRoomScheduleForDay(
     scheduleSlot: ScheduleSlot,
 ): MutableList<RoomSchedule> {
 
-  calendar.timeInMillis = scheduleSlot.startDate.toInstant(TimeZone.UTC).toEpochMilliseconds()
+  calendar.timeInMillis = scheduleSlot.startDate.toInstant(eventTimeZone).toEpochMilliseconds()
   val dayIndex = calendar.get(Calendar.DAY_OF_YEAR) + calendar.get(Calendar.YEAR) * 1000
   var daySchedule: DaySchedule? = itemByDayOfTheYear.get(dayIndex)
   if (daySchedule == null) {
