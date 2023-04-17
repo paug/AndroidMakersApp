@@ -29,7 +29,7 @@ object TimeUtils {
 
     // Display the time in the local time as everyone will be on site so it makes
     // planning in advance easier
-    val tz = TimeZone.getTimeZone(ZoneId.of("Europe/Paris"))
+    val tz = TimeZone.getTimeZone("Europe/Paris")
     if (tz != null) {
       dateFormat.timeZone = tz
     }
@@ -48,3 +48,5 @@ object TimeUtils {
     }
   }
 }
+
+val eventTimeZone = kotlinx.datetime.TimeZone.of("Europe/Paris")
