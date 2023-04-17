@@ -141,7 +141,7 @@ fun SessionDetailLayout(
       floatingActionButton = {
         if (sessionDetailState is Lce.Content) {
           val backgroundColor by animateColorAsState(
-              if (sessionDetailState.content.isBookmarked) Color.White else AMColor.amRed
+              if (sessionDetailState.content.isBookmarked) AMColor.amRed else Color.White  
           )
           FloatingActionButton(
               containerColor = backgroundColor,
