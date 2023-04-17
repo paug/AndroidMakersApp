@@ -12,10 +12,9 @@
         android:theme="@style/PreviewTheme.AndroidMakers"
         tools:ignore="UnusedAttribute">
 
-        <!-- Disable analytics and advertisingId collection. Google just pushed us out of the store for that -->
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
-            android:value="false" />
+            android:value="true" />
 
         <meta-data
             android:name="google_analytics_adid_collection_enabled"
