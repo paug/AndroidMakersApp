@@ -11,6 +11,7 @@ enum class MainNavigationRoute {
 enum class AVANavigationRoute {
   AGENDA,
   VENUE,
+  SPEAKERS,
   SPONSORS,
   ABOUT,
 }

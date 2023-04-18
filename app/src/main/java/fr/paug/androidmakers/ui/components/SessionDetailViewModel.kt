@@ -15,6 +15,7 @@ class SessionDetailViewModel(
     private val startTimestamp: Long,
     private val endTimestamp: Long,
 ) : ViewModel() {
+
   val sessionDetailState = combine(
       AndroidMakersApplication.instance().store.getSession(sessionId),
       AndroidMakersApplication.instance().store.getRoom(roomId),

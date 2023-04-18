@@ -25,7 +25,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fr.paug.androidmakers.R
-import fr.paug.androidmakers.ui.components.AgendaRow
 import fr.paug.androidmakers.ui.model.UISession
 
 @OptIn(ExperimentalFoundationApi::class)
