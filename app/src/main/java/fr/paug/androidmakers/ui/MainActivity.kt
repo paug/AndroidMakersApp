@@ -45,16 +45,21 @@ import fr.paug.androidmakers.util.CustomTabUtil
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 val LocalActivity = staticCompositionLocalOf<MainActivity> { throw NotImplementedError() }
 
 data class AMUser(
-    val uid: String,
-    val photoUrl: String?,
-)
+    private val firebaseUser: FirebaseUser
+) {
+  val uid: String
+    get() = firebaseUser.uid
+  val photoUrl: String?
+    get() = firebaseUser.photoUrl?.toString()
+}
 
 private fun FirebaseUser.toAMUser(): AMUser {
-  return AMUser(this.uid, this.photoUrl?.toString())
+  return AMUser(this)
 }
 
 class MainActivity : AppCompatActivity() {
@@ -78,7 +83,6 @@ class MainActivity : AppCompatActivity() {
     logFCMToken()
 
     setContent {
-
       val rememberedActivity = remember { this }
 
       val userState = _user.collectAsState()
@@ -239,8 +243,8 @@ class MainActivity : AppCompatActivity() {
                     if (task.isSuccessful) {
                       // Sign in success, update UI with the signed-in user's information
                       lifecycleScope.launch {
-                        mergeBookmarks(auth.currentUser!!.uid)
                         _user.value = auth.currentUser?.toAMUser()
+                        mergeBookmarks(auth.currentUser!!.uid)
                       }
                     } else {
                       // If sign in fails, display a message to the user.
@@ -267,7 +271,7 @@ class MainActivity : AppCompatActivity() {
         .store
         .getBookmarks(userId)
         .firstOrNull()
-        ?.getOrNull() ?: error("no bookmarks")
+        ?.getOrNull()
     if (bookmarks != null) {
       BookmarksStore.merge(bookmarks)
     }
