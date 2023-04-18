@@ -45,6 +45,7 @@ firebase-bom = "com.google.firebase:firebase-bom:31.2.3"
 firebase-config = { module = "com.google.firebase:firebase-config" }
 firebase-crashlytics-gradle = "com.google.firebase:firebase-crashlytics-gradle:2.9.4"
 firebase-crashlytics-ktx = { module = "com.google.firebase:firebase-crashlytics-ktx" }
+firebase-inappmessaging = { module = "com.google.firebase:firebase-inappmessaging-display-ktx" }
 firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
 glide-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
 glide-runtime = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
