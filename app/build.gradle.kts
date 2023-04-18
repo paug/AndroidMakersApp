@@ -15,7 +15,9 @@ dependencies {
   implementation(libs.kotlinx.coroutines.android)
 
   // Support
-  implementation(libs.appcompat)
+  implementation(libs.androidx.activity.compose)
+  implementation(libs.androidx.appcompat)
+
   implementation(libs.material)
   implementation(libs.vectordrawable)
   implementation(libs.browser)

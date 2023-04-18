@@ -1,13 +1,17 @@
 [versions]
-kotlin = "1.8.20-RC"
-glide = "4.12.0"
+accompanist = "0.29.2-rc"
+androidxActivity = "1.7.0"
+androidxAppCompat = "1.6.1"
 apollo = "3.7.5"
 compose = "1.4.0"
 compose-compiler = "1.4.4-dev-k1.8.20-RC-88d9f3a8232"
-accompanist = "0.29.2-rc"
+kotlin = "1.8.20-RC"
+glide = "4.12.0"
 material3 = "1.1.0-beta01"
 
 [libraries]
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidxAppCompat" }
 accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "accompanist" }
 accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanist" }
 accompanist-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "accompanist" }
@@ -17,7 +21,6 @@ apollo-adapters = { module = "com.apollographql.apollo3:apollo-adapters" }
 apollo-normalized-cache = { module = "com.apollographql.apollo3:apollo-normalized-cache" }
 apollo-normalized-cache-sqlite = { module = "com.apollographql.apollo3:apollo-normalized-cache-sqlite" }
 apollo-runtime = { module = "com.apollographql.apollo3:apollo-runtime" }
-appcompat = "androidx.appcompat:appcompat:1.6.1"
 browser = "androidx.browser:browser:1.5.0"
 cardview = "androidx.cardview:cardview:1.0.0"
 shared-preferences = "androidx.preference:preference:1.2.0"
