@@ -3,7 +3,6 @@ package fr.paug.androidmakers.fixtures
 import fr.androidmakers.store.AndroidMakersStore
 import fr.androidmakers.store.model.Partner
 import fr.androidmakers.store.model.Room
-import fr.androidmakers.store.model.ScheduleSlot
 import fr.androidmakers.store.model.Session
 import fr.androidmakers.store.model.Speaker
 import fr.androidmakers.store.model.Venue

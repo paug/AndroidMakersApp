@@ -13,7 +13,6 @@ import fr.androidmakers.store.graphql.type.buildBookmarks
 import fr.androidmakers.store.model.Logo
 import fr.androidmakers.store.model.Partner
 import fr.androidmakers.store.model.Room
-import fr.androidmakers.store.model.ScheduleSlot
 import fr.androidmakers.store.model.Session
 import fr.androidmakers.store.model.Speaker
 import fr.androidmakers.store.model.Venue
@@ -143,16 +142,6 @@ class GraphQLStore(
                 }
             )
           }
-        }
-        .toResultFlow()
-  }
-
-  override fun getScheduleSlots(): Flow<Result<List<ScheduleSlot>>> {
-    return apolloClient.query(GetSessionsQuery())
-        .fetchPolicy(FetchPolicy.CacheAndNetwork)
-        .watch()
-        .map {
-          it.dataAssertNoErrors.sessions.nodes.map { it.sessionDetails.toSlot() }
         }
         .toResultFlow()
   }
