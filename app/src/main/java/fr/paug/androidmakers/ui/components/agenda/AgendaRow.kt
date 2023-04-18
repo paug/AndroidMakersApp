@@ -40,15 +40,15 @@ fun AgendaRow(
 ) {
   ListItem(
       modifier = modifier,
-      leadingContent = {
-        Divider(
-            modifier = Modifier
-                .fillMaxHeight()
-                .width(4.dp),
-            thickness = 80.dp,
-            color = MaterialTheme.colorScheme.primary
-        )
-      },
+//      leadingContent = {
+//        Divider(
+//            modifier = Modifier
+//                .fillMaxHeight()
+//                .width(4.dp),
+//            thickness = 80.dp,
+//            color = MaterialTheme.colorScheme.primary
+//        )
+//      },
       headlineContent = {
         Text(
             text = uiSession.title,

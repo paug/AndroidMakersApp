@@ -4,19 +4,16 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Schedule
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -34,28 +31,31 @@ fun AgendaColumn(
     onSessionClicked: (UISession) -> Unit,
 ) {
   val listState = rememberLazyListState()
-  var itemNum by remember { mutableStateOf(0) }
+
   LazyColumn(
       state = listState,
       modifier = Modifier.fillMaxHeight()
   ) {
-    sessionsPerStartTime.forEach {
+    sessionsPerStartTime.forEach { (key, sessions) ->
 
       stickyHeader {
-        TimeSeparator(it.key)
+        TimeSeparator(key)
       }
 
-      itemsIndexed(
-          items = it.value
-      ) { index, uiSession ->
-
-        AgendaRow(
-            modifier = Modifier
-                .clickable { onSessionClicked.invoke(uiSession) }
-                .animateItemPlacement(),
-            uiSession = uiSession,
-        )
-
+      item {
+        ElevatedCard(
+            modifier = Modifier.padding(horizontal = 16.dp),
+            shape = RoundedCornerShape(16.dp),
+        ) {
+          sessions.forEach { uiSession ->
+            AgendaRow(
+                modifier = Modifier
+                    .clickable { onSessionClicked.invoke(uiSession) }
+                    .animateItemPlacement(),
+                uiSession = uiSession,
+            )
+          }
+        }
       }
     }
   }
@@ -66,7 +66,7 @@ fun TimeSeparator(prettyTime: String) {
   Surface {
     Row(
         modifier = Modifier
-            .padding(horizontal = 12.dp, vertical = 8.dp)
+            .padding(horizontal = 16.dp, vertical = 8.dp)
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(4.dp)
