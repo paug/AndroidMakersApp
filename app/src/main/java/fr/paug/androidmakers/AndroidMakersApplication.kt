@@ -7,6 +7,7 @@ import fr.paug.androidmakers.util.BookmarksStore
 import io.openfeedback.android.OpenFeedback
 
 
+
 class AndroidMakersApplication : Application() {
   lateinit var store: AndroidMakersStore
   lateinit var openFeedback: OpenFeedback
