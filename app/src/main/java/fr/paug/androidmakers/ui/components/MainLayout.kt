@@ -11,8 +11,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import fr.paug.androidmakers.ui.activity.AMUser
+import fr.paug.androidmakers.ui.AMUser
 import fr.paug.androidmakers.ui.components.about.AboutActions
+import fr.paug.androidmakers.ui.components.session.SessionDetailLayout
+import fr.paug.androidmakers.ui.components.session.SessionDetailViewModel
 import fr.paug.androidmakers.ui.navigation.MainNavigationRoute
 import fr.paug.androidmakers.ui.viewmodel.Lce
 
@@ -40,9 +42,11 @@ private fun MainNavHost(
     user: AMUser?,
 ) {
   NavHost(mainNavController, startDestination = MainNavigationRoute.AVA.name) {
+
     composable(route = MainNavigationRoute.AVA.name) {
       AVALayout(onSessionClick = onSessionClick, aboutActions = aboutActions, user = user)
     }
+
     composable(route = "${MainNavigationRoute.SESSION_DETAIL.name}/{sessionId}/{roomId}/{startTimestamp}/{endTimestamp}") { backStackEntry ->
       val sessionId = backStackEntry.arguments!!.getString("sessionId")!!
       val roomId = backStackEntry.arguments!!.getString("roomId")!!

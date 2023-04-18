@@ -1,4 +1,4 @@
-package fr.paug.androidmakers.ui.components
+package fr.paug.androidmakers.ui.components.agenda
 
 import android.content.Context
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -14,16 +14,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
-import fr.paug.androidmakers.ui.components.agenda.AgendaColumn
-import fr.paug.androidmakers.ui.components.agenda.AgendaPagerViewModel
-import fr.paug.androidmakers.ui.components.agenda.agendaToDays
+import fr.paug.androidmakers.ui.components.EmptyLayout
+import fr.paug.androidmakers.ui.components.SwipeRefreshableLceLayout
 import fr.paug.androidmakers.ui.model.UISession
 import fr.paug.androidmakers.util.BookmarksStore
 import fr.paug.androidmakers.util.SessionFilter
 import fr.paug.androidmakers.util.TimeUtils
-import fr.paug.androidmakers.util.eventTimeZone
 import kotlinx.coroutines.launch
-import kotlinx.datetime.toInstant
 import java.util.*
 
 

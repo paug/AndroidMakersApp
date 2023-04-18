@@ -46,7 +46,7 @@ import androidx.navigation.compose.rememberNavController
 import fr.androidmakers.store.model.Partner
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.R
-import fr.paug.androidmakers.ui.activity.AMUser
+import fr.paug.androidmakers.ui.AMUser
 import fr.paug.androidmakers.ui.components.about.AboutActions
 import fr.paug.androidmakers.ui.components.about.AboutLayout
 import fr.paug.androidmakers.ui.components.agenda.AgendaLayout

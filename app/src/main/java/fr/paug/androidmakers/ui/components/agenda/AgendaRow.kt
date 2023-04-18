@@ -2,15 +2,13 @@ package fr.paug.androidmakers.ui.components.agenda
 
 import android.content.Context
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.BookmarkAdd
 import androidx.compose.material.icons.rounded.BookmarkRemove
-import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.ListItem
@@ -19,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -52,24 +51,28 @@ fun AgendaRow(
       headlineContent = {
         Text(
             text = uiSession.title,
-            style = MaterialTheme.typography.titleMedium.copy(
+            style = MaterialTheme.typography.titleLarge.copy(
                 fontWeight = FontWeight.Bold
             )
         )
       },
       supportingContent = {
-        Column {
+        Column(
+            modifier = Modifier.padding(top = 12.dp),
+            horizontalAlignment = Alignment.Start,
+//            verticalArrangement = Arrangement.spacedBy(2.dp, Alignment.CenterVertically)
+        ) {
           val speakers = uiSession.speakers.joinToString(", ") { it.name }
           if (speakers.isNotBlank()) {
             Text(
                 text = speakers,
-                style = MaterialTheme.typography.labelMedium,
+                style = MaterialTheme.typography.bodyMedium,
             )
           }
 
           Text(
               text = uiSession.subtitle(LocalContext.current),
-              style = MaterialTheme.typography.labelMedium,
+              style = MaterialTheme.typography.bodyMedium,
               modifier = Modifier.padding(top = 4.dp)
           )
         }

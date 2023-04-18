@@ -1,4 +1,4 @@
-package fr.paug.androidmakers.ui.activity
+package fr.paug.androidmakers.ui
 
 import android.Manifest.permission.POST_NOTIFICATIONS
 import android.content.Intent

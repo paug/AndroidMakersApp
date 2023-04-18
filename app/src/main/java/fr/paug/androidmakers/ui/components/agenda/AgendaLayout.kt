@@ -39,7 +39,6 @@ import fr.androidmakers.store.model.Speaker
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.components.AgendaLayoutViewModel
-import fr.paug.androidmakers.ui.components.AgendaPager
 import fr.paug.androidmakers.ui.components.ButtonRefreshableLceLayout
 import fr.paug.androidmakers.ui.model.UISession
 import fr.paug.androidmakers.ui.viewmodel.LceViewModel

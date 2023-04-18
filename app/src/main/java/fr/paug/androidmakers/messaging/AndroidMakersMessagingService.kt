@@ -12,7 +12,7 @@ import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import fr.paug.androidmakers.R
-import fr.paug.androidmakers.ui.activity.MainActivity
+import fr.paug.androidmakers.ui.MainActivity
 
 class AndroidMakersMessagingService : FirebaseMessagingService() {
 

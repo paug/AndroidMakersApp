@@ -1,4 +1,4 @@
-package fr.paug.androidmakers.ui.components
+package fr.paug.androidmakers.ui.components.session
 
 import androidx.lifecycle.ViewModel
 import fr.androidmakers.store.model.Session
