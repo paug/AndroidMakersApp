@@ -18,8 +18,8 @@ import androidx.compose.ui.res.stringResource
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import fr.paug.androidmakers.R
-import fr.paug.androidmakers.ui.activity.AMUser
-import fr.paug.androidmakers.ui.activity.LocalActivity
+import fr.paug.androidmakers.ui.AMUser
+import fr.paug.androidmakers.ui.LocalActivity
 
 
 @Composable

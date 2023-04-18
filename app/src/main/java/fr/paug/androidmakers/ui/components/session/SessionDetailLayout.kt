@@ -1,4 +1,4 @@
-package fr.paug.androidmakers.ui.components
+package fr.paug.androidmakers.ui.components.session
 
 import android.content.Context
 import android.content.Intent
@@ -28,9 +28,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.BookmarkAdd
 import androidx.compose.material.icons.rounded.BookmarkRemove
+import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.Public
 import androidx.compose.material.icons.rounded.Share
-import androidx.compose.material3.Card
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -56,20 +57,18 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.google.accompanist.flowlayout.FlowRow
-import fr.androidmakers.store.model.BadgesItem
 import fr.androidmakers.store.model.Room
 import fr.androidmakers.store.model.Session
-import fr.androidmakers.store.model.SocialsItem
 import fr.androidmakers.store.model.Speaker
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.R
+import fr.paug.androidmakers.ui.components.LoadingLayout
 import fr.paug.androidmakers.ui.theme.AMColor
 import fr.paug.androidmakers.ui.util.discardHtmlTags
 import fr.paug.androidmakers.ui.viewmodel.Lce
-import fr.paug.androidmakers.util.imageUrl
+import fr.paug.androidmakers.util.EmojiUtils
 import io.openfeedback.android.components.SessionFeedbackContainer
 import separatorColor
-import java.util.Date
 import java.util.Formatter
 import java.util.Locale
 
@@ -141,7 +140,7 @@ fun SessionDetailLayout(
       floatingActionButton = {
         if (sessionDetailState is Lce.Content) {
           val backgroundColor by animateColorAsState(
-              if (sessionDetailState.content.isBookmarked) AMColor.amRed else Color.White  
+              if (sessionDetailState.content.isBookmarked) AMColor.amRed else Color.White
           )
           FloatingActionButton(
               containerColor = backgroundColor,
@@ -179,19 +178,32 @@ private fun SessionDetails(sessionDetails: SessionDetailState, formattedDateAndR
 
     Text(
         text = sessionDetails.session.title,
-        style = MaterialTheme.typography.titleLarge
+        style = MaterialTheme.typography.headlineLarge
     )
-    Text(
+
+    Row(
         modifier = Modifier.padding(top = 16.dp),
-        text = formattedDateAndRoom,
-        style = MaterialTheme.typography.labelMedium,
-    )
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.Start)
+    ) {
+      Icon(
+          modifier = Modifier.size(16.dp),
+          imageVector = Icons.Rounded.Info,
+          contentDescription = stringResource(R.string.info)
+      )
+
+      Text(
+
+          text = formattedDateAndRoom,
+          style = MaterialTheme.typography.labelMedium,
+      )
+    }
 
     Text(
         modifier = Modifier.padding(top = 16.dp),
         text = sessionDetails.session.description?.discardHtmlTags() ?: "",
         textAlign = TextAlign.Start,
-        style = MaterialTheme.typography.bodyMedium,
+        style = MaterialTheme.typography.bodyLarge,
     )
 
     ChipList(sessionDetails)
@@ -250,7 +262,10 @@ private fun ChipList(sessionDetails: SessionDetailState) {
       SuggestionChip(
           onClick = {},
           label = { Text(text = language) },
-          enabled = true
+          enabled = true,
+          icon = {
+            EmojiUtils.getLanguageInEmoji(sessionDetails.session.language)?.let { Text(text = it) }
+          }
       )
     }
     for (tag in sessionDetails.session.tags) {
@@ -277,77 +292,76 @@ private fun Speakers(speakers: List<Speaker>) {
       verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically)
   ) {
     for (speaker in speakers) {
-      Speaker(speaker)
+      ElevatedCard {
+        Speaker(speaker = speaker)
+      }
     }
   }
 
 }
 
 @Composable
-private fun Speaker(speaker: Speaker) {
-  Card {
-    Column(Modifier.padding(top = 16.dp)) {
-      Row {
-        AsyncImage(
-            modifier = Modifier
-                .size(64.dp)
-                .clip(CircleShape),
-            placeholder = painterResource(R.drawable.ic_person_black_24dp),
-            error = painterResource(R.drawable.ic_person_black_24dp),
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(speaker.photoUrl?.let { imageUrl(it) })
-                .crossfade(true)
-                .build(),
-            contentDescription = speaker.name
-        )
+private fun Speaker(
+    modifier: Modifier = Modifier,
+    speaker: Speaker
+) {
 
-        Column(
-            modifier = Modifier.padding(horizontal = 8.dp)
+  Column(
+      modifier = Modifier.padding(16.dp),
+      verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically),
+      horizontalAlignment = Alignment.Start
+  ) {
+    AsyncImage(
+        modifier = Modifier
+            .size(64.dp)
+            .clip(CircleShape),
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(speaker.photoUrl)
+            .build(),
+        contentDescription = stringResource(R.string.title_speakers)
+    )
+
+    Text(
+        text = speaker.getFullNameAndCompany(),
+        style = MaterialTheme.typography.titleLarge,
+    )
+
+    speaker.bio?.let { bio ->
+      Text(
+          modifier = Modifier.padding(),
+          text = bio,
+          textAlign = TextAlign.Start,
+          style = MaterialTheme.typography.bodyMedium,
+      )
+    }
+
+    Row(
+        horizontalArrangement = Arrangement.End
+    ) {
+      val context = LocalContext.current
+      for (socialsItem in speaker.socials.orEmpty().filterNotNull()) {
+        IconButton(
+            onClick = {
+              // TODO Ideally this should not be handled here but by the caller
+              openSocialLink(context, socialsItem.link!!)
+            }
         ) {
-
-          Text(
-              text = speaker.getFullNameAndCompany(),
-              style = MaterialTheme.typography.titleMedium,
-          )
-
-          speaker.bio?.let { bio ->
-            Text(
-                modifier = Modifier.padding(),
-                text = bio,
-                style = MaterialTheme.typography.bodyMedium,
+          if (socialsItem.icon == "twitter") {
+            Icon(
+                painter = painterResource(R.drawable.ic_network_twitter),
+                contentDescription = socialsItem.icon
+            )
+          } else {
+            Icon(
+                imageVector = Icons.Rounded.Public,
+                contentDescription = socialsItem.icon
             )
           }
-
-          Row {
-            val context = LocalContext.current
-            for (socialsItem in speaker.socials.orEmpty().filterNotNull()) {
-              IconButton(
-                  onClick = {
-                    // TODO Ideally this should not be handled here but by the caller
-                    openSocialLink(context, socialsItem.link!!)
-                  }
-              ) {
-                if (socialsItem.icon == "twitter") {
-                  Icon(
-                      painter = painterResource(R.drawable.ic_network_twitter),
-                      contentDescription = socialsItem.icon
-                  )
-                } else {
-                  Icon(
-                      imageVector = Icons.Rounded.Public,
-                      contentDescription = socialsItem.icon
-                  )
-                }
-              }
-            }
-          }
-
-
         }
       }
-
     }
   }
+
 }
 
 
