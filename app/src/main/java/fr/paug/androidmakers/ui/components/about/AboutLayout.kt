@@ -20,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -132,6 +133,7 @@ private fun SocialCard(
                 .size(96.dp, 64.dp)
                 .clickable(onClick = onTwitterLogoClick),
             painter = painterResource(R.drawable.ic_network_twitter),
+            tint = Color(0xff1d9bf0),
             contentDescription = "Twitter"
         )
         Icon(
@@ -139,6 +141,7 @@ private fun SocialCard(
                 .size(96.dp, 64.dp)
                 .clickable(onClick = onYouTubeLogoClick),
             painter = painterResource(R.drawable.ic_network_youtube),
+            tint = Color(0xffff0000),
             contentDescription = "YouTube"
         )
       }

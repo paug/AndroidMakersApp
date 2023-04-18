@@ -9,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.CalendarMonth
 import androidx.compose.material.icons.rounded.Diamond
 import androidx.compose.material.icons.rounded.FilterList
+import androidx.compose.material.icons.rounded.Groups
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.LocationCity
 import androidx.compose.material3.DrawerState
@@ -34,6 +35,8 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -47,6 +50,8 @@ import fr.paug.androidmakers.ui.activity.AMUser
 import fr.paug.androidmakers.ui.components.about.AboutActions
 import fr.paug.androidmakers.ui.components.about.AboutLayout
 import fr.paug.androidmakers.ui.components.agenda.AgendaLayout
+import fr.paug.androidmakers.ui.components.speakers.SpeakerScreen
+import fr.paug.androidmakers.ui.components.speakers.SpeakerViewModel
 import fr.paug.androidmakers.ui.components.sponsors.SponsorsScreen
 import fr.paug.androidmakers.ui.navigation.AVANavigationRoute
 import fr.paug.androidmakers.ui.viewmodel.LceViewModel
@@ -124,6 +129,13 @@ fun AVALayout(
           )
           NavigationBarItem(
               avaNavController = avaNavController,
+              imageVector = Icons.Rounded.Groups,
+              labelResId = R.string.title_speakers,
+              currentRoute = currentRoute,
+              destinationRoute = AVANavigationRoute.SPEAKERS
+          )
+          NavigationBarItem(
+              avaNavController = avaNavController,
               imageVector = Icons.Rounded.Diamond,
               labelResId = R.string.title_sponsors,
               currentRoute = currentRoute,
@@ -198,6 +210,23 @@ private fun AVANavHost(
 
     composable(route = AVANavigationRoute.VENUE.name) {
       VenuePager()
+    }
+
+    composable(route = AVANavigationRoute.SPEAKERS.name) {
+
+      val speakerViewModel: SpeakerViewModel = viewModel(
+          factory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+              @Suppress("UNCHECKED_CAST")
+              return SpeakerViewModel(
+              ) as T
+            }
+          }
+      )
+
+      SpeakerScreen(
+          speakerViewModel = speakerViewModel
+      )
     }
 
     composable(route = AVANavigationRoute.ABOUT.name) {
