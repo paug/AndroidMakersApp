@@ -285,7 +285,6 @@ internal fun agendaToDays(agenda: Agenda): List<DaySchedule> {
   return agenda.sessions.values.groupBy { it.startsAt.date }
       .entries
       .map {
-
         DaySchedule(
             title = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).format(it.key.toJavaLocalDate()),
             date = it.key,
