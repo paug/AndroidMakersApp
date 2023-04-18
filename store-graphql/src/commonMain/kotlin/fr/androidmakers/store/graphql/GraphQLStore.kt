@@ -112,8 +112,14 @@ class GraphQLStore(
   }
 
   override suspend fun setBookmark(userId: String, sessionId: String, value: Boolean) {
-    if (value) {
-      addBookmark(userId, sessionId)
+    try {
+      if (value) {
+        addBookmark(userId, sessionId)
+      } else {
+        removeBookmark(userId, sessionId)
+      }
+    } catch (e: Exception) {
+      e.printStackTrace()
     }
   }
 
