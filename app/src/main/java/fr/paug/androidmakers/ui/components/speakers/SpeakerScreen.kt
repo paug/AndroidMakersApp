@@ -128,7 +128,7 @@ fun SpeakerItem(
       headlineContent = {
         Text(
             text = speaker.name.orEmpty(),
-            style = MaterialTheme.typography.titleMedium.copy(
+            style = MaterialTheme.typography.titleLarge.copy(
                 fontWeight = FontWeight.Bold
             )
         )
@@ -151,9 +151,6 @@ fun SpeakerItem(
         )
       },
       trailingContent = {},
-//      colors =,
-//      tonalElevation =,
-//      shadowElevation =
   )
 }
 
