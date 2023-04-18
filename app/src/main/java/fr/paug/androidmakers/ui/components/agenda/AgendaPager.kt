@@ -14,8 +14,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
-import fr.paug.androidmakers.ui.adapter.DaySchedule
-import fr.paug.androidmakers.ui.adapter.ScheduleSession
 import fr.paug.androidmakers.ui.components.agenda.AgendaColumn
 import fr.paug.androidmakers.ui.components.agenda.AgendaPagerViewModel
 import fr.paug.androidmakers.ui.components.agenda.agendaToDays
@@ -25,7 +23,6 @@ import fr.paug.androidmakers.util.SessionFilter
 import fr.paug.androidmakers.util.TimeUtils
 import fr.paug.androidmakers.util.eventTimeZone
 import kotlinx.coroutines.launch
-import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
 import java.util.*
 
@@ -69,23 +66,7 @@ fun AgendaPager(
       val viewModel = viewModel<AgendaPagerViewModel>()
       SwipeRefreshableLceLayout(viewModel = viewModel) {
         val days = agendaToDays(it)
-        val items = days[page].roomSchedules.flatMap { it.scheduleSessions }
-            .filterSessions(filterList)
-            .sorted()
-            .map { item ->
-              UISession(
-                  id = item.sessionId,
-                  title = item.title,
-                  language = item.language,
-                  startDate = item.slot.startDate.toInstant(eventTimeZone),
-                  endDate = item.slot.endDate.toInstant(eventTimeZone),
-                  room = getRoomTitle(item, days[page]),
-                  roomId = item.roomId,
-                  speakers = item.speakers.map {
-                    UISession.Speaker(it.name ?: "")
-                  },
-              )
-            }
+        val items = days[page].sessions.filter(filterList)
         if (items.isEmpty()) {
           EmptyLayout()
         } else {
@@ -118,16 +99,15 @@ private fun addSeparators(
 // example: Language English && (Rooms Moebius || Rooms A...)
 // the algorithm is inspired by Inverted index
 // time complexity is O(n * m) where n is the number of sessions and m is the number of filters
-private fun List<ScheduleSession>.filterSessions(
+private fun List<UISession>.filter(
     filterList: List<SessionFilter>
-): Set<ScheduleSession> {
-  val filteredSessions = hashSetOf<ScheduleSession>()
+): List<UISession> {
   if (filterList.isEmpty()) {
-    filteredSessions.addAll(this)
-    return filteredSessions
+    return this
   }
+
   val sessionsByFilterType =
-      mutableMapOf<SessionFilter.FilterType, MutableList<ScheduleSession>>()
+      mutableMapOf<SessionFilter.FilterType, MutableList<UISession>>()
   for (filter in filterList) {
     if (!sessionsByFilterType.containsKey(filter.type)) {
       sessionsByFilterType[filter.type] = mutableListOf()
@@ -137,7 +117,7 @@ private fun List<ScheduleSession>.filterSessions(
     for (filter in filterList) {
       when (filter.type) {
         SessionFilter.FilterType.BOOKMARK -> {
-          if (BookmarksStore.isBookmarked(session.sessionId)) {
+          if (BookmarksStore.isBookmarked(session.id)) {
             sessionsByFilterType[filter.type]?.add(session)
           }
         }
@@ -156,18 +136,9 @@ private fun List<ScheduleSession>.filterSessions(
       }
     }
   }
+
   //get union join of all ScheduleSessions
   val origin = sessionsByFilterType.values.flatten().toMutableSet()
   sessionsByFilterType.values.forEach { origin.retainAll(it) }
-  return origin
-}
-
-private fun getRoomTitle(scheduleSession: ScheduleSession, daySchedule: DaySchedule): String {
-  var roomTitle = ""
-  for (roomSchedule in daySchedule.roomSchedules) {
-    if (roomSchedule.roomId == scheduleSession.roomId) {
-      roomTitle = roomSchedule.title
-    }
-  }
-  return roomTitle
+  return origin.sortedBy { it.startDate }
 }

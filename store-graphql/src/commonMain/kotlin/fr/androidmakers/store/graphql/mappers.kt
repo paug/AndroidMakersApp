@@ -48,16 +48,11 @@ fun SessionDetails.toSession(): Session {
       slido = "",
       speakers = speakers.map { it.id },
       tags = tags,
-      videoURL = ""
-  )
-}
+      videoURL = "",
+      roomId = this.room?.id ?: "",
+      endsAt = this.endsAt,
+      startsAt = this.startsAt,
 
-fun SessionDetails.toSlot(): ScheduleSlot {
-  return ScheduleSlot(
-      sessionId = id,
-      roomId = room?.id ?: "",
-      startDate = startsAt,
-      endDate = endsAt
   )
 }
 
