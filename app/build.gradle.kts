@@ -15,7 +15,9 @@ dependencies {
   implementation(libs.kotlinx.coroutines.android)
 
   // Support
-  implementation(libs.appcompat)
+  implementation(libs.androidx.activity.compose)
+  implementation(libs.androidx.appcompat)
+
   implementation(libs.material)
   implementation(libs.vectordrawable)
   implementation(libs.browser)
@@ -26,11 +28,12 @@ dependencies {
 
   // Firebase
   implementation(platform(libs.firebase.bom))
-  implementation(libs.firebase.crashlytics.ktx)
   implementation(libs.firebase.analytics.ktx)
-  implementation(libs.firebase.messaging)
-  implementation(libs.firebase.config)
   implementation(libs.firebase.auth)
+  implementation(libs.firebase.config)
+  implementation(libs.firebase.crashlytics.ktx)
+  implementation(libs.firebase.inappmessaging)
+  implementation(libs.firebase.messaging)
 
   implementation(libs.lifecycle.viewmodel.compose)
   implementation(libs.compose.material3)

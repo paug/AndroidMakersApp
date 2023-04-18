@@ -84,4 +84,7 @@
 
     <string name="signin">Connexion</string>
     <string name="signout">Déconnexion</string>
+    <string name="permission_notifications_rationale_title">Permission refusée</string>
+    <string name="permission_notifications_rationale_text">Sans cette autorisation, l‘application ne peut pas vous envoyer de notifications. Voulez-vous vraiment refuser cette autorisation ?</string>
+    <string name="permission_notifications_rationale_positive">Aller dans les préférences</string>
 </resources>

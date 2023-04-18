@@ -96,4 +96,8 @@
     <string name="signin">Sign in</string>
     <string name="signout">Sign out</string>
     <string name="title_sponsors">Sponsors</string>
+    <string name="permission_notifications_rationale_title">Permission denied</string>
+    <string name="permission_notifications_rationale_text">Without this permission the app is unable to send you notifications. Are you sure you want to deny this permission?</string>
+    <string name="permission_notifications_rationale_positive">Go to Settings</string>
+    <string name="title_speakers">Speakers</string>
 </resources>
