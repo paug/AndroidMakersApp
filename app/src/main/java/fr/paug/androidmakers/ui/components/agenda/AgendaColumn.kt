@@ -58,7 +58,13 @@ fun AgendaColumn(
           sessions.forEach { uiSession ->
             AgendaRow(
                 modifier = Modifier
-                    .clickable { onSessionClicked.invoke(uiSession) }
+                    .run {
+                      if (!uiSession.isServiceSession) {
+                        clickable { onSessionClicked.invoke(uiSession) }
+                      } else {
+                        this
+                      }
+                    }
                     .animateItemPlacement(),
                 uiSession = uiSession,
             )

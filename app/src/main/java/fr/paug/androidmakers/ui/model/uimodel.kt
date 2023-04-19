@@ -11,8 +11,8 @@ class UISession(
     val room: String,
     val roomId: String,
     val speakers: List<Speaker>,
+    val isServiceSession: Boolean,
 ) {
-
   class Speaker(val name: String)
 }
 
