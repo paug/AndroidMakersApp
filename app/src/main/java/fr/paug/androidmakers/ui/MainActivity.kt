@@ -170,11 +170,11 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun onFaqClick() {
-    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://androidmakers.fr/faq")))
+    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://androidmakers.droidcon.com/faqs/")))
   }
 
   private fun onCodeOfConductClick() {
-    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://androidmakers.fr/coc")))
+    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://androidmakers.droidcon.com/code-of-conduct/")))
   }
 
   private fun onTwitterHashtagClick() {
