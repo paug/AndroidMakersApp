@@ -66,6 +66,8 @@ fun AgendaLayout(
       drawerState = agendaFilterDrawerState,
       drawerContent = {
         ModalDrawerSheet(
+            drawerContainerColor = MaterialTheme.colorScheme.background,
+            drawerContentColor = MaterialTheme.colorScheme.onBackground,
             drawerShape = RectangleShape,
             windowInsets = WindowInsets(0, 0, 0, 0),
         ) {

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
@@ -14,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.sp
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.components.venue.VenueLayout
@@ -36,14 +38,23 @@ fun VenuePager() {
     )
 
     TabRow(
-        // Our selected tab is our current page
         selectedTabIndex = pagerState.currentPage,
+        containerColor = MaterialTheme.colorScheme.background,
+        contentColor = MaterialTheme.colorScheme.onBackground
     ) {
       repeat(titles.size) {
         val coroutineScope = rememberCoroutineScope()
 
         Tab(
-            text = { Text(stringResource(id = titles[it])) },
+            text = {
+              Text(
+                  text = stringResource(id = titles[it]),
+                  style = MaterialTheme.typography.headlineSmall.copy(
+                      color = MaterialTheme.colorScheme.primary,
+                      fontSize = 18.sp
+                  )
+              )
+            },
             selected = pagerState.currentPage == it,
             onClick = {
               coroutineScope.launch {

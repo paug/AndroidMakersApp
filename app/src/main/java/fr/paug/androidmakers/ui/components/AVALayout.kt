@@ -1,10 +1,14 @@
 package fr.paug.androidmakers.ui.components
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.CalendarMonth
 import androidx.compose.material.icons.rounded.Diamond
@@ -18,23 +22,27 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -80,15 +88,34 @@ fun AVALayout(
       modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
       contentWindowInsets = WindowInsets(0, 0, 0, 0),
       topBar = {
-        TopAppBar(
+        MediumTopAppBar(
             scrollBehavior = scrollBehavior,
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = MaterialTheme.colorScheme.background,
+                scrolledContainerColor = MaterialTheme.colorScheme.background,
+//                navigationIconContentColor =,
+                titleContentColor = MaterialTheme.colorScheme.onBackground,
+                actionIconContentColor = MaterialTheme.colorScheme.onBackground,
+            ),
+            navigationIcon = {
+              Box(modifier = Modifier.padding(14.dp)) {
+                Image(
+                    modifier = Modifier.size(28.dp),
+                    painter = painterResource(id = R.drawable.notification),
+                    contentDescription = "logo"
+                )
+              }
+            },
             title = {
-              Text(
-                  text = stringResource(R.string.app_name),
-                  style = MaterialTheme.typography.titleLarge,
-                  maxLines = 1,
-                  overflow = TextOverflow.Ellipsis
-              )
+              Row(horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.Start)) {
+
+                Text(
+                    text = stringResource(R.string.app_name),
+                    style = MaterialTheme.typography.headlineSmall,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+              }
             },
             actions = {
               if (currentRoute == AVANavigationRoute.AGENDA.name) {
@@ -112,7 +139,10 @@ fun AVALayout(
       },
 
       bottomBar = {
-        NavigationBar {
+        NavigationBar(
+            containerColor = MaterialTheme.colorScheme.background,
+            contentColor = MaterialTheme.colorScheme.onBackground
+        ) {
           NavigationBarItem(
               avaNavController = avaNavController,
               imageVector = Icons.Rounded.CalendarMonth,
@@ -179,6 +209,15 @@ private fun RowScope.NavigationBarItem(
       },
       label = { Text(stringResource(labelResId)) },
       selected = currentRoute == destinationRoute.name,
+      colors = NavigationBarItemDefaults.colors(
+          selectedIconColor = MaterialTheme.colorScheme.onSurface,
+          selectedTextColor = MaterialTheme.colorScheme.onSurface,
+          unselectedIconColor = MaterialTheme.colorScheme.onSurface,
+          unselectedTextColor = MaterialTheme.colorScheme.onSurface,
+          indicatorColor = MaterialTheme.colorScheme.surface,
+//          disabledIconColor =,
+//          disabledTextColor =
+      ),
       onClick = {
         avaNavController.navigate(destinationRoute.name) {
           // Prevents from having the history of selected tabs in the backstack: back always goes to the start destination

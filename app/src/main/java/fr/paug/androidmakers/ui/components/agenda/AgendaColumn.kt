@@ -8,7 +8,8 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Schedule
-import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -20,7 +21,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.model.UISession
 
@@ -34,7 +34,11 @@ fun AgendaColumn(
 
   LazyColumn(
       state = listState,
-      modifier = Modifier.fillMaxHeight()
+      modifier = Modifier.fillMaxHeight(),
+      contentPadding = PaddingValues(8.dp),
+      verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically),
+      horizontalAlignment = Alignment.CenterHorizontally
+
   ) {
     sessionsPerStartTime.forEach { (key, sessions) ->
 
@@ -43,8 +47,12 @@ fun AgendaColumn(
       }
 
       item {
-        ElevatedCard(
+        Card(
             modifier = Modifier.padding(horizontal = 16.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surface,
+                contentColor = MaterialTheme.colorScheme.onSurface
+            ),
             shape = RoundedCornerShape(16.dp),
         ) {
           sessions.forEach { uiSession ->
@@ -63,7 +71,9 @@ fun AgendaColumn(
 
 @Composable
 fun TimeSeparator(prettyTime: String) {
-  Surface {
+  Surface(
+      color = MaterialTheme.colorScheme.background
+  ) {
     Row(
         modifier = Modifier
             .padding(horizontal = 16.dp, vertical = 8.dp)
@@ -72,17 +82,15 @@ fun TimeSeparator(prettyTime: String) {
         horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
       Icon(
-          modifier = Modifier.size(18.dp),
+          modifier = Modifier.size(24.dp),
           imageVector = Icons.Rounded.Schedule,
           tint = MaterialTheme.colorScheme.primary,
           contentDescription = stringResource(R.string.filter),
       )
       Text(
           text = prettyTime,
-          style = MaterialTheme.typography.titleMedium.copy(
-              color = MaterialTheme.colorScheme.primary,
-              fontWeight = FontWeight.Bold,
-              fontSize = 18.sp
+          style = MaterialTheme.typography.headlineSmall.copy(
+              color = MaterialTheme.colorScheme.primary
           )
       )
     }

@@ -18,8 +18,10 @@ import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBar
+import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -78,6 +80,26 @@ fun SpeakerScreen(
               onQueryChange = { text = it },
               onSearch = { active = false },
               active = active,
+              colors = SearchBarDefaults.colors(
+                  containerColor = MaterialTheme.colorScheme.surface,
+                  dividerColor = MaterialTheme.colorScheme.primary,
+//                  inputFieldColors = SearchBarDefaults.inputFieldColors(
+//                      focusedTextColor = MaterialTheme.colorScheme.surface,
+////                      unfocusedTextColor =,
+////                      disabledTextColor =,
+////                      cursorColor =,
+////                      selectionColors =,
+////                      focusedLeadingIconColor =,
+////                      unfocusedLeadingIconColor =,
+////                      disabledLeadingIconColor =,
+////                      focusedTrailingIconColor =,
+////                      unfocusedTrailingIconColor =,
+////                      disabledTrailingIconColor =,
+////                      focusedPlaceholderColor =,
+////                      unfocusedPlaceholderColor =,
+////                      disabledPlaceholderColor =
+//                  ),
+              ),
               onActiveChange = {
                 active = it
               },
@@ -125,6 +147,9 @@ fun SpeakerItem(
 
   ListItem(
       modifier = modifier,
+      colors = ListItemDefaults.colors(
+          containerColor = MaterialTheme.colorScheme.background,
+      ),
       headlineContent = {
         Text(
             text = speaker.name.orEmpty(),
