@@ -31,7 +31,8 @@ import androidx.compose.material.icons.rounded.BookmarkRemove
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.Public
 import androidx.compose.material.icons.rounded.Share
-import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -193,7 +194,6 @@ private fun SessionDetails(sessionDetails: SessionDetailState, formattedDateAndR
       )
 
       Text(
-
           text = formattedDateAndRoom,
           style = MaterialTheme.typography.labelMedium,
       )
@@ -292,7 +292,12 @@ private fun Speakers(speakers: List<Speaker>) {
       verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically)
   ) {
     for (speaker in speakers) {
-      ElevatedCard {
+      Card(
+          colors = CardDefaults.cardColors(
+              containerColor = MaterialTheme.colorScheme.surface,
+              contentColor = MaterialTheme.colorScheme.onSurface
+          )
+      ) {
         Speaker(speaker = speaker)
       }
     }
@@ -420,7 +425,7 @@ private fun shareSession(
   context.startActivity(shareSessionIntent)
 }
 
-private fun openSocialLink(context: Context, link: String) {
+fun openSocialLink(context: Context, link: String) {
   context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(link)))
 }
 

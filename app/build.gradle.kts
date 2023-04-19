@@ -16,6 +16,7 @@ dependencies {
   // Support
   implementation(libs.androidx.activity.compose)
   implementation(libs.androidx.appcompat)
+  implementation(libs.androidx.lifecycle.runtimeCompose)
 
   implementation(libs.material)
   implementation(libs.vectordrawable)

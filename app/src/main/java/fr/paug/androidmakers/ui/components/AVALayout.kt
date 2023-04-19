@@ -1,10 +1,14 @@
 package fr.paug.androidmakers.ui.components
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.CalendarMonth
 import androidx.compose.material.icons.rounded.Diamond
@@ -18,23 +22,27 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -44,6 +52,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import fr.androidmakers.store.model.Partner
+import fr.androidmakers.store.model.SpeakerId
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.AMUser
@@ -69,6 +78,7 @@ fun AVALayout(
     onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
     aboutActions: AboutActions,
     user: AMUser?,
+    navigateToSpeakerDetails: (SpeakerId) -> Unit,
 ) {
   val avaNavController = rememberNavController()
   val navBackStackEntry by avaNavController.currentBackStackEntryAsState()
@@ -80,15 +90,34 @@ fun AVALayout(
       modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
       contentWindowInsets = WindowInsets(0, 0, 0, 0),
       topBar = {
-        TopAppBar(
+        MediumTopAppBar(
             scrollBehavior = scrollBehavior,
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = MaterialTheme.colorScheme.background,
+                scrolledContainerColor = MaterialTheme.colorScheme.background,
+//                navigationIconContentColor =,
+                titleContentColor = MaterialTheme.colorScheme.onBackground,
+                actionIconContentColor = MaterialTheme.colorScheme.onBackground,
+            ),
+            navigationIcon = {
+              Box(modifier = Modifier.padding(14.dp)) {
+                Image(
+                    modifier = Modifier.size(28.dp),
+                    painter = painterResource(id = R.drawable.notification),
+                    contentDescription = "logo"
+                )
+              }
+            },
             title = {
-              Text(
-                  text = stringResource(R.string.app_name),
-                  style = MaterialTheme.typography.titleLarge,
-                  maxLines = 1,
-                  overflow = TextOverflow.Ellipsis
-              )
+              Row(horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.Start)) {
+
+                Text(
+                    text = stringResource(R.string.app_name),
+                    style = MaterialTheme.typography.headlineSmall,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+              }
             },
             actions = {
               if (currentRoute == AVANavigationRoute.AGENDA.name) {
@@ -112,7 +141,10 @@ fun AVALayout(
       },
 
       bottomBar = {
-        NavigationBar {
+        NavigationBar(
+            containerColor = MaterialTheme.colorScheme.background,
+            contentColor = MaterialTheme.colorScheme.onBackground
+        ) {
           NavigationBarItem(
               avaNavController = avaNavController,
               imageVector = Icons.Rounded.CalendarMonth,
@@ -157,6 +189,7 @@ fun AVALayout(
           onSessionClick = onSessionClick,
           agendaFilterDrawerState = agendaFilterDrawerState,
           aboutActions = aboutActions,
+          navigateToSpeakerDetails = navigateToSpeakerDetails
       )
     }
   }
@@ -179,6 +212,15 @@ private fun RowScope.NavigationBarItem(
       },
       label = { Text(stringResource(labelResId)) },
       selected = currentRoute == destinationRoute.name,
+      colors = NavigationBarItemDefaults.colors(
+          selectedIconColor = MaterialTheme.colorScheme.onSurface,
+          selectedTextColor = MaterialTheme.colorScheme.onSurface,
+          unselectedIconColor = MaterialTheme.colorScheme.onSurface,
+          unselectedTextColor = MaterialTheme.colorScheme.onSurface,
+          indicatorColor = MaterialTheme.colorScheme.surface,
+//          disabledIconColor =,
+//          disabledTextColor =
+      ),
       onClick = {
         avaNavController.navigate(destinationRoute.name) {
           // Prevents from having the history of selected tabs in the backstack: back always goes to the start destination
@@ -198,6 +240,7 @@ private fun AVANavHost(
     onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
     agendaFilterDrawerState: DrawerState,
     aboutActions: AboutActions,
+    navigateToSpeakerDetails: (SpeakerId) -> Unit,
 ) {
   NavHost(avaNavController, startDestination = AVANavigationRoute.AGENDA.name) {
 
@@ -225,7 +268,8 @@ private fun AVANavHost(
       )
 
       SpeakerScreen(
-          speakerViewModel = speakerViewModel
+          speakerViewModel = speakerViewModel,
+          navigateToSpeakerDetails = navigateToSpeakerDetails
       )
     }
 
@@ -258,5 +302,10 @@ class PartnersViewModel : LceViewModel<List<Partner>>() {
 @Preview
 @Composable
 private fun AVALayoutPreview() {
-  AVALayout(onSessionClick = { _, _, _, _ -> }, aboutActions = AboutActions(), user = null)
+  AVALayout(
+      onSessionClick = { _, _, _, _ -> },
+      aboutActions = AboutActions(),
+      user = null,
+      navigateToSpeakerDetails = {}
+  )
 }
