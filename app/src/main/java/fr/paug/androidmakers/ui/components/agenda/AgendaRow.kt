@@ -81,28 +81,30 @@ fun AgendaRow(
         }
       },
       trailingContent = {
-        Box {
-          val isBookmarked =
-              BookmarksStore.subscribe(uiSession.id).collectAsState(false)
-          val imageVector = if (isBookmarked.value) Icons.Rounded.BookmarkRemove
-          else Icons.Rounded.BookmarkAdd
+        if (!uiSession.isServiceSession) {
+          Box {
+            val isBookmarked =
+                BookmarksStore.subscribe(uiSession.id).collectAsState(false)
+            val imageVector = if (isBookmarked.value) Icons.Rounded.BookmarkRemove
+            else Icons.Rounded.BookmarkAdd
 
-          val tint by animateColorAsState(
-              if (isBookmarked.value) AMColor.bookmarked
-              else Color.LightGray
-          )
-
-          IconToggleButton(
-              checked = isBookmarked.value,
-              onCheckedChange = {
-                BookmarksStore.setBookmarked(uiSession.id, it)
-              },
-          ) {
-            Icon(
-                imageVector = imageVector,
-                contentDescription = "favorite",
-                tint = tint
+            val tint by animateColorAsState(
+                if (isBookmarked.value) AMColor.bookmarked
+                else Color.LightGray
             )
+
+            IconToggleButton(
+                checked = isBookmarked.value,
+                onCheckedChange = {
+                  BookmarksStore.setBookmarked(uiSession.id, it)
+                },
+            ) {
+              Icon(
+                  imageVector = imageVector,
+                  contentDescription = "favorite",
+                  tint = tint
+              )
+            }
           }
         }
       },
@@ -142,4 +144,5 @@ private val fakeUiSession = UISession(
     room = "Moebius",
     startDate = Instant.parse("2022-04-25T09:00:00+02:00"),
     endDate = Instant.parse("2022-04-25T10:00:00+02:00"),
+    isServiceSession = false
 )

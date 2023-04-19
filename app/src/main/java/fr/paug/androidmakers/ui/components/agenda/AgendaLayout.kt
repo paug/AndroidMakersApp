@@ -304,7 +304,8 @@ fun Session.toUISession(rooms: Map<String, Room>, speakers: Map<String, Speaker>
       language = language,
       roomId = roomId,
       room = rooms.get(roomId)!!.name,
-      speakers = this.speakers.mapNotNull { speakers[it]?.toUISpeaker() }
+      speakers = this.speakers.mapNotNull { speakers[it]?.toUISpeaker() },
+      isServiceSession = isServiceSession,
   )
 }
 
