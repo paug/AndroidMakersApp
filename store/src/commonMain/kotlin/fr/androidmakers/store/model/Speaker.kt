@@ -1,7 +1,7 @@
 package fr.androidmakers.store.model
 
 data class Speaker(
-    val id: String = "",
+    val id: SpeakerId = "",
     val badges: List<BadgesItem?>? = null,
     val country: String? = null,
     val featured: Boolean? = null,
@@ -25,3 +25,5 @@ data class Speaker(
   }
 
 }
+
+typealias SpeakerId = String

@@ -6,6 +6,7 @@ enum class MainNavigationRoute {
    */
   AVA,
   SESSION_DETAIL,
+  SPEAKER_DETAIL
 }
 
 enum class AVANavigationRoute {

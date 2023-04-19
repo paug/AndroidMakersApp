@@ -52,6 +52,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import fr.androidmakers.store.model.Partner
+import fr.androidmakers.store.model.SpeakerId
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.AMUser
@@ -77,6 +78,7 @@ fun AVALayout(
     onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
     aboutActions: AboutActions,
     user: AMUser?,
+    navigateToSpeakerDetails: (SpeakerId) -> Unit,
 ) {
   val avaNavController = rememberNavController()
   val navBackStackEntry by avaNavController.currentBackStackEntryAsState()
@@ -187,6 +189,7 @@ fun AVALayout(
           onSessionClick = onSessionClick,
           agendaFilterDrawerState = agendaFilterDrawerState,
           aboutActions = aboutActions,
+          navigateToSpeakerDetails = navigateToSpeakerDetails
       )
     }
   }
@@ -237,6 +240,7 @@ private fun AVANavHost(
     onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
     agendaFilterDrawerState: DrawerState,
     aboutActions: AboutActions,
+    navigateToSpeakerDetails: (SpeakerId) -> Unit,
 ) {
   NavHost(avaNavController, startDestination = AVANavigationRoute.AGENDA.name) {
 
@@ -264,7 +268,8 @@ private fun AVANavHost(
       )
 
       SpeakerScreen(
-          speakerViewModel = speakerViewModel
+          speakerViewModel = speakerViewModel,
+          navigateToSpeakerDetails = navigateToSpeakerDetails
       )
     }
 
@@ -297,5 +302,10 @@ class PartnersViewModel : LceViewModel<List<Partner>>() {
 @Preview
 @Composable
 private fun AVALayoutPreview() {
-  AVALayout(onSessionClick = { _, _, _, _ -> }, aboutActions = AboutActions(), user = null)
+  AVALayout(
+      onSessionClick = { _, _, _, _ -> },
+      aboutActions = AboutActions(),
+      user = null,
+      navigateToSpeakerDetails = {}
+  )
 }

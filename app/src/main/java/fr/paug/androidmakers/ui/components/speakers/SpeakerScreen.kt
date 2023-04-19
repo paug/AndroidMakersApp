@@ -3,6 +3,7 @@ package fr.paug.androidmakers.ui.components.speakers
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -42,6 +43,7 @@ import androidx.compose.ui.zIndex
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import fr.androidmakers.store.model.Speaker
+import fr.androidmakers.store.model.SpeakerId
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.components.LoadingLayout
 import fr.paug.androidmakers.ui.viewmodel.Lce
@@ -51,6 +53,7 @@ import fr.paug.androidmakers.ui.viewmodel.Lce
 fun SpeakerScreen(
     modifier: Modifier = Modifier,
     speakerViewModel: SpeakerViewModel,
+    navigateToSpeakerDetails: (SpeakerId) -> Unit,
 ) {
 
   val speakersUiState by speakerViewModel.uiState.collectAsState(
@@ -110,7 +113,8 @@ fun SpeakerScreen(
             LazyColumn {
               items(state.content.speakers.filter { it.name?.contains(text, ignoreCase = true) == true }) { speaker ->
                 SpeakerItem(
-                    speaker = speaker
+                    speaker = speaker,
+                    navigateToSpeakerDetails = navigateToSpeakerDetails,
                 )
               }
             }
@@ -128,7 +132,8 @@ fun SpeakerScreen(
           ) {
             items(state.content.speakers.filter { it.name?.contains(text, ignoreCase = true) == true }) { speaker ->
               SpeakerItem(
-                  speaker = speaker
+                  speaker = speaker,
+                  navigateToSpeakerDetails = navigateToSpeakerDetails
               )
             }
           }
@@ -143,10 +148,12 @@ fun SpeakerScreen(
 @Composable
 fun SpeakerItem(
     modifier: Modifier = Modifier,
-    speaker: Speaker) {
+    speaker: Speaker,
+    navigateToSpeakerDetails: (SpeakerId) -> Unit,
+) {
 
   ListItem(
-      modifier = modifier,
+      modifier = modifier.clickable(onClick = { navigateToSpeakerDetails(speaker.id) }),
       colors = ListItemDefaults.colors(
           containerColor = MaterialTheme.colorScheme.background,
       ),

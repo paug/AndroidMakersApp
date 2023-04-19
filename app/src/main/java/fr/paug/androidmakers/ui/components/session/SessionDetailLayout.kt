@@ -425,7 +425,7 @@ private fun shareSession(
   context.startActivity(shareSessionIntent)
 }
 
-private fun openSocialLink(context: Context, link: String) {
+fun openSocialLink(context: Context, link: String) {
   context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(link)))
 }
 
