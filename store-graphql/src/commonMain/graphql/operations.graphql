@@ -27,6 +27,7 @@ fragment SessionDetails on Session {
         id
     }
     tags
+    isServiceSession
 }
 
 

@@ -142,4 +142,5 @@ private val fakeUiSession = UISession(
     room = "Moebius",
     startDate = Instant.parse("2022-04-25T09:00:00+02:00"),
     endDate = Instant.parse("2022-04-25T10:00:00+02:00"),
+    isServiceSession = false
 )
