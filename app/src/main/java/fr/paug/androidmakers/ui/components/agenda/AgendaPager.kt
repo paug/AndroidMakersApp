@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
@@ -13,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import fr.paug.androidmakers.ui.components.EmptyLayout
 import fr.paug.androidmakers.ui.components.SwipeRefreshableLceLayout
@@ -40,19 +42,32 @@ fun AgendaPager(
 
     TabRow(
         selectedTabIndex = pagerState.currentPage,
+        containerColor = MaterialTheme.colorScheme.background,
+        contentColor = MaterialTheme.colorScheme.onBackground
     ) {
       repeat(days.size) {
         val coroutineScope = rememberCoroutineScope()
 
         Tab(
-            text = { Text(days[it]) },
+            text = {
+              Text(
+                  text = days[it],
+                  style = MaterialTheme.typography.headlineSmall.copy(
+                      color = MaterialTheme.colorScheme.primary,
+                      fontSize = 20.sp
+                  )
+              )
+            },
             selected = pagerState.currentPage == it,
+            selectedContentColor = MaterialTheme.colorScheme.onSurface,
+            unselectedContentColor = MaterialTheme.colorScheme.onSurface,
             onClick = {
               coroutineScope.launch {
                 pagerState.animateScrollToPage(it)
               }
             },
-        )
+
+            )
       }
     }
 

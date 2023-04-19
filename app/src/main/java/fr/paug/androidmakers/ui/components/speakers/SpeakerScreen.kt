@@ -3,6 +3,7 @@ package fr.paug.androidmakers.ui.components.speakers
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -18,8 +19,10 @@ import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBar
+import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -40,6 +43,7 @@ import androidx.compose.ui.zIndex
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import fr.androidmakers.store.model.Speaker
+import fr.androidmakers.store.model.SpeakerId
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.components.LoadingLayout
 import fr.paug.androidmakers.ui.viewmodel.Lce
@@ -49,6 +53,7 @@ import fr.paug.androidmakers.ui.viewmodel.Lce
 fun SpeakerScreen(
     modifier: Modifier = Modifier,
     speakerViewModel: SpeakerViewModel,
+    navigateToSpeakerDetails: (SpeakerId) -> Unit,
 ) {
 
   val speakersUiState by speakerViewModel.uiState.collectAsState(
@@ -78,6 +83,26 @@ fun SpeakerScreen(
               onQueryChange = { text = it },
               onSearch = { active = false },
               active = active,
+              colors = SearchBarDefaults.colors(
+                  containerColor = MaterialTheme.colorScheme.surface,
+                  dividerColor = MaterialTheme.colorScheme.primary,
+//                  inputFieldColors = SearchBarDefaults.inputFieldColors(
+//                      focusedTextColor = MaterialTheme.colorScheme.surface,
+////                      unfocusedTextColor =,
+////                      disabledTextColor =,
+////                      cursorColor =,
+////                      selectionColors =,
+////                      focusedLeadingIconColor =,
+////                      unfocusedLeadingIconColor =,
+////                      disabledLeadingIconColor =,
+////                      focusedTrailingIconColor =,
+////                      unfocusedTrailingIconColor =,
+////                      disabledTrailingIconColor =,
+////                      focusedPlaceholderColor =,
+////                      unfocusedPlaceholderColor =,
+////                      disabledPlaceholderColor =
+//                  ),
+              ),
               onActiveChange = {
                 active = it
               },
@@ -88,7 +113,8 @@ fun SpeakerScreen(
             LazyColumn {
               items(state.content.speakers.filter { it.name?.contains(text, ignoreCase = true) == true }) { speaker ->
                 SpeakerItem(
-                    speaker = speaker
+                    speaker = speaker,
+                    navigateToSpeakerDetails = navigateToSpeakerDetails,
                 )
               }
             }
@@ -106,7 +132,8 @@ fun SpeakerScreen(
           ) {
             items(state.content.speakers.filter { it.name?.contains(text, ignoreCase = true) == true }) { speaker ->
               SpeakerItem(
-                  speaker = speaker
+                  speaker = speaker,
+                  navigateToSpeakerDetails = navigateToSpeakerDetails
               )
             }
           }
@@ -121,10 +148,15 @@ fun SpeakerScreen(
 @Composable
 fun SpeakerItem(
     modifier: Modifier = Modifier,
-    speaker: Speaker) {
+    speaker: Speaker,
+    navigateToSpeakerDetails: (SpeakerId) -> Unit,
+) {
 
   ListItem(
-      modifier = modifier,
+      modifier = modifier.clickable(onClick = { navigateToSpeakerDetails(speaker.id) }),
+      colors = ListItemDefaults.colors(
+          containerColor = MaterialTheme.colorScheme.background,
+      ),
       headlineContent = {
         Text(
             text = speaker.name.orEmpty(),

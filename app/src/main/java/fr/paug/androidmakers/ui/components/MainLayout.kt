@@ -11,10 +11,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import fr.androidmakers.store.model.SpeakerId
 import fr.paug.androidmakers.ui.AMUser
 import fr.paug.androidmakers.ui.components.about.AboutActions
 import fr.paug.androidmakers.ui.components.session.SessionDetailLayout
 import fr.paug.androidmakers.ui.components.session.SessionDetailViewModel
+import fr.paug.androidmakers.ui.components.speakers.details.SpeakerDetailsRoute
+import fr.paug.androidmakers.ui.components.speakers.details.SpeakerDetailsViewModel
 import fr.paug.androidmakers.ui.navigation.MainNavigationRoute
 import fr.paug.androidmakers.ui.viewmodel.Lce
 
@@ -29,8 +32,11 @@ fun MainLayout(aboutActions: AboutActions, user: AMUser?) {
       onSessionClick = { sessionId, roomId, startTimestamp, endTimestamp ->
         mainNavController.navigate("${MainNavigationRoute.SESSION_DETAIL.name}/$sessionId/$roomId/$startTimestamp/$endTimestamp")
       },
-      aboutActions,
-      user
+      aboutActions = aboutActions,
+      user = user,
+      navigateToSpeakerDetails = { speakerId ->
+        mainNavController.navigate("${MainNavigationRoute.SPEAKER_DETAIL.name}/$speakerId")
+      },
   )
 }
 
@@ -40,11 +46,20 @@ private fun MainNavHost(
     onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
     aboutActions: AboutActions,
     user: AMUser?,
+    navigateToSpeakerDetails: (SpeakerId) -> Unit,
 ) {
-  NavHost(mainNavController, startDestination = MainNavigationRoute.AVA.name) {
+  NavHost(
+      navController = mainNavController,
+      startDestination = MainNavigationRoute.AVA.name
+  ) {
 
     composable(route = MainNavigationRoute.AVA.name) {
-      AVALayout(onSessionClick = onSessionClick, aboutActions = aboutActions, user = user)
+      AVALayout(
+          onSessionClick = onSessionClick,
+          aboutActions = aboutActions,
+          user = user,
+          navigateToSpeakerDetails = navigateToSpeakerDetails
+      )
     }
 
     composable(route = "${MainNavigationRoute.SESSION_DETAIL.name}/{sessionId}/{roomId}/{startTimestamp}/{endTimestamp}") { backStackEntry ->
@@ -74,6 +89,27 @@ private fun MainNavHost(
           onBookmarkClick = { bookmarked -> sessionDetailViewModel.bookmark(bookmarked) },
       )
     }
+
+    composable(route = "${MainNavigationRoute.SPEAKER_DETAIL.name}/{speakerId}") { backStackEntry ->
+      val speakerId = backStackEntry.arguments!!.getString("speakerId")!!
+
+      val speakerDetailsViewModel: SpeakerDetailsViewModel = viewModel(
+          factory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+              @Suppress("UNCHECKED_CAST")
+              return SpeakerDetailsViewModel(
+                  speakerId = speakerId
+              ) as T
+            }
+          }
+      )
+
+      SpeakerDetailsRoute(
+          speakerDetailsViewModel = speakerDetailsViewModel,
+          onBackClick = { mainNavController.popBackStack() },
+      )
+    }
+
   }
 }
 
