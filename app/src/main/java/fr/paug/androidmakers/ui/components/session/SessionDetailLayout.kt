@@ -351,7 +351,7 @@ private fun Speaker(
               openSocialLink(context, socialsItem.link!!)
             }
         ) {
-          if (socialsItem.icon == "twitter") {
+          if (socialsItem.name?.lowercase() == "twitter") {
             Icon(
                 painter = painterResource(R.drawable.ic_network_twitter),
                 contentDescription = socialsItem.icon
