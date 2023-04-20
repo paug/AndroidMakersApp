@@ -70,8 +70,11 @@ fun VenueLayout(uiVenue: UIVenue) {
         style = MaterialTheme.typography.bodyMedium,
     )
     val context = LocalContext.current
-    Button(modifier = Modifier.fillMaxSize(),
-        onClick = { openMap(context, uiVenue.coordinates, uiVenue.name) }) {
+    Button(
+      modifier = Modifier
+        .fillMaxSize()
+        .padding(horizontal = 8.dp),
+      onClick = { openMap(context, uiVenue.coordinates, uiVenue.name) }) {
       Text(text = stringResource(R.string.locate_on_map))
     }
   }
