@@ -422,7 +422,8 @@ private fun shareSession(
     )
   }
   shareSessionIntent.type = "text/plain"
-  context.startActivity(shareSessionIntent)
+  val shareSheetIntent = Intent.createChooser(shareSessionIntent, null)
+  context.startActivity(shareSheetIntent)
 }
 
 fun openSocialLink(context: Context, link: String) {
