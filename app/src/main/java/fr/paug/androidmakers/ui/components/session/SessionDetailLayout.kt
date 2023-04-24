@@ -125,7 +125,7 @@ fun SessionDetailLayout(
                           context = context,
                           session = sessionDetailState.content.session,
                           sessionDateAndRoom = formattedDateAndRoom!!,
-                          speakersList = sessionDetailState.content.speakers,
+                          speakersNameList = sessionDetailState.content.speakers.mapNotNull { it.name },
                       )
                     }
                 ) {
@@ -389,16 +389,16 @@ private fun getFormattedDateAndRoom(room: Room, startTimestamp: Long, endTimesta
 }
 
 private fun shareSession(
-    context: Context,
-    session: Session,
-    sessionDateAndRoom: String,
-    speakersList: List<Speaker>
+  context: Context,
+  session: Session,
+  sessionDateAndRoom: String,
+  speakersNameList: List<String>
 ) {
-  val speakers = TextUtils.join(", ", speakersList)
+  val speakers = TextUtils.join(", ", speakersNameList)
 
   val shareSessionIntent = Intent(Intent.ACTION_SEND)
   shareSessionIntent.putExtra(Intent.EXTRA_SUBJECT, session.title)
-  if (speakersList.isEmpty()) {
+  if (speakersNameList.isEmpty()) {
     shareSessionIntent.putExtra(
         Intent.EXTRA_TEXT,
         String.format(
