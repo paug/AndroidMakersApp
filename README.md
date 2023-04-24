@@ -9,8 +9,12 @@ Play store link: https://play.google.com/store/apps/details?id=fr.paug.androidma
 The app gives info about the agenda, sessions details, venues and more.<br>
 This app uses Firestore database for the content, and is in Jetpack Compose
 
-<h2>Contributing</h2>
+<h2>Contributors</h2>
 
-This app was built by Paug members.<br>
-Help us improve the app if you want, PR welcome!
+This app was built by the community 💚. PRs are welcome, see [CONTRIBUTING.md](CONTRIBUTING.md) for (a little bit :)) more details.
+
+<a href="https://github.com/paug/androidmakersapp/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=paug/androidmakersapp" />
+</a>
+
 
