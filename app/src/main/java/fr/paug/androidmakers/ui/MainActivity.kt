@@ -117,8 +117,6 @@ class MainActivity : AppCompatActivity() {
           }
       )
 
-
-
       LaunchedEffect(true) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
           launcher.launch(POST_NOTIFICATIONS)
@@ -129,7 +127,6 @@ class MainActivity : AppCompatActivity() {
           LocalActivity provides rememberedActivity,
       ) {
         AndroidMakersTheme {
-
           if (rationalPermissionOpenDialog.value) {
             ShowRationalPermissionDialog(
                 packageName = packageName,
