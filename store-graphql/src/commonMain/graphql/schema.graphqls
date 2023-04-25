@@ -140,7 +140,7 @@ type Session {
   isServiceSession: Boolean!
 
   """
-  An [IETF language code](https://en.wikipedia.org/wiki/IETF_language_tag) like en-US
+  either "French" or "English"
   """
   language: String
 

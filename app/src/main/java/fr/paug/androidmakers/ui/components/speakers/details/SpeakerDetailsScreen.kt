@@ -2,7 +2,6 @@ package fr.paug.androidmakers.ui.components.speakers.details
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -10,7 +9,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.Public
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -24,7 +22,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -33,7 +30,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.components.LoadingLayout
-import fr.paug.androidmakers.ui.components.session.openSocialLink
+import fr.paug.androidmakers.ui.components.session.SocialButtons
 import fr.paug.androidmakers.ui.viewmodel.Lce
 
 @Composable
@@ -112,30 +109,7 @@ fun SpeakerDetailsScreen(
           style = MaterialTheme.typography.bodyLarge,
       )
 
-      Row(
-          horizontalArrangement = Arrangement.End
-      ) {
-        val context = LocalContext.current
-        for (socialsItem in speaker.socials.orEmpty().filterNotNull()) {
-          IconButton(
-              onClick = {
-                openSocialLink(context, socialsItem.link!!)
-              }
-          ) {
-            if (socialsItem.icon == "twitter") {
-              Icon(
-                  painter = painterResource(R.drawable.ic_network_twitter),
-                  contentDescription = socialsItem.icon
-              )
-            } else {
-              Icon(
-                  imageVector = Icons.Rounded.Public,
-                  contentDescription = socialsItem.icon
-              )
-            }
-          }
-        }
-      }
+      SocialButtons(speaker)
     }
   }
 }

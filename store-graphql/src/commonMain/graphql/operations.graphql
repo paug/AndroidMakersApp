@@ -46,8 +46,7 @@ fragment SpeakerDetails on Speaker {
     bio
     socials {
         name
-        link
-        icon
+        url
     }
 }
 
