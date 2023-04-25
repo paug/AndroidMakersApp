@@ -3,7 +3,11 @@ package fr.androidmakers.store.graphql
 import fr.androidmakers.store.graphql.fragment.RoomDetails
 import fr.androidmakers.store.graphql.fragment.SessionDetails
 import fr.androidmakers.store.graphql.fragment.SpeakerDetails
-import fr.androidmakers.store.model.*
+import fr.androidmakers.store.model.Room
+import fr.androidmakers.store.model.Session
+import fr.androidmakers.store.model.SocialsItem
+import fr.androidmakers.store.model.Speaker
+import fr.androidmakers.store.model.Venue
 
 fun SpeakerDetails.toSpeaker(): Speaker {
   return Speaker(
@@ -25,8 +29,7 @@ fun SpeakerDetails.toSpeaker(): Speaker {
 fun SpeakerDetails.Social.toSocialsItem(): SocialsItem {
   return SocialsItem(
       name = name,
-      icon = icon,
-      link = link,
+      url = url,
   )
 }
 
