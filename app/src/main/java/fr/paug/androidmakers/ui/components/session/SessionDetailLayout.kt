@@ -55,6 +55,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.google.accompanist.flowlayout.FlowRow
@@ -195,7 +196,7 @@ private fun SessionDetails(sessionDetails: SessionDetailState, formattedDateAndR
 
       Text(
           text = formattedDateAndRoom,
-          style = MaterialTheme.typography.labelMedium,
+          style = MaterialTheme.typography.labelMedium.copy(fontSize = 18.sp),
       )
     }
 
