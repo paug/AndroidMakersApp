@@ -26,7 +26,7 @@ class AndroidApplicationPlugin : Plugin<Project> {
         namespace = "fr.paug.androidmakers"
         minSdk = 21
         targetSdk = 33
-        versionCode = 1454
+        versionCode = 1455
         versionName = versionCode.toString()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
       }
