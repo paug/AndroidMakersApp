@@ -87,61 +87,10 @@ class MainActivity : AppCompatActivity() {
 
       val userState = _user.collectAsState()
 
-      val context = LocalContext.current
-      val permissionOpenDialog = remember { mutableStateOf(false) }
-      val rationalPermissionOpenDialog = remember { mutableStateOf(false) }
-
-      var hasNotificationPermission by remember {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-          mutableStateOf(
-              ContextCompat.checkSelfPermission(
-                  context,
-                  POST_NOTIFICATIONS
-              ) == PackageManager.PERMISSION_GRANTED
-          )
-        } else mutableStateOf(true)
-      }
-
-      val launcher = rememberLauncherForActivityResult(
-          contract = ActivityResultContracts.RequestPermission(),
-          onResult = { isGranted ->
-            if (!isGranted) {
-              if (shouldShowRequestPermissionRationale(POST_NOTIFICATIONS)) {
-                rationalPermissionOpenDialog.value = true
-              } else {
-                permissionOpenDialog.value = true
-              }
-            } else {
-              hasNotificationPermission = isGranted
-            }
-          }
-      )
-
-
-
-      LaunchedEffect(true) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-          launcher.launch(POST_NOTIFICATIONS)
-        }
-      }
-
       CompositionLocalProvider(
           LocalActivity provides rememberedActivity,
       ) {
         AndroidMakersTheme {
-
-          if (rationalPermissionOpenDialog.value) {
-            ShowRationalPermissionDialog(
-                packageName = packageName,
-                openDialog = rationalPermissionOpenDialog
-            ) {
-              rationalPermissionOpenDialog.value = false
-              if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                launcher.launch(POST_NOTIFICATIONS)
-              }
-            }
-          }
-
           MainLayout(
               aboutActions = AboutActions(
                   onFaqClick = ::onFaqClick,
