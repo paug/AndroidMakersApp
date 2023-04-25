@@ -3,7 +3,6 @@ package fr.paug.androidmakers.ui
 import android.Manifest.permission.POST_NOTIFICATIONS
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +11,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -24,6 +25,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
+import androidx.window.layout.WindowInfoTracker
+import com.google.accompanist.adaptive.calculateDisplayFeatures
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -36,16 +39,14 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.messaging.FirebaseMessaging
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.R
-import fr.paug.androidmakers.ui.components.MainLayout
+import fr.paug.androidmakers.ui.components.AndroidMakersApp
 import fr.paug.androidmakers.ui.components.ShowRationalPermissionDialog
-import fr.paug.androidmakers.ui.components.about.AboutActions
 import fr.paug.androidmakers.ui.theme.AndroidMakersTheme
+import fr.paug.androidmakers.ui.util.extension.toAMUser
 import fr.paug.androidmakers.util.BookmarksStore
-import fr.paug.androidmakers.util.CustomTabUtil
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 
 val LocalActivity = staticCompositionLocalOf<MainActivity> { throw NotImplementedError() }
 
@@ -58,16 +59,17 @@ data class AMUser(
     get() = firebaseUser.photoUrl?.toString()
 }
 
-private fun FirebaseUser.toAMUser(): AMUser {
-  return AMUser(this)
-}
-
 class MainActivity : AppCompatActivity() {
   private val _user = MutableStateFlow(FirebaseAuth.getInstance().currentUser?.toAMUser())
 
+  private lateinit var windowInfoTracker: WindowInfoTracker
+
+  @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
   @RequiresApi(Build.VERSION_CODES.M)
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+
+    windowInfoTracker = WindowInfoTracker.getOrCreate(this@MainActivity)
 
     val currentUser = _user.value
     if (currentUser != null) {
@@ -139,16 +141,13 @@ class MainActivity : AppCompatActivity() {
             }
           }
 
-          MainLayout(
-              aboutActions = AboutActions(
-                  onFaqClick = ::onFaqClick,
-                  onCodeOfConductClick = ::onCodeOfConductClick,
-                  onTwitterHashtagClick = ::onTwitterHashtagClick,
-                  onTwitterLogoClick = ::onTwitterLogoClick,
-                  onYouTubeLogoClick = ::onYouTubeLogoClick,
-                  onSponsorClick = ::onSponsorClick,
-              ),
-              user = userState.value,
+          val displayFeatures = calculateDisplayFeatures(this)
+          val windowSizeClass = calculateWindowSizeClass(this)
+
+          AndroidMakersApp(
+              displayFeatures = displayFeatures,
+              windowSizeClass = windowSizeClass,
+              user = userState.value
           )
         }
       }
@@ -166,61 +165,11 @@ class MainActivity : AppCompatActivity() {
     })
   }
 
-  private fun onFaqClick() {
-    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://androidmakers.droidcon.com/faqs/")))
-  }
-
-  private fun onCodeOfConductClick() {
-    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://androidmakers.droidcon.com/code-of-conduct/")))
-  }
-
-  private fun onTwitterHashtagClick() {
-    var twitterIntent: Intent
-    try {
-      // get the Twitter app if possible
-      packageManager?.getPackageInfo("com.twitter.android", 0)
-      twitterIntent = Intent(
-          Intent.ACTION_VIEW,
-          Uri.parse("twitter://search?query=%23" + getString(R.string.twitter_hashtag_for_query))
-      )
-      twitterIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-    } catch (e: Exception) {
-      // no Twitter app, revert to browser
-      twitterIntent = Intent(
-          Intent.ACTION_VIEW,
-          Uri.parse("https://twitter.com/search?q=%23" + getString(R.string.twitter_hashtag_for_query))
-      )
-    }
-
-    startActivity(twitterIntent)
-  }
-
-  private fun onTwitterLogoClick() {
-    var twitterIntent: Intent
-    try {
-      // get the Twitter app if possible
-      packageManager?.getPackageInfo("com.twitter.android", 0)
-      twitterIntent = Intent(
-          Intent.ACTION_VIEW,
-          Uri.parse("twitter://user?screen_name=" + getString(R.string.twitter_user_name))
-      )
-      twitterIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-    } catch (e: Exception) {
-      // no Twitter app, revert to browser
-      twitterIntent = Intent(
-          Intent.ACTION_VIEW,
-          Uri.parse("https://twitter.com/" + getString(R.string.twitter_user_name))
-      )
-    }
-
-    startActivity(twitterIntent)
-  }
-
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     super.onActivityResult(requestCode, resultCode, data)
 
     when (requestCode) {
-      REQ_SIGNIN -> {
+      REQ_SIGN_IN -> {
         val task: Task<GoogleSignInAccount> =
             GoogleSignIn.getSignedInAccountFromIntent(data)
         try {
@@ -228,10 +177,7 @@ class MainActivity : AppCompatActivity() {
           val idToken = account.idToken
           when {
             idToken != null -> {
-              // Got an ID token from Google. Use it to authenticate
-              // with Firebase.
-              // Got an ID token from Google. Use it to authenticate
-              // with Firebase.
+              // Got an ID token from Google. Use it to authenticate with Firebase.
               val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
               val auth = FirebaseAuth.getInstance()
 
@@ -250,7 +196,6 @@ class MainActivity : AppCompatActivity() {
                     }
                   }
             }
-
             else -> {
               _user.value = null
               // Shouldn't happen.
@@ -274,15 +219,7 @@ class MainActivity : AppCompatActivity() {
     }
   }
 
-  private fun onYouTubeLogoClick() {
-    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.youtube_channel))))
-  }
-
-  private fun onSponsorClick(url: String) {
-    CustomTabUtil.openChromeTab(this, url)
-  }
-
-  fun signout() {
+  fun signOut() {
     val activity = this
     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
         .requestIdToken(activity.getString(R.string.default_web_client_id))
@@ -295,18 +232,18 @@ class MainActivity : AppCompatActivity() {
     _user.value = null
   }
 
-  fun signin() {
+  fun signIn() {
     val activity = this
     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
         .requestIdToken(activity.getString(R.string.default_web_client_id))
         .build()
     val googleSignInClient = GoogleSignIn.getClient(activity, gso)
 
-    activity.startActivityForResult(googleSignInClient.signInIntent, REQ_SIGNIN)
+    activity.startActivityForResult(googleSignInClient.signInIntent, REQ_SIGN_IN)
   }
 
   companion object {
-    const val REQ_SIGNIN = 33
+    const val REQ_SIGN_IN = 33
   }
 
 }

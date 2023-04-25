@@ -12,13 +12,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Bookmark
 import androidx.compose.material.icons.rounded.Room
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -31,6 +31,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import fr.androidmakers.store.getAgenda
 import fr.androidmakers.store.model.Agenda
 import fr.androidmakers.store.model.Room
@@ -41,6 +42,7 @@ import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.components.AgendaLayoutViewModel
 import fr.paug.androidmakers.ui.components.ButtonRefreshableLceLayout
 import fr.paug.androidmakers.ui.model.UISession
+import fr.paug.androidmakers.ui.navigation.AndroidMakersRoute
 import fr.paug.androidmakers.ui.viewmodel.LceViewModel
 import fr.paug.androidmakers.util.EmojiUtils
 import fr.paug.androidmakers.util.SessionFilter
@@ -56,11 +58,13 @@ import java.time.format.FormatStyle
 
 @Composable
 fun AgendaLayout(
-    agendaFilterDrawerState: DrawerState,
-    onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
+    modifier: Modifier = Modifier,
+    navHostController: NavHostController,
+//    agendaFilterDrawerState: DrawerState,
 ) {
   val agendaLayoutViewModel = viewModel<AgendaLayoutViewModel>()
   val agendaLayoutState by agendaLayoutViewModel.state.collectAsState()
+  val agendaFilterDrawerState = rememberDrawerState(DrawerValue.Closed)
 
   ModalNavigationDrawer(
       drawerState = agendaFilterDrawerState,
@@ -79,35 +83,57 @@ fun AgendaLayout(
         }
       },
       content = {
-        AgendaPagerOrLoading(agendaLayoutState.sessionFilters, onSessionClick)
+        AgendaPagerOrLoading(
+            navHostController,
+            agendaLayoutState.sessionFilters
+        )
       }
   )
 }
 
 class AgendaPagerViewModel : LceViewModel<Agenda>() {
-  override fun produce(): Flow<Result<Agenda>> {
-    return AndroidMakersApplication.instance().store.getAgenda()
-  }
+  override fun produce(): Flow<Result<Agenda>> =
+      AndroidMakersApplication.instance().store.getAgenda()
 }
 
 @Composable
 private fun AgendaPagerOrLoading(
-    sessionFilters: List<SessionFilter>,
-    onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
+    navHostController: NavHostController,
+    sessionFilters: List<SessionFilter>
 ) {
   ButtonRefreshableLceLayout(viewModel<AgendaPagerViewModel>()) {
     val days = agendaToDays(it)
 
     AgendaPager(
         initialPageIndex = days.todayPageIndex(),
-        days = days.map { it.title },
+        days = days.map { daySchedule ->
+          daySchedule.title
+        },
         filterList = sessionFilters,
-        onSessionClicked = {
-          onSessionClick(
-              it.id,
-              it.roomId,
-              it.startDate.toEpochMilliseconds(),
-              it.endDate.toEpochMilliseconds()
+        onSessionClicked = { uiSession ->
+          val sessionId = uiSession.id
+          val sessionRoom = uiSession.roomId
+          val sessionStart = uiSession.startDate.toEpochMilliseconds().toString()
+          val sessionEnd = uiSession.endDate.toEpochMilliseconds().toString()
+
+          navHostController.navigate(
+              AndroidMakersRoute.AGENDA_DETAILS
+                  .replace(
+                      oldValue = "{sessionId}",
+                      newValue = sessionId
+                  )
+                  .replace(
+                      oldValue = "{roomId}",
+                      newValue = sessionRoom
+                  )
+                  .replace(
+                      oldValue = "{startTime}",
+                      newValue = sessionStart
+                  )
+                  .replace(
+                      oldValue = "{endTime}",
+                      newValue = sessionEnd
+                  )
           )
         }
     )
@@ -263,16 +289,6 @@ private fun AgendaFilterDrawerPreview() {
           SessionFilter(type = SessionFilter.FilterType.BOOKMARK, value = "")
       ),
       onFiltersChanged = {}
-  )
-}
-
-
-@Preview
-@Composable
-private fun AgendaLayoutPreview() {
-  AgendaLayout(
-      agendaFilterDrawerState = DrawerState(DrawerValue.Closed, confirmStateChange = { true }),
-      onSessionClick = { _, _, _, _ -> }
   )
 }
 

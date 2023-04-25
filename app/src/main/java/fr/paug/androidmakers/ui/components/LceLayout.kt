@@ -25,9 +25,11 @@ import fr.paug.androidmakers.ui.viewmodel.Lce
 import fr.paug.androidmakers.ui.viewmodel.LceViewModel
 
 @Composable
-fun LoadingLayout() {
+fun LoadingLayout(
+    modifier: Modifier = Modifier
+) {
   Box(
-      modifier = Modifier
+      modifier = modifier
           .fillMaxWidth()
           .fillMaxHeight(),
       contentAlignment = Alignment.Center

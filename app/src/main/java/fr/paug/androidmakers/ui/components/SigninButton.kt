@@ -59,7 +59,7 @@ fun SigninButton(user: AMUser?) {
           },
           onClick = {
             expandedState.value = false
-            activity.signin()
+            activity.signIn()
           }
       )
     } else {
@@ -69,7 +69,7 @@ fun SigninButton(user: AMUser?) {
           },
           onClick = {
             expandedState.value = false
-            activity.signout()
+            activity.signOut()
           }
       )
     }

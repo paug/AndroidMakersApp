@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -25,12 +24,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.BookmarkAdd
 import androidx.compose.material.icons.rounded.BookmarkRemove
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.Public
-import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -42,8 +39,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,8 +50,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.google.accompanist.flowlayout.FlowRow
@@ -82,18 +81,36 @@ class SessionDetailState(
     val isBookmarked: Boolean,
 )
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SessionDetailLayout(
-    sessionDetailState: Lce<SessionDetailState>,
-    onBackClick: () -> Unit,
-    onBookmarkClick: (bookmarked: Boolean) -> Unit,
+    sessionId: String,
+    roomId: String,
+    startTime: String,
+    endTime: String
 ) {
+  val sessionDetailViewModel: SessionDetailViewModel = viewModel(
+      factory = object : ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+          @Suppress("UNCHECKED_CAST")
+          return SessionDetailViewModel(
+              sessionId = sessionId,
+              roomId = roomId,
+              startTimestamp = startTime.toLong(),
+              endTimestamp = endTime.toLong()
+          ) as T
+        }
+      }
+  )
+
+  val sessionDetailState by sessionDetailViewModel.sessionDetailState.collectAsState(
+      initial = Lce.Loading
+  )
+
   val formattedDateAndRoom: String? = if (sessionDetailState is Lce.Content) {
     getFormattedDateAndRoom(
-        room = sessionDetailState.content.room,
-        startTimestamp = sessionDetailState.content.startTimestamp,
-        endTimestamp = sessionDetailState.content.endTimestamp,
+        room = (sessionDetailState as Lce.Content<SessionDetailState>).content.room,
+        startTimestamp = (sessionDetailState as Lce.Content<SessionDetailState>).content.startTimestamp,
+        endTimestamp = (sessionDetailState as Lce.Content<SessionDetailState>).content.endTimestamp,
     )
   } else {
     null
@@ -101,55 +118,18 @@ fun SessionDetailLayout(
 
   Scaffold(
       modifier = Modifier.navigationBarsPadding(),
-      contentWindowInsets = WindowInsets(0, 0, 0, 0),
-      topBar = {
-        TopAppBar(
-            navigationIcon = {
-              IconButton(onClick = onBackClick) {
-                Icon(
-                    Icons.Rounded.ArrowBack,
-                    contentDescription = stringResource(R.string.back)
-                )
-              }
-            },
-            title = {
-              // Nothing to do
-            },
-            actions = {
-              if (sessionDetailState is Lce.Content) {
-                val context = LocalContext.current
-                IconButton(
-                    onClick = {
-                      // TODO Ideally this should not be handled here but by the caller
-                      shareSession(
-                          context = context,
-                          session = sessionDetailState.content.session,
-                          sessionDateAndRoom = formattedDateAndRoom!!,
-                          speakersList = sessionDetailState.content.speakers,
-                      )
-                    }
-                ) {
-                  Icon(
-                      Icons.Rounded.Share,
-                      contentDescription = stringResource(R.string.share)
-                  )
-                }
-              }
-            }
-        )
-      },
       floatingActionButton = {
         if (sessionDetailState is Lce.Content) {
           val backgroundColor by animateColorAsState(
-              if (sessionDetailState.content.isBookmarked) AMColor.amRed else Color.White
+              if ((sessionDetailState as Lce.Content<SessionDetailState>).content.isBookmarked) AMColor.amRed else Color.White, label = ""
           )
           FloatingActionButton(
               containerColor = backgroundColor,
               onClick = {
-                onBookmarkClick(!sessionDetailState.content.isBookmarked)
+                sessionDetailViewModel.bookmark(!(sessionDetailState as Lce.Content<SessionDetailState>).content.isBookmarked)
               }
           ) {
-            Crossfade(sessionDetailState.content.isBookmarked) { isBookmarked ->
+            Crossfade((sessionDetailState as Lce.Content<SessionDetailState>).content.isBookmarked, label = "") { isBookmarked ->
               Image(
                   imageVector = if (isBookmarked) Icons.Rounded.BookmarkRemove else Icons.Rounded.BookmarkAdd,
                   contentDescription = stringResource(R.string.bookmarked)
@@ -162,7 +142,7 @@ fun SessionDetailLayout(
     Box(Modifier.padding(innerPadding)) {
       when (sessionDetailState) {
         is Lce.Loading, Lce.Error -> LoadingLayout()
-        is Lce.Content -> SessionDetails(sessionDetailState.content, formattedDateAndRoom!!)
+        is Lce.Content -> SessionDetails((sessionDetailState as Lce.Content<SessionDetailState>).content, formattedDateAndRoom!!)
       }
     }
   }
@@ -428,15 +408,4 @@ private fun shareSession(
 
 fun openSocialLink(context: Context, link: String) {
   context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(link)))
-}
-
-
-@Preview
-@Composable
-private fun SessionDetailLayoutLoadingPreview() {
-  SessionDetailLayout(
-      sessionDetailState = Lce.Loading,
-      onBackClick = {},
-      onBookmarkClick = {},
-  )
 }

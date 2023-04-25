@@ -35,7 +35,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.isContainer
@@ -43,38 +42,46 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import fr.androidmakers.store.model.Speaker
-import fr.androidmakers.store.model.SpeakerId
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.components.LoadingLayout
+import fr.paug.androidmakers.ui.navigation.AndroidMakersRoute
 import fr.paug.androidmakers.ui.viewmodel.Lce
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SpeakerScreen(
     modifier: Modifier = Modifier,
-    speakerViewModel: SpeakerViewModel,
-    navigateToSpeakerDetails: (SpeakerId) -> Unit,
+    navHostController: NavHostController
 ) {
+  val speakerViewModel: SpeakerViewModel = viewModel(
+      factory = object : ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+          @Suppress("UNCHECKED_CAST")
+          return SpeakerViewModel(
+          ) as T
+        }
+      }
+  )
 
   val speakersUiState by speakerViewModel.uiState.collectAsState(
       initial = Lce.Loading
   )
 
   when (val state = speakersUiState) {
-    Lce.Loading -> LoadingLayout()
-    Lce.Error -> {
-
-    }
-
+    Lce.Loading -> LoadingLayout(modifier = modifier)
+    Lce.Error -> { }
     is Lce.Content -> {
-
       var text by rememberSaveable { mutableStateOf("") }
       var active by rememberSaveable { mutableStateOf(false) }
 
-      Box(Modifier.fillMaxSize()) {
+      Box(modifier.fillMaxSize()) {
         Box(Modifier
             .semantics { isContainer = true }
             .background(MaterialTheme.colorScheme.background)
@@ -119,7 +126,14 @@ fun SpeakerScreen(
               items(state.content.speakers.filter { it.name?.contains(text, ignoreCase = true) == true }) { speaker ->
                 SpeakerItem(
                     speaker = speaker,
-                    navigateToSpeakerDetails = navigateToSpeakerDetails,
+                    navigateToSpeakerDetails = { speakerId ->
+                      navHostController.navigate(
+                          AndroidMakersRoute.SPEAKER_DETAILS
+                              .replace(
+                                  oldValue = "{speakerId}",
+                                  newValue = speakerId
+                              ))
+                    }
                 )
               }
             }
@@ -138,7 +152,14 @@ fun SpeakerScreen(
             items(state.content.speakers.filter { it.name?.contains(text, ignoreCase = true) == true }) { speaker ->
               SpeakerItem(
                   speaker = speaker,
-                  navigateToSpeakerDetails = navigateToSpeakerDetails
+                  navigateToSpeakerDetails = { speakerId ->
+                    navHostController.navigate(
+                        AndroidMakersRoute.SPEAKER_DETAILS.replace(
+                            oldValue = "{speakerId}",
+                            newValue = speakerId
+                        )
+                    )
+                  }
               )
             }
           }
@@ -154,7 +175,7 @@ fun SpeakerScreen(
 fun SpeakerItem(
     modifier: Modifier = Modifier,
     speaker: Speaker,
-    navigateToSpeakerDetails: (SpeakerId) -> Unit,
+    navigateToSpeakerDetails: (String) -> Unit,
 ) {
 
   ListItem(

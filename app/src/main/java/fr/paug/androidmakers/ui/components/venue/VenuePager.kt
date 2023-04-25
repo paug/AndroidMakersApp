@@ -1,4 +1,4 @@
-package fr.paug.androidmakers.ui.components
+package fr.paug.androidmakers.ui.components.venue
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
@@ -18,7 +18,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.R
-import fr.paug.androidmakers.ui.components.venue.VenueLayout
+import fr.paug.androidmakers.ui.components.FloorPlan
+import fr.paug.androidmakers.ui.components.LceLayout
 import fr.paug.androidmakers.ui.model.UIVenue
 import fr.paug.androidmakers.ui.viewmodel.Lce
 import fr.paug.androidmakers.ui.viewmodel.toLce
@@ -95,7 +96,6 @@ fun VenuePager() {
             VenueLayout(uiVenue)
           }
         }
-
         else -> {
           FloorPlan()
         }

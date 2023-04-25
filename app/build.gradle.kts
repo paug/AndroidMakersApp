@@ -16,6 +16,7 @@ dependencies {
   // Support
   implementation(libs.androidx.activity.compose)
   implementation(libs.androidx.appcompat)
+  implementation(libs.androidx.compose.materialWindow)
   implementation(libs.androidx.lifecycle.runtimeCompose)
 
   implementation(libs.material)
@@ -41,10 +42,11 @@ dependencies {
   implementation(libs.compose.ui)
   implementation(libs.compose.ui.tooling)
   implementation(libs.navigation.compose)
-  implementation(libs.accompanist.pager)
-  implementation(libs.accompanist.systemuicontroller)
-  implementation(libs.accompanist.pager.indicators)
+  implementation(libs.accompanist.adaptive)
   implementation(libs.accompanist.flowlayout)
+  implementation(libs.accompanist.pager)
+  implementation(libs.accompanist.pager.indicators)
+  implementation(libs.accompanist.systemuicontroller)
 
   implementation(libs.play.services.auth)
 

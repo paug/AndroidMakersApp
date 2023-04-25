@@ -1,5 +1,7 @@
 package fr.paug.androidmakers.ui.components.about
 
+import android.content.Intent
+import android.net.Uri
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -21,32 +23,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import fr.androidmakers.store.model.Logo
-import fr.androidmakers.store.model.Partner
 import fr.paug.androidmakers.BuildConfig
 import fr.paug.androidmakers.R
-import fr.paug.androidmakers.ui.viewmodel.Lce
-
-
-class AboutActions(
-    val onFaqClick: () -> Unit = {},
-    val onCodeOfConductClick: () -> Unit = {},
-    val onTwitterHashtagClick: () -> Unit = {},
-    val onTwitterLogoClick: () -> Unit = {},
-    val onYouTubeLogoClick: () -> Unit = {},
-    val onSponsorClick: (url: String) -> Unit = {},
-)
-
 @Composable
-fun AboutLayout(
-    partnerList: Lce<List<Partner>>,
-    aboutActions: AboutActions,
-) {
+fun AboutLayout() {
+  val context = LocalContext.current
 
   Column(
       modifier = Modifier
@@ -57,15 +44,25 @@ fun AboutLayout(
   ) {
 
     IntroCard(
-        onFaqClick = aboutActions.onFaqClick,
-        onCocClick = aboutActions.onCodeOfConductClick
+        onFaqClick = {
+          context.startActivity(
+              Intent(
+                  Intent.ACTION_VIEW,
+                  Uri.parse("https://androidmakers.droidcon.com/faqs/")
+              )
+          )
+        },
+        onCocClick = {
+          context.startActivity(
+              Intent(
+                  Intent.ACTION_VIEW,
+                  Uri.parse("https://androidmakers.droidcon.com/code-of-conduct/")
+              )
+          )
+        }
     )
 
-    SocialCard(
-        aboutActions.onTwitterHashtagClick,
-        aboutActions.onTwitterLogoClick,
-        aboutActions.onYouTubeLogoClick
-    )
+    SocialCard()
 
     Text(
         modifier = Modifier.fillMaxWidth(),
@@ -109,18 +106,38 @@ private fun IntroCard(
 }
 
 @Composable
-private fun SocialCard(
-    onTwitterHashtagClick: () -> Unit,
-    onTwitterLogoClick: () -> Unit,
-    onYouTubeLogoClick: () -> Unit
-) {
+private fun SocialCard() {
+  val context = LocalContext.current
+  val twitterHashtagForQuery = stringResource(id = R.string.twitter_hashtag_for_query)
+  val twitterUsername = stringResource(id = R.string.twitter_user_name)
+  val youtubeChannelUrl = stringResource(id = R.string.youtube_channel)
+
   Card(Modifier.fillMaxWidth()) {
     Column(Modifier.padding(8.dp)) {
       Row(
           Modifier.fillMaxWidth(),
           horizontalArrangement = Arrangement.Center
       ) {
-        ClickableText(R.string.twitter_hashtag, onTwitterHashtagClick)
+        ClickableText(R.string.twitter_hashtag) {
+          var twitterIntent: Intent
+          try {
+            // get the Twitter app if possible
+            context.packageManager?.getPackageInfo("com.twitter.android", 0)
+            twitterIntent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("twitter://search?query=%23$twitterHashtagForQuery")
+            )
+            twitterIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+          } catch (e: Exception) {
+            // no Twitter app, revert to browser
+            twitterIntent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("https://twitter.com/search?q=%23$twitterHashtagForQuery")
+            )
+          }
+
+          context.startActivity(twitterIntent)
+        }
       }
       Row(
           Modifier
@@ -131,7 +148,26 @@ private fun SocialCard(
         Icon(
             modifier = Modifier
                 .size(96.dp, 64.dp)
-                .clickable(onClick = onTwitterLogoClick),
+                .clickable(onClick = {
+                  var twitterIntent: Intent
+                  try {
+                    // Get the Twitter app if possible
+                    context.packageManager?.getPackageInfo("com.twitter.android", 0)
+                    twitterIntent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("twitter://user?screen_name=$twitterUsername")
+                    )
+                    twitterIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                  } catch (e: Exception) {
+                    // Twitter app is not installed, revert to browser
+                    twitterIntent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("https://twitter.com/$twitterUsername")
+                    )
+                  }
+
+                  context.startActivity(twitterIntent)
+                }),
             painter = painterResource(R.drawable.ic_network_twitter),
             tint = Color(0xff1d9bf0),
             contentDescription = "Twitter"
@@ -139,7 +175,9 @@ private fun SocialCard(
         Icon(
             modifier = Modifier
                 .size(96.dp, 64.dp)
-                .clickable(onClick = onYouTubeLogoClick),
+                .clickable(onClick = {
+                  context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(youtubeChannelUrl)))
+                }),
             painter = painterResource(R.drawable.ic_network_youtube),
             tint = Color(0xffff0000),
             contentDescription = "YouTube"
@@ -167,46 +205,5 @@ private fun ClickableText(
 @Preview
 @Composable
 private fun AboutLayoutLoadingPreview() {
-  AboutLayout(
-      partnerList = Lce.Loading,
-      aboutActions = AboutActions()
-  )
-}
-
-
-@Preview
-@Composable
-private fun AboutLayoutLoadedPreview() {
-  AboutLayout(
-      partnerList = Lce.Content(
-          listOf(
-              Partner(
-                  title = "Event Organizers",
-                  logos = listOf(
-                      Logo(
-                          logoUrl = "../images/logos/babbel.jpeg",
-                          name = "Babbel",
-                          url = "https://babbel.com/"
-                      ),
-                      Logo(
-                          logoUrl = "../images/logos/coyote.png",
-                          name = "Coyote",
-                          url = "https://corporate.moncoyote.com/"
-                      ),
-                  )
-              ),
-              Partner(
-                  title = "Gold sponsors",
-                  logos = listOf(
-                      Logo(
-                          logoUrl = "../images/logos/deezer.png",
-                          name = "Deezer",
-                          url = "https://www.deezer.com/en/company/about"
-                      ),
-                  )
-              ),
-          )
-      ),
-      aboutActions = AboutActions()
-  )
+  AboutLayout()
 }
