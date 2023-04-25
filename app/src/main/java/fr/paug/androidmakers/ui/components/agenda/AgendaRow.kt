@@ -2,12 +2,15 @@ package fr.paug.androidmakers.ui.components.agenda
 
 import android.content.Context
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.BookmarkAdd
 import androidx.compose.material.icons.rounded.BookmarkRemove
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.ListItem
@@ -17,8 +20,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -31,39 +36,54 @@ import fr.paug.androidmakers.util.EmojiUtils
 import fr.paug.androidmakers.util.TimeUtils
 import kotlinx.datetime.Instant
 
+@Composable
+private fun maybeClickable(uiSession: UISession, onSessionClicked: ((UISession) -> Unit)): Modifier {
+  return if (uiSession.isServiceSession.not()) {
+    Modifier.clickable(
+        interactionSource = remember { MutableInteractionSource() },
+        indication = rememberRipple(bounded = false),
+        onClick = {
+          onSessionClicked.invoke(uiSession)
+        }
+    )
+  } else {
+    Modifier
+  }
+}
+
+@Composable
+fun backgroundColor(uiSession: UISession): Color {
+  return if (uiSession.isServiceSession) {
+    MaterialTheme.colorScheme.surface
+  } else {
+    MaterialTheme.colorScheme.surfaceVariant
+  }
+}
 
 @Composable
 fun AgendaRow(
     uiSession: UISession,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onSessionClicked: ((UISession) -> Unit)
 ) {
   ListItem(
       modifier = modifier,
       colors = ListItemDefaults.colors(
-          containerColor = MaterialTheme.colorScheme.surface,
+          containerColor = backgroundColor(uiSession),
       ),
-//      leadingContent = {
-//        Divider(
-//            modifier = Modifier
-//                .fillMaxHeight()
-//                .width(4.dp),
-//            thickness = 80.dp,
-//            color = MaterialTheme.colorScheme.primary
-//        )
-//      },
       headlineContent = {
         Text(
             text = uiSession.title,
             style = MaterialTheme.typography.titleLarge.copy(
                 fontWeight = FontWeight.Bold
-            )
+            ),
+            modifier = maybeClickable(uiSession, onSessionClicked)
         )
       },
       supportingContent = {
         Column(
-            modifier = Modifier.padding(top = 12.dp),
+            modifier = maybeClickable(uiSession, onSessionClicked).padding(top = 12.dp),
             horizontalAlignment = Alignment.Start,
-//            verticalArrangement = Arrangement.spacedBy(2.dp, Alignment.CenterVertically)
         ) {
           val speakers = uiSession.speakers.joinToString(", ") { it.name }
           if (speakers.isNotBlank()) {
@@ -132,7 +152,7 @@ private fun UISession.subtitle(context: Context) = buildString {
 @Preview
 @Composable
 private fun AgendaRowPreview() {
-  AgendaRow(fakeUiSession)
+  AgendaRow(fakeUiSession) { }
 }
 
 private val fakeUiSession = UISession(
