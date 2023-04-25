@@ -340,33 +340,8 @@ private fun Speaker(
       )
     }
 
-    Row(
-        horizontalArrangement = Arrangement.End
-    ) {
-      val context = LocalContext.current
-      for (socialsItem in speaker.socials.orEmpty().filterNotNull()) {
-        IconButton(
-            onClick = {
-              // TODO Ideally this should not be handled here but by the caller
-              openSocialLink(context, socialsItem.link!!)
-            }
-        ) {
-          if (socialsItem.name?.lowercase() == "twitter") {
-            Icon(
-                painter = painterResource(R.drawable.ic_network_twitter),
-                contentDescription = socialsItem.icon
-            )
-          } else {
-            Icon(
-                imageVector = Icons.Rounded.Public,
-                contentDescription = socialsItem.icon
-            )
-          }
-        }
-      }
-    }
+    SocialButtons(speaker)
   }
-
 }
 
 
@@ -389,10 +364,10 @@ private fun getFormattedDateAndRoom(room: Room, startTimestamp: Long, endTimesta
 }
 
 private fun shareSession(
-  context: Context,
-  session: Session,
-  sessionDateAndRoom: String,
-  speakersNameList: List<String>
+    context: Context,
+    session: Session,
+    sessionDateAndRoom: String,
+    speakersNameList: List<String>
 ) {
   val speakers = TextUtils.join(", ", speakersNameList)
 
@@ -428,6 +403,53 @@ private fun shareSession(
 
 fun openSocialLink(context: Context, link: String) {
   context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(link)))
+}
+
+@Composable
+fun SocialButtons(speaker: Speaker) {
+  Row(
+      horizontalArrangement = Arrangement.End
+  ) {
+    val context = LocalContext.current
+    for (socialsItem in speaker.socials.orEmpty().filterNotNull()) {
+      IconButton(
+          onClick = {
+            openSocialLink(context, socialsItem.url!!)
+          }
+      ) {
+        val socialName = socialsItem.name?.lowercase() ?: ""
+        when {
+          socialName.contains("twitter") -> {
+            Icon(
+                painter = painterResource(R.drawable.ic_network_twitter),
+                contentDescription = socialsItem.name
+            )
+          }
+
+          socialName.contains("blog") -> {
+            Icon(
+                painter = painterResource(R.drawable.ic_network_blog),
+                contentDescription = socialsItem.name
+            )
+          }
+
+          socialName.contains("linkedin") -> {
+            Icon(
+                painter = painterResource(R.drawable.ic_network_linkedin),
+                contentDescription = socialsItem.name
+            )
+          }
+
+          else -> {
+            Icon(
+                imageVector = Icons.Rounded.Public,
+                contentDescription = socialsItem.name
+            )
+          }
+        }
+      }
+    }
+  }
 }
 
 
