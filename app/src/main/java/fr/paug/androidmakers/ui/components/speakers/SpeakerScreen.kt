@@ -170,11 +170,13 @@ fun SpeakerItem(
             )
         )
       },
-      supportingContent = {
-        Text(
-            text = speaker.company.orEmpty(),
-            style = MaterialTheme.typography.labelMedium,
-        )
+      supportingContent = speaker.company?.let { company ->
+        {
+          Text(
+              text = company,
+              style = MaterialTheme.typography.labelMedium,
+          )
+        }
       },
       leadingContent = {
         AsyncImage(
