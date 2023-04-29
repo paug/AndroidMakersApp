@@ -37,19 +37,20 @@ import fr.paug.androidmakers.util.TimeUtils
 import kotlinx.datetime.Instant
 
 @Composable
-private fun maybeClickable(uiSession: UISession, onSessionClicked: ((UISession) -> Unit)): Modifier {
-  return if (uiSession.isServiceSession.not()) {
-    Modifier.clickable(
-        interactionSource = remember { MutableInteractionSource() },
-        indication = rememberRipple(bounded = false),
-        onClick = {
-          onSessionClicked.invoke(uiSession)
-        }
-    )
-  } else {
+private fun Modifier.maybeClickable(uiSession: UISession, onSessionClicked: ((UISession) -> Unit)) = then(
+  if (uiSession.isServiceSession.not()) {
     Modifier
+        .clickable(
+            interactionSource = remember { MutableInteractionSource() },
+            indication = rememberRipple(bounded = true),
+            onClick = {
+              onSessionClicked.invoke(uiSession)
+            }
+        )
+  } else {
+    this
   }
-}
+)
 
 @Composable
 fun backgroundColor(uiSession: UISession): Color {
@@ -67,7 +68,7 @@ fun AgendaRow(
     onSessionClicked: ((UISession) -> Unit)
 ) {
   ListItem(
-      modifier = modifier,
+      modifier = modifier.maybeClickable(uiSession, onSessionClicked),
       colors = ListItemDefaults.colors(
           containerColor = backgroundColor(uiSession),
       ),
@@ -76,13 +77,12 @@ fun AgendaRow(
             text = uiSession.title,
             style = MaterialTheme.typography.titleLarge.copy(
                 fontWeight = FontWeight.Bold
-            ),
-            modifier = maybeClickable(uiSession, onSessionClicked)
+            )
         )
       },
       supportingContent = {
         Column(
-            modifier = maybeClickable(uiSession, onSessionClicked).padding(top = 12.dp),
+            modifier = Modifier.padding(top = 12.dp),
             horizontalAlignment = Alignment.Start,
         ) {
           val speakers = uiSession.speakers.joinToString(", ") { it.name }

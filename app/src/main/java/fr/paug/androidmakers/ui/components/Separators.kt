@@ -11,5 +11,3 @@ fun separatorColor() = MaterialTheme.colors.onSurface.copy(alpha = AMAlpha.big)
  */
 @Composable
 fun surfaceColor2() = MaterialTheme.colors.onSurface.copy(alpha = AMAlpha.small)
-
-val separatorHeight = 0.5.dp
