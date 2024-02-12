@@ -1,27 +1,17 @@
 package fr.paug.androidmakers.ui
 
-import android.Manifest.permission.POST_NOTIFICATIONS
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.platform.LocalContext
-import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -37,7 +27,6 @@ import com.google.firebase.messaging.FirebaseMessaging
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.components.MainLayout
-import fr.paug.androidmakers.ui.components.ShowRationalPermissionDialog
 import fr.paug.androidmakers.ui.components.about.AboutActions
 import fr.paug.androidmakers.ui.theme.AndroidMakersTheme
 import fr.paug.androidmakers.util.BookmarksStore
@@ -45,7 +34,6 @@ import fr.paug.androidmakers.util.CustomTabUtil
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 
 val LocalActivity = staticCompositionLocalOf<MainActivity> { throw NotImplementedError() }
 
@@ -95,8 +83,8 @@ class MainActivity : AppCompatActivity() {
               aboutActions = AboutActions(
                   onFaqClick = ::onFaqClick,
                   onCodeOfConductClick = ::onCodeOfConductClick,
-                  onTwitterHashtagClick = ::onTwitterHashtagClick,
-                  onTwitterLogoClick = ::onTwitterLogoClick,
+                  onXHashtagClick = ::onXHashtagClick,
+                  onXLogoClick = ::onXLogoClick,
                   onYouTubeLogoClick = ::onYouTubeLogoClick,
                   onSponsorClick = ::onSponsorClick,
               ),
@@ -126,46 +114,46 @@ class MainActivity : AppCompatActivity() {
     startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://androidmakers.droidcon.com/code-of-conduct/")))
   }
 
-  private fun onTwitterHashtagClick() {
-    var twitterIntent: Intent
+  private fun onXHashtagClick() {
+    var xIntent: Intent
     try {
-      // get the Twitter app if possible
+      // get the X app if possible
       packageManager?.getPackageInfo("com.twitter.android", 0)
-      twitterIntent = Intent(
+      xIntent = Intent(
           Intent.ACTION_VIEW,
-          Uri.parse("twitter://search?query=%23" + getString(R.string.twitter_hashtag_for_query))
+          Uri.parse("twitter://search?query=%23" + getString(R.string.x_hashtag_for_query))
       )
-      twitterIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+      xIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     } catch (e: Exception) {
-      // no Twitter app, revert to browser
-      twitterIntent = Intent(
+      // no X app, revert to browser
+      xIntent = Intent(
           Intent.ACTION_VIEW,
-          Uri.parse("https://twitter.com/search?q=%23" + getString(R.string.twitter_hashtag_for_query))
+          Uri.parse("https://x.com/search?q=%23" + getString(R.string.x_hashtag_for_query))
       )
     }
 
-    startActivity(twitterIntent)
+    startActivity(xIntent)
   }
 
-  private fun onTwitterLogoClick() {
-    var twitterIntent: Intent
+  private fun onXLogoClick() {
+    var xIntent: Intent
     try {
-      // get the Twitter app if possible
+      // get the X app if possible. The package name is still "Twitter"
       packageManager?.getPackageInfo("com.twitter.android", 0)
-      twitterIntent = Intent(
+      xIntent = Intent(
           Intent.ACTION_VIEW,
-          Uri.parse("twitter://user?screen_name=" + getString(R.string.twitter_user_name))
+          Uri.parse("twitter://user?screen_name=" + getString(R.string.x_user_name))
       )
-      twitterIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+      xIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     } catch (e: Exception) {
-      // no Twitter app, revert to browser
-      twitterIntent = Intent(
+      // no X app, revert to browser
+      xIntent = Intent(
           Intent.ACTION_VIEW,
-          Uri.parse("https://twitter.com/" + getString(R.string.twitter_user_name))
+          Uri.parse("https://x.com/" + getString(R.string.x_user_name))
       )
     }
 
-    startActivity(twitterIntent)
+    startActivity(xIntent)
   }
 
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
