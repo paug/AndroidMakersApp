@@ -110,7 +110,6 @@ dependencies {
 
   implementation(libs.accompanist.pager)
   implementation(libs.accompanist.pager.indicators)
-  implementation(libs.accompanist.flowlayout)
 
   implementation(libs.play.services.auth)
 

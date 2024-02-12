@@ -21,7 +21,6 @@ androidx-activity-compose = { group = "androidx.activity", name = "activity-comp
 androidx-activity = { group = "androidx.activity", name = "activity-ktx", version.ref = "androidxActivity" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidxAppCompat" }
 androidx-lifecycle-runtimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
-accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "accompanist" }
 accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanist" }
 accompanist-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "accompanist" }
 apollo-adapters = { module = "com.apollographql.apollo3:apollo-adapters" }
@@ -33,7 +32,6 @@ shared-preferences = "androidx.preference:preference:1.2.0"
 coil-compose = "io.coil-kt:coil-compose:2.2.2"
 compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
 constraintlayout = "androidx.constraintlayout:constraintlayout:2.1.4"
 espresso-core = "androidx.test.espresso:espresso-core:3.5.1"
@@ -42,7 +40,6 @@ firebase-auth = { module = "com.google.firebase:firebase-auth" }
 firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx" }
 firebase-bom = "com.google.firebase:firebase-bom:31.2.3"
 firebase-config = { module = "com.google.firebase:firebase-config" }
-firebase-crashlytics-gradle = "com.google.firebase:firebase-crashlytics-gradle:2.9.4"
 firebase-crashlytics-ktx = { module = "com.google.firebase:firebase-crashlytics-ktx" }
 firebase-inappmessaging = { module = "com.google.firebase:firebase-inappmessaging-display-ktx" }
 firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
@@ -61,7 +58,6 @@ kotlinx-coroutines-core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
 kotlinx-coroutines-play-services = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4"
 kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.4.0"
 kotlinx-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0"
-ksp = { group = "com.google.devtools.ksp", name = "symbol-processing-gradle-plugin", version = "1.8.20-1.0.11" }
 layouts = "org.apmem.tools:layouts:1.10"
 lifecycle-runtime-ktx = "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1"
 lifecycle-viewmodel-compose = "androidx.lifecycle:lifecycle-viewmodel-compose:2.6.0"
