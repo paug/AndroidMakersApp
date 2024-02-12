@@ -1,5 +1,7 @@
 package fr.paug.androidmakers.ui.theme
 
+import androidx.activity.SystemBarStyle
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
@@ -11,7 +13,6 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import fr.paug.androidmakers.R
 
 val GillSans = FontFamily(
@@ -137,20 +138,6 @@ fun AndroidMakersTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-
-  val systemUiController = rememberSystemUiController()
-
-  DisposableEffect(systemUiController) {
-    systemUiController.setStatusBarColor(
-        color = Color.Transparent,
-        darkIcons = !useDarkTheme
-    )
-    systemUiController.setNavigationBarColor(
-        color = Color.Transparent
-    )
-
-    onDispose {}
-  }
 
   val colorSchemeColors = if (!useDarkTheme) LightDefaultColorScheme else DarkDefaultColorScheme
 

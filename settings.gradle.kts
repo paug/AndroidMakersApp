@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 pluginManagement {
   listOf(repositories, dependencyResolutionManagement.repositories).forEach {
     it.apply {
@@ -14,23 +16,18 @@ pluginManagement {
       }
     }
   }
-  includeBuild("build-logic")
-}
-
-plugins {
-  id("com.gradle.enterprise") version "3.13"
-  id("org.gradle.toolchains.foojay-resolver-convention") version "0.4.0"
 }
 
 dependencyResolutionManagement {
-  versionCatalogs {
-    create("libs") {
-      from(files("libs.versions.toml"))
-    }
+  repositories {
+    google()
+    mavenCentral()
   }
 }
 
 
-include(":app")
-include(":store")
-include(":store-graphql")
+include(
+    ":app",
+    ":store",
+    ":store-graphql"
+)

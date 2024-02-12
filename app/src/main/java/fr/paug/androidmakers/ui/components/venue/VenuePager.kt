@@ -29,13 +29,14 @@ import kotlinx.coroutines.launch
 @Composable
 fun VenuePager() {
   Column(modifier = Modifier.fillMaxWidth()) {
-    val pagerState = rememberPagerState()
 
     val titles = listOf(
         R.string.venue_conference_tab,
         R.string.venue_afterparty_tab,
         R.string.venue_floor_plan_tab
     )
+
+    val pagerState = rememberPagerState(pageCount = { titles.size })
 
     TabRow(
         selectedTabIndex = pagerState.currentPage,
@@ -66,7 +67,6 @@ fun VenuePager() {
     }
 
     HorizontalPager(
-        pageCount = titles.size,
         state = pagerState,
     ) { page ->
       when (page) {
@@ -103,4 +103,3 @@ fun VenuePager() {
     }
   }
 }
-

@@ -1,18 +1,28 @@
 plugins {
-  id("fr.androidmakers.gradle.multiplatform.library")
+  alias(libs.plugins.kmp)
+  alias(libs.plugins.android.library)
 }
 
 kotlin {
+
+  jvmToolchain {
+    languageVersion.set(JavaLanguageVersion.of(17))
+  }
+
+  androidTarget()
+
   sourceSets {
-    getByName("commonMain").apply {
-      dependencies {
+    commonMain.dependencies {
         implementation(libs.kotlinx.coroutines.core)
         api(libs.kotlinx.datetime)
       }
-    }
   }
 }
 
 android {
   namespace = "fr.androidmakers.store"
+  compileSdk = libs.versions.sdk.compile.get().toInt()
+  defaultConfig {
+    minSdk = libs.versions.sdk.min.get().toInt()
+  }
 }

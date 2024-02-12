@@ -1,11 +1,19 @@
 plugins {
-  id("fr.androidmakers.gradle.multiplatform.library")
+  alias(libs.plugins.kmp)
+  alias(libs.plugins.android.library)
   alias(libs.plugins.apollo)
 }
 
 kotlin {
+
+  jvmToolchain {
+    languageVersion.set(JavaLanguageVersion.of(17))
+  }
+
+  androidTarget()
+
   sourceSets {
-    getByName("commonMain").apply {
+    commonMain {
       dependencies {
         api(project(":store"))
         implementation(libs.apollo.runtime)
@@ -15,12 +23,18 @@ kotlin {
       }
     }
 
-    getByName("androidMain").apply {
-      dependencies {
+    androidMain.dependencies {
         implementation(libs.firebase.auth)
         implementation(libs.firebase.auth.ktx)
-      }
     }
+  }
+}
+
+android {
+  namespace = "fr.androidmakers.store.graphql"
+  compileSdk = libs.versions.sdk.compile.get().toInt()
+  defaultConfig {
+    minSdk = libs.versions.sdk.min.get().toInt()
   }
 }
 
