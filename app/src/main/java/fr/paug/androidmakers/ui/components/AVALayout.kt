@@ -274,10 +274,7 @@ private fun AVANavHost(
     }
 
     composable(route = AVANavigationRoute.ABOUT.name) {
-      val partnerList by viewModel<PartnersViewModel>().values.collectAsState()
-
       AboutLayout(
-          partnerList = partnerList,
           aboutActions = aboutActions
       )
     }

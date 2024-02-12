@@ -26,25 +26,21 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import fr.androidmakers.store.model.Logo
-import fr.androidmakers.store.model.Partner
 import fr.paug.androidmakers.BuildConfig
 import fr.paug.androidmakers.R
-import fr.paug.androidmakers.ui.viewmodel.Lce
 
 
 class AboutActions(
     val onFaqClick: () -> Unit = {},
     val onCodeOfConductClick: () -> Unit = {},
-    val onTwitterHashtagClick: () -> Unit = {},
-    val onTwitterLogoClick: () -> Unit = {},
+    val onXHashtagClick: () -> Unit = {},
+    val onXLogoClick: () -> Unit = {},
     val onYouTubeLogoClick: () -> Unit = {},
     val onSponsorClick: (url: String) -> Unit = {},
 )
 
 @Composable
 fun AboutLayout(
-    partnerList: Lce<List<Partner>>,
     aboutActions: AboutActions,
 ) {
 
@@ -62,8 +58,8 @@ fun AboutLayout(
     )
 
     SocialCard(
-        aboutActions.onTwitterHashtagClick,
-        aboutActions.onTwitterLogoClick,
+        aboutActions.onXHashtagClick,
+        aboutActions.onXLogoClick,
         aboutActions.onYouTubeLogoClick
     )
 
@@ -110,8 +106,8 @@ private fun IntroCard(
 
 @Composable
 private fun SocialCard(
-    onTwitterHashtagClick: () -> Unit,
-    onTwitterLogoClick: () -> Unit,
+    onXHashtagClick: () -> Unit,
+    onXLogoClick: () -> Unit,
     onYouTubeLogoClick: () -> Unit
 ) {
   Card(Modifier.fillMaxWidth()) {
@@ -120,7 +116,7 @@ private fun SocialCard(
           Modifier.fillMaxWidth(),
           horizontalArrangement = Arrangement.Center
       ) {
-        ClickableText(R.string.twitter_hashtag, onTwitterHashtagClick)
+        ClickableText(R.string.x_hashtag, onXHashtagClick)
       }
       Row(
           Modifier
@@ -131,10 +127,11 @@ private fun SocialCard(
         Icon(
             modifier = Modifier
                 .size(96.dp, 64.dp)
-                .clickable(onClick = onTwitterLogoClick),
-            painter = painterResource(R.drawable.ic_network_twitter),
-            tint = Color(0xff1d9bf0),
-            contentDescription = "Twitter"
+                .clickable(onClick = onXLogoClick)
+                .padding(12.dp),
+            painter = painterResource(R.drawable.ic_network_x),
+            tint = Color(0xFF000000),
+            contentDescription = "X"
         )
         Icon(
             modifier = Modifier
@@ -168,7 +165,6 @@ private fun ClickableText(
 @Composable
 private fun AboutLayoutLoadingPreview() {
   AboutLayout(
-      partnerList = Lce.Loading,
       aboutActions = AboutActions()
   )
 }
@@ -178,35 +174,6 @@ private fun AboutLayoutLoadingPreview() {
 @Composable
 private fun AboutLayoutLoadedPreview() {
   AboutLayout(
-      partnerList = Lce.Content(
-          listOf(
-              Partner(
-                  title = "Event Organizers",
-                  logos = listOf(
-                      Logo(
-                          logoUrl = "../images/logos/babbel.jpeg",
-                          name = "Babbel",
-                          url = "https://babbel.com/"
-                      ),
-                      Logo(
-                          logoUrl = "../images/logos/coyote.png",
-                          name = "Coyote",
-                          url = "https://corporate.moncoyote.com/"
-                      ),
-                  )
-              ),
-              Partner(
-                  title = "Gold sponsors",
-                  logos = listOf(
-                      Logo(
-                          logoUrl = "../images/logos/deezer.png",
-                          name = "Deezer",
-                          url = "https://www.deezer.com/en/company/about"
-                      ),
-                  )
-              ),
-          )
-      ),
       aboutActions = AboutActions()
   )
 }

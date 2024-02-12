@@ -420,9 +420,10 @@ fun SocialButtons(speaker: Speaker) {
       ) {
         val socialName = socialsItem.name?.lowercase() ?: ""
         when {
-          socialName.contains("twitter") -> {
+          socialName.contains("twitter") || socialName == "x" -> {
             Icon(
-                painter = painterResource(R.drawable.ic_network_twitter),
+                modifier = Modifier.size(24.dp),
+                painter = painterResource(R.drawable.ic_network_x),
                 contentDescription = socialsItem.name
             )
           }
