@@ -5,7 +5,6 @@ pluginManagement {
     it.apply {
       google()
       mavenCentral()
-      maven("https://androidx.dev/storage/compose-compiler/repository")
       gradlePluginPortal()
     }
   }
@@ -16,6 +15,8 @@ pluginManagement {
       }
     }
   }
+
+  includeBuild("build-logic")
 }
 
 dependencyResolutionManagement {

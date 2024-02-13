@@ -1,6 +1,5 @@
 plugins {
-  alias(libs.plugins.kmp)
-  alias(libs.plugins.android.library)
+  alias(libs.plugins.androidmakers.kmp.library)
 }
 
 kotlin {

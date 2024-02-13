@@ -1,11 +1,7 @@
 import java.util.Properties
 
 plugins {
-  alias(libs.plugins.android.application)
-  alias(libs.plugins.kotlin.android)
-  alias(libs.plugins.google.services)
-  alias(libs.plugins.crashlytics)
-  alias(libs.plugins.kotlin.serialization)
+  alias(libs.plugins.androidmakers.android.application)
 }
 
 android {
@@ -66,8 +62,6 @@ android {
       }
     }
   }
-
-  buildFeatures.viewBinding = true
 }
 
 dependencies {
@@ -91,7 +85,6 @@ dependencies {
   implementation(libs.vectordrawable)
   implementation(libs.browser)
   implementation(libs.percentlayout)
-  implementation(libs.constraintlayout)
   implementation(libs.shared.preferences)
 
   // Firebase
@@ -104,18 +97,16 @@ dependencies {
 
   implementation(libs.lifecycle.viewmodel.compose)
   implementation(libs.compose.material3)
+  implementation(libs.compose.material)
   implementation(libs.compose.material.icons.extended)
   implementation(libs.compose.ui.tooling)
   implementation(libs.navigation.compose)
 
   implementation(libs.accompanist.pager)
-  implementation(libs.accompanist.pager.indicators)
 
   implementation(libs.play.services.auth)
 
   // Image management
-  implementation(libs.glide.runtime)
-  add("annotationProcessor", libs.glide.compiler)
   implementation(libs.coil.compose)
 
   // Used for tags

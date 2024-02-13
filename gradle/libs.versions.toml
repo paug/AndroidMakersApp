@@ -22,7 +22,6 @@ androidx-activity = { group = "androidx.activity", name = "activity-ktx", versio
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidxAppCompat" }
 androidx-lifecycle-runtimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
 accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanist" }
-accompanist-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "accompanist" }
 apollo-adapters = { module = "com.apollographql.apollo3:apollo-adapters" }
 apollo-normalized-cache = { module = "com.apollographql.apollo3:apollo-normalized-cache" }
 apollo-normalized-cache-sqlite = { module = "com.apollographql.apollo3:apollo-normalized-cache-sqlite" }
@@ -32,6 +31,7 @@ shared-preferences = "androidx.preference:preference:1.2.0"
 coil-compose = "io.coil-kt:coil-compose:2.2.2"
 compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
+compose-material = { group = "androidx.compose.material", name = "material", version.ref = "compose" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
 constraintlayout = "androidx.constraintlayout:constraintlayout:2.1.4"
 espresso-core = "androidx.test.espresso:espresso-core:3.5.1"
@@ -48,9 +48,6 @@ glide-runtime = { module = "com.github.bumptech.glide:glide", version.ref = "gli
 google-services = "com.google.gms:google-services:4.3.15"
 graphql-kotlin-spring-server = "com.expediagroup:graphql-kotlin-spring-server:6.4.0"
 junit = "junit:junit:4.13.2"
-kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-kotlin-inject-ksp = "me.tatarka.inject:kotlin-inject-compiler-ksp:0.6.1"
-kotlin-inject-runtime = "me.tatarka.inject:kotlin-inject-runtime:0.6.1"
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 kotlinx-coroutines-android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
@@ -70,14 +67,21 @@ percentlayout = "androidx.percentlayout:percentlayout:1.0.0"
 play-services-auth = "com.google.android.gms:play-services-auth:20.4.1"
 vectordrawable = "androidx.vectordrawable:vectordrawable:1.1.0"
 
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "android-gradle-plugin" }
+firebase-crashlytics-gradlePlugin = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version.ref = "crashlytics-plugin" }
+kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
 android-library = { id = "com.android.library", version.ref = "android-gradle-plugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 apollo = { id = "com.apollographql.apollo3", version.ref = "apollo" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 appengine = { id = "com.google.cloud.tools.appengine", version = "2.4.2" }
 kmp = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services-plugin" }
 crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlytics-plugin" }
+
+## Custom plugins
+androidmakers-android-application = { id = "fr.androidmakers.android.application", version = "unspecified" }
+androidmakers-kmp-library = { id = "fr.androidmakers.kmp.library", version = "unspecified" }
