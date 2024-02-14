@@ -1,5 +1,3 @@
-import java.util.Properties
-
 plugins {
   alias(libs.plugins.androidmakers.android.application)
   alias(libs.plugins.androidmakers.android.compose)
@@ -22,8 +20,6 @@ dependencies {
   testImplementation(libs.junit)
   androidTestImplementation(libs.espresso.core)
 
-  implementation(libs.multidex)
-
   // Kotlin
   implementation(libs.kotlinx.coroutines.play.services)
   implementation(libs.kotlinx.coroutines.android)
@@ -35,9 +31,6 @@ dependencies {
   implementation(libs.androidx.lifecycle.runtimeCompose)
 
   implementation(libs.material)
-  implementation(libs.vectordrawable)
-  implementation(libs.browser)
-  implementation(libs.percentlayout)
   implementation(libs.shared.preferences)
 
   // Firebase
@@ -48,14 +41,11 @@ dependencies {
   implementation(libs.firebase.inappmessaging)
   implementation(libs.firebase.messaging)
 
-  implementation(libs.accompanist.pager)
-
   implementation(libs.play.services.auth)
 
   // Image management
   implementation(libs.coil.compose)
 
   // Used for tags
-  implementation(libs.layouts)
   implementation(libs.openfeedback)
 }

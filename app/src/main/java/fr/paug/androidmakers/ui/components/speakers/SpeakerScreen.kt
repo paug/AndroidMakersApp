@@ -38,7 +38,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.isContainer
+import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -76,7 +76,7 @@ fun SpeakerScreen(
 
       Box(Modifier.fillMaxSize()) {
         Box(Modifier
-            .semantics { isContainer = true }
+            .semantics { isTraversalGroup = true }
             .background(MaterialTheme.colorScheme.background)
             .padding(bottom = 8.dp)
             .zIndex(1f)
@@ -192,4 +192,3 @@ fun SpeakerItem(
       trailingContent = {},
   )
 }
-
