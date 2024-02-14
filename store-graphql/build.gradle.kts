@@ -5,12 +5,6 @@ plugins {
 
 kotlin {
 
-  jvmToolchain {
-    languageVersion.set(JavaLanguageVersion.of(17))
-  }
-
-  androidTarget()
-
   sourceSets {
     commonMain {
       dependencies {
@@ -31,10 +25,6 @@ kotlin {
 
 android {
   namespace = "fr.androidmakers.store.graphql"
-  compileSdk = libs.versions.sdk.compile.get().toInt()
-  defaultConfig {
-    minSdk = libs.versions.sdk.min.get().toInt()
-  }
 }
 
 dependencies {

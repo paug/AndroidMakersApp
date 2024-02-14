@@ -43,8 +43,6 @@ firebase-config = { module = "com.google.firebase:firebase-config" }
 firebase-crashlytics-ktx = { module = "com.google.firebase:firebase-crashlytics-ktx" }
 firebase-inappmessaging = { module = "com.google.firebase:firebase-inappmessaging-display-ktx" }
 firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
-glide-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
-glide-runtime = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 google-services = "com.google.gms:google-services:4.3.15"
 graphql-kotlin-spring-server = "com.expediagroup:graphql-kotlin-spring-server:6.4.0"
 junit = "junit:junit:4.13.2"
@@ -85,3 +83,5 @@ crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlyti
 ## Custom plugins
 androidmakers-android-application = { id = "fr.androidmakers.android.application", version = "unspecified" }
 androidmakers-kmp-library = { id = "fr.androidmakers.kmp.library", version = "unspecified" }
+androidmakers-android-compose = { id = "fr.androidmakers.android.compose", version = "unspecified" }
+androidmakers-android-signing = { id = "fr.androidmakers.android.signing", version = "unspecified" }
