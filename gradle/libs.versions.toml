@@ -1,0 +1,76 @@
+[versions]
+version-code = "1456"
+sdk-compile = "34"
+sdk-min = "21"
+androidxActivity = "1.8.2"
+androidxAppCompat = "1.6.1"
+androidxLifecycle = "2.7.0"
+apollo = "3.7.5"
+compose = "1.6.1"
+android-gradle-plugin = "8.2.2"
+compose-compiler = "1.5.7"
+kotlin = "1.9.21"
+material3 = "1.2.0"
+google-services-plugin = "4.4.1"
+crashlytics-plugin = "2.9.9"
+
+[libraries]
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
+androidx-activity = { group = "androidx.activity", name = "activity-ktx", version.ref = "androidxActivity" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidxAppCompat" }
+androidx-lifecycle-runtimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
+apollo-adapters = { module = "com.apollographql.apollo3:apollo-adapters" }
+apollo-normalized-cache = { module = "com.apollographql.apollo3:apollo-normalized-cache" }
+apollo-normalized-cache-sqlite = { module = "com.apollographql.apollo3:apollo-normalized-cache-sqlite" }
+apollo-runtime = { module = "com.apollographql.apollo3:apollo-runtime" }
+shared-preferences = "androidx.preference:preference:1.2.1"
+coil-compose = "io.coil-kt:coil-compose:2.5.0"
+compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
+compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
+compose-material = { group = "androidx.compose.material", name = "material", version.ref = "compose" }
+compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
+espresso-core = "androidx.test.espresso:espresso-core:3.5.1"
+firebase-analytics-ktx = { module = "com.google.firebase:firebase-analytics-ktx" }
+firebase-auth = { module = "com.google.firebase:firebase-auth" }
+firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx" }
+firebase-bom = "com.google.firebase:firebase-bom:32.7.2"
+firebase-config = { module = "com.google.firebase:firebase-config" }
+firebase-crashlytics-ktx = { module = "com.google.firebase:firebase-crashlytics-ktx" }
+firebase-inappmessaging = { module = "com.google.firebase:firebase-inappmessaging-display-ktx" }
+firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
+google-services = "com.google.gms:google-services:4.4.1"
+graphql-kotlin-spring-server = "com.expediagroup:graphql-kotlin-spring-server:6.4.0"
+junit = "junit:junit:4.13.2"
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
+kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+kotlinx-coroutines-android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3"
+kotlinx-coroutines-core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3"
+kotlinx-coroutines-play-services = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3"
+kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.5.0"
+kotlinx-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0"
+lifecycle-runtime-ktx = "androidx.lifecycle:lifecycle-runtime-ktx:2.7.0"
+lifecycle-viewmodel-compose = "androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0"
+material = "com.google.android.material:material:1.11.0"
+navigation-compose = "androidx.navigation:navigation-compose:2.7.7"
+openfeedback = "io.openfeedback:feedback-android-sdk-ui:0.0.7"
+play-services-auth = "com.google.android.gms:play-services-auth:20.7.0"
+
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "android-gradle-plugin" }
+firebase-crashlytics-gradlePlugin = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version.ref = "crashlytics-plugin" }
+kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
+android-library = { id = "com.android.library", version.ref = "android-gradle-plugin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+apollo = { id = "com.apollographql.apollo3", version.ref = "apollo" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kmp = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+google-services = { id = "com.google.gms.google-services", version.ref = "google-services-plugin" }
+crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlytics-plugin" }
+
+## Custom plugins
+androidmakers-android-application = { id = "fr.androidmakers.android.application", version = "unspecified" }
+androidmakers-kmp-library = { id = "fr.androidmakers.kmp.library", version = "unspecified" }
+androidmakers-android-compose = { id = "fr.androidmakers.android.compose", version = "unspecified" }
+androidmakers-android-signing = { id = "fr.androidmakers.android.signing", version = "unspecified" }

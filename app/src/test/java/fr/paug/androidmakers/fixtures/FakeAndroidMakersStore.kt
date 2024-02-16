@@ -34,10 +34,6 @@ class FakeAndroidMakersStore : AndroidMakersStore {
     TODO("Not yet implemented")
   }
 
-  override fun getScheduleSlots(): Flow<Result<List<ScheduleSlot>>> {
-    TODO("Not yet implemented")
-  }
-
   override fun getSessions(): Flow<Result<List<Session>>> {
     TODO("Not yet implemented")
   }
