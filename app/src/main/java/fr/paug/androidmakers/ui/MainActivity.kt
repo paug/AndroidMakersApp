@@ -1,14 +1,18 @@
 package fr.paug.androidmakers.ui
 
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
@@ -53,7 +57,6 @@ private fun FirebaseUser.toAMUser(): AMUser {
 class MainActivity : AppCompatActivity() {
   private val _user = MutableStateFlow(FirebaseAuth.getInstance().currentUser?.toAMUser())
 
-  @RequiresApi(Build.VERSION_CODES.M)
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
@@ -67,6 +70,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     WindowCompat.setDecorFitsSystemWindows(window, false)
+    enableEdgeToEdge()
 
     logFCMToken()
 
@@ -74,11 +78,26 @@ class MainActivity : AppCompatActivity() {
       val rememberedActivity = remember { this }
 
       val userState = _user.collectAsState()
+      val darkTheme = isSystemInDarkTheme()
 
       CompositionLocalProvider(
           LocalActivity provides rememberedActivity,
       ) {
         AndroidMakersTheme {
+          DisposableEffect(darkTheme) {
+            enableEdgeToEdge(
+                statusBarStyle = SystemBarStyle.auto(
+                    Color.TRANSPARENT,
+                    Color.TRANSPARENT,
+                ) { darkTheme },
+                navigationBarStyle = SystemBarStyle.auto(
+                    Color.TRANSPARENT,
+                    Color.TRANSPARENT,
+                ) { darkTheme },
+            )
+            onDispose { }
+          }
+
           MainLayout(
               aboutActions = AboutActions(
                   onFaqClick = ::onFaqClick,

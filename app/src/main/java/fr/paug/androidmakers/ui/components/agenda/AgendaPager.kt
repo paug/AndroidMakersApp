@@ -38,7 +38,8 @@ fun AgendaPager(
       modifier = Modifier.fillMaxWidth()
   ) {
 
-    val pagerState = rememberPagerState(initialPage = initialPageIndex)
+    val pagerState = rememberPagerState(
+        pageCount = { days.size }, initialPage = initialPageIndex)
 
     TabRow(
         selectedTabIndex = pagerState.currentPage,
@@ -72,7 +73,6 @@ fun AgendaPager(
     }
 
     HorizontalPager(
-        pageCount = days.size,
         state = pagerState,
     ) { page ->
       val viewModel = viewModel<AgendaPagerViewModel>()

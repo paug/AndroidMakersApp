@@ -1,11 +1,12 @@
 plugins {
-  id("fr.androidmakers.gradle.multiplatform.library")
+  alias(libs.plugins.androidmakers.kmp.library)
   alias(libs.plugins.apollo)
 }
 
 kotlin {
+
   sourceSets {
-    getByName("commonMain").apply {
+    commonMain {
       dependencies {
         api(project(":store"))
         implementation(libs.apollo.runtime)
@@ -15,13 +16,15 @@ kotlin {
       }
     }
 
-    getByName("androidMain").apply {
-      dependencies {
+    androidMain.dependencies {
         implementation(libs.firebase.auth)
         implementation(libs.firebase.auth.ktx)
-      }
     }
   }
+}
+
+android {
+  namespace = "fr.androidmakers.store.graphql"
 }
 
 dependencies {

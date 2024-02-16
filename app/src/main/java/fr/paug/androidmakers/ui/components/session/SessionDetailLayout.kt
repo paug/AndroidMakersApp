@@ -12,6 +12,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -25,7 +27,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.BookmarkAdd
 import androidx.compose.material.icons.rounded.BookmarkRemove
 import androidx.compose.material.icons.rounded.Info
@@ -58,7 +60,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.google.accompanist.flowlayout.FlowRow
 import fr.androidmakers.store.model.Room
 import fr.androidmakers.store.model.Session
 import fr.androidmakers.store.model.Speaker
@@ -108,7 +109,7 @@ fun SessionDetailLayout(
             navigationIcon = {
               IconButton(onClick = onBackClick) {
                 Icon(
-                    Icons.Rounded.ArrowBack,
+                    Icons.AutoMirrored.Rounded.ArrowBack,
                     contentDescription = stringResource(R.string.back)
                 )
               }
@@ -253,11 +254,12 @@ private fun String.asLanguageResource(): String? {
   }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun ChipList(sessionDetails: SessionDetailState) {
   FlowRow(
       modifier = Modifier.padding(top = 16.dp),
-      mainAxisSpacing = 8.dp,
+      horizontalArrangement = Arrangement.spacedBy(8.dp),
   ) {
     sessionDetails.session.language.asLanguageResource()?.let { language ->
       SuggestionChip(

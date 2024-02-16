@@ -1,15 +1,14 @@
 plugins {
-  id("fr.androidmakers.gradle.multiplatform.library")
+  alias(libs.plugins.androidmakers.kmp.library)
 }
 
 kotlin {
+
   sourceSets {
-    getByName("commonMain").apply {
-      dependencies {
+    commonMain.dependencies {
         implementation(libs.kotlinx.coroutines.core)
         api(libs.kotlinx.datetime)
       }
-    }
   }
 }
 
