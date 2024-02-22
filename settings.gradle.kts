@@ -1,5 +1,8 @@
 @file:Suppress("UnstableApiUsage")
 
+include(":shared")
+
+
 pluginManagement {
   listOf(repositories, dependencyResolutionManagement.repositories).forEach {
     it.apply {
@@ -12,7 +15,8 @@ pluginManagement {
 }
 
 include(
-    ":app",
-    ":store",
-    ":store-graphql"
+    ":androidApp",
+    ":shared",
+    ":shared:store",
+    ":shared:store-graphql"
 )

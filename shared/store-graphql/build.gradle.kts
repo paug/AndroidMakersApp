@@ -8,7 +8,7 @@ kotlin {
   sourceSets {
     commonMain {
       dependencies {
-        api(project(":store"))
+        api(project(":shared:store"))
         implementation(libs.apollo.runtime)
         implementation(libs.apollo.adapters)
         implementation(libs.apollo.normalized.cache.sqlite)
