@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+
+    <string name="app_name">Android Makers by droidcon</string>
+
+    <string name="version">Version %s (%d)</string>
+
+    <string name="title_agenda">Agenda</string>
+    <string name="title_venue">Venue</string>
+    <string name="title_about">About</string>
+</resources>

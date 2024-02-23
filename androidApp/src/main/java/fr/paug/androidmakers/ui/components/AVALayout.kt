@@ -56,6 +56,7 @@ import fr.androidmakers.store.model.SpeakerId
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.AMUser
+import fr.paug.androidmakers.ui.MR
 import fr.paug.androidmakers.ui.components.about.AboutActions
 import fr.paug.androidmakers.ui.components.about.AboutLayout
 import fr.paug.androidmakers.ui.components.agenda.AgendaLayout
@@ -112,7 +113,7 @@ fun AVALayout(
               Row(horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.Start)) {
 
                 Text(
-                    text = stringResource(R.string.app_name),
+                    text = stringResource(MR.strings.app_name.resourceId),
                     style = MaterialTheme.typography.headlineSmall,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis

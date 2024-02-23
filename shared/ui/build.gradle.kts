@@ -4,6 +4,7 @@ plugins {
 }
 
 kotlin {
+  applyDefaultHierarchyTemplate()
 
   listOf(
       iosX64(),
@@ -14,6 +15,7 @@ kotlin {
       baseName = "ui"
       isStatic = true
       export(libs.moko.resources)
+      export(project(":shared:ui"))
     }
   }
 
@@ -21,27 +23,13 @@ kotlin {
     commonMain.dependencies {
       api(libs.moko.resources)
     }
-
-    val androidMain by getting {
-      dependsOn(commonMain.get())
-    }
-
-    val iosX64Main by getting
-    val iosArm64Main by getting
-    val iosSimulatorArm64Main by getting
-    val iosMain by creating {
-      dependsOn(commonMain.get())
-      iosX64Main.dependsOn(this)
-      iosArm64Main.dependsOn(this)
-      iosSimulatorArm64Main.dependsOn(this)
-    }
   }
 }
 
 android {
-  namespace = "com.androidmakers.ui"
+  namespace = "fr.paug.androidmakers.ui"
 }
 
 multiplatformResources {
-  multiplatformResourcesPackage = "com.androidmakers.ui"
+  resourcesPackage.set("fr.paug.androidmakers.ui")
 }

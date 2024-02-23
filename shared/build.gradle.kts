@@ -17,12 +17,19 @@ kotlin {
       export(libs.moko.graphics)
     }
   }
+
+  sourceSets {
+    commonMain.dependencies {
+      api(libs.moko.resources)
+      api(project(":shared:ui"))
+    }
+  }
 }
 
 android {
-  namespace = "com.androidmakers.shared"
+  namespace = "fr.paug.androidmakers.shared"
 }
 
 multiplatformResources {
-  multiplatformResourcesPackage = "com.androidmakers.ui"
+  resourcesPackage.set("fr.paug.androidmakers.ui")
 }
