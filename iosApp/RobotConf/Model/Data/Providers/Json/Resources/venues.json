@@ -1,0 +1,18 @@
+{
+    "conference": {
+        "address": "2 Place Emile Cresp, 92120 Montrouge",
+        "coordinates": "48.819111, 2.319627",
+        "description": "At the gates of Paris, the Belfry of Montrouge is a modern congress center, combining monumental architecture of the 1930s and modernity of a completely renovated infrastructure.<br><br><b>Metro:</b> Line 4, stop Mairie de Montrouge<br><br>  <b>Bus:</b> Lines 68, 126, 128 to Mairie de Montrouge<br><br>  <b>Tram:</b> Line 3 Porte d'Orléans stop<br><br><b>Car:</b> Peripheral exit Porte d'Orléans / Porte de Châtillon<br><br><b>Plane:</b> Orly airport at ~30 min. Paris CDG airport at ~1h",
+        "descriptionFr": "Aux portes de Paris, le Beffroi de Montrouge est un centre de congrès moderne, alliant architecture monumentale des années 1930 et modernité d'une infrastructure entièrement rénovée.<br><br><b>Métro :</b> Ligne 4, arrêt Mairie de Montrouge<br><br>  <b>Bus :</b> Lignes 68, 126, 128 arrêt Mairie de Montrouge<br><br>  <b>Tram :</b> Ligne 3 arrêt Porte d’Orléans<br><br><b>Voiture :</b> Périphérique sortie porte d’Orléans / Porte de Châtillon<br><br><b>Avion :</b> Aéroport d'Orly à ~30 min. Aéroport de Paris Charles de Gaulle à ~1h.",
+        "imageUrl": "https://androidmakers.fr/images/venues/venue_0.jpg",
+        "name": "Le Beffroi de Montrouge"
+    },
+    "afterparty": {
+        "address":"3 Place Denfert-Rochereau, 75014 Paris",
+        "coordinates": "48.833308, 2.333927",
+        "description": "Large venue with australian beers and bar meals offered in a relaxed setting, enlivened by a DJ, or on the terrace.<br><br>Only 10 minutes by subway<br><br>M ° Denfert-Rochereau, M ° Raspail (4, 6)",
+        "descriptionFr": "Grand bar avec bières australiennes et plats de bar proposés dans un cadre détendu, animé par un DJ, ou en terrasse.<br><br>Seulement à 10 minutes en métro<br><br>M° Denfert-Rochereau, M° Raspail (4, 6)",
+        "imageUrl": "https://androidmakers.fr/images/venues/party.jpg",
+        "name": "Café Oz Denfert"
+    }
+}

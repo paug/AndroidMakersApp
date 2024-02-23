@@ -1,0 +1,61 @@
+{
+  "195718": {
+    "title": "Story of a full-remote culture",
+    "description": "Remote working has really been a strong trend for several years now and obviously, those days, it became a reality for a lot of people, especially for software engineers. But there are various ways of working remotely and it's not always obvious to settle a remote culture in a company. In this talk, we'll talk about remote-friendly and remote-first companies, benefits that remote work brings to a company and how to work in a distributed team. ",
+    "language": "English",
+    "complexity": "Introductory and overview",
+    "speakers": [
+      "9716ff27-d78b-437f-9ce8-24087a771ccc"
+    ],
+    "tags": [
+      "Soft skills"
+    ],
+    "icon": "opening",
+    "platformUrl": "https://androidmakers.virtualconference.com/#/conference/5e957e531954df001b6e288d",
+    "feedback": "https://openfeedback-b7ab9.web.app/mMHR63ARZQpPidFQISyc/2020-04-20/195718",
+    "slido": "https://app.sli.do/event/79lcfi8m?section=c4e503f1-c1e2-40fc-8bf0-bf23c1cdd1e5"
+  },
+  "173222": {
+    "title": "Benchmarking your application",
+    "description": "Back in 1974, Donald Knuth said that “premature optimization is the root of all evil (or at least most of it) in programming”. But optimization without benchmarks can be even worse than that. It’s like following a map without using a compass, and just following your instinct that you’re going in the right direction. \r\n\r\nWhether it is during development or at runtime, many tools exist to let you measure the performance of your applications. These measures can then be used to prioritize which parts to optimize first, as well as measure the performances gained (or lost) after a refactoring.\r\n",
+    "language": "English",
+    "complexity": "Advanced",
+    "speakers": [
+      "bf58d77f-fad3-49b7-a6b3-82b5f46e5549"
+    ],
+    "tags": [
+      "Testing",
+      "Tools"
+    ],
+    "platformUrl": "https://androidmakers.virtualconference.com/#/conference/5e9580f11954df001b6e28b2",
+    "feedback": "https://openfeedback-b7ab9.web.app/mMHR63ARZQpPidFQISyc/2020-04-20/173222",
+    "slido": "https://app.sli.do/event/79lcfi8m?section=bd68ae62-894d-4161-89a4-ed8988918dcb"
+  },
+  "welcome": {
+    "title": "Welcome Message",
+    "description": "Welcome Message",
+    "icon": "registration",
+    "language": "",
+    "complexity": "",
+    "speakers": [],
+    "tags": [
+      "Welcome Message"
+    ],
+    "platformUrl": "https://androidmakers.virtualconference.com/#/conference/5e957e531954df001b6e288d"
+  },
+  "break": {
+    "description": "Coffeeeeeee! ☕️",
+    "icon": "coffee-break",
+    "title": "Coffee break",
+    "tags": [
+      "Service"
+    ]
+  },
+  "thank-you": {
+    "description": "Thank you and see you next year! 👋",
+    "title": "👋 Closing Keynote 👋",
+    "tags": [
+      "Service"
+    ]
+  }
+}

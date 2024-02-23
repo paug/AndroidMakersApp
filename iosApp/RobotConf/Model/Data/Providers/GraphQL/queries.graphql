@@ -1,0 +1,57 @@
+query GetVenues {
+  venues {
+    id
+    name
+    address
+    coordinates
+    description
+    descriptionFr: description(language: "fr")
+    imageUrl
+  }
+}
+
+query GetTalks {
+  rooms {
+    capacity
+    id
+    name
+  }
+  sessions(first: 1000) {
+    nodes {
+      complexity
+      description
+      endsAt
+      id
+      language
+      rooms {
+        capacity
+        id
+        name
+      }
+      shortDescription
+      speakers {
+        id
+        name
+        photoUrl
+        company
+        bio
+        city
+      }
+      startsAt
+      tags
+      title
+      type
+    }
+  }
+}
+
+query GetPartners {
+  partnerGroups {
+    partners {
+      logoUrl
+      name
+      url
+    }
+    title
+  }
+}

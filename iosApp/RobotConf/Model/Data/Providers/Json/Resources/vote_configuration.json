@@ -1,0 +1,52 @@
+{
+	"chipColors": [
+		"d7604e",
+		"4ab4e0"
+	],
+	"languages": [
+		"fr",
+		"en"
+	],
+	"voteItems": [
+		{
+			"id": "item1",
+			"languages": {
+				"fr": "Fun 😄",
+				"en": "Fun 😄"
+			},
+			"name": "Fun 😄",
+			"position": 0,
+			"type": "boolean"
+		},
+		{
+			"id": "item2",
+			"languages": {
+				"fr": "J'ai beaucoup appris 🤓",
+				"en": "I've learned a lot 🤓"
+			},
+			"name": "I've learned a lot 🤓",
+			"position": 1,
+			"type": "boolean"
+		},
+		{
+			"id": "item3",
+			"languages": {
+				"fr": "Trop long ⏰",
+				"en": "Too long ⏰"
+			},
+			"name": "Too long ⏰",
+			"position": 2,
+			"type": "boolean"
+		},
+		{
+			"id": "item4",
+			"languages": {
+				"fr": "Pas assez clair 🤯",
+				"en": "Not clear enough 🤯"
+			},
+			"name": "Not clear enough 🤯",
+			"position": 3,
+			"type": "boolean"
+		}
+	]
+}
