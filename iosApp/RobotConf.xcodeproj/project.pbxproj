@@ -119,34 +119,11 @@
 		B2FE9FE124549114005FE370 /* VenuesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FE9FE024549114005FE370 /* VenuesProvider.swift */; };
 		B2FE9FE32454918F005FE370 /* JsonVenuesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FE9FE22454918F005FE370 /* JsonVenuesProvider.swift */; };
 		B2FE9FE9245493F3005FE370 /* FirebaseDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FE9FE8245493F3005FE370 /* FirebaseDescriptor.swift */; };
-		B83891F623C17BE3B86C039E /* Pods_RobotConf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05750C6DD6C4C74AB517F79B /* Pods_RobotConf.framework */; };
-		BE30A17E3BB5248CE13B5D2F /* Pods_RobotConfTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02C298435E1FD022C97E2462 /* Pods_RobotConfTests.framework */; };
-		C15E9DEF1BB86AF3BE8D0307 /* Pods_RobotConf_RobotConfUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B39EAD04C7867B0526F8A774 /* Pods_RobotConf_RobotConfUITests.framework */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		B2CD2742234D06560016AA02 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B2CD2723234D06530016AA02 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = B2CD272A234D06530016AA02;
-			remoteInfo = RobotConf;
-		};
-		B2CD274D234D06560016AA02 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B2CD2723234D06530016AA02 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = B2CD272A234D06530016AA02;
-			remoteInfo = RobotConf;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
-		02C298435E1FD022C97E2462 /* Pods_RobotConfTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RobotConfTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		05750C6DD6C4C74AB517F79B /* Pods_RobotConf.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RobotConf.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		33BFB2842822D71300B12C0D /* URL+QueryItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+QueryItems.swift"; sourceTree = "<group>"; };
 		33CD20B328087FE7005084EF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		3F6488AAF2376A31D325EE79 /* Pods-RobotConf-RobotConfUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RobotConf-RobotConfUITests.debug.xcconfig"; path = "Target Support Files/Pods-RobotConf-RobotConfUITests/Pods-RobotConf-RobotConfUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		4538D0B529CA2CC400BB94DB /* GraphQLPartnersProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphQLPartnersProvider.swift; sourceTree = "<group>"; };
 		4538D0B829CA2DB600BB94DB /* GraphQLData.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphQLData.graphql.swift; sourceTree = "<group>"; };
 		4538D0BB29CA2DB600BB94DB /* GetTalksQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetTalksQuery.graphql.swift; sourceTree = "<group>"; };
@@ -176,8 +153,6 @@
 		45EC5A9D29C254A500ABBB7F /* GraphQLTalksProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphQLTalksProvider.swift; sourceTree = "<group>"; };
 		45EC5AC129C26DCE00ABBB7F /* GraphQLDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphQLDataProvider.swift; sourceTree = "<group>"; };
 		45EC5AC329C2701400ABBB7F /* SessionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionData.swift; sourceTree = "<group>"; };
-		55A413A41399018318492B2F /* Pods-RobotConfTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RobotConfTests.release.xcconfig"; path = "Target Support Files/Pods-RobotConfTests/Pods-RobotConfTests.release.xcconfig"; sourceTree = "<group>"; };
-		B079D0492C7BAA561372BF59 /* Pods-RobotConfTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RobotConfTests.debug.xcconfig"; path = "Target Support Files/Pods-RobotConfTests/Pods-RobotConfTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B207015D2353324400F8E2AF /* AgendaDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgendaDetailView.swift; sourceTree = "<group>"; };
 		B207015F2353372800F8E2AF /* AgendaDetailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgendaDetailViewModel.swift; sourceTree = "<group>"; };
 		B2229A0023A39D6F00F50750 /* FirestoreSlotsProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirestoreSlotsProvider.swift; sourceTree = "<group>"; };
@@ -218,8 +193,6 @@
 		B2CD2734234D06560016AA02 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B2CD2737234D06560016AA02 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		B2CD273C234D06560016AA02 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B2CD2741234D06560016AA02 /* RobotConfTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RobotConfTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		B2CD274C234D06560016AA02 /* RobotConfUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RobotConfUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2CD275E234D079B0016AA02 /* AgendaDayListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgendaDayListView.swift; sourceTree = "<group>"; };
 		B2CD2762234D08820016AA02 /* AgendaCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgendaCellView.swift; sourceTree = "<group>"; };
 		B2CD2765234D116A0016AA02 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
@@ -266,10 +239,6 @@
 		B2FE9FE424549377005FE370 /* partners.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = partners.json; sourceTree = "<group>"; };
 		B2FE9FE524549378005FE370 /* venues.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = venues.json; sourceTree = "<group>"; };
 		B2FE9FE8245493F3005FE370 /* FirebaseDescriptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseDescriptor.swift; sourceTree = "<group>"; };
-		B39EAD04C7867B0526F8A774 /* Pods_RobotConf_RobotConfUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RobotConf_RobotConfUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		BE5DDA9D47243C2669C7EED7 /* Pods-RobotConf.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RobotConf.debug.xcconfig"; path = "Target Support Files/Pods-RobotConf/Pods-RobotConf.debug.xcconfig"; sourceTree = "<group>"; };
-		C296222F54A3FB6D03F03D33 /* Pods-RobotConf.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RobotConf.release.xcconfig"; path = "Target Support Files/Pods-RobotConf/Pods-RobotConf.release.xcconfig"; sourceTree = "<group>"; };
-		E39AD2418E40492998FA9DB8 /* Pods-RobotConf-RobotConfUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RobotConf-RobotConfUITests.release.xcconfig"; path = "Target Support Files/Pods-RobotConf-RobotConfUITests/Pods-RobotConf-RobotConfUITests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -283,26 +252,9 @@
 				B265B04723F0691400EA363D /* CodableFirebase in Frameworks */,
 				45DAAD7A29E49D430085977B /* Apollo in Frameworks */,
 				33243ED427FA168800ECBA97 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
-				B83891F623C17BE3B86C039E /* Pods_RobotConf.framework in Frameworks */,
 				45DAAD7C29E49D430085977B /* ApolloSQLite in Frameworks */,
 				33243ED227FA154700ECBA97 /* FirebaseFirestore in Frameworks */,
 				33243ED627FA171400ECBA97 /* FirebaseAuth in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B2CD273E234D06560016AA02 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BE30A17E3BB5248CE13B5D2F /* Pods_RobotConfTests.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B2CD2749234D06560016AA02 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C15E9DEF1BB86AF3BE8D0307 /* Pods_RobotConf_RobotConfUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -406,16 +358,6 @@
 			path = GraphQL;
 			sourceTree = "<group>";
 		};
-		486E2D16E16F082ED56C5D94 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				05750C6DD6C4C74AB517F79B /* Pods_RobotConf.framework */,
-				B39EAD04C7867B0526F8A774 /* Pods_RobotConf_RobotConfUITests.framework */,
-				02C298435E1FD022C97E2462 /* Pods_RobotConfTests.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		B225421E23FB22C200C5A83E /* Feedback */ = {
 			isa = PBXGroup;
 			children = (
@@ -479,8 +421,6 @@
 			children = (
 				B2CD272D234D06530016AA02 /* RobotConf */,
 				B2CD272C234D06530016AA02 /* Products */,
-				486E2D16E16F082ED56C5D94 /* Frameworks */,
-				C1F2FF1E3DB3831F6CFDA45C /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -488,8 +428,6 @@
 			isa = PBXGroup;
 			children = (
 				B2CD272B234D06530016AA02 /* RobotConf.app */,
-				B2CD2741234D06560016AA02 /* RobotConfTests.xctest */,
-				B2CD274C234D06560016AA02 /* RobotConfUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -669,20 +607,6 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		C1F2FF1E3DB3831F6CFDA45C /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				BE5DDA9D47243C2669C7EED7 /* Pods-RobotConf.debug.xcconfig */,
-				C296222F54A3FB6D03F03D33 /* Pods-RobotConf.release.xcconfig */,
-				3F6488AAF2376A31D325EE79 /* Pods-RobotConf-RobotConfUITests.debug.xcconfig */,
-				E39AD2418E40492998FA9DB8 /* Pods-RobotConf-RobotConfUITests.release.xcconfig */,
-				B079D0492C7BAA561372BF59 /* Pods-RobotConfTests.debug.xcconfig */,
-				55A413A41399018318492B2F /* Pods-RobotConfTests.release.xcconfig */,
-			);
-			name = Pods;
-			path = Pods;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -690,9 +614,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B2CD2755234D06560016AA02 /* Build configuration list for PBXNativeTarget "RobotConf" */;
 			buildPhases = (
-				50C5FC63A5759A2B64B2EE8B /* [CP] Check Pods Manifest.lock */,
-				B2F270CF23DC7EFF00FD6823 /* SwiftGen */,
-				B2F270D723DC848100FD6823 /* SwiftLint */,
+				64F2D2762B878156005B9EAF /* 🏗️ Compile and embedded shared code */,
 				B2CD2727234D06530016AA02 /* Sources */,
 				B2CD2728234D06530016AA02 /* Frameworks */,
 				B2CD2729234D06530016AA02 /* Resources */,
@@ -719,44 +641,6 @@
 			productReference = B2CD272B234D06530016AA02 /* RobotConf.app */;
 			productType = "com.apple.product-type.application";
 		};
-		B2CD2740234D06560016AA02 /* RobotConfTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = B2CD2758234D06560016AA02 /* Build configuration list for PBXNativeTarget "RobotConfTests" */;
-			buildPhases = (
-				5EA287BA7091C3106C8427F7 /* [CP] Check Pods Manifest.lock */,
-				B2CD273D234D06560016AA02 /* Sources */,
-				B2CD273E234D06560016AA02 /* Frameworks */,
-				B2CD273F234D06560016AA02 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				B2CD2743234D06560016AA02 /* PBXTargetDependency */,
-			);
-			name = RobotConfTests;
-			productName = RobotConfTests;
-			productReference = B2CD2741234D06560016AA02 /* RobotConfTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		B2CD274B234D06560016AA02 /* RobotConfUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = B2CD275B234D06560016AA02 /* Build configuration list for PBXNativeTarget "RobotConfUITests" */;
-			buildPhases = (
-				C84F2D5824D109B5535FC4CE /* [CP] Check Pods Manifest.lock */,
-				B2CD2748234D06560016AA02 /* Sources */,
-				B2CD2749234D06560016AA02 /* Frameworks */,
-				B2CD274A234D06560016AA02 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				B2CD274E234D06560016AA02 /* PBXTargetDependency */,
-			);
-			name = RobotConfUITests;
-			productName = RobotConfUITests;
-			productReference = B2CD274C234D06560016AA02 /* RobotConfUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -769,14 +653,6 @@
 				TargetAttributes = {
 					B2CD272A234D06530016AA02 = {
 						CreatedOnToolsVersion = 11.0;
-					};
-					B2CD2740234D06560016AA02 = {
-						CreatedOnToolsVersion = 11.0;
-						TestTargetID = B2CD272A234D06530016AA02;
-					};
-					B2CD274B234D06560016AA02 = {
-						CreatedOnToolsVersion = 11.0;
-						TestTargetID = B2CD272A234D06530016AA02;
 					};
 				};
 			};
@@ -802,8 +678,6 @@
 			projectRoot = "";
 			targets = (
 				B2CD272A234D06530016AA02 /* RobotConf */,
-				B2CD2740234D06560016AA02 /* RobotConfTests */,
-				B2CD274B234D06560016AA02 /* RobotConfUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -822,24 +696,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B2CD273F234D06560016AA02 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B2CD274A234D06560016AA02 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		50C5FC63A5759A2B64B2EE8B /* [CP] Check Pods Manifest.lock */ = {
+		64F2D2762B878156005B9EAF /* 🏗️ Compile and embedded shared code */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -847,41 +707,15 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
 			);
-			name = "[CP] Check Pods Manifest.lock";
+			name = "🏗️ Compile and embedded shared code";
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-RobotConf-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		5EA287BA7091C3106C8427F7 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-RobotConfTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
+			shellScript = "cd \"$SRCROOT/..\"\n./gradlew :shared:embedAndSignAppleFrameworkForXcode\n";
 		};
 		B27CC3E5245594DF0055D36B /* Copy json files in debug */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -919,64 +753,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "MAIN_FIREBASE_FILE=\"${SRCROOT}/RobotConf/GoogleService-Info.plist\"\nOPENFEEDBACK_FIREBASE_FILE=\"${SRCROOT}/RobotConf/OpenFeedback-Info.plist\"\nif [ -f \"${MAIN_FIREBASE_FILE}\" ]; then\n    cp -r \"${MAIN_FIREBASE_FILE}\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app\"\nfi\n\nif [ -f \"${OPENFEEDBACK_FIREBASE_FILE}\" ]; then\n    cp -r \"${OPENFEEDBACK_FIREBASE_FILE}\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app\"\nfi\n";
-		};
-		B2F270CF23DC7EFF00FD6823 /* SwiftGen */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = SwiftGen;
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "$PODS_ROOT/SwiftGen/bin/swiftgen config run --config \"$PROJECT_DIR\"/RobotConf/SwiftGen/swiftgen.yml\n";
-		};
-		B2F270D723DC848100FD6823 /* SwiftLint */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = SwiftLint;
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n  \"${PODS_ROOT}/SwiftLint/swiftlint\"\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
-		};
-		C84F2D5824D109B5535FC4CE /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-RobotConf-RobotConfUITests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1085,34 +861,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B2CD273D234D06560016AA02 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B2CD2748234D06560016AA02 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		B2CD2743234D06560016AA02 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = B2CD272A234D06530016AA02 /* RobotConf */;
-			targetProxy = B2CD2742234D06560016AA02 /* PBXContainerItemProxy */;
-		};
-		B2CD274E234D06560016AA02 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = B2CD272A234D06530016AA02 /* RobotConf */;
-			targetProxy = B2CD274D234D06560016AA02 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		B2CD2739234D06560016AA02 /* LaunchScreen.storyboard */ = {
@@ -1255,7 +1004,6 @@
 		};
 		B2CD2756234D06560016AA02 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BE5DDA9D47243C2669C7EED7 /* Pods-RobotConf.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = RobotConf/AndroidMakers.entitlements;
@@ -1264,6 +1012,8 @@
 				DEVELOPMENT_ASSET_PATHS = "RobotConf/Preview\\ Content";
 				DEVELOPMENT_TEAM = 57MV6634WZ;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)";
 				INFOPLIST_FILE = RobotConf/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1271,6 +1021,10 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 3.0.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					shared,
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.paug.RobotConf;
 				PRODUCT_NAME = RobotConf;
 				SWIFT_VERSION = 5.0;
@@ -1280,7 +1034,6 @@
 		};
 		B2CD2757234D06560016AA02 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C296222F54A3FB6D03F03D33 /* Pods-RobotConf.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = RobotConf/AndroidMakers.entitlements;
@@ -1289,6 +1042,8 @@
 				DEVELOPMENT_ASSET_PATHS = "RobotConf/Preview\\ Content";
 				DEVELOPMENT_TEAM = 57MV6634WZ;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)";
 				INFOPLIST_FILE = RobotConf/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1296,92 +1051,14 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 3.0.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					shared,
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.paug.RobotConf;
 				PRODUCT_NAME = RobotConf;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		B2CD2759234D06560016AA02 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = B079D0492C7BAA561372BF59 /* Pods-RobotConfTests.debug.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = RobotConfTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.sousoum.RobotConfTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RobotConf.app/RobotConf";
-			};
-			name = Debug;
-		};
-		B2CD275A234D06560016AA02 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 55A413A41399018318492B2F /* Pods-RobotConfTests.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = RobotConfTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.sousoum.RobotConfTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RobotConf.app/RobotConf";
-			};
-			name = Release;
-		};
-		B2CD275C234D06560016AA02 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3F6488AAF2376A31D325EE79 /* Pods-RobotConf-RobotConfUITests.debug.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = RobotConfUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.sousoum.RobotConfUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = RobotConf;
-			};
-			name = Debug;
-		};
-		B2CD275D234D06560016AA02 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = E39AD2418E40492998FA9DB8 /* Pods-RobotConf-RobotConfUITests.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = RobotConfUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.sousoum.RobotConfUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = RobotConf;
 			};
 			name = Release;
 		};
@@ -1402,24 +1079,6 @@
 			buildConfigurations = (
 				B2CD2756234D06560016AA02 /* Debug */,
 				B2CD2757234D06560016AA02 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		B2CD2758234D06560016AA02 /* Build configuration list for PBXNativeTarget "RobotConfTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				B2CD2759234D06560016AA02 /* Debug */,
-				B2CD275A234D06560016AA02 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		B2CD275B234D06560016AA02 /* Build configuration list for PBXNativeTarget "RobotConfUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				B2CD275C234D06560016AA02 /* Debug */,
-				B2CD275D234D06560016AA02 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
