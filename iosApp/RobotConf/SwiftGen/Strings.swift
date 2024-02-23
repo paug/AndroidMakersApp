@@ -33,13 +33,11 @@ internal enum L10n {
     /// Sponsors
     internal static let sponsors = L10n.tr("Localizable", "about.sponsors", fallback: "Sponsors")
     /// About
-    internal static let tabTitle = L10n.tr("Localizable", "about.tabTitle", fallback: "About")
   }
   internal enum Agenda {
     /// RobotConf 23
     internal static let navTitle = L10n.tr("Localizable", "agenda.navTitle", fallback: "RobotConf 23")
     /// Agenda
-    internal static let tabTitle = L10n.tr("Localizable", "agenda.tabTitle", fallback: "Agenda")
     internal enum Detail {
       /// Open the slides
       internal static let presentation = L10n.tr("Localizable", "agenda.detail.presentation", fallback: "Open the slides")
@@ -73,8 +71,7 @@ internal enum L10n {
     internal static let conference = L10n.tr("Localizable", "locations.conference", fallback: "Conference")
     /// Directions
     internal static let directions = L10n.tr("Localizable", "locations.directions", fallback: "Directions")
-    /// Locations
-    internal static let navTitle = L10n.tr("Localizable", "locations.navTitle", fallback: "Locations")
+
     /// After party
     internal static let party = L10n.tr("Localizable", "locations.party", fallback: "After party")
     /// Plan

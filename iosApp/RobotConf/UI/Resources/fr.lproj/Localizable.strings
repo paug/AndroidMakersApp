@@ -1,6 +1,5 @@
 "common.loading" = "Chargement...";
 
-"agenda.tabTitle" = "Agenda";
 "agenda.navTitle" = "RobotConf 23";
 
 /* Info about the session. It is `date` at `start time` - `end time` */

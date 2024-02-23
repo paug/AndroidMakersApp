@@ -3,6 +3,7 @@
 //
 
 import SwiftUI
+import shared
 
 struct ContentView: View {
     @State private var selection = 0
@@ -13,7 +14,7 @@ struct ContentView: View {
                 .tabItem {
                     VStack {
                         Image("agenda")
-                        Text(L10n.Agenda.tabTitle)
+                        Text(stringResource(MR.strings().title_agenda))
                     }
             }.tag(0)
 
@@ -21,7 +22,7 @@ struct ContentView: View {
                 .tabItem {
                     VStack {
                         Image("location")
-                        Text(L10n.Locations.tabTitle)
+                        Text(stringResource(MR.strings().title_venue))
                     }
             }.tag(1)
 
@@ -29,7 +30,7 @@ struct ContentView: View {
                 .tabItem {
                     VStack {
                         Image("about")
-                        Text(L10n.About.tabTitle)
+                        Text(stringResource(MR.strings().title_about))
                     }
             }.tag(2)
         }
