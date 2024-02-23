@@ -1,5 +1,6 @@
 plugins {
   alias(libs.plugins.androidmakers.kmp.library)
+  alias(libs.plugins.moko)
 }
 
 kotlin {
@@ -12,10 +13,16 @@ kotlin {
     it.binaries.framework {
       baseName = "shared"
       isStatic = true
+      export(libs.moko.resources)
+      export(libs.moko.graphics)
     }
   }
 }
 
 android {
   namespace = "com.androidmakers.shared"
+}
+
+multiplatformResources {
+  multiplatformResourcesPackage = "com.androidmakers.ui"
 }

@@ -13,6 +13,8 @@ kotlin = "1.9.21"
 material3 = "1.2.0"
 google-services-plugin = "4.4.1"
 crashlytics-plugin = "2.9.9"
+moko = "0.23.0"
+moko-graphics = "0.9.0"
 
 [libraries]
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
@@ -54,6 +56,8 @@ material = "com.google.android.material:material:1.11.0"
 navigation-compose = "androidx.navigation:navigation-compose:2.7.7"
 openfeedback = "io.openfeedback:feedback-android-sdk-ui:0.0.7"
 play-services-auth = "com.google.android.gms:play-services-auth:20.7.0"
+moko-resources = { module = "dev.icerock.moko:resources", version.ref = "moko" }
+moko-graphics = { module = "dev.icerock.moko:graphics", version.ref = "moko-graphics" }
 
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "android-gradle-plugin" }
 firebase-crashlytics-gradlePlugin = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version.ref = "crashlytics-plugin" }
@@ -68,6 +72,7 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 kmp = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services-plugin" }
 crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlytics-plugin" }
+moko = { id = "dev.icerock.mobile.multiplatform-resources", version.ref = "moko" }
 
 ## Custom plugins
 androidmakers-android-application = { id = "fr.androidmakers.android.application", version = "unspecified" }
