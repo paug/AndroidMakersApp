@@ -21,6 +21,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import fr.paug.androidmakers.R
+import fr.paug.androidmakers.ui.MR
+import fr.paug.androidmakers.ui.util.stringResource
 import fr.paug.androidmakers.ui.viewmodel.Lce
 import fr.paug.androidmakers.ui.viewmodel.LceViewModel
 
@@ -131,7 +133,7 @@ fun EmptyLayout(modifier: Modifier = Modifier) {
       contentAlignment = Alignment.Center
   ) {
     Text(
-        text = stringResource(id = R.string.empty_events),
+        text = stringResource(MR.strings.empty_events),
         textAlign = TextAlign.Center
     )
   }

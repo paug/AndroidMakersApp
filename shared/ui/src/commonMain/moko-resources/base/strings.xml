@@ -5,7 +5,21 @@
 
     <string name="version">Version %s (%d)</string>
 
-    <string name="title_agenda">Agenda</string>
-    <string name="title_venue">Venue</string>
-    <string name="title_about">About</string>
+    <string name="agenda">Agenda</string>
+    <string name="venue">Venue</string>
+    <string name="about">About</string>
+
+    <string name="sponsors">Sponsors</string>
+    <string name="speakers">Speakers</string>
+
+    <string name="language">Language</string>
+    <string name="language_all">All</string>
+
+    <string name="filter">Filter</string>
+    <string name="bookmarked">Favorite</string>
+    <string name="language">Language</string>
+    <string name="room">Room</string>
+    <string name="rooms">Rooms</string>
+    <string name="empty_events">Sorry, there is nothing conference available for currently selected filters.</string>
+
 </resources>

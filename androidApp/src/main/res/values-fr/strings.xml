@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="title_agenda">Agenda</string>
-    <string name="title_venue">Lieu</string>
-    <string name="title_about">À propos</string>
-
     <string name="english">Anglais</string>
     <string name="french">Français</string>
 
@@ -22,8 +18,6 @@
     <string name="agenda_empty_screen">Impossible de charger l‘agenda.\nVérifiez votre connexion et
         attendez que cette vue se rafraîchit.
     </string>
-    <string name="filter_language_header">Langues</string>
-    <string name="filter_language_all">Toutes</string>
 
     <string name="ImageDesc_speaker_avatar">Photo du speaker</string>
     <string name="ImageDesc_social_network_image">réseau social</string>
@@ -36,12 +30,7 @@
     <string name="unable_to_launch_video_intent">Désolé, la vidéo ne peut pas être lancée pour le moment :(</string>
 
     <!--Filters-->
-    <string name="filter">Filtres</string>
-    <string name="bookmarked">Favoris</string>
-    <string name="language">Langues</string>
-    <string name="room">Salle</string>
-    <string name="rooms">Salles</string>
-    <string name="empty_events">Désolé, aucune conférence n‘est disponible pour les filtres actuellement sélectionnés.</string>
+
 
     <!--Venue-->
     <string name="locate_on_map">Localiser sur la carte</string>

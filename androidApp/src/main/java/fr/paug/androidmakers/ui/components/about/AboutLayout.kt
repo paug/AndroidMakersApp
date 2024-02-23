@@ -28,6 +28,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fr.paug.androidmakers.BuildConfig
 import fr.paug.androidmakers.R
+import fr.paug.androidmakers.ui.MR
+import fr.paug.androidmakers.ui.util.stringResource
 
 
 class AboutActions(
@@ -67,7 +69,7 @@ fun AboutLayout(
         modifier = Modifier.fillMaxWidth(),
         textAlign = TextAlign.Center,
         text = stringResource(
-            R.string.version,
+            MR.strings.version,
             BuildConfig.VERSION_NAME,
             BuildConfig.VERSION_CODE
         ),

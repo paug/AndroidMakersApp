@@ -18,7 +18,7 @@ struct LocationListView: View {
                 NavigationLink(destination: LocationPlanView()) {
                     Text(L10n.Locations.plan)
                 }
-            }.navigationBarTitle(Text(stringResource(MR.strings().title_venue)), displayMode: .large)
+            }.navigationBarTitle(Text(stringResource(MR.strings().venue)), displayMode: .large)
             // Display the LocationVenueView in the detail view to avoid having a white screen
             // (this will be only used when the master and detail are visible together i.e. on ipads)
             LocationVenueView(kind: .conference)

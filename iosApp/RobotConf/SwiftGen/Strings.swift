@@ -13,16 +13,6 @@ internal enum L10n {
   internal enum About {
     /// Code of conduct
     internal static let coc = L10n.tr("Localizable", "about.coc", fallback: "Code of conduct")
-    /// RobotConf Paris is a two day event held on April 27th and 28th, 2023.
-    /// 
-    /// Join us in tackling the present and future of Robot with the hottest experts of the domain.
-    /// There'll be technical sessions, workshops, debates, networking.
-    /// RobotConf gathers 4 events in 1.
-    /// 
-    /// ∙ Conferences: 40min Tech Talks by awesome speakers and 20min Lightning Talks on the future of Robot.
-    /// ∙ Workshops: Get trained on new methods, discover and build your app during the workshops.
-    /// 
-    /// All the talks will be recorded, and uploaded on the Youtube channel.
     internal static let explanation = L10n.tr("Localizable", "about.explanation", fallback: "RobotConf Paris is a two day event held on April 27th and 28th, 2023.\n\nJoin us in tackling the present and future of Robot with the hottest experts of the domain.\nThere'll be technical sessions, workshops, debates, networking.\nRobotConf gathers 4 events in 1.\n\n∙ Conferences: 40min Tech Talks by awesome speakers and 20min Lightning Talks on the future of Robot.\n∙ Workshops: Get trained on new methods, discover and build your app during the workshops.\n\nAll the talks will be recorded, and uploaded on the Youtube channel.")
     /// FAQ
     internal static let faq = L10n.tr("Localizable", "about.faq", fallback: "FAQ")

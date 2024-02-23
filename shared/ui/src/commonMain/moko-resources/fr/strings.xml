@@ -4,7 +4,19 @@
 
     <string name="version">Version %s (%d)</string>
 
-    <string name="title_agenda">Agenda</string>
-    <string name="title_venue">Lieu</string>
-    <string name="title_about">À propos</string>
+    <string name="agenda">Agenda</string>
+    <string name="venue">Lieu</string>
+    <string name="about">À propos</string>
+    <string name="sponsors">Sponsors</string>
+    <string name="speakers">Speakers</string>
+
+    <string name="language">Langues</string>
+    <string name="language_all">Toutes</string>
+
+    <string name="filter">Filtres</string>
+    <string name="bookmarked">Favoris</string>
+    <string name="language">Langues</string>
+    <string name="room">Salle</string>
+    <string name="rooms">Salles</string>
+    <string name="empty_events">Désolé, aucune conférence n‘est disponible pour les filtres actuellement sélectionnés.</string>
 </resources>

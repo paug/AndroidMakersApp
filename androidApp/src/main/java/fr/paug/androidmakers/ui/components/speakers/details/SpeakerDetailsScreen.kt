@@ -29,8 +29,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import fr.paug.androidmakers.R
+import fr.paug.androidmakers.ui.MR
 import fr.paug.androidmakers.ui.components.LoadingLayout
 import fr.paug.androidmakers.ui.components.session.SocialButtons
+import fr.paug.androidmakers.ui.util.stringResource
 import fr.paug.androidmakers.ui.viewmodel.Lce
 
 @Composable
@@ -95,7 +97,7 @@ fun SpeakerDetailsScreen(
           model = ImageRequest.Builder(LocalContext.current)
               .data(speaker.photoUrl)
               .build(),
-          contentDescription = stringResource(R.string.title_speakers)
+          contentDescription = stringResource(MR.strings.speakers)
       )
 
       Text(

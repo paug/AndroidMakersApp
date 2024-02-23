@@ -38,12 +38,14 @@ import fr.androidmakers.store.model.Session
 import fr.androidmakers.store.model.Speaker
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.R
+import fr.paug.androidmakers.ui.MR
 import fr.paug.androidmakers.ui.components.AgendaLayoutViewModel
 import fr.paug.androidmakers.ui.components.ButtonRefreshableLceLayout
 import fr.paug.androidmakers.ui.model.UISession
 import fr.paug.androidmakers.ui.viewmodel.LceViewModel
 import fr.paug.androidmakers.util.EmojiUtils
 import fr.paug.androidmakers.util.SessionFilter
+import fr.paug.androidmakers.ui.util.stringResource
 import fr.paug.androidmakers.util.eventTimeZone
 import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.Clock
@@ -127,9 +129,9 @@ private fun AgendaFilterDrawer(
     onFiltersChanged: (List<SessionFilter>) -> Unit,
 ) {
   Column(modifier = Modifier.fillMaxWidth()) {
-    HeaderItem(R.string.filter)
+    HeaderItem(stringResource(MR.strings.filter))
     FilterItem(
-        text = stringResource(R.string.bookmarked),
+        text = stringResource(MR.strings.bookmarked),
         imageVector = Icons.Rounded.Bookmark,
         checked = sessionFilters.any { it.type == SessionFilter.FilterType.BOOKMARK },
         onCheck = { checked ->
@@ -141,7 +143,7 @@ private fun AgendaFilterDrawer(
         }
     )
 
-    HeaderItem(R.string.filter_language_header)
+    HeaderItem(stringResource(MR.strings.language))
     val french = "French"
     FilterItem(
         text = stringResource(R.string.french),
@@ -170,7 +172,7 @@ private fun AgendaFilterDrawer(
         }
     )
 
-    HeaderItem(R.string.rooms)
+    HeaderItem(stringResource(MR.strings.rooms))
     for (room in rooms) {
       FilterItem(
           text = room.name,
@@ -238,12 +240,12 @@ private fun FilterItem(
 }
 
 @Composable
-private fun HeaderItem(text: Int) {
+private fun HeaderItem(text: String) {
   Text(
       modifier = Modifier
           .fillMaxWidth()
           .padding(12.dp),
-      text = stringResource(text),
+      text = text,
       style = MaterialTheme.typography.titleMedium
   )
 }

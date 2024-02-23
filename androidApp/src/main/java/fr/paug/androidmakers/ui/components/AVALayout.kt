@@ -1,6 +1,5 @@
 package fr.paug.androidmakers.ui.components
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -64,6 +63,7 @@ import fr.paug.androidmakers.ui.components.speakers.SpeakerScreen
 import fr.paug.androidmakers.ui.components.speakers.SpeakerViewModel
 import fr.paug.androidmakers.ui.components.sponsors.SponsorsScreen
 import fr.paug.androidmakers.ui.navigation.AVANavigationRoute
+import fr.paug.androidmakers.ui.util.stringResource
 import fr.paug.androidmakers.ui.viewmodel.LceViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -132,7 +132,7 @@ fun AVALayout(
                 ) {
                   Icon(
                       imageVector = Icons.Rounded.FilterList,
-                      contentDescription = stringResource(R.string.filter),
+                      contentDescription = stringResource(MR.strings.filter),
                   )
                 }
               }
@@ -149,35 +149,35 @@ fun AVALayout(
           NavigationBarItem(
               avaNavController = avaNavController,
               imageVector = Icons.Rounded.CalendarMonth,
-              labelResId = R.string.title_agenda,
+              label = stringResource(MR.strings.agenda),
               currentRoute = currentRoute,
               destinationRoute = AVANavigationRoute.AGENDA
           )
           NavigationBarItem(
               avaNavController = avaNavController,
               imageVector = Icons.Rounded.LocationCity,
-              labelResId = R.string.title_venue,
+              label = stringResource(MR.strings.venue),
               currentRoute = currentRoute,
               destinationRoute = AVANavigationRoute.VENUE
           )
           NavigationBarItem(
               avaNavController = avaNavController,
               imageVector = Icons.Rounded.Groups,
-              labelResId = R.string.title_speakers,
+              label = stringResource(MR.strings.speakers),
               currentRoute = currentRoute,
               destinationRoute = AVANavigationRoute.SPEAKERS
           )
           NavigationBarItem(
               avaNavController = avaNavController,
               imageVector = Icons.Rounded.Diamond,
-              labelResId = R.string.title_sponsors,
+              label = stringResource(MR.strings.sponsors),
               currentRoute = currentRoute,
               destinationRoute = AVANavigationRoute.SPONSORS
           )
           NavigationBarItem(
               avaNavController = avaNavController,
               imageVector = Icons.Rounded.Info,
-              labelResId = R.string.title_about,
+              label = stringResource(MR.strings.about),
               currentRoute = currentRoute,
               destinationRoute = AVANavigationRoute.ABOUT
           )
@@ -200,7 +200,7 @@ fun AVALayout(
 private fun RowScope.NavigationBarItem(
     avaNavController: NavHostController,
     imageVector: ImageVector,
-    @StringRes labelResId: Int,
+    label: String,
     currentRoute: String?,
     destinationRoute: AVANavigationRoute,
 ) {
@@ -208,10 +208,10 @@ private fun RowScope.NavigationBarItem(
       icon = {
         Icon(
             imageVector = imageVector,
-            contentDescription = stringResource(labelResId)
+            contentDescription = label
         )
       },
-      label = { Text(stringResource(labelResId)) },
+      label = { Text(label) },
       selected = currentRoute == destinationRoute.name,
       colors = NavigationBarItemDefaults.colors(
           selectedIconColor = MaterialTheme.colorScheme.onSurface,
