@@ -1,0 +1,11 @@
+strings:
+    inputs: ${PROJECT_DIR}/RobotConf/UI/Resources/en.lproj
+    outputs:
+        templateName: structured-swift4
+        output: Strings.swift
+
+xcassets:
+    inputs: ${PROJECT_DIR}/RobotConf/UI/Resources/Assets.xcassets
+    outputs:
+        templateName: swift4
+        output: Assets.swift

@@ -38,3 +38,11 @@ app/prod/release/output.json
 !**/.idea/runConfigurations
 !**/.idea/scopes
 *.iml
+
+Pods
+
+xcuserdata
+RobotConf/OpenFeedback-Info.plist
+RobotConf/GoogleService-Info.plist
+apollo-ios-cli
+

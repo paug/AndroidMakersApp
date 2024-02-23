@@ -1,0 +1,29 @@
+{
+  "schemaName" : "GraphQLData",
+  "input" : {
+    "operationSearchPaths" : [
+      "**/*.graphql"
+    ],
+    "schemaSearchPaths" : [
+      "**/*.graphqls"
+    ]
+  },
+  "output" : {
+    "testMocks" : {
+      "none" : {
+      }
+    },
+    "schemaTypes" : {
+      "path" : "./RobotConf/Model/Data/Providers/GraphQL/Generated",
+      "moduleType" : {
+        "embeddedInTarget" : {
+          "name" : "RobotConf"
+        }
+      }
+    },
+    "operations" : {
+      "inSchemaModule" : {
+      }
+    }
+  }
+}
