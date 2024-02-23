@@ -13,6 +13,7 @@ kotlin {
     it.binaries.framework {
       baseName = "shared"
       isStatic = true
+      export(project(":shared:ui"))
       export(libs.moko.resources)
       export(libs.moko.graphics)
     }

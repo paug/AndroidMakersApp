@@ -15,7 +15,6 @@ kotlin {
       baseName = "ui"
       isStatic = true
       export(libs.moko.resources)
-      export(project(":shared:ui"))
     }
   }
 

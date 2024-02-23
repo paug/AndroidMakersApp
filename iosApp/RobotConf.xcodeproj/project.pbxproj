@@ -620,6 +620,7 @@
 				B2CD2729234D06530016AA02 /* Resources */,
 				B27CC3E5245594DF0055D36B /* Copy json files in debug */,
 				B27CC3E82455ADD40055D36B /* Copy Firebase plist files */,
+				644052092B8922D300F87201 /* 🎨 Generate Moko Resources */,
 			);
 			buildRules = (
 			);
@@ -699,6 +700,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		644052092B8922D300F87201 /* 🎨 Generate Moko Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "🎨 Generate Moko Resources";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$SRCROOT/../gradlew\" -p \"$SRCROOT/../\" :shared:copyFrameworkResourcesToApp \\\n    -Pmoko.resources.PLATFORM=\"$PLATFORM_NAME\" \\\n    -Pmoko.resources.CONFIGURATION=\"$CONFIGURATION\" \\\n    -Pmoko.resources.ARCHS=\"$ARCHS\" \\\n    -Pmoko.resources.BUILT_PRODUCTS_DIR=\"$BUILT_PRODUCTS_DIR\" \\\n    -Pmoko.resources.CONTENTS_FOLDER_PATH=\"$CONTENTS_FOLDER_PATH\" \n";
+		};
 		64F2D2762B878156005B9EAF /* 🏗️ Compile and embedded shared code */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
