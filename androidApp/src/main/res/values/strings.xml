@@ -32,9 +32,6 @@
 
     <string name="unable_to_launch_video_intent">Sorry, we are unable to launch the video at this time :(</string>
 
-    <!--Filters-->
-
-
     <!--Venue-->
     <string name="locate_on_map">Locate on map</string>
     <string name="venue_afterparty_tab">Afterparty</string>

@@ -29,9 +29,6 @@
 
     <string name="unable_to_launch_video_intent">Désolé, la vidéo ne peut pas être lancée pour le moment :(</string>
 
-    <!--Filters-->
-
-
     <!--Venue-->
     <string name="locate_on_map">Localiser sur la carte</string>
     <string name="venue_afterparty_tab">After Party</string>
