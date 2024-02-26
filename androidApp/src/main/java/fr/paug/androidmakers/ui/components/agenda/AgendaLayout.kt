@@ -146,7 +146,7 @@ private fun AgendaFilterDrawer(
     HeaderItem(stringResource(MR.strings.language))
     val french = "French"
     FilterItem(
-        text = stringResource(R.string.french),
+        text = stringResource(MR.strings.french),
         language = french,
         checked = sessionFilters.any { it.type == SessionFilter.FilterType.LANGUAGE && it.value == french },
         onCheck = { checked ->
@@ -160,7 +160,7 @@ private fun AgendaFilterDrawer(
     )
     val english = "English"
     FilterItem(
-        text = stringResource(R.string.english),
+        text = stringResource(MR.strings.english),
         language = english,
         checked = sessionFilters.any { it.type == SessionFilter.FilterType.LANGUAGE && it.value == english },
         onCheck = { checked ->

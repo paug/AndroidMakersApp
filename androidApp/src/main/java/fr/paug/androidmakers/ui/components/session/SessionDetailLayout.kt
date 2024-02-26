@@ -112,7 +112,7 @@ fun SessionDetailLayout(
               IconButton(onClick = onBackClick) {
                 Icon(
                     Icons.AutoMirrored.Rounded.ArrowBack,
-                    contentDescription = stringResource(R.string.back)
+                    contentDescription = stringResource(MR.strings.back)
                 )
               }
             },
@@ -250,8 +250,8 @@ private fun SessionDetails(sessionDetails: SessionDetailState, formattedDateAndR
 @Composable
 private fun String.asLanguageResource(): String? {
   return when (this) {
-    "English" -> stringResource(R.string.english)
-    "French" -> stringResource(R.string.french)
+    "English" -> stringResource(MR.strings.english)
+    "French" -> stringResource(MR.strings.french)
     else -> null
   }
 }

@@ -1,9 +1,6 @@
 <resources>
 
     <string name="app_name" translatable="false">Android Makers by droidcon</string>
-
-    <string name="english">English</string>
-    <string name="french">French</string>
     <string name="no_language" translatable="false" />
 
     <string name="no_maps_app_found">Error: No maps app found</string>
@@ -32,22 +29,12 @@
 
     <string name="unable_to_launch_video_intent">Sorry, we are unable to launch the video at this time :(</string>
 
-    <!--Venue-->
-    <string name="locate_on_map">Locate on map</string>
-    <string name="venue_afterparty_tab">Afterparty</string>
-    <string name="venue_conference_tab">Conference</string>
-    <string name="venue_floor_plan_tab">Floor Plan</string>
-
     <!--About-->
     <string name="about_android_makers">Android Makers by droidcon is a two days event held in Paris on April 27th and 28th.
         \n\nJoin us in tackling the present and future of Android with the hottest experts of the domain.
         There\'ll be technical sessions, workshops and opportunities to meet your favorites speakers.
         \n\nAll the Talks will be recorded, and uploaded on the Youtube channel.</string>
 
-    <string name="faq">FAQ</string>
-    <string name="code_of_conduct">Code of conduct</string>
-
-    <string name="social">Social</string>
     <string name="x_hashtag" translatable="false">#AMxDC24</string>
     <string name="x_hashtag_for_query" translatable="false">AMxDC24</string>
     <string name="x_user_name" translatable="false">AndroidMakersFR</string>
@@ -71,11 +58,6 @@
     <string name="specialthanks_sponsor">Special Thanks</string>
     <string name="feedbackWaiting">This talk cannot be reviewed yet. Please come back after attending it.</string>
 
-    <string name="back">Back</string>
-    <string name="ohno">Oh no! 😕 \nSomething wrong happened…</string>
-    <string name="retry">Retry</string>
-    <string name="signin">Sign in</string>
-    <string name="signout">Sign out</string>
     <string name="permission_notifications_rationale_title">Permission denied</string>
     <string name="permission_notifications_rationale_text">Without this permission the app is unable to send you notifications. Are you sure you want to deny this permission?</string>
     <string name="permission_notifications_rationale_positive">Go to Settings</string>

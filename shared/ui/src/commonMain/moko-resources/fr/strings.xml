@@ -19,4 +19,23 @@
     <string name="room">Salle</string>
     <string name="rooms">Salles</string>
     <string name="empty_events">Désolé, aucune conférence n‘est disponible pour les filtres actuellement sélectionnés.</string>
+
+    <string name="english">Anglais</string>
+    <string name="french">Français</string>
+
+    <string name="locate_on_map">Localiser sur la carte</string>
+    <string name="venue_afterparty_tab">After Party</string>
+    <string name="venue_conference_tab">Conférence</string>
+    <string name="venue_floor_plan_tab">Plan</string>
+
+    <string name="back">Retour</string>
+    <string name="ohno">Oh no !\nC‘est tout cassé\n😕 …</string>
+    <string name="retry">Réessayer</string>
+
+    <string name="signin">Connexion</string>
+    <string name="signout">Déconnexion</string>
+
+    <string name="faq">FAQ</string>
+    <string name="code_of_conduct">Code de conduite</string>
+    <string name="social">Social</string>
 </resources>

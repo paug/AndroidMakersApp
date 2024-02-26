@@ -4,6 +4,7 @@
 
 import SwiftUI
 import URLImage
+import shared
 
 struct AboutView: View {
     @ObservedObject private var viewModel = AboutViewModel()
@@ -23,12 +24,12 @@ struct AboutView: View {
                                     .foregroundColor(Color.black)
                                 HStack(spacing: 24) {
                                     WebButton(url: URL(string: "https://androidmakers.droidcon.com/faqs/")!) {
-                                        Text(L10n.About.faq)
+                                        Text(stringResource(MR.strings().faq))
                                     }
                                     .foregroundColor(Color(Asset.Colors.link.color))
                                     WebButton(url: URL(
                                         string: "https://androidmakers.droidcon.com/code-of-conduct/")!) {
-                                            Text(L10n.About.coc)
+                                            Text(stringResource(MR.strings().code_of_conduct))
                                     }
                                     .foregroundColor(Color(Asset.Colors.link.color))
                                 }.padding(8)
@@ -36,7 +37,7 @@ struct AboutView: View {
                         }
                         Card {
                             VStack {
-                                Text(L10n.About.social)
+                                Text(stringResource(MR.strings().social))
                                     .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
                                     .foregroundColor(Color(Asset.Colors.link.color))
                                 Button(action: {

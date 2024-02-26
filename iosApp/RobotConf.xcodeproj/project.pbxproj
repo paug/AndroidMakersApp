@@ -97,7 +97,6 @@
 		B2EF3CF923E8A4C30078019F /* TalkFeedbackViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EF3CF823E8A4C30078019F /* TalkFeedbackViewModel.swift */; };
 		B2EF3CFB23E8A8020078019F /* TalkFeedbackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EF3CFA23E8A8020078019F /* TalkFeedbackView.swift */; };
 		B2F270CA23DC7E2600FD6823 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B2F270C823DC7E2600FD6823 /* Localizable.strings */; };
-		B2F270D423DC816B00FD6823 /* swiftgen.yml in Resources */ = {isa = PBXBuildFile; fileRef = B2F270D323DC816B00FD6823 /* swiftgen.yml */; };
 		B2F270D623DC82BB00FD6823 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F270D523DC82BB00FD6823 /* Strings.swift */; };
 		B2F270DB23DC869300FD6823 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = B2F270DA23DC869300FD6823 /* .swiftlint.yml */; };
 		B2F270DE23DC944800FD6823 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F270DD23DC944800FD6823 /* Assets.swift */; };
@@ -213,7 +212,6 @@
 		B2EF3CFA23E8A8020078019F /* TalkFeedbackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkFeedbackView.swift; sourceTree = "<group>"; };
 		B2F270CC23DC7E9200FD6823 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B2F270CD23DC7EBC00FD6823 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		B2F270D323DC816B00FD6823 /* swiftgen.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = swiftgen.yml; sourceTree = "<group>"; };
 		B2F270D523DC82BB00FD6823 /* Strings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		B2F270DA23DC869300FD6823 /* .swiftlint.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		B2F270DD23DC944800FD6823 /* Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
@@ -526,7 +524,6 @@
 			children = (
 				B2F270DD23DC944800FD6823 /* Assets.swift */,
 				B2F270D523DC82BB00FD6823 /* Strings.swift */,
-				B2F270D323DC816B00FD6823 /* swiftgen.yml */,
 			);
 			path = SwiftGen;
 			sourceTree = "<group>";
@@ -696,7 +693,6 @@
 				B2F270DB23DC869300FD6823 /* .swiftlint.yml in Resources */,
 				B2CD2738234D06560016AA02 /* Preview Assets.xcassets in Resources */,
 				B2CD2735234D06560016AA02 /* Assets.xcassets in Resources */,
-				B2F270D423DC816B00FD6823 /* swiftgen.yml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

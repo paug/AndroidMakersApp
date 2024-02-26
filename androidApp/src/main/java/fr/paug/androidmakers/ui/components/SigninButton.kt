@@ -14,12 +14,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.AMUser
 import fr.paug.androidmakers.ui.LocalActivity
+import fr.paug.androidmakers.ui.MR
+import fr.paug.androidmakers.ui.util.stringResource
 
 
 @Composable
@@ -35,7 +35,7 @@ fun SigninButton(user: AMUser?) {
     if (user == null) {
       Icon(
           imageVector = Icons.Rounded.AccountCircle,
-          contentDescription = stringResource(R.string.signin)
+          contentDescription = stringResource(MR.strings.signin)
       )
     } else {
       AsyncImage(
@@ -43,7 +43,7 @@ fun SigninButton(user: AMUser?) {
               .data(user.photoUrl)
               .build(),
           modifier = Modifier.clip(CircleShape),
-          contentDescription = stringResource(R.string.signout)
+          contentDescription = stringResource(MR.strings.signout)
       )
     }
   }
@@ -55,7 +55,7 @@ fun SigninButton(user: AMUser?) {
     if (user == null) {
       DropdownMenuItem(
           text = {
-            Text(stringResource(id = R.string.signin))
+            Text(stringResource(MR.strings.signin))
           },
           onClick = {
             expandedState.value = false
@@ -65,7 +65,7 @@ fun SigninButton(user: AMUser?) {
     } else {
       DropdownMenuItem(
           text = {
-            Text(stringResource(id = R.string.signout))
+            Text(stringResource(MR.strings.signout))
           },
           onClick = {
             expandedState.value = false

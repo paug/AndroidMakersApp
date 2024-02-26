@@ -99,8 +99,14 @@ private fun IntroCard(
         horizontalArrangement = Arrangement.Center
 
     ) {
-      ClickableText(R.string.faq, onFaqClick)
-      ClickableText(R.string.code_of_conduct, onCocClick)
+      ClickableText(
+          text = stringResource(MR.strings.faq),
+          onClick = onFaqClick
+      )
+      ClickableText(
+          text = stringResource(MR.strings.code_of_conduct),
+          onClick = onCocClick
+      )
     }
   }
 
@@ -118,7 +124,7 @@ private fun SocialCard(
           Modifier.fillMaxWidth(),
           horizontalArrangement = Arrangement.Center
       ) {
-        ClickableText(R.string.x_hashtag, onXHashtagClick)
+        ClickableText(stringResource(R.string.x_hashtag), onXHashtagClick)
       }
       Row(
           Modifier
@@ -150,14 +156,14 @@ private fun SocialCard(
 
 @Composable
 private fun ClickableText(
-    @StringRes text: Int,
-    onFaqClick: () -> Unit,
+    text: String,
+    onClick: () -> Unit,
 ) {
   Text(
       modifier = Modifier
-          .clickable(onClick = onFaqClick)
+          .clickable(onClick = onClick)
           .padding(8.dp),
-      text = stringResource(text),
+      text = text,
       color = MaterialTheme.colorScheme.primary
   )
 }

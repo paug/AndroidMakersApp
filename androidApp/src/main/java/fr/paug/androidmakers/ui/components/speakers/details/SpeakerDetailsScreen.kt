@@ -73,7 +73,7 @@ fun SpeakerDetailsScreen(
               IconButton(onClick = onBackClick) {
                 Icon(
                     Icons.AutoMirrored.Rounded.ArrowBack,
-                    contentDescription = stringResource(R.string.back)
+                    contentDescription = stringResource(MR.strings.back)
                 )
               }
             },

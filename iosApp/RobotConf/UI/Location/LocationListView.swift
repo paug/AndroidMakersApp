@@ -10,13 +10,13 @@ struct LocationListView: View {
         NavigationView {
             List {
                 NavigationLink(destination: LocationVenueView(kind: .conference)) {
-                    Text(L10n.Locations.conference)
+                    Text(stringResource(MR.strings().venue_conference_tab))
                 }
                 NavigationLink(destination: LocationVenueView(kind: .party)) {
-                    Text(L10n.Locations.party)
+                    Text(stringResource(MR.strings().venue_afterparty_tab))
                 }
                 NavigationLink(destination: LocationPlanView()) {
-                    Text(L10n.Locations.plan)
+                    Text(stringResource(MR.strings().venue_floor_plan_tab))
                 }
             }.navigationBarTitle(Text(stringResource(MR.strings().venue)), displayMode: .large)
             // Display the LocationVenueView in the detail view to avoid having a white screen

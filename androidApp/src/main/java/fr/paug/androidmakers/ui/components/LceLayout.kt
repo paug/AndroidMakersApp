@@ -107,7 +107,7 @@ fun ErrorLayout(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
       Text(
-          text = stringResource(id = R.string.ohno),
+          text = stringResource(MR.strings.ohno),
           textAlign = TextAlign.Center
       )
       if (onClick != null) {
@@ -116,7 +116,7 @@ fun ErrorLayout(
             onClick = onClick,
             enabled = enabled
         ) {
-          Text(text = stringResource(id = R.string.retry))
+          Text(text = stringResource(MR.strings.retry))
         }
       }
     }

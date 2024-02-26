@@ -13,10 +13,7 @@
 
 "locations.tabTitle" = "Lieux";
 "locations.navTitle" = "Lieux";
-"locations.conference" = "Conférence";
-"locations.party" = "Soirée";
 "locations.directions" = "Localiser";
-"locations.plan" = "Plan";
 
 "about.tabTitle" = "À propos";
 "about.navTitle" = "À propos d'AM 23";
@@ -30,8 +27,6 @@ RobotConf rassemble 4 événements en 1.
 ∙ Ateliers : Entrainez-vous sur les nouvelles méthodes, découvrez et construisez votre application pendant les ateliers.
 
 Tous les talks seront enregistrées, et mis sur la chaîne YouTube.";
-"about.faq" = "FAQ";
-"about.coc" = "Code de conduite";
 "about.social" = "Social";
 "about.sponsors" = "Sponsors";
 

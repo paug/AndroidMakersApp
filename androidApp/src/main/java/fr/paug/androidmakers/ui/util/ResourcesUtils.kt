@@ -7,7 +7,7 @@ import dev.icerock.moko.resources.desc.ResourceFormatted
 import dev.icerock.moko.resources.desc.StringDesc
 
 @Composable
-fun stringResource(stringDesc: StringResource, vararg args: Any): String {
+fun stringResource(stringRes: StringResource, vararg args: Any): String {
   val context = LocalContext.current
-  return StringDesc.ResourceFormatted(stringDesc, args).toString(context)
+  return StringDesc.ResourceFormatted(stringRes, *args).toString(context)
 }

@@ -22,4 +22,22 @@
     <string name="rooms">Rooms</string>
     <string name="empty_events">Sorry, there is nothing conference available for currently selected filters.</string>
 
+    <string name="english">English</string>
+    <string name="french">French</string>
+
+    <string name="locate_on_map">Locate on map</string>
+    <string name="venue_afterparty_tab">Afterparty</string>
+    <string name="venue_conference_tab">Conference</string>
+    <string name="venue_floor_plan_tab">Floor Plan</string>
+
+    <string name="back">Back</string>
+    <string name="ohno">Oh no! 😕 \nSomething wrong happened…</string>
+    <string name="retry">Retry</string>
+
+    <string name="signin">Sign in</string>
+    <string name="signout">Sign out</string>
+
+    <string name="faq">FAQ</string>
+    <string name="code_of_conduct">Code of conduct</string>
+    <string name="social">Social</string>
 </resources>

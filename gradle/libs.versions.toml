@@ -15,6 +15,7 @@ google-services-plugin = "4.4.1"
 crashlytics-plugin = "2.9.9"
 moko = "0.24.0-alpha-4"
 moko-graphics = "0.9.0"
+compose-mp = "1.5.12"
 
 [libraries]
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
@@ -58,6 +59,7 @@ openfeedback = "io.openfeedback:feedback-android-sdk-ui:0.0.7"
 play-services-auth = "com.google.android.gms:play-services-auth:20.7.0"
 moko-resources = { module = "dev.icerock.moko:resources", version.ref = "moko" }
 moko-graphics = { module = "dev.icerock.moko:graphics", version.ref = "moko-graphics" }
+compose-mp-icons = { module = "org.jetbrains.compose.material:material-icons-extended-desktop", version.ref = "compose-mp" }
 
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "android-gradle-plugin" }
 firebase-crashlytics-gradlePlugin = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version.ref = "crashlytics-plugin" }

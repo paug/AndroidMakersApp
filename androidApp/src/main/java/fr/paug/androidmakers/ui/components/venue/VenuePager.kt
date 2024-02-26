@@ -14,12 +14,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import fr.paug.androidmakers.AndroidMakersApplication
-import fr.paug.androidmakers.R
+import fr.paug.androidmakers.ui.MR
 import fr.paug.androidmakers.ui.components.venue.VenueLayout
 import fr.paug.androidmakers.ui.model.UIVenue
+import fr.paug.androidmakers.ui.util.stringResource
 import fr.paug.androidmakers.ui.viewmodel.Lce
 import fr.paug.androidmakers.ui.viewmodel.toLce
 import kotlinx.coroutines.flow.map
@@ -31,9 +31,9 @@ fun VenuePager() {
   Column(modifier = Modifier.fillMaxWidth()) {
 
     val titles = listOf(
-        R.string.venue_conference_tab,
-        R.string.venue_afterparty_tab,
-        R.string.venue_floor_plan_tab
+        MR.strings.venue_conference_tab,
+        MR.strings.venue_afterparty_tab,
+        MR.strings.venue_floor_plan_tab
     )
 
     val pagerState = rememberPagerState(pageCount = { titles.size })
@@ -49,7 +49,7 @@ fun VenuePager() {
         Tab(
             text = {
               Text(
-                  text = stringResource(id = titles[it]),
+                  text = stringResource(titles[it]),
                   style = MaterialTheme.typography.headlineSmall.copy(
                       color = MaterialTheme.colorScheme.primary,
                       fontSize = 18.sp

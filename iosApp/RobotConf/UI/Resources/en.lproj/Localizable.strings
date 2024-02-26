@@ -13,10 +13,7 @@
 
 "locations.tabTitle" = "Locations";
 "locations.navTitle" = "Locations";
-"locations.conference" = "Conference";
-"locations.party" = "After party";
 "locations.directions" = "Directions";
-"locations.plan" = "Plan";
 
 "about.tabTitle" = "About";
 "about.navTitle" = "About AM 23";
@@ -30,9 +27,6 @@ RobotConf gathers 4 events in 1.
 ∙ Workshops: Get trained on new methods, discover and build your app during the workshops.
 
 All the talks will be recorded, and uploaded on the Youtube channel.";
-"about.faq" = "FAQ";
-"about.coc" = "Code of conduct";
-"about.social" = "Social";
 "about.sponsors" = "Sponsors";
 
 "talk.complexity.beginner" = "Beginner";
