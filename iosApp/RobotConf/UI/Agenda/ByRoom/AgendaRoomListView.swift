@@ -29,7 +29,7 @@ struct AgendaRoomListView: View {
             .onAppear { self.viewModel.viewAppeared() }
             .onDisappear { self.viewModel.viewDisappeared() }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .navigationBarTitle(Text(L10n.Agenda.navTitle), displayMode: .inline)
+            .navigationBarTitle(Text("title"), displayMode: .inline)
             .navigationBarItems(
                 trailing:  HStack {
                     Button(action: { favOnly.toggle() }) {

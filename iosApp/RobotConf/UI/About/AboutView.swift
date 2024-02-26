@@ -20,7 +20,7 @@ struct AboutView: View {
                                 Image("logo_oneline_black_text")
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
-                                Text(L10n.About.explanation)
+                                Text(stringResource(MR.strings().about_android_makers))
                                     .foregroundColor(Color.black)
                                 HStack(spacing: 24) {
                                     WebButton(url: URL(string: "https://androidmakers.droidcon.com/faqs/")!) {
@@ -69,7 +69,7 @@ struct AboutView: View {
                         }
                         Card {
                             VStack(spacing: 16) {
-                                Text(L10n.About.sponsors)
+                                Text(stringResource(MR.strings().sponsors))
                                     .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
                                     .foregroundColor(Color(Asset.Colors.link.color))
                                 ForEach(self.viewModel.partnerCategories, id: \.self) { category in
@@ -100,7 +100,7 @@ struct AboutView: View {
                     .padding(.horizontal)
                 }
                 .background(Color(.secondarySystemBackground))
-                .navigationBarTitle(Text(L10n.About.navTitle), displayMode: .inline)
+                .navigationBarTitle(Text(stringResource(MR.strings().about_am)), displayMode: .inline)
             }
         }
         // must ensure that the stack navigation is used otherwise it is considered as a master view

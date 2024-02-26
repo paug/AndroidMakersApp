@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="no_maps_app_found">Erreur: Pas d‘application de carte trouvée</string>
 
-    <plurals name="duration_minutes">
-        <item quantity="one">%s minute</item>
-        <item quantity="other">%s minutes</item>
-    </plurals>
     <string name="many_minutes">Beaucoup de minutes</string>
 
     <string name="Detail_sessionNotFound">Impossible de récuperer les informations sur cette
@@ -25,21 +20,6 @@
     <string name="share">Partager la session</string>
 
     <string name="unable_to_launch_video_intent">Désolé, la vidéo ne peut pas être lancée pour le moment :(</string>
-
-    <!--Venue-->
-
-
-    <!--About-->
-    <string name="about_android_makers">Android Makers by droidcon est un événement de deux jours qui se tiendra les 27 et 28 avril.
-        \n\nRejoignez-nous pour aborder le présent et futur d‘Android avec les meilleurs experts du domaine.
-        Il y aura des sessions techniques, des ateliers et des rencontres avec vos speakers préférés.
-        \n\nTous les talks seront enregistrées, et mis sur la chaîne YouTube.</string>
-
-    <string name="wifi">Wifi</string>
-    <string name="wifi_network">Réseau: <b>%1$s</b></string>
-    <string name="wifi_password">Mot de passe : <b>%1$s</b></string>
-    <string name="wifi_connect_description">Se connecter directement au Wifi du lieu</string>
-    <string name="wifi_connect">Se connecter</string>
 
     <string name="sponsors">Sponsors</string>
     <string name="gold_sponsor">Sponsor Gold</string>

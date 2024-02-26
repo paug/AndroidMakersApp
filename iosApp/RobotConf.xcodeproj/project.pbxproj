@@ -97,7 +97,6 @@
 		B2EF3CF923E8A4C30078019F /* TalkFeedbackViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EF3CF823E8A4C30078019F /* TalkFeedbackViewModel.swift */; };
 		B2EF3CFB23E8A8020078019F /* TalkFeedbackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EF3CFA23E8A8020078019F /* TalkFeedbackView.swift */; };
 		B2F270CA23DC7E2600FD6823 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B2F270C823DC7E2600FD6823 /* Localizable.strings */; };
-		B2F270D623DC82BB00FD6823 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F270D523DC82BB00FD6823 /* Strings.swift */; };
 		B2F270DB23DC869300FD6823 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = B2F270DA23DC869300FD6823 /* .swiftlint.yml */; };
 		B2F270DE23DC944800FD6823 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F270DD23DC944800FD6823 /* Assets.swift */; };
 		B2FE9FBA24546FAD005FE370 /* TalksProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FE9FB924546FAD005FE370 /* TalksProvider.swift */; };
@@ -212,7 +211,6 @@
 		B2EF3CFA23E8A8020078019F /* TalkFeedbackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkFeedbackView.swift; sourceTree = "<group>"; };
 		B2F270CC23DC7E9200FD6823 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B2F270CD23DC7EBC00FD6823 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		B2F270D523DC82BB00FD6823 /* Strings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		B2F270DA23DC869300FD6823 /* .swiftlint.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		B2F270DD23DC944800FD6823 /* Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
 		B2FE9FB924546FAD005FE370 /* TalksProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalksProvider.swift; sourceTree = "<group>"; };
@@ -523,7 +521,6 @@
 			isa = PBXGroup;
 			children = (
 				B2F270DD23DC944800FD6823 /* Assets.swift */,
-				B2F270D523DC82BB00FD6823 /* Strings.swift */,
 			);
 			path = SwiftGen;
 			sourceTree = "<group>";
@@ -812,7 +809,6 @@
 				B2FE9FE9245493F3005FE370 /* FirebaseDescriptor.swift in Sources */,
 				4538D0DE29CA2DB600BB94DB /* SchemaMetadata.graphql.swift in Sources */,
 				B2BC0B8823B933ED00C85F69 /* LocationPlanView.swift in Sources */,
-				B2F270D623DC82BB00FD6823 /* Strings.swift in Sources */,
 				B2FE9FD324548D52005FE370 /* JsonRoomsProvider.swift in Sources */,
 				4538D0D429CA2DB600BB94DB /* LocalDateTime.swift in Sources */,
 				B2BC0B7923B902BF00C85F69 /* FirestoreVenuesProvider.swift in Sources */,

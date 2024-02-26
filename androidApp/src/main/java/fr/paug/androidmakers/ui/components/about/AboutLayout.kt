@@ -92,7 +92,7 @@ private fun IntroCard(
     )
     Text(
         modifier = Modifier.padding(16.dp),
-        text = stringResource(R.string.about_android_makers)
+        text = stringResource(MR.strings.about_android_makers)
     )
     Row(
         Modifier.fillMaxWidth(),
