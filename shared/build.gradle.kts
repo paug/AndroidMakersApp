@@ -14,6 +14,7 @@ kotlin {
       baseName = "shared"
       isStatic = true
       export(project(":shared:ui"))
+      export(project(":shared:domain"))
       export(libs.moko.resources)
       export(libs.moko.graphics)
     }
@@ -23,6 +24,7 @@ kotlin {
     commonMain.dependencies {
       api(libs.moko.resources)
       api(project(":shared:ui"))
+      api(project(":shared:domain"))
     }
   }
 }

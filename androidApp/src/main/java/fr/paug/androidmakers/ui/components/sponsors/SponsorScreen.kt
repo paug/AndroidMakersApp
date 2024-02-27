@@ -20,7 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import fr.androidmakers.store.model.Partner
+import fr.androidmakers.domain.model.Partner
 import fr.paug.androidmakers.ui.viewmodel.Lce
 import java.util.Locale
 

@@ -1,4 +1,4 @@
-package fr.androidmakers.store.model
+package fr.androidmakers.domain.model
 
 class Agenda(
     val sessions: Map<String, Session>,

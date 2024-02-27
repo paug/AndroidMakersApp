@@ -8,21 +8,25 @@ import com.apollographql.apollo3.cache.normalized.fetchPolicy
 import com.apollographql.apollo3.cache.normalized.optimisticUpdates
 import com.apollographql.apollo3.cache.normalized.refetchPolicy
 import com.apollographql.apollo3.cache.normalized.watch
-import fr.androidmakers.store.AndroidMakersStore
 import fr.androidmakers.store.graphql.type.buildBookmarks
-import fr.androidmakers.store.model.Logo
-import fr.androidmakers.store.model.Partner
-import fr.androidmakers.store.model.Room
-import fr.androidmakers.store.model.Session
-import fr.androidmakers.store.model.Speaker
-import fr.androidmakers.store.model.Venue
+import fr.androidmakers.domain.model.Logo
+import fr.androidmakers.domain.model.Partner
+import fr.androidmakers.domain.model.Room
+import fr.androidmakers.domain.model.Session
+import fr.androidmakers.domain.model.Speaker
+import fr.androidmakers.domain.model.Venue
+import fr.androidmakers.domain.repo.PartnersRepository
+import fr.androidmakers.domain.repo.RoomsRepository
+import fr.androidmakers.domain.repo.SessionsRepository
+import fr.androidmakers.domain.repo.SpeakersRepository
+import fr.androidmakers.domain.repo.VenueRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 
 class GraphQLStore(
     val apolloClient: ApolloClient
-) : AndroidMakersStore {
+) : PartnersRepository, RoomsRepository, SessionsRepository, SpeakersRepository, VenueRepository {
   override fun getVenue(id: String): Flow<Result<Venue>> {
     return apolloClient.query(GetVenueQuery(id))
         .fetchPolicy(FetchPolicy.CacheAndNetwork)

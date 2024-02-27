@@ -1,4 +1,4 @@
-package fr.androidmakers.store.model
+package fr.androidmakers.domain.model
 
 data class SocialsItem(
     val name: String? = null,

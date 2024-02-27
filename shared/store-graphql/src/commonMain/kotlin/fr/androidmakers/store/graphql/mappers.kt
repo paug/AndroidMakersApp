@@ -3,11 +3,12 @@ package fr.androidmakers.store.graphql
 import fr.androidmakers.store.graphql.fragment.RoomDetails
 import fr.androidmakers.store.graphql.fragment.SessionDetails
 import fr.androidmakers.store.graphql.fragment.SpeakerDetails
-import fr.androidmakers.store.model.Room
-import fr.androidmakers.store.model.Session
-import fr.androidmakers.store.model.SocialsItem
-import fr.androidmakers.store.model.Speaker
-import fr.androidmakers.store.model.Venue
+import fr.androidmakers.domain.model.Complexity
+import fr.androidmakers.domain.model.Room
+import fr.androidmakers.domain.model.Session
+import fr.androidmakers.domain.model.SocialsItem
+import fr.androidmakers.domain.model.Speaker
+import fr.androidmakers.domain.model.Venue
 
 fun SpeakerDetails.toSpeaker(): Speaker {
   return Speaker(
@@ -45,7 +46,7 @@ fun SessionDetails.toSession(): Session {
       id = id,
       description = description,
       title = title,
-      complexity = complexity ?: "",
+      complexity = complexity?.let { Complexity.valueOf(it) },
       language = language ?: "",
       platformUrl = "",
       slido = "",

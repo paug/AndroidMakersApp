@@ -4,6 +4,7 @@
 
 import Foundation
 import Combine
+import shared
 
 class AgendaDayListViewModel: ObservableObject, Identifiable {
     struct Content {
@@ -81,7 +82,7 @@ class AgendaDayListViewModel: ObservableObject, Identifiable {
     }
 
     private func sessionsChanged(sessions: [Session]) {
-        let groupedSessions = Dictionary(grouping: sessions) { $0.startTime }
+        let groupedSessions = Dictionary(grouping: sessions) { $0.startsAt }
         let sortedKeys = groupedSessions.keys.sorted()
         var sections = [Content.Section]()
         var previousDate: Date?
@@ -105,10 +106,10 @@ class AgendaDayListViewModel: ObservableObject, Identifiable {
 
 extension AgendaDayListViewModel.Content.Session {
     init(from session: Session) {
-        self.init(uid: session.uid,
+        self.init(uid: session.id,
                   title: session.title,
                   duration: session.duration,
-                  speakers: session.speakers,
+                  speakers: session.speakers.map { $0 },
                   room: session.isATalk ? session.room.name : nil,
                   language: session.isATalk ? session.language : nil,
                   state: State(from: session))

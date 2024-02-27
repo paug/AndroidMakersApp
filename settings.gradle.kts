@@ -13,7 +13,7 @@ pluginManagement {
 include(
     ":androidApp",
     ":shared",
-    ":shared:store",
+    ":shared:domain",
     ":shared:store-graphql",
     ":shared:ui"
 )

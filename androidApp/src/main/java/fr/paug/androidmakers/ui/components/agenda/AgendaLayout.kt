@@ -26,18 +26,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import fr.androidmakers.store.getAgenda
-import fr.androidmakers.store.model.Agenda
-import fr.androidmakers.store.model.Room
-import fr.androidmakers.store.model.Session
-import fr.androidmakers.store.model.Speaker
+import fr.androidmakers.domain.model.Agenda
+import fr.androidmakers.domain.model.Room
+import fr.androidmakers.domain.model.Session
+import fr.androidmakers.domain.model.Speaker
 import fr.paug.androidmakers.AndroidMakersApplication
-import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.MR
 import fr.paug.androidmakers.ui.components.AgendaLayoutViewModel
 import fr.paug.androidmakers.ui.components.ButtonRefreshableLceLayout
@@ -88,7 +85,7 @@ fun AgendaLayout(
 
 class AgendaPagerViewModel : LceViewModel<Agenda>() {
   override fun produce(): Flow<Result<Agenda>> {
-    return AndroidMakersApplication.instance().store.getAgenda()
+    return AndroidMakersApplication.instance().getAgendaUseCase()
   }
 }
 

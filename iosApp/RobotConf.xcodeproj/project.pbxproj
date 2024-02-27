@@ -31,7 +31,6 @@
 		4538D0DD29CA2DB600BB94DB /* SchemaConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4538D0CC29CA2DB600BB94DB /* SchemaConfiguration.swift */; };
 		4538D0DE29CA2DB600BB94DB /* SchemaMetadata.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4538D0CD29CA2DB600BB94DB /* SchemaMetadata.graphql.swift */; };
 		4567FB1229D9D04F00724187 /* View+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4567FB1129D9D04F00724187 /* View+Utils.swift */; };
-		4567FB1529D9D95B00724187 /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4567FB1429D9D95B00724187 /* Room.swift */; };
 		4567FB1729D9E08000724187 /* AgendaListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4567FB1629D9E08000724187 /* AgendaListView.swift */; };
 		4567FB1B29D9E13100724187 /* AgendaRoomListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4567FB1A29D9E13100724187 /* AgendaRoomListView.swift */; };
 		4595148E29C0FE4D003F7B4F /* GraphQLVenuesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4595148D29C0FE4D003F7B4F /* GraphQLVenuesProvider.swift */; };
@@ -42,6 +41,7 @@
 		45EC5AC229C26DCE00ABBB7F /* GraphQLDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EC5AC129C26DCE00ABBB7F /* GraphQLDataProvider.swift */; };
 		45EC5AC429C2701400ABBB7F /* SessionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EC5AC329C2701400ABBB7F /* SessionData.swift */; };
 		6440520B2B892F0200F87201 /* ResourcesUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6440520A2B892F0200F87201 /* ResourcesUtils.swift */; };
+		647899302B8CE32600887B74 /* KmpUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6478992F2B8CE32600887B74 /* KmpUtils.swift */; };
 		B207015E2353324400F8E2AF /* AgendaDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B207015D2353324400F8E2AF /* AgendaDetailView.swift */; };
 		B20701602353372800F8E2AF /* AgendaDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B207015F2353372800F8E2AF /* AgendaDetailViewModel.swift */; };
 		B2229A0123A39D6F00F50750 /* FirestoreSlotsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2229A0023A39D6F00F50750 /* FirestoreSlotsProvider.swift */; };
@@ -83,9 +83,7 @@
 		B2CD273B234D06560016AA02 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2CD2739234D06560016AA02 /* LaunchScreen.storyboard */; };
 		B2CD275F234D079B0016AA02 /* AgendaDayListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CD275E234D079B0016AA02 /* AgendaDayListView.swift */; };
 		B2CD2763234D08820016AA02 /* AgendaCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CD2762234D08820016AA02 /* AgendaCellView.swift */; };
-		B2CD2766234D116A0016AA02 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CD2765234D116A0016AA02 /* Session.swift */; };
 		B2CD2768234D12500016AA02 /* SessionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CD2767234D12500016AA02 /* SessionRepository.swift */; };
-		B2CD276A234D12980016AA02 /* Speaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CD2769234D12980016AA02 /* Speaker.swift */; };
 		B2CD276C234D13380016AA02 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CD276B234D13380016AA02 /* Language.swift */; };
 		B2CD276E234D18450016AA02 /* AgendaDayListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CD276D234D18450016AA02 /* AgendaDayListViewModel.swift */; };
 		B2CD4264235789B5009FE6B0 /* DataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CD4263235789B5009FE6B0 /* DataProvider.swift */; };
@@ -142,7 +140,6 @@
 		4538D0CC29CA2DB600BB94DB /* SchemaConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchemaConfiguration.swift; sourceTree = "<group>"; };
 		4538D0CD29CA2DB600BB94DB /* SchemaMetadata.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchemaMetadata.graphql.swift; sourceTree = "<group>"; };
 		4567FB1129D9D04F00724187 /* View+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Utils.swift"; sourceTree = "<group>"; };
-		4567FB1429D9D95B00724187 /* Room.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
 		4567FB1629D9E08000724187 /* AgendaListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgendaListView.swift; sourceTree = "<group>"; };
 		4567FB1A29D9E13100724187 /* AgendaRoomListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgendaRoomListView.swift; sourceTree = "<group>"; };
 		4595145A29C0F56E003F7B4F /* schema.graphqls */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = schema.graphqls; sourceTree = "<group>"; };
@@ -153,6 +150,7 @@
 		45EC5AC129C26DCE00ABBB7F /* GraphQLDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphQLDataProvider.swift; sourceTree = "<group>"; };
 		45EC5AC329C2701400ABBB7F /* SessionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionData.swift; sourceTree = "<group>"; };
 		6440520A2B892F0200F87201 /* ResourcesUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcesUtils.swift; sourceTree = "<group>"; };
+		6478992F2B8CE32600887B74 /* KmpUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KmpUtils.swift; sourceTree = "<group>"; };
 		B207015D2353324400F8E2AF /* AgendaDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgendaDetailView.swift; sourceTree = "<group>"; };
 		B207015F2353372800F8E2AF /* AgendaDetailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgendaDetailViewModel.swift; sourceTree = "<group>"; };
 		B2229A0023A39D6F00F50750 /* FirestoreSlotsProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirestoreSlotsProvider.swift; sourceTree = "<group>"; };
@@ -195,9 +193,7 @@
 		B2CD273C234D06560016AA02 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B2CD275E234D079B0016AA02 /* AgendaDayListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgendaDayListView.swift; sourceTree = "<group>"; };
 		B2CD2762234D08820016AA02 /* AgendaCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgendaCellView.swift; sourceTree = "<group>"; };
-		B2CD2765234D116A0016AA02 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		B2CD2767234D12500016AA02 /* SessionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionRepository.swift; sourceTree = "<group>"; };
-		B2CD2769234D12980016AA02 /* Speaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Speaker.swift; sourceTree = "<group>"; };
 		B2CD276B234D13380016AA02 /* Language.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
 		B2CD276D234D18450016AA02 /* AgendaDayListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgendaDayListViewModel.swift; sourceTree = "<group>"; };
 		B2CD42612357876C009FE6B0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -374,6 +370,7 @@
 				33BFB2842822D71300B12C0D /* URL+QueryItems.swift */,
 				4567FB1129D9D04F00724187 /* View+Utils.swift */,
 				6440520A2B892F0200F87201 /* ResourcesUtils.swift */,
+				6478992F2B8CE32600887B74 /* KmpUtils.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -494,15 +491,12 @@
 				B2BC0B8523B91E0800C85F69 /* VenueRepository.swift */,
 				B258187423C2374D00E1B0F0 /* PartnerRepository.swift */,
 				B2EF3CF423E89FC90078019F /* FeedbackRepository.swift */,
-				B2CD2765234D116A0016AA02 /* Session.swift */,
-				B2CD2769234D12980016AA02 /* Speaker.swift */,
 				B2BC0B7A23B905B800C85F69 /* Venue.swift */,
 				B258187623C2379600E1B0F0 /* Partner.swift */,
 				B2CD276B234D13380016AA02 /* Language.swift */,
 				B265B04823F1ECA200EA363D /* TalkFeedback.swift */,
 				B268A968242FADCE00412523 /* UserPrefs.swift */,
 				B2FE9FB524546EE2005FE370 /* Data */,
-				4567FB1429D9D95B00724187 /* Room.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -803,7 +797,6 @@
 				B2CD276C234D13380016AA02 /* Language.swift in Sources */,
 				B2FE9FBC2454700F005FE370 /* TalkData.swift in Sources */,
 				B26E853623D49187006C2C9E /* NSAttributedString+HTML.swift in Sources */,
-				B2CD276A234D12980016AA02 /* Speaker.swift in Sources */,
 				B2FE9FC924548A6E005FE370 /* SlotData.swift in Sources */,
 				4538D0D229CA2DB600BB94DB /* Instant.swift in Sources */,
 				B2FE9FE9245493F3005FE370 /* FirebaseDescriptor.swift in Sources */,
@@ -841,7 +834,6 @@
 				B2BC0B8423B91D2100C85F69 /* Model.swift in Sources */,
 				B2FE9FBA24546FAD005FE370 /* TalksProvider.swift in Sources */,
 				45DAAD7729E4867B0085977B /* AgendaRoomListViewModel.swift in Sources */,
-				4567FB1529D9D95B00724187 /* Room.swift in Sources */,
 				B27CC3DF24549E1B0055D36B /* VoteData.swift in Sources */,
 				B2FE9FCD24548B80005FE370 /* JsonSlotsProvider.swift in Sources */,
 				4567FB1229D9D04F00724187 /* View+Utils.swift in Sources */,
@@ -871,8 +863,8 @@
 				B2CD426723578D81009FE6B0 /* FirestoreTalksProvider.swift in Sources */,
 				B2BC0B8223B91C5B00C85F69 /* LocationVenueViewModel.swift in Sources */,
 				B2FE9FC72454882F005FE370 /* JsonSpeakersProvider.swift in Sources */,
-				B2CD2766234D116A0016AA02 /* Session.swift in Sources */,
 				B27CC3DD24549D0A0055D36B /* OpenFeedbackSynchronizer.swift in Sources */,
+				647899302B8CE32600887B74 /* KmpUtils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,8 +10,9 @@ kotlin {
       iosSimulatorArm64()
   ).forEach {
     it.binaries.framework {
-      baseName = "store"
+      baseName = "domain"
       isStatic = true
+      export(libs.kotlinx.datetime)
     }
   }
 
@@ -24,5 +25,5 @@ kotlin {
 }
 
 android {
-  namespace = "fr.androidmakers.store"
+  namespace = "fr.paug.androidmakers.domain"
 }

@@ -78,7 +78,7 @@ fun VenuePager() {
           }
 
           val flow = remember {
-            AndroidMakersApplication.instance().store.getVenue(venueId)
+            AndroidMakersApplication.instance().venueRepository.getVenue(venueId)
                 .map { it.toLce() }
           }
           val venueState = flow.collectAsState(initial = Lce.Loading)

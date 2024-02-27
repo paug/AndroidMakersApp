@@ -1,7 +1,12 @@
 package fr.paug.androidmakers
 
 import android.app.Application
-import fr.androidmakers.store.AndroidMakersStore
+import fr.androidmakers.domain.interactor.GetAgendaUseCase
+import fr.androidmakers.domain.repo.PartnersRepository
+import fr.androidmakers.domain.repo.RoomsRepository
+import fr.androidmakers.domain.repo.SessionsRepository
+import fr.androidmakers.domain.repo.SpeakersRepository
+import fr.androidmakers.domain.repo.VenueRepository
 import fr.androidmakers.store.graphql.GraphQLStore
 import fr.paug.androidmakers.util.BookmarksStore
 import io.openfeedback.android.OpenFeedback
@@ -9,13 +14,28 @@ import io.openfeedback.android.OpenFeedback
 
 
 class AndroidMakersApplication : Application() {
-  lateinit var store: AndroidMakersStore
+  lateinit var getAgendaUseCase: GetAgendaUseCase
+  lateinit var partnersRepository: PartnersRepository
+  lateinit var roomsRepository: RoomsRepository
+  lateinit var sessionsRepository: SessionsRepository
+  lateinit var speakersRepository: SpeakersRepository
+  lateinit var venueRepository: VenueRepository
+
   lateinit var openFeedback: OpenFeedback
 
   override fun onCreate() {
     instance_ = this
 
-    store = GraphQLStore(this)
+    partnersRepository = GraphQLStore(this)
+    roomsRepository = GraphQLStore(this)
+    sessionsRepository = GraphQLStore(this)
+    speakersRepository = GraphQLStore(this)
+    venueRepository = GraphQLStore(this)
+    getAgendaUseCase = GetAgendaUseCase(
+        sessionsRepository = sessionsRepository,
+        roomsRepository = roomsRepository,
+        speakersRepository = speakersRepository
+    )
 
     super.onCreate()
     BookmarksStore.init(this)
