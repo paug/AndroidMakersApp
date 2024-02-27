@@ -25,6 +25,8 @@ import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import fr.paug.androidmakers.R
+import fr.paug.androidmakers.ui.MR
+import fr.paug.androidmakers.ui.util.stringResource
 import fr.paug.androidmakers.ui.model.UIVenue
 import fr.paug.androidmakers.ui.util.discardHtmlTags
 import fr.paug.androidmakers.util.CustomTabUtil
@@ -75,7 +77,7 @@ fun VenueLayout(uiVenue: UIVenue) {
         .fillMaxSize()
         .padding(horizontal = 8.dp),
       onClick = { openMap(context, uiVenue.coordinates, uiVenue.name) }) {
-      Text(text = stringResource(R.string.locate_on_map))
+      Text(text = stringResource(MR.strings.locate_on_map))
     }
   }
 }
@@ -97,4 +99,3 @@ fun openMap(context: Context, coordinates: String?, name: String) {
     )
   }
 }
-

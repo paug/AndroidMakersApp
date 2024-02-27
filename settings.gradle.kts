@@ -14,5 +14,6 @@ include(
     ":androidApp",
     ":shared",
     ":shared:store",
-    ":shared:store-graphql"
+    ":shared:store-graphql",
+    ":shared:ui"
 )

@@ -3,6 +3,7 @@
 //
 
 import SwiftUI
+import shared
 
 struct TalkFeedbackView: View {
     @ObservedObject private var viewModel: TalkFeedbackViewModel
@@ -25,7 +26,7 @@ struct TalkFeedbackView: View {
 
         switch content.availability {
         case .notAvailable:
-            return AnyView(Text(L10n.Agenda.Detail.Feedback.notAvailable).italic())
+                return AnyView(Text(stringResource(MR.strings().feedback_not_available)).italic())
         case .available(let feedback):
             return AnyView(
                 VStack {

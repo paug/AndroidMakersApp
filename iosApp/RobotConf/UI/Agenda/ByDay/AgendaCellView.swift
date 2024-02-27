@@ -3,6 +3,7 @@
 //
 
 import SwiftUI
+import shared
 
 struct AgendaCellView: View {
     var session: AgendaDayListViewModel.Content.Session
@@ -56,9 +57,9 @@ struct AgendaCellView: View {
 extension AgendaDayListViewModel.Content.Session.State {
     var localizedDescription: String {
         switch self {
-        case .current:  return L10n.Agenda.Detail.State.current
-        case .isComing: return L10n.Agenda.Detail.State.isComing
-        case .none:     return ""
+            case .current:  return stringResource(MR.strings().current_session)
+            case .isComing: return stringResource(MR.strings().upcoming_session)
+            case .none:     return ""
         }
     }
 }

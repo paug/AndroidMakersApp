@@ -3,13 +3,14 @@
 //
 
 import SwiftUI
+import shared
 
 struct LocationPlanView: View {
     var body: some View {
         Image("plan")
             .resizable()
             .aspectRatio(contentMode: .fit)
-            .navigationBarTitle(Text(L10n.Locations.plan), displayMode: .inline)
+            .navigationBarTitle(Text(stringResource(MR.strings().venue_floor_plan_tab)), displayMode: .inline)
     }
 }
 

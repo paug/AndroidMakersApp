@@ -5,6 +5,7 @@
 import SwiftUI
 import URLImage
 import MapKit
+import shared
 
 struct LocationVenueView: View {
     @StateObject private var viewModel: LocationVenueViewModel
@@ -34,7 +35,7 @@ struct LocationVenueView: View {
                         .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
                         .padding(.horizontal, 8)
 
-                    Button(L10n.Locations.directions) {
+                    Button(stringResource(MR.strings().locations)) {
                         if let coordinates = content.coordinates {
                             let placemark = MKPlacemark(coordinate: coordinates)
                             let mapItem = MKMapItem(placemark: placemark)

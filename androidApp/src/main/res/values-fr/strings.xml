@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="title_agenda">Agenda</string>
-    <string name="title_venue">Lieu</string>
-    <string name="title_about">À propos</string>
-
-    <string name="english">Anglais</string>
-    <string name="french">Français</string>
-
     <string name="no_maps_app_found">Erreur: Pas d‘application de carte trouvée</string>
 
-    <plurals name="duration_minutes">
-        <item quantity="one">%s minute</item>
-        <item quantity="other">%s minutes</item>
-    </plurals>
     <string name="many_minutes">Beaucoup de minutes</string>
 
     <string name="Detail_sessionNotFound">Impossible de récuperer les informations sur cette
@@ -22,8 +10,6 @@
     <string name="agenda_empty_screen">Impossible de charger l‘agenda.\nVérifiez votre connexion et
         attendez que cette vue se rafraîchit.
     </string>
-    <string name="filter_language_header">Langues</string>
-    <string name="filter_language_all">Toutes</string>
 
     <string name="ImageDesc_speaker_avatar">Photo du speaker</string>
     <string name="ImageDesc_social_network_image">réseau social</string>
@@ -34,37 +20,6 @@
     <string name="share">Partager la session</string>
 
     <string name="unable_to_launch_video_intent">Désolé, la vidéo ne peut pas être lancée pour le moment :(</string>
-
-    <!--Filters-->
-    <string name="filter">Filtres</string>
-    <string name="bookmarked">Favoris</string>
-    <string name="language">Langues</string>
-    <string name="room">Salle</string>
-    <string name="rooms">Salles</string>
-    <string name="empty_events">Désolé, aucune conférence n‘est disponible pour les filtres actuellement sélectionnés.</string>
-
-    <!--Venue-->
-    <string name="locate_on_map">Localiser sur la carte</string>
-    <string name="venue_afterparty_tab">After Party</string>
-    <string name="venue_conference_tab">Conférence</string>
-    <string name="venue_floor_plan_tab">Plan</string>
-
-    <!--About-->
-    <string name="about_android_makers">Android Makers by droidcon est un événement de deux jours qui se tiendra les 27 et 28 avril.
-        \n\nRejoignez-nous pour aborder le présent et futur d‘Android avec les meilleurs experts du domaine.
-        Il y aura des sessions techniques, des ateliers et des rencontres avec vos speakers préférés.
-        \n\nTous les talks seront enregistrées, et mis sur la chaîne YouTube.</string>
-
-    <string name="faq">FAQ</string>
-    <string name="code_of_conduct">Code de conduite</string>
-
-    <string name="social">Social</string>
-
-    <string name="wifi">Wifi</string>
-    <string name="wifi_network">Réseau: <b>%1$s</b></string>
-    <string name="wifi_password">Mot de passe : <b>%1$s</b></string>
-    <string name="wifi_connect_description">Se connecter directement au Wifi du lieu</string>
-    <string name="wifi_connect">Se connecter</string>
 
     <string name="sponsors">Sponsors</string>
     <string name="gold_sponsor">Sponsor Gold</string>
@@ -78,12 +33,6 @@
 
     <string name="feedbackWaiting">Revenez plus tard pour donner votre retour.</string>
 
-    <string name="back">Retour</string>
-    <string name="ohno">Oh no !\nC‘est tout cassé\n😕 …</string>
-    <string name="retry">Réessayer</string>
-
-    <string name="signin">Connexion</string>
-    <string name="signout">Déconnexion</string>
     <string name="permission_notifications_rationale_title">Permission refusée</string>
     <string name="permission_notifications_rationale_text">Sans cette autorisation, l‘application ne peut pas vous envoyer de notifications. Voulez-vous vraiment refuser cette autorisation ?</string>
     <string name="permission_notifications_rationale_positive">Aller dans les préférences</string>

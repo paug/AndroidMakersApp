@@ -5,6 +5,7 @@
 import SwiftUI
 import URLImage
 import SafariServices
+import shared
 
 struct AgendaDetailView: View {
 
@@ -41,15 +42,18 @@ struct AgendaDetailView: View {
                         .font(.title)
                         .padding(.bottom, 8)
                         .padding(.top, 16)
-                    Text([L10n.Agenda.Detail.summary(fullDateFormatter.string(from: content.startDate),
-                                                     timeFormatter.string(from: content.startDate),
-                                                     timeFormatter.string(from: content.endDate)),
-                          content.room]
+                    Text(
+                        [stringResource(
+                            MR.strings().session_detail,
+                            args: [fullDateFormatter.string(from: content.startDate),
+                            timeFormatter.string(from: content.startDate),
+                            timeFormatter.string(from: content.endDate)]),
+                            content.room]
                         .compactMap { $0 }
-                        .joined(separator: ", "))
-                        .bold()
-                        .font(.headline)
-                        .padding(.bottom, 8)
+                            .joined(separator: ", "))
+                    .bold()
+                    .font(.headline)
+                    .padding(.bottom, 8)
                     Text(content.description)
                         .font(.body)
                     HStack {
@@ -64,7 +68,7 @@ struct AgendaDetailView: View {
                         Divider().padding(.top, 8)
                         if content.youtubeUrl != nil {
                             WebButton(url: content.youtubeUrl!, openInExternalBrowser: true) {
-                                Text(L10n.Agenda.Detail.youtube)
+                                Text(stringResource(MR.strings().watch_youtube))
                                     .frame(maxWidth: .infinity)
                             }
                             .foregroundColor(Color(UIColor.systemBackground))
@@ -74,7 +78,7 @@ struct AgendaDetailView: View {
                         }
                         if content.slidesUrl != nil {
                             WebButton(url: content.slidesUrl!, openInExternalBrowser: true) {
-                                Text(L10n.Agenda.Detail.presentation)
+                                Text(stringResource(MR.strings().open_slides))
                                     .frame(maxWidth: .infinity)
                             }
                             .foregroundColor(Color(UIColor.systemBackground))
@@ -84,7 +88,7 @@ struct AgendaDetailView: View {
                         }
                         if content.questionUrl != nil {
                             WebButton(url: content.questionUrl!) {
-                                Text(L10n.Agenda.Detail.question)
+                                Text(stringResource(MR.strings().ask_speaker))
                                     .frame(maxWidth: .infinity)
                             }
                             .foregroundColor(Color(UIColor.systemBackground))
@@ -157,9 +161,9 @@ struct SpeakerView: View {
 private extension Session.Complexity {
     var displayString: String {
         switch self {
-        case .beginner:     return L10n.Talk.Complexity.beginner
-        case .intermediate: return L10n.Talk.Complexity.intermediate
-        case .expert:       return L10n.Talk.Complexity.expert
+            case .beginner:     return stringResource(MR.strings().beginner)
+            case .intermediate: return stringResource(MR.strings().intermediate)
+            case .expert:       return stringResource(MR.strings().expert)
         }
     }
 }

@@ -2,7 +2,11 @@ package fr.paug.androidmakers.util
 
 import android.content.Context
 import android.text.format.DateFormat
+import dev.icerock.moko.resources.desc.Plural
+import dev.icerock.moko.resources.desc.PluralFormatted
+import dev.icerock.moko.resources.desc.StringDesc
 import fr.paug.androidmakers.R
+import fr.paug.androidmakers.ui.MR
 import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.util.Date
@@ -39,10 +43,10 @@ object TimeUtils {
   fun formatDuration(context: Context, duration: Duration): String {
     val minutes = duration.inWholeMinutes
     return if (minutes <= 120) {
-      context.resources.getQuantityString(
-          R.plurals.duration_minutes, minutes.toInt(),
+      StringDesc.PluralFormatted(
+          MR.plurals.duration_minutes, minutes.toInt(),
           minutes
-      )
+      ).toString(context)
     } else {
       context.resources.getString(R.string.many_minutes)
     }

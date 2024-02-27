@@ -64,7 +64,7 @@ struct AgendaDayListView: View {
                 }
             }
             .listStyle(.insetGrouped)
-            .navigationBarTitle(Text(L10n.Agenda.navTitle), displayMode: .large)
+            .navigationBarTitle(Text("title"), displayMode: .large)
             .navigationBarItems(trailing:
                 Button(action: { self.favOnly.toggle() }) {
                     Image(systemName: favOnly ? "star.fill" : "star").padding()
