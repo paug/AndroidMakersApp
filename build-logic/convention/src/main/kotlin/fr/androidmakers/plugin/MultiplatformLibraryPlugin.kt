@@ -20,6 +20,7 @@ class MultiplatformLibraryPlugin : Plugin<Project> {
       configureMultiplatformLibrary(kotlinExtension)
 
       (kotlinExtension as KotlinMultiplatformExtension).apply {
+        applyDefaultHierarchyTemplate()
         androidTarget()
       }
 

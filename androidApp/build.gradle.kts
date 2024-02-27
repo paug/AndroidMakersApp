@@ -48,4 +48,5 @@ dependencies {
 
   // Used for tags
   implementation(libs.openfeedback)
+  implementation(project(":shared"))
 }

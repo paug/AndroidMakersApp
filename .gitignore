@@ -41,8 +41,8 @@ app/prod/release/output.json
 
 Pods
 
-xcuserdata
+**/xcuserdata
 RobotConf/OpenFeedback-Info.plist
 RobotConf/GoogleService-Info.plist
 apollo-ios-cli
-
+*.xcuserstate

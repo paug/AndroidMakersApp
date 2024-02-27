@@ -65,9 +65,11 @@ import fr.androidmakers.store.model.Session
 import fr.androidmakers.store.model.Speaker
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.R
+import fr.paug.androidmakers.ui.MR
 import fr.paug.androidmakers.ui.components.LoadingLayout
 import fr.paug.androidmakers.ui.theme.AMColor
 import fr.paug.androidmakers.ui.util.discardHtmlTags
+import fr.paug.androidmakers.ui.util.stringResource
 import fr.paug.androidmakers.ui.viewmodel.Lce
 import fr.paug.androidmakers.util.EmojiUtils
 import io.openfeedback.android.components.SessionFeedbackContainer
@@ -110,7 +112,7 @@ fun SessionDetailLayout(
               IconButton(onClick = onBackClick) {
                 Icon(
                     Icons.AutoMirrored.Rounded.ArrowBack,
-                    contentDescription = stringResource(R.string.back)
+                    contentDescription = stringResource(MR.strings.back)
                 )
               }
             },
@@ -154,7 +156,7 @@ fun SessionDetailLayout(
             Crossfade(sessionDetailState.content.isBookmarked) { isBookmarked ->
               Image(
                   imageVector = if (isBookmarked) Icons.Rounded.BookmarkRemove else Icons.Rounded.BookmarkAdd,
-                  contentDescription = stringResource(R.string.bookmarked)
+                  contentDescription = stringResource(MR.strings.bookmarked)
               )
             }
           }
@@ -248,8 +250,8 @@ private fun SessionDetails(sessionDetails: SessionDetailState, formattedDateAndR
 @Composable
 private fun String.asLanguageResource(): String? {
   return when (this) {
-    "English" -> stringResource(R.string.english)
-    "French" -> stringResource(R.string.french)
+    "English" -> stringResource(MR.strings.english)
+    "French" -> stringResource(MR.strings.french)
     else -> null
   }
 }
@@ -326,7 +328,7 @@ private fun Speaker(
         model = ImageRequest.Builder(LocalContext.current)
             .data(speaker.photoUrl)
             .build(),
-        contentDescription = stringResource(R.string.title_speakers)
+        contentDescription = stringResource(MR.strings.speakers)
     )
 
     Text(

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Android Makers by droidcon</string>
+
+    <string name="version">Version %s (%d)</string>
+
+    <string name="agenda">Agenda</string>
+    <string name="venue">Lieu</string>
+    <string name="about">À propos</string>
+    <string name="sponsors">Sponsors</string>
+    <string name="speakers">Speakers</string>
+
+    <string name="language">Langues</string>
+    <string name="language_all">Toutes</string>
+
+    <string name="filter">Filtres</string>
+    <string name="bookmarked">Favoris</string>
+    <string name="language">Langues</string>
+    <string name="room">Salle</string>
+    <string name="rooms">Salles</string>
+    <string name="empty_events">Désolé, aucune conférence n‘est disponible pour les filtres actuellement sélectionnés.</string>
+
+    <string name="english">Anglais</string>
+    <string name="french">Français</string>
+
+    <string name="locate_on_map">Localiser sur la carte</string>
+    <string name="venue_afterparty_tab">After Party</string>
+    <string name="venue_conference_tab">Conférence</string>
+    <string name="venue_floor_plan_tab">Plan</string>
+
+    <string name="back">Retour</string>
+    <string name="ohno">Oh no !\nC‘est tout cassé\n😕 …</string>
+    <string name="retry">Réessayer</string>
+
+    <string name="signin">Connexion</string>
+    <string name="signout">Déconnexion</string>
+
+    <string name="faq">FAQ</string>
+    <string name="code_of_conduct">Code de conduite</string>
+    <string name="social">Social</string>
+
+    <string name="beginner">Débutant</string>
+    <string name="intermediate">Intermédiaire</string>
+    <string name="expert">Expert</string>
+
+    <string name="about_android_makers">AndroidMakers by droidcon est un événement de deux jours qui se tiendra les 27 et 28 avril.
+        \n\nRejoignez-nous pour aborder le présent et futur d‘Android avec les meilleurs experts du domaine.
+        Il y aura des sessions techniques, des ateliers et des rencontres avec vos speakers préférés.
+        \n\nTous les talks seront enregistrées, et mis sur la chaîne YouTube.</string>
+
+    <string name="current_session">En cours</string>
+    <string name="upcoming_session">Bientôt</string>
+
+    <!-- Specific iOS -->
+    <string name="about_am">À propos d\'AM 23</string>
+    <string name="locations">Lieux</string>
+    <string name="directions">Localiser</string>
+
+    <string name="open_slides">Voir les slides</string>
+    <string name="feedback_not_available">Cette présentation ne peut pas être commentée pour l\'instant.\nVeuillez revenir après y avoir assisté.</string>
+    <string name="watch_youtube">Regarder sur Youtube</string>
+    <string name="ask_speaker">Posez une question au speaker sur Slido</string>
+
+    <!-- Info about the session. It is `date` at `start time` - `end time`-->
+    <string name="session_detail">%s à %s - %s</string>
+</resources>

@@ -41,6 +41,7 @@
 		45EC5A9E29C254A500ABBB7F /* GraphQLTalksProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EC5A9D29C254A500ABBB7F /* GraphQLTalksProvider.swift */; };
 		45EC5AC229C26DCE00ABBB7F /* GraphQLDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EC5AC129C26DCE00ABBB7F /* GraphQLDataProvider.swift */; };
 		45EC5AC429C2701400ABBB7F /* SessionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EC5AC329C2701400ABBB7F /* SessionData.swift */; };
+		6440520B2B892F0200F87201 /* ResourcesUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6440520A2B892F0200F87201 /* ResourcesUtils.swift */; };
 		B207015E2353324400F8E2AF /* AgendaDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B207015D2353324400F8E2AF /* AgendaDetailView.swift */; };
 		B20701602353372800F8E2AF /* AgendaDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B207015F2353372800F8E2AF /* AgendaDetailViewModel.swift */; };
 		B2229A0123A39D6F00F50750 /* FirestoreSlotsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2229A0023A39D6F00F50750 /* FirestoreSlotsProvider.swift */; };
@@ -96,8 +97,6 @@
 		B2EF3CF923E8A4C30078019F /* TalkFeedbackViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EF3CF823E8A4C30078019F /* TalkFeedbackViewModel.swift */; };
 		B2EF3CFB23E8A8020078019F /* TalkFeedbackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EF3CFA23E8A8020078019F /* TalkFeedbackView.swift */; };
 		B2F270CA23DC7E2600FD6823 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B2F270C823DC7E2600FD6823 /* Localizable.strings */; };
-		B2F270D423DC816B00FD6823 /* swiftgen.yml in Resources */ = {isa = PBXBuildFile; fileRef = B2F270D323DC816B00FD6823 /* swiftgen.yml */; };
-		B2F270D623DC82BB00FD6823 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F270D523DC82BB00FD6823 /* Strings.swift */; };
 		B2F270DB23DC869300FD6823 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = B2F270DA23DC869300FD6823 /* .swiftlint.yml */; };
 		B2F270DE23DC944800FD6823 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F270DD23DC944800FD6823 /* Assets.swift */; };
 		B2FE9FBA24546FAD005FE370 /* TalksProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FE9FB924546FAD005FE370 /* TalksProvider.swift */; };
@@ -153,6 +152,7 @@
 		45EC5A9D29C254A500ABBB7F /* GraphQLTalksProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphQLTalksProvider.swift; sourceTree = "<group>"; };
 		45EC5AC129C26DCE00ABBB7F /* GraphQLDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphQLDataProvider.swift; sourceTree = "<group>"; };
 		45EC5AC329C2701400ABBB7F /* SessionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionData.swift; sourceTree = "<group>"; };
+		6440520A2B892F0200F87201 /* ResourcesUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcesUtils.swift; sourceTree = "<group>"; };
 		B207015D2353324400F8E2AF /* AgendaDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgendaDetailView.swift; sourceTree = "<group>"; };
 		B207015F2353372800F8E2AF /* AgendaDetailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgendaDetailViewModel.swift; sourceTree = "<group>"; };
 		B2229A0023A39D6F00F50750 /* FirestoreSlotsProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirestoreSlotsProvider.swift; sourceTree = "<group>"; };
@@ -211,8 +211,6 @@
 		B2EF3CFA23E8A8020078019F /* TalkFeedbackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkFeedbackView.swift; sourceTree = "<group>"; };
 		B2F270CC23DC7E9200FD6823 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B2F270CD23DC7EBC00FD6823 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		B2F270D323DC816B00FD6823 /* swiftgen.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = swiftgen.yml; sourceTree = "<group>"; };
-		B2F270D523DC82BB00FD6823 /* Strings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		B2F270DA23DC869300FD6823 /* .swiftlint.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		B2F270DD23DC944800FD6823 /* Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
 		B2FE9FB924546FAD005FE370 /* TalksProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalksProvider.swift; sourceTree = "<group>"; };
@@ -375,6 +373,7 @@
 				B225422023FB27FE00C5A83E /* TimeProvider.swift */,
 				33BFB2842822D71300B12C0D /* URL+QueryItems.swift */,
 				4567FB1129D9D04F00724187 /* View+Utils.swift */,
+				6440520A2B892F0200F87201 /* ResourcesUtils.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -522,8 +521,6 @@
 			isa = PBXGroup;
 			children = (
 				B2F270DD23DC944800FD6823 /* Assets.swift */,
-				B2F270D523DC82BB00FD6823 /* Strings.swift */,
-				B2F270D323DC816B00FD6823 /* swiftgen.yml */,
 			);
 			path = SwiftGen;
 			sourceTree = "<group>";
@@ -620,6 +617,7 @@
 				B2CD2729234D06530016AA02 /* Resources */,
 				B27CC3E5245594DF0055D36B /* Copy json files in debug */,
 				B27CC3E82455ADD40055D36B /* Copy Firebase plist files */,
+				644052092B8922D300F87201 /* 🎨 Generate Moko Resources */,
 			);
 			buildRules = (
 			);
@@ -692,13 +690,30 @@
 				B2F270DB23DC869300FD6823 /* .swiftlint.yml in Resources */,
 				B2CD2738234D06560016AA02 /* Preview Assets.xcassets in Resources */,
 				B2CD2735234D06560016AA02 /* Assets.xcassets in Resources */,
-				B2F270D423DC816B00FD6823 /* swiftgen.yml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		644052092B8922D300F87201 /* 🎨 Generate Moko Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "🎨 Generate Moko Resources";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$SRCROOT/../gradlew\" -p \"$SRCROOT/../\" :shared:copyFrameworkResourcesToApp \\\n    -Pmoko.resources.PLATFORM=\"$PLATFORM_NAME\" \\\n    -Pmoko.resources.CONFIGURATION=\"$CONFIGURATION\" \\\n    -Pmoko.resources.ARCHS=\"$ARCHS\" \\\n    -Pmoko.resources.BUILT_PRODUCTS_DIR=\"$BUILT_PRODUCTS_DIR\" \\\n    -Pmoko.resources.CONTENTS_FOLDER_PATH=\"$CONTENTS_FOLDER_PATH\" \n";
+		};
 		64F2D2762B878156005B9EAF /* 🏗️ Compile and embedded shared code */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -794,7 +809,6 @@
 				B2FE9FE9245493F3005FE370 /* FirebaseDescriptor.swift in Sources */,
 				4538D0DE29CA2DB600BB94DB /* SchemaMetadata.graphql.swift in Sources */,
 				B2BC0B8823B933ED00C85F69 /* LocationPlanView.swift in Sources */,
-				B2F270D623DC82BB00FD6823 /* Strings.swift in Sources */,
 				B2FE9FD324548D52005FE370 /* JsonRoomsProvider.swift in Sources */,
 				4538D0D429CA2DB600BB94DB /* LocalDateTime.swift in Sources */,
 				B2BC0B7923B902BF00C85F69 /* FirestoreVenuesProvider.swift in Sources */,
@@ -808,6 +822,7 @@
 				B2FE9FC324547850005FE370 /* SpeakerData.swift in Sources */,
 				33BFB2852822D71300B12C0D /* URL+QueryItems.swift in Sources */,
 				B258187523C2374D00E1B0F0 /* PartnerRepository.swift in Sources */,
+				6440520B2B892F0200F87201 /* ResourcesUtils.swift in Sources */,
 				4595148E29C0FE4D003F7B4F /* GraphQLVenuesProvider.swift in Sources */,
 				4538D0DD29CA2DB600BB94DB /* SchemaConfiguration.swift in Sources */,
 				4538D0D829CA2DB600BB94DB /* Partner.graphql.swift in Sources */,

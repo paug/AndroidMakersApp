@@ -28,6 +28,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fr.paug.androidmakers.BuildConfig
 import fr.paug.androidmakers.R
+import fr.paug.androidmakers.ui.MR
+import fr.paug.androidmakers.ui.util.stringResource
 
 
 class AboutActions(
@@ -67,7 +69,7 @@ fun AboutLayout(
         modifier = Modifier.fillMaxWidth(),
         textAlign = TextAlign.Center,
         text = stringResource(
-            R.string.version,
+            MR.strings.version,
             BuildConfig.VERSION_NAME,
             BuildConfig.VERSION_CODE
         ),
@@ -90,15 +92,21 @@ private fun IntroCard(
     )
     Text(
         modifier = Modifier.padding(16.dp),
-        text = stringResource(R.string.about_android_makers)
+        text = stringResource(MR.strings.about_android_makers)
     )
     Row(
         Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center
 
     ) {
-      ClickableText(R.string.faq, onFaqClick)
-      ClickableText(R.string.code_of_conduct, onCocClick)
+      ClickableText(
+          text = stringResource(MR.strings.faq),
+          onClick = onFaqClick
+      )
+      ClickableText(
+          text = stringResource(MR.strings.code_of_conduct),
+          onClick = onCocClick
+      )
     }
   }
 
@@ -116,7 +124,7 @@ private fun SocialCard(
           Modifier.fillMaxWidth(),
           horizontalArrangement = Arrangement.Center
       ) {
-        ClickableText(R.string.x_hashtag, onXHashtagClick)
+        ClickableText(stringResource(R.string.x_hashtag), onXHashtagClick)
       }
       Row(
           Modifier
@@ -148,14 +156,14 @@ private fun SocialCard(
 
 @Composable
 private fun ClickableText(
-    @StringRes text: Int,
-    onFaqClick: () -> Unit,
+    text: String,
+    onClick: () -> Unit,
 ) {
   Text(
       modifier = Modifier
-          .clickable(onClick = onFaqClick)
+          .clickable(onClick = onClick)
           .padding(8.dp),
-      text = stringResource(text),
+      text = text,
       color = MaterialTheme.colorScheme.primary
   )
 }

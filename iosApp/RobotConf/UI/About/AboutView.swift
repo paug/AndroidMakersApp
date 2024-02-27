@@ -4,6 +4,7 @@
 
 import SwiftUI
 import URLImage
+import shared
 
 struct AboutView: View {
     @ObservedObject private var viewModel = AboutViewModel()
@@ -19,16 +20,16 @@ struct AboutView: View {
                                 Image("logo_oneline_black_text")
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
-                                Text(L10n.About.explanation)
+                                Text(stringResource(MR.strings().about_android_makers))
                                     .foregroundColor(Color.black)
                                 HStack(spacing: 24) {
                                     WebButton(url: URL(string: "https://androidmakers.droidcon.com/faqs/")!) {
-                                        Text(L10n.About.faq)
+                                        Text(stringResource(MR.strings().faq))
                                     }
                                     .foregroundColor(Color(Asset.Colors.link.color))
                                     WebButton(url: URL(
                                         string: "https://androidmakers.droidcon.com/code-of-conduct/")!) {
-                                            Text(L10n.About.coc)
+                                            Text(stringResource(MR.strings().code_of_conduct))
                                     }
                                     .foregroundColor(Color(Asset.Colors.link.color))
                                 }.padding(8)
@@ -36,7 +37,7 @@ struct AboutView: View {
                         }
                         Card {
                             VStack {
-                                Text(L10n.About.social)
+                                Text(stringResource(MR.strings().social))
                                     .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
                                     .foregroundColor(Color(Asset.Colors.link.color))
                                 Button(action: {
@@ -68,7 +69,7 @@ struct AboutView: View {
                         }
                         Card {
                             VStack(spacing: 16) {
-                                Text(L10n.About.sponsors)
+                                Text(stringResource(MR.strings().sponsors))
                                     .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
                                     .foregroundColor(Color(Asset.Colors.link.color))
                                 ForEach(self.viewModel.partnerCategories, id: \.self) { category in
@@ -99,7 +100,7 @@ struct AboutView: View {
                     .padding(.horizontal)
                 }
                 .background(Color(.secondarySystemBackground))
-                .navigationBarTitle(Text(L10n.About.navTitle), displayMode: .inline)
+                .navigationBarTitle(Text(stringResource(MR.strings().about_am)), displayMode: .inline)
             }
         }
         // must ensure that the stack navigation is used otherwise it is considered as a master view
