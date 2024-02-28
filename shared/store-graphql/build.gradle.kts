@@ -20,7 +20,7 @@ kotlin {
     commonMain {
       dependencies {
         api(project(":shared:domain"))
-        implementation(libs.apollo.runtime)
+        api(libs.apollo.runtime)
         implementation(libs.apollo.adapters)
         implementation(libs.apollo.normalized.cache.sqlite)
         implementation(libs.apollo.normalized.cache)

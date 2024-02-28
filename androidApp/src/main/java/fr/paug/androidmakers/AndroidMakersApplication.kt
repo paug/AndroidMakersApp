@@ -7,6 +7,7 @@ import fr.androidmakers.domain.repo.RoomsRepository
 import fr.androidmakers.domain.repo.SessionsRepository
 import fr.androidmakers.domain.repo.SpeakersRepository
 import fr.androidmakers.domain.repo.VenueRepository
+import fr.androidmakers.store.graphql.ApolloClientBuilder
 import fr.androidmakers.store.graphql.GraphQLStore
 import fr.paug.androidmakers.util.BookmarksStore
 import io.openfeedback.android.OpenFeedback
@@ -26,11 +27,12 @@ class AndroidMakersApplication : Application() {
   override fun onCreate() {
     instance_ = this
 
-    partnersRepository = GraphQLStore(this)
-    roomsRepository = GraphQLStore(this)
-    sessionsRepository = GraphQLStore(this)
-    speakersRepository = GraphQLStore(this)
-    venueRepository = GraphQLStore(this)
+    val apolloClient = ApolloClientBuilder(this).build()
+    partnersRepository = GraphQLStore(apolloClient)
+    roomsRepository = GraphQLStore(apolloClient)
+    sessionsRepository = GraphQLStore(apolloClient)
+    speakersRepository = GraphQLStore(apolloClient)
+    venueRepository = GraphQLStore(apolloClient)
     getAgendaUseCase = GetAgendaUseCase(
         sessionsRepository = sessionsRepository,
         roomsRepository = roomsRepository,
