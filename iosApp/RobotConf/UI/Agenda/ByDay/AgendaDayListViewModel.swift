@@ -82,7 +82,7 @@ class AgendaDayListViewModel: ObservableObject, Identifiable {
     }
 
     private func sessionsChanged(sessions: [Session]) {
-        let groupedSessions = Dictionary(grouping: sessions) { $0.startsAt }
+        let groupedSessions = Dictionary(grouping: sessions) { $0.startTime }
         let sortedKeys = groupedSessions.keys.sorted()
         var sections = [Content.Section]()
         var previousDate: Date?
@@ -106,7 +106,7 @@ class AgendaDayListViewModel: ObservableObject, Identifiable {
 
 extension AgendaDayListViewModel.Content.Session {
     init(from session: Session) {
-        self.init(uid: session.id,
+        self.init(uid: session.uid,
                   title: session.title,
                   duration: session.duration,
                   speakers: session.speakers.map { $0 },

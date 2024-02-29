@@ -11,7 +11,7 @@ kotlin {
       iosSimulatorArm64()
   ).forEach {
     it.binaries.framework {
-      baseName = "storegraphql"
+      baseName = "data"
       isStatic = true
     }
   }

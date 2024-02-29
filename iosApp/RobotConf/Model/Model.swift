@@ -3,9 +3,14 @@
 //
 
 import Foundation
+import shared
 
 /// Singleton model
 private(set) var model = Model()
+private(set) var apolloClient = ApolloClientBuilder(
+    url: "https://androidmakers-2023.ew.r.appspot.com/graphql",
+    conference: "androidmakers2023",
+    token: "").build()
 
 #if DEBUG
 private var mockModel = Model(dataProvider: DataProvider(desiredProviderType: .json))
@@ -20,6 +25,7 @@ protocol RepositoryProvider {
     var venueRepository: VenueRepository { get }
     var partnerRepository: PartnerRepository { get }
     var feedbackRepository: FeedbackRepository { get }
+    var partnersRepository: PartnersRepository { get }
 }
 
 /// The model API object
@@ -30,6 +36,8 @@ class Model: RepositoryProvider {
     let partnerRepository: PartnerRepository
     let feedbackRepository: FeedbackRepository
 
+    let partnersRepository: PartnersRepository
+
     fileprivate init(dataProvider: DataProvider = DataProvider()) {
         self.dataProvider = dataProvider
         sessionRepository = SessionRepository(dataProvider: dataProvider)
@@ -37,5 +45,6 @@ class Model: RepositoryProvider {
         partnerRepository = PartnerRepository(dataProvider: dataProvider)
 
         feedbackRepository = FeedbackRepository(dataProvider: dataProvider)
+        partnersRepository = PartnersGraphQLRepository(apolloClient: apolloClient)
     }
 }

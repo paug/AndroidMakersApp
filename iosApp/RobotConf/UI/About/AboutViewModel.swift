@@ -5,6 +5,7 @@
 import Foundation
 import Combine
 import UIKit
+import shared
 
 class AboutViewModel: ObservableObject, Identifiable {
 
@@ -12,7 +13,7 @@ class AboutViewModel: ObservableObject, Identifiable {
 
     private var disposables = Set<AnyCancellable>()
 
-    init(partnerRepo: PartnerRepository = model.partnerRepository) {
+    init(partnerRepo: PartnersRepository = model.partnersRepository) {
         partnerRepo.getPartners()
             .sink { [weak self] in
                 self?.partnerCategories = $0

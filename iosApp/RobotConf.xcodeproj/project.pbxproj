@@ -42,6 +42,9 @@
 		45EC5AC429C2701400ABBB7F /* SessionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EC5AC329C2701400ABBB7F /* SessionData.swift */; };
 		6440520B2B892F0200F87201 /* ResourcesUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6440520A2B892F0200F87201 /* ResourcesUtils.swift */; };
 		647899302B8CE32600887B74 /* KmpUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6478992F2B8CE32600887B74 /* KmpUtils.swift */; };
+		647899322B90937800887B74 /* Speaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 647899312B90937800887B74 /* Speaker.swift */; };
+		647899342B9093A000887B74 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 647899332B9093A000887B74 /* Session.swift */; };
+		647899362B9093C000887B74 /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = 647899352B9093C000887B74 /* Room.swift */; };
 		B207015E2353324400F8E2AF /* AgendaDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B207015D2353324400F8E2AF /* AgendaDetailView.swift */; };
 		B20701602353372800F8E2AF /* AgendaDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B207015F2353372800F8E2AF /* AgendaDetailViewModel.swift */; };
 		B2229A0123A39D6F00F50750 /* FirestoreSlotsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2229A0023A39D6F00F50750 /* FirestoreSlotsProvider.swift */; };
@@ -151,6 +154,9 @@
 		45EC5AC329C2701400ABBB7F /* SessionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionData.swift; sourceTree = "<group>"; };
 		6440520A2B892F0200F87201 /* ResourcesUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcesUtils.swift; sourceTree = "<group>"; };
 		6478992F2B8CE32600887B74 /* KmpUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KmpUtils.swift; sourceTree = "<group>"; };
+		647899312B90937800887B74 /* Speaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Speaker.swift; sourceTree = "<group>"; };
+		647899332B9093A000887B74 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
+		647899352B9093C000887B74 /* Room.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
 		B207015D2353324400F8E2AF /* AgendaDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgendaDetailView.swift; sourceTree = "<group>"; };
 		B207015F2353372800F8E2AF /* AgendaDetailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgendaDetailViewModel.swift; sourceTree = "<group>"; };
 		B2229A0023A39D6F00F50750 /* FirestoreSlotsProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirestoreSlotsProvider.swift; sourceTree = "<group>"; };
@@ -497,6 +503,9 @@
 				B265B04823F1ECA200EA363D /* TalkFeedback.swift */,
 				B268A968242FADCE00412523 /* UserPrefs.swift */,
 				B2FE9FB524546EE2005FE370 /* Data */,
+				647899312B90937800887B74 /* Speaker.swift */,
+				647899332B9093A000887B74 /* Session.swift */,
+				647899352B9093C000887B74 /* Room.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -776,6 +785,7 @@
 				B2CD272F234D06530016AA02 /* AppDelegate.swift in Sources */,
 				B2FE9FD924548FBF005FE370 /* PartnersProvider.swift in Sources */,
 				4538D0D029CA2DB600BB94DB /* GetVenuesQuery.graphql.swift in Sources */,
+				647899342B9093A000887B74 /* Session.swift in Sources */,
 				B26E853823D49242006C2C9E /* AttributedTextView.swift in Sources */,
 				4567FB1B29D9E13100724187 /* AgendaRoomListView.swift in Sources */,
 				4538D0D529CA2DB600BB94DB /* Venue.graphql.swift in Sources */,
@@ -813,6 +823,7 @@
 				4538D0DA29CA2DB600BB94DB /* Speaker.graphql.swift in Sources */,
 				B2EF3CFB23E8A8020078019F /* TalkFeedbackView.swift in Sources */,
 				B2FE9FC324547850005FE370 /* SpeakerData.swift in Sources */,
+				647899362B9093C000887B74 /* Room.swift in Sources */,
 				33BFB2852822D71300B12C0D /* URL+QueryItems.swift in Sources */,
 				B258187523C2374D00E1B0F0 /* PartnerRepository.swift in Sources */,
 				6440520B2B892F0200F87201 /* ResourcesUtils.swift in Sources */,
@@ -821,6 +832,7 @@
 				4538D0D829CA2DB600BB94DB /* Partner.graphql.swift in Sources */,
 				B258187923C23E7800E1B0F0 /* AboutViewModel.swift in Sources */,
 				B2A0669323521AC00062383A /* Language+UI.swift in Sources */,
+				647899322B90937800887B74 /* Speaker.swift in Sources */,
 				B225422123FB27FE00C5A83E /* TimeProvider.swift in Sources */,
 				4538D0CF29CA2DB600BB94DB /* GetTalksQuery.graphql.swift in Sources */,
 				45EC5A9E29C254A500ABBB7F /* GraphQLTalksProvider.swift in Sources */,

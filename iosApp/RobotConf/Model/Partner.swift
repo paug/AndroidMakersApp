@@ -3,6 +3,7 @@
 //
 
 import Foundation
+import shared
 
 struct Partner: Hashable {
     let name: String
@@ -14,3 +15,4 @@ struct PartnerCategory: Hashable {
     let categoryName: String
     let partners: [Partner]
 }
+

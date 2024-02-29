@@ -15,14 +15,14 @@ class PartnersGraphQLRepository(private val apolloClient: ApolloClient): Partner
     return apolloClient.query(GetPartnerGroupsQuery())
         .fetchPolicy(FetchPolicy.CacheAndNetwork)
         .watch().map {
-          it.dataAssertNoErrors.partnerGroups.map {
+          it.dataAssertNoErrors.partnerGroups.map { partnerGroup ->
             Partner(
-                title = it.title,
-                logos = it.partners.map {
+                title = partnerGroup.title,
+                logos = partnerGroup.partners.map { partner ->
                   Logo(
-                      logoUrl = it.logoUrl,
-                      name = it.name,
-                      url = it.url
+                      logoUrl = partner.logoUrl,
+                      name = partner.name,
+                      url = partner.url
                   )
                 }
             )
