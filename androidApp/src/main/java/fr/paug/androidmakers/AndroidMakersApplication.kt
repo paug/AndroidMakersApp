@@ -1,6 +1,7 @@
 package fr.paug.androidmakers
 
 import android.app.Application
+import android.os.Build
 import fr.androidmakers.domain.interactor.GetAgendaUseCase
 import fr.androidmakers.domain.repo.PartnersRepository
 import fr.androidmakers.domain.repo.RoomsRepository
@@ -31,7 +32,14 @@ class AndroidMakersApplication : Application() {
   override fun onCreate() {
     instance_ = this
 
-    val apolloClient = ApolloClientBuilder(this).build()
+    val apolloClient = ApolloClientBuilder(
+        context = this,
+        url = if (false && Build.PRODUCT == "sdk_gphone64_arm64") {
+          "http://10.0.2.2:8080/graphql"
+        } else {
+          "https://androidmakers-2023.ew.r.appspot.com/graphql"
+        },
+        conference = "androidmakers2023").build()
     partnersRepository = PartnersGraphQLRepository(apolloClient)
     roomsRepository = RoomsGraphQLRepository(apolloClient)
     sessionsRepository = SessionsGraphQLRepository(apolloClient)

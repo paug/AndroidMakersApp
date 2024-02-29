@@ -14,22 +14,20 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.runBlocking
 
-actual class ApolloClientBuilder(context: Context) {
+actual class ApolloClientBuilder(
+    context: Context,
+    private val url: String,
+    private val conference: String
+) {
   private val memoryCacheFactory = MemoryCacheFactory(20_000_000).chain(SqlNormalizedCacheFactory(context))
   actual fun build(): ApolloClient {
     return ApolloClient.Builder()
-        .apply {
-          if (false && Build.PRODUCT == "sdk_gphone64_arm64") {
-            serverUrl("http://10.0.2.2:8080/graphql")
-          } else {
-            serverUrl("https://androidmakers-2023.ew.r.appspot.com/graphql")
-          }
-        }
+        .serverUrl(url)
         .addHttpInterceptor(object : HttpInterceptor {
           override suspend fun intercept(request: HttpRequest, chain: HttpInterceptorChain): HttpResponse {
             return chain.proceed(
                 request.newBuilder()
-                    .addHeader("conference", "androidmakers2023")
+                    .addHeader("conference", conference)
                     .apply {
                       val token = runBlocking {
                         Firebase.auth.currentUser?.getIdToken(false)?.result?.token

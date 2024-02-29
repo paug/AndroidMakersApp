@@ -14,6 +14,6 @@ include(
     ":androidApp",
     ":shared",
     ":shared:domain",
-    ":shared:store-graphql",
+    ":shared:data",
     ":shared:ui"
 )
