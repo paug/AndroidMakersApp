@@ -41,9 +41,6 @@
 		647899322B90937800887B74 /* Speaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 647899312B90937800887B74 /* Speaker.swift */; };
 		647899342B9093A000887B74 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 647899332B9093A000887B74 /* Session.swift */; };
 		647899362B9093C000887B74 /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = 647899352B9093C000887B74 /* Room.swift */; };
-		647899392B9099DC00887B74 /* KMPNativeCoroutinesAsync in Frameworks */ = {isa = PBXBuildFile; productRef = 647899382B9099DC00887B74 /* KMPNativeCoroutinesAsync */; };
-		6478993B2B9099DC00887B74 /* KMPNativeCoroutinesCombine in Frameworks */ = {isa = PBXBuildFile; productRef = 6478993A2B9099DC00887B74 /* KMPNativeCoroutinesCombine */; };
-		6478993D2B9099DC00887B74 /* KMPNativeCoroutinesCore in Frameworks */ = {isa = PBXBuildFile; productRef = 6478993C2B9099DC00887B74 /* KMPNativeCoroutinesCore */; };
 		B207015E2353324400F8E2AF /* AgendaDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B207015D2353324400F8E2AF /* AgendaDetailView.swift */; };
 		B20701602353372800F8E2AF /* AgendaDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B207015F2353372800F8E2AF /* AgendaDetailViewModel.swift */; };
 		B2229A0123A39D6F00F50750 /* FirestoreSlotsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2229A0023A39D6F00F50750 /* FirestoreSlotsProvider.swift */; };
@@ -231,15 +228,12 @@
 			files = (
 				B2CD426E2362281A009FE6B0 /* URLImage in Frameworks */,
 				B26E853B23D49D8B006C2C9E /* SwiftRichString in Frameworks */,
-				6478993D2B9099DC00887B74 /* KMPNativeCoroutinesCore in Frameworks */,
-				6478993B2B9099DC00887B74 /* KMPNativeCoroutinesCombine in Frameworks */,
 				33243ED027FA154700ECBA97 /* FirebaseCrashlytics in Frameworks */,
 				B265B04723F0691400EA363D /* CodableFirebase in Frameworks */,
 				45DAAD7A29E49D430085977B /* Apollo in Frameworks */,
 				33243ED427FA168800ECBA97 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 				45DAAD7C29E49D430085977B /* ApolloSQLite in Frameworks */,
 				33243ED227FA154700ECBA97 /* FirebaseFirestore in Frameworks */,
-				647899392B9099DC00887B74 /* KMPNativeCoroutinesAsync in Frameworks */,
 				33243ED627FA171400ECBA97 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -613,9 +607,6 @@
 				33243ED527FA171400ECBA97 /* FirebaseAuth */,
 				45DAAD7929E49D430085977B /* Apollo */,
 				45DAAD7B29E49D430085977B /* ApolloSQLite */,
-				647899382B9099DC00887B74 /* KMPNativeCoroutinesAsync */,
-				6478993A2B9099DC00887B74 /* KMPNativeCoroutinesCombine */,
-				6478993C2B9099DC00887B74 /* KMPNativeCoroutinesCore */,
 			);
 			productName = RobotConf;
 			productReference = B2CD272B234D06530016AA02 /* RobotConf.app */;
@@ -652,7 +643,6 @@
 				B265B04523F0691400EA363D /* XCRemoteSwiftPackageReference "CodableFirebase" */,
 				33243ECE27FA154700ECBA97 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				45DAAD7829E49D430085977B /* XCRemoteSwiftPackageReference "apollo-ios" */,
-				647899372B9099DC00887B74 /* XCRemoteSwiftPackageReference "KMP-NativeCoroutines" */,
 			);
 			productRefGroup = B2CD272C234D06530016AA02 /* Products */;
 			projectDirPath = "";
@@ -1091,14 +1081,6 @@
 				version = 1.0.7;
 			};
 		};
-		647899372B9099DC00887B74 /* XCRemoteSwiftPackageReference "KMP-NativeCoroutines" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/rickclephas/KMP-NativeCoroutines.git";
-			requirement = {
-				kind = exactVersion;
-				version = "1.0.0-ALPHA-23";
-			};
-		};
 		B265B04523F0691400EA363D /* XCRemoteSwiftPackageReference "CodableFirebase" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/alickbass/CodableFirebase";
@@ -1155,21 +1137,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 45DAAD7829E49D430085977B /* XCRemoteSwiftPackageReference "apollo-ios" */;
 			productName = ApolloSQLite;
-		};
-		647899382B9099DC00887B74 /* KMPNativeCoroutinesAsync */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 647899372B9099DC00887B74 /* XCRemoteSwiftPackageReference "KMP-NativeCoroutines" */;
-			productName = KMPNativeCoroutinesAsync;
-		};
-		6478993A2B9099DC00887B74 /* KMPNativeCoroutinesCombine */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 647899372B9099DC00887B74 /* XCRemoteSwiftPackageReference "KMP-NativeCoroutines" */;
-			productName = KMPNativeCoroutinesCombine;
-		};
-		6478993C2B9099DC00887B74 /* KMPNativeCoroutinesCore */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 647899372B9099DC00887B74 /* XCRemoteSwiftPackageReference "KMP-NativeCoroutines" */;
-			productName = KMPNativeCoroutinesCore;
 		};
 		B265B04623F0691400EA363D /* CodableFirebase */ = {
 			isa = XCSwiftPackageProductDependency;
