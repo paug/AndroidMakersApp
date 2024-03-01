@@ -44,14 +44,3 @@ query GetTalks {
     }
   }
 }
-
-query GetPartners {
-  partnerGroups {
-    partners {
-      logoUrl
-      name
-      url
-    }
-    title
-  }
-}

@@ -1,6 +1,7 @@
 plugins {
   alias(libs.plugins.androidmakers.kmp.library)
   alias(libs.plugins.moko)
+  alias(libs.plugins.skie)
 }
 
 kotlin {
@@ -14,6 +15,9 @@ kotlin {
       baseName = "shared"
       isStatic = true
       export(project(":shared:ui"))
+      export(project(":shared:domain"))
+      // Temporary
+      export(project(":shared:data"))
       export(libs.moko.resources)
       export(libs.moko.graphics)
     }
@@ -23,6 +27,9 @@ kotlin {
     commonMain.dependencies {
       api(libs.moko.resources)
       api(project(":shared:ui"))
+      api(project(":shared:domain"))
+      // Temporary
+      api(project(":shared:data"))
     }
   }
 }

@@ -6,6 +6,7 @@ plugins {
   alias(libs.plugins.google.services) apply false
   alias(libs.plugins.kmp) apply false
   alias(libs.plugins.crashlytics) apply false
+  alias(libs.plugins.skie) apply false
 }
 
 allprojects {

@@ -60,9 +60,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import fr.androidmakers.store.model.Room
-import fr.androidmakers.store.model.Session
-import fr.androidmakers.store.model.Speaker
+import fr.androidmakers.domain.model.Room
+import fr.androidmakers.domain.model.Session
+import fr.androidmakers.domain.model.Speaker
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.MR
@@ -280,10 +280,10 @@ private fun ChipList(sessionDetails: SessionDetailState) {
           enabled = true
       )
     }
-    if (sessionDetails.session.complexity.isNotEmpty()) {
+    sessionDetails.session.complexity?.let { complexity ->
       SuggestionChip(
           onClick = {},
-          label = { Text(text = sessionDetails.session.complexity) },
+          label = { Text(complexity.name) },
           enabled = true
       )
     }

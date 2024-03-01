@@ -4,6 +4,7 @@
 
 import Foundation
 import Combine
+import shared
 
 class AgendaDayListViewModel: ObservableObject, Identifiable {
     struct Content {
@@ -108,7 +109,7 @@ extension AgendaDayListViewModel.Content.Session {
         self.init(uid: session.uid,
                   title: session.title,
                   duration: session.duration,
-                  speakers: session.speakers,
+                  speakers: session.speakers.map { $0 },
                   room: session.isATalk ? session.room.name : nil,
                   language: session.isATalk ? session.language : nil,
                   state: State(from: session))

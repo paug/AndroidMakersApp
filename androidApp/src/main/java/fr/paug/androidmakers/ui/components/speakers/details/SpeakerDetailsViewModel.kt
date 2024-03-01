@@ -2,8 +2,8 @@ package fr.paug.androidmakers.ui.components.speakers.details
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import fr.androidmakers.store.model.Speaker
-import fr.androidmakers.store.model.SpeakerId
+import fr.androidmakers.domain.model.Speaker
+import fr.androidmakers.domain.model.SpeakerId
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.ui.viewmodel.Lce
 import kotlinx.coroutines.flow.SharingStarted
@@ -15,7 +15,7 @@ class SpeakerDetailsViewModel(
     speakerId: SpeakerId
 ) : ViewModel() {
 
-  val uiState: StateFlow<Lce<SpeakerDetailsUiState>> = AndroidMakersApplication.instance().store
+  val uiState: StateFlow<Lce<SpeakerDetailsUiState>> = AndroidMakersApplication.instance().speakersRepository
       .getSpeaker(speakerId).map {
         val exception = it.exceptionOrNull()
         if (exception != null) {

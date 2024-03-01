@@ -12,18 +12,14 @@
 		33243ED427FA168800ECBA97 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 33243ED327FA168800ECBA97 /* FirebaseAnalyticsWithoutAdIdSupport */; };
 		33243ED627FA171400ECBA97 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 33243ED527FA171400ECBA97 /* FirebaseAuth */; };
 		33BFB2852822D71300B12C0D /* URL+QueryItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33BFB2842822D71300B12C0D /* URL+QueryItems.swift */; };
-		4538D0B629CA2CC400BB94DB /* GraphQLPartnersProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4538D0B529CA2CC400BB94DB /* GraphQLPartnersProvider.swift */; };
 		4538D0CE29CA2DB600BB94DB /* GraphQLData.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4538D0B829CA2DB600BB94DB /* GraphQLData.graphql.swift */; };
 		4538D0CF29CA2DB600BB94DB /* GetTalksQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4538D0BB29CA2DB600BB94DB /* GetTalksQuery.graphql.swift */; };
 		4538D0D029CA2DB600BB94DB /* GetVenuesQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4538D0BC29CA2DB600BB94DB /* GetVenuesQuery.graphql.swift */; };
-		4538D0D129CA2DB600BB94DB /* GetPartnersQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4538D0BD29CA2DB600BB94DB /* GetPartnersQuery.graphql.swift */; };
 		4538D0D229CA2DB600BB94DB /* Instant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4538D0C029CA2DB600BB94DB /* Instant.swift */; };
 		4538D0D329CA2DB600BB94DB /* LocalDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4538D0C129CA2DB600BB94DB /* LocalDate.swift */; };
 		4538D0D429CA2DB600BB94DB /* LocalDateTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4538D0C229CA2DB600BB94DB /* LocalDateTime.swift */; };
 		4538D0D529CA2DB600BB94DB /* Venue.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4538D0C429CA2DB600BB94DB /* Venue.graphql.swift */; };
-		4538D0D629CA2DB600BB94DB /* PartnerGroup.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4538D0C529CA2DB600BB94DB /* PartnerGroup.graphql.swift */; };
 		4538D0D729CA2DB600BB94DB /* Query.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4538D0C629CA2DB600BB94DB /* Query.graphql.swift */; };
-		4538D0D829CA2DB600BB94DB /* Partner.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4538D0C729CA2DB600BB94DB /* Partner.graphql.swift */; };
 		4538D0D929CA2DB600BB94DB /* SessionConnection.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4538D0C829CA2DB600BB94DB /* SessionConnection.graphql.swift */; };
 		4538D0DA29CA2DB600BB94DB /* Speaker.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4538D0C929CA2DB600BB94DB /* Speaker.graphql.swift */; };
 		4538D0DB29CA2DB600BB94DB /* Session.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4538D0CA29CA2DB600BB94DB /* Session.graphql.swift */; };
@@ -31,7 +27,6 @@
 		4538D0DD29CA2DB600BB94DB /* SchemaConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4538D0CC29CA2DB600BB94DB /* SchemaConfiguration.swift */; };
 		4538D0DE29CA2DB600BB94DB /* SchemaMetadata.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4538D0CD29CA2DB600BB94DB /* SchemaMetadata.graphql.swift */; };
 		4567FB1229D9D04F00724187 /* View+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4567FB1129D9D04F00724187 /* View+Utils.swift */; };
-		4567FB1529D9D95B00724187 /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4567FB1429D9D95B00724187 /* Room.swift */; };
 		4567FB1729D9E08000724187 /* AgendaListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4567FB1629D9E08000724187 /* AgendaListView.swift */; };
 		4567FB1B29D9E13100724187 /* AgendaRoomListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4567FB1A29D9E13100724187 /* AgendaRoomListView.swift */; };
 		4595148E29C0FE4D003F7B4F /* GraphQLVenuesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4595148D29C0FE4D003F7B4F /* GraphQLVenuesProvider.swift */; };
@@ -42,13 +37,14 @@
 		45EC5AC229C26DCE00ABBB7F /* GraphQLDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EC5AC129C26DCE00ABBB7F /* GraphQLDataProvider.swift */; };
 		45EC5AC429C2701400ABBB7F /* SessionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EC5AC329C2701400ABBB7F /* SessionData.swift */; };
 		6440520B2B892F0200F87201 /* ResourcesUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6440520A2B892F0200F87201 /* ResourcesUtils.swift */; };
+		647899302B8CE32600887B74 /* KmpUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6478992F2B8CE32600887B74 /* KmpUtils.swift */; };
+		647899322B90937800887B74 /* Speaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 647899312B90937800887B74 /* Speaker.swift */; };
+		647899342B9093A000887B74 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 647899332B9093A000887B74 /* Session.swift */; };
+		647899362B9093C000887B74 /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = 647899352B9093C000887B74 /* Room.swift */; };
 		B207015E2353324400F8E2AF /* AgendaDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B207015D2353324400F8E2AF /* AgendaDetailView.swift */; };
 		B20701602353372800F8E2AF /* AgendaDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B207015F2353372800F8E2AF /* AgendaDetailViewModel.swift */; };
 		B2229A0123A39D6F00F50750 /* FirestoreSlotsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2229A0023A39D6F00F50750 /* FirestoreSlotsProvider.swift */; };
 		B225422123FB27FE00C5A83E /* TimeProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B225422023FB27FE00C5A83E /* TimeProvider.swift */; };
-		B258187323C2354200E1B0F0 /* FirestorePartnersProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B258187223C2354200E1B0F0 /* FirestorePartnersProvider.swift */; };
-		B258187523C2374D00E1B0F0 /* PartnerRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B258187423C2374D00E1B0F0 /* PartnerRepository.swift */; };
-		B258187723C2379600E1B0F0 /* Partner.swift in Sources */ = {isa = PBXBuildFile; fileRef = B258187623C2379600E1B0F0 /* Partner.swift */; };
 		B258187923C23E7800E1B0F0 /* AboutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B258187823C23E7800E1B0F0 /* AboutViewModel.swift */; };
 		B265B04223F02D3800EA363D /* FirestoreOpenFeedbackSynchronizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B265B04123F02D3800EA363D /* FirestoreOpenFeedbackSynchronizer.swift */; };
 		B265B04423F05CFE00EA363D /* Timestamp+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B265B04323F05CFE00EA363D /* Timestamp+Codable.swift */; };
@@ -83,9 +79,7 @@
 		B2CD273B234D06560016AA02 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2CD2739234D06560016AA02 /* LaunchScreen.storyboard */; };
 		B2CD275F234D079B0016AA02 /* AgendaDayListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CD275E234D079B0016AA02 /* AgendaDayListView.swift */; };
 		B2CD2763234D08820016AA02 /* AgendaCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CD2762234D08820016AA02 /* AgendaCellView.swift */; };
-		B2CD2766234D116A0016AA02 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CD2765234D116A0016AA02 /* Session.swift */; };
 		B2CD2768234D12500016AA02 /* SessionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CD2767234D12500016AA02 /* SessionRepository.swift */; };
-		B2CD276A234D12980016AA02 /* Speaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CD2769234D12980016AA02 /* Speaker.swift */; };
 		B2CD276C234D13380016AA02 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CD276B234D13380016AA02 /* Language.swift */; };
 		B2CD276E234D18450016AA02 /* AgendaDayListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CD276D234D18450016AA02 /* AgendaDayListViewModel.swift */; };
 		B2CD4264235789B5009FE6B0 /* DataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CD4263235789B5009FE6B0 /* DataProvider.swift */; };
@@ -111,9 +105,6 @@
 		B2FE9FCF24548CB3005FE370 /* RoomData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FE9FCE24548CB3005FE370 /* RoomData.swift */; };
 		B2FE9FD124548CD3005FE370 /* RoomsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FE9FD024548CD3005FE370 /* RoomsProvider.swift */; };
 		B2FE9FD324548D52005FE370 /* JsonRoomsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FE9FD224548D52005FE370 /* JsonRoomsProvider.swift */; };
-		B2FE9FD924548FBF005FE370 /* PartnersProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FE9FD824548FBF005FE370 /* PartnersProvider.swift */; };
-		B2FE9FDB24548FDC005FE370 /* PartnerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FE9FDA24548FDC005FE370 /* PartnerData.swift */; };
-		B2FE9FDD24549068005FE370 /* JsonPartnersProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FE9FDC24549068005FE370 /* JsonPartnersProvider.swift */; };
 		B2FE9FDF245490F1005FE370 /* VenueData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FE9FDE245490F1005FE370 /* VenueData.swift */; };
 		B2FE9FE124549114005FE370 /* VenuesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FE9FE024549114005FE370 /* VenuesProvider.swift */; };
 		B2FE9FE32454918F005FE370 /* JsonVenuesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FE9FE22454918F005FE370 /* JsonVenuesProvider.swift */; };
@@ -123,18 +114,14 @@
 /* Begin PBXFileReference section */
 		33BFB2842822D71300B12C0D /* URL+QueryItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+QueryItems.swift"; sourceTree = "<group>"; };
 		33CD20B328087FE7005084EF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		4538D0B529CA2CC400BB94DB /* GraphQLPartnersProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphQLPartnersProvider.swift; sourceTree = "<group>"; };
 		4538D0B829CA2DB600BB94DB /* GraphQLData.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphQLData.graphql.swift; sourceTree = "<group>"; };
 		4538D0BB29CA2DB600BB94DB /* GetTalksQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetTalksQuery.graphql.swift; sourceTree = "<group>"; };
 		4538D0BC29CA2DB600BB94DB /* GetVenuesQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetVenuesQuery.graphql.swift; sourceTree = "<group>"; };
-		4538D0BD29CA2DB600BB94DB /* GetPartnersQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetPartnersQuery.graphql.swift; sourceTree = "<group>"; };
 		4538D0C029CA2DB600BB94DB /* Instant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Instant.swift; sourceTree = "<group>"; };
 		4538D0C129CA2DB600BB94DB /* LocalDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalDate.swift; sourceTree = "<group>"; };
 		4538D0C229CA2DB600BB94DB /* LocalDateTime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalDateTime.swift; sourceTree = "<group>"; };
 		4538D0C429CA2DB600BB94DB /* Venue.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Venue.graphql.swift; sourceTree = "<group>"; };
-		4538D0C529CA2DB600BB94DB /* PartnerGroup.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PartnerGroup.graphql.swift; sourceTree = "<group>"; };
 		4538D0C629CA2DB600BB94DB /* Query.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Query.graphql.swift; sourceTree = "<group>"; };
-		4538D0C729CA2DB600BB94DB /* Partner.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Partner.graphql.swift; sourceTree = "<group>"; };
 		4538D0C829CA2DB600BB94DB /* SessionConnection.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionConnection.graphql.swift; sourceTree = "<group>"; };
 		4538D0C929CA2DB600BB94DB /* Speaker.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Speaker.graphql.swift; sourceTree = "<group>"; };
 		4538D0CA29CA2DB600BB94DB /* Session.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Session.graphql.swift; sourceTree = "<group>"; };
@@ -142,7 +129,6 @@
 		4538D0CC29CA2DB600BB94DB /* SchemaConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchemaConfiguration.swift; sourceTree = "<group>"; };
 		4538D0CD29CA2DB600BB94DB /* SchemaMetadata.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchemaMetadata.graphql.swift; sourceTree = "<group>"; };
 		4567FB1129D9D04F00724187 /* View+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Utils.swift"; sourceTree = "<group>"; };
-		4567FB1429D9D95B00724187 /* Room.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
 		4567FB1629D9E08000724187 /* AgendaListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgendaListView.swift; sourceTree = "<group>"; };
 		4567FB1A29D9E13100724187 /* AgendaRoomListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgendaRoomListView.swift; sourceTree = "<group>"; };
 		4595145A29C0F56E003F7B4F /* schema.graphqls */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = schema.graphqls; sourceTree = "<group>"; };
@@ -153,13 +139,14 @@
 		45EC5AC129C26DCE00ABBB7F /* GraphQLDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphQLDataProvider.swift; sourceTree = "<group>"; };
 		45EC5AC329C2701400ABBB7F /* SessionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionData.swift; sourceTree = "<group>"; };
 		6440520A2B892F0200F87201 /* ResourcesUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcesUtils.swift; sourceTree = "<group>"; };
+		6478992F2B8CE32600887B74 /* KmpUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KmpUtils.swift; sourceTree = "<group>"; };
+		647899312B90937800887B74 /* Speaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Speaker.swift; sourceTree = "<group>"; };
+		647899332B9093A000887B74 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
+		647899352B9093C000887B74 /* Room.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
 		B207015D2353324400F8E2AF /* AgendaDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgendaDetailView.swift; sourceTree = "<group>"; };
 		B207015F2353372800F8E2AF /* AgendaDetailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgendaDetailViewModel.swift; sourceTree = "<group>"; };
 		B2229A0023A39D6F00F50750 /* FirestoreSlotsProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirestoreSlotsProvider.swift; sourceTree = "<group>"; };
 		B225422023FB27FE00C5A83E /* TimeProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeProvider.swift; sourceTree = "<group>"; };
-		B258187223C2354200E1B0F0 /* FirestorePartnersProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirestorePartnersProvider.swift; sourceTree = "<group>"; };
-		B258187423C2374D00E1B0F0 /* PartnerRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PartnerRepository.swift; sourceTree = "<group>"; };
-		B258187623C2379600E1B0F0 /* Partner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Partner.swift; sourceTree = "<group>"; };
 		B258187823C23E7800E1B0F0 /* AboutViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewModel.swift; sourceTree = "<group>"; };
 		B265B04123F02D3800EA363D /* FirestoreOpenFeedbackSynchronizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreOpenFeedbackSynchronizer.swift; sourceTree = "<group>"; };
 		B265B04323F05CFE00EA363D /* Timestamp+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Timestamp+Codable.swift"; sourceTree = "<group>"; };
@@ -195,9 +182,7 @@
 		B2CD273C234D06560016AA02 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B2CD275E234D079B0016AA02 /* AgendaDayListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgendaDayListView.swift; sourceTree = "<group>"; };
 		B2CD2762234D08820016AA02 /* AgendaCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgendaCellView.swift; sourceTree = "<group>"; };
-		B2CD2765234D116A0016AA02 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		B2CD2767234D12500016AA02 /* SessionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionRepository.swift; sourceTree = "<group>"; };
-		B2CD2769234D12980016AA02 /* Speaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Speaker.swift; sourceTree = "<group>"; };
 		B2CD276B234D13380016AA02 /* Language.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
 		B2CD276D234D18450016AA02 /* AgendaDayListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgendaDayListViewModel.swift; sourceTree = "<group>"; };
 		B2CD42612357876C009FE6B0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -228,9 +213,6 @@
 		B2FE9FD224548D52005FE370 /* JsonRoomsProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JsonRoomsProvider.swift; sourceTree = "<group>"; };
 		B2FE9FD424548E41005FE370 /* schedule-app.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "schedule-app.json"; sourceTree = "<group>"; };
 		B2FE9FD524548E41005FE370 /* speakers.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = speakers.json; sourceTree = "<group>"; };
-		B2FE9FD824548FBF005FE370 /* PartnersProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PartnersProvider.swift; sourceTree = "<group>"; };
-		B2FE9FDA24548FDC005FE370 /* PartnerData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartnerData.swift; sourceTree = "<group>"; };
-		B2FE9FDC24549068005FE370 /* JsonPartnersProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JsonPartnersProvider.swift; sourceTree = "<group>"; };
 		B2FE9FDE245490F1005FE370 /* VenueData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueData.swift; sourceTree = "<group>"; };
 		B2FE9FE024549114005FE370 /* VenuesProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VenuesProvider.swift; sourceTree = "<group>"; };
 		B2FE9FE22454918F005FE370 /* JsonVenuesProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JsonVenuesProvider.swift; sourceTree = "<group>"; };
@@ -282,7 +264,6 @@
 			children = (
 				4538D0BB29CA2DB600BB94DB /* GetTalksQuery.graphql.swift */,
 				4538D0BC29CA2DB600BB94DB /* GetVenuesQuery.graphql.swift */,
-				4538D0BD29CA2DB600BB94DB /* GetPartnersQuery.graphql.swift */,
 			);
 			path = Queries;
 			sourceTree = "<group>";
@@ -312,9 +293,7 @@
 			isa = PBXGroup;
 			children = (
 				4538D0C429CA2DB600BB94DB /* Venue.graphql.swift */,
-				4538D0C529CA2DB600BB94DB /* PartnerGroup.graphql.swift */,
 				4538D0C629CA2DB600BB94DB /* Query.graphql.swift */,
-				4538D0C729CA2DB600BB94DB /* Partner.graphql.swift */,
 				4538D0C829CA2DB600BB94DB /* SessionConnection.graphql.swift */,
 				4538D0C929CA2DB600BB94DB /* Speaker.graphql.swift */,
 				4538D0CA29CA2DB600BB94DB /* Session.graphql.swift */,
@@ -347,7 +326,6 @@
 			children = (
 				45EC5AC129C26DCE00ABBB7F /* GraphQLDataProvider.swift */,
 				4595148D29C0FE4D003F7B4F /* GraphQLVenuesProvider.swift */,
-				4538D0B529CA2CC400BB94DB /* GraphQLPartnersProvider.swift */,
 				45EC5A9D29C254A500ABBB7F /* GraphQLTalksProvider.swift */,
 				4538D0B729CA2DB600BB94DB /* Generated */,
 				4595145A29C0F56E003F7B4F /* schema.graphqls */,
@@ -374,6 +352,7 @@
 				33BFB2842822D71300B12C0D /* URL+QueryItems.swift */,
 				4567FB1129D9D04F00724187 /* View+Utils.swift */,
 				6440520A2B892F0200F87201 /* ResourcesUtils.swift */,
+				6478992F2B8CE32600887B74 /* KmpUtils.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -492,17 +471,15 @@
 				B2BC0B8323B91D2100C85F69 /* Model.swift */,
 				B2CD2767234D12500016AA02 /* SessionRepository.swift */,
 				B2BC0B8523B91E0800C85F69 /* VenueRepository.swift */,
-				B258187423C2374D00E1B0F0 /* PartnerRepository.swift */,
 				B2EF3CF423E89FC90078019F /* FeedbackRepository.swift */,
-				B2CD2765234D116A0016AA02 /* Session.swift */,
-				B2CD2769234D12980016AA02 /* Speaker.swift */,
 				B2BC0B7A23B905B800C85F69 /* Venue.swift */,
-				B258187623C2379600E1B0F0 /* Partner.swift */,
 				B2CD276B234D13380016AA02 /* Language.swift */,
 				B265B04823F1ECA200EA363D /* TalkFeedback.swift */,
 				B268A968242FADCE00412523 /* UserPrefs.swift */,
 				B2FE9FB524546EE2005FE370 /* Data */,
-				4567FB1429D9D95B00724187 /* Room.swift */,
+				647899312B90937800887B74 /* Speaker.swift */,
+				647899332B9093A000887B74 /* Session.swift */,
+				647899352B9093C000887B74 /* Room.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -535,7 +512,6 @@
 				B2FE9FC824548A6E005FE370 /* SlotData.swift */,
 				B2FE9FCE24548CB3005FE370 /* RoomData.swift */,
 				B2FE9FDE245490F1005FE370 /* VenueData.swift */,
-				B2FE9FDA24548FDC005FE370 /* PartnerData.swift */,
 				B27CC3DE24549E1B0055D36B /* VoteData.swift */,
 				B2FE9FB824546F88005FE370 /* Providers */,
 			);
@@ -550,7 +526,6 @@
 				B2229A0023A39D6F00F50750 /* FirestoreSlotsProvider.swift */,
 				B268A96A243E445800412523 /* FirestoreRoomsProvider.swift */,
 				B2BC0B7823B902BF00C85F69 /* FirestoreVenuesProvider.swift */,
-				B258187223C2354200E1B0F0 /* FirestorePartnersProvider.swift */,
 				B265B04123F02D3800EA363D /* FirestoreOpenFeedbackSynchronizer.swift */,
 				B2CD426823578FBD009FE6B0 /* DocumentSnapshot+Decodable.swift */,
 				B265B04323F05CFE00EA363D /* Timestamp+Codable.swift */,
@@ -567,7 +542,6 @@
 				B2FE9FCC24548B7F005FE370 /* JsonSlotsProvider.swift */,
 				B2FE9FD224548D52005FE370 /* JsonRoomsProvider.swift */,
 				B2FE9FE22454918F005FE370 /* JsonVenuesProvider.swift */,
-				B2FE9FDC24549068005FE370 /* JsonPartnersProvider.swift */,
 				B27CC3E02454A2930055D36B /* JsonOpenFeedbackSynchronizer.swift */,
 				B2FE9FBF2454733E005FE370 /* Resources */,
 			);
@@ -582,7 +556,6 @@
 				B2FE9FCA24548AAF005FE370 /* SlotsProvider.swift */,
 				B2FE9FD024548CD3005FE370 /* RoomsProvider.swift */,
 				B2FE9FE024549114005FE370 /* VenuesProvider.swift */,
-				B2FE9FD824548FBF005FE370 /* PartnersProvider.swift */,
 				B27CC3DC24549D0A0055D36B /* OpenFeedbackSynchronizer.swift */,
 				B2FE9FB724546F56005FE370 /* Json */,
 				B2FE9FB624546F4B005FE370 /* Firestore */,
@@ -777,23 +750,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				B268A96E24431E7500412523 /* WebButton.swift in Sources */,
-				4538D0D129CA2DB600BB94DB /* GetPartnersQuery.graphql.swift in Sources */,
 				B265B04923F1ECA200EA363D /* TalkFeedback.swift in Sources */,
 				B2CD272F234D06530016AA02 /* AppDelegate.swift in Sources */,
-				B2FE9FD924548FBF005FE370 /* PartnersProvider.swift in Sources */,
 				4538D0D029CA2DB600BB94DB /* GetVenuesQuery.graphql.swift in Sources */,
+				647899342B9093A000887B74 /* Session.swift in Sources */,
 				B26E853823D49242006C2C9E /* AttributedTextView.swift in Sources */,
 				4567FB1B29D9E13100724187 /* AgendaRoomListView.swift in Sources */,
 				4538D0D529CA2DB600BB94DB /* Venue.graphql.swift in Sources */,
 				B2BC0B7B23B905B800C85F69 /* Venue.swift in Sources */,
 				B2FE9FCB24548AAF005FE370 /* SlotsProvider.swift in Sources */,
-				B258187723C2379600E1B0F0 /* Partner.swift in Sources */,
-				4538D0D629CA2DB600BB94DB /* PartnerGroup.graphql.swift in Sources */,
 				B268A96B243E445800412523 /* FirestoreRoomsProvider.swift in Sources */,
 				B265B04D23F47E1D00EA363D /* AgendaFeedbackChoiceViewModel.swift in Sources */,
-				4538D0B629CA2CC400BB94DB /* GraphQLPartnersProvider.swift in Sources */,
 				B2CD2731234D06530016AA02 /* SceneDelegate.swift in Sources */,
-				B258187323C2354200E1B0F0 /* FirestorePartnersProvider.swift in Sources */,
 				B2FE9FD124548CD3005FE370 /* RoomsProvider.swift in Sources */,
 				B2FE9FDF245490F1005FE370 /* VenueData.swift in Sources */,
 				B2CD2768234D12500016AA02 /* SessionRepository.swift in Sources */,
@@ -803,7 +771,6 @@
 				B2CD276C234D13380016AA02 /* Language.swift in Sources */,
 				B2FE9FBC2454700F005FE370 /* TalkData.swift in Sources */,
 				B26E853623D49187006C2C9E /* NSAttributedString+HTML.swift in Sources */,
-				B2CD276A234D12980016AA02 /* Speaker.swift in Sources */,
 				B2FE9FC924548A6E005FE370 /* SlotData.swift in Sources */,
 				4538D0D229CA2DB600BB94DB /* Instant.swift in Sources */,
 				B2FE9FE9245493F3005FE370 /* FirebaseDescriptor.swift in Sources */,
@@ -816,18 +783,17 @@
 				B2229A0123A39D6F00F50750 /* FirestoreSlotsProvider.swift in Sources */,
 				B2FE9FE32454918F005FE370 /* JsonVenuesProvider.swift in Sources */,
 				B2BC0B8023B90DE100C85F69 /* LocationVenueView.swift in Sources */,
-				B2FE9FDD24549068005FE370 /* JsonPartnersProvider.swift in Sources */,
 				4538D0DA29CA2DB600BB94DB /* Speaker.graphql.swift in Sources */,
 				B2EF3CFB23E8A8020078019F /* TalkFeedbackView.swift in Sources */,
 				B2FE9FC324547850005FE370 /* SpeakerData.swift in Sources */,
+				647899362B9093C000887B74 /* Room.swift in Sources */,
 				33BFB2852822D71300B12C0D /* URL+QueryItems.swift in Sources */,
-				B258187523C2374D00E1B0F0 /* PartnerRepository.swift in Sources */,
 				6440520B2B892F0200F87201 /* ResourcesUtils.swift in Sources */,
 				4595148E29C0FE4D003F7B4F /* GraphQLVenuesProvider.swift in Sources */,
 				4538D0DD29CA2DB600BB94DB /* SchemaConfiguration.swift in Sources */,
-				4538D0D829CA2DB600BB94DB /* Partner.graphql.swift in Sources */,
 				B258187923C23E7800E1B0F0 /* AboutViewModel.swift in Sources */,
 				B2A0669323521AC00062383A /* Language+UI.swift in Sources */,
+				647899322B90937800887B74 /* Speaker.swift in Sources */,
 				B225422123FB27FE00C5A83E /* TimeProvider.swift in Sources */,
 				4538D0CF29CA2DB600BB94DB /* GetTalksQuery.graphql.swift in Sources */,
 				45EC5A9E29C254A500ABBB7F /* GraphQLTalksProvider.swift in Sources */,
@@ -835,13 +801,11 @@
 				B2CD426B23579A36009FE6B0 /* FirestoreSpeakersProvider.swift in Sources */,
 				B2CD276E234D18450016AA02 /* AgendaDayListViewModel.swift in Sources */,
 				B2EF3CF523E89FC90078019F /* FeedbackRepository.swift in Sources */,
-				B2FE9FDB24548FDC005FE370 /* PartnerData.swift in Sources */,
 				4567FB1729D9E08000724187 /* AgendaListView.swift in Sources */,
 				B265B04223F02D3800EA363D /* FirestoreOpenFeedbackSynchronizer.swift in Sources */,
 				B2BC0B8423B91D2100C85F69 /* Model.swift in Sources */,
 				B2FE9FBA24546FAD005FE370 /* TalksProvider.swift in Sources */,
 				45DAAD7729E4867B0085977B /* AgendaRoomListViewModel.swift in Sources */,
-				4567FB1529D9D95B00724187 /* Room.swift in Sources */,
 				B27CC3DF24549E1B0055D36B /* VoteData.swift in Sources */,
 				B2FE9FCD24548B80005FE370 /* JsonSlotsProvider.swift in Sources */,
 				4567FB1229D9D04F00724187 /* View+Utils.swift in Sources */,
@@ -871,8 +835,8 @@
 				B2CD426723578D81009FE6B0 /* FirestoreTalksProvider.swift in Sources */,
 				B2BC0B8223B91C5B00C85F69 /* LocationVenueViewModel.swift in Sources */,
 				B2FE9FC72454882F005FE370 /* JsonSpeakersProvider.swift in Sources */,
-				B2CD2766234D116A0016AA02 /* Session.swift in Sources */,
 				B27CC3DD24549D0A0055D36B /* OpenFeedbackSynchronizer.swift in Sources */,
+				647899302B8CE32600887B74 /* KmpUtils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1030,7 +994,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)";
 				INFOPLIST_FILE = RobotConf/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1060,7 +1024,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)";
 				INFOPLIST_FILE = RobotConf/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

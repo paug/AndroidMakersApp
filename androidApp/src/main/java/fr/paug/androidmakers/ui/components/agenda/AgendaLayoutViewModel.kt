@@ -2,8 +2,8 @@ package fr.paug.androidmakers.ui.components
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import fr.androidmakers.store.AndroidMakersStore
-import fr.androidmakers.store.model.Room
+import fr.androidmakers.domain.model.Room
+import fr.androidmakers.domain.repo.RoomsRepository
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.util.SessionFilter
 import kotlinx.coroutines.CoroutineScope
@@ -20,13 +20,17 @@ data class AgendaLayoutState(
 )
 
 class AgendaLayoutViewModel(
-    store: AndroidMakersStore = AndroidMakersApplication.instance().store,
+    roomsRepository: RoomsRepository = AndroidMakersApplication.instance().roomsRepository,
     scope: ViewModel.() -> CoroutineScope = { viewModelScope }
 ) : ViewModel() {
   private val sessionFilters = MutableStateFlow(emptyList<SessionFilter>())
 
   val state: StateFlow<AgendaLayoutState> = combine(
-      store.getRooms().map { rooms -> rooms.recover { emptyList() }.getOrThrow() },
+      roomsRepository.getRooms()
+          .map { rooms ->
+            rooms/*.recover { emptyList() }*/
+                .getOrThrow()
+          },
       sessionFilters,
       ::AgendaLayoutState
   ).stateIn(scope(), SharingStarted.WhileSubscribed(), AgendaLayoutState())

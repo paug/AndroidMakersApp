@@ -44,8 +44,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import fr.androidmakers.store.model.Speaker
-import fr.androidmakers.store.model.SpeakerId
+import fr.androidmakers.domain.model.Speaker
+import fr.androidmakers.domain.model.SpeakerId
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.MR
 import fr.paug.androidmakers.ui.components.LoadingLayout
