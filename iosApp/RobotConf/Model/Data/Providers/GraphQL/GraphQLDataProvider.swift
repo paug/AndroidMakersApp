@@ -13,12 +13,10 @@ class GraphQLDataProvider: DataProviderProtocol {
     let sessionsPublisher: AnyPublisher<[SessionData], Error>
     let confVenuePublisher: AnyPublisher<VenueData, Error>
     let partyVenuePublisher: AnyPublisher<VenueData, Error>
-    let partnersPublisher: AnyPublisher<[PartnersByCategoryData], Error>
     let votesPublisher: AnyPublisher<[String: TalkFeedback], Error>
 
     private let venuesProvider: GraphQLVenuesProvider
     private let sessionsProvider: GraphQLTalksProvider
-    private let partnersProvider: GraphQLPartnersProvider
     private let openFeedbackSynchronizer: OpenFeedbackSynchronizer?
 
     private let apolloClient: ApolloClient = {
@@ -54,8 +52,6 @@ class GraphQLDataProvider: DataProviderProtocol {
         confVenuePublisher = venuesProvider.confVenuePublisher.eraseToAnyPublisher()
         partyVenuePublisher = venuesProvider.partyVenuePublisher.eraseToAnyPublisher()
 
-        partnersProvider = GraphQLPartnersProvider(apolloClient: apolloClient)
-        partnersPublisher = partnersProvider.partnersPublisher.eraseToAnyPublisher()
 
         sessionsProvider = GraphQLTalksProvider(apolloClient: apolloClient)
         sessionsPublisher = sessionsProvider.talksPublisher.eraseToAnyPublisher()

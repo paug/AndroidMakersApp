@@ -41,7 +41,7 @@ class SessionDetailViewModel(
 
   private suspend fun getSpeakers(session: Session): List<Speaker> {
     val allSpeakers = AndroidMakersApplication.instance().speakersRepository.getSpeakers().firstOrNull()
-        ?.recover { emptyList() }
+        //?.recover { emptyList() }
         ?.getOrThrow()
         ?: return emptyList()
 

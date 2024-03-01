@@ -21,12 +21,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import fr.androidmakers.domain.model.Partner
+import fr.androidmakers.domain.model.PartnerGroup
 import fr.paug.androidmakers.ui.viewmodel.Lce
 import java.util.Locale
 
 @Composable
 fun SponsorsScreen(
-    partnerList: Lce<List<Partner>>,
+    partnerList: Lce<List<PartnerGroup>>,
     onSponsorClick: (url: String) -> Unit
 ) {
   when (partnerList) {
@@ -39,7 +40,6 @@ fun SponsorsScreen(
       ) {
         CircularProgressIndicator()
       }
-
     }
 
     is Lce.Content -> {
@@ -49,7 +49,7 @@ fun SponsorsScreen(
           contentPadding = PaddingValues(start = 12.dp, end = 12.dp, bottom = 8.dp)
       ) {
 
-        for (partner in partnerList.content) {
+        for (partnerGroup in partnerList.content) {
 
           // Sponsor "group" (e.g. Organizers, Gold, etc.)
           item(span = {
@@ -60,7 +60,7 @@ fun SponsorsScreen(
                     .padding(top = 32.dp, bottom = 8.dp)
                     .fillMaxWidth(),
                 textAlign = TextAlign.Start,
-                text = partner.title.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() },
+                text = partnerGroup.title.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() },
                 style = MaterialTheme.typography.titleMedium.copy(
                     color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.Bold,
@@ -71,17 +71,17 @@ fun SponsorsScreen(
           }
 
           // Sponsor logo
-          for (logo in partner.logos) {
+          for (partner in partnerGroup.partners) {
             item {
               AsyncImage(
                   modifier = Modifier
                       .fillMaxWidth()
                       .height(80.dp)
                       .clickable {
-                        onSponsorClick(logo.url)
+                        onSponsorClick(partner.url)
                       },
-                  model = logo.logoUrl,
-                  contentDescription = logo.name
+                  model = partner.logoUrl,
+                  contentDescription = partner.name
               )
             }
           }

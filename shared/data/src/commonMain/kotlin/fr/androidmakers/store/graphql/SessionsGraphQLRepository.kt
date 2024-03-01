@@ -1,5 +1,6 @@
 package fr.androidmakers.store.graphql
 
+import at.asitplus.KmmResult
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.Mutation
 import com.apollographql.apollo3.cache.normalized.FetchPolicy
@@ -50,7 +51,7 @@ class SessionsGraphQLRepository(private val apolloClient: ApolloClient): Session
     }
   }
 
-  override fun getSession(id: String): Flow<Result<Session>> {
+  override fun getSession(id: String): Flow<KmmResult<Session>> {
     return apolloClient.query(GetSessionQuery(id))
         .fetchPolicy(FetchPolicy.CacheAndNetwork)
         .watch().map {
@@ -59,7 +60,7 @@ class SessionsGraphQLRepository(private val apolloClient: ApolloClient): Session
         .toResultFlow()
   }
 
-  override fun getBookmarks(uid: String): Flow<Result<Set<String>>> {
+  override fun getBookmarks(uid: String): Flow<KmmResult<Set<String>>> {
     return apolloClient.query(BookmarksQuery())
         .fetchPolicy(FetchPolicy.NetworkOnly)
         .refetchPolicy(FetchPolicy.CacheOnly)
@@ -90,7 +91,7 @@ class SessionsGraphQLRepository(private val apolloClient: ApolloClient): Session
     return response.data != null
   }
 
-  override fun getSessions(): Flow<Result<List<Session>>> {
+  override fun getSessions(): Flow<KmmResult<List<Session>>> {
     return apolloClient.query(GetSessionsQuery())
         .fetchPolicy(FetchPolicy.CacheAndNetwork)
         .watch()

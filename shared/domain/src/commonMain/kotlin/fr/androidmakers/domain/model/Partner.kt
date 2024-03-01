@@ -1,6 +1,6 @@
 package fr.androidmakers.domain.model
 
-data class Partner(
+data class PartnerGroup(
     val title: String = "",
-    val logos: List<Logo> = arrayListOf()
+    val partners: List<Partner> = arrayListOf()
 )

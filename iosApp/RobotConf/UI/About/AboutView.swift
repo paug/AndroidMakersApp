@@ -72,21 +72,24 @@ struct AboutView: View {
                                 Text(stringResource(MR.strings().sponsors))
                                     .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
                                     .foregroundColor(Color(Asset.Colors.link.color))
-                                ForEach(self.viewModel.partnerCategories, id: \.self) { category in
+                                ForEach(self.viewModel.partnerGroups, id: \.self) { partnerGroup in
                                     VStack {
-                                        Text(category.categoryName.capitalized)
+                                        Text(partnerGroup.title.capitalized)
                                             .foregroundColor(Color.black)
                                             .bold()
                                             .font(.title2)
                                             .padding(16)
-                                        ForEach(category.partners, id: \.self) { partner in
+                                        ForEach(partnerGroup.partners, id: \.self) { partner in
                                             Button(action: { self.viewModel.openPartnerPage(partner) }) {
-                                                URLImage(partner.logoUrl) { image in
-                                                    image
-                                                        .renderingMode(.original)
-                                                        .resizable()
-                                                        .aspectRatio(contentMode: .fit)
+                                                if let imageUrl = URL(string: partner.logoUrl) {
+                                                    URLImage(imageUrl) { image in
+                                                        image
+                                                            .renderingMode(.original)
+                                                            .resizable()
+                                                            .aspectRatio(contentMode: .fit)
+                                                    }
                                                 }
+
                                             }
                                             .frame(maxHeight: 150)
                                         }
@@ -107,6 +110,9 @@ struct AboutView: View {
         // and nothing is shown in the detail
         .navigationViewStyle(StackNavigationViewStyle())
         .padding(0)
+        .task {
+            await viewModel.activate()
+        }
     }
 }
 

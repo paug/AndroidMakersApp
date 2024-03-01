@@ -13,7 +13,6 @@ protocol DataProviderProtocol {
     var sessionsPublisher: AnyPublisher<[SessionData], Error> { get }
     var confVenuePublisher: AnyPublisher<VenueData, Error> { get }
     var partyVenuePublisher: AnyPublisher<VenueData, Error> { get }
-    var partnersPublisher: AnyPublisher<[PartnersByCategoryData], Error> { get }
     var votesPublisher: AnyPublisher<[String: TalkFeedback], Error> { get }
 
     func vote(_ proposition: TalkFeedback.Proposition, for talkId: String)
@@ -33,7 +32,6 @@ class DataProvider {
     var sessionsPublisher = PassthroughSubject<[Session], Error>()
     var confVenuePublisher = PassthroughSubject<Venue, Error>()
     var partyVenuePublisher = PassthroughSubject<Venue, Error>()
-    var partnerPublisher = PassthroughSubject<[PartnerCategory], Error>()
     let votesPublisher: AnyPublisher<[String: TalkFeedback], Error>
 
     private var cancellables: Set<AnyCancellable> = []
@@ -47,7 +45,6 @@ class DataProvider {
 
         computeSessions()
         computeVenues()
-        computePartners()
     }
 
     func vote(_ proposition: TalkFeedback.Proposition, for talkId: String) {
@@ -116,14 +113,6 @@ class DataProvider {
         }.store(in: &cancellables)
     }
 
-    private func computePartners() {
-        proxyDataProvider.partnersPublisher
-            .sink(receiveCompletion: { error in
-                print("Error computing partners \(error)")
-            }) { [unowned self] partnerCategories in
-                self.partnerPublisher.send([PartnerCategory](from: partnerCategories))
-        }.store(in: &cancellables)
-    }
 }
 
 private extension Language {
@@ -175,24 +164,6 @@ private extension Venue {
     }
 }
 
-private extension Array where Element == PartnerCategory {
-    init(from partnersByCategories: [PartnersByCategoryData]) {
-        self = partnersByCategories
-            .sorted { $0.category.order < $1.category.order }
-            .compactMap { partnersByCategory in
-                let partners = partnersByCategory.partners.compactMap { Partner(from: $0) }
-                guard !partners.isEmpty else { return nil }
-                return PartnerCategory(categoryName: partnersByCategory.category.name, partners: partners)
-        }
-    }
-}
-
-private extension Partner {
-    init?(from partner: PartnerData) {
-        guard let logoUrl = URL(string: partner.logoUrl) else { return nil }
-        self.init(name: partner.name, logoUrl: logoUrl, url: URL(string: partner.url))
-    }
-}
 
 private extension TalkFeedback.Proposition {
     init?(from voteItem: VoteConfigData.VoteItem, language: String) {

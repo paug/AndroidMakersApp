@@ -37,8 +37,6 @@ public extension GraphQLData {
       case "SessionConnection": return GraphQLData.Objects.SessionConnection
       case "Session": return GraphQLData.Objects.Session
       case "Speaker": return GraphQLData.Objects.Speaker
-      case "PartnerGroup": return GraphQLData.Objects.PartnerGroup
-      case "Partner": return GraphQLData.Objects.Partner
       default: return nil
       }
     }

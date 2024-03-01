@@ -30,6 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import at.asitplus.KmmResult
 import fr.androidmakers.domain.model.Agenda
 import fr.androidmakers.domain.model.Room
 import fr.androidmakers.domain.model.Session
@@ -84,7 +85,7 @@ fun AgendaLayout(
 }
 
 class AgendaPagerViewModel : LceViewModel<Agenda>() {
-  override fun produce(): Flow<Result<Agenda>> {
+  override fun produce(): Flow<KmmResult<Agenda>> {
     return AndroidMakersApplication.instance().getAgendaUseCase()
   }
 }

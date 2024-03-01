@@ -23,7 +23,6 @@ func injectMockModel() {
 protocol RepositoryProvider {
     var sessionRepository: SessionRepository { get }
     var venueRepository: VenueRepository { get }
-    var partnerRepository: PartnerRepository { get }
     var feedbackRepository: FeedbackRepository { get }
     var partnersRepository: PartnersRepository { get }
 }
@@ -33,7 +32,7 @@ class Model: RepositoryProvider {
     private let dataProvider: DataProvider // A strong ref on the data provider must be kept
     let sessionRepository: SessionRepository
     let venueRepository: VenueRepository
-    let partnerRepository: PartnerRepository
+
     let feedbackRepository: FeedbackRepository
 
     let partnersRepository: PartnersRepository
@@ -42,7 +41,6 @@ class Model: RepositoryProvider {
         self.dataProvider = dataProvider
         sessionRepository = SessionRepository(dataProvider: dataProvider)
         venueRepository = VenueRepository(dataProvider: dataProvider)
-        partnerRepository = PartnerRepository(dataProvider: dataProvider)
 
         feedbackRepository = FeedbackRepository(dataProvider: dataProvider)
         partnersRepository = PartnersGraphQLRepository(apolloClient: apolloClient)

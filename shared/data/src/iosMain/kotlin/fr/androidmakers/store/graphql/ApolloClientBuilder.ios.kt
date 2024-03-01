@@ -24,7 +24,7 @@ actual class ApolloClientBuilder(
             return chain.proceed(
                 request.newBuilder()
                     .addHeader("conference", conference)
-                    .addHeader("Authorization", "Bearer $token")
+                    //.addHeader("Authorization", "Bearer $token")
                     .build()
             )
           }

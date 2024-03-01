@@ -1,8 +1,9 @@
 package fr.androidmakers.domain.repo
 
-import fr.androidmakers.domain.model.Partner
+import at.asitplus.KmmResult
+import fr.androidmakers.domain.model.PartnerGroup
 import kotlinx.coroutines.flow.Flow
 
 interface PartnersRepository {
-  fun getPartners(): Flow<Result<List<Partner>>>
+  fun getPartners(): Flow<KmmResult<List<PartnerGroup>>>
 }

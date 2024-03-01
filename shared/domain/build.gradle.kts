@@ -18,9 +18,13 @@ kotlin {
 
   sourceSets {
     commonMain.dependencies {
-        implementation(libs.kotlinx.coroutines.core)
-        api(libs.kotlinx.datetime)
-      }
+      implementation(libs.kotlinx.coroutines.core)
+      api(libs.kotlinx.datetime)
+
+      // Temporary dependency to handle the fact that swift doesnt support Kotlin Result
+      // It will be removed when we will merge the viewmodels or go for Compose MP
+      api("at.asitplus:kmmresult:1.5.4")
+    }
   }
 }
 
