@@ -51,7 +51,7 @@ object BookmarksStore {
     val userId = FirebaseAuth.getInstance().currentUser?.uid
     if (userId != null) {
       GlobalScope.launch {
-        AndroidMakersApplication.instance().store.setBookmark(userId, sessionId, bookmarked)
+        AndroidMakersApplication.instance().sessionsRepository.setBookmark(userId, sessionId, bookmarked)
       }
     }
   }

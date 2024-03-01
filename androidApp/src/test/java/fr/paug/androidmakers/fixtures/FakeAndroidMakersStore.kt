@@ -1,11 +1,10 @@
 package fr.paug.androidmakers.fixtures
 
-import fr.androidmakers.store.AndroidMakersStore
-import fr.androidmakers.store.model.Partner
-import fr.androidmakers.store.model.Room
-import fr.androidmakers.store.model.Session
-import fr.androidmakers.store.model.Speaker
-import fr.androidmakers.store.model.Venue
+import fr.androidmakers.domain.model.Partner
+import fr.androidmakers.domain.model.Room
+import fr.androidmakers.domain.model.Session
+import fr.androidmakers.domain.model.Speaker
+import fr.androidmakers.domain.model.Venue
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 

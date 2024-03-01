@@ -16,7 +16,7 @@ android {
 }
 
 dependencies {
-  implementation(project(":shared:store-graphql"))
+  implementation(project(":shared:data"))
   testImplementation(libs.junit)
   androidTestImplementation(libs.espresso.core)
 

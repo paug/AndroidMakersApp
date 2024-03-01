@@ -1,8 +1,8 @@
 package fr.paug.androidmakers.ui.components.session
 
 import androidx.lifecycle.ViewModel
-import fr.androidmakers.store.model.Session
-import fr.androidmakers.store.model.Speaker
+import fr.androidmakers.domain.model.Session
+import fr.androidmakers.domain.model.Speaker
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.ui.viewmodel.Lce
 import fr.paug.androidmakers.util.BookmarksStore
@@ -17,8 +17,8 @@ class SessionDetailViewModel(
 ) : ViewModel() {
 
   val sessionDetailState = combine(
-      AndroidMakersApplication.instance().store.getSession(sessionId),
-      AndroidMakersApplication.instance().store.getRoom(roomId),
+      AndroidMakersApplication.instance().sessionsRepository.getSession(sessionId),
+      AndroidMakersApplication.instance().roomsRepository.getRoom(roomId),
       BookmarksStore.subscribe(sessionId),
   ) { session, room, isBookmarked ->
 
@@ -40,8 +40,8 @@ class SessionDetailViewModel(
   }
 
   private suspend fun getSpeakers(session: Session): List<Speaker> {
-    val allSpeakers = AndroidMakersApplication.instance().store.getSpeakers().firstOrNull()
-        ?.recover { emptyList() }
+    val allSpeakers = AndroidMakersApplication.instance().speakersRepository.getSpeakers().firstOrNull()
+        //?.recover { emptyList() }
         ?.getOrThrow()
         ?: return emptyList()
 

@@ -16,6 +16,7 @@ crashlytics-plugin = "2.9.9"
 moko = "0.24.0-alpha-4"
 moko-graphics = "0.9.0"
 compose-mp = "1.5.12"
+skie = "0.6.1"
 
 [libraries]
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
@@ -75,6 +76,7 @@ kmp = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services-plugin" }
 crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlytics-plugin" }
 moko = { id = "dev.icerock.mobile.multiplatform-resources", version.ref = "moko" }
+skie = { id = "co.touchlab.skie", version.ref = "skie" }
 
 ## Custom plugins
 androidmakers-android-application = { id = "fr.androidmakers.android.application", version = "unspecified" }

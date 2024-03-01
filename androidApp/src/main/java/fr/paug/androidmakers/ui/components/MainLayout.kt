@@ -11,7 +11,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import fr.androidmakers.store.model.SpeakerId
+import fr.androidmakers.domain.model.SpeakerId
 import fr.paug.androidmakers.ui.AMUser
 import fr.paug.androidmakers.ui.components.about.AboutActions
 import fr.paug.androidmakers.ui.components.session.SessionDetailLayout

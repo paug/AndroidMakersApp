@@ -24,19 +24,6 @@ type PageInfo {
   endCursor: String
 }
 
-type Partner {
-  logoUrl: String!
-
-  name: String! 
-
-  url: String!
-}
-
-type PartnerGroup {
-  partners: [Partner!]!
-
-  title: String!
-}
 
 type Query {
   bookmarks: Bookmarks
@@ -44,8 +31,6 @@ type Query {
   conferences(orderBy: ConferenceOrderByInput): [Conference!]!
 
   config: Conference!
-
-  partnerGroups: [PartnerGroup!]!
 
   rooms: [Room!]!
 

@@ -2,6 +2,7 @@ package fr.paug.androidmakers.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import at.asitplus.KmmResult
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,7 +12,7 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 abstract class LceViewModel<T> : ViewModel() {
-  abstract fun produce(): Flow<Result<T>>
+  abstract fun produce(): Flow<KmmResult<T>>
 
   private val _mutableSharedState = MutableStateFlow<Lce<T>>(Lce.Loading)
   val values = _mutableSharedState.asStateFlow()
@@ -58,9 +59,8 @@ sealed interface Lce<out T> {
   object Error : Lce<Nothing>
 }
 
-fun <T> Result<T>.toLce(): Lce<T> = if (isSuccess) {
+fun <T> KmmResult<T>.toLce(): Lce<T> = if (isSuccess) {
   Lce.Content(getOrThrow())
 } else {
   Lce.Error
 }
-

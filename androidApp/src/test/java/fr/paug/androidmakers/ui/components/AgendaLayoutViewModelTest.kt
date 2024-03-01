@@ -1,6 +1,6 @@
 package fr.paug.androidmakers.ui.components
 
-import fr.androidmakers.store.model.Room
+import fr.androidmakers.domain.model.Room
 import fr.paug.androidmakers.fixtures.FakeAndroidMakersStore
 import fr.paug.androidmakers.util.SessionFilter
 import kotlinx.coroutines.CoroutineScope

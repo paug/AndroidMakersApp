@@ -5,18 +5,27 @@
 import Foundation
 import Combine
 import UIKit
+import shared
 
 class AboutViewModel: ObservableObject, Identifiable {
 
-    @Published var partnerCategories = [PartnerCategory]()
+    @Published var partnerGroups = [PartnerGroup]()
 
     private var disposables = Set<AnyCancellable>()
 
-    init(partnerRepo: PartnerRepository = model.partnerRepository) {
-        partnerRepo.getPartners()
-            .sink { [weak self] in
-                self?.partnerCategories = $0
-        }.store(in: &disposables)
+    @MainActor
+    func activate() async {
+        let partnersFlow = model.partnersRepository.getPartners()
+        for await partnerResult in partnersFlow {
+            partnerResult.fold(
+                onSuccess: { [weak self] partnerGroups in
+                    self?.partnerGroups = partnerGroups as? [PartnerGroup] ?? []
+                },
+                onFailure: { error in
+                    print("Error in retrieving partners")
+                }
+            )
+        }
     }
 
     func openTwitterPage() {
@@ -62,7 +71,7 @@ class AboutViewModel: ObservableObject, Identifiable {
     }
 
     func openPartnerPage(_ partner: Partner) {
-        if let url = partner.url {
+        if let url = URL(string: partner.url) {
             UIApplication.shared.open(url)
         }
     }

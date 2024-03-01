@@ -224,7 +224,7 @@ class MainActivity : AppCompatActivity() {
 
   suspend fun mergeBookmarks(userId: String) {
     val bookmarks = AndroidMakersApplication.instance()
-        .store
+        .sessionsRepository
         .getBookmarks(userId)
         .firstOrNull()
         ?.getOrNull()
