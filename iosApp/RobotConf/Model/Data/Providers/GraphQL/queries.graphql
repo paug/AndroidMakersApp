@@ -1,15 +1,3 @@
-query GetVenues {
-  venues {
-    id
-    name
-    address
-    coordinates
-    description
-    descriptionFr: description(language: "fr")
-    imageUrl
-  }
-}
-
 query GetTalks {
   rooms {
     capacity

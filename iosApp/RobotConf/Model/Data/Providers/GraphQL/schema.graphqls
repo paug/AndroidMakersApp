@@ -131,28 +131,6 @@ type Speaker {
   socials: [Social!]!
 }
 
-type Venue {
-  address: String
-
-  coordinates: String @deprecated(reason: "use latitude and longitude instead")
-
-  description(language: String): String!
-
-  descriptionFr: String! @deprecated(reason: "description(language: \"fr\") instead")
-
-  floorPlanUrl: String
-
-  id: String!
-
-  imageUrl: String
-
-  latitude: Float
-
-  longitude: Float
-
-  name: String!
-}
-
 enum ConferenceField {
   DAYS
 }

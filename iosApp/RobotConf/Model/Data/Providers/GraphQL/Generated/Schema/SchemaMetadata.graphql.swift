@@ -32,7 +32,6 @@ public extension GraphQLData {
     public static func objectType(forTypename typename: String) -> Object? {
       switch typename {
       case "Query": return GraphQLData.Objects.Query
-      case "Venue": return GraphQLData.Objects.Venue
       case "Room": return GraphQLData.Objects.Room
       case "SessionConnection": return GraphQLData.Objects.SessionConnection
       case "Session": return GraphQLData.Objects.Session

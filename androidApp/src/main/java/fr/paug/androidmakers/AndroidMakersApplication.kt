@@ -2,7 +2,9 @@ package fr.paug.androidmakers
 
 import android.app.Application
 import android.os.Build
+import fr.androidmakers.domain.interactor.GetAfterpartyVenueUseCase
 import fr.androidmakers.domain.interactor.GetAgendaUseCase
+import fr.androidmakers.domain.interactor.GetConferenceVenueUseCase
 import fr.androidmakers.domain.repo.PartnersRepository
 import fr.androidmakers.domain.repo.RoomsRepository
 import fr.androidmakers.domain.repo.SessionsRepository
@@ -21,11 +23,13 @@ import io.openfeedback.android.OpenFeedback
 
 class AndroidMakersApplication : Application() {
   lateinit var getAgendaUseCase: GetAgendaUseCase
+  lateinit var getConferenceVenueUseCase: GetConferenceVenueUseCase
+  lateinit var getAfterpartyVenueUseCase: GetAfterpartyVenueUseCase
+
   lateinit var partnersRepository: PartnersRepository
   lateinit var roomsRepository: RoomsRepository
   lateinit var sessionsRepository: SessionsRepository
   lateinit var speakersRepository: SpeakersRepository
-  lateinit var venueRepository: VenueRepository
 
   lateinit var openFeedback: OpenFeedback
 
@@ -44,7 +48,9 @@ class AndroidMakersApplication : Application() {
     roomsRepository = RoomsGraphQLRepository(apolloClient)
     sessionsRepository = SessionsGraphQLRepository(apolloClient)
     speakersRepository = SpeakersGraphQLRepository(apolloClient)
-    venueRepository = VenueGraphQLRepository(apolloClient)
+    val venueRepository = VenueGraphQLRepository(apolloClient)
+    getAfterpartyVenueUseCase = GetAfterpartyVenueUseCase(venueRepository)
+    getConferenceVenueUseCase = GetConferenceVenueUseCase(venueRepository)
     getAgendaUseCase = GetAgendaUseCase(
         sessionsRepository = sessionsRepository,
         roomsRepository = roomsRepository,
