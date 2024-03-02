@@ -11,8 +11,6 @@ import Apollo
 
 protocol DataProviderProtocol {
     var sessionsPublisher: AnyPublisher<[SessionData], Error> { get }
-    var confVenuePublisher: AnyPublisher<VenueData, Error> { get }
-    var partyVenuePublisher: AnyPublisher<VenueData, Error> { get }
     var votesPublisher: AnyPublisher<[String: TalkFeedback], Error> { get }
 
     func vote(_ proposition: TalkFeedback.Proposition, for talkId: String)
@@ -30,8 +28,6 @@ class DataProvider {
     }
 
     var sessionsPublisher = PassthroughSubject<[Session], Error>()
-    var confVenuePublisher = PassthroughSubject<Venue, Error>()
-    var partyVenuePublisher = PassthroughSubject<Venue, Error>()
     let votesPublisher: AnyPublisher<[String: TalkFeedback], Error>
 
     private var cancellables: Set<AnyCancellable> = []
@@ -44,7 +40,6 @@ class DataProvider {
         votesPublisher = proxyDataProvider.votesPublisher
 
         computeSessions()
-        computeVenues()
     }
 
     func vote(_ proposition: TalkFeedback.Proposition, for talkId: String) {
@@ -86,33 +81,6 @@ class DataProvider {
             self.sessionsPublisher.send(sessions)
         }.store(in: &cancellables)
     }
-
-    private func computeVenues() {
-        proxyDataProvider.confVenuePublisher
-            .sink(receiveCompletion: { error in
-                print("Error computing conf venue \(error)")
-            }) { [unowned self] venue in
-                guard let confVenue = Venue(from: venue) else {
-                    // self.confVenuePublisher.send(completion: .failure())
-                    return
-                }
-
-                self.confVenuePublisher.send(confVenue)
-        }.store(in: &cancellables)
-
-        proxyDataProvider.partyVenuePublisher
-            .sink(receiveCompletion: { error in
-                print("Error computing party venue \(error)")
-            }) { [unowned self] venue in
-                guard let partyVenue = Venue(from: venue) else {
-                    // self.partyVenuePublisher.send(completion: .failure())
-                    return
-                }
-
-                self.partyVenuePublisher.send(partyVenue)
-        }.store(in: &cancellables)
-    }
-
 }
 
 private extension Language {
@@ -142,28 +110,6 @@ private extension Session.Complexity {
         }
     }
 }
-
-private extension Venue {
-    init?(from venue: VenueData) {
-        let coords = venue.coordinates?.split(separator: ",") ?? []
-        let formatter = NumberFormatter()
-        formatter.locale = Locale(identifier: "en_US")
-        formatter.numberStyle = .decimal
-        let coordinates: CLLocationCoordinate2D?
-        if coords.count == 2,
-            let latitude = formatter.number(from: String(coords[0]))?.doubleValue,
-            let longitude = formatter.number(from: String(coords[1]))?.doubleValue {
-            coordinates = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-        } else {
-            coordinates = nil
-        }
-        self = Venue(name: venue.name, description: venue.description, descriptionFr: venue.descriptionFr,
-                     address: venue.address,
-                     coordinates: coordinates,
-                     imageUrl: venue.imageUrl)
-    }
-}
-
 
 private extension TalkFeedback.Proposition {
     init?(from voteItem: VoteConfigData.VoteItem, language: String) {

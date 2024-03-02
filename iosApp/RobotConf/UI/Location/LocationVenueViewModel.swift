@@ -5,6 +5,7 @@
 import Foundation
 import Combine
 import CoreLocation
+import shared
 
 class LocationVenueViewModel: ObservableObject, Identifiable {
     enum VenueKind {
@@ -14,44 +15,26 @@ class LocationVenueViewModel: ObservableObject, Identifiable {
 
     struct Content {
         let name: String
-        let description: String
+        let detail: String
         let address: String
-        let coordinates: CLLocationCoordinate2D?
+        let coordinates: String?
         let imageUrl: String
     }
 
     @Published var content: Content?
 
-    private let venueRepo: VenueRepository
-    private var disposables = Set<AnyCancellable>()
-
-    init(kind: VenueKind, venueRepo: VenueRepository = model.venueRepository) {
-        self.venueRepo = venueRepo
-        let venuePublisher: AnyPublisher<Venue?, Never>
-        switch kind {
-        case .conference:
-            venuePublisher = venueRepo.getConferenceVenue()
-        case .party:
-            venuePublisher = venueRepo.getPartyVenue()
-        }
-        venuePublisher.sink { [weak self] venue in
-            guard let venue = venue else {
-                // TODO: let the view know that the venue is unknown. To do that, maybe change the type of content
-                // to be a type that can give an error
-                return
-            }
-
-            self?.content = Content(from: venue)
-        }.store(in: &disposables)
+    @MainActor
+    func activate() async {
     }
 }
 
-private extension LocationVenueViewModel.Content {
+extension LocationVenueViewModel.Content {
     init(from venue: Venue) {
-        self.init(name: venue.name,
-                  description: Locale.current.languageCode != "fr" ? venue.description : venue.descriptionFr,
-                  address: venue.address,
-                  coordinates: venue.coordinates,
-                  imageUrl: venue.imageUrl)
+        self.init(
+            name: venue.name,
+            detail: Locale.current.languageCode != "fr" ? venue.description_ : venue.descriptionFr,
+            address: venue.address,
+            coordinates: venue.coordinates,
+            imageUrl: venue.imageUrl)
     }
 }

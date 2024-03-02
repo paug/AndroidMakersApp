@@ -71,15 +71,14 @@ fun VenuePager() {
     ) { page ->
       when (page) {
         0, 1 -> {
-          val venueId = if (page == 0) {
-            "conference"
+          val venueUc = if (page == 0) {
+            AndroidMakersApplication.instance().getConferenceVenueUseCase
           } else {
-            "afterparty"
+            AndroidMakersApplication.instance().getConferenceVenueUseCase
           }
 
           val flow = remember {
-            AndroidMakersApplication.instance().venueRepository.getVenue(venueId)
-                .map { it.toLce() }
+            venueUc().map { it.toLce() }
           }
           val venueState = flow.collectAsState(initial = Lce.Loading)
 

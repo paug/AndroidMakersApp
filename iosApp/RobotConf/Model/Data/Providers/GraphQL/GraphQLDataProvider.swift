@@ -11,11 +11,8 @@ import UIKit
 
 class GraphQLDataProvider: DataProviderProtocol {
     let sessionsPublisher: AnyPublisher<[SessionData], Error>
-    let confVenuePublisher: AnyPublisher<VenueData, Error>
-    let partyVenuePublisher: AnyPublisher<VenueData, Error>
     let votesPublisher: AnyPublisher<[String: TalkFeedback], Error>
 
-    private let venuesProvider: GraphQLVenuesProvider
     private let sessionsProvider: GraphQLTalksProvider
     private let openFeedbackSynchronizer: OpenFeedbackSynchronizer?
 
@@ -48,11 +45,6 @@ class GraphQLDataProvider: DataProviderProtocol {
     }()
 
     init() {
-        venuesProvider = GraphQLVenuesProvider(apolloClient: apolloClient)
-        confVenuePublisher = venuesProvider.confVenuePublisher.eraseToAnyPublisher()
-        partyVenuePublisher = venuesProvider.partyVenuePublisher.eraseToAnyPublisher()
-
-
         sessionsProvider = GraphQLTalksProvider(apolloClient: apolloClient)
         sessionsPublisher = sessionsProvider.talksPublisher.eraseToAnyPublisher()
 
