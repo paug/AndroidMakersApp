@@ -9,14 +9,26 @@ import shared
 
 struct LocationVenueView: View {
     @StateObject private var viewModel: LocationVenueViewModel
+    var kind: LocationVenueViewModel.VenueKind = .conference
 
     init(kind: LocationVenueViewModel.VenueKind) {
-        self._viewModel = StateObject(wrappedValue: LocationVenueViewModel(kind: kind))
+        switch kind {
+            case .conference:
+                self._viewModel = StateObject(wrappedValue: ConferenceVenueViewModel(
+                    getConferenceVenueUc: model.getConferenceVenueUC
+                ))
+            case .party:
+                self._viewModel = StateObject(wrappedValue: AfterPartyVenueViewModel(
+                    getAfterpartyUc: model.getAfterpartyVenueUC
+                ))
+        }
+
     }
 
     var body: some View {
-        viewModel.content.map { content in
+
             ScrollView {
+                viewModel.content.map { content in
                 VStack(alignment: .center, spacing: 16) {
                     URLImage(URL(string: content.imageUrl)!) { image in
                         image
@@ -31,12 +43,12 @@ struct LocationVenueView: View {
 
                     // Set the width to 320 because it is the smallest width of the iPhones. This is a really dirty hack
                     // but using a geometry destroys the UI.
-                    AttributedLabel(attributedText: content.description.asHtmlAttributedString, width: 320)
+                    AttributedLabel(attributedText: content.detail.asHtmlAttributedString, width: 320)
                         .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
                         .padding(.horizontal, 8)
 
                     Button(stringResource(MR.strings().locations)) {
-                        if let coordinates = content.coordinates {
+                        if let coordinates = content.clCoordinates {
                             let placemark = MKPlacemark(coordinate: coordinates)
                             let mapItem = MKMapItem(placemark: placemark)
                             mapItem.name = content.name
@@ -57,9 +69,12 @@ struct LocationVenueView: View {
                         .cornerRadius(8)
 
                     Spacer()
-                }
+                }.navigationBarTitle(Text(content.name), displayMode: .inline)
             }
-            .navigationBarTitle(Text(content.name), displayMode: .inline)
+
+            .task {
+                await viewModel.activate()
+            }
         }
     }
 }
@@ -72,3 +87,21 @@ struct LocationVenueView_Previews: PreviewProvider {
     }
 }
 #endif
+
+extension LocationVenueViewModel.Content {
+    var clCoordinates: CLLocationCoordinate2D? {
+        get {
+            let coords = coordinates?.split(separator: ",") ?? []
+            let formatter = NumberFormatter()
+            formatter.locale = Locale(identifier: "en_US")
+            formatter.numberStyle = .decimal
+            if coords.count == 2,
+               let latitude = formatter.number(from: String(coords[0]))?.doubleValue,
+               let longitude = formatter.number(from: String(coords[1]))?.doubleValue {
+                return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+            } else {
+                return nil
+            }
+        }
+    }
+}
