@@ -16,7 +16,7 @@ import fr.androidmakers.store.graphql.SessionsGraphQLRepository
 import fr.androidmakers.store.graphql.SpeakersGraphQLRepository
 import fr.androidmakers.store.graphql.VenueGraphQLRepository
 import fr.androidmakers.store.local.createDataStore
-import fr.androidmakers.store.local.BookmarksStore
+import fr.androidmakers.store.local.BookmarksDataStoreRepository
 import io.openfeedback.android.OpenFeedback
 
 
@@ -31,7 +31,7 @@ class AndroidMakersApplication : Application() {
   lateinit var sessionsRepository: SessionsRepository
   lateinit var speakersRepository: SpeakersRepository
 
-  lateinit var bookmarksStore: BookmarksStore
+  lateinit var bookmarksStore: BookmarksDataStoreRepository
 
   lateinit var openFeedback: OpenFeedback
 
@@ -61,7 +61,7 @@ class AndroidMakersApplication : Application() {
 
     super.onCreate()
 
-    bookmarksStore = BookmarksStore(createDataStore {
+    bookmarksStore = BookmarksDataStoreRepository(createDataStore {
       filesDir.resolve("bookmarks.preferences_pb").absolutePath
     })
 
