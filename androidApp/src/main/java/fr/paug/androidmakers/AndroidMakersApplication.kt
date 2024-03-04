@@ -5,6 +5,7 @@ import android.os.Build
 import fr.androidmakers.domain.interactor.GetAfterpartyVenueUseCase
 import fr.androidmakers.domain.interactor.GetAgendaUseCase
 import fr.androidmakers.domain.interactor.GetConferenceVenueUseCase
+import fr.androidmakers.domain.interactor.SyncBookmarksUseCase
 import fr.androidmakers.domain.repo.PartnersRepository
 import fr.androidmakers.domain.repo.RoomsRepository
 import fr.androidmakers.domain.repo.SessionsRepository
@@ -25,6 +26,7 @@ class AndroidMakersApplication : Application() {
   lateinit var getAgendaUseCase: GetAgendaUseCase
   lateinit var getConferenceVenueUseCase: GetConferenceVenueUseCase
   lateinit var getAfterpartyVenueUseCase: GetAfterpartyVenueUseCase
+  lateinit var syncBookmarksUseCase: SyncBookmarksUseCase
 
   lateinit var partnersRepository: PartnersRepository
   lateinit var roomsRepository: RoomsRepository
@@ -64,6 +66,11 @@ class AndroidMakersApplication : Application() {
     bookmarksStore = BookmarksDataStoreRepository(createDataStore {
       filesDir.resolve("bookmarks.preferences_pb").absolutePath
     })
+
+    syncBookmarksUseCase = SyncBookmarksUseCase(
+        bookmarksStore,
+        sessionsRepository
+    )
 
     openFeedback = OpenFeedback(
         context = this,
