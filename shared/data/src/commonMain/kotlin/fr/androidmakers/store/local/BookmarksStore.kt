@@ -1,32 +1,31 @@
-package fr.paug.androidmakers.util
+package fr.androidmakers.store.local
 
-import android.content.Context
-import android.content.SharedPreferences
-import androidx.preference.PreferenceManager
-import com.google.firebase.auth.FirebaseAuth
-import fr.paug.androidmakers.AndroidMakersApplication
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringSetPreferencesKey
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
-object BookmarksStore {
-
-  private const val PREF_SELECTED_SESSIONS = "selected_sessions"
-
-  private var mSharedPreferences: SharedPreferences? = null
-
+class BookmarksStore(private val dataStore: DataStore<Preferences>) {
   private var bookmarkedSessions: MutableSet<String> = HashSet()
 
-  private lateinit var selectedSessionIds: MutableStateFlow<Set<String>>
+  private var selectedSessionIds: MutableStateFlow<Set<String>>
 
-  fun init(context: Context) {
-    val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-    mSharedPreferences = sharedPreferences
-    val prefSet = sharedPreferences.getStringSet(PREF_SELECTED_SESSIONS, null)
+  init {
+    val prefSet = runBlocking {
+      dataStore.data.map { prefs ->
+        prefs[stringSetPreferencesKey(PREF_SELECTED_SESSIONS)]
+      }.first()
+    }
     if (prefSet != null) {
       bookmarkedSessions.addAll(prefSet)
     }
@@ -38,7 +37,7 @@ object BookmarksStore {
     )
   }
 
-  fun setBookmarked(sessionId: String, bookmarked: Boolean) {
+  suspend fun setBookmarked(sessionId: String, bookmarked: Boolean) {
     if (bookmarked) {
       bookmarkedSessions.add(sessionId)
     } else {
@@ -46,14 +45,6 @@ object BookmarksStore {
     }
     selectedSessionIds.value = mutableSetOf<String>().apply { addAll(bookmarkedSessions) }
     save()
-
-    // YOLO 🙌
-    val userId = FirebaseAuth.getInstance().currentUser?.uid
-    if (userId != null) {
-      GlobalScope.launch {
-        AndroidMakersApplication.instance().sessionsRepository.setBookmark(userId, sessionId, bookmarked)
-      }
-    }
   }
 
   fun isBookmarked(id: String): Boolean {
@@ -66,21 +57,25 @@ object BookmarksStore {
     }
   }
 
-  private fun save() {
-    val editor = mSharedPreferences?.edit()
-    editor?.putStringSet(PREF_SELECTED_SESSIONS, bookmarkedSessions)
-    editor?.apply()
+  private suspend fun save() {
+    dataStore.edit { prefs ->
+      prefs[stringSetPreferencesKey(PREF_SELECTED_SESSIONS)] = bookmarkedSessions
+    }
   }
 
   /**
    * This is called after a successful signin or at startup to merge the remote bookmarks into
    * the local ones
    */
-  fun merge(bookmarks: Set<String>) {
+  suspend fun merge(bookmarks: Set<String>) {
     bookmarkedSessions.addAll(bookmarks)
 
     selectedSessionIds.value = mutableSetOf<String>().apply { addAll(bookmarkedSessions) }
     save()
+  }
+
+  companion object {
+    private const val PREF_SELECTED_SESSIONS = "selected_sessions"
   }
 }
 

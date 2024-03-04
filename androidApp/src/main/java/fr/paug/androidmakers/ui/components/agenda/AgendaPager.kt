@@ -16,10 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.ui.components.EmptyLayout
 import fr.paug.androidmakers.ui.components.SwipeRefreshableLceLayout
 import fr.paug.androidmakers.ui.model.UISession
-import fr.paug.androidmakers.util.BookmarksStore
 import fr.paug.androidmakers.util.SessionFilter
 import fr.paug.androidmakers.util.TimeUtils
 import kotlinx.coroutines.launch
@@ -129,7 +129,7 @@ private fun List<UISession>.filter(
     for (filter in filterList) {
       when (filter.type) {
         SessionFilter.FilterType.BOOKMARK -> {
-          if (BookmarksStore.isBookmarked(session.id)) {
+          if (AndroidMakersApplication.instance().bookmarksStore.isBookmarked(session.id)) {
             sessionsByFilterType[filter.type]?.add(session)
           }
         }

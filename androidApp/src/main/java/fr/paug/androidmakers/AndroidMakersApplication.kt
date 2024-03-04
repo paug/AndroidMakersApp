@@ -9,14 +9,14 @@ import fr.androidmakers.domain.repo.PartnersRepository
 import fr.androidmakers.domain.repo.RoomsRepository
 import fr.androidmakers.domain.repo.SessionsRepository
 import fr.androidmakers.domain.repo.SpeakersRepository
-import fr.androidmakers.domain.repo.VenueRepository
 import fr.androidmakers.store.graphql.ApolloClientBuilder
 import fr.androidmakers.store.graphql.PartnersGraphQLRepository
 import fr.androidmakers.store.graphql.RoomsGraphQLRepository
 import fr.androidmakers.store.graphql.SessionsGraphQLRepository
 import fr.androidmakers.store.graphql.SpeakersGraphQLRepository
 import fr.androidmakers.store.graphql.VenueGraphQLRepository
-import fr.paug.androidmakers.util.BookmarksStore
+import fr.androidmakers.store.local.createDataStore
+import fr.androidmakers.store.local.BookmarksStore
 import io.openfeedback.android.OpenFeedback
 
 
@@ -30,6 +30,8 @@ class AndroidMakersApplication : Application() {
   lateinit var roomsRepository: RoomsRepository
   lateinit var sessionsRepository: SessionsRepository
   lateinit var speakersRepository: SpeakersRepository
+
+  lateinit var bookmarksStore: BookmarksStore
 
   lateinit var openFeedback: OpenFeedback
 
@@ -58,7 +60,10 @@ class AndroidMakersApplication : Application() {
     )
 
     super.onCreate()
-    BookmarksStore.init(this)
+
+    bookmarksStore = BookmarksStore(createDataStore {
+      filesDir.resolve("bookmarks.preferences_pb").absolutePath
+    })
 
     openFeedback = OpenFeedback(
         context = this,

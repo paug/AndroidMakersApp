@@ -8,7 +8,6 @@ import android.util.Log
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.CompositionLocalProvider
@@ -33,7 +32,6 @@ import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.components.MainLayout
 import fr.paug.androidmakers.ui.components.about.AboutActions
 import fr.paug.androidmakers.ui.theme.AndroidMakersTheme
-import fr.paug.androidmakers.util.BookmarksStore
 import fr.paug.androidmakers.util.CustomTabUtil
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.firstOrNull
@@ -229,7 +227,7 @@ class MainActivity : AppCompatActivity() {
         .firstOrNull()
         ?.getOrNull()
     if (bookmarks != null) {
-      BookmarksStore.merge(bookmarks)
+      AndroidMakersApplication.instance().bookmarksStore.merge(bookmarks)
     }
   }
 
