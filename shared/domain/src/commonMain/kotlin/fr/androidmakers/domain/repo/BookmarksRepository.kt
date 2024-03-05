@@ -9,4 +9,7 @@ interface BookmarksRepository {
   fun subscribe(id: String): Flow<Boolean>
 
   suspend fun merge(bookmarks: Set<String>)
+
+  // TODO Temporary for iOS
+  fun getFavoriteSessions(): Flow<Set<String>>
 }

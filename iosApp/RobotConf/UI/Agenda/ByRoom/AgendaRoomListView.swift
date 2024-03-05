@@ -38,6 +38,9 @@ struct AgendaRoomListView: View {
                 }
             )
         }
+        .task {
+            await viewModel.activate()
+        }
         .navigationViewStyle(StackNavigationViewStyle())
     }
 }

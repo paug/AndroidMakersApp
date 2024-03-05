@@ -74,6 +74,10 @@ class BookmarksDataStoreRepository(
     save()
   }
 
+  override fun getFavoriteSessions(): Flow<Set<String>> {
+    return selectedSessionIds
+  }
+
   companion object {
     private const val PREF_SELECTED_SESSIONS = "selected_sessions"
   }
