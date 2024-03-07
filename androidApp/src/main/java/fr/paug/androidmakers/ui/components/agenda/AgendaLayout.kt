@@ -282,20 +282,28 @@ class DaySchedule(
     val sessions: List<UISession>
 )
 
+@Composable
 internal fun agendaToDays(agenda: Agenda): List<DaySchedule> {
+  // TODO move it to a viewmodel
+  val favoriteSessions by AndroidMakersApplication.instance().bookmarksStore.getFavoriteSessions().collectAsState(emptySet())
   return agenda.sessions.values.groupBy { it.startsAt.date }
       .entries
       .map {
         DaySchedule(
             title = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).format(it.key.toJavaLocalDate()),
             date = it.key,
-            sessions = it.value.sortedBy { it.startsAt }.map { it.toUISession(agenda.rooms, agenda.speakers) }
+            sessions = it.value.sortedBy { it.startsAt }
+                .map { it.toUISession(agenda.rooms, agenda.speakers, favoriteSessions.contains(it.id)) }
         )
       }
 }
 
 
-fun Session.toUISession(rooms: Map<String, Room>, speakers: Map<String, Speaker>): UISession {
+fun Session.toUISession(
+    rooms: Map<String, Room>,
+    speakers: Map<String, Speaker>,
+    isFavorite: Boolean
+): UISession {
   return UISession(
       id = id,
       title = title,
@@ -306,6 +314,7 @@ fun Session.toUISession(rooms: Map<String, Room>, speakers: Map<String, Speaker>
       room = rooms.get(roomId)!!.name,
       speakers = this.speakers.mapNotNull { speakers[it]?.toUISpeaker() },
       isServiceSession = isServiceSession,
+      isFavorite = isFavorite
   )
 }
 

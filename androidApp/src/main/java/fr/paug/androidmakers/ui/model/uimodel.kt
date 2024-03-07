@@ -12,6 +12,7 @@ class UISession(
     val roomId: String,
     val speakers: List<Speaker>,
     val isServiceSession: Boolean,
+    var isFavorite: Boolean,
 ) {
   class Speaker(val name: String)
 }

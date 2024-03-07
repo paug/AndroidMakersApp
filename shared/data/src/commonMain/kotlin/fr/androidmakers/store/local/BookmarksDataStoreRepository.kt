@@ -47,15 +47,12 @@ class BookmarksDataStoreRepository(
     save()
   }
 
-  override fun isBookmarked(id: String): Boolean {
-    return bookmarkedSessions.contains(id)
+  override fun isBookmarked(id: String): Flow<Boolean> {
+    return dataStore.data.map { prefs ->
+      val set = prefs[stringSetPreferencesKey(PREF_SELECTED_SESSIONS)] ?: emptySet()
+      set.contains(id)
+    }
   }
-
-  override fun subscribe(id: String): Flow<Boolean> =
-      dataStore.data.map { prefs ->
-        val sessions = prefs[stringSetPreferencesKey(PREF_SELECTED_SESSIONS)]
-        sessions?.contains(id) ?: false
-      }
 
   private suspend fun save() {
     dataStore.edit { prefs ->

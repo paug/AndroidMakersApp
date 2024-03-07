@@ -103,18 +103,17 @@ fun AgendaRow(
       trailingContent = {
         if (!uiSession.isServiceSession) {
           Box {
-            val isBookmarked =
-                AndroidMakersApplication.instance().bookmarksStore.subscribe(uiSession.id).collectAsState(false)
-            val imageVector = if (isBookmarked.value) Icons.Rounded.BookmarkRemove
+            val isBookmarked = uiSession.isFavorite
+            val imageVector = if (isBookmarked) Icons.Rounded.BookmarkRemove
             else Icons.Rounded.BookmarkAdd
 
             val tint by animateColorAsState(
-                if (isBookmarked.value) AMColor.bookmarked
+                if (isBookmarked) AMColor.bookmarked
                 else Color.LightGray
             )
 
             IconToggleButton(
-                checked = isBookmarked.value,
+                checked = isBookmarked,
                 onCheckedChange = {
                   runBlocking {
                     AndroidMakersApplication.instance().bookmarksStore.setBookmarked(uiSession.id, it)
@@ -166,5 +165,6 @@ private val fakeUiSession = UISession(
     room = "Moebius",
     startDate = Instant.parse("2022-04-25T09:00:00+02:00"),
     endDate = Instant.parse("2022-04-25T10:00:00+02:00"),
-    isServiceSession = false
+    isServiceSession = false,
+    isFavorite = false
 )

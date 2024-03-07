@@ -6,6 +6,7 @@ import fr.androidmakers.domain.interactor.GetAfterpartyVenueUseCase
 import fr.androidmakers.domain.interactor.GetAgendaUseCase
 import fr.androidmakers.domain.interactor.GetConferenceVenueUseCase
 import fr.androidmakers.domain.interactor.SyncBookmarksUseCase
+import fr.androidmakers.domain.repo.BookmarksRepository
 import fr.androidmakers.domain.repo.PartnersRepository
 import fr.androidmakers.domain.repo.RoomsRepository
 import fr.androidmakers.domain.repo.SessionsRepository
@@ -33,7 +34,7 @@ class AndroidMakersApplication : Application() {
   lateinit var sessionsRepository: SessionsRepository
   lateinit var speakersRepository: SpeakersRepository
 
-  lateinit var bookmarksStore: BookmarksDataStoreRepository
+  lateinit var bookmarksStore: BookmarksRepository
 
   lateinit var openFeedback: OpenFeedback
 

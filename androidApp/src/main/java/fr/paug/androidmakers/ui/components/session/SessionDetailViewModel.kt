@@ -22,7 +22,7 @@ class SessionDetailViewModel(
   val sessionDetailState = combine(
       AndroidMakersApplication.instance().sessionsRepository.getSession(sessionId),
       AndroidMakersApplication.instance().roomsRepository.getRoom(roomId),
-      AndroidMakersApplication.instance().bookmarksStore.subscribe(sessionId),
+      AndroidMakersApplication.instance().bookmarksStore.isBookmarked(sessionId),
   ) { session, room, isBookmarked ->
 
     val exception = session.exceptionOrNull() ?: room.exceptionOrNull()
