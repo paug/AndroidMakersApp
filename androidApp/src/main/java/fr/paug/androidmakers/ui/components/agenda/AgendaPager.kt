@@ -11,18 +11,22 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.ui.components.EmptyLayout
 import fr.paug.androidmakers.ui.components.SwipeRefreshableLceLayout
 import fr.paug.androidmakers.ui.model.UISession
-import fr.paug.androidmakers.util.BookmarksStore
 import fr.paug.androidmakers.util.SessionFilter
 import fr.paug.androidmakers.util.TimeUtils
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.util.*
 
 
@@ -82,6 +86,12 @@ fun AgendaPager(
         if (items.isEmpty()) {
           EmptyLayout()
         } else {
+          // TODO move it in a viewmodel
+          val favoriteSessions by AndroidMakersApplication.instance().bookmarksStore.getFavoriteSessions()
+              .collectAsState(emptySet())
+          items.filter { favoriteSessions.contains(it.id) }.forEach {
+              it.isFavorite = true
+          }
           AgendaColumn(
               sessionsPerStartTime = addSeparators(LocalContext.current, items),
               onSessionClicked = onSessionClicked
@@ -129,7 +139,8 @@ private fun List<UISession>.filter(
     for (filter in filterList) {
       when (filter.type) {
         SessionFilter.FilterType.BOOKMARK -> {
-          if (BookmarksStore.isBookmarked(session.id)) {
+          val bookmarked = AndroidMakersApplication.instance().bookmarksStore.isBookmarked(session.id)
+          if (runBlocking { bookmarked.first() }) {
             sessionsByFilterType[filter.type]?.add(session)
           }
         }

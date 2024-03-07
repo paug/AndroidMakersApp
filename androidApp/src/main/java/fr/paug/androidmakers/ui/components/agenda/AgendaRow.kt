@@ -23,17 +23,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.ui.model.UISession
 import fr.paug.androidmakers.ui.theme.AMColor
-import fr.paug.androidmakers.util.BookmarksStore
 import fr.paug.androidmakers.util.EmojiUtils
 import fr.paug.androidmakers.util.TimeUtils
+import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.Instant
 
 @Composable
@@ -103,21 +103,22 @@ fun AgendaRow(
       trailingContent = {
         if (!uiSession.isServiceSession) {
           Box {
-            val isBookmarked =
-                BookmarksStore.subscribe(uiSession.id).collectAsState(false)
-            val imageVector = if (isBookmarked.value) Icons.Rounded.BookmarkRemove
+            val isBookmarked = uiSession.isFavorite
+            val imageVector = if (isBookmarked) Icons.Rounded.BookmarkRemove
             else Icons.Rounded.BookmarkAdd
 
             val tint by animateColorAsState(
-                if (isBookmarked.value) AMColor.bookmarked
+                if (isBookmarked) AMColor.bookmarked
                 else Color.LightGray
             )
 
             IconToggleButton(
-                checked = isBookmarked.value,
+                checked = isBookmarked,
                 onCheckedChange = {
-                  BookmarksStore.setBookmarked(uiSession.id, it)
-                },
+                  runBlocking {
+                    AndroidMakersApplication.instance().bookmarksStore.setBookmarked(uiSession.id, it)
+                  }
+                                  },
             ) {
               Icon(
                   imageVector = imageVector,
@@ -164,5 +165,6 @@ private val fakeUiSession = UISession(
     room = "Moebius",
     startDate = Instant.parse("2022-04-25T09:00:00+02:00"),
     endDate = Instant.parse("2022-04-25T10:00:00+02:00"),
-    isServiceSession = false
+    isServiceSession = false,
+    isFavorite = false
 )

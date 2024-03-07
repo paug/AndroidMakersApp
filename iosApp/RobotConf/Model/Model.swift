@@ -12,6 +12,15 @@ private(set) var apolloClient = ApolloClientBuilder(
     conference: "androidmakers2023",
     token: "").build()
 
+private(set) var datastore = createDataStore(migrations: []) {
+    do {
+        let documentDir = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+        return documentDir.path.appending("/bookmarks.preferences_pb")
+    } catch {
+        return ""
+    }
+}
+
 #if DEBUG
 private var mockModel = Model(dataProvider: DataProvider(desiredProviderType: .json))
 /// Injects a mock model based on data provided by embedded json files in order to avoid backend dependencies.
@@ -26,6 +35,7 @@ protocol RepositoryProvider {
     var partnersRepository: PartnersRepository { get }
     var getConferenceVenueUC: GetConferenceVenueUseCase { get }
     var getAfterpartyVenueUC: GetAfterpartyVenueUseCase { get }
+    var bookmarksRepository: BookmarksRepository { get }
 }
 
 /// The model API object
@@ -38,6 +48,7 @@ class Model: RepositoryProvider {
     let getAfterpartyVenueUC: GetAfterpartyVenueUseCase
 
     let partnersRepository: PartnersRepository
+    let bookmarksRepository: BookmarksRepository
 
     fileprivate init(dataProvider: DataProvider = DataProvider()) {
         self.dataProvider = dataProvider
@@ -48,5 +59,7 @@ class Model: RepositoryProvider {
 
         feedbackRepository = FeedbackRepository(dataProvider: dataProvider)
         partnersRepository = PartnersGraphQLRepository(apolloClient: apolloClient)
+
+        bookmarksRepository = BookmarksDataStoreRepository(dataStore: datastore)
     }
 }

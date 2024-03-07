@@ -4,6 +4,7 @@
 
 import Foundation
 import Combine
+import shared
 
 class AgendaRoomListViewModel: ObservableObject {
     struct Content {
@@ -29,18 +30,16 @@ class AgendaRoomListViewModel: ObservableObject {
     @Published var selectedDay = Date.distantFuture
 
     private var sessionRepo: SessionRepository
+    private var bookmarksRepo: BookmarksRepository
     private var isDisplayed = false
     private var disposables = Set<AnyCancellable>()
 
-    init(sessionRepo: SessionRepository = model.sessionRepository) {
+    init(
+        sessionRepo: SessionRepository = model.sessionRepository,
+        bookmarksRepo: BookmarksRepository = model.bookmarksRepository
+    ) {
         self.sessionRepo = sessionRepo
-
-        sessionRepo.getFavoriteSessions().sink { [unowned self] in
-            // only update when view is displayed otherwise it will redisplay the list when the favorite state changes
-            if self.isDisplayed {
-                self.favoriteSessions = $0
-            }
-        }.store(in: &disposables)
+        self.bookmarksRepo = bookmarksRepo
 
         sessionRepo.getSessions().sink { [unowned self] sessions in
             var allDates = Set<DateComponents>()
@@ -70,12 +69,18 @@ class AgendaRoomListViewModel: ObservableObject {
         }.store(in: &disposables)
     }
 
+    @MainActor
+    func activate() async {
+        for await favSessions in bookmarksRepo.getFavoriteSessions() {
+            self.favoriteSessions = favSessions
+        }
+    }
+
     func viewAppeared() {
         isDisplayed = true
 
         // recompute sessions in case status have changed
         sessionsChanged(sessions: sessionRepo.sessions, selectedDay: selectedDay)
-        favoriteSessions = sessionRepo.favoriteSessions
     }
 
     func viewDisappeared() {

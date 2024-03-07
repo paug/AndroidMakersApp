@@ -48,7 +48,6 @@
 		B265B04923F1ECA200EA363D /* TalkFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = B265B04823F1ECA200EA363D /* TalkFeedback.swift */; };
 		B265B04B23F32A8700EA363D /* AgendaFeedbackChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B265B04A23F32A8700EA363D /* AgendaFeedbackChoiceView.swift */; };
 		B265B04D23F47E1D00EA363D /* AgendaFeedbackChoiceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B265B04C23F47E1C00EA363D /* AgendaFeedbackChoiceViewModel.swift */; };
-		B268A969242FADCE00412523 /* UserPrefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B268A968242FADCE00412523 /* UserPrefs.swift */; };
 		B268A96B243E445800412523 /* FirestoreRoomsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B268A96A243E445800412523 /* FirestoreRoomsProvider.swift */; };
 		B268A96E24431E7500412523 /* WebButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B268A96D24431E7500412523 /* WebButton.swift */; };
 		B26E853623D49187006C2C9E /* NSAttributedString+HTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26E853523D49187006C2C9E /* NSAttributedString+HTML.swift */; };
@@ -128,7 +127,6 @@
 		B265B04823F1ECA200EA363D /* TalkFeedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkFeedback.swift; sourceTree = "<group>"; };
 		B265B04A23F32A8700EA363D /* AgendaFeedbackChoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgendaFeedbackChoiceView.swift; sourceTree = "<group>"; };
 		B265B04C23F47E1C00EA363D /* AgendaFeedbackChoiceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgendaFeedbackChoiceViewModel.swift; sourceTree = "<group>"; };
-		B268A968242FADCE00412523 /* UserPrefs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPrefs.swift; sourceTree = "<group>"; };
 		B268A96A243E445800412523 /* FirestoreRoomsProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirestoreRoomsProvider.swift; sourceTree = "<group>"; };
 		B268A96D24431E7500412523 /* WebButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebButton.swift; sourceTree = "<group>"; };
 		B26E853523D49187006C2C9E /* NSAttributedString+HTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+HTML.swift"; sourceTree = "<group>"; };
@@ -428,7 +426,6 @@
 				B2EF3CF423E89FC90078019F /* FeedbackRepository.swift */,
 				B2CD276B234D13380016AA02 /* Language.swift */,
 				B265B04823F1ECA200EA363D /* TalkFeedback.swift */,
-				B268A968242FADCE00412523 /* UserPrefs.swift */,
 				B2FE9FB524546EE2005FE370 /* Data */,
 				647899312B90937800887B74 /* Speaker.swift */,
 				647899332B9093A000887B74 /* Session.swift */,
@@ -742,7 +739,6 @@
 				4538D0DB29CA2DB600BB94DB /* Session.graphql.swift in Sources */,
 				B2EF3CF923E8A4C30078019F /* TalkFeedbackViewModel.swift in Sources */,
 				4538D0CE29CA2DB600BB94DB /* GraphQLData.graphql.swift in Sources */,
-				B268A969242FADCE00412523 /* UserPrefs.swift in Sources */,
 				B2CD2733234D06530016AA02 /* ContentView.swift in Sources */,
 				B2CD2763234D08820016AA02 /* AgendaCellView.swift in Sources */,
 				B2CD4264235789B5009FE6B0 /* DataProvider.swift in Sources */,

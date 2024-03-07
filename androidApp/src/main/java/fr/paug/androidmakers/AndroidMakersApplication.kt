@@ -5,18 +5,20 @@ import android.os.Build
 import fr.androidmakers.domain.interactor.GetAfterpartyVenueUseCase
 import fr.androidmakers.domain.interactor.GetAgendaUseCase
 import fr.androidmakers.domain.interactor.GetConferenceVenueUseCase
+import fr.androidmakers.domain.interactor.SyncBookmarksUseCase
+import fr.androidmakers.domain.repo.BookmarksRepository
 import fr.androidmakers.domain.repo.PartnersRepository
 import fr.androidmakers.domain.repo.RoomsRepository
 import fr.androidmakers.domain.repo.SessionsRepository
 import fr.androidmakers.domain.repo.SpeakersRepository
-import fr.androidmakers.domain.repo.VenueRepository
 import fr.androidmakers.store.graphql.ApolloClientBuilder
 import fr.androidmakers.store.graphql.PartnersGraphQLRepository
 import fr.androidmakers.store.graphql.RoomsGraphQLRepository
 import fr.androidmakers.store.graphql.SessionsGraphQLRepository
 import fr.androidmakers.store.graphql.SpeakersGraphQLRepository
 import fr.androidmakers.store.graphql.VenueGraphQLRepository
-import fr.paug.androidmakers.util.BookmarksStore
+import fr.androidmakers.store.local.createDataStore
+import fr.androidmakers.store.local.BookmarksDataStoreRepository
 import io.openfeedback.android.OpenFeedback
 
 
@@ -25,11 +27,14 @@ class AndroidMakersApplication : Application() {
   lateinit var getAgendaUseCase: GetAgendaUseCase
   lateinit var getConferenceVenueUseCase: GetConferenceVenueUseCase
   lateinit var getAfterpartyVenueUseCase: GetAfterpartyVenueUseCase
+  lateinit var syncBookmarksUseCase: SyncBookmarksUseCase
 
   lateinit var partnersRepository: PartnersRepository
   lateinit var roomsRepository: RoomsRepository
   lateinit var sessionsRepository: SessionsRepository
   lateinit var speakersRepository: SpeakersRepository
+
+  lateinit var bookmarksStore: BookmarksRepository
 
   lateinit var openFeedback: OpenFeedback
 
@@ -58,7 +63,15 @@ class AndroidMakersApplication : Application() {
     )
 
     super.onCreate()
-    BookmarksStore.init(this)
+
+    bookmarksStore = BookmarksDataStoreRepository(createDataStore {
+      filesDir.resolve("bookmarks.preferences_pb").absolutePath
+    })
+
+    syncBookmarksUseCase = SyncBookmarksUseCase(
+        bookmarksStore,
+        sessionsRepository
+    )
 
     openFeedback = OpenFeedback(
         context = this,
