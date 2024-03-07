@@ -4,6 +4,7 @@
 
 import Foundation
 import Combine
+import shared
 
 class AgendaDetailViewModel: ObservableObject, Identifiable {
     struct Content {
@@ -28,28 +29,40 @@ class AgendaDetailViewModel: ObservableObject, Identifiable {
     @Published var content: Content?
 
     private var sessionRepo: SessionRepository
+    private var bookmarksRepo: BookmarksRepository
     private var disposables = Set<AnyCancellable>()
 
-    init(sessionId: String, sessionRepo: SessionRepository = model.sessionRepository) {
+    init(
+        sessionId: String,
+        sessionRepo: SessionRepository = model.sessionRepository,
+        bookmarksRepo: BookmarksRepository = model.bookmarksRepository
+    ) {
+
+        self.bookmarksRepo = bookmarksRepo
         self.sessionRepo = sessionRepo
+
         sessionRepo.getSessions()
-            .combineLatest(sessionRepo.getFavoriteSessions())
-            .sink { [weak self] sessions, favorites in
+            .sink { [weak self] sessions in
                 guard let session = sessions.first(where: { $0.uid == sessionId }) else {
                     // TODO: let the view know that this session is unknown. To do that, maybe change the type of
                     // content to be a type that can give an error
                     return
                 }
 
-                self?.content = Content(from: session, isFavorite: favorites.contains(sessionId))
-        }.store(in: &disposables)
+                self?.content = Content(
+                    from: session,
+                    isFavorite: false
+                )
+            }.store(in: &disposables)
     }
 
     func toggleFavorite(ofSession session: Content) {
-        if session.isFavorite {
-            sessionRepo.removeSessionToFavorite(sessionId: session.sessionId)
-        } else {
-            sessionRepo.addSessionToFavorite(sessionId: session.sessionId)
+        Task {
+            do {
+                try await bookmarksRepo.setBookmarked(sessionId: session.sessionId, bookmarked: session.isFavorite)
+            } catch {
+                print("error")
+            }
         }
     }
 }

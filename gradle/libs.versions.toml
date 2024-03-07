@@ -16,6 +16,7 @@ crashlytics-plugin = "2.9.9"
 moko = "0.24.0-alpha-4"
 moko-graphics = "0.9.0"
 compose-mp = "1.5.12"
+datastore = "1.1.0-beta01"
 skie = "0.6.1"
 
 [libraries]
@@ -61,6 +62,9 @@ play-services-auth = "com.google.android.gms:play-services-auth:20.7.0"
 moko-resources = { module = "dev.icerock.moko:resources", version.ref = "moko" }
 moko-graphics = { module = "dev.icerock.moko:graphics", version.ref = "moko-graphics" }
 compose-mp-icons = { module = "org.jetbrains.compose.material:material-icons-extended-desktop", version.ref = "compose-mp" }
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
+androidx-datastore-preferences-core = { group = "androidx.datastore", name = "datastore-preferences-core", version.ref = "datastore" }
+
 
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "android-gradle-plugin" }
 firebase-crashlytics-gradlePlugin = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version.ref = "crashlytics-plugin" }

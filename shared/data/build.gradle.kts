@@ -24,6 +24,9 @@ kotlin {
         implementation(libs.apollo.adapters)
         implementation(libs.apollo.normalized.cache.sqlite)
         implementation(libs.apollo.normalized.cache)
+
+        implementation(libs.androidx.datastore.preferences.core)
+        api(libs.androidx.datastore.preferences)
       }
     }
 

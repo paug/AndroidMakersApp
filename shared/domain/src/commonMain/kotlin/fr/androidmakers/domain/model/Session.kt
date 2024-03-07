@@ -21,5 +21,5 @@ data class Session(
     val startsAt: LocalDateTime,
     val endsAt: LocalDateTime,
     val roomId: String,
-    val isServiceSession: Boolean
+    val isServiceSession: Boolean,
 )

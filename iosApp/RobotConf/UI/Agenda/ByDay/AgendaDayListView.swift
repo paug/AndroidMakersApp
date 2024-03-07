@@ -78,6 +78,9 @@ struct AgendaDayListView: View {
                 AgendaDetailView(sessionId: viewModel.content.sections.first!.sessions.first!.uid)
             }
         }
+        .task {
+            await viewModel.activate()
+        }
         .navigationViewStyle(DoubleColumnNavigationViewStyle())
     }
 }

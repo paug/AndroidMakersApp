@@ -1,13 +1,16 @@
 package fr.paug.androidmakers.ui.components.session
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseAuth
 import fr.androidmakers.domain.model.Session
 import fr.androidmakers.domain.model.Speaker
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.ui.viewmodel.Lce
-import fr.paug.androidmakers.util.BookmarksStore
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.launch
 
 class SessionDetailViewModel(
     private val sessionId: String,
@@ -19,7 +22,7 @@ class SessionDetailViewModel(
   val sessionDetailState = combine(
       AndroidMakersApplication.instance().sessionsRepository.getSession(sessionId),
       AndroidMakersApplication.instance().roomsRepository.getRoom(roomId),
-      BookmarksStore.subscribe(sessionId),
+      AndroidMakersApplication.instance().bookmarksStore.isBookmarked(sessionId),
   ) { session, room, isBookmarked ->
 
     val exception = session.exceptionOrNull() ?: room.exceptionOrNull()
@@ -49,7 +52,14 @@ class SessionDetailViewModel(
     return session.speakers.mapNotNull { allSpeakersById[it] }
   }
 
-  fun bookmark(bookmarked: Boolean) {
-    BookmarksStore.setBookmarked(sessionId, bookmarked)
+  fun bookmark(bookmarked: Boolean) = viewModelScope.launch {
+    AndroidMakersApplication.instance().bookmarksStore.setBookmarked(sessionId, bookmarked)
+
+    val userId = FirebaseAuth.getInstance().currentUser?.uid
+    if (userId != null) {
+      GlobalScope.launch {
+        AndroidMakersApplication.instance().sessionsRepository.setBookmark(userId, sessionId, bookmarked)
+      }
+    }
   }
 }

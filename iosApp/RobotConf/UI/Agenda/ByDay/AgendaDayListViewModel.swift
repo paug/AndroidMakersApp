@@ -38,21 +38,19 @@ class AgendaDayListViewModel: ObservableObject, Identifiable {
     @Published var favoriteSessions: Set<String> = []
 
     private var sessionRepo: SessionRepository
+    private var bookmarksRepo: BookmarksRepository
     private var disposables = Set<AnyCancellable>()
     private var timer: Timer?
     private var isDisplayed = false
 
-    init(sessionRepository: SessionRepository = model.sessionRepository) {
+    init(
+        sessionRepository: SessionRepository = model.sessionRepository,
+        bookmarksRepository: BookmarksRepository = model.bookmarksRepository
+    ) {
         self.sessionRepo = sessionRepository
+        self.bookmarksRepo = bookmarksRepository
         sessionRepo.getSessions().sink { [weak self] in
             self?.sessionsChanged(sessions: $0)
-        }.store(in: &disposables)
-
-        sessionRepo.getFavoriteSessions().sink { [unowned self] in
-            // only update when view is displayed otherwise it will redisplay the list when the favorite state changes
-            if self.isDisplayed {
-                self.favoriteSessions = $0
-            }
         }.store(in: &disposables)
     }
 
@@ -64,7 +62,13 @@ class AgendaDayListViewModel: ObservableObject, Identifiable {
         }
         // recompute sessions in case status have changed
         sessionsChanged(sessions: self.sessionRepo.sessions)
-        favoriteSessions = sessionRepo.favoriteSessions
+    }
+
+    @MainActor
+    func activate() async {
+        for await favoriteSessions in bookmarksRepo.getFavoriteSessions() {
+            self.favoriteSessions = favoriteSessions
+        }
     }
 
     func viewDisappeared() {
@@ -74,10 +78,12 @@ class AgendaDayListViewModel: ObservableObject, Identifiable {
     }
 
     func toggleFavorite(ofSession session: Content.Session) {
-        if favoriteSessions.contains(session.uid) {
-            sessionRepo.removeSessionToFavorite(sessionId: session.uid)
-        } else {
-            sessionRepo.addSessionToFavorite(sessionId: session.uid)
+        Task {
+            let isBookmarked = !favoriteSessions.contains(session.uid)
+
+            try await bookmarksRepo.setBookmarked(
+                sessionId:session.uid,
+                bookmarked:isBookmarked)
         }
     }
 
