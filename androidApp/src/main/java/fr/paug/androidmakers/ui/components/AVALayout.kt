@@ -51,12 +51,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import at.asitplus.KmmResult
-import fr.androidmakers.domain.model.Partner
 import fr.androidmakers.domain.model.PartnerGroup
 import fr.androidmakers.domain.model.SpeakerId
+import fr.androidmakers.domain.model.User
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.R
-import fr.paug.androidmakers.ui.AMUser
 import fr.paug.androidmakers.ui.MR
 import fr.paug.androidmakers.ui.components.about.AboutActions
 import fr.paug.androidmakers.ui.components.about.AboutLayout
@@ -80,7 +79,7 @@ import kotlinx.coroutines.launch
 fun AVALayout(
     onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
     aboutActions: AboutActions,
-    user: AMUser?,
+    user: User?,
     navigateToSpeakerDetails: (SpeakerId) -> Unit,
 ) {
   val avaNavController = rememberNavController()
