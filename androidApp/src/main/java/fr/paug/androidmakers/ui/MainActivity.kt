@@ -30,6 +30,7 @@ import dev.gitlive.firebase.auth.GoogleAuthProvider
 import dev.gitlive.firebase.auth.auth
 import fr.androidmakers.domain.model.User
 import fr.androidmakers.store.firebase.toUser
+import fr.androidmakers.domain.utils.UrlOpener
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.components.MainLayout
@@ -122,53 +123,19 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun onFaqClick() {
-    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://androidmakers.droidcon.com/faqs/")))
+    AndroidMakersApplication.instance().openFaqUseCase()
   }
 
   private fun onCodeOfConductClick() {
-    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://androidmakers.droidcon.com/code-of-conduct/")))
+    AndroidMakersApplication.instance().openCocUseCase()
   }
 
   private fun onXHashtagClick() {
-    var xIntent: Intent
-    try {
-      // get the X app if possible
-      packageManager?.getPackageInfo("com.twitter.android", 0)
-      xIntent = Intent(
-          Intent.ACTION_VIEW,
-          Uri.parse("twitter://search?query=%23" + getString(R.string.x_hashtag_for_query))
-      )
-      xIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-    } catch (e: Exception) {
-      // no X app, revert to browser
-      xIntent = Intent(
-          Intent.ACTION_VIEW,
-          Uri.parse("https://x.com/search?q=%23" + getString(R.string.x_hashtag_for_query))
-      )
-    }
-
-    startActivity(xIntent)
+    AndroidMakersApplication.instance().openXHashtagUseCase()
   }
 
   private fun onXLogoClick() {
-    var xIntent: Intent
-    try {
-      // get the X app if possible. The package name is still "Twitter"
-      packageManager?.getPackageInfo("com.twitter.android", 0)
-      xIntent = Intent(
-          Intent.ACTION_VIEW,
-          Uri.parse("twitter://user?screen_name=" + getString(R.string.x_user_name))
-      )
-      xIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-    } catch (e: Exception) {
-      // no X app, revert to browser
-      xIntent = Intent(
-          Intent.ACTION_VIEW,
-          Uri.parse("https://x.com/" + getString(R.string.x_user_name))
-      )
-    }
-
-    startActivity(xIntent)
+    AndroidMakersApplication.instance().openXAccountUseCase()
   }
 
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -215,7 +182,7 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun onYouTubeLogoClick() {
-    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.youtube_channel))))
+    AndroidMakersApplication.instance().openYoutubeUseCase()
   }
 
   private fun onSponsorClick(url: String) {
