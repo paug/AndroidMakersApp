@@ -11,6 +11,8 @@ import fr.androidmakers.domain.repo.PartnersRepository
 import fr.androidmakers.domain.repo.RoomsRepository
 import fr.androidmakers.domain.repo.SessionsRepository
 import fr.androidmakers.domain.repo.SpeakersRepository
+import fr.androidmakers.domain.repo.UserRepository
+import fr.androidmakers.store.firebase.FirebaseUserRepository
 import fr.androidmakers.store.graphql.ApolloClientBuilder
 import fr.androidmakers.store.graphql.PartnersGraphQLRepository
 import fr.androidmakers.store.graphql.RoomsGraphQLRepository
@@ -33,6 +35,7 @@ class AndroidMakersApplication : Application() {
   lateinit var roomsRepository: RoomsRepository
   lateinit var sessionsRepository: SessionsRepository
   lateinit var speakersRepository: SpeakersRepository
+  lateinit var userRepository: UserRepository
 
   lateinit var bookmarksStore: BookmarksRepository
 
@@ -67,6 +70,8 @@ class AndroidMakersApplication : Application() {
     bookmarksStore = BookmarksDataStoreRepository(createDataStore {
       filesDir.resolve("bookmarks.preferences_pb").absolutePath
     })
+
+    userRepository = FirebaseUserRepository()
 
     syncBookmarksUseCase = SyncBookmarksUseCase(
         bookmarksStore,
