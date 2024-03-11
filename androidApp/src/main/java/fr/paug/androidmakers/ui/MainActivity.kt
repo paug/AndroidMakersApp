@@ -30,6 +30,7 @@ import dev.gitlive.firebase.auth.GoogleAuthProvider
 import dev.gitlive.firebase.auth.auth
 import fr.androidmakers.domain.model.User
 import fr.androidmakers.store.firebase.toUser
+import fr.androidmakers.domain.utils.UrlOpener
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.components.MainLayout
@@ -122,11 +123,11 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun onFaqClick() {
-    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://androidmakers.droidcon.com/faqs/")))
+    AndroidMakersApplication.instance().openFaqUseCase()
   }
 
   private fun onCodeOfConductClick() {
-    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://androidmakers.droidcon.com/code-of-conduct/")))
+    AndroidMakersApplication.instance().openCocUseCase()
   }
 
   private fun onXHashtagClick() {
@@ -215,7 +216,7 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun onYouTubeLogoClick() {
-    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.youtube_channel))))
+    AndroidMakersApplication.instance().openYoutubeUseCase()
   }
 
   private fun onSponsorClick(url: String) {
