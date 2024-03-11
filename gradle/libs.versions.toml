@@ -1,7 +1,7 @@
 [versions]
 version-code = "1456"
 sdk-compile = "34"
-sdk-min = "21"
+sdk-min = "24"
 androidxActivity = "1.8.2"
 androidxAppCompat = "1.6.1"
 androidxLifecycle = "2.7.0"
@@ -18,6 +18,7 @@ moko-graphics = "0.9.0"
 compose-mp = "1.5.12"
 datastore = "1.1.0-beta01"
 skie = "0.6.1"
+firebase = "1.11.1"
 
 [libraries]
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
@@ -36,10 +37,7 @@ compose-material = { group = "androidx.compose.material", name = "material", ver
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
 espresso-core = "androidx.test.espresso:espresso-core:3.5.1"
 firebase-analytics-ktx = { module = "com.google.firebase:firebase-analytics-ktx" }
-firebase-auth = { module = "com.google.firebase:firebase-auth" }
-firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx" }
 firebase-bom = "com.google.firebase:firebase-bom:32.7.2"
-firebase-config = { module = "com.google.firebase:firebase-config" }
 firebase-crashlytics-ktx = { module = "com.google.firebase:firebase-crashlytics-ktx" }
 firebase-inappmessaging = { module = "com.google.firebase:firebase-inappmessaging-display-ktx" }
 firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
@@ -64,7 +62,8 @@ moko-graphics = { module = "dev.icerock.moko:graphics", version.ref = "moko-grap
 compose-mp-icons = { module = "org.jetbrains.compose.material:material-icons-extended-desktop", version.ref = "compose-mp" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
 androidx-datastore-preferences-core = { group = "androidx.datastore", name = "datastore-preferences-core", version.ref = "datastore" }
-
+firebase-installations = { module = "dev.gitlive:firebase-installations", version.ref = "firebase" }
+firebase-auth = { module = "dev.gitlive:firebase-auth", version.ref = "firebase" }
 
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "android-gradle-plugin" }
 firebase-crashlytics-gradlePlugin = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version.ref = "crashlytics-plugin" }

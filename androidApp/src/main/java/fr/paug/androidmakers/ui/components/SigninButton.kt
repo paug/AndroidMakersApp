@@ -16,14 +16,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import fr.paug.androidmakers.ui.AMUser
+import fr.androidmakers.domain.model.User
 import fr.paug.androidmakers.ui.LocalActivity
 import fr.paug.androidmakers.ui.MR
 import fr.paug.androidmakers.ui.util.stringResource
 
 
 @Composable
-fun SigninButton(user: AMUser?) {
+fun SigninButton(user: User?) {
   val activity = LocalActivity.current
   val expandedState = remember { mutableStateOf(false) }
 

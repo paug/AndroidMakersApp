@@ -12,7 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import fr.androidmakers.domain.model.SpeakerId
-import fr.paug.androidmakers.ui.AMUser
+import fr.androidmakers.domain.model.User
 import fr.paug.androidmakers.ui.components.about.AboutActions
 import fr.paug.androidmakers.ui.components.session.SessionDetailLayout
 import fr.paug.androidmakers.ui.components.session.SessionDetailViewModel
@@ -25,7 +25,7 @@ import fr.paug.androidmakers.ui.viewmodel.Lce
  * The main layout: entry point of the application
  */
 @Composable
-fun MainLayout(aboutActions: AboutActions, user: AMUser?) {
+fun MainLayout(aboutActions: AboutActions, user: User?) {
   val mainNavController = rememberNavController()
   MainNavHost(
       mainNavController = mainNavController,
@@ -45,7 +45,7 @@ private fun MainNavHost(
     mainNavController: NavHostController,
     onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
     aboutActions: AboutActions,
-    user: AMUser?,
+    user: User?,
     navigateToSpeakerDetails: (SpeakerId) -> Unit,
 ) {
   NavHost(

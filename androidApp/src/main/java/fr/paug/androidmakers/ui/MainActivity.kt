@@ -23,47 +23,45 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.messaging.FirebaseMessaging
+import dev.gitlive.firebase.Firebase
+import dev.gitlive.firebase.auth.FirebaseAuth
+import dev.gitlive.firebase.auth.GoogleAuthProvider
+import dev.gitlive.firebase.auth.auth
+import fr.androidmakers.domain.model.User
+import fr.androidmakers.store.firebase.toUser
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.components.MainLayout
 import fr.paug.androidmakers.ui.components.about.AboutActions
 import fr.paug.androidmakers.ui.theme.AndroidMakersTheme
 import fr.paug.androidmakers.util.CustomTabUtil
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
 val LocalActivity = staticCompositionLocalOf<MainActivity> { throw NotImplementedError() }
 
-data class AMUser(
-    private val firebaseUser: FirebaseUser
-) {
-  val uid: String
-    get() = firebaseUser.uid
-  val photoUrl: String?
-    get() = firebaseUser.photoUrl?.toString()
-}
-
-private fun FirebaseUser.toAMUser(): AMUser {
-  return AMUser(this)
-}
-
 class MainActivity : AppCompatActivity() {
-  private val _user = MutableStateFlow(FirebaseAuth.getInstance().currentUser?.toAMUser())
+
+  private val userRepository = AndroidMakersApplication.instance().userRepository
+
+  private val _user = MutableStateFlow<User?>(null)
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+
+    lifecycleScope.launch {
+      _user.emit(userRepository.getUser())
+    }
 
     val currentUser = _user.value
     if (currentUser != null) {
       lifecycleScope.launch {
         // fire & forget
         // This is racy but oh well...
-        mergeBookmarks(currentUser.uid)
+        mergeBookmarks(currentUser.id)
       }
     }
 
@@ -189,32 +187,24 @@ class MainActivity : AppCompatActivity() {
               // with Firebase.
               // Got an ID token from Google. Use it to authenticate
               // with Firebase.
-              val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
-              val auth = FirebaseAuth.getInstance()
+              val firebaseCredential = GoogleAuthProvider.credential(idToken, null)
+              val auth = Firebase.auth
 
-              auth.signInWithCredential(firebaseCredential)
-                  .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                      // Sign in success, update UI with the signed-in user's information
-                      lifecycleScope.launch {
-                        _user.value = auth.currentUser?.toAMUser()
-                        mergeBookmarks(auth.currentUser!!.uid)
-                      }
-                    } else {
-                      // If sign in fails, display a message to the user.
-                      task.exception?.printStackTrace()
-                      _user.value = null
-                    }
-                  }
+              CoroutineScope(Dispatchers.Default).launch {
+                val result = auth.signInWithCredential(firebaseCredential)
+                // Sign in success, update UI with the signed-in user's information
+                lifecycleScope.launch {
+                  _user.value = result.user?.toUser()
+                  mergeBookmarks(auth.currentUser!!.uid)
+                }
+              }
             }
 
-            else -> {
-              _user.value = null
-              // Shouldn't happen.
-            }
+            else -> {}
           }
         } catch (e: ApiException) {
           e.printStackTrace()
+          _user.value = null
         }
       }
     }
@@ -239,10 +229,12 @@ class MainActivity : AppCompatActivity() {
         .build()
     val googleSignInClient = GoogleSignIn.getClient(activity, gso)
 
-    FirebaseAuth.getInstance().signOut()
-    googleSignInClient.signOut()
-    googleSignInClient.revokeAccess()
-    _user.value = null
+    lifecycleScope.launch {
+      Firebase.auth.signOut()
+      googleSignInClient.signOut()
+      googleSignInClient.revokeAccess()
+      _user.emit(null)
+    }
   }
 
   fun signin() {

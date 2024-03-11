@@ -27,12 +27,10 @@ kotlin {
 
         implementation(libs.androidx.datastore.preferences.core)
         api(libs.androidx.datastore.preferences)
-      }
-    }
 
-    androidMain.dependencies {
-        implementation(libs.firebase.auth)
-        implementation(libs.firebase.auth.ktx)
+        api(libs.firebase.auth)
+
+      }
     }
   }
 }
