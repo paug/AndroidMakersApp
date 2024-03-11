@@ -28,7 +28,6 @@
     <string name="x_hashtag" translatable="false">#AMxDC24</string>
     <string name="x_hashtag_for_query" translatable="false">AMxDC24</string>
     <string name="x_user_name" translatable="false">AndroidMakersFR</string>
-    <string name="youtube_channel" translatable="false">https://www.youtube.com/channel/UCkatLlah5weIpN23LqMgdTg</string>
 
     <string name="sponsors">Sponsors</string>
     <string name="gold_sponsor">Gold Sponsor</string>

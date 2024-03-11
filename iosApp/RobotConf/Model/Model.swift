@@ -36,6 +36,9 @@ protocol RepositoryProvider {
     var getConferenceVenueUC: GetConferenceVenueUseCase { get }
     var getAfterpartyVenueUC: GetAfterpartyVenueUseCase { get }
     var bookmarksRepository: BookmarksRepository { get }
+    var openXAccountUC: OpenXAccountUseCase { get }
+    var openXHashtagUC: OpenXHashtagUseCase { get }
+    var openYoutubeUC: OpenYoutubeUseCase { get }
 }
 
 /// The model API object
@@ -46,9 +49,13 @@ class Model: RepositoryProvider {
     let feedbackRepository: FeedbackRepository
     let getConferenceVenueUC: GetConferenceVenueUseCase
     let getAfterpartyVenueUC: GetAfterpartyVenueUseCase
+    let openXAccountUC: OpenXAccountUseCase
+    let openXHashtagUC: OpenXHashtagUseCase
+    let openYoutubeUC: OpenYoutubeUseCase
 
     let partnersRepository: PartnersRepository
     let bookmarksRepository: BookmarksRepository
+    let urlOpener: UrlOpener
 
     fileprivate init(dataProvider: DataProvider = DataProvider()) {
         self.dataProvider = dataProvider
@@ -61,5 +68,9 @@ class Model: RepositoryProvider {
         partnersRepository = PartnersGraphQLRepository(apolloClient: apolloClient)
 
         bookmarksRepository = BookmarksDataStoreRepository(dataStore: datastore)
+        urlOpener = UrlOpener()
+        openXAccountUC = OpenXAccountUseCase(urlOpener: urlOpener)
+        openXHashtagUC = OpenXHashtagUseCase(urlOpener: urlOpener)
+        openYoutubeUC = OpenYoutubeUseCase(urlOpener: urlOpener)
     }
 }
