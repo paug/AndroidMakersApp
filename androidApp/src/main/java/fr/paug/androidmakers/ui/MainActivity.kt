@@ -131,45 +131,11 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun onXHashtagClick() {
-    var xIntent: Intent
-    try {
-      // get the X app if possible
-      packageManager?.getPackageInfo("com.twitter.android", 0)
-      xIntent = Intent(
-          Intent.ACTION_VIEW,
-          Uri.parse("twitter://search?query=%23" + getString(R.string.x_hashtag_for_query))
-      )
-      xIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-    } catch (e: Exception) {
-      // no X app, revert to browser
-      xIntent = Intent(
-          Intent.ACTION_VIEW,
-          Uri.parse("https://x.com/search?q=%23" + getString(R.string.x_hashtag_for_query))
-      )
-    }
-
-    startActivity(xIntent)
+    AndroidMakersApplication.instance().openXHashtagUseCase()
   }
 
   private fun onXLogoClick() {
-    var xIntent: Intent
-    try {
-      // get the X app if possible. The package name is still "Twitter"
-      packageManager?.getPackageInfo("com.twitter.android", 0)
-      xIntent = Intent(
-          Intent.ACTION_VIEW,
-          Uri.parse("twitter://user?screen_name=" + getString(R.string.x_user_name))
-      )
-      xIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-    } catch (e: Exception) {
-      // no X app, revert to browser
-      xIntent = Intent(
-          Intent.ACTION_VIEW,
-          Uri.parse("https://x.com/" + getString(R.string.x_user_name))
-      )
-    }
-
-    startActivity(xIntent)
+    AndroidMakersApplication.instance().openXAccountUseCase()
   }
 
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -7,6 +7,8 @@ import fr.androidmakers.domain.interactor.GetAgendaUseCase
 import fr.androidmakers.domain.interactor.GetConferenceVenueUseCase
 import fr.androidmakers.domain.interactor.OpenCocUseCase
 import fr.androidmakers.domain.interactor.OpenFaqUseCase
+import fr.androidmakers.domain.interactor.OpenXAccountUseCase
+import fr.androidmakers.domain.interactor.OpenXHashtagUseCase
 import fr.androidmakers.domain.interactor.OpenYoutubeUseCase
 import fr.androidmakers.domain.interactor.SyncBookmarksUseCase
 import fr.androidmakers.domain.repo.BookmarksRepository
@@ -37,6 +39,8 @@ class AndroidMakersApplication : Application() {
   lateinit var openFaqUseCase: OpenFaqUseCase
   lateinit var openCocUseCase: OpenCocUseCase
   lateinit var openYoutubeUseCase: OpenYoutubeUseCase
+  lateinit var openXHashtagUseCase: OpenXHashtagUseCase
+  lateinit var openXAccountUseCase: OpenXAccountUseCase
 
   lateinit var partnersRepository: PartnersRepository
   lateinit var roomsRepository: RoomsRepository
@@ -90,6 +94,8 @@ class AndroidMakersApplication : Application() {
     openFaqUseCase = OpenFaqUseCase(urlOpener)
     openCocUseCase = OpenCocUseCase(urlOpener)
     openYoutubeUseCase = OpenYoutubeUseCase(urlOpener)
+    openXHashtagUseCase = OpenXHashtagUseCase(urlOpener)
+    openXAccountUseCase = OpenXAccountUseCase(urlOpener)
 
     openFeedback = OpenFeedback(
         context = this,
