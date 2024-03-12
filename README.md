@@ -1,6 +1,6 @@
 <h1>Android Makers conference app</h1>
 
-Android App for Android Makers Paris Conferences https://androidmakers.fr/
+Android App for Android Makers (by droidcon) Paris Conferences https://androidmakers.droidcon.com
 
 Play store link: https://play.google.com/store/apps/details?id=fr.paug.androidmakers
 
