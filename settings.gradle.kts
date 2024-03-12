@@ -1,4 +1,7 @@
 @file:Suppress("UnstableApiUsage")
+
+include(":shared:di")
+
 pluginManagement {
   listOf(repositories, dependencyResolutionManagement.repositories).forEach {
     it.apply {

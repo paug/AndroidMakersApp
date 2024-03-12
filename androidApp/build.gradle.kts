@@ -23,15 +23,14 @@ dependencies {
   // Kotlin
   implementation(libs.kotlinx.coroutines.play.services)
   implementation(libs.kotlinx.coroutines.android)
+  implementation(libs.kotlinx.coroutines.core)
 
   // Support
   implementation(libs.androidx.activity.compose)
   implementation(libs.androidx.activity)
   implementation(libs.androidx.appcompat)
-  implementation(libs.androidx.lifecycle.runtimeCompose)
 
   implementation(libs.material)
-  implementation(libs.shared.preferences)
 
   // Firebase
   implementation(platform(libs.firebase.bom))
@@ -43,6 +42,9 @@ dependencies {
 
   // Image management
   implementation(libs.coil.compose)
+
+  implementation(libs.koin.android)
+  implementation(libs.koin.androidx.compose)
 
   // Used for tags
   implementation(libs.openfeedback)

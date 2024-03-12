@@ -54,6 +54,7 @@ import at.asitplus.KmmResult
 import fr.androidmakers.domain.model.PartnerGroup
 import fr.androidmakers.domain.model.SpeakerId
 import fr.androidmakers.domain.model.User
+import fr.androidmakers.domain.repo.PartnersRepository
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.MR
@@ -68,6 +69,7 @@ import fr.paug.androidmakers.ui.util.stringResource
 import fr.paug.androidmakers.ui.viewmodel.LceViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 /**
  * AVA stands for Agenda/Venue/About.
@@ -259,16 +261,7 @@ private fun AVANavHost(
 
     composable(route = AVANavigationRoute.SPEAKERS.name) {
 
-      val speakerViewModel: SpeakerViewModel = viewModel(
-          factory = object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-              @Suppress("UNCHECKED_CAST")
-              return SpeakerViewModel(
-              ) as T
-            }
-          }
-      )
-
+      val speakerViewModel: SpeakerViewModel = koinViewModel()
       SpeakerScreen(
           speakerViewModel = speakerViewModel,
           navigateToSpeakerDetails = navigateToSpeakerDetails
@@ -282,7 +275,7 @@ private fun AVANavHost(
     }
 
     composable(route = AVANavigationRoute.SPONSORS.name) {
-      val partnerList by viewModel<PartnersViewModel>().values.collectAsState()
+      val partnerList by koinViewModel<PartnersViewModel>().values.collectAsState()
       SponsorsScreen(
           partnerList = partnerList,
           onSponsorClick = aboutActions.onSponsorClick
@@ -292,9 +285,11 @@ private fun AVANavHost(
   }
 }
 
-class PartnersViewModel : LceViewModel<List<PartnerGroup>>() {
+class PartnersViewModel(
+    private val partnersRepository: PartnersRepository
+) : LceViewModel<List<PartnerGroup>>() {
   override fun produce(): Flow<KmmResult<List<PartnerGroup>>> {
-    return AndroidMakersApplication.instance().partnersRepository.getPartners()
+    return partnersRepository.getPartners()
   }
 }
 

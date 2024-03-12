@@ -1,9 +1,11 @@
 package fr.paug.androidmakers.ui.components.speakers.details
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import fr.androidmakers.domain.model.Speaker
 import fr.androidmakers.domain.model.SpeakerId
+import fr.androidmakers.domain.repo.SpeakersRepository
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.ui.viewmodel.Lce
 import kotlinx.coroutines.flow.SharingStarted
@@ -12,10 +14,13 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
 class SpeakerDetailsViewModel(
-    speakerId: SpeakerId
+    savedStateHandle: SavedStateHandle,
+    speakersRepository: SpeakersRepository
 ) : ViewModel() {
 
-  val uiState: StateFlow<Lce<SpeakerDetailsUiState>> = AndroidMakersApplication.instance().speakersRepository
+  private val speakerId: String = savedStateHandle["speakerId"]!!
+
+  val uiState: StateFlow<Lce<SpeakerDetailsUiState>> = speakersRepository
       .getSpeaker(speakerId).map {
         val exception = it.exceptionOrNull()
         if (exception != null) {

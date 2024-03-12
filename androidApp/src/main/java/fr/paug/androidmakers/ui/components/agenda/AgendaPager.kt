@@ -27,6 +27,7 @@ import fr.paug.androidmakers.util.TimeUtils
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.koin.androidx.compose.koinViewModel
 import java.util.*
 
 
@@ -79,16 +80,14 @@ fun AgendaPager(
     HorizontalPager(
         state = pagerState,
     ) { page ->
-      val viewModel = viewModel<AgendaPagerViewModel>()
+      val viewModel = koinViewModel<AgendaPagerViewModel>()
+      val favoriteSessions by viewModel.getFavoriteSessions().collectAsState(emptySet())
       SwipeRefreshableLceLayout(viewModel = viewModel) {
-        val days = agendaToDays(it)
+        val days = agendaToDays(it, favoriteSessions)
         val items = days[page].sessions.filter(filterList)
         if (items.isEmpty()) {
           EmptyLayout()
         } else {
-          // TODO move it in a viewmodel
-          val favoriteSessions by AndroidMakersApplication.instance().bookmarksStore.getFavoriteSessions()
-              .collectAsState(emptySet())
           items.filter { favoriteSessions.contains(it.id) }.forEach {
               it.isFavorite = true
           }
@@ -139,8 +138,8 @@ private fun List<UISession>.filter(
     for (filter in filterList) {
       when (filter.type) {
         SessionFilter.FilterType.BOOKMARK -> {
-          val bookmarked = AndroidMakersApplication.instance().bookmarksStore.isBookmarked(session.id)
-          if (runBlocking { bookmarked.first() }) {
+          val bookmarked = session.isFavorite
+          if (bookmarked) {
             sessionsByFilterType[filter.type]?.add(session)
           }
         }

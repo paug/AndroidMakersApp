@@ -64,7 +64,8 @@ fun backgroundColor(uiSession: UISession): Color {
 fun AgendaRow(
     uiSession: UISession,
     modifier: Modifier = Modifier,
-    onSessionClicked: ((UISession) -> Unit)
+    onSessionClicked: (UISession) -> Unit,
+    onSessionBookmarked: (UISession, Boolean) -> Unit,
 ) {
   ListItem(
       modifier = modifier,
@@ -115,10 +116,8 @@ fun AgendaRow(
             IconToggleButton(
                 checked = isBookmarked,
                 onCheckedChange = {
-                  runBlocking {
-                    AndroidMakersApplication.instance().bookmarksStore.setBookmarked(uiSession.id, it)
-                  }
-                                  },
+                  onSessionBookmarked(uiSession, it)
+                },
             ) {
               Icon(
                   imageVector = imageVector,
@@ -153,7 +152,7 @@ private fun UISession.subtitle(context: Context) = buildString {
 @Preview
 @Composable
 private fun AgendaRowPreview() {
-  AgendaRow(fakeUiSession) { }
+  AgendaRow(fakeUiSession, onSessionClicked = {}, onSessionBookmarked = { _,_ -> })
 }
 
 private val fakeUiSession = UISession(

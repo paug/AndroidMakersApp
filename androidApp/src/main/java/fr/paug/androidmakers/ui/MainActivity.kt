@@ -2,7 +2,6 @@ package fr.paug.androidmakers.ui
 
 import android.content.Intent
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.SystemBarStyle
@@ -25,13 +24,9 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.messaging.FirebaseMessaging
 import dev.gitlive.firebase.Firebase
-import dev.gitlive.firebase.auth.FirebaseAuth
 import dev.gitlive.firebase.auth.GoogleAuthProvider
 import dev.gitlive.firebase.auth.auth
-import fr.androidmakers.domain.model.User
 import fr.androidmakers.store.firebase.toUser
-import fr.androidmakers.domain.utils.UrlOpener
-import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.components.MainLayout
 import fr.paug.androidmakers.ui.components.about.AboutActions
@@ -39,32 +34,17 @@ import fr.paug.androidmakers.ui.theme.AndroidMakersTheme
 import fr.paug.androidmakers.util.CustomTabUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.compose.KoinContext
 
 val LocalActivity = staticCompositionLocalOf<MainActivity> { throw NotImplementedError() }
 
 class MainActivity : AppCompatActivity() {
-
-  private val userRepository = AndroidMakersApplication.instance().userRepository
-
-  private val _user = MutableStateFlow<User?>(null)
+  private val viewModel: MainActivityViewModel by viewModel()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-
-    lifecycleScope.launch {
-      _user.emit(userRepository.getUser())
-    }
-
-    val currentUser = _user.value
-    if (currentUser != null) {
-      lifecycleScope.launch {
-        // fire & forget
-        // This is racy but oh well...
-        mergeBookmarks(currentUser.id)
-      }
-    }
 
     WindowCompat.setDecorFitsSystemWindows(window, false)
     enableEdgeToEdge()
@@ -74,38 +54,40 @@ class MainActivity : AppCompatActivity() {
     setContent {
       val rememberedActivity = remember { this }
 
-      val userState = _user.collectAsState()
+      val userState = viewModel.user.collectAsState(null)
       val darkTheme = isSystemInDarkTheme()
 
       CompositionLocalProvider(
           LocalActivity provides rememberedActivity,
       ) {
-        AndroidMakersTheme {
-          DisposableEffect(darkTheme) {
-            enableEdgeToEdge(
-                statusBarStyle = SystemBarStyle.auto(
-                    Color.TRANSPARENT,
-                    Color.TRANSPARENT,
-                ) { darkTheme },
-                navigationBarStyle = SystemBarStyle.auto(
-                    Color.TRANSPARENT,
-                    Color.TRANSPARENT,
-                ) { darkTheme },
-            )
-            onDispose { }
-          }
+        KoinContext {
+          AndroidMakersTheme {
+            DisposableEffect(darkTheme) {
+              enableEdgeToEdge(
+                  statusBarStyle = SystemBarStyle.auto(
+                      Color.TRANSPARENT,
+                      Color.TRANSPARENT,
+                  ) { darkTheme },
+                  navigationBarStyle = SystemBarStyle.auto(
+                      Color.TRANSPARENT,
+                      Color.TRANSPARENT,
+                  ) { darkTheme },
+              )
+              onDispose { }
+            }
 
-          MainLayout(
-              aboutActions = AboutActions(
-                  onFaqClick = ::onFaqClick,
-                  onCodeOfConductClick = ::onCodeOfConductClick,
-                  onXHashtagClick = ::onXHashtagClick,
-                  onXLogoClick = ::onXLogoClick,
-                  onYouTubeLogoClick = ::onYouTubeLogoClick,
-                  onSponsorClick = ::onSponsorClick,
-              ),
-              user = userState.value,
-          )
+            MainLayout(
+                aboutActions = AboutActions(
+                    onFaqClick = ::onFaqClick,
+                    onCodeOfConductClick = ::onCodeOfConductClick,
+                    onXHashtagClick = ::onXHashtagClick,
+                    onXLogoClick = ::onXLogoClick,
+                    onYouTubeLogoClick = ::onYouTubeLogoClick,
+                    onSponsorClick = ::onSponsorClick,
+                ),
+                user = userState.value,
+            )
+          }
         }
       }
     }
@@ -123,19 +105,19 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun onFaqClick() {
-    AndroidMakersApplication.instance().openFaqUseCase()
+    viewModel.openFaqUseCase()
   }
 
   private fun onCodeOfConductClick() {
-    AndroidMakersApplication.instance().openCocUseCase()
+    viewModel.openCocUseCase()
   }
 
   private fun onXHashtagClick() {
-    AndroidMakersApplication.instance().openXHashtagUseCase()
+    viewModel.openXHashtagUseCase()
   }
 
   private fun onXLogoClick() {
-    AndroidMakersApplication.instance().openXAccountUseCase()
+    viewModel.openXAccountUseCase()
   }
 
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -161,8 +143,8 @@ class MainActivity : AppCompatActivity() {
                 val result = auth.signInWithCredential(firebaseCredential)
                 // Sign in success, update UI with the signed-in user's information
                 lifecycleScope.launch {
-                  _user.value = result.user?.toUser()
-                  mergeBookmarks(auth.currentUser!!.uid)
+                  viewModel._user.value = result.user?.toUser()
+                  viewModel.syncBookmarksUseCase(auth.currentUser!!.uid)
                 }
               }
             }
@@ -171,18 +153,14 @@ class MainActivity : AppCompatActivity() {
           }
         } catch (e: ApiException) {
           e.printStackTrace()
-          _user.value = null
+          viewModel._user.value = null
         }
       }
     }
   }
 
-  suspend fun mergeBookmarks(userId: String) {
-    AndroidMakersApplication.instance().syncBookmarksUseCase(userId)
-  }
-
   private fun onYouTubeLogoClick() {
-    AndroidMakersApplication.instance().openYoutubeUseCase()
+    viewModel.openYoutubeUseCase()
   }
 
   private fun onSponsorClick(url: String) {
@@ -200,7 +178,7 @@ class MainActivity : AppCompatActivity() {
       Firebase.auth.signOut()
       googleSignInClient.signOut()
       googleSignInClient.revokeAccess()
-      _user.emit(null)
+      viewModel._user.emit(null)
     }
   }
 

@@ -63,7 +63,10 @@ fun AgendaColumn(
             AgendaRow(
                 modifier = Modifier.animateItemPlacement(),
                 uiSession = uiSession,
-                onSessionClicked =onSessionClicked
+                onSessionClicked = onSessionClicked,
+                onSessionBookmarked = { session, bookmarked ->
+                  
+                }
             )
           }
         }

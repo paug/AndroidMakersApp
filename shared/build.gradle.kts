@@ -16,6 +16,7 @@ kotlin {
       isStatic = true
       export(project(":shared:ui"))
       export(project(":shared:domain"))
+      export(project(":shared:di"))
       // Temporary
       export(project(":shared:data"))
       export(libs.moko.resources)
@@ -28,6 +29,7 @@ kotlin {
       api(libs.moko.resources)
       api(project(":shared:ui"))
       api(project(":shared:domain"))
+      api(project(":shared:di"))
       // Temporary
       api(project(":shared:data"))
     }
