@@ -1,6 +1,5 @@
 package fr.paug.androidmakers.ui.components.about
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -31,7 +30,6 @@ import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.MR
 import fr.paug.androidmakers.ui.util.stringResource
 
-
 class AboutActions(
     val onFaqClick: () -> Unit = {},
     val onCodeOfConductClick: () -> Unit = {},
@@ -45,7 +43,6 @@ class AboutActions(
 fun AboutLayout(
     aboutActions: AboutActions,
 ) {
-
   Column(
       modifier = Modifier
           .fillMaxSize()
@@ -53,7 +50,6 @@ fun AboutLayout(
           .padding(16.dp),
       verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically)
   ) {
-
     IntroCard(
         onFaqClick = aboutActions.onFaqClick,
         onCocClick = aboutActions.onCodeOfConductClick
@@ -109,7 +105,6 @@ private fun IntroCard(
       )
     }
   }
-
 }
 
 @Composable
