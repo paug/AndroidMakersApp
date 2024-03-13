@@ -43,7 +43,7 @@
     <string name="intermediate">Intermédiaire</string>
     <string name="expert">Expert</string>
 
-    <string name="about_android_makers">AndroidMakers by droidcon est un événement de deux jours qui se tiendra les 27 et 28 avril.
+    <string name="about_android_makers">AndroidMakers by droidcon est un événement de deux jours qui se tiendra les 25 et 26 Avril 2024.
         \n\nRejoignez-nous pour aborder le présent et futur d‘Android avec les meilleurs experts du domaine.
         Il y aura des sessions techniques, des ateliers et des rencontres avec vos speakers préférés.
         \n\nTous les talks seront enregistrées, et mis sur la chaîne YouTube.</string>
@@ -52,7 +52,7 @@
     <string name="upcoming_session">Bientôt</string>
 
     <!-- Specific iOS -->
-    <string name="about_am">À propos d\'AM 23</string>
+    <string name="about_am">À propos d\'AM 24</string>
     <string name="locations">Lieux</string>
     <string name="directions">Localiser</string>
 
