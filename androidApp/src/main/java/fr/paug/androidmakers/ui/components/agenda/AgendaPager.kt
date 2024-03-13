@@ -93,7 +93,10 @@ fun AgendaPager(
           }
           AgendaColumn(
               sessionsPerStartTime = addSeparators(LocalContext.current, items),
-              onSessionClicked = onSessionClicked
+              onSessionClicked = onSessionClicked,
+              onSessionBookmarked = { uiSession, bookmarked ->
+                viewModel.setSessionBookmark(uiSession, bookmarked)
+              }
           )
         }
       }

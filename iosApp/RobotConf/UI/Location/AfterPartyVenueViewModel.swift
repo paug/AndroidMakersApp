@@ -10,15 +10,11 @@ import Foundation
 import shared
 
 class AfterPartyVenueViewModel: LocationVenueViewModel {
-    
-    let getAfterpartyUc: GetAfterpartyVenueUseCase
 
-    init(getAfterpartyUc: GetAfterpartyVenueUseCase) {
-        self.getAfterpartyUc = getAfterpartyUc
-    }
 
     override func activate() async {
-        for await afterPartyVenueResult in self.getAfterpartyUc.invoke() {
+        let getAfterpartyUc = DepContainer().getAfterpartyVenueUseCase
+        for await afterPartyVenueResult in getAfterpartyUc.invoke() {
             afterPartyVenueResult.fold(
                 onSuccess: { [weak self] venue in
                     self?.content = venue != nil ? Content(from: venue!) : nil

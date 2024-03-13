@@ -14,10 +14,10 @@ import org.koin.dsl.module
 val viewModelModule = module {
   viewModel { MainActivityViewModel(get(), get(), get(), get(), get(), get(), get()) }
   viewModel { PartnersViewModel(get()) }
-  viewModel { AgendaPagerViewModel(get(), get()) }
+  viewModel { AgendaPagerViewModel(get(), get(), get()) }
   viewModel { AgendaLayoutViewModel(get()) }
   viewModel { SpeakerViewModel(get()) }
   viewModel { SpeakerDetailsViewModel(get(), get()) }
-  viewModel { SessionDetailViewModel(get(), get(), get(), get(), get())}
+  viewModel { SessionDetailViewModel(get(), get(), get(), get(), get(), get())}
   viewModel { VenueViewModel(get(), get()) }
 }

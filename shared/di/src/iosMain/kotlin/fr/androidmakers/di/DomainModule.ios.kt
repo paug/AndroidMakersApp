@@ -1,6 +1,10 @@
 package fr.androidmakers.di
 
-import org.koin.core.module.Module
+import fr.androidmakers.domain.utils.UrlOpener
+import org.koin.dsl.module
 
-actual val domainPlatformModule: Module
-  get() = TODO("Not yet implemented")
+actual val domainPlatformModule = module {
+  single {
+    UrlOpener()
+  }
+}

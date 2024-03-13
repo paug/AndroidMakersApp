@@ -3,11 +3,14 @@ package fr.androidmakers.di
 import fr.androidmakers.domain.interactor.GetAfterpartyVenueUseCase
 import fr.androidmakers.domain.interactor.GetAgendaUseCase
 import fr.androidmakers.domain.interactor.GetConferenceVenueUseCase
+import fr.androidmakers.domain.interactor.GetFavoriteSessionsUseCase
+import fr.androidmakers.domain.interactor.GetPartnersUseCase
 import fr.androidmakers.domain.interactor.OpenCocUseCase
 import fr.androidmakers.domain.interactor.OpenFaqUseCase
 import fr.androidmakers.domain.interactor.OpenXAccountUseCase
 import fr.androidmakers.domain.interactor.OpenXHashtagUseCase
 import fr.androidmakers.domain.interactor.OpenYoutubeUseCase
+import fr.androidmakers.domain.interactor.SetSessionBookmarkUseCase
 import fr.androidmakers.domain.interactor.SyncBookmarksUseCase
 import org.koin.core.module.Module
 import org.koin.dsl.module
@@ -24,4 +27,7 @@ val domainModule = module {
   factory { OpenYoutubeUseCase(get()) }
   factory { OpenXHashtagUseCase(get()) }
   factory { OpenXAccountUseCase(get()) }
+  factory { SetSessionBookmarkUseCase(get(), get(), get()) }
+  factory { GetPartnersUseCase(get()) }
+  factory { GetFavoriteSessionsUseCase(get()) }
 }

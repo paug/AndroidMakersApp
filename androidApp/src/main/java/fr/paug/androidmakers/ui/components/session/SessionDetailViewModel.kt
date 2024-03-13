@@ -3,7 +3,7 @@ package fr.paug.androidmakers.ui.components.session
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.FirebaseAuth
+import fr.androidmakers.domain.interactor.SetSessionBookmarkUseCase
 import fr.androidmakers.domain.model.Session
 import fr.androidmakers.domain.model.Speaker
 import fr.androidmakers.domain.repo.BookmarksRepository
@@ -12,8 +12,8 @@ import fr.androidmakers.domain.repo.SessionsRepository
 import fr.androidmakers.domain.repo.SpeakersRepository
 import fr.paug.androidmakers.ui.viewmodel.Lce
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flattenMerge
 import kotlinx.coroutines.flow.mapNotNull
@@ -24,10 +24,12 @@ import kotlinx.datetime.toInstant
 @OptIn(ExperimentalCoroutinesApi::class)
 class SessionDetailViewModel(
     savedStateHandle: SavedStateHandle,
-    private val sessionsRepository: SessionsRepository,
+    sessionsRepository: SessionsRepository,
     private val roomsRepository: RoomsRepository,
-    private val bookmarksRepository: BookmarksRepository,
-    private val speakersRepository: SpeakersRepository
+    // TODO remove the reference to repositories here
+    bookmarksRepository: BookmarksRepository,
+    private val speakersRepository: SpeakersRepository,
+    private val setSessionBookmarkUseCase: SetSessionBookmarkUseCase,
 ) : ViewModel() {
 
   private val sessionId: String = savedStateHandle["sessionId"]!!
@@ -74,13 +76,6 @@ class SessionDetailViewModel(
   }
 
   fun bookmark(bookmarked: Boolean) = viewModelScope.launch {
-    bookmarksRepository.setBookmarked(sessionId, bookmarked)
-
-    val userId = FirebaseAuth.getInstance().currentUser?.uid
-    if (userId != null) {
-      GlobalScope.launch {
-        sessionsRepository.setBookmark(userId, sessionId, bookmarked)
-      }
-    }
+    setSessionBookmarkUseCase(session.first().getOrThrow().id, bookmarked)
   }
 }

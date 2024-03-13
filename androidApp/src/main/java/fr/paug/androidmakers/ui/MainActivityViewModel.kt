@@ -1,7 +1,6 @@
 package fr.paug.androidmakers.ui
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import fr.androidmakers.domain.interactor.OpenCocUseCase
 import fr.androidmakers.domain.interactor.OpenFaqUseCase
@@ -25,7 +24,7 @@ class MainActivityViewModel(
     val openCocUseCase: OpenCocUseCase
 
 ): ViewModel() {
-  val _user = MutableStateFlow<User?>(null)
+  private val _user = MutableStateFlow<User?>(null)
   val user: Flow<User?> = _user
 
   init {
@@ -38,6 +37,13 @@ class MainActivityViewModel(
           // This is racy but oh well...
           syncBookmarksUseCase(currentUser.id)
       }
+    }
+  }
+
+  suspend fun setUser(user: User?) {
+    _user.emit(user)
+    user?.let {
+      syncBookmarksUseCase(it.id)
     }
   }
 }

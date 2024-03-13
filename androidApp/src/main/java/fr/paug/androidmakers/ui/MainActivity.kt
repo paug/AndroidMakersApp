@@ -143,8 +143,7 @@ class MainActivity : AppCompatActivity() {
                 val result = auth.signInWithCredential(firebaseCredential)
                 // Sign in success, update UI with the signed-in user's information
                 lifecycleScope.launch {
-                  viewModel._user.value = result.user?.toUser()
-                  viewModel.syncBookmarksUseCase(auth.currentUser!!.uid)
+                  viewModel.setUser(result.user?.toUser())
                 }
               }
             }
@@ -153,7 +152,9 @@ class MainActivity : AppCompatActivity() {
           }
         } catch (e: ApiException) {
           e.printStackTrace()
-          viewModel._user.value = null
+          lifecycleScope.launch {
+            viewModel.setUser(null)
+          }
         }
       }
     }
@@ -178,7 +179,7 @@ class MainActivity : AppCompatActivity() {
       Firebase.auth.signOut()
       googleSignInClient.signOut()
       googleSignInClient.revokeAccess()
-      viewModel._user.emit(null)
+      viewModel.setUser(null)
     }
   }
 

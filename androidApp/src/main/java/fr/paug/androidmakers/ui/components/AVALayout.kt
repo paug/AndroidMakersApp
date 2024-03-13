@@ -51,6 +51,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import at.asitplus.KmmResult
+import fr.androidmakers.domain.interactor.GetPartnersUseCase
 import fr.androidmakers.domain.model.PartnerGroup
 import fr.androidmakers.domain.model.SpeakerId
 import fr.androidmakers.domain.model.User
@@ -286,10 +287,10 @@ private fun AVANavHost(
 }
 
 class PartnersViewModel(
-    private val partnersRepository: PartnersRepository
+    private val getPartnersUseCase: GetPartnersUseCase
 ) : LceViewModel<List<PartnerGroup>>() {
   override fun produce(): Flow<KmmResult<List<PartnerGroup>>> {
-    return partnersRepository.getPartners()
+    return getPartnersUseCase()
   }
 }
 

@@ -11,11 +11,11 @@ class AboutViewModel: ObservableObject, Identifiable {
 
     @Published var partnerGroups = [PartnerGroup]()
 
-    private var disposables = Set<AnyCancellable>()
+    private let deps = DepContainer()
 
     @MainActor
     func activate() async {
-        let partnersFlow = model.partnersRepository.getPartners()
+        let partnersFlow = deps.getPartnersUseCase.invoke()
         for await partnerResult in partnersFlow {
             partnerResult.fold(
                 onSuccess: { [weak self] partnerGroups in
@@ -29,15 +29,15 @@ class AboutViewModel: ObservableObject, Identifiable {
     }
 
     func openTwitterPage() {
-        model.openXAccountUC.invoke()
+        deps.openXAccountUseCase.invoke()
     }
 
     func openHashtagPage() {
-        model.openXHashtagUC.invoke()
+        deps.openXHashtagUseCase.invoke()
     }
 
     func openYoutubePage() {
-        model.openYoutubeUC.invoke()
+        deps.openYoutubeUseCase.invoke()
     }
 
     func openPartnerPage(_ partner: Partner) {

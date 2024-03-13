@@ -22,8 +22,6 @@ import io.openfeedback.android.OpenFeedback
 
 class AndroidMakersApplication : Application() {
 
-  lateinit var urlOpener: UrlOpener
-
   lateinit var openFeedback: OpenFeedback
 
   override fun onCreate() {
@@ -33,8 +31,6 @@ class AndroidMakersApplication : Application() {
     DependenciesBuilder(this).inject(
         listOf(viewModelModule)
     )
-
-    urlOpener = UrlOpener(this)
 
     openFeedback = OpenFeedback(
         context = this,

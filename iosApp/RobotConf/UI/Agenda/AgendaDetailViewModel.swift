@@ -29,16 +29,14 @@ class AgendaDetailViewModel: ObservableObject, Identifiable {
     @Published var content: Content?
 
     private var sessionRepo: SessionRepository
-    private var bookmarksRepo: BookmarksRepository
     private var disposables = Set<AnyCancellable>()
+    private let deps = DepContainer()
 
     init(
         sessionId: String,
-        sessionRepo: SessionRepository = model.sessionRepository,
-        bookmarksRepo: BookmarksRepository = model.bookmarksRepository
+        sessionRepo: SessionRepository = model.sessionRepository
     ) {
 
-        self.bookmarksRepo = bookmarksRepo
         self.sessionRepo = sessionRepo
 
         sessionRepo.getSessions()
@@ -51,7 +49,7 @@ class AgendaDetailViewModel: ObservableObject, Identifiable {
 
                 self?.content = Content(
                     from: session,
-                    isFavorite: false
+                    isFavorite: false // Will be fixed when the getAgendaUsecase will be ready
                 )
             }.store(in: &disposables)
     }
@@ -59,7 +57,7 @@ class AgendaDetailViewModel: ObservableObject, Identifiable {
     func toggleFavorite(ofSession session: Content) {
         Task {
             do {
-                try await bookmarksRepo.setBookmarked(sessionId: session.sessionId, bookmarked: session.isFavorite)
+                try await deps.setSessionBookmarkedUseCase.invoke(sessionId: session.sessionId, isBookmark: !session.isFavorite)
             } catch {
                 print("error")
             }
