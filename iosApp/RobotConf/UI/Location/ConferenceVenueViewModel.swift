@@ -10,14 +10,10 @@ import Foundation
 import shared
 
 class ConferenceVenueViewModel: LocationVenueViewModel {
-    let getConferenceVenueUc: GetConferenceVenueUseCase
-
-    init(getConferenceVenueUc: GetConferenceVenueUseCase) {
-        self.getConferenceVenueUc = getConferenceVenueUc
-    }
 
     override func activate() async {
-        for await confVenueResult in self.getConferenceVenueUc.invoke() {
+        let getConferenceVenueUc = DepContainer().getConferenceVenueUseCase
+        for await confVenueResult in getConferenceVenueUc.invoke() {
             confVenueResult.fold(
                 onSuccess: { [weak self] venue in
                     self?.content = venue != nil ? Content(from: venue!) : nil

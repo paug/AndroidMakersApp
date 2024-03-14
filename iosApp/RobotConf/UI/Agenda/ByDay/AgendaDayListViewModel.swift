@@ -38,17 +38,16 @@ class AgendaDayListViewModel: ObservableObject, Identifiable {
     @Published var favoriteSessions: Set<String> = []
 
     private var sessionRepo: SessionRepository
-    private var bookmarksRepo: BookmarksRepository
     private var disposables = Set<AnyCancellable>()
     private var timer: Timer?
     private var isDisplayed = false
 
+    private let deps = DepContainer()
+
     init(
-        sessionRepository: SessionRepository = model.sessionRepository,
-        bookmarksRepository: BookmarksRepository = model.bookmarksRepository
+        sessionRepository: SessionRepository = model.sessionRepository
     ) {
         self.sessionRepo = sessionRepository
-        self.bookmarksRepo = bookmarksRepository
         sessionRepo.getSessions().sink { [weak self] in
             self?.sessionsChanged(sessions: $0)
         }.store(in: &disposables)
@@ -66,7 +65,8 @@ class AgendaDayListViewModel: ObservableObject, Identifiable {
 
     @MainActor
     func activate() async {
-        for await favoriteSessions in bookmarksRepo.getFavoriteSessions() {
+        let getFavoriteSessionsUseCase = deps.getFavoritesSessionsUseCase
+        for await favoriteSessions in getFavoriteSessionsUseCase.invoke() {
             self.favoriteSessions = favoriteSessions
         }
     }
@@ -80,10 +80,11 @@ class AgendaDayListViewModel: ObservableObject, Identifiable {
     func toggleFavorite(ofSession session: Content.Session) {
         Task {
             let isBookmarked = !favoriteSessions.contains(session.uid)
+            let setBookmarkUseCase = deps.setSessionBookmarkedUseCase
 
-            try await bookmarksRepo.setBookmarked(
+            try await setBookmarkUseCase.invoke(
                 sessionId:session.uid,
-                bookmarked:isBookmarked)
+                isBookmark:isBookmarked)
         }
     }
 

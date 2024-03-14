@@ -30,7 +30,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import at.asitplus.KmmResult
 import fr.androidmakers.domain.model.Agenda
 import fr.androidmakers.domain.model.Room
 import fr.androidmakers.domain.model.Session
@@ -40,17 +39,17 @@ import fr.paug.androidmakers.ui.MR
 import fr.paug.androidmakers.ui.components.AgendaLayoutViewModel
 import fr.paug.androidmakers.ui.components.ButtonRefreshableLceLayout
 import fr.paug.androidmakers.ui.model.UISession
-import fr.paug.androidmakers.ui.viewmodel.LceViewModel
+import fr.paug.androidmakers.ui.util.stringResource
 import fr.paug.androidmakers.util.EmojiUtils
 import fr.paug.androidmakers.util.SessionFilter
-import fr.paug.androidmakers.ui.util.stringResource
 import fr.paug.androidmakers.util.eventTimeZone
-import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toJavaLocalDate
 import kotlinx.datetime.todayIn
+import org.koin.androidx.compose.koinViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
@@ -59,7 +58,7 @@ fun AgendaLayout(
     agendaFilterDrawerState: DrawerState,
     onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
 ) {
-  val agendaLayoutViewModel = viewModel<AgendaLayoutViewModel>()
+  val agendaLayoutViewModel = koinViewModel<AgendaLayoutViewModel>()
   val agendaLayoutState by agendaLayoutViewModel.state.collectAsState()
 
   ModalNavigationDrawer(
@@ -84,19 +83,15 @@ fun AgendaLayout(
   )
 }
 
-class AgendaPagerViewModel : LceViewModel<Agenda>() {
-  override fun produce(): Flow<KmmResult<Agenda>> {
-    return AndroidMakersApplication.instance().getAgendaUseCase()
-  }
-}
-
 @Composable
 private fun AgendaPagerOrLoading(
     sessionFilters: List<SessionFilter>,
     onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
 ) {
-  ButtonRefreshableLceLayout(viewModel<AgendaPagerViewModel>()) {
-    val days = agendaToDays(it)
+  val viewModel: AgendaPagerViewModel = koinViewModel()
+  val favoriteSessions by viewModel.getFavoriteSessions().collectAsState(emptySet())
+  ButtonRefreshableLceLayout(viewModel) {
+    val days = agendaToDays(it, favoriteSessions)
 
     AgendaPager(
         initialPageIndex = days.todayPageIndex(),
@@ -283,9 +278,8 @@ class DaySchedule(
 )
 
 @Composable
-internal fun agendaToDays(agenda: Agenda): List<DaySchedule> {
-  // TODO move it to a viewmodel
-  val favoriteSessions by AndroidMakersApplication.instance().bookmarksStore.getFavoriteSessions().collectAsState(emptySet())
+internal fun agendaToDays(agenda: Agenda, favoriteSessions: Set<String>): List<DaySchedule> {
+
   return agenda.sessions.values.groupBy { it.startsAt.date }
       .entries
       .map {

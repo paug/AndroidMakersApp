@@ -20,7 +20,7 @@ data class AgendaLayoutState(
 )
 
 class AgendaLayoutViewModel(
-    roomsRepository: RoomsRepository = AndroidMakersApplication.instance().roomsRepository,
+    roomsRepository: RoomsRepository,
     scope: ViewModel.() -> CoroutineScope = { viewModelScope }
 ) : ViewModel() {
   private val sessionFilters = MutableStateFlow(emptyList<SessionFilter>())

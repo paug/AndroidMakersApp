@@ -17,18 +17,16 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.MR
 import fr.paug.androidmakers.ui.components.LoadingLayout
 import fr.paug.androidmakers.ui.components.session.SocialButtons
@@ -41,7 +39,7 @@ fun SpeakerDetailsRoute(
     speakerDetailsViewModel: SpeakerDetailsViewModel,
     onBackClick: () -> Unit,
 ) {
-  val uiState by speakerDetailsViewModel.uiState.collectAsStateWithLifecycle()
+  val uiState by speakerDetailsViewModel.uiState.collectAsState()
   when (val state = uiState) {
     Lce.Loading -> LoadingLayout()
     Lce.Error -> {

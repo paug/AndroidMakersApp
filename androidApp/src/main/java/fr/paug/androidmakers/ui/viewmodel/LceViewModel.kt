@@ -22,7 +22,7 @@ abstract class LceViewModel<T> : ViewModel() {
 
   private var job: Job? = null
 
-  private fun launch(isRefresh: Boolean) {
+  protected fun launch(isRefresh: Boolean) {
     job?.cancel()
     job = viewModelScope.launch {
       produce().map {
@@ -46,10 +46,6 @@ abstract class LceViewModel<T> : ViewModel() {
   fun refresh() {
     _isRefreshing.value = true
     launch(true)
-  }
-
-  init {
-    launch(false)
   }
 }
 

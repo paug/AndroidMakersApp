@@ -8,9 +8,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import fr.androidmakers.domain.model.SpeakerId
 import fr.androidmakers.domain.model.User
 import fr.paug.androidmakers.ui.components.about.AboutActions
@@ -20,6 +22,7 @@ import fr.paug.androidmakers.ui.components.speakers.details.SpeakerDetailsRoute
 import fr.paug.androidmakers.ui.components.speakers.details.SpeakerDetailsViewModel
 import fr.paug.androidmakers.ui.navigation.MainNavigationRoute
 import fr.paug.androidmakers.ui.viewmodel.Lce
+import org.koin.androidx.compose.koinViewModel
 
 /**
  * The main layout: entry point of the application
@@ -30,7 +33,7 @@ fun MainLayout(aboutActions: AboutActions, user: User?) {
   MainNavHost(
       mainNavController = mainNavController,
       onSessionClick = { sessionId, roomId, startTimestamp, endTimestamp ->
-        mainNavController.navigate("${MainNavigationRoute.SESSION_DETAIL.name}/$sessionId/$roomId/$startTimestamp/$endTimestamp")
+        mainNavController.navigate("${MainNavigationRoute.SESSION_DETAIL.name}/$sessionId")
       },
       aboutActions = aboutActions,
       user = user,
@@ -62,24 +65,17 @@ private fun MainNavHost(
       )
     }
 
-    composable(route = "${MainNavigationRoute.SESSION_DETAIL.name}/{sessionId}/{roomId}/{startTimestamp}/{endTimestamp}") { backStackEntry ->
-      val sessionId = backStackEntry.arguments!!.getString("sessionId")!!
-      val roomId = backStackEntry.arguments!!.getString("roomId")!!
-      val startTimestamp = backStackEntry.arguments!!.getString("startTimestamp")!!.toLong()
-      val endTimestamp = backStackEntry.arguments!!.getString("endTimestamp")!!.toLong()
-      val sessionDetailViewModel: SessionDetailViewModel = viewModel(
-          factory = object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-              @Suppress("UNCHECKED_CAST")
-              return SessionDetailViewModel(
-                  sessionId = sessionId,
-                  roomId = roomId,
-                  startTimestamp = startTimestamp,
-                  endTimestamp = endTimestamp
-              ) as T
+    composable(
+        route = "${MainNavigationRoute.SESSION_DETAIL.name}/{sessionId}",
+        arguments = listOf(
+            navArgument("sessionId") {
+              type = NavType.StringType
             }
-          }
-      )
+        )
+    ) {
+
+      val sessionDetailViewModel: SessionDetailViewModel = koinViewModel()
+
       val sessionDetailState by sessionDetailViewModel.sessionDetailState.collectAsState(
           initial = Lce.Loading
       )
@@ -90,19 +86,15 @@ private fun MainNavHost(
       )
     }
 
-    composable(route = "${MainNavigationRoute.SPEAKER_DETAIL.name}/{speakerId}") { backStackEntry ->
-      val speakerId = backStackEntry.arguments!!.getString("speakerId")!!
-
-      val speakerDetailsViewModel: SpeakerDetailsViewModel = viewModel(
-          factory = object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-              @Suppress("UNCHECKED_CAST")
-              return SpeakerDetailsViewModel(
-                  speakerId = speakerId
-              ) as T
+    composable(
+        route = "${MainNavigationRoute.SPEAKER_DETAIL.name}/{speakerId}",
+        arguments = listOf(
+            navArgument("speakerId") {
+              type = NavType.StringType
             }
-          }
-      )
+        )
+    ) {
+      val speakerDetailsViewModel: SpeakerDetailsViewModel = koinViewModel()
 
       SpeakerDetailsRoute(
           speakerDetailsViewModel = speakerDetailsViewModel,

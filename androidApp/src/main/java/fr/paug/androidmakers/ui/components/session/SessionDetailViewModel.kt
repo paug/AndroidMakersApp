@@ -1,28 +1,51 @@
 package fr.paug.androidmakers.ui.components.session
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.FirebaseAuth
+import fr.androidmakers.domain.interactor.SetSessionBookmarkUseCase
 import fr.androidmakers.domain.model.Session
 import fr.androidmakers.domain.model.Speaker
-import fr.paug.androidmakers.AndroidMakersApplication
+import fr.androidmakers.domain.repo.BookmarksRepository
+import fr.androidmakers.domain.repo.RoomsRepository
+import fr.androidmakers.domain.repo.SessionsRepository
+import fr.androidmakers.domain.repo.SpeakersRepository
 import fr.paug.androidmakers.ui.viewmodel.Lce
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.flattenMerge
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.launch
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class SessionDetailViewModel(
-    private val sessionId: String,
-    roomId: String,
-    private val startTimestamp: Long,
-    private val endTimestamp: Long,
+    savedStateHandle: SavedStateHandle,
+    sessionsRepository: SessionsRepository,
+    private val roomsRepository: RoomsRepository,
+    // TODO remove the reference to repositories here
+    bookmarksRepository: BookmarksRepository,
+    private val speakersRepository: SpeakersRepository,
+    private val setSessionBookmarkUseCase: SetSessionBookmarkUseCase,
 ) : ViewModel() {
 
+  private val sessionId: String = savedStateHandle["sessionId"]!!
+  private val session = sessionsRepository.getSession(sessionId)
+  private val room = session.mapNotNull { result ->
+    result.getOrNull()?.roomId?.let { roomId ->
+      roomsRepository.getRoom(roomId)
+    }
+  }.flattenMerge()
+
+  private val isBookmarked = bookmarksRepository.isBookmarked(sessionId)
+
   val sessionDetailState = combine(
-      AndroidMakersApplication.instance().sessionsRepository.getSession(sessionId),
-      AndroidMakersApplication.instance().roomsRepository.getRoom(roomId),
-      AndroidMakersApplication.instance().bookmarksStore.isBookmarked(sessionId),
+      session,
+      room,
+      isBookmarked,
   ) { session, room, isBookmarked ->
 
     val exception = session.exceptionOrNull() ?: room.exceptionOrNull()
@@ -34,8 +57,8 @@ class SessionDetailViewModel(
               session = session.getOrThrow(),
               room = room.getOrThrow(),
               speakers = getSpeakers(session.getOrThrow()),
-              startTimestamp = startTimestamp,
-              endTimestamp = endTimestamp,
+              startTimestamp = session.getOrThrow().startsAt.toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds(),
+              endTimestamp = session.getOrThrow().endsAt.toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds(),
               isBookmarked = isBookmarked,
           )
       )
@@ -43,7 +66,7 @@ class SessionDetailViewModel(
   }
 
   private suspend fun getSpeakers(session: Session): List<Speaker> {
-    val allSpeakers = AndroidMakersApplication.instance().speakersRepository.getSpeakers().firstOrNull()
+    val allSpeakers = speakersRepository.getSpeakers().firstOrNull()
         //?.recover { emptyList() }
         ?.getOrThrow()
         ?: return emptyList()
@@ -53,13 +76,6 @@ class SessionDetailViewModel(
   }
 
   fun bookmark(bookmarked: Boolean) = viewModelScope.launch {
-    AndroidMakersApplication.instance().bookmarksStore.setBookmarked(sessionId, bookmarked)
-
-    val userId = FirebaseAuth.getInstance().currentUser?.uid
-    if (userId != null) {
-      GlobalScope.launch {
-        AndroidMakersApplication.instance().sessionsRepository.setBookmark(userId, sessionId, bookmarked)
-      }
-    }
+    setSessionBookmarkUseCase(session.first().getOrThrow().id, bookmarked)
   }
 }

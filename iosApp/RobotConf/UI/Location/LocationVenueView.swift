@@ -14,13 +14,9 @@ struct LocationVenueView: View {
     init(kind: LocationVenueViewModel.VenueKind) {
         switch kind {
             case .conference:
-                self._viewModel = StateObject(wrappedValue: ConferenceVenueViewModel(
-                    getConferenceVenueUc: model.getConferenceVenueUC
-                ))
+                self._viewModel = StateObject(wrappedValue: ConferenceVenueViewModel())
             case .party:
-                self._viewModel = StateObject(wrappedValue: AfterPartyVenueViewModel(
-                    getAfterpartyUc: model.getAfterpartyVenueUC
-                ))
+                self._viewModel = StateObject(wrappedValue: AfterPartyVenueViewModel())
         }
 
     }

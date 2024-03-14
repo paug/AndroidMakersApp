@@ -6,6 +6,7 @@ import UIKit
 import FirebaseAnalytics
 import FirebaseCrashlytics
 import Firebase
+import shared
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -26,6 +27,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else {
             print("⚠️ Firebase descriptor for the main purpose is not embedded, crashlytics disabled.")
         }
+
+        DependenciesBuilder().inject(platformModules: [])
 
         return true
     }

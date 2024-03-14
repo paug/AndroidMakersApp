@@ -7,19 +7,6 @@ import shared
 
 /// Singleton model
 private(set) var model = Model()
-private(set) var apolloClient = ApolloClientBuilder(
-    url: "https://androidmakers-2023.ew.r.appspot.com/graphql",
-    conference: "androidmakers2023",
-    token: "").build()
-
-private(set) var datastore = createDataStore(migrations: []) {
-    do {
-        let documentDir = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-        return documentDir.path.appending("/bookmarks.preferences_pb")
-    } catch {
-        return ""
-    }
-}
 
 #if DEBUG
 private var mockModel = Model(dataProvider: DataProvider(desiredProviderType: .json))
@@ -32,13 +19,6 @@ func injectMockModel() {
 protocol RepositoryProvider {
     var sessionRepository: SessionRepository { get }
     var feedbackRepository: FeedbackRepository { get }
-    var partnersRepository: PartnersRepository { get }
-    var getConferenceVenueUC: GetConferenceVenueUseCase { get }
-    var getAfterpartyVenueUC: GetAfterpartyVenueUseCase { get }
-    var bookmarksRepository: BookmarksRepository { get }
-    var openXAccountUC: OpenXAccountUseCase { get }
-    var openXHashtagUC: OpenXHashtagUseCase { get }
-    var openYoutubeUC: OpenYoutubeUseCase { get }
 }
 
 /// The model API object
@@ -47,30 +27,10 @@ class Model: RepositoryProvider {
     let sessionRepository: SessionRepository
 
     let feedbackRepository: FeedbackRepository
-    let getConferenceVenueUC: GetConferenceVenueUseCase
-    let getAfterpartyVenueUC: GetAfterpartyVenueUseCase
-    let openXAccountUC: OpenXAccountUseCase
-    let openXHashtagUC: OpenXHashtagUseCase
-    let openYoutubeUC: OpenYoutubeUseCase
-
-    let partnersRepository: PartnersRepository
-    let bookmarksRepository: BookmarksRepository
-    let urlOpener: UrlOpener
 
     fileprivate init(dataProvider: DataProvider = DataProvider()) {
         self.dataProvider = dataProvider
         sessionRepository = SessionRepository(dataProvider: dataProvider)
-        let venueRepository = VenueGraphQLRepository(apolloClient: apolloClient)
-        getConferenceVenueUC = GetConferenceVenueUseCase(venueRepository: venueRepository)
-        getAfterpartyVenueUC = GetAfterpartyVenueUseCase(venueRepository: venueRepository)
-
         feedbackRepository = FeedbackRepository(dataProvider: dataProvider)
-        partnersRepository = PartnersGraphQLRepository(apolloClient: apolloClient)
-
-        bookmarksRepository = BookmarksDataStoreRepository(dataStore: datastore)
-        urlOpener = UrlOpener()
-        openXAccountUC = OpenXAccountUseCase(urlOpener: urlOpener)
-        openXHashtagUC = OpenXHashtagUseCase(urlOpener: urlOpener)
-        openYoutubeUC = OpenYoutubeUseCase(urlOpener: urlOpener)
     }
 }
