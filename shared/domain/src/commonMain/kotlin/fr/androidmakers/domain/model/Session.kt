@@ -18,6 +18,7 @@ data class Session(
     val slidesUrl: String? = null,
     val duration: Duration = Duration.ZERO,
 
+    // TODO move to instant to handle timezone
     val startsAt: LocalDateTime,
     val endsAt: LocalDateTime,
     val roomId: String,

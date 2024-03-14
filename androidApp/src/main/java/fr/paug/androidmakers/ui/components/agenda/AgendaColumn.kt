@@ -33,6 +33,7 @@ import fr.paug.androidmakers.ui.util.stringResource
 fun AgendaColumn(
     sessionsPerStartTime: Map<String, List<UISession>>,
     onSessionClicked: (UISession) -> Unit,
+    onSessionBookmarked: (UISession, Boolean) -> Unit,
 ) {
   val listState = rememberLazyListState()
 
@@ -63,7 +64,8 @@ fun AgendaColumn(
             AgendaRow(
                 modifier = Modifier.animateItemPlacement(),
                 uiSession = uiSession,
-                onSessionClicked =onSessionClicked
+                onSessionClicked = onSessionClicked,
+                onSessionBookmarked = onSessionBookmarked
             )
           }
         }

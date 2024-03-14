@@ -2,13 +2,16 @@ package fr.paug.androidmakers.ui.components.speakers
 
 import androidx.lifecycle.ViewModel
 import fr.androidmakers.domain.model.Speaker
+import fr.androidmakers.domain.repo.SpeakersRepository
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.ui.viewmodel.Lce
 import kotlinx.coroutines.flow.map
 
-class SpeakerViewModel : ViewModel() {
+class SpeakerViewModel(
+    speakersRepository: SpeakersRepository
+) : ViewModel() {
 
-  val uiState = AndroidMakersApplication.instance().speakersRepository.getSpeakers().map {
+  val uiState = speakersRepository.getSpeakers().map {
     val exception = it.exceptionOrNull()
     if (exception != null) {
       Lce.Error
@@ -18,7 +21,6 @@ class SpeakerViewModel : ViewModel() {
       ))
     }
   }
-
 }
 
 data class SpeakersUiState(

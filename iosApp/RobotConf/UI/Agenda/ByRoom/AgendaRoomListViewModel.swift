@@ -30,16 +30,15 @@ class AgendaRoomListViewModel: ObservableObject {
     @Published var selectedDay = Date.distantFuture
 
     private var sessionRepo: SessionRepository
-    private var bookmarksRepo: BookmarksRepository
     private var isDisplayed = false
     private var disposables = Set<AnyCancellable>()
 
+    private let deps = DepContainer()
+
     init(
-        sessionRepo: SessionRepository = model.sessionRepository,
-        bookmarksRepo: BookmarksRepository = model.bookmarksRepository
+        sessionRepo: SessionRepository = model.sessionRepository
     ) {
         self.sessionRepo = sessionRepo
-        self.bookmarksRepo = bookmarksRepo
 
         sessionRepo.getSessions().sink { [unowned self] sessions in
             var allDates = Set<DateComponents>()
@@ -71,7 +70,8 @@ class AgendaRoomListViewModel: ObservableObject {
 
     @MainActor
     func activate() async {
-        for await favSessions in bookmarksRepo.getFavoriteSessions() {
+        let getFavoriteSessionsUseCase = deps.getFavoritesSessionsUseCase
+        for await favSessions in getFavoriteSessionsUseCase.invoke() {
             self.favoriteSessions = favSessions
         }
     }
