@@ -33,6 +33,7 @@
 		45EC5AC229C26DCE00ABBB7F /* GraphQLDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EC5AC129C26DCE00ABBB7F /* GraphQLDataProvider.swift */; };
 		45EC5AC429C2701400ABBB7F /* SessionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EC5AC329C2701400ABBB7F /* SessionData.swift */; };
 		6418BE5D2BA1EC8900F3EA79 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6418BE5C2BA1EC8900F3EA79 /* GoogleService-Info.plist */; };
+		6418BE602BA2F75700F3EA79 /* SponsorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6418BE5F2BA2F75700F3EA79 /* SponsorsView.swift */; };
 		6440520B2B892F0200F87201 /* ResourcesUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6440520A2B892F0200F87201 /* ResourcesUtils.swift */; };
 		647899322B90937800887B74 /* Speaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 647899312B90937800887B74 /* Speaker.swift */; };
 		647899342B9093A000887B74 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 647899332B9093A000887B74 /* Session.swift */; };
@@ -114,6 +115,7 @@
 		45EC5AC129C26DCE00ABBB7F /* GraphQLDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphQLDataProvider.swift; sourceTree = "<group>"; };
 		45EC5AC329C2701400ABBB7F /* SessionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionData.swift; sourceTree = "<group>"; };
 		6418BE5C2BA1EC8900F3EA79 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		6418BE5F2BA2F75700F3EA79 /* SponsorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SponsorsView.swift; sourceTree = "<group>"; };
 		6440520A2B892F0200F87201 /* ResourcesUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcesUtils.swift; sourceTree = "<group>"; };
 		647899312B90937800887B74 /* Speaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Speaker.swift; sourceTree = "<group>"; };
 		647899332B9093A000887B74 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
@@ -288,6 +290,14 @@
 			path = GraphQL;
 			sourceTree = "<group>";
 		};
+		6418BE5E2BA2F73F00F3EA79 /* Sponsors */ = {
+			isa = PBXGroup;
+			children = (
+				6418BE5F2BA2F75700F3EA79 /* SponsorsView.swift */,
+			);
+			path = Sponsors;
+			sourceTree = "<group>";
+		};
 		B225421E23FB22C200C5A83E /* Feedback */ = {
 			isa = PBXGroup;
 			children = (
@@ -398,6 +408,7 @@
 				B2BC0B7C23B90B3500C85F69 /* Location */,
 				B2BC0B8923BB66D000C85F69 /* About */,
 				B26E853423D4913C006C2C9E /* FormattedText */,
+				6418BE5E2BA2F73F00F3EA79 /* Sponsors */,
 				B268A96C24431E5300412523 /* Common */,
 				B225421F23FB27ED00C5A83E /* Utils */,
 				B2A0669223521AC00062383A /* Language+UI.swift */,
@@ -747,6 +758,7 @@
 				B2CD275F234D079B0016AA02 /* AgendaDayListView.swift in Sources */,
 				B20701602353372800F8E2AF /* AgendaDetailViewModel.swift in Sources */,
 				B2BC0B8B23BB66EF00C85F69 /* AboutView.swift in Sources */,
+				6418BE602BA2F75700F3EA79 /* SponsorsView.swift in Sources */,
 				4538D0D929CA2DB600BB94DB /* SessionConnection.graphql.swift in Sources */,
 				B2BC0B7E23B90B6C00C85F69 /* LocationListView.swift in Sources */,
 				B2BC0B8223B91C5B00C85F69 /* LocationVenueViewModel.swift in Sources */,

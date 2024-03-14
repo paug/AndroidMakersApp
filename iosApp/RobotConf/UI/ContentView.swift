@@ -26,13 +26,21 @@ struct ContentView: View {
                     }
             }.tag(1)
 
+            SponsorsView()
+                .tabItem {
+                    VStack {
+                        Image("location")
+                        Text(stringResource(MR.strings().sponsors))
+                    }
+                }.tag(2)
+
             AboutView()
                 .tabItem {
                     VStack {
                         Image("about")
                         Text(stringResource(MR.strings().about))
                     }
-            }.tag(2)
+            }.tag(3)
         }
     }
 }

@@ -1,5 +1,6 @@
-package fr.paug.androidmakers.ui.components.sponsors
+package com.androidmakers.ui.sponsors
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,11 +20,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
+import com.androidmakers.ui.model.Lce
+import com.seiko.imageloader.rememberImagePainter
 import fr.androidmakers.domain.model.Partner
 import fr.androidmakers.domain.model.PartnerGroup
-import fr.paug.androidmakers.ui.viewmodel.Lce
-import java.util.Locale
 
 @Composable
 fun SponsorsScreen(
@@ -60,27 +60,27 @@ fun SponsorsScreen(
                     .padding(top = 32.dp, bottom = 8.dp)
                     .fillMaxWidth(),
                 textAlign = TextAlign.Start,
-                text = partnerGroup.title.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() },
+                text = partnerGroup.title.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() },
                 style = MaterialTheme.typography.titleMedium.copy(
                     color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp
                 )
             )
-
           }
 
           // Sponsor logo
           for (partner in partnerGroup.partners) {
             item {
-              AsyncImage(
+              val painter = rememberImagePainter(partner.logoUrl)
+              Image(
                   modifier = Modifier
                       .fillMaxWidth()
                       .height(80.dp)
                       .clickable {
                         onSponsorClick(partner)
                       },
-                  model = partner.logoUrl,
+                  painter = painter,
                   contentDescription = partner.name
               )
             }
@@ -88,6 +88,5 @@ fun SponsorsScreen(
         }
       }
     }
-
   }
 }

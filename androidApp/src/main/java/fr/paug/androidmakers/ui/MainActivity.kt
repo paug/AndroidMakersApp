@@ -26,6 +26,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.GoogleAuthProvider
 import dev.gitlive.firebase.auth.auth
+import fr.androidmakers.domain.model.Partner
 import fr.androidmakers.store.firebase.toUser
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.components.MainLayout
@@ -164,8 +165,9 @@ class MainActivity : AppCompatActivity() {
     viewModel.openYoutubeUseCase()
   }
 
-  private fun onSponsorClick(url: String) {
-    CustomTabUtil.openChromeTab(this, url)
+  private fun onSponsorClick(partner: Partner) {
+    viewModel.openPartnerLinkUseCase(partner)
+    //CustomTabUtil.openChromeTab(this, url)
   }
 
   fun signout() {

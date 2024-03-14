@@ -25,6 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import fr.androidmakers.domain.model.Partner
 import fr.paug.androidmakers.BuildConfig
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.MR
@@ -36,7 +37,7 @@ class AboutActions(
     val onXHashtagClick: () -> Unit = {},
     val onXLogoClick: () -> Unit = {},
     val onYouTubeLogoClick: () -> Unit = {},
-    val onSponsorClick: (url: String) -> Unit = {},
+    val onSponsorClick: (partner: Partner) -> Unit = {},
 )
 
 @Composable

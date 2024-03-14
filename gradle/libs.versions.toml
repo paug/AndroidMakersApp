@@ -20,6 +20,7 @@ datastore = "1.1.0-beta01"
 skie = "0.6.1"
 firebase = "1.11.1"
 koin = "3.5.3"
+compose-plugin = "1.6.0"
 
 [libraries]
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
@@ -85,6 +86,7 @@ google-services = { id = "com.google.gms.google-services", version.ref = "google
 crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlytics-plugin" }
 moko = { id = "dev.icerock.mobile.multiplatform-resources", version.ref = "moko" }
 skie = { id = "co.touchlab.skie", version.ref = "skie" }
+jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
 
 ## Custom plugins
 androidmakers-android-application = { id = "fr.androidmakers.android.application", version = "unspecified" }

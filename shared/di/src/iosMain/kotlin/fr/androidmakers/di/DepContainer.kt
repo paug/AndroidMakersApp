@@ -5,6 +5,7 @@ import fr.androidmakers.domain.interactor.GetConferenceVenueUseCase
 import fr.androidmakers.domain.interactor.GetFavoriteSessionsUseCase
 import fr.androidmakers.domain.interactor.GetPartnersUseCase
 import fr.androidmakers.domain.interactor.OpenFaqUseCase
+import fr.androidmakers.domain.interactor.OpenPartnerLinkUseCase
 import fr.androidmakers.domain.interactor.OpenXAccountUseCase
 import fr.androidmakers.domain.interactor.OpenXHashtagUseCase
 import fr.androidmakers.domain.interactor.OpenYoutubeUseCase
@@ -24,4 +25,5 @@ class DepContainer: KoinComponent {
   val getPartnersUseCase: GetPartnersUseCase by inject()
   val setSessionBookmarkedUseCase: SetSessionBookmarkUseCase by inject()
   val getFavoritesSessionsUseCase: GetFavoriteSessionsUseCase by inject()
+  val openPartnerLinkUseCase: OpenPartnerLinkUseCase by inject()
 }
