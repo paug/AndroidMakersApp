@@ -29,15 +29,13 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.androidmakers.ui.common.ButtonRefreshableLceLayout
 import fr.androidmakers.domain.model.Agenda
 import fr.androidmakers.domain.model.Room
 import fr.androidmakers.domain.model.Session
 import fr.androidmakers.domain.model.Speaker
-import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.ui.MR
 import fr.paug.androidmakers.ui.components.AgendaLayoutViewModel
-import fr.paug.androidmakers.ui.components.ButtonRefreshableLceLayout
 import fr.paug.androidmakers.ui.model.UISession
 import fr.paug.androidmakers.ui.util.stringResource
 import fr.paug.androidmakers.util.EmojiUtils
@@ -48,8 +46,8 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toJavaLocalDate
 import kotlinx.datetime.todayIn
+import moe.tlaster.precompose.koin.koinViewModel
 import org.koin.androidx.compose.koinViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
@@ -88,7 +86,7 @@ private fun AgendaPagerOrLoading(
     sessionFilters: List<SessionFilter>,
     onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
 ) {
-  val viewModel: AgendaPagerViewModel = koinViewModel()
+  val viewModel = moe.tlaster.precompose.koin.koinViewModel(vmClass = AgendaPagerViewModel::class)
   val favoriteSessions by viewModel.getFavoriteSessions().collectAsState(emptySet())
   ButtonRefreshableLceLayout(viewModel) {
     val days = agendaToDays(it, favoriteSessions)

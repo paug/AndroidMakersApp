@@ -1,23 +1,10 @@
 package fr.paug.androidmakers
 
 import android.app.Application
+import com.androidmakers.di.viewModelModule
 import fr.androidmakers.di.DependenciesBuilder
-import fr.androidmakers.domain.interactor.GetAfterpartyVenueUseCase
-import fr.androidmakers.domain.interactor.GetAgendaUseCase
-import fr.androidmakers.domain.interactor.GetConferenceVenueUseCase
-import fr.androidmakers.domain.interactor.OpenCocUseCase
-import fr.androidmakers.domain.interactor.OpenFaqUseCase
-import fr.androidmakers.domain.interactor.OpenXAccountUseCase
-import fr.androidmakers.domain.interactor.OpenXHashtagUseCase
-import fr.androidmakers.domain.interactor.OpenYoutubeUseCase
-import fr.androidmakers.domain.interactor.SyncBookmarksUseCase
-import fr.androidmakers.domain.repo.BookmarksRepository
-import fr.androidmakers.domain.utils.UrlOpener
-import fr.androidmakers.store.local.createDataStore
-import fr.androidmakers.store.local.BookmarksDataStoreRepository
-import fr.paug.androidmakers.di.viewModelModule
+import fr.paug.androidmakers.di.androidViewModelModule
 import io.openfeedback.android.OpenFeedback
-
 
 
 class AndroidMakersApplication : Application() {
@@ -29,7 +16,7 @@ class AndroidMakersApplication : Application() {
     super.onCreate()
 
     DependenciesBuilder(this).inject(
-        listOf(viewModelModule)
+        listOf(androidViewModelModule, viewModelModule)
     )
 
     openFeedback = OpenFeedback(

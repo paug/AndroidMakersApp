@@ -1,13 +1,12 @@
-package fr.paug.androidmakers.ui.components.speakers
+package com.androidmakers.ui.speakers
 
-import androidx.lifecycle.ViewModel
+import com.androidmakers.ui.model.Lce
 import fr.androidmakers.domain.model.Speaker
 import fr.androidmakers.domain.repo.SpeakersRepository
-import fr.paug.androidmakers.AndroidMakersApplication
-import fr.paug.androidmakers.ui.viewmodel.Lce
 import kotlinx.coroutines.flow.map
+import moe.tlaster.precompose.viewmodel.ViewModel
 
-class SpeakerViewModel(
+class SpeakerListViewModel(
     speakersRepository: SpeakersRepository
 ) : ViewModel() {
 

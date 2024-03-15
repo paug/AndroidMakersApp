@@ -3,11 +3,9 @@ package fr.paug.androidmakers.ui.components.speakers.details
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.androidmakers.ui.model.Lce
 import fr.androidmakers.domain.model.Speaker
-import fr.androidmakers.domain.model.SpeakerId
 import fr.androidmakers.domain.repo.SpeakersRepository
-import fr.paug.androidmakers.AndroidMakersApplication
-import fr.paug.androidmakers.ui.viewmodel.Lce
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map

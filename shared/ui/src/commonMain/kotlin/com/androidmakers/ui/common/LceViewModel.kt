@@ -1,8 +1,7 @@
-package fr.paug.androidmakers.ui.viewmodel
+package com.androidmakers.ui.common
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import at.asitplus.KmmResult
+import com.androidmakers.ui.model.Lce
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -10,6 +9,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import moe.tlaster.precompose.viewmodel.ViewModel
+import moe.tlaster.precompose.viewmodel.viewModelScope
+
 
 abstract class LceViewModel<T> : ViewModel() {
   abstract fun produce(): Flow<KmmResult<T>>
@@ -47,16 +49,4 @@ abstract class LceViewModel<T> : ViewModel() {
     _isRefreshing.value = true
     launch(true)
   }
-}
-
-sealed interface Lce<out T> {
-  object Loading : Lce<Nothing>
-  class Content<T>(val content: T) : Lce<T>
-  object Error : Lce<Nothing>
-}
-
-fun <T> KmmResult<T>.toLce(): Lce<T> = if (isSuccess) {
-  Lce.Content(getOrThrow())
-} else {
-  Lce.Error
 }

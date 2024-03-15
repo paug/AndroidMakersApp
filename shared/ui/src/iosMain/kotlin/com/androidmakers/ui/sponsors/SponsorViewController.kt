@@ -13,13 +13,8 @@ import platform.UIKit.UIViewController
 fun SponsorViewController(): UIViewController =
     ComposeUIViewController {
       val depContainter = DepContainer()
-      val getPartnerUseCase = depContainter.getPartnersUseCase
-      val partners by getPartnerUseCase().collectAsState(KmmResult.success(emptyList()))
-
-      val partnerlist = partners.getOrNull() ?: emptyList()
-
       AndroidMakersTheme {
-        SponsorsScreen(Lce.Content(partnerlist)) { partner ->
+        SponsorsScreen { partner ->
           depContainter.openPartnerLinkUseCase(partner)
         }
       }

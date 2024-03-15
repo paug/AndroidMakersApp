@@ -17,18 +17,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import fr.paug.androidmakers.AndroidMakersApplication
-import fr.paug.androidmakers.ui.components.EmptyLayout
+import com.androidmakers.ui.common.EmptyLayout
 import fr.paug.androidmakers.ui.components.SwipeRefreshableLceLayout
 import fr.paug.androidmakers.ui.model.UISession
 import fr.paug.androidmakers.util.SessionFilter
 import fr.paug.androidmakers.util.TimeUtils
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import org.koin.androidx.compose.koinViewModel
-import java.util.*
+import moe.tlaster.precompose.koin.koinViewModel
+import java.util.Date
 
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -80,7 +76,7 @@ fun AgendaPager(
     HorizontalPager(
         state = pagerState,
     ) { page ->
-      val viewModel = koinViewModel<AgendaPagerViewModel>()
+      val viewModel = koinViewModel(vmClass = AgendaPagerViewModel::class)
       val favoriteSessions by viewModel.getFavoriteSessions().collectAsState(emptySet())
       SwipeRefreshableLceLayout(viewModel = viewModel) {
         val days = agendaToDays(it, favoriteSessions)

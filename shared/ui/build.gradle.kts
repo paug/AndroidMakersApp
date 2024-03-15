@@ -33,6 +33,9 @@ kotlin {
       implementation(project(":shared:domain"))
       implementation(project(":shared:di"))
       api("io.github.qdsfdhvh:image-loader:1.7.8")
+      api(libs.precompose)
+      api(libs.precompose.viewmodel)
+      api(libs.precompose.koin)
     }
   }
 }

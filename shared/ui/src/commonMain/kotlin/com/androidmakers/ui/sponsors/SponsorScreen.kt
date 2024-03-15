@@ -14,6 +14,8 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -24,9 +26,23 @@ import com.androidmakers.ui.model.Lce
 import com.seiko.imageloader.rememberImagePainter
 import fr.androidmakers.domain.model.Partner
 import fr.androidmakers.domain.model.PartnerGroup
+import moe.tlaster.precompose.koin.koinViewModel
 
 @Composable
 fun SponsorsScreen(
+    onSponsorClick: (partner: Partner) -> Unit
+) {
+  val viewModel = koinViewModel(SponsorsViewModel::class)
+  val sponsors by viewModel.values.collectAsState()
+
+  SponsorsView(
+      partnerList = sponsors,
+      onSponsorClick = onSponsorClick
+  )
+}
+
+@Composable
+fun SponsorsView(
     partnerList: Lce<List<PartnerGroup>>,
     onSponsorClick: (partner: Partner) -> Unit
 ) {

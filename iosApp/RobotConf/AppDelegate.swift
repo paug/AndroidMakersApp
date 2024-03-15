@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("⚠️ Firebase descriptor for the main purpose is not embedded, crashlytics disabled.")
         }
 
-        DependenciesBuilder().inject(platformModules: [])
+        DependenciesBuilder().inject(platformModules: [viewModelModule])
 
         return true
     }

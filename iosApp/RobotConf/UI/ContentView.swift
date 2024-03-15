@@ -26,7 +26,9 @@ struct ContentView: View {
                     }
             }.tag(1)
 
-            SpeakersView()
+            SpeakersView(
+                onSpeakerClick: { _ in }
+            )
                 .tabItem {
                     VStack {
                         Image(systemName: "person.3.fill")

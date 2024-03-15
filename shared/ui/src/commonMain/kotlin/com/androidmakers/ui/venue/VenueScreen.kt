@@ -1,9 +1,6 @@
-package fr.paug.androidmakers.ui.components.venue
+package com.androidmakers.ui.venue
 
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
-import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,32 +14,28 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import fr.paug.androidmakers.R
+import com.androidmakers.ui.model.UIVenue
+import com.seiko.imageloader.rememberImagePainter
+import dev.icerock.moko.resources.compose.stringResource
 import fr.paug.androidmakers.ui.MR
-import fr.paug.androidmakers.ui.util.stringResource
-import fr.paug.androidmakers.ui.model.UIVenue
-import fr.paug.androidmakers.ui.util.discardHtmlTags
-import fr.paug.androidmakers.util.CustomTabUtil
-import surfaceColor2
 
 @Composable
-fun VenueLayout(uiVenue: UIVenue) {
+fun VenueLayout(
+    uiVenue: UIVenue,
+    onClickOnMap: (String) -> Unit
+) {
   Column(
       modifier = Modifier
           .fillMaxWidth()
           .fillMaxHeight()
           .verticalScroll(rememberScrollState())
   ) {
-    AsyncImage(
-        model = uiVenue.imageUrl,
-        placeholder = ColorPainter(surfaceColor2()),
+    val painter = rememberImagePainter(uiVenue.imageUrl)
+    Image(
+        painter = painter,
         contentDescription = null,
         contentScale = ContentScale.FillWidth,
         modifier = Modifier
@@ -67,35 +60,17 @@ fun VenueLayout(uiVenue: UIVenue) {
       uiVenue.descriptionEn
     }
     Text(
-        text = description.discardHtmlTags(),
+        text = description/*.discardHtmlTags()*/,
         modifier = Modifier.padding(8.dp),
         style = MaterialTheme.typography.bodyMedium,
     )
-    val context = LocalContext.current
+
     Button(
-      modifier = Modifier
-        .fillMaxSize()
-        .padding(horizontal = 8.dp),
-      onClick = { openMap(context, uiVenue.coordinates, uiVenue.name) }) {
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 8.dp),
+        onClick = { uiVenue.coordinates?.let { onClickOnMap(it) } }) {
       Text(text = stringResource(MR.strings.locate_on_map))
     }
-  }
-}
-
-fun openMap(context: Context, coordinates: String?, name: String) {
-  val venueCoordinatesUri = Uri.parse(
-      "geo:" + coordinates +
-          "?q=" + Uri.encode(name)
-  )
-  try {
-    val intent = Intent(Intent.ACTION_VIEW, venueCoordinatesUri)
-    context.startActivity(intent)
-  } catch (e: Exception) {
-    Toast.makeText(context, R.string.no_maps_app_found, Toast.LENGTH_SHORT).show()
-    // Open in Webview
-    CustomTabUtil.openChromeTab(
-        context,
-        "https://www.google.com/maps/?q=" + coordinates?.replace(" ", "")
-    )
   }
 }

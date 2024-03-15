@@ -11,6 +11,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import dev.icerock.moko.resources.compose.fontFamilyResource
 import fr.paug.androidmakers.ui.MR
+import moe.tlaster.precompose.PreComposeApp
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 @Composable
@@ -114,10 +115,12 @@ fun AndroidMakersTheme(
 ) {
 
   val colorSchemeColors = if (!useDarkTheme) LightDefaultColorScheme else DarkDefaultColorScheme
+    PreComposeApp {
+      MaterialTheme(
+          colorScheme = colorSchemeColors,
+          typography = androidMakersTypography(),
+          content = content,
+      )
+    }
 
-  MaterialTheme(
-      colorScheme = colorSchemeColors,
-      typography = androidMakersTypography(),
-      content = content,
-  )
 }

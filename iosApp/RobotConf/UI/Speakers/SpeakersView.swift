@@ -11,8 +11,13 @@ import SwiftUI
 import shared
 
 struct SpeakersView: UIViewControllerRepresentable {
+
+    let onSpeakerClick: (String) -> Void
+
     func makeUIViewController(context: Context) -> UIViewController {
-        return SpeakerListViewController()
+        return SpeakerListViewController(
+            onSpeakerClick: onSpeakerClick
+        )
     }
 
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}

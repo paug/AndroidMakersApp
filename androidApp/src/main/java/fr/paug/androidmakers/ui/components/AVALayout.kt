@@ -1,5 +1,9 @@
 package fr.paug.androidmakers.ui.components
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,7 +34,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -42,35 +45,28 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import at.asitplus.KmmResult
-import fr.androidmakers.domain.interactor.GetPartnersUseCase
-import fr.androidmakers.domain.model.PartnerGroup
+import com.androidmakers.ui.about.AboutActions
+import com.androidmakers.ui.about.AboutScreen
+import com.androidmakers.ui.speakers.SpeakerListViewModel
+import com.androidmakers.ui.speakers.SpeakerScreen
+import com.androidmakers.ui.sponsors.SponsorsScreen
+import com.androidmakers.ui.venue.VenuePager
 import fr.androidmakers.domain.model.SpeakerId
 import fr.androidmakers.domain.model.User
-import fr.androidmakers.domain.repo.PartnersRepository
-import fr.paug.androidmakers.AndroidMakersApplication
+import fr.paug.androidmakers.BuildConfig
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.MR
-import fr.paug.androidmakers.ui.components.about.AboutActions
-import fr.paug.androidmakers.ui.components.about.AboutLayout
 import fr.paug.androidmakers.ui.components.agenda.AgendaLayout
-import fr.paug.androidmakers.ui.components.speakers.SpeakerScreen
-import fr.paug.androidmakers.ui.components.speakers.SpeakerViewModel
-import fr.paug.androidmakers.ui.components.sponsors.SponsorsScreen
 import fr.paug.androidmakers.ui.navigation.AVANavigationRoute
 import fr.paug.androidmakers.ui.util.stringResource
-import fr.paug.androidmakers.ui.viewmodel.LceViewModel
-import kotlinx.coroutines.flow.Flow
+import fr.paug.androidmakers.util.CustomTabUtil
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.koinViewModel
+import moe.tlaster.precompose.koin.koinViewModel
 
 /**
  * AVA stands for Agenda/Venue/About.
@@ -262,39 +258,27 @@ private fun AVANavHost(
 
     composable(route = AVANavigationRoute.SPEAKERS.name) {
 
-      val speakerViewModel: SpeakerViewModel = koinViewModel()
+      val speakerViewModel: SpeakerListViewModel = koinViewModel()
       SpeakerScreen(
-          speakerViewModel = speakerViewModel,
+          viewModel = speakerViewModel,
           navigateToSpeakerDetails = navigateToSpeakerDetails
       )
     }
 
     composable(route = AVANavigationRoute.ABOUT.name) {
-      AboutLayout(
+      AboutScreen(
+          versionCode = BuildConfig.VERSION_CODE.toString(),
+          versionName = BuildConfig.VERSION_NAME,
           aboutActions = aboutActions
       )
     }
 
     composable(route = AVANavigationRoute.SPONSORS.name) {
-      val partnerList by koinViewModel<PartnersViewModel>().values.collectAsState()
       SponsorsScreen(
-          partnerList = partnerList,
           onSponsorClick = aboutActions.onSponsorClick
       )
     }
 
-  }
-}
-
-class PartnersViewModel(
-    private val getPartnersUseCase: GetPartnersUseCase
-) : LceViewModel<List<PartnerGroup>>() {
-  override fun produce(): Flow<KmmResult<List<PartnerGroup>>> {
-    return getPartnersUseCase()
-  }
-
-  init {
-    launch(false)
   }
 }
 
@@ -307,4 +291,23 @@ private fun AVALayoutPreview() {
       user = null,
       navigateToSpeakerDetails = {}
   )
+}
+
+
+fun openMap(context: Context, coordinates: String?, name: String) {
+  val venueCoordinatesUri = Uri.parse(
+      "geo:" + coordinates +
+          "?q=" + Uri.encode(name)
+  )
+  try {
+    val intent = Intent(Intent.ACTION_VIEW, venueCoordinatesUri)
+    context.startActivity(intent)
+  } catch (e: Exception) {
+    Toast.makeText(context, R.string.no_maps_app_found, Toast.LENGTH_SHORT).show()
+    // Open in Webview
+    CustomTabUtil.openChromeTab(
+        context,
+        "https://www.google.com/maps/?q=" + coordinates?.replace(" ", "")
+    )
+  }
 }

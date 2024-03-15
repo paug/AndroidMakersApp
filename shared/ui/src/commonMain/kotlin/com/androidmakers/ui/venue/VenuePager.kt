@@ -1,4 +1,4 @@
-package fr.paug.androidmakers.ui.components
+package com.androidmakers.ui.venue
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
@@ -15,22 +15,21 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
-import fr.paug.androidmakers.AndroidMakersApplication
+import com.androidmakers.ui.common.LceLayout
+import com.androidmakers.ui.model.Lce
+import com.androidmakers.ui.model.UIVenue
+import com.androidmakers.ui.model.toLce
+import dev.icerock.moko.resources.compose.stringResource
 import fr.paug.androidmakers.ui.MR
-import fr.paug.androidmakers.ui.components.venue.VenueLayout
-import fr.paug.androidmakers.ui.components.venue.VenueViewModel
-import fr.paug.androidmakers.ui.model.UIVenue
-import fr.paug.androidmakers.ui.util.stringResource
-import fr.paug.androidmakers.ui.viewmodel.Lce
-import fr.paug.androidmakers.ui.viewmodel.toLce
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.koinViewModel
+import moe.tlaster.precompose.koin.koinViewModel
+
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun VenuePager() {
-  val viewModel: VenueViewModel = koinViewModel()
+  val viewModel = koinViewModel(VenueViewModel::class)
 
   Column(modifier = Modifier.fillMaxWidth()) {
 
@@ -96,7 +95,10 @@ fun VenuePager() {
                 name = venue.name,
                 coordinates = venue.coordinates,
             )
-            VenueLayout(uiVenue)
+            VenueLayout(
+                uiVenue = uiVenue,
+                onClickOnMap = {}
+            )
           }
         }
 

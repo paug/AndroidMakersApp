@@ -28,6 +28,7 @@ import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -51,20 +52,23 @@ import fr.paug.androidmakers.ui.MR
 @Composable
 fun SpeakerScreen(
     modifier: Modifier = Modifier,
-    content: Lce<List<Speaker>>,
+    viewModel: SpeakerListViewModel,
     navigateToSpeakerDetails: (String) -> Unit,
 ) {
 
-  when (content) {
+  val state by viewModel.uiState.collectAsState(Lce.Loading)
+
+  when (state) {
     Lce.Loading -> LoadingLayout()
     Lce.Error -> {
 
     }
 
-    is Lce.Content<*> -> {
+    is Lce.Content -> {
 
       var text by rememberSaveable { mutableStateOf("") }
       var active by rememberSaveable { mutableStateOf(false) }
+      val content = (state as Lce.Content<SpeakersUiState>).content
 
       Box(Modifier.fillMaxSize()) {
         Box(Modifier
@@ -92,8 +96,8 @@ fun SpeakerScreen(
               leadingIcon = { Icon(Icons.Rounded.Search, contentDescription = null) }
           ) {
             LazyColumn {
-              val items = content as Lce.Content<List<Speaker>>
-              items(items.content.filter { it.name?.contains(text, ignoreCase = true) == true }) { speaker ->
+              val speakers = content.speakers
+              items(speakers.filter { it.name?.contains(text, ignoreCase = true) == true }) { speaker ->
                 SpeakerItem(
                     speaker = speaker,
                     navigateToSpeakerDetails = navigateToSpeakerDetails,
@@ -112,8 +116,7 @@ fun SpeakerScreen(
               contentPadding = PaddingValues(start = 0.dp, top = 72.dp, end = 0.dp, bottom = 16.dp),
               verticalArrangement = Arrangement.spacedBy(8.dp)
           ) {
-            val items = content as Lce.Content<List<Speaker>>
-            items(items.content.filter { it.name?.contains(text, ignoreCase = true) == true }) { speaker ->
+            items(content.speakers.filter { it.name?.contains(text, ignoreCase = true) == true }) { speaker ->
               SpeakerItem(
                   speaker = speaker,
                   navigateToSpeakerDetails = navigateToSpeakerDetails

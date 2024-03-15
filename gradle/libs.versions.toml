@@ -20,6 +20,7 @@ datastore = "1.1.0-beta01"
 skie = "0.6.1"
 firebase = "1.11.1"
 koin = "3.5.3"
+precompose = "1.6.0-rc02"
 compose-plugin = "1.6.0"
 
 [libraries]
@@ -67,6 +68,9 @@ androidx-datastore-preferences = { module = "androidx.datastore:datastore-prefer
 androidx-datastore-preferences-core = { group = "androidx.datastore", name = "datastore-preferences-core", version.ref = "datastore" }
 firebase-installations = { module = "dev.gitlive:firebase-installations", version.ref = "firebase" }
 firebase-auth = { module = "dev.gitlive:firebase-auth", version.ref = "firebase" }
+precompose = { module = "moe.tlaster:precompose", version.ref = "precompose" }
+precompose-viewmodel = { module = "moe.tlaster:precompose-viewmodel", version.ref = "precompose" }
+precompose-koin = { module = "moe.tlaster:precompose-koin", version.ref = "precompose" }
 
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
