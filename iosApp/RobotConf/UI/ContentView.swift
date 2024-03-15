@@ -18,7 +18,7 @@ struct ContentView: View {
                     }
             }.tag(0)
 
-             LocationListView()
+             VenueView()
                 .tabItem {
                     VStack {
                         Image("location")
