@@ -1,8 +1,9 @@
-package fr.paug.androidmakers.ui.components.speakers
+package com.androidmakers.ui.speakers
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -27,7 +28,6 @@ import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -35,42 +35,33 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
+import com.androidmakers.ui.common.LoadingLayout
+import com.androidmakers.ui.model.Lce
+import com.seiko.imageloader.rememberImagePainter
+import dev.icerock.moko.resources.compose.stringResource
 import fr.androidmakers.domain.model.Speaker
-import fr.androidmakers.domain.model.SpeakerId
-import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.MR
-import fr.paug.androidmakers.ui.components.LoadingLayout
-import fr.paug.androidmakers.ui.util.stringResource
-import fr.paug.androidmakers.ui.viewmodel.Lce
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SpeakerScreen(
     modifier: Modifier = Modifier,
-    speakerViewModel: SpeakerViewModel,
-    navigateToSpeakerDetails: (SpeakerId) -> Unit,
+    content: Lce<List<Speaker>>,
+    navigateToSpeakerDetails: (String) -> Unit,
 ) {
 
-  val speakersUiState by speakerViewModel.uiState.collectAsState(
-      initial = Lce.Loading
-  )
-
-  when (val state = speakersUiState) {
+  when (content) {
     Lce.Loading -> LoadingLayout()
     Lce.Error -> {
 
     }
 
-    is Lce.Content -> {
+    is Lce.Content<*> -> {
 
       var text by rememberSaveable { mutableStateOf("") }
       var active by rememberSaveable { mutableStateOf(false) }
@@ -92,22 +83,6 @@ fun SpeakerScreen(
               colors = SearchBarDefaults.colors(
                   containerColor = MaterialTheme.colorScheme.surface,
                   dividerColor = MaterialTheme.colorScheme.primary,
-//                  inputFieldColors = SearchBarDefaults.inputFieldColors(
-//                      focusedTextColor = MaterialTheme.colorScheme.surface,
-////                      unfocusedTextColor =,
-////                      disabledTextColor =,
-////                      cursorColor =,
-////                      selectionColors =,
-////                      focusedLeadingIconColor =,
-////                      unfocusedLeadingIconColor =,
-////                      disabledLeadingIconColor =,
-////                      focusedTrailingIconColor =,
-////                      unfocusedTrailingIconColor =,
-////                      disabledTrailingIconColor =,
-////                      focusedPlaceholderColor =,
-////                      unfocusedPlaceholderColor =,
-////                      disabledPlaceholderColor =
-//                  ),
               ),
               onActiveChange = {
                 active = it
@@ -117,7 +92,8 @@ fun SpeakerScreen(
               leadingIcon = { Icon(Icons.Rounded.Search, contentDescription = null) }
           ) {
             LazyColumn {
-              items(state.content.speakers.filter { it.name?.contains(text, ignoreCase = true) == true }) { speaker ->
+              val items = content as Lce.Content<List<Speaker>>
+              items(items.content.filter { it.name?.contains(text, ignoreCase = true) == true }) { speaker ->
                 SpeakerItem(
                     speaker = speaker,
                     navigateToSpeakerDetails = navigateToSpeakerDetails,
@@ -136,7 +112,8 @@ fun SpeakerScreen(
               contentPadding = PaddingValues(start = 0.dp, top = 72.dp, end = 0.dp, bottom = 16.dp),
               verticalArrangement = Arrangement.spacedBy(8.dp)
           ) {
-            items(state.content.speakers.filter { it.name?.contains(text, ignoreCase = true) == true }) { speaker ->
+            val items = content as Lce.Content<List<Speaker>>
+            items(items.content.filter { it.name?.contains(text, ignoreCase = true) == true }) { speaker ->
               SpeakerItem(
                   speaker = speaker,
                   navigateToSpeakerDetails = navigateToSpeakerDetails
@@ -155,7 +132,7 @@ fun SpeakerScreen(
 fun SpeakerItem(
     modifier: Modifier = Modifier,
     speaker: Speaker,
-    navigateToSpeakerDetails: (SpeakerId) -> Unit,
+    navigateToSpeakerDetails: (String) -> Unit,
 ) {
 
   ListItem(
@@ -180,15 +157,15 @@ fun SpeakerItem(
         }
       },
       leadingContent = {
-        AsyncImage(
-            modifier = Modifier
-                .size(64.dp)
-                .clip(CircleShape),
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(speaker.photoUrl)
-                .build(),
-            contentDescription = stringResource(MR.strings.speakers)
-        )
+        speaker.photoUrl?.let { url ->
+          Image(
+              modifier = Modifier
+                  .size(64.dp)
+                  .clip(CircleShape),
+              painter = rememberImagePainter(url),
+              contentDescription = stringResource(MR.strings.speakers)
+          )
+        }
       },
       trailingContent = {},
   )

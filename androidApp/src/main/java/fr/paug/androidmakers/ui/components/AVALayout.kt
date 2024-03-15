@@ -292,6 +292,10 @@ class PartnersViewModel(
   override fun produce(): Flow<KmmResult<List<PartnerGroup>>> {
     return getPartnersUseCase()
   }
+
+  init {
+    launch(false)
+  }
 }
 
 @Preview

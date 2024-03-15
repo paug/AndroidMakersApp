@@ -31,6 +31,7 @@
 		45EC5A9E29C254A500ABBB7F /* GraphQLTalksProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EC5A9D29C254A500ABBB7F /* GraphQLTalksProvider.swift */; };
 		45EC5AC229C26DCE00ABBB7F /* GraphQLDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EC5AC129C26DCE00ABBB7F /* GraphQLDataProvider.swift */; };
 		45EC5AC429C2701400ABBB7F /* SessionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EC5AC329C2701400ABBB7F /* SessionData.swift */; };
+		6417D57D2BA452A000A1E16C /* SpeakersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6417D57C2BA452A000A1E16C /* SpeakersView.swift */; };
 		6418BE5D2BA1EC8900F3EA79 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6418BE5C2BA1EC8900F3EA79 /* GoogleService-Info.plist */; };
 		6418BE602BA2F75700F3EA79 /* SponsorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6418BE5F2BA2F75700F3EA79 /* SponsorsView.swift */; };
 		6440520B2B892F0200F87201 /* ResourcesUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6440520A2B892F0200F87201 /* ResourcesUtils.swift */; };
@@ -111,6 +112,7 @@
 		45EC5A9D29C254A500ABBB7F /* GraphQLTalksProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphQLTalksProvider.swift; sourceTree = "<group>"; };
 		45EC5AC129C26DCE00ABBB7F /* GraphQLDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphQLDataProvider.swift; sourceTree = "<group>"; };
 		45EC5AC329C2701400ABBB7F /* SessionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionData.swift; sourceTree = "<group>"; };
+		6417D57C2BA452A000A1E16C /* SpeakersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeakersView.swift; sourceTree = "<group>"; };
 		6418BE5C2BA1EC8900F3EA79 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6418BE5F2BA2F75700F3EA79 /* SponsorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SponsorsView.swift; sourceTree = "<group>"; };
 		6440520A2B892F0200F87201 /* ResourcesUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcesUtils.swift; sourceTree = "<group>"; };
@@ -286,6 +288,14 @@
 			path = GraphQL;
 			sourceTree = "<group>";
 		};
+		6417D57B2BA4528000A1E16C /* Speakers */ = {
+			isa = PBXGroup;
+			children = (
+				6417D57C2BA452A000A1E16C /* SpeakersView.swift */,
+			);
+			path = Speakers;
+			sourceTree = "<group>";
+		};
 		6418BE5E2BA2F73F00F3EA79 /* Sponsors */ = {
 			isa = PBXGroup;
 			children = (
@@ -403,6 +413,7 @@
 				B2BC0B8923BB66D000C85F69 /* About */,
 				B26E853423D4913C006C2C9E /* FormattedText */,
 				6418BE5E2BA2F73F00F3EA79 /* Sponsors */,
+				6417D57B2BA4528000A1E16C /* Speakers */,
 				B268A96C24431E5300412523 /* Common */,
 				B225421F23FB27ED00C5A83E /* Utils */,
 				B2A0669223521AC00062383A /* Language+UI.swift */,
@@ -726,6 +737,7 @@
 				45EC5A9E29C254A500ABBB7F /* GraphQLTalksProvider.swift in Sources */,
 				B2FE9FCF24548CB3005FE370 /* RoomData.swift in Sources */,
 				B2CD276E234D18450016AA02 /* AgendaDayListViewModel.swift in Sources */,
+				6417D57D2BA452A000A1E16C /* SpeakersView.swift in Sources */,
 				B2EF3CF523E89FC90078019F /* FeedbackRepository.swift in Sources */,
 				4567FB1729D9E08000724187 /* AgendaListView.swift in Sources */,
 				B265B04223F02D3800EA363D /* FirestoreOpenFeedbackSynchronizer.swift in Sources */,

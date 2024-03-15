@@ -63,4 +63,7 @@
 
     <!-- Info about the session. It is `date` at `start time` - `end time`-->
     <string name="session_detail">%s à %s - %s</string>
+
+    <string name="speaker_search_placeholder">Recherche</string>
+
 </resources>

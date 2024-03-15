@@ -11,6 +11,7 @@ import fr.androidmakers.domain.interactor.OpenXAccountUseCase
 import fr.androidmakers.domain.interactor.OpenXHashtagUseCase
 import fr.androidmakers.domain.interactor.OpenYoutubeUseCase
 import fr.androidmakers.domain.interactor.SetSessionBookmarkUseCase
+import fr.androidmakers.domain.repo.SpeakersRepository
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -23,6 +24,8 @@ class DepContainer: KoinComponent {
   val openYoutubeUseCase: OpenYoutubeUseCase by inject()
   val openFaqUseCase: OpenFaqUseCase by inject()
   val openCocUseCase: OpenCocUseCase by inject()
+
+  val speakersRepository: SpeakersRepository by inject()
 
   val getPartnersUseCase: GetPartnersUseCase by inject()
   val setSessionBookmarkedUseCase: SetSessionBookmarkUseCase by inject()

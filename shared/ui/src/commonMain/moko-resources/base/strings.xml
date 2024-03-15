@@ -70,4 +70,7 @@
     <string name="x_hashtag" translatable="false">#AMxDC24</string>
     <string name="x_hashtag_for_query" translatable="false">AMxDC24</string>
     <string name="x_user_name" translatable="false">AndroidMakersFR</string>
+
+    <string name="speaker_search_placeholder">Search</string>
+
 </resources>
