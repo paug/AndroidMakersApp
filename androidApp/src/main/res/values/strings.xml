@@ -25,10 +25,6 @@
 
     <string name="unable_to_launch_video_intent">Sorry, we are unable to launch the video at this time :(</string>
 
-    <string name="x_hashtag" translatable="false">#AMxDC24</string>
-    <string name="x_hashtag_for_query" translatable="false">AMxDC24</string>
-    <string name="x_user_name" translatable="false">AndroidMakersFR</string>
-
     <string name="sponsors">Sponsors</string>
     <string name="gold_sponsor">Gold Sponsor</string>
     <string name="silver_sponsor">Silver Sponsor</string>

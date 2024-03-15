@@ -1,4 +1,4 @@
-package fr.paug.androidmakers.ui.components.about
+package com.androidmakers.ui.about
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -20,16 +20,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dev.icerock.moko.resources.compose.painterResource
+import dev.icerock.moko.resources.compose.stringResource
 import fr.androidmakers.domain.model.Partner
-import fr.paug.androidmakers.BuildConfig
-import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.MR
-import fr.paug.androidmakers.ui.util.stringResource
 
 class AboutActions(
     val onFaqClick: () -> Unit = {},
@@ -41,7 +37,9 @@ class AboutActions(
 )
 
 @Composable
-fun AboutLayout(
+fun AboutScreen(
+    versionName: String,
+    versionCode: String,
     aboutActions: AboutActions,
 ) {
   Column(
@@ -67,8 +65,8 @@ fun AboutLayout(
         textAlign = TextAlign.Center,
         text = stringResource(
             MR.strings.version,
-            BuildConfig.VERSION_NAME,
-            BuildConfig.VERSION_CODE
+            versionName,
+            versionCode
         ),
     )
   }
@@ -84,7 +82,7 @@ private fun IntroCard(
         modifier = Modifier
             .height(64.dp)
             .fillMaxWidth(),
-        painter = painterResource(R.drawable.logo_android_makers),
+        painter = painterResource(MR.images.logo_android_makers),
         contentDescription = "Logo"
     )
     Text(
@@ -133,7 +131,7 @@ private fun SocialCard(
                 .size(96.dp, 64.dp)
                 .clickable(onClick = onXLogoClick)
                 .padding(12.dp),
-            painter = painterResource(R.drawable.ic_network_x),
+            painter = painterResource(MR.images.ic_network_x),
             tint = Color(0xFF000000),
             contentDescription = "X"
         )
@@ -141,7 +139,7 @@ private fun SocialCard(
             modifier = Modifier
                 .size(96.dp, 64.dp)
                 .clickable(onClick = onYouTubeLogoClick),
-            painter = painterResource(R.drawable.ic_network_youtube),
+            painter = painterResource(MR.images.ic_network_youtube),
             tint = Color(0xffff0000),
             contentDescription = "YouTube"
         )
@@ -161,23 +159,5 @@ private fun ClickableText(
           .padding(8.dp),
       text = text,
       color = MaterialTheme.colorScheme.primary
-  )
-}
-
-
-@Preview
-@Composable
-private fun AboutLayoutLoadingPreview() {
-  AboutLayout(
-      aboutActions = AboutActions()
-  )
-}
-
-
-@Preview
-@Composable
-private fun AboutLayoutLoadedPreview() {
-  AboutLayout(
-      aboutActions = AboutActions()
   )
 }
