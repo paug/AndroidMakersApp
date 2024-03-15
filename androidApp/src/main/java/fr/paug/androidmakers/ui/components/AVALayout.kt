@@ -295,19 +295,5 @@ private fun AVALayoutPreview() {
 
 
 fun openMap(context: Context, coordinates: String?, name: String) {
-  val venueCoordinatesUri = Uri.parse(
-      "geo:" + coordinates +
-          "?q=" + Uri.encode(name)
-  )
-  try {
-    val intent = Intent(Intent.ACTION_VIEW, venueCoordinatesUri)
-    context.startActivity(intent)
-  } catch (e: Exception) {
-    Toast.makeText(context, R.string.no_maps_app_found, Toast.LENGTH_SHORT).show()
-    // Open in Webview
-    CustomTabUtil.openChromeTab(
-        context,
-        "https://www.google.com/maps/?q=" + coordinates?.replace(" ", "")
-    )
-  }
+
 }

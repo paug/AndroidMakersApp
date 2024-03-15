@@ -97,7 +97,9 @@ fun VenuePager() {
             )
             VenueLayout(
                 uiVenue = uiVenue,
-                onClickOnMap = {}
+                onClickOnMap = {
+                  viewModel.openMapUseCase(uiVenue.coordinates ?: "", uiVenue.name)
+                }
             )
           }
         }

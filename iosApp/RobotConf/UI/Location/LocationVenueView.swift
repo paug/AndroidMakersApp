@@ -44,20 +44,7 @@ struct LocationVenueView: View {
                         .padding(.horizontal, 8)
 
                     Button(stringResource(MR.strings().locations)) {
-                        if let coordinates = content.clCoordinates {
-                            let placemark = MKPlacemark(coordinate: coordinates)
-                            let mapItem = MKMapItem(placemark: placemark)
-                            mapItem.name = content.name
-                            mapItem.openInMaps()
-                        } else {
-                            let geoCoder = CLGeocoder()
-                            geoCoder.geocodeAddressString(content.address) { (placemarks, error) in
-                                guard let placemark = placemarks?.first else { return }
-                                let mapItem = MKMapItem(placemark: MKPlacemark(placemark: placemark))
-                                mapItem.name = content.name
-                                mapItem.openInMaps()
-                            }
-                        }
+                        
                     }.padding(.vertical, 8)
                         .padding(.horizontal, 16)
                         .foregroundColor(Color.primary)
@@ -84,20 +71,3 @@ struct LocationVenueView_Previews: PreviewProvider {
 }
 #endif
 
-extension LocationVenueViewModel.Content {
-    var clCoordinates: CLLocationCoordinate2D? {
-        get {
-            let coords = coordinates?.split(separator: ",") ?? []
-            let formatter = NumberFormatter()
-            formatter.locale = Locale(identifier: "en_US")
-            formatter.numberStyle = .decimal
-            if coords.count == 2,
-               let latitude = formatter.number(from: String(coords[0]))?.doubleValue,
-               let longitude = formatter.number(from: String(coords[1]))?.doubleValue {
-                return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-            } else {
-                return nil
-            }
-        }
-    }
-}
