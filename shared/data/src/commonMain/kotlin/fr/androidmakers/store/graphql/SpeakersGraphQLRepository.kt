@@ -13,7 +13,10 @@ import kotlinx.coroutines.flow.map
 class SpeakersGraphQLRepository(private val apolloClient: ApolloClient): SpeakersRepository {
 
   override fun getSpeakers(): Flow<KmmResult<List<Speaker>>> {
-    return apolloClient.query(GetSpeakersQuery()).watch().map {
+    return apolloClient.query(GetSpeakersQuery())
+        .watch()
+        .ignoreCacheMisses()
+        .map {
       it.dataAssertNoErrors.speakers.map { it.speakerDetails.toSpeaker() }
     }.toResultFlow()
   }
@@ -21,7 +24,9 @@ class SpeakersGraphQLRepository(private val apolloClient: ApolloClient): Speaker
   override fun getSpeaker(id: String): Flow<KmmResult<Speaker>> {
     return apolloClient.query(GetSpeakersQuery())
         .fetchPolicy(FetchPolicy.CacheAndNetwork)
-        .watch().map {
+        .watch()
+        .ignoreCacheMisses()
+        .map {
           it.dataAssertNoErrors.speakers.map { it.speakerDetails }.singleOrNull { it.id == id }?.toSpeaker()
               ?: error("no speaker")
         }
