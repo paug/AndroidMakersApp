@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Android Makers by droidcon</string>
 
-    <string name="version">Version %s (%d)</string>
+    <string name="version">Version %s (%s)</string>
 
     <string name="agenda">Agenda</string>
     <string name="venue">Lieu</string>
@@ -63,4 +63,7 @@
 
     <!-- Info about the session. It is `date` at `start time` - `end time`-->
     <string name="session_detail">%s à %s - %s</string>
+
+    <string name="speaker_search_placeholder">Recherche</string>
+
 </resources>

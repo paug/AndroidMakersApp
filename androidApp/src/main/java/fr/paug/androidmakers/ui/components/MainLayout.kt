@@ -4,24 +4,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.androidmakers.ui.about.AboutActions
+import com.androidmakers.ui.model.Lce
 import fr.androidmakers.domain.model.SpeakerId
 import fr.androidmakers.domain.model.User
-import fr.paug.androidmakers.ui.components.about.AboutActions
 import fr.paug.androidmakers.ui.components.session.SessionDetailLayout
 import fr.paug.androidmakers.ui.components.session.SessionDetailViewModel
 import fr.paug.androidmakers.ui.components.speakers.details.SpeakerDetailsRoute
 import fr.paug.androidmakers.ui.components.speakers.details.SpeakerDetailsViewModel
 import fr.paug.androidmakers.ui.navigation.MainNavigationRoute
-import fr.paug.androidmakers.ui.viewmodel.Lce
 import org.koin.androidx.compose.koinViewModel
 
 /**

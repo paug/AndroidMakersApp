@@ -1,6 +1,7 @@
 plugins {
   alias(libs.plugins.androidmakers.kmp.library)
   alias(libs.plugins.moko)
+  alias(libs.plugins.jetbrainsCompose)
 }
 
 kotlin {
@@ -21,6 +22,20 @@ kotlin {
   sourceSets {
     commonMain.dependencies {
       api(libs.moko.resources)
+      api(libs.moko.compose)
+      implementation(compose.runtime)
+      implementation(compose.foundation)
+      implementation(compose.material3)
+      implementation(compose.ui)
+      implementation(compose.components.resources)
+      implementation(compose.components.uiToolingPreview)
+      api("at.asitplus:kmmresult:1.5.4")
+      implementation(project(":shared:domain"))
+      implementation(project(":shared:di"))
+      api("io.github.qdsfdhvh:image-loader:1.7.8")
+      api(libs.precompose)
+      api(libs.precompose.viewmodel)
+      api(libs.precompose.koin)
     }
   }
 }

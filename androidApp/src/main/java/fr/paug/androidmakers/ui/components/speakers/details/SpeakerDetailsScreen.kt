@@ -27,11 +27,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.androidmakers.ui.common.LoadingLayout
+import com.androidmakers.ui.model.Lce
 import fr.paug.androidmakers.ui.MR
-import fr.paug.androidmakers.ui.components.LoadingLayout
 import fr.paug.androidmakers.ui.components.session.SocialButtons
 import fr.paug.androidmakers.ui.util.stringResource
-import fr.paug.androidmakers.ui.viewmodel.Lce
 
 @Composable
 fun SpeakerDetailsRoute(
