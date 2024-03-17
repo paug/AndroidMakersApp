@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import fr.androidmakers.domain.interactor.OpenCocUseCase
 import fr.androidmakers.domain.interactor.OpenFaqUseCase
+import fr.androidmakers.domain.interactor.OpenPartnerLinkUseCase
 import fr.androidmakers.domain.interactor.OpenXAccountUseCase
 import fr.androidmakers.domain.interactor.OpenXHashtagUseCase
 import fr.androidmakers.domain.interactor.OpenYoutubeUseCase
@@ -21,7 +22,8 @@ class MainActivityViewModel(
     val openXHashtagUseCase: OpenXHashtagUseCase,
     val openYoutubeUseCase: OpenYoutubeUseCase,
     val openFaqUseCase: OpenFaqUseCase,
-    val openCocUseCase: OpenCocUseCase
+    val openCocUseCase: OpenCocUseCase,
+    val openPartnerLinkUseCase: OpenPartnerLinkUseCase
 
 ): ViewModel() {
   private val _user = MutableStateFlow<User?>(null)

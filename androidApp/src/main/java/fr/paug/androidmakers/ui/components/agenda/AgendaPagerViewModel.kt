@@ -1,19 +1,15 @@
 package fr.paug.androidmakers.ui.components.agenda
 
-import androidx.lifecycle.viewModelScope
 import at.asitplus.KmmResult
+import com.androidmakers.ui.common.LceViewModel
 import fr.androidmakers.domain.interactor.GetAgendaUseCase
 import fr.androidmakers.domain.interactor.GetFavoriteSessionsUseCase
 import fr.androidmakers.domain.interactor.SetSessionBookmarkUseCase
 import fr.androidmakers.domain.model.Agenda
-import fr.androidmakers.domain.model.Session
-import fr.androidmakers.domain.repo.BookmarksRepository
 import fr.paug.androidmakers.ui.model.UISession
-import fr.paug.androidmakers.ui.viewmodel.LceViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
+import moe.tlaster.precompose.viewmodel.viewModelScope
 
 class AgendaPagerViewModel(
     private val getAgendaUseCase: GetAgendaUseCase,

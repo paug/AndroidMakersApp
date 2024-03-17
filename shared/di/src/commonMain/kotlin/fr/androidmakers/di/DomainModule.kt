@@ -7,6 +7,8 @@ import fr.androidmakers.domain.interactor.GetFavoriteSessionsUseCase
 import fr.androidmakers.domain.interactor.GetPartnersUseCase
 import fr.androidmakers.domain.interactor.OpenCocUseCase
 import fr.androidmakers.domain.interactor.OpenFaqUseCase
+import fr.androidmakers.domain.interactor.OpenMapUseCase
+import fr.androidmakers.domain.interactor.OpenPartnerLinkUseCase
 import fr.androidmakers.domain.interactor.OpenXAccountUseCase
 import fr.androidmakers.domain.interactor.OpenXHashtagUseCase
 import fr.androidmakers.domain.interactor.OpenYoutubeUseCase
@@ -30,4 +32,5 @@ val domainModule = module {
   factory { SetSessionBookmarkUseCase(get(), get(), get()) }
   factory { GetPartnersUseCase(get()) }
   factory { GetFavoriteSessionsUseCase(get()) }
+  factory { OpenPartnerLinkUseCase(get()) }
 }

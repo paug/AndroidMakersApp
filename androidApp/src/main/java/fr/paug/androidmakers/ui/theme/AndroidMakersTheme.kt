@@ -11,6 +11,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import fr.paug.androidmakers.R
+import moe.tlaster.precompose.PreComposeApp
 
 val GillSans = FontFamily(
     Font(R.font.gill_sans_light, FontWeight.Light),
@@ -138,9 +139,11 @@ fun AndroidMakersTheme(
 
   val colorSchemeColors = if (!useDarkTheme) LightDefaultColorScheme else DarkDefaultColorScheme
 
-  MaterialTheme(
-      colorScheme = colorSchemeColors,
-      typography = AndroidMakersTypography,
-      content = content,
-  )
+  PreComposeApp {
+    MaterialTheme(
+        colorScheme = colorSchemeColors,
+        typography = AndroidMakersTypography,
+        content = content,
+    )
+  }
 }

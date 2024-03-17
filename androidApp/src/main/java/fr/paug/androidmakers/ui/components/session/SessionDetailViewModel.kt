@@ -3,6 +3,7 @@ package fr.paug.androidmakers.ui.components.session
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.androidmakers.ui.model.Lce
 import fr.androidmakers.domain.interactor.SetSessionBookmarkUseCase
 import fr.androidmakers.domain.model.Session
 import fr.androidmakers.domain.model.Speaker
@@ -10,7 +11,6 @@ import fr.androidmakers.domain.repo.BookmarksRepository
 import fr.androidmakers.domain.repo.RoomsRepository
 import fr.androidmakers.domain.repo.SessionsRepository
 import fr.androidmakers.domain.repo.SpeakersRepository
-import fr.paug.androidmakers.ui.viewmodel.Lce
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first

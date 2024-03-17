@@ -20,6 +20,8 @@ datastore = "1.1.0-beta01"
 skie = "0.6.1"
 firebase = "1.11.1"
 koin = "3.5.3"
+precompose = "1.6.0-rc02"
+compose-plugin = "1.6.0"
 
 [libraries]
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
@@ -59,12 +61,16 @@ navigation-compose = "androidx.navigation:navigation-compose:2.7.7"
 openfeedback = "io.openfeedback:feedback-android-sdk-ui:0.0.7"
 play-services-auth = "com.google.android.gms:play-services-auth:20.7.0"
 moko-resources = { module = "dev.icerock.moko:resources", version.ref = "moko" }
+moko-compose = { module = "dev.icerock.moko:resources-compose", version.ref = "moko" }
 moko-graphics = { module = "dev.icerock.moko:graphics", version.ref = "moko-graphics" }
 compose-mp-icons = { module = "org.jetbrains.compose.material:material-icons-extended-desktop", version.ref = "compose-mp" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
 androidx-datastore-preferences-core = { group = "androidx.datastore", name = "datastore-preferences-core", version.ref = "datastore" }
 firebase-installations = { module = "dev.gitlive:firebase-installations", version.ref = "firebase" }
 firebase-auth = { module = "dev.gitlive:firebase-auth", version.ref = "firebase" }
+precompose = { module = "moe.tlaster:precompose", version.ref = "precompose" }
+precompose-viewmodel = { module = "moe.tlaster:precompose-viewmodel", version.ref = "precompose" }
+precompose-koin = { module = "moe.tlaster:precompose-koin", version.ref = "precompose" }
 
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
@@ -85,6 +91,7 @@ google-services = { id = "com.google.gms.google-services", version.ref = "google
 crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlytics-plugin" }
 moko = { id = "dev.icerock.mobile.multiplatform-resources", version.ref = "moko" }
 skie = { id = "co.touchlab.skie", version.ref = "skie" }
+jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
 
 ## Custom plugins
 androidmakers-android-application = { id = "fr.androidmakers.android.application", version = "unspecified" }
