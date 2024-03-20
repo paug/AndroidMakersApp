@@ -17,6 +17,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.androidmakers.ui.model.Lce
 import dev.icerock.moko.resources.compose.stringResource
+import dev.materii.pullrefresh.PullRefreshIndicator
+import dev.materii.pullrefresh.PullRefreshState
+import dev.materii.pullrefresh.pullRefresh
+import dev.materii.pullrefresh.rememberPullRefreshState
 import fr.paug.androidmakers.ui.MR
 
 @Composable
@@ -110,5 +114,66 @@ fun <T> ButtonRefreshableLceLayout(
       isRefreshing = isRefreshing.value
   ) {
     content(it)
+  }
+}
+
+@Composable
+fun <T> SwipeRefreshableLceLayout(
+    viewModel: LceViewModel<T>,
+    content: @Composable (T) -> Unit
+) {
+  val isRefreshing = viewModel.isRefreshing.collectAsState()
+  val lce = viewModel.values.collectAsState()
+  val pullRefreshState = rememberPullRefreshState(isRefreshing.value, { viewModel.refresh() })
+
+  PullRefreshLayout(
+      state = pullRefreshState
+  ) {
+    LceLayout(
+        lce = lce.value,
+    ) {
+      content(it)
+    }
+  }
+}
+
+
+// TODO this is a temporary function
+// To be removed when Materii-PullToRefresh will be available in 1.4.0
+@Composable
+fun PullRefreshLayout(
+    state: PullRefreshState,
+    modifier: Modifier = Modifier,
+    flipped: Boolean = false,
+    enabled: Boolean = true,
+    indicator: @Composable () -> Unit = {
+      PullRefreshIndicator(
+          state = state,
+          flipped = flipped
+      )
+    },
+    content: @Composable () -> Unit
+) {
+  Box(
+      modifier = Modifier
+          .pullRefresh(
+              state = state,
+              inverse = flipped,
+              enabled = enabled
+          )
+          .then(modifier)
+  ) {
+    val indicatorAlignment = if (flipped) Alignment.BottomCenter else Alignment.TopCenter
+
+    content()
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .align(indicatorAlignment),
+        contentAlignment = Alignment.Center
+    ) {
+      indicator()
+    }
+
   }
 }
