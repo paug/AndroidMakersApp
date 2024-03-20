@@ -35,6 +35,7 @@ kotlin {
       api(libs.precompose)
       api(libs.precompose.viewmodel)
       api(libs.precompose.koin)
+      implementation(libs.materii.pullrefresh)
     }
   }
 }

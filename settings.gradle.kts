@@ -16,6 +16,7 @@ pluginManagement {
 
 include(
     ":androidApp",
+    ":wearApp",
     ":shared",
     ":shared:domain",
     ":shared:data",

@@ -53,7 +53,9 @@ class SessionsGraphQLRepository(private val apolloClient: ApolloClient): Session
   override fun getSession(id: String): Flow<Result<Session>> {
     return apolloClient.query(GetSessionQuery(id))
         .fetchPolicy(FetchPolicy.CacheAndNetwork)
-        .watch().map {
+        .watch()
+        .ignoreCacheMisses()
+        .map {
           it.dataAssertNoErrors.session.sessionDetails.toSession()
         }
         .toResultFlow()
@@ -94,6 +96,7 @@ class SessionsGraphQLRepository(private val apolloClient: ApolloClient): Session
     return apolloClient.query(GetSessionsQuery())
         .fetchPolicy(FetchPolicy.CacheAndNetwork)
         .watch()
+        .ignoreCacheMisses()
         .map {
           it.dataAssertNoErrors.sessions.nodes.map { it.sessionDetails.toSession() }
         }
