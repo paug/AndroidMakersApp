@@ -14,7 +14,9 @@ class VenueGraphQLRepository(private val apolloClient: ApolloClient): VenueRepos
   override fun getVenue(id: String): Flow<KmmResult<Venue>> {
     return apolloClient.query(GetVenueQuery(id))
         .fetchPolicy(FetchPolicy.CacheAndNetwork)
-        .watch().map {
+        .watch()
+        .ignoreCacheMisses()
+        .map {
           it.dataAssertNoErrors.venue.toVenue()
         }
         .toResultFlow()
