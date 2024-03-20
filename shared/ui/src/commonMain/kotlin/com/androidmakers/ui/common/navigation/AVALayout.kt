@@ -1,9 +1,5 @@
-package fr.paug.androidmakers.ui.components
+package com.androidmakers.ui.common.navigation
 
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -34,39 +30,33 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import com.androidmakers.ui.about.AboutActions
 import com.androidmakers.ui.about.AboutScreen
 import com.androidmakers.ui.speakers.SpeakerListViewModel
 import com.androidmakers.ui.speakers.SpeakerScreen
 import com.androidmakers.ui.sponsors.SponsorsScreen
 import com.androidmakers.ui.venue.VenuePager
-import fr.androidmakers.domain.model.SpeakerId
+import dev.icerock.moko.resources.compose.painterResource
+import dev.icerock.moko.resources.compose.stringResource
 import fr.androidmakers.domain.model.User
-import fr.paug.androidmakers.BuildConfig
-import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.MR
-import fr.paug.androidmakers.ui.components.agenda.AgendaLayout
-import fr.paug.androidmakers.ui.navigation.AVANavigationRoute
-import fr.paug.androidmakers.ui.util.stringResource
-import fr.paug.androidmakers.util.CustomTabUtil
 import kotlinx.coroutines.launch
 import moe.tlaster.precompose.koin.koinViewModel
+import moe.tlaster.precompose.navigation.BackStackEntry
+import moe.tlaster.precompose.navigation.NavHost
+import moe.tlaster.precompose.navigation.NavOptions
+import moe.tlaster.precompose.navigation.Navigator
+import moe.tlaster.precompose.navigation.PopUpTo
+import moe.tlaster.precompose.navigation.rememberNavigator
 
 /**
  * AVA stands for Agenda/Venue/About.
@@ -76,14 +66,17 @@ import moe.tlaster.precompose.koin.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AVALayout(
+    versionCode: String,
+    versionName: String,
+    agendaLayout: @Composable () -> Unit,
     onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
     aboutActions: AboutActions,
     user: User?,
-    navigateToSpeakerDetails: (SpeakerId) -> Unit,
+    navigateToSpeakerDetails: (String) -> Unit,
 ) {
-  val avaNavController = rememberNavController()
-  val navBackStackEntry by avaNavController.currentBackStackEntryAsState()
-  val currentRoute = navBackStackEntry?.destination?.route
+  val avaNavController = rememberNavigator()
+  val navBackStackEntry by avaNavController.currentEntry.collectAsState(null)
+  val currentRoute = navBackStackEntry?.route?.route
 
   val agendaFilterDrawerState = rememberDrawerState(DrawerValue.Closed)
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
@@ -104,7 +97,7 @@ fun AVALayout(
               Box(modifier = Modifier.padding(14.dp)) {
                 Image(
                     modifier = Modifier.size(28.dp),
-                    painter = painterResource(id = R.drawable.notification),
+                    painter = painterResource(MR.images.notification),
                     contentDescription = "logo"
                 )
               }
@@ -113,7 +106,7 @@ fun AVALayout(
               Row(horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.Start)) {
 
                 Text(
-                    text = stringResource(MR.strings.app_name.resourceId),
+                    text = stringResource(MR.strings.app_name),
                     style = MaterialTheme.typography.headlineSmall,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
@@ -136,7 +129,7 @@ fun AVALayout(
                   )
                 }
               }
-              SigninButton(user)
+              //SigninButton(user)
             }
         )
       },
@@ -186,6 +179,9 @@ fun AVALayout(
   ) { innerPadding ->
     Box(Modifier.padding(innerPadding)) {
       AVANavHost(
+          versionCode = versionCode,
+          versionName = versionName,
+          agendaLayout = agendaLayout,
           avaNavController = avaNavController,
           onSessionClick = onSessionClick,
           agendaFilterDrawerState = agendaFilterDrawerState,
@@ -198,7 +194,7 @@ fun AVALayout(
 
 @Composable
 private fun RowScope.NavigationBarItem(
-    avaNavController: NavHostController,
+    avaNavController: Navigator,
     imageVector: ImageVector,
     label: String,
     currentRoute: String?,
@@ -223,77 +219,58 @@ private fun RowScope.NavigationBarItem(
 //          disabledTextColor =
       ),
       onClick = {
-        avaNavController.navigate(destinationRoute.name) {
-          // Prevents from having the history of selected tabs in the backstack: back always goes to the start destination
-          popUpTo(avaNavController.graph.startDestinationRoute!!) {
-            saveState = true
-          }
-          launchSingleTop = true
-          restoreState = true
-        }
+        avaNavController.navigate(destinationRoute.name, options = NavOptions(
+            launchSingleTop = true,
+            popUpTo = PopUpTo.First(inclusive = true)
+        )
+        )
       }
   )
 }
 
 @Composable
 private fun AVANavHost(
-    avaNavController: NavHostController,
+    versionCode: String,
+    versionName: String,
+    agendaLayout: @Composable () -> Unit,
+    avaNavController: Navigator,
     onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
     agendaFilterDrawerState: DrawerState,
     aboutActions: AboutActions,
-    navigateToSpeakerDetails: (SpeakerId) -> Unit,
+    navigateToSpeakerDetails: (String) -> Unit,
 ) {
-  NavHost(avaNavController, startDestination = AVANavigationRoute.AGENDA.name) {
+  NavHost(avaNavController, initialRoute = AVANavigationRoute.AGENDA.name) {
 
-    composable(route = AVANavigationRoute.AGENDA.name) {
-      AgendaLayout(
-          agendaFilterDrawerState = agendaFilterDrawerState,
-          onSessionClick = onSessionClick
-      )
+    scene(route = AVANavigationRoute.AGENDA.name) {
+      agendaLayout()
     }
 
-    composable(route = AVANavigationRoute.VENUE.name) {
+    scene(route = AVANavigationRoute.VENUE.name) {
       VenuePager()
     }
 
-    composable(route = AVANavigationRoute.SPEAKERS.name) {
+    scene(route = AVANavigationRoute.SPEAKERS.name) {
 
-      val speakerViewModel: SpeakerListViewModel = koinViewModel()
+      val speakerViewModel = koinViewModel(vmClass = SpeakerListViewModel::class)
       SpeakerScreen(
           viewModel = speakerViewModel,
           navigateToSpeakerDetails = navigateToSpeakerDetails
       )
     }
 
-    composable(route = AVANavigationRoute.ABOUT.name) {
+    scene(route = AVANavigationRoute.ABOUT.name) {
       AboutScreen(
-          versionCode = BuildConfig.VERSION_CODE.toString(),
-          versionName = BuildConfig.VERSION_NAME,
+          versionCode = versionCode,
+          versionName = versionName,
           aboutActions = aboutActions
       )
     }
 
-    composable(route = AVANavigationRoute.SPONSORS.name) {
+    scene(route = AVANavigationRoute.SPONSORS.name) {
       SponsorsScreen(
           onSponsorClick = aboutActions.onSponsorClick
       )
     }
 
   }
-}
-
-@Preview
-@Composable
-private fun AVALayoutPreview() {
-  AVALayout(
-      onSessionClick = { _, _, _, _ -> },
-      aboutActions = AboutActions(),
-      user = null,
-      navigateToSpeakerDetails = {}
-  )
-}
-
-
-fun openMap(context: Context, coordinates: String?, name: String) {
-
 }

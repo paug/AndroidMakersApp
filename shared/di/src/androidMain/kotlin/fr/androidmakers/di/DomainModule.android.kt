@@ -11,4 +11,5 @@ actual val domainPlatformModule = module {
   }
 
   factory { OpenMapUseCase(get(), get()) }
+
 }

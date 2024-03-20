@@ -1,4 +1,4 @@
-package fr.paug.androidmakers.ui.model
+package com.androidmakers.ui.model
 
 import kotlinx.datetime.Instant
 

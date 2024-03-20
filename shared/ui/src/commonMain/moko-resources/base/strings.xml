@@ -72,5 +72,10 @@
     <string name="x_user_name" translatable="false">AndroidMakersFR</string>
 
     <string name="speaker_search_placeholder">Search</string>
+    <string name="feedbackWaiting">This talk cannot be reviewed yet. Please come back after attending it.</string>
+
+    <string name="info" translatable="false">infos</string>
+
+    <string name="share">Share the session</string>
 
 </resources>

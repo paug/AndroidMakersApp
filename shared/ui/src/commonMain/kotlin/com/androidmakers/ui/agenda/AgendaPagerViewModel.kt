@@ -1,11 +1,11 @@
-package fr.paug.androidmakers.ui.components.agenda
+package com.androidmakers.ui.agenda
 
 import com.androidmakers.ui.common.LceViewModel
 import fr.androidmakers.domain.interactor.GetAgendaUseCase
 import fr.androidmakers.domain.interactor.GetFavoriteSessionsUseCase
 import fr.androidmakers.domain.interactor.SetSessionBookmarkUseCase
 import fr.androidmakers.domain.model.Agenda
-import fr.paug.androidmakers.ui.model.UISession
+import com.androidmakers.ui.model.UISession
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import moe.tlaster.precompose.viewmodel.viewModelScope

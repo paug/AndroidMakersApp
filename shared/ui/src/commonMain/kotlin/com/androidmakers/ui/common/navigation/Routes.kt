@@ -1,4 +1,4 @@
-package fr.paug.androidmakers.ui.navigation
+package com.androidmakers.ui.common.navigation
 
 enum class MainNavigationRoute {
   /**

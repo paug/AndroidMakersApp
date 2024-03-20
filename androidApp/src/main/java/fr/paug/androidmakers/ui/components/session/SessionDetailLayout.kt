@@ -60,8 +60,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.androidmakers.ui.common.EmojiUtils
 import com.androidmakers.ui.common.LoadingLayout
+import com.androidmakers.ui.common.separatorColor
 import com.androidmakers.ui.model.Lce
+import com.androidmakers.ui.model.SessionDetailState
+import com.androidmakers.ui.theme.AMColor
 import fr.androidmakers.domain.model.Room
 import fr.androidmakers.domain.model.Session
 import fr.androidmakers.domain.model.Speaker
@@ -71,20 +75,9 @@ import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.MR
 import fr.paug.androidmakers.ui.theme.AMColor
 import fr.paug.androidmakers.ui.util.stringResource
-import fr.paug.androidmakers.util.EmojiUtils
 import io.openfeedback.android.components.SessionFeedbackContainer
-import separatorColor
 import java.util.Formatter
 import java.util.Locale
-
-class SessionDetailState(
-    val session: Session,
-    val speakers: List<Speaker>,
-    val room: Room,
-    val startTimestamp: Long,
-    val endTimestamp: Long,
-    val isBookmarked: Boolean,
-)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -135,7 +128,7 @@ fun SessionDetailLayout(
                 ) {
                   Icon(
                       Icons.Rounded.Share,
-                      contentDescription = stringResource(R.string.share)
+                      contentDescription = stringResource(MR.strings.share)
                   )
                 }
               }
@@ -194,7 +187,7 @@ private fun SessionDetails(sessionDetails: SessionDetailState, formattedDateAndR
       Icon(
           modifier = Modifier.size(16.dp),
           imageVector = Icons.Rounded.Info,
-          contentDescription = stringResource(R.string.info)
+          contentDescription = stringResource(MR.strings.info)
       )
 
       Text(
@@ -234,7 +227,7 @@ private fun SessionDetails(sessionDetails: SessionDetailState, formattedDateAndR
       ) {
         Text(
             modifier = Modifier.padding(horizontal = 4.dp, vertical = 8.dp),
-            text = stringResource(id = R.string.feedbackWaiting),
+            text = stringResource(MR.strings.feedbackWaiting),
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center
         )
@@ -427,21 +420,21 @@ fun SocialButtons(speaker: Speaker) {
           socialName.contains("twitter") || socialName == "x" -> {
             Icon(
                 modifier = Modifier.size(24.dp),
-                painter = painterResource(R.drawable.ic_network_x),
+                painter = painterResource(MR.images.ic_network_x.drawableResId),
                 contentDescription = socialsItem.name
             )
           }
 
           socialName.contains("blog") -> {
             Icon(
-                painter = painterResource(R.drawable.ic_network_blog),
+                painter = painterResource(MR.images.ic_network_blog.drawableResId),
                 contentDescription = socialsItem.name
             )
           }
 
           socialName.contains("linkedin") -> {
             Icon(
-                painter = painterResource(R.drawable.ic_network_linkedin),
+                painter = painterResource(MR.images.ic_network_linkedin.drawableResId),
                 contentDescription = socialsItem.name
             )
           }

@@ -1,4 +1,4 @@
-package fr.paug.androidmakers.ui.components.agenda
+package com.androidmakers.ui.agenda
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
@@ -22,11 +22,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fr.paug.androidmakers.ui.MR
-import fr.paug.androidmakers.ui.model.UISession
-import fr.paug.androidmakers.ui.util.stringResource
+import com.androidmakers.ui.model.UISession
+import dev.icerock.moko.resources.compose.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

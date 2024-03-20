@@ -1,9 +1,7 @@
-package fr.paug.androidmakers.ui.components.session
+package com.androidmakers.ui.agenda
 
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.androidmakers.ui.model.Lce
+import com.androidmakers.ui.model.SessionDetailState
 import fr.androidmakers.domain.interactor.SetSessionBookmarkUseCase
 import fr.androidmakers.domain.model.Session
 import fr.androidmakers.domain.model.Speaker
@@ -20,10 +18,12 @@ import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.launch
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
+import moe.tlaster.precompose.viewmodel.ViewModel
+import moe.tlaster.precompose.viewmodel.viewModelScope
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class SessionDetailViewModel(
-    savedStateHandle: SavedStateHandle,
+    sessionId: String,
     sessionsRepository: SessionsRepository,
     private val roomsRepository: RoomsRepository,
     // TODO remove the reference to repositories here
@@ -32,7 +32,6 @@ class SessionDetailViewModel(
     private val setSessionBookmarkUseCase: SetSessionBookmarkUseCase,
 ) : ViewModel() {
 
-  private val sessionId: String = savedStateHandle["sessionId"]!!
   private val session = sessionsRepository.getSession(sessionId)
   private val room = session.mapNotNull { result ->
     result.getOrNull()?.roomId?.let { roomId ->

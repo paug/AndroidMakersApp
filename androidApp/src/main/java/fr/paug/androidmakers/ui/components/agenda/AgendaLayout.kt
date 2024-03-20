@@ -35,19 +35,19 @@ import fr.androidmakers.domain.model.Room
 import fr.androidmakers.domain.model.Session
 import fr.androidmakers.domain.model.Speaker
 import fr.paug.androidmakers.ui.MR
-import fr.paug.androidmakers.ui.components.AgendaLayoutViewModel
-import fr.paug.androidmakers.ui.model.UISession
+import com.androidmakers.ui.agenda.AgendaLayoutViewModel
+import com.androidmakers.ui.agenda.AgendaPagerViewModel
+import com.androidmakers.ui.model.UISession
 import fr.paug.androidmakers.ui.util.stringResource
-import fr.paug.androidmakers.util.EmojiUtils
-import fr.paug.androidmakers.util.SessionFilter
-import fr.paug.androidmakers.util.eventTimeZone
+import com.androidmakers.ui.common.EmojiUtils
+import com.androidmakers.ui.common.SessionFilter
+import fr.androidmakers.domain.utils.eventTimeZone
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toJavaLocalDate
 import kotlinx.datetime.todayIn
 import moe.tlaster.precompose.koin.koinViewModel
-import org.koin.androidx.compose.koinViewModel
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
@@ -56,7 +56,7 @@ fun AgendaLayout(
     agendaFilterDrawerState: DrawerState,
     onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
 ) {
-  val agendaLayoutViewModel = koinViewModel<AgendaLayoutViewModel>()
+  val agendaLayoutViewModel = koinViewModel(vmClass = AgendaLayoutViewModel::class)
   val agendaLayoutState by agendaLayoutViewModel.state.collectAsState()
 
   ModalNavigationDrawer(

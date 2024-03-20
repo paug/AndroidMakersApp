@@ -66,4 +66,9 @@
 
     <string name="speaker_search_placeholder">Recherche</string>
 
+    <string name="feedbackWaiting">Revenez plus tard pour donner votre retour.</string>
+
+    <string name="info" translatable="false">infos</string>
+
+    <string name="share">Partager la session</string>
 </resources>

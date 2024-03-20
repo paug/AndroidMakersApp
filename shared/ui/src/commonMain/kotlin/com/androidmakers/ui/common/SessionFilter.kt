@@ -1,4 +1,4 @@
-package fr.paug.androidmakers.util
+package com.androidmakers.ui.common
 
 data class SessionFilter(val type: FilterType, val value: Any) {
   enum class FilterType {

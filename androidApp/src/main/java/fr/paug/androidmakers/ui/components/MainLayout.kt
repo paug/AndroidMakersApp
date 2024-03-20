@@ -1,60 +1,74 @@
 package fr.paug.androidmakers.ui.components
 
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavHostController
-import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.androidmakers.ui.about.AboutActions
+import com.androidmakers.ui.common.navigation.AVALayout
+import com.androidmakers.ui.common.navigation.MainNavigationRoute
 import com.androidmakers.ui.model.Lce
+import com.androidmakers.ui.speakers.SpeakerDetailsRoute
+import com.androidmakers.ui.speakers.SpeakerDetailsViewModel
 import fr.androidmakers.domain.model.SpeakerId
 import fr.androidmakers.domain.model.User
+import fr.paug.androidmakers.BuildConfig
+import fr.paug.androidmakers.ui.components.agenda.AgendaLayout
+import com.androidmakers.ui.agenda.SessionDetailViewModel
 import fr.paug.androidmakers.ui.components.session.SessionDetailLayout
-import fr.paug.androidmakers.ui.components.session.SessionDetailViewModel
-import fr.paug.androidmakers.ui.components.speakers.details.SpeakerDetailsRoute
-import fr.paug.androidmakers.ui.components.speakers.details.SpeakerDetailsViewModel
-import fr.paug.androidmakers.ui.navigation.MainNavigationRoute
-import org.koin.androidx.compose.koinViewModel
+import moe.tlaster.precompose.koin.koinViewModel
+import moe.tlaster.precompose.navigation.NavHost
+import moe.tlaster.precompose.navigation.Navigator
+import moe.tlaster.precompose.navigation.path
+import moe.tlaster.precompose.navigation.rememberNavigator
+import org.koin.core.parameter.parametersOf
 
 /**
  * The main layout: entry point of the application
  */
 @Composable
 fun MainLayout(aboutActions: AboutActions, user: User?) {
-  val mainNavController = rememberNavController()
+  val navigator = rememberNavigator()
   MainNavHost(
-      mainNavController = mainNavController,
+      mainNavController = navigator,
       onSessionClick = { sessionId, roomId, startTimestamp, endTimestamp ->
-        mainNavController.navigate("${MainNavigationRoute.SESSION_DETAIL.name}/$sessionId")
+        navigator.navigate("${MainNavigationRoute.SESSION_DETAIL.name}/$sessionId")
       },
       aboutActions = aboutActions,
       user = user,
       navigateToSpeakerDetails = { speakerId ->
-        mainNavController.navigate("${MainNavigationRoute.SPEAKER_DETAIL.name}/$speakerId")
+        navigator.navigate("${MainNavigationRoute.SPEAKER_DETAIL.name}/$speakerId")
       },
   )
 }
 
 @Composable
 private fun MainNavHost(
-    mainNavController: NavHostController,
+    mainNavController: Navigator,
     onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
     aboutActions: AboutActions,
     user: User?,
     navigateToSpeakerDetails: (SpeakerId) -> Unit,
 ) {
   NavHost(
-      navController = mainNavController,
-      startDestination = MainNavigationRoute.AVA.name
+      navigator = mainNavController,
+      initialRoute = MainNavigationRoute.AVA.name
   ) {
 
-    composable(route = MainNavigationRoute.AVA.name) {
+    scene(route = MainNavigationRoute.AVA.name) {
       AVALayout(
+          versionCode = BuildConfig.VERSION_CODE.toString(),
+          versionName = BuildConfig.VERSION_NAME,
+          agendaLayout = {
+            val agendaFilterDrawerState = rememberDrawerState(DrawerValue.Closed)
+            AgendaLayout(
+                agendaFilterDrawerState = agendaFilterDrawerState,
+                onSessionClick = { sessionId, _, _, _ ->
+                  //mainNavController.navigate()
+                }
+            )
+          },
           onSessionClick = onSessionClick,
           aboutActions = aboutActions,
           user = user,
@@ -62,16 +76,12 @@ private fun MainNavHost(
       )
     }
 
-    composable(
+    scene(
         route = "${MainNavigationRoute.SESSION_DETAIL.name}/{sessionId}",
-        arguments = listOf(
-            navArgument("sessionId") {
-              type = NavType.StringType
-            }
-        )
     ) {
 
-      val sessionDetailViewModel: SessionDetailViewModel = koinViewModel()
+      val sessionId = it.path<String>("sessionId")
+      val sessionDetailViewModel: SessionDetailViewModel = koinViewModel { parametersOf(sessionId) }
 
       val sessionDetailState by sessionDetailViewModel.sessionDetailState.collectAsState(
           initial = Lce.Loading
@@ -83,27 +93,17 @@ private fun MainNavHost(
       )
     }
 
-    composable(
-        route = "${MainNavigationRoute.SPEAKER_DETAIL.name}/{speakerId}",
-        arguments = listOf(
-            navArgument("speakerId") {
-              type = NavType.StringType
-            }
-        )
-    ) {
-      val speakerDetailsViewModel: SpeakerDetailsViewModel = koinViewModel()
+    scene(
+        route = "${MainNavigationRoute.SPEAKER_DETAIL.name}/{speakerId}"
+    ) { backstackEntry ->
+      val speakerId = backstackEntry.path<String>("speakerId")
+
+      val speakerDetailsViewModel: SpeakerDetailsViewModel = koinViewModel { parametersOf(speakerId) }
 
       SpeakerDetailsRoute(
           speakerDetailsViewModel = speakerDetailsViewModel,
           onBackClick = { mainNavController.popBackStack() },
       )
     }
-
   }
-}
-
-@Preview
-@Composable
-private fun MainLayoutPreview() {
-  MainLayout(aboutActions = AboutActions(), user = null)
 }

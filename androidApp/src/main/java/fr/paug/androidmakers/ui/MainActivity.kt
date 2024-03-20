@@ -134,8 +134,6 @@ class MainActivity : AppCompatActivity() {
             idToken != null -> {
               // Got an ID token from Google. Use it to authenticate
               // with Firebase.
-              // Got an ID token from Google. Use it to authenticate
-              // with Firebase.
               val firebaseCredential = GoogleAuthProvider.credential(idToken, null)
               val auth = Firebase.auth
 

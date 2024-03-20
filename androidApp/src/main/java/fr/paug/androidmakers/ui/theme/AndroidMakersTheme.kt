@@ -25,24 +25,6 @@ val Inter = FontFamily(
     Font(R.font.inter_regular, FontWeight.Normal)
 )
 
-object AMColor {
-  val amBlue = Color(0xff4eb6e3)
-  val amBlueNavy = Color(0xff0014e6)
-  val amRed = Color(0xffff5641)
-  val bookmarked = amRed
-}
-
-class AMAlphas(
-    val small: Float,
-    val big: Float
-)
-
-val AMAlpha = AMAlphas(
-    15f / 255,
-    50f / 255
-)
-
-
 val AndroidMakersTypography = Typography(
     displayLarge = TextStyle(
         fontFamily = GillSans,

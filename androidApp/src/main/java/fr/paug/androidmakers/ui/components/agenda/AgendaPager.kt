@@ -17,11 +17,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.sp
+import com.androidmakers.ui.agenda.AgendaColumn
+import com.androidmakers.ui.agenda.AgendaPagerViewModel
 import com.androidmakers.ui.common.EmptyLayout
+import com.androidmakers.ui.common.SessionFilter
 import com.androidmakers.ui.common.SwipeRefreshableLceLayout
-import fr.paug.androidmakers.ui.model.UISession
-import fr.paug.androidmakers.util.SessionFilter
-import fr.paug.androidmakers.util.TimeUtils
+import com.androidmakers.ui.model.UISession
+import fr.androidmakers.domain.utils.formatShortTime
 import kotlinx.coroutines.launch
 import moe.tlaster.precompose.koin.koinViewModel
 import java.util.Date
@@ -105,7 +107,7 @@ private fun addSeparators(
     sessions: List<UISession>
 ): Map<String, List<UISession>> {
   return sessions.map {
-    TimeUtils.formatShortTime(context, Date(it.startDate.toEpochMilliseconds())) to it
+    it.startDate.formatShortTime() to it
   }
       .groupBy(
           keySelector = { it.first }

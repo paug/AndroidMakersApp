@@ -1,5 +1,6 @@
-package fr.paug.androidmakers.ui.components.speakers.details
+package com.androidmakers.ui.speakers
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -22,16 +23,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
 import com.androidmakers.ui.common.LoadingLayout
+import com.androidmakers.ui.common.SocialButtons
 import com.androidmakers.ui.model.Lce
+import com.seiko.imageloader.rememberImagePainter
+import dev.icerock.moko.resources.compose.stringResource
 import fr.paug.androidmakers.ui.MR
-import fr.paug.androidmakers.ui.components.session.SocialButtons
-import fr.paug.androidmakers.ui.util.stringResource
+
 
 @Composable
 fun SpeakerDetailsRoute(
@@ -88,15 +88,15 @@ fun SpeakerDetailsScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically)
     ) {
 
-      AsyncImage(
-          modifier = Modifier
-              .size(64.dp)
-              .clip(CircleShape),
-          model = ImageRequest.Builder(LocalContext.current)
-              .data(speaker.photoUrl)
-              .build(),
-          contentDescription = stringResource(MR.strings.speakers)
-      )
+      speaker.photoUrl?.let { photoUrl ->
+        Image(
+            modifier = Modifier
+                .size(64.dp)
+                .clip(CircleShape),
+            painter = rememberImagePainter(photoUrl),
+            contentDescription = stringResource(MR.strings.speakers)
+        )
+      }
 
       Text(
           text = speaker.name.orEmpty(),
@@ -109,7 +109,12 @@ fun SpeakerDetailsScreen(
           style = MaterialTheme.typography.bodyLarge,
       )
 
-      SocialButtons(speaker)
+      SocialButtons(
+          speaker = speaker,
+          onClickOnItem = { item ->
+
+          }
+      )
     }
   }
 }

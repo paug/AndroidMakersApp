@@ -1,6 +1,5 @@
-package fr.paug.androidmakers.ui.components.agenda
+package com.androidmakers.ui.agenda
 
-import android.content.Context
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -18,23 +17,18 @@ import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import fr.paug.androidmakers.AndroidMakersApplication
-import fr.paug.androidmakers.ui.model.UISession
-import fr.paug.androidmakers.ui.theme.AMColor
-import fr.paug.androidmakers.util.EmojiUtils
-import fr.paug.androidmakers.util.TimeUtils
-import kotlinx.coroutines.runBlocking
+import com.androidmakers.ui.common.EmojiUtils
+import com.androidmakers.ui.model.UISession
+import com.androidmakers.ui.theme.AMColor
 import kotlinx.datetime.Instant
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 private fun maybeClickable(uiSession: UISession, onSessionClicked: ((UISession) -> Unit)): Modifier {
@@ -95,7 +89,7 @@ fun AgendaRow(
           }
 
           Text(
-              text = uiSession.subtitle(LocalContext.current),
+              text = "", //uiSession.subtitle(LocalContext.current),
               style = MaterialTheme.typography.bodyMedium,
               modifier = Modifier.padding(top = 4.dp)
           )
@@ -133,7 +127,7 @@ fun AgendaRow(
       },
   )
 }
-
+/*
 private fun UISession.subtitle(context: Context) = buildString {
   val millis = endDate - startDate
   val duration = TimeUtils.formatDuration(
@@ -147,7 +141,7 @@ private fun UISession.subtitle(context: Context) = buildString {
   if (emoji != null) {
     append(" / $emoji")
   }
-}
+}*/
 
 @Preview
 @Composable
