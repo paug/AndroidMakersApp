@@ -15,7 +15,9 @@ class PartnersGraphQLRepository(private val apolloClient: ApolloClient): Partner
   override fun getPartners(): Flow<KmmResult<List<PartnerGroup>>> {
     return apolloClient.query(GetPartnerGroupsQuery())
         .fetchPolicy(FetchPolicy.CacheAndNetwork)
-        .watch().map {
+        .watch()
+        .ignoreCacheMisses()
+        .map {
           it.dataAssertNoErrors.partnerGroups.map { partnerGroup ->
             PartnerGroup(
                 title = partnerGroup.title,
