@@ -67,7 +67,7 @@ class SessionDetailViewModel(
 
   private suspend fun getSpeakers(session: Session): List<Speaker> {
     val allSpeakers = speakersRepository.getSpeakers().firstOrNull()
-        //?.recover { emptyList() }
+        ?.recover { emptyList() }
         ?.getOrThrow()
         ?: return emptyList()
 
