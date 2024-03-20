@@ -1,6 +1,5 @@
 package com.androidmakers.ui.common
 
-import at.asitplus.KmmResult
 import com.androidmakers.ui.model.Lce
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
@@ -14,7 +13,7 @@ import moe.tlaster.precompose.viewmodel.viewModelScope
 
 
 abstract class LceViewModel<T> : ViewModel() {
-  abstract fun produce(): Flow<KmmResult<T>>
+  abstract fun produce(): Flow<Result<T>>
 
   private val _mutableSharedState = MutableStateFlow<Lce<T>>(Lce.Loading)
   val values = _mutableSharedState.asStateFlow()

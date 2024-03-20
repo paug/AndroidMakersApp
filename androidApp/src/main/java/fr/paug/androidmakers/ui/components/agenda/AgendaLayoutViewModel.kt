@@ -28,7 +28,7 @@ class AgendaLayoutViewModel(
   val state: StateFlow<AgendaLayoutState> = combine(
       roomsRepository.getRooms()
           .map { rooms ->
-            rooms/*.recover { emptyList() }*/
+            rooms.recover { emptyList() }
                 .getOrThrow()
           },
       sessionFilters,

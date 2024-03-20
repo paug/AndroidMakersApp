@@ -1,6 +1,5 @@
 package fr.paug.androidmakers.ui.components.agenda
 
-import at.asitplus.KmmResult
 import com.androidmakers.ui.common.LceViewModel
 import fr.androidmakers.domain.interactor.GetAgendaUseCase
 import fr.androidmakers.domain.interactor.GetFavoriteSessionsUseCase
@@ -16,7 +15,7 @@ class AgendaPagerViewModel(
     private val setSessionBookmarkUseCase: SetSessionBookmarkUseCase,
     private val getFavoriteSessionsUseCase: GetFavoriteSessionsUseCase
 ) : LceViewModel<Agenda>() {
-  override fun produce(): Flow<KmmResult<Agenda>> {
+  override fun produce(): Flow<Result<Agenda>> {
     return getAgendaUseCase()
   }
 
