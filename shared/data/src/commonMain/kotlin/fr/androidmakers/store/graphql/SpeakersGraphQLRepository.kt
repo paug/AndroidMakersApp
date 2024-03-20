@@ -1,6 +1,5 @@
 package fr.androidmakers.store.graphql
 
-import at.asitplus.KmmResult
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.cache.normalized.FetchPolicy
 import com.apollographql.apollo3.cache.normalized.fetchPolicy
@@ -12,13 +11,13 @@ import kotlinx.coroutines.flow.map
 
 class SpeakersGraphQLRepository(private val apolloClient: ApolloClient): SpeakersRepository {
 
-  override fun getSpeakers(): Flow<KmmResult<List<Speaker>>> {
+  override fun getSpeakers(): Flow<Result<List<Speaker>>> {
     return apolloClient.query(GetSpeakersQuery()).watch().map {
       it.dataAssertNoErrors.speakers.map { it.speakerDetails.toSpeaker() }
     }.toResultFlow()
   }
 
-  override fun getSpeaker(id: String): Flow<KmmResult<Speaker>> {
+  override fun getSpeaker(id: String): Flow<Result<Speaker>> {
     return apolloClient.query(GetSpeakersQuery())
         .fetchPolicy(FetchPolicy.CacheAndNetwork)
         .watch().map {

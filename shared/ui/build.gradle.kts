@@ -29,7 +29,6 @@ kotlin {
       implementation(compose.ui)
       implementation(compose.components.resources)
       implementation(compose.components.uiToolingPreview)
-      api("at.asitplus:kmmresult:1.5.4")
       implementation(project(":shared:domain"))
       implementation(project(":shared:di"))
       api("io.github.qdsfdhvh:image-loader:1.7.8")

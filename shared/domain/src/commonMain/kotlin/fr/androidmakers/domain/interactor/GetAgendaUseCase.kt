@@ -1,6 +1,5 @@
 package fr.androidmakers.domain.interactor
 
-import at.asitplus.KmmResult
 import fr.androidmakers.domain.model.Agenda
 import fr.androidmakers.domain.repo.RoomsRepository
 import fr.androidmakers.domain.repo.SessionsRepository
@@ -13,7 +12,7 @@ class GetAgendaUseCase(
     private val speakersRepository: SpeakersRepository,
     private val roomsRepository: RoomsRepository,
 ) {
-  operator fun invoke(): Flow<KmmResult<Agenda>> {
+  operator fun invoke(): Flow<Result<Agenda>> {
     return combine(
         sessionsRepository.getSessions(),
         roomsRepository.getRooms(),
@@ -22,18 +21,18 @@ class GetAgendaUseCase(
 
       sessions.exceptionOrNull()?.let {
         it.printStackTrace()
-        return@combine KmmResult.failure(it)
+        return@combine Result.failure(it)
       }
       rooms.exceptionOrNull()?.let {
         it.printStackTrace()
-        return@combine KmmResult.failure(it)
+        return@combine Result.failure(it)
       }
       speakers.exceptionOrNull()?.let {
         it.printStackTrace()
-        return@combine KmmResult.failure(it)
+        return@combine Result.failure(it)
       }
 
-      KmmResult.success(
+      Result.success(
           Agenda(
               sessions = sessions.getOrThrow().associateBy { it.id },
               rooms = rooms.getOrThrow().associateBy { it.id },

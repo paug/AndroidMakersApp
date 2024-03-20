@@ -1,6 +1,5 @@
 package fr.androidmakers.store.graphql
 
-import at.asitplus.KmmResult
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.cache.normalized.FetchPolicy
 import com.apollographql.apollo3.cache.normalized.fetchPolicy
@@ -12,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class PartnersGraphQLRepository(private val apolloClient: ApolloClient): PartnersRepository {
-  override fun getPartners(): Flow<KmmResult<List<PartnerGroup>>> {
+  override fun getPartners(): Flow<Result<List<PartnerGroup>>> {
     return apolloClient.query(GetPartnerGroupsQuery())
         .fetchPolicy(FetchPolicy.CacheAndNetwork)
         .watch().map {

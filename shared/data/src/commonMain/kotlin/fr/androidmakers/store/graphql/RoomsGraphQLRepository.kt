@@ -1,6 +1,5 @@
 package fr.androidmakers.store.graphql
 
-import at.asitplus.KmmResult
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.cache.normalized.FetchPolicy
 import com.apollographql.apollo3.cache.normalized.fetchPolicy
@@ -11,13 +10,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class RoomsGraphQLRepository(private val apolloClient: ApolloClient): RoomsRepository {
-  override fun getRoom(id: String): Flow<KmmResult<Room>> {
+  override fun getRoom(id: String): Flow<Result<Room>> {
     return getRooms().map {
       it.map { it.singleOrNull { it.id == id } ?: error("Not Room") }
     }
   }
 
-  override fun getRooms(): Flow<KmmResult<List<Room>>> {
+  override fun getRooms(): Flow<Result<List<Room>>> {
     return apolloClient.query(GetRoomsQuery())
         .fetchPolicy(FetchPolicy.NetworkFirst)
         .watch()
