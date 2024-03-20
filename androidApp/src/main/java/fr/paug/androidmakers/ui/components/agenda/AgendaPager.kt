@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.sp
 import com.androidmakers.ui.common.EmptyLayout
-import fr.paug.androidmakers.ui.components.SwipeRefreshableLceLayout
+import com.androidmakers.ui.common.SwipeRefreshableLceLayout
 import fr.paug.androidmakers.ui.model.UISession
 import fr.paug.androidmakers.util.SessionFilter
 import fr.paug.androidmakers.util.TimeUtils
