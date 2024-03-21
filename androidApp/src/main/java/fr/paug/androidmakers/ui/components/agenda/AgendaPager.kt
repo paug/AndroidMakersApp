@@ -26,7 +26,6 @@ import com.androidmakers.ui.model.UISession
 import fr.androidmakers.domain.utils.formatShortTime
 import kotlinx.coroutines.launch
 import moe.tlaster.precompose.koin.koinViewModel
-import java.util.Date
 
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -90,7 +89,7 @@ fun AgendaPager(
               it.isFavorite = true
           }
           AgendaColumn(
-              sessionsPerStartTime = addSeparators(LocalContext.current, items),
+              sessionsPerStartTime = addSeparators(items),
               onSessionClicked = onSessionClicked,
               onSessionBookmarked = { uiSession, bookmarked ->
                 viewModel.setSessionBookmark(uiSession, bookmarked)
@@ -103,7 +102,6 @@ fun AgendaPager(
 }
 
 private fun addSeparators(
-    context: Context,
     sessions: List<UISession>
 ): Map<String, List<UISession>> {
   return sessions.map {

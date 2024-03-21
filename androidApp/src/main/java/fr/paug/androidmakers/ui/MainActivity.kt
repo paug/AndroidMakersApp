@@ -9,6 +9,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
@@ -30,7 +32,9 @@ import dev.gitlive.firebase.auth.auth
 import fr.androidmakers.domain.model.Partner
 import fr.androidmakers.store.firebase.toUser
 import fr.paug.androidmakers.R
-import fr.paug.androidmakers.ui.components.MainLayout
+import com.androidmakers.ui.MainLayout
+import fr.paug.androidmakers.BuildConfig
+import fr.paug.androidmakers.ui.components.agenda.AgendaLayout
 import fr.paug.androidmakers.ui.theme.AndroidMakersTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -77,6 +81,15 @@ class MainActivity : AppCompatActivity() {
             }
 
             MainLayout(
+                agendaLayout = @androidx.compose.runtime.Composable {
+                  val agendaFilterDrawerState = rememberDrawerState(DrawerValue.Closed)
+                  AgendaLayout(
+                      agendaFilterDrawerState = agendaFilterDrawerState,
+                      onSessionClick = { sessionId, _, _, _ ->
+                        //mainNavController.navigate()
+                      }
+                  )
+                },
                 aboutActions = AboutActions(
                     onFaqClick = ::onFaqClick,
                     onCodeOfConductClick = ::onCodeOfConductClick,
@@ -86,6 +99,8 @@ class MainActivity : AppCompatActivity() {
                     onSponsorClick = ::onSponsorClick,
                 ),
                 user = userState.value,
+                versionName = BuildConfig.VERSION_NAME,
+                versionCode = BuildConfig.VERSION_CODE.toString(),
             )
           }
         }

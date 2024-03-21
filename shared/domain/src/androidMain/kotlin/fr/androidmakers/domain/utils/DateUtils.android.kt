@@ -1,9 +1,12 @@
 package fr.androidmakers.domain.utils
 
 import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toJavaLocalDateTime
+import java.text.DateFormat.MEDIUM
 import java.text.DateFormat.SHORT
 import java.text.SimpleDateFormat
 import java.time.format.DateTimeFormatter
@@ -27,5 +30,20 @@ actual fun Instant.formatShortTime(): String {
   }
 
   val date = Date(this.toEpochMilliseconds())
+  return dateFormat.format(date).lowercase(Locale.getDefault())
+}
+
+actual fun LocalDate.formatMediumDate(): String {
+  val dateFormat = SimpleDateFormat.getDateInstance(MEDIUM)
+
+  val tz = TimeZone.getTimeZone("Europe/Paris")
+  if (tz != null) {
+    dateFormat.timeZone = tz
+  }
+
+  val date = Date(
+      this.atStartOfDayIn(kotlinx.datetime.TimeZone.currentSystemDefault())
+      .toEpochMilliseconds()
+  )
   return dateFormat.format(date).lowercase(Locale.getDefault())
 }

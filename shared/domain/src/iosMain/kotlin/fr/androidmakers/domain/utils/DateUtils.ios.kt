@@ -1,8 +1,10 @@
 package fr.androidmakers.domain.utils
 
 import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toNSDate
 import platform.Foundation.NSDateFormatter
@@ -21,4 +23,10 @@ actual fun Instant.formatShortTime(): String {
     timeStyle = NSDateFormatterMediumStyle
   }
   return dateFormatter.stringFromDate(date)
+}
+
+actual fun LocalDate.formatMediumDate(): String {
+  // TODO à revoir
+  val date = atStartOfDayIn(TimeZone.currentSystemDefault())
+  return date.formatShortTime()
 }

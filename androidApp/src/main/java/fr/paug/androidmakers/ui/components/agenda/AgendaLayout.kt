@@ -29,27 +29,25 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.androidmakers.ui.agenda.AgendaLayoutViewModel
+import com.androidmakers.ui.agenda.AgendaPagerViewModel
 import com.androidmakers.ui.common.ButtonRefreshableLceLayout
+import com.androidmakers.ui.common.EmojiUtils
+import com.androidmakers.ui.common.SessionFilter
+import com.androidmakers.ui.model.UISession
 import fr.androidmakers.domain.model.Agenda
 import fr.androidmakers.domain.model.Room
 import fr.androidmakers.domain.model.Session
 import fr.androidmakers.domain.model.Speaker
-import fr.paug.androidmakers.ui.MR
-import com.androidmakers.ui.agenda.AgendaLayoutViewModel
-import com.androidmakers.ui.agenda.AgendaPagerViewModel
-import com.androidmakers.ui.model.UISession
-import fr.paug.androidmakers.ui.util.stringResource
-import com.androidmakers.ui.common.EmojiUtils
-import com.androidmakers.ui.common.SessionFilter
 import fr.androidmakers.domain.utils.eventTimeZone
+import fr.androidmakers.domain.utils.formatMediumDate
+import fr.paug.androidmakers.ui.MR
+import fr.paug.androidmakers.ui.util.stringResource
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.toInstant
-import kotlinx.datetime.toJavaLocalDate
 import kotlinx.datetime.todayIn
 import moe.tlaster.precompose.koin.koinViewModel
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 
 @Composable
 fun AgendaLayout(
@@ -282,7 +280,7 @@ internal fun agendaToDays(agenda: Agenda, favoriteSessions: Set<String>): List<D
       .entries
       .map {
         DaySchedule(
-            title = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).format(it.key.toJavaLocalDate()),
+            title = it.key.formatMediumDate(),
             date = it.key,
             sessions = it.value.sortedBy { it.startsAt }
                 .map { it.toUISession(agenda.rooms, agenda.speakers, favoriteSessions.contains(it.id)) }
