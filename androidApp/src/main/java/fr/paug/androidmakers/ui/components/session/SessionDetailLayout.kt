@@ -65,11 +65,11 @@ import com.androidmakers.ui.model.Lce
 import fr.androidmakers.domain.model.Room
 import fr.androidmakers.domain.model.Session
 import fr.androidmakers.domain.model.Speaker
+import fr.androidmakers.domain.utils.removeHtmlTags
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.MR
 import fr.paug.androidmakers.ui.theme.AMColor
-import fr.paug.androidmakers.ui.util.discardHtmlTags
 import fr.paug.androidmakers.ui.util.stringResource
 import fr.paug.androidmakers.util.EmojiUtils
 import io.openfeedback.android.components.SessionFeedbackContainer
@@ -205,7 +205,7 @@ private fun SessionDetails(sessionDetails: SessionDetailState, formattedDateAndR
 
     Text(
         modifier = Modifier.padding(top = 16.dp),
-        text = sessionDetails.session.description?.discardHtmlTags() ?: "",
+        text = sessionDetails.session.description?.removeHtmlTags() ?: "",
         textAlign = TextAlign.Start,
         style = MaterialTheme.typography.bodyLarge,
     )
