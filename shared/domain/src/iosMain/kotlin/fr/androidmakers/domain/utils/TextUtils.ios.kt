@@ -2,22 +2,11 @@
 
 package fr.androidmakers.domain.utils
 
-import kotlinx.cinterop.BetaInteropApi
 import kotlinx.cinterop.ExperimentalForeignApi
-import platform.Foundation.NSAttributedString
-import platform.Foundation.NSString
-import platform.Foundation.NSUTF8StringEncoding
-import platform.Foundation.create
-import platform.Foundation.dataUsingEncoding
-import platform.UIKit.NSDocumentTypeDocumentAttribute
-import platform.UIKit.NSDocumentTypeDocumentOption
-import platform.UIKit.NSHTMLTextDocumentType
-import platform.UIKit.create
 
 @OptIn(ExperimentalForeignApi::class)
 actual fun String.removeHtmlTags(): String {
-
-  if (this.isBlank()) {
+  /*if (this.isBlank()) {
     return ""
   } else {
     return NSString.create(string = this).dataUsingEncoding(NSUTF8StringEncoding)?.let { data ->
@@ -29,5 +18,7 @@ actual fun String.removeHtmlTags(): String {
       )
       return attributed?.string ?: ""
     } ?: ""
-  }
+  }*/
+  // TODO the above method does not work
+  return this
 }

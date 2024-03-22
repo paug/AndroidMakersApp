@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.androidmakers.ui.about.AboutActions
+import com.androidmakers.ui.agenda.SessionDetailLayout
 import com.androidmakers.ui.common.navigation.AVALayout
 import com.androidmakers.ui.common.navigation.MainNavigationRoute
 import com.androidmakers.ui.model.Lce
@@ -78,8 +79,7 @@ private fun MainNavHost(
         route = "${MainNavigationRoute.SESSION_DETAIL.name}/{sessionId}",
     ) {
 
-      Text("ok")
-      /*val sessionId = it.path<String>("sessionId")
+      val sessionId = it.path<String>("sessionId")
       val sessionDetailViewModel = koinViewModel(vmClass = SessionDetailViewModel::class) { parametersOf(sessionId) }
 
       val sessionDetailState by sessionDetailViewModel.sessionDetailState.collectAsState(
@@ -89,7 +89,7 @@ private fun MainNavHost(
           sessionDetailState = sessionDetailState,
           onBackClick = { mainNavController.popBackStack() },
           onBookmarkClick = { bookmarked -> sessionDetailViewModel.bookmark(bookmarked) },
-      )*/
+      )
     }
 
     scene(

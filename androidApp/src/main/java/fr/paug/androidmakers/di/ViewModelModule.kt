@@ -10,6 +10,5 @@ import org.koin.dsl.module
 val androidViewModelModule = module {
   viewModel { MainActivityViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
 
-  factory { (sessionId: String) -> SessionDetailViewModel(sessionId, get(), get(), get(), get(), get()) }
 
 }

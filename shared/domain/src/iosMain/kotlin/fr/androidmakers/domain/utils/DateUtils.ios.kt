@@ -10,6 +10,7 @@ import kotlinx.datetime.toNSDate
 import platform.Foundation.NSDateFormatter
 import platform.Foundation.NSDateFormatterLongStyle
 import platform.Foundation.NSDateFormatterMediumStyle
+import platform.Foundation.NSDateFormatterShortStyle
 
 actual fun LocalDateTime.formatShortTime(): String {
   val date = toInstant(TimeZone.currentSystemDefault())
@@ -19,14 +20,16 @@ actual fun LocalDateTime.formatShortTime(): String {
 actual fun Instant.formatShortTime(): String {
   val date = toNSDate()
   val dateFormatter = NSDateFormatter().apply {
-    dateStyle = NSDateFormatterLongStyle
-    timeStyle = NSDateFormatterMediumStyle
+    timeStyle = NSDateFormatterShortStyle
   }
   return dateFormatter.stringFromDate(date)
 }
 
 actual fun LocalDate.formatMediumDate(): String {
-  // TODO à revoir
   val date = atStartOfDayIn(TimeZone.currentSystemDefault())
-  return date.formatShortTime()
+  val nsDate = date.toNSDate()
+  val dateFormatter = NSDateFormatter().apply {
+    dateStyle = NSDateFormatterMediumStyle
+  }
+  return dateFormatter.stringFromDate(nsDate)
 }

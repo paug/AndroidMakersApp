@@ -1,10 +1,5 @@
-package fr.paug.androidmakers.ui.components.session
+package com.androidmakers.ui.agenda
 
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
-import android.text.TextUtils
-import android.text.format.DateUtils
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.BorderStroke
@@ -51,32 +46,26 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
 import com.androidmakers.ui.common.EmojiUtils
 import com.androidmakers.ui.common.LoadingLayout
 import com.androidmakers.ui.common.separatorColor
 import com.androidmakers.ui.model.Lce
 import com.androidmakers.ui.model.SessionDetailState
 import com.androidmakers.ui.theme.AMColor
+import com.seiko.imageloader.rememberImagePainter
+import dev.icerock.moko.resources.compose.painterResource
+import dev.icerock.moko.resources.compose.stringResource
 import fr.androidmakers.domain.model.Room
 import fr.androidmakers.domain.model.Session
 import fr.androidmakers.domain.model.Speaker
 import fr.androidmakers.domain.utils.removeHtmlTags
-import fr.paug.androidmakers.AndroidMakersApplication
-import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.MR
-import fr.paug.androidmakers.ui.util.stringResource
-import io.openfeedback.android.components.SessionFeedbackContainer
-import java.util.Formatter
-import java.util.Locale
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -113,12 +102,10 @@ fun SessionDetailLayout(
             },
             actions = {
               if (sessionDetailState is Lce.Content) {
-                val context = LocalContext.current
                 IconButton(
                     onClick = {
                       // TODO Ideally this should not be handled here but by the caller
                       shareSession(
-                          context = context,
                           session = sessionDetailState.content.session,
                           sessionDateAndRoom = formattedDateAndRoom!!,
                           speakersNameList = sessionDetailState.content.speakers.mapNotNull { it.name },
@@ -212,12 +199,12 @@ private fun SessionDetails(sessionDetails: SessionDetailState, formattedDateAndR
             .height(16.dp)
     )
 
-    if (System.currentTimeMillis() > sessionDetails.startTimestamp) {
-      SessionFeedbackContainer(
+    if (Clock.System.now() > Instant.fromEpochMilliseconds(sessionDetails.startTimestamp)) {
+      /*SessionFeedbackContainer(
           openFeedback = AndroidMakersApplication.instance().openFeedback,
           sessionId = sessionDetails.session.id,
           language = Locale.getDefault().language,
-      )
+      )*/
     } else {
       Surface(
           shape = RoundedCornerShape(5.dp),
@@ -313,15 +300,15 @@ private fun Speaker(
       verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically),
       horizontalAlignment = Alignment.Start
   ) {
-    AsyncImage(
-        modifier = Modifier
-            .size(64.dp)
-            .clip(CircleShape),
-        model = ImageRequest.Builder(LocalContext.current)
-            .data(speaker.photoUrl)
-            .build(),
-        contentDescription = stringResource(MR.strings.speakers)
-    )
+    speaker.photoUrl?.let { speakerPhotoUrl ->
+      Image(
+          modifier = Modifier
+              .size(64.dp)
+              .clip(CircleShape),
+          painter = rememberImagePainter(speakerPhotoUrl),
+          contentDescription = stringResource(MR.strings.speakers)
+      )
+    }
 
     Text(
         text = speaker.getFullNameAndCompany(),
@@ -344,7 +331,7 @@ private fun Speaker(
 
 @Composable
 private fun getFormattedDateAndRoom(room: Room, startTimestamp: Long, endTimestamp: Long): String {
-  val context = LocalContext.current
+  /*val context = LocalContext.current
   val sessionDate = DateUtils.formatDateRange(
       context,
       Formatter(context.resources.configuration.locale),
@@ -357,15 +344,16 @@ private fun getFormattedDateAndRoom(room: Room, startTimestamp: Long, endTimesta
     stringResource(R.string.sessionDateWithRoomPlaceholder, sessionDate, room.name)
   } else {
     sessionDate
-  }
+  }*/
+  return ""
 }
 
 private fun shareSession(
-    context: Context,
     session: Session,
     sessionDateAndRoom: String,
     speakersNameList: List<String>
 ) {
+  /*
   val speakers = TextUtils.join(", ", speakersNameList)
 
   val shareSessionIntent = Intent(Intent.ACTION_SEND)
@@ -396,10 +384,8 @@ private fun shareSession(
   shareSessionIntent.type = "text/plain"
   val shareSheetIntent = Intent.createChooser(shareSessionIntent, null)
   context.startActivity(shareSheetIntent)
-}
 
-fun openSocialLink(context: Context, link: String) {
-  context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(link)))
+   */
 }
 
 @Composable
@@ -407,11 +393,11 @@ fun SocialButtons(speaker: Speaker) {
   Row(
       horizontalArrangement = Arrangement.End
   ) {
-    val context = LocalContext.current
+    //val context = LocalContext.current
     for (socialsItem in speaker.socials.orEmpty().filterNotNull()) {
       IconButton(
           onClick = {
-            openSocialLink(context, socialsItem.url!!)
+            //openSocialLink(context, socialsItem.url!!)
           }
       ) {
         val socialName = socialsItem.name?.lowercase() ?: ""
@@ -419,21 +405,21 @@ fun SocialButtons(speaker: Speaker) {
           socialName.contains("twitter") || socialName == "x" -> {
             Icon(
                 modifier = Modifier.size(24.dp),
-                painter = painterResource(MR.images.ic_network_x.drawableResId),
+                painter = painterResource(MR.images.ic_network_x),
                 contentDescription = socialsItem.name
             )
           }
 
           socialName.contains("blog") -> {
             Icon(
-                painter = painterResource(MR.images.ic_network_blog.drawableResId),
+                painter = painterResource(MR.images.ic_network_blog),
                 contentDescription = socialsItem.name
             )
           }
 
           socialName.contains("linkedin") -> {
             Icon(
-                painter = painterResource(MR.images.ic_network_linkedin.drawableResId),
+                painter = painterResource(MR.images.ic_network_linkedin),
                 contentDescription = socialsItem.name
             )
           }

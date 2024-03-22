@@ -10,53 +10,19 @@ import FirebaseFirestore
 import UIKit
 
 class GraphQLDataProvider: DataProviderProtocol {
-    let sessionsPublisher: AnyPublisher<[SessionData], Error>
     let votesPublisher: AnyPublisher<[String: TalkFeedback], Error>
 
-    private let sessionsProvider: GraphQLTalksProvider
     private let openFeedbackSynchronizer: OpenFeedbackSynchronizer?
 
-    private let apolloClient: ApolloClient = {
-        // setup cache
-        let documentsPath = NSSearchPathForDirectoriesInDomains(
-            .documentDirectory,
-            .userDomainMask,
-            true
-        ).first!
-        let documentsURL = URL(fileURLWithPath: documentsPath)
-        let sqliteFileURL = documentsURL.appendingPathComponent("am_apollo_db.sqlite")
-        let sqliteCache = try? SQLiteNormalizedCache(fileURL: sqliteFileURL)
-
-        let endpointURL = URL(string: "https://androidmakers-2023.ew.r.appspot.com/graphql")!
-        let store: ApolloStore
-        if let sqliteCache {
-            store = ApolloStore(cache: sqliteCache)
-        } else {
-            store = ApolloStore()
-        }
-        let interceptorProvider = NetworkInterceptorsProvider(
-            interceptors: [ConfInterceptor(confUid: "androidmakers2023")],
-            store: store
-        )
-        let networkTransport = RequestChainNetworkTransport(
-            interceptorProvider: interceptorProvider, endpointURL: endpointURL
-        )
-        return ApolloClient(networkTransport: networkTransport, store: store)
-    }()
-
     init() {
-        sessionsProvider = GraphQLTalksProvider(apolloClient: apolloClient)
-        sessionsPublisher = sessionsProvider.talksPublisher.eraseToAnyPublisher()
-
         openFeedbackSynchronizer = FirestoreOpenFeedbackSynchronizer()
 
         if let openFeedbackSynchronizer {
-            votesPublisher = Publishers.CombineLatest4(
+            votesPublisher = Publishers.CombineLatest3(
                 openFeedbackSynchronizer.configPublisher,
                 openFeedbackSynchronizer.sessionVotesPublisher,
-                openFeedbackSynchronizer.userVotesPublisher,
-                sessionsPublisher)
-            .map { config, sessionVotes, userVotes, sessions in
+                openFeedbackSynchronizer.userVotesPublisher)
+            .map { config, sessionVotes, userVotes  in
                 let preferredLanguage = Bundle.main.preferredLocalizations[0]
                 let propositions = config.voteItems.sorted { $0.position ?? 0 < $1.position ?? 0 }
                     .compactMap { TalkFeedback.Proposition(from: $0, language: preferredLanguage) }
@@ -64,23 +30,7 @@ class GraphQLDataProvider: DataProviderProtocol {
                 let colors = config.chipColors.map { UIColor(named: $0) }
 
                 var talkVotes = [String: TalkFeedback]()
-                sessions.forEach { session in
-                    let talkId = session.uid
-                    let votes = sessionVotes[talkId] ?? [:]
-                    var infos = [TalkFeedback.Proposition: TalkFeedback.PropositionInfo]()
-                    votes.forEach { vote in
-                        if let proposition = propositionDict[vote.key] {
-                            let identifier = UserVoteIdentifierData(
-                                talkId: talkId, voteItemId: vote.key)
-                            let hasVoted = userVotes[identifier]?.status == .active
-                            infos[proposition] = TalkFeedback.PropositionInfo(numberOfVotes: vote.value,
-                                                                              userHasVoted: hasVoted)
-                        }
-                    }
-                    let talkVote = TalkFeedback(talkId: talkId, colors: colors.compactMap { $0 }, propositions: propositions,
-                                                propositionInfos: infos)
-                    talkVotes[talkId] = talkVote
-                }
+
                 return talkVotes
             }.eraseToAnyPublisher()
         } else {
@@ -100,42 +50,6 @@ class GraphQLDataProvider: DataProviderProtocol {
               let voteItm = openFeedbackSynchronizer.config?.voteItems.first(where: { $0.id == proposition.uid })
         else { return }
         openFeedbackSynchronizer.deleteVote(voteItm, of: talkId)
-    }
-}
-
-private class ConfInterceptor: ApolloInterceptor {
-    let confUid: String
-
-    init(confUid: String) {
-        self.confUid = confUid
-    }
-
-    func interceptAsync<Operation>(
-        chain: RequestChain,
-        request: HTTPRequest<Operation>,
-        response: HTTPResponse<Operation>?,
-        completion: @escaping (Result<GraphQLResult<Operation.Data>, Error>) -> Void) where Operation : GraphQLOperation {
-            request.addHeader(name: "conference", value: confUid)
-            chain.proceedAsync(request: request, response: response, completion: completion)
-    }
-
-}
-
-private class NetworkInterceptorsProvider: DefaultInterceptorProvider {
-
-    let interceptors: [ApolloInterceptor]
-
-    init(interceptors: [ApolloInterceptor], store: ApolloStore) {
-        self.interceptors = interceptors
-        super.init(store: store)
-    }
-
-    override func interceptors<Operation>(for operation: Operation) -> [ApolloInterceptor] where Operation : GraphQLOperation {
-        var interceptors = super.interceptors(for: operation)
-        self.interceptors.forEach { interceptor in
-            interceptors.insert(interceptor, at: 0)
-        }
-        return interceptors
     }
 }
 

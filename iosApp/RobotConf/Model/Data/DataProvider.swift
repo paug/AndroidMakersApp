@@ -10,7 +10,6 @@ import UIKit
 import Apollo
 
 protocol DataProviderProtocol {
-    var sessionsPublisher: AnyPublisher<[SessionData], Error> { get }
     var votesPublisher: AnyPublisher<[String: TalkFeedback], Error> { get }
 
     func vote(_ proposition: TalkFeedback.Proposition, for talkId: String)
@@ -27,7 +26,6 @@ class DataProvider {
         #endif
     }
 
-    var sessionsPublisher = PassthroughSubject<[Session], Error>()
     let votesPublisher: AnyPublisher<[String: TalkFeedback], Error>
 
     private var cancellables: Set<AnyCancellable> = []
@@ -49,33 +47,6 @@ class DataProvider {
     }
 }
 
-private extension Language {
-    init(from str: String?) {
-        guard let str = str else {
-            self = .all
-            return
-        }
-        var language: Language = []
-        if str.localizedCaseInsensitiveContains("english") {
-            language.formUnion(.english)
-        }
-        if str.localizedCaseInsensitiveContains("french") {
-            language.formUnion(.french)
-        }
-        self = language
-    }
-}
-
-private extension Session.Complexity {
-    init?(from str: String?) {
-        switch str {
-        case "Beginner": self = .beginner
-        case "Intermediate": self = .intermediate
-        case "Expert": self = .expert
-        default: return nil
-        }
-    }
-}
 
 private extension TalkFeedback.Proposition {
     init?(from voteItem: VoteConfigData.VoteItem, language: String) {

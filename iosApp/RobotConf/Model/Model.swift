@@ -17,20 +17,17 @@ func injectMockModel() {
 #endif
 
 protocol RepositoryProvider {
-    var sessionRepository: SessionRepository { get }
     var feedbackRepository: FeedbackRepository { get }
 }
 
 /// The model API object
 class Model: RepositoryProvider {
     private let dataProvider: DataProvider // A strong ref on the data provider must be kept
-    let sessionRepository: SessionRepository
 
     let feedbackRepository: FeedbackRepository
 
     fileprivate init(dataProvider: DataProvider = DataProvider()) {
         self.dataProvider = dataProvider
-        sessionRepository = SessionRepository(dataProvider: dataProvider)
         feedbackRepository = FeedbackRepository(dataProvider: dataProvider)
     }
 }

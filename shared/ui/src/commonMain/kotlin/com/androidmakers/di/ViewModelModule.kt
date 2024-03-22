@@ -2,6 +2,7 @@ package com.androidmakers.di
 
 import com.androidmakers.ui.agenda.AgendaLayoutViewModel
 import com.androidmakers.ui.agenda.AgendaPagerViewModel
+import com.androidmakers.ui.agenda.SessionDetailViewModel
 import com.androidmakers.ui.speakers.SpeakerDetailsViewModel
 import com.androidmakers.ui.speakers.SpeakerListViewModel
 import com.androidmakers.ui.sponsors.SponsorsViewModel
@@ -15,4 +16,5 @@ val viewModelModule = module {
   factory { (speakerId: String) -> SpeakerDetailsViewModel(speakerId, get()) }
   factory { AgendaLayoutViewModel(get()) }
   factory { AgendaPagerViewModel(get(), get(), get()) }
+  factory { (sessionId: String) -> SessionDetailViewModel(sessionId, get(), get(), get(), get(), get()) }
 }
