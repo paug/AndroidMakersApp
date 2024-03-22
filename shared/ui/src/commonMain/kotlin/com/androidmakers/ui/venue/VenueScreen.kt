@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.androidmakers.ui.model.UIVenue
 import com.seiko.imageloader.rememberImagePainter
 import dev.icerock.moko.resources.compose.stringResource
+import fr.androidmakers.domain.utils.removeHtmlTags
 import fr.paug.androidmakers.ui.MR
 
 @Composable
@@ -60,7 +61,7 @@ fun VenueLayout(
       uiVenue.descriptionEn
     }
     Text(
-        text = description/*.discardHtmlTags()*/,
+        text = description.removeHtmlTags(),
         modifier = Modifier.padding(8.dp),
         style = MaterialTheme.typography.bodyMedium,
     )
