@@ -73,7 +73,6 @@ import fr.androidmakers.domain.utils.removeHtmlTags
 import fr.paug.androidmakers.AndroidMakersApplication
 import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.MR
-import fr.paug.androidmakers.ui.theme.AMColor
 import fr.paug.androidmakers.ui.util.stringResource
 import io.openfeedback.android.components.SessionFeedbackContainer
 import java.util.Formatter

@@ -61,7 +61,7 @@ class GraphQLDataProvider: DataProviderProtocol {
                 let propositions = config.voteItems.sorted { $0.position ?? 0 < $1.position ?? 0 }
                     .compactMap { TalkFeedback.Proposition(from: $0, language: preferredLanguage) }
                 let propositionDict = Dictionary(uniqueKeysWithValues: propositions.map { ($0.uid, $0) })
-                let colors = config.chipColors.map { UIColor(hexString: $0) }
+                let colors = config.chipColors.map { UIColor(named: $0) }
 
                 var talkVotes = [String: TalkFeedback]()
                 sessions.forEach { session in
@@ -77,7 +77,7 @@ class GraphQLDataProvider: DataProviderProtocol {
                                                                               userHasVoted: hasVoted)
                         }
                     }
-                    let talkVote = TalkFeedback(talkId: talkId, colors: colors, propositions: propositions,
+                    let talkVote = TalkFeedback(talkId: talkId, colors: colors.compactMap { $0 }, propositions: propositions,
                                                 propositionInfos: infos)
                     talkVotes[talkId] = talkVote
                 }

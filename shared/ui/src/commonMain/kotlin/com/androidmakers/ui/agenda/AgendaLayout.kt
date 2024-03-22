@@ -1,4 +1,4 @@
-package fr.paug.androidmakers.ui.components.agenda
+package com.androidmakers.ui.agenda
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -27,27 +27,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.androidmakers.ui.agenda.AgendaLayoutViewModel
-import com.androidmakers.ui.agenda.AgendaPagerViewModel
 import com.androidmakers.ui.common.ButtonRefreshableLceLayout
 import com.androidmakers.ui.common.EmojiUtils
 import com.androidmakers.ui.common.SessionFilter
-import com.androidmakers.ui.model.UISession
-import fr.androidmakers.domain.model.Agenda
+import dev.icerock.moko.resources.compose.stringResource
 import fr.androidmakers.domain.model.Room
-import fr.androidmakers.domain.model.Session
-import fr.androidmakers.domain.model.Speaker
 import fr.androidmakers.domain.utils.eventTimeZone
-import fr.androidmakers.domain.utils.formatMediumDate
 import fr.paug.androidmakers.ui.MR
-import fr.paug.androidmakers.ui.util.stringResource
 import kotlinx.datetime.Clock
-import kotlinx.datetime.LocalDate
-import kotlinx.datetime.toInstant
 import kotlinx.datetime.todayIn
 import moe.tlaster.precompose.koin.koinViewModel
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun AgendaLayout(
@@ -84,7 +75,7 @@ private fun AgendaPagerOrLoading(
     sessionFilters: List<SessionFilter>,
     onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
 ) {
-  val viewModel = moe.tlaster.precompose.koin.koinViewModel(vmClass = AgendaPagerViewModel::class)
+  val viewModel = koinViewModel(vmClass = AgendaPagerViewModel::class)
   val favoriteSessions by viewModel.getFavoriteSessions().collectAsState(emptySet())
   ButtonRefreshableLceLayout(viewModel) {
     val days = agendaToDays(it, favoriteSessions)
@@ -264,52 +255,5 @@ private fun AgendaLayoutPreview() {
   AgendaLayout(
       agendaFilterDrawerState = DrawerState(DrawerValue.Closed, confirmStateChange = { true }),
       onSessionClick = { _, _, _, _ -> }
-  )
-}
-
-class DaySchedule(
-    val title: String,
-    val date: LocalDate,
-    val sessions: List<UISession>
-)
-
-@Composable
-internal fun agendaToDays(agenda: Agenda, favoriteSessions: Set<String>): List<DaySchedule> {
-
-  return agenda.sessions.values.groupBy { it.startsAt.date }
-      .entries
-      .map {
-        DaySchedule(
-            title = it.key.formatMediumDate(),
-            date = it.key,
-            sessions = it.value.sortedBy { it.startsAt }
-                .map { it.toUISession(agenda.rooms, agenda.speakers, favoriteSessions.contains(it.id)) }
-        )
-      }
-}
-
-
-fun Session.toUISession(
-    rooms: Map<String, Room>,
-    speakers: Map<String, Speaker>,
-    isFavorite: Boolean
-): UISession {
-  return UISession(
-      id = id,
-      title = title,
-      startDate = startsAt.toInstant(eventTimeZone),
-      endDate = endsAt.toInstant(eventTimeZone),
-      language = language,
-      roomId = roomId,
-      room = rooms.get(roomId)!!.name,
-      speakers = this.speakers.mapNotNull { speakers[it]?.toUISpeaker() },
-      isServiceSession = isServiceSession,
-      isFavorite = isFavorite
-  )
-}
-
-fun Speaker.toUISpeaker(): UISession.Speaker {
-  return UISession.Speaker(
-      name = name ?: ""
   )
 }

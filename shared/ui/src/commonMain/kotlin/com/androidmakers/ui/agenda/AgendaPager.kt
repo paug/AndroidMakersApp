@@ -1,6 +1,5 @@
-package fr.paug.androidmakers.ui.components.agenda
+package com.androidmakers.ui.agenda
 
-import android.content.Context
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,10 +14,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.sp
-import com.androidmakers.ui.agenda.AgendaColumn
-import com.androidmakers.ui.agenda.AgendaPagerViewModel
 import com.androidmakers.ui.common.EmptyLayout
 import com.androidmakers.ui.common.SessionFilter
 import com.androidmakers.ui.common.SwipeRefreshableLceLayout

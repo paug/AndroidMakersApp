@@ -18,15 +18,11 @@ struct Session: Hashable {
     let title: String
     let description: String
     let duration: TimeInterval
-    let speakers: [Speaker]
     let tags: [String]
     let startTime: Date
-    let room: Room
     let language: Language
     let complexity: Complexity?
     let questionUrl: URL?
     let youtubeUrl: URL?
     let slidesUrl: URL?
-
-    var isATalk: Bool { return !speakers.isEmpty }
 }

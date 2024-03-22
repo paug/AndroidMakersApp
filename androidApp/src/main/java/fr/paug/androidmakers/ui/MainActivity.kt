@@ -34,7 +34,7 @@ import fr.androidmakers.store.firebase.toUser
 import fr.paug.androidmakers.R
 import com.androidmakers.ui.MainLayout
 import fr.paug.androidmakers.BuildConfig
-import fr.paug.androidmakers.ui.components.agenda.AgendaLayout
+import com.androidmakers.ui.agenda.AgendaLayout
 import fr.paug.androidmakers.ui.theme.AndroidMakersTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -81,15 +81,6 @@ class MainActivity : AppCompatActivity() {
             }
 
             MainLayout(
-                agendaLayout = @androidx.compose.runtime.Composable {
-                  val agendaFilterDrawerState = rememberDrawerState(DrawerValue.Closed)
-                  AgendaLayout(
-                      agendaFilterDrawerState = agendaFilterDrawerState,
-                      onSessionClick = { sessionId, _, _, _ ->
-                        //mainNavController.navigate()
-                      }
-                  )
-                },
                 aboutActions = AboutActions(
                     onFaqClick = ::onFaqClick,
                     onCodeOfConductClick = ::onCodeOfConductClick,

@@ -41,6 +41,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.androidmakers.ui.about.AboutActions
 import com.androidmakers.ui.about.AboutScreen
+import com.androidmakers.ui.agenda.AgendaLayout
 import com.androidmakers.ui.speakers.SpeakerListViewModel
 import com.androidmakers.ui.speakers.SpeakerScreen
 import com.androidmakers.ui.sponsors.SponsorsScreen
@@ -68,7 +69,6 @@ import moe.tlaster.precompose.navigation.rememberNavigator
 fun AVALayout(
     versionCode: String,
     versionName: String,
-    agendaLayout: @Composable () -> Unit,
     onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
     aboutActions: AboutActions,
     user: User?,
@@ -181,7 +181,6 @@ fun AVALayout(
       AVANavHost(
           versionCode = versionCode,
           versionName = versionName,
-          agendaLayout = agendaLayout,
           avaNavController = avaNavController,
           onSessionClick = onSessionClick,
           agendaFilterDrawerState = agendaFilterDrawerState,
@@ -232,7 +231,6 @@ private fun RowScope.NavigationBarItem(
 private fun AVANavHost(
     versionCode: String,
     versionName: String,
-    agendaLayout: @Composable () -> Unit,
     avaNavController: Navigator,
     onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
     agendaFilterDrawerState: DrawerState,
@@ -242,7 +240,10 @@ private fun AVANavHost(
   NavHost(avaNavController, initialRoute = AVANavigationRoute.AGENDA.name) {
 
     scene(route = AVANavigationRoute.AGENDA.name) {
-      agendaLayout()
+      AgendaLayout(
+          agendaFilterDrawerState = agendaFilterDrawerState,
+          onSessionClick = onSessionClick
+      )
     }
 
     scene(route = AVANavigationRoute.VENUE.name) {

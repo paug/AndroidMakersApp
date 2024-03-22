@@ -38,8 +38,6 @@ class DataProvider {
         proxyDataProvider = GraphQLDataProvider()
 
         votesPublisher = proxyDataProvider.votesPublisher
-
-        computeSessions()
     }
 
     func vote(_ proposition: TalkFeedback.Proposition, for talkId: String) {
@@ -48,38 +46,6 @@ class DataProvider {
 
     func removeVote(_ proposition: TalkFeedback.Proposition, for talkId: String) {
         proxyDataProvider.removeVote(proposition, for: talkId)
-    }
-
-    private func computeSessions() {
-        proxyDataProvider.sessionsPublisher.sink(receiveCompletion: { error in
-            print("Error computing talks \(error)")
-        }) { [unowned self] sessionsData in
-            var sessions = [Session]()
-            for sessionData in sessionsData {
-                let speakers: [Speaker] = sessionData.speakers.compactMap {
-                    guard let name = $0.name else { return nil }
-                    return Speaker(
-                        name: name,
-                        // can force unwrap URL because URL(string: "") is returning a non nil url
-                        photoUrl: $0.photoUrl.map { URL(string: $0) ?? URL(string: "")! } ?? URL(string: "")!,
-                        company: $0.company ?? "", description: $0.bio ?? "")
-                }
-                let talk = Session(
-                    uid: sessionData.uid,
-                    title: sessionData.title,
-                    description: sessionData.description,
-                    duration: sessionData.endTime.timeIntervalSince(sessionData.startTime),
-                    speakers: speakers, tags: sessionData.tags, startTime: sessionData.startTime,
-                    room: Room(uid: sessionData.room.id, name: sessionData.room.name, index: sessionData.room.index),
-                    language: Language(from: sessionData.language),
-                    complexity: Session.Complexity(from: sessionData.complexity),
-                    questionUrl: URL(string: sessionData.questionUrl),
-                    youtubeUrl: URL(string: sessionData.youtubeUrl),
-                    slidesUrl: URL(string: sessionData.slidesUrl))
-                sessions.append(talk)
-            }
-            self.sessionsPublisher.send(sessions)
-        }.store(in: &cancellables)
     }
 }
 

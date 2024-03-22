@@ -29,7 +29,6 @@ import org.koin.core.parameter.parametersOf
 fun MainLayout(
     versionCode: String,
     versionName: String,
-    agendaLayout: @Composable () -> Unit,
     aboutActions: AboutActions,
     user: User?
 ) {
@@ -44,7 +43,6 @@ fun MainLayout(
       navigateToSpeakerDetails = { speakerId ->
         navigator.navigate("${MainNavigationRoute.SPEAKER_DETAIL.name}/$speakerId")
       },
-      agendaLayout = agendaLayout,
       versionCode = versionCode,
       versionName = versionName,
   )
@@ -54,7 +52,6 @@ fun MainLayout(
 private fun MainNavHost(
     versionCode: String,
     versionName: String,
-    agendaLayout: @Composable () -> Unit,
     mainNavController: Navigator,
     onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
     aboutActions: AboutActions,
@@ -70,7 +67,6 @@ private fun MainNavHost(
       AVALayout(
           versionCode = versionCode,
           versionName = versionName,
-          agendaLayout = agendaLayout,
           onSessionClick = onSessionClick,
           aboutActions = aboutActions,
           user = user,
