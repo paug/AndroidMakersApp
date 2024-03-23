@@ -5,23 +5,25 @@ package fr.paug.androidmakers.wear.ui.main
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.ScrollState
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.wear.compose.foundation.ExperimentalWearFoundationApi
 import androidx.wear.compose.material.MaterialTheme
@@ -45,23 +47,22 @@ import com.google.android.horologist.compose.material.Button
 import com.google.android.horologist.compose.material.Chip
 import com.google.android.horologist.compose.material.ListHeaderDefaults.firstItemPadding
 import com.google.android.horologist.compose.material.ResponsiveListHeader
-import com.google.android.horologist.compose.rotaryinput.rotaryWithScroll
+import com.google.android.horologist.compose.pager.PagerScreen
+import fr.androidmakers.domain.model.User
 import fr.paug.androidmakers.wear.R
+import fr.paug.androidmakers.wear.ui.session.list.SessionListScreen
+import fr.paug.androidmakers.wear.ui.signin.SignInScreen
 import fr.paug.androidmakers.wear.ui.theme.AndroidMakersWearTheme
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.compose.koinViewModel
+
+private val TAG = MainActivity::class.java.simpleName
 
 class MainActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-
-    val viewModel: MainViewModel by viewModel()
-    viewModel.logAgenda()
-
     setContent {
       installSplashScreen()
-
       WearApp()
-
       setTheme(android.R.style.Theme_DeviceDefault)
     }
   }
@@ -70,18 +71,57 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun WearApp() {
   val navController = rememberSwipeDismissableNavController()
-
   AndroidMakersWearTheme {
     AppScaffold {
-      SwipeDismissableNavHost(navController = navController, startDestination = "menu") {
-        composable("menu") {
-          GreetingScreen(
-              "Android",
-              onShowList = { navController.navigate("list") }
+      SwipeDismissableNavHost(navController = navController, startDestination = Navigation.MAIN) {
+        composable(Navigation.MAIN) {
+          MainScreen(
+              onSignInClick = { navController.navigate(Navigation.SIGN_IN) },
+              onSignOutClick = { TODO() }
           )
         }
         composable("list") {
           ListScreen()
+        }
+        composable(Navigation.SIGN_IN) {
+          SignInScreen(onDismissOrTimeout = navController::popBackStack)
+        }
+      }
+    }
+  }
+}
+
+
+@Composable
+fun MainScreen(
+    viewModel: MainViewModel = koinViewModel(),
+    onSignInClick: () -> Unit,
+    onSignOutClick: () -> Unit,
+) {
+  ScreenScaffold {
+    val pagerState: PagerState = rememberPagerState(initialPage = 1, pageCount = { 3 })
+    PagerScreen(
+        modifier = Modifier.fillMaxSize(),
+        state = pagerState
+    ) { page ->
+      when (page) {
+        0 -> {
+          val user: User? by viewModel.user.collectAsState()
+          SettingsScreen(
+              user = user,
+              onSignInClick = onSignInClick,
+              onSignOutInClick = onSignOutClick,
+          )
+        }
+
+        1 -> {
+          val sessionsDay1: List<SessionDetails>? by viewModel.sessionsDay1.collectAsState(initial = null)
+          SessionListScreen(sessions = sessionsDay1)
+        }
+
+        2 -> {
+          val sessionsDay2: List<SessionDetails>? by viewModel.sessionsDay2.collectAsState(initial = null)
+          SessionListScreen(sessions = sessionsDay2)
         }
       }
     }
@@ -89,28 +129,21 @@ fun WearApp() {
 }
 
 @Composable
-fun GreetingScreen(greetingName: String, onShowList: () -> Unit) {
-  val scrollState = ScrollState(0)
-
-  /* If you have enough items in your list, use [ScalingLazyColumn] which is an optimized
-   * version of LazyColumn for wear devices with some added features. For more information,
-   * see d.android.com/wear/compose.
-   */
-  ScreenScaffold(scrollState = scrollState) {
-    val padding = ScalingLazyColumnDefaults.padding(
-        first = ItemType.Text,
-        last = ItemType.Chip
-    )()
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(scrollState)
-            .rotaryWithScroll(scrollState)
-            .padding(padding),
-        verticalArrangement = Arrangement.Center
-    ) {
-      Greeting(greetingName = greetingName)
-      Chip(label = "Show List", onClick = onShowList)
+private fun SettingsScreen(
+    user: User?,
+    onSignInClick: () -> Unit,
+    onSignOutInClick: () -> Unit,
+) {
+  Box(
+      modifier = Modifier
+          .fillMaxSize()
+          .padding(16.dp),
+      contentAlignment = Alignment.Center
+  ) {
+    if (user == null) {
+      Chip(label = stringResource(R.string.main_signIn), onClick = onSignInClick)
+    } else {
+      Chip(label = stringResource(R.string.main_signOut), onClick = onSignOutInClick)
     }
   }
 }
@@ -179,7 +212,7 @@ fun Greeting(greetingName: String) {
         modifier = Modifier.fillMaxWidth(),
         textAlign = TextAlign.Center,
         color = MaterialTheme.colors.primary,
-        text = stringResource(R.string.hello_world, greetingName)
+        text = "Hello"
     )
   }
 }
@@ -230,7 +263,10 @@ fun SampleDialogContent(
 @WearPreviewFontScales
 @Composable
 fun GreetingScreenPreview() {
-  GreetingScreen("Preview Android", onShowList = {})
+  MainScreen(
+      onSignInClick = {},
+      onSignOutClick = {},
+  )
 }
 
 @WearPreviewDevices

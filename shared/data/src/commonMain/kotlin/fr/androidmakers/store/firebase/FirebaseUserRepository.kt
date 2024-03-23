@@ -6,7 +6,7 @@ import fr.androidmakers.domain.model.User
 import fr.androidmakers.domain.repo.UserRepository
 
 class FirebaseUserRepository : UserRepository {
-  override suspend fun getUser(): User? {
+  override fun getUser(): User? {
     return try {
       Firebase.auth.currentUser?.toUser()
   } catch (e: Exception) {

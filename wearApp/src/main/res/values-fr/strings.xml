@@ -1,0 +1,4 @@
+<resources>
+    <string name="main_signIn">Connexion</string>
+    <string name="main_signOut">Déconnexion</string>
+</resources>

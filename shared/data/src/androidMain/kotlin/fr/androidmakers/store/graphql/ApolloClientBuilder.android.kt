@@ -1,7 +1,6 @@
 package fr.androidmakers.store.graphql
 
 import android.content.Context
-import android.os.Build
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.http.HttpRequest
 import com.apollographql.apollo3.api.http.HttpResponse
@@ -12,7 +11,6 @@ import com.apollographql.apollo3.network.http.HttpInterceptor
 import com.apollographql.apollo3.network.http.HttpInterceptorChain
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.runBlocking
 
 actual class ApolloClientBuilder(
     context: Context,
@@ -29,9 +27,7 @@ actual class ApolloClientBuilder(
                 request.newBuilder()
                     .addHeader("conference", conference)
                     .apply {
-                      val token = runBlocking {
-                        Firebase.auth.currentUser?.getIdToken(false)?.result?.token
-                      }
+                      val token = Firebase.auth.currentUser?.getIdToken(false)?.result?.token
                       if (token != null) {
                         addHeader("Authorization", "Bearer $token")
                       }
