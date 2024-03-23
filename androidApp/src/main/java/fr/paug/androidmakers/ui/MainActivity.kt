@@ -9,8 +9,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
@@ -18,7 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
-import com.androidmakers.ui.about.AboutActions
+import com.androidmakers.ui.MainLayout
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -31,10 +29,8 @@ import dev.gitlive.firebase.auth.GoogleAuthProvider
 import dev.gitlive.firebase.auth.auth
 import fr.androidmakers.domain.model.Partner
 import fr.androidmakers.store.firebase.toUser
-import fr.paug.androidmakers.R
-import com.androidmakers.ui.MainLayout
 import fr.paug.androidmakers.BuildConfig
-import com.androidmakers.ui.agenda.AgendaLayout
+import fr.paug.androidmakers.R
 import fr.paug.androidmakers.ui.theme.AndroidMakersTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -81,14 +77,6 @@ class MainActivity : AppCompatActivity() {
             }
 
             MainLayout(
-                aboutActions = AboutActions(
-                    onFaqClick = ::onFaqClick,
-                    onCodeOfConductClick = ::onCodeOfConductClick,
-                    onXHashtagClick = ::onXHashtagClick,
-                    onXLogoClick = ::onXLogoClick,
-                    onYouTubeLogoClick = ::onYouTubeLogoClick,
-                    onSponsorClick = ::onSponsorClick,
-                ),
                 user = userState.value,
                 versionName = BuildConfig.VERSION_NAME,
                 versionCode = BuildConfig.VERSION_CODE.toString(),

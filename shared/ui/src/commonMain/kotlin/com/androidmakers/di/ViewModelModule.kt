@@ -1,5 +1,6 @@
 package com.androidmakers.di
 
+import com.androidmakers.ui.about.AboutViewModel
 import com.androidmakers.ui.agenda.AgendaLayoutViewModel
 import com.androidmakers.ui.agenda.AgendaPagerViewModel
 import com.androidmakers.ui.agenda.SessionDetailViewModel
@@ -17,4 +18,5 @@ val viewModelModule = module {
   factory { AgendaLayoutViewModel(get()) }
   factory { AgendaPagerViewModel(get(), get(), get()) }
   factory { (sessionId: String) -> SessionDetailViewModel(sessionId, get(), get(), get(), get(), get()) }
+  factory { AboutViewModel(get(), get(), get(), get(), get()) }
 }

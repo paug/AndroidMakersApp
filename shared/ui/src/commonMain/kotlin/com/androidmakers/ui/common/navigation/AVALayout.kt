@@ -39,7 +39,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.androidmakers.ui.about.AboutActions
 import com.androidmakers.ui.about.AboutScreen
 import com.androidmakers.ui.agenda.AgendaLayout
 import com.androidmakers.ui.speakers.SpeakerListViewModel
@@ -70,7 +69,6 @@ fun AVALayout(
     versionCode: String,
     versionName: String,
     onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
-    aboutActions: AboutActions,
     user: User?,
     navigateToSpeakerDetails: (String) -> Unit,
 ) {
@@ -184,7 +182,6 @@ fun AVALayout(
           avaNavController = avaNavController,
           onSessionClick = onSessionClick,
           agendaFilterDrawerState = agendaFilterDrawerState,
-          aboutActions = aboutActions,
           navigateToSpeakerDetails = navigateToSpeakerDetails
       )
     }
@@ -234,7 +231,6 @@ private fun AVANavHost(
     avaNavController: Navigator,
     onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
     agendaFilterDrawerState: DrawerState,
-    aboutActions: AboutActions,
     navigateToSpeakerDetails: (String) -> Unit,
 ) {
   NavHost(avaNavController, initialRoute = AVANavigationRoute.AGENDA.name) {
@@ -262,14 +258,13 @@ private fun AVANavHost(
     scene(route = AVANavigationRoute.ABOUT.name) {
       AboutScreen(
           versionCode = versionCode,
-          versionName = versionName,
-          aboutActions = aboutActions
+          versionName = versionName
       )
     }
 
     scene(route = AVANavigationRoute.SPONSORS.name) {
       SponsorsScreen(
-          onSponsorClick = aboutActions.onSponsorClick
+          onSponsorClick = {}
       )
     }
 

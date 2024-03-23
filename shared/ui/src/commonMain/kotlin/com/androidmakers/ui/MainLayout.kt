@@ -1,13 +1,10 @@
 package com.androidmakers.ui
 
-import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.Text
-import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import com.androidmakers.ui.about.AboutActions
 import com.androidmakers.ui.agenda.SessionDetailLayout
+import com.androidmakers.ui.agenda.SessionDetailViewModel
 import com.androidmakers.ui.common.navigation.AVALayout
 import com.androidmakers.ui.common.navigation.MainNavigationRoute
 import com.androidmakers.ui.model.Lce
@@ -15,7 +12,6 @@ import com.androidmakers.ui.speakers.SpeakerDetailsRoute
 import com.androidmakers.ui.speakers.SpeakerDetailsViewModel
 import fr.androidmakers.domain.model.SpeakerId
 import fr.androidmakers.domain.model.User
-import com.androidmakers.ui.agenda.SessionDetailViewModel
 import moe.tlaster.precompose.koin.koinViewModel
 import moe.tlaster.precompose.navigation.NavHost
 import moe.tlaster.precompose.navigation.Navigator
@@ -30,7 +26,6 @@ import org.koin.core.parameter.parametersOf
 fun MainLayout(
     versionCode: String,
     versionName: String,
-    aboutActions: AboutActions,
     user: User?
 ) {
   val navigator = rememberNavigator()
@@ -39,7 +34,6 @@ fun MainLayout(
       onSessionClick = { sessionId, roomId, startTimestamp, endTimestamp ->
         navigator.navigate("${MainNavigationRoute.SESSION_DETAIL.name}/$sessionId")
       },
-      aboutActions = aboutActions,
       user = user,
       navigateToSpeakerDetails = { speakerId ->
         navigator.navigate("${MainNavigationRoute.SPEAKER_DETAIL.name}/$speakerId")
@@ -55,7 +49,6 @@ private fun MainNavHost(
     versionName: String,
     mainNavController: Navigator,
     onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
-    aboutActions: AboutActions,
     user: User?,
     navigateToSpeakerDetails: (SpeakerId) -> Unit,
 ) {
@@ -69,7 +62,6 @@ private fun MainNavHost(
           versionCode = versionCode,
           versionName = versionName,
           onSessionClick = onSessionClick,
-          aboutActions = aboutActions,
           user = user,
           navigateToSpeakerDetails = navigateToSpeakerDetails
       )
