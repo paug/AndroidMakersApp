@@ -1,5 +1,6 @@
 package fr.androidmakers.domain.utils
 
+import android.text.format.DateUtils
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
@@ -46,4 +47,13 @@ actual fun LocalDate.formatMediumDate(): String {
       .toEpochMilliseconds()
   )
   return dateFormat.format(date).lowercase(Locale.getDefault())
+}
+
+actual fun formatTimeInterval(startDate: LocalDateTime, endDate: LocalDateTime): String {
+
+  return if (startDate.date == endDate.date) {
+    "${startDate.date.formatMediumDate()}, ${startDate.formatShortTime()} - ${endDate.formatShortTime()}"
+  } else {
+    "${startDate.date.formatMediumDate()}, ${startDate.formatShortTime()} - ${endDate.date.formatMediumDate()}, ${endDate.formatShortTime()}"
+  }
 }

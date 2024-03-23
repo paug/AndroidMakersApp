@@ -10,16 +10,12 @@
     <string name="ImageDesc_speaker_avatar">Speaker picture</string>
     <string name="ImageDesc_social_network_image">social network image</string>
     <string name="Detail_sessionNotFound">Unable to retrieve this session information.</string>
-    <string name="sessionDateWithRoomPlaceholder" translatable="false">%1$s, %2$s</string>
     <string name="agenda_empty_screen">We cannot load the agenda.\nPlease check your network
         connection and wait for this view to refresh.
     </string>
 
     <string name="session_selected">Session added to favorites</string>
     <string name="session_deselected">Session removed from favorites</string>
-
-    <string name="session_description_placeholder_with_language" translatable="false">%1$s / %2$s / %3$s</string>
-    <string name="session_description_placeholder" translatable="false">%1$s / %2$s</string>
 
     <string name="unable_to_launch_video_intent">Sorry, we are unable to launch the video at this time :(</string>
 
@@ -33,8 +29,6 @@
     <string name="media_sponsor">Media</string>
     <string name="location_sponsor">Location</string>
     <string name="specialthanks_sponsor">Special Thanks</string>
-
-
     <string name="permission_notifications_rationale_title">Permission denied</string>
     <string name="permission_notifications_rationale_text">Without this permission the app is unable to send you notifications. Are you sure you want to deny this permission?</string>
     <string name="permission_notifications_rationale_positive">Go to Settings</string>

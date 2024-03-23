@@ -21,7 +21,6 @@ import kotlinx.datetime.toInstant
 import moe.tlaster.precompose.viewmodel.ViewModel
 import moe.tlaster.precompose.viewmodel.viewModelScope
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class SessionDetailViewModel(
     sessionId: String,
     sessionsRepository: SessionsRepository,
@@ -56,8 +55,8 @@ class SessionDetailViewModel(
               session = session.getOrThrow(),
               room = room.getOrThrow(),
               speakers = getSpeakers(session.getOrThrow()),
-              startTimestamp = session.getOrThrow().startsAt.toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds(),
-              endTimestamp = session.getOrThrow().endsAt.toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds(),
+              startTimestamp = session.getOrThrow().startsAt.toInstant(TimeZone.currentSystemDefault()),
+              endTimestamp = session.getOrThrow().endsAt.toInstant(TimeZone.currentSystemDefault()),
               isBookmarked = isBookmarked,
           )
       )

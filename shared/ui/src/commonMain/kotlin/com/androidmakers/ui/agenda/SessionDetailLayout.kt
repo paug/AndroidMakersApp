@@ -61,10 +61,13 @@ import dev.icerock.moko.resources.compose.stringResource
 import fr.androidmakers.domain.model.Room
 import fr.androidmakers.domain.model.Session
 import fr.androidmakers.domain.model.Speaker
+import fr.androidmakers.domain.utils.formatTimeInterval
 import fr.androidmakers.domain.utils.removeHtmlTags
 import fr.paug.androidmakers.ui.MR
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -199,7 +202,7 @@ private fun SessionDetails(sessionDetails: SessionDetailState, formattedDateAndR
             .height(16.dp)
     )
 
-    if (Clock.System.now() > Instant.fromEpochMilliseconds(sessionDetails.startTimestamp)) {
+    if (Clock.System.now() > sessionDetails.startTimestamp) {
       /*SessionFeedbackContainer(
           openFeedback = AndroidMakersApplication.instance().openFeedback,
           sessionId = sessionDetails.session.id,
@@ -330,22 +333,16 @@ private fun Speaker(
 
 
 @Composable
-private fun getFormattedDateAndRoom(room: Room, startTimestamp: Long, endTimestamp: Long): String {
-  /*val context = LocalContext.current
-  val sessionDate = DateUtils.formatDateRange(
-      context,
-      Formatter(context.resources.configuration.locale),
-      startTimestamp,
-      endTimestamp,
-      DateUtils.FORMAT_SHOW_WEEKDAY or DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_YEAR,
-      "Europe/Paris"
-  ).toString()
+private fun getFormattedDateAndRoom(room: Room, startTimestamp: Instant, endTimestamp: Instant): String {
+  val sessionDate = formatTimeInterval(
+      startTimestamp.toLocalDateTime(TimeZone.currentSystemDefault()),
+      endTimestamp.toLocalDateTime(TimeZone.currentSystemDefault())
+  )
   return if (room.name.isNotEmpty()) {
-    stringResource(R.string.sessionDateWithRoomPlaceholder, sessionDate, room.name)
+    stringResource(MR.strings.session_date_with_room, sessionDate, room.name)
   } else {
     sessionDate
-  }*/
-  return ""
+  }
 }
 
 private fun shareSession(

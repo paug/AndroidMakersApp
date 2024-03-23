@@ -74,8 +74,13 @@
     <string name="speaker_search_placeholder">Search</string>
     <string name="feedbackWaiting">This talk cannot be reviewed yet. Please come back after attending it.</string>
 
-    <string name="info" translatable="false">infos</string>
+    <string name="info">infos</string>
 
     <string name="share">Share the session</string>
+
+    <string name="session_description_placeholder_with_language" translatable="false">%1$s / %2$s / %3$s</string>
+    <string name="session_description_placeholder" translatable="false">%1$s / %2$s</string>
+    <string name="session_date_with_room">%1$s, %2$s</string>
+
 
 </resources>
