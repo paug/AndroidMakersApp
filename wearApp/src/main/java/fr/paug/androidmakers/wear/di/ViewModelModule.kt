@@ -6,6 +6,6 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val androidViewModelModule = module {
-  viewModel { MainViewModel(get(), get(), get(), get()) }
+  viewModel { MainViewModel(get(), get(), get(), get(), get()) }
   viewModel { SignInViewModel(get(), get()) }
 }

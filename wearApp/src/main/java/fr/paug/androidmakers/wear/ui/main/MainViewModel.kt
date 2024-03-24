@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import fr.androidmakers.domain.interactor.GetAgendaUseCase
+import fr.androidmakers.domain.interactor.GetFavoriteSessionsUseCase
 import fr.androidmakers.domain.interactor.SyncBookmarksUseCase
 import fr.androidmakers.domain.model.Agenda
 import fr.androidmakers.domain.model.User
@@ -12,6 +13,7 @@ import fr.androidmakers.domain.repo.UserRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -32,8 +34,9 @@ private val DAY_2_DATE = DAY_1_DATE.plus(1, DateTimeUnit.DAY)
 class MainViewModel(
     application: Application,
     private val userRepository: UserRepository,
-    private val getAgendaUseCase: GetAgendaUseCase,
-    val syncBookmarksUseCase: SyncBookmarksUseCase,
+    getAgendaUseCase: GetAgendaUseCase,
+    syncBookmarksUseCase: SyncBookmarksUseCase,
+    getFavoriteSessionsUseCase: GetFavoriteSessionsUseCase,
 ) : AndroidViewModel(application) {
   private val _user = MutableStateFlow<User?>(null)
 
@@ -54,7 +57,10 @@ class MainViewModel(
 
   private val sessions: Flow<List<UISession>> = getAgendaUseCase()
       .filter { it.isSuccess }
-      .map { it.getOrThrow().toUISessions() }
+      .map { it.getOrThrow() }
+      .combine(getFavoriteSessionsUseCase()) { agenda, favoriteSessions ->
+        agenda.toUISessions(favoriteSessions)
+      }
 
   val sessionsDay1 = sessions.map { sessions -> sessions.filter { it.session.startsAt.date == DAY_1_DATE } }
 
@@ -73,7 +79,7 @@ class MainViewModel(
   }
 }
 
-private fun Agenda.toUISessions(): List<UISession> {
+private fun Agenda.toUISessions(favoriteSessions: Set<String>): List<UISession> {
   return sessions.values.mapNotNull { session ->
     UISession(
         session = session,
@@ -86,7 +92,8 @@ private fun Agenda.toUISessions(): List<UISession> {
         room = rooms[session.roomId] ?: run {
           Log.d(TAG, "Room ${session.roomId} not found")
           return@mapNotNull null
-        }
+        },
+        isBookmarked = session.id in favoriteSessions,
     )
   }
 }

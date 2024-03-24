@@ -9,14 +9,20 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Bookmark
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.foundation.lazy.items
 import androidx.wear.compose.material.CircularProgressIndicator
+import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.LocalContentColor
 import androidx.wear.compose.material.LocalTextStyle
 import androidx.wear.compose.material.MaterialTheme
@@ -64,6 +70,19 @@ private fun SessionList(sessions: List<UISession>, title: String) {
   }
 }
 
+fun Modifier.matchRowSize(): Modifier {
+  return layout { measurable, constraints ->
+    if (constraints.maxHeight == Constraints.Infinity) {
+      layout(0, 0) {}
+    } else {
+      val placeable = measurable.measure(constraints)
+      layout(placeable.width, placeable.height) {
+        placeable.place(0, 0)
+      }
+    }
+  }
+}
+
 @Composable
 private fun SessionItem(session: UISession) {
   TitleCard(
@@ -78,7 +97,17 @@ private fun SessionItem(session: UISession) {
           ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
+              if (session.isBookmarked) {
+                Icon(
+                    modifier = Modifier.size(18.dp),
+                    imageVector = Icons.Rounded.Bookmark,
+                    tint = MaterialTheme.colors.secondaryVariant,
+                    contentDescription = "Bookmarked"
+                )
+              }
+
               Text(
                   modifier = Modifier.weight(1F),
                   text = session.session.startsAt.time.toString(),
@@ -162,7 +191,8 @@ private fun LoadedSessionListScreenPreview() {
               room = Room(
                   id = "1",
                   name = "Room 1"
-              )
+              ),
+              isBookmarked = true,
           ),
           UISession(
               session = Session(
@@ -185,7 +215,8 @@ private fun LoadedSessionListScreenPreview() {
               room = Room(
                   id = "2",
                   name = "Room 2"
-              )
+              ),
+              isBookmarked = false,
           ),
       ),
       stringResource(id = R.string.main_day1)

@@ -53,7 +53,7 @@ dependencies {
   implementation(libs.androidx.splashscreen)
   implementation(libs.wear.compose.material)
   implementation(libs.wear.compose.foundation)
-  implementation(libs.androidx.material.icons.core)
+  implementation(libs.androidx.material.icons.extended)
   implementation(libs.horologist.composables)
   implementation(libs.horologist.compose.layout)
   implementation(libs.horologist.compose.material)

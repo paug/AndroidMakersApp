@@ -8,6 +8,7 @@ data class UISession(
     val session: Session,
     val speakers: List<Speaker>,
     val room: Room,
+    val isBookmarked: Boolean,
 ) {
   val formattedDuration: String = session.duration.inWholeMinutes.toString() + " min"
 }
