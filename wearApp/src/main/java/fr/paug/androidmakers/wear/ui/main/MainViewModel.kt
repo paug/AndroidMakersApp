@@ -10,6 +10,7 @@ import fr.androidmakers.domain.interactor.SyncBookmarksUseCase
 import fr.androidmakers.domain.model.Agenda
 import fr.androidmakers.domain.model.User
 import fr.androidmakers.domain.repo.UserRepository
+import fr.paug.androidmakers.wear.data.LocalPreferencesRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -33,7 +34,8 @@ private val DAY_2_DATE = DAY_1_DATE.plus(1, DateTimeUnit.DAY)
 
 class MainViewModel(
     application: Application,
-    private val userRepository: UserRepository,
+    userRepository: UserRepository,
+    localPreferencesRepository: LocalPreferencesRepository,
     getAgendaUseCase: GetAgendaUseCase,
     syncBookmarksUseCase: SyncBookmarksUseCase,
     getFavoriteSessionsUseCase: GetFavoriteSessionsUseCase,
@@ -60,6 +62,13 @@ class MainViewModel(
       .map { it.getOrThrow() }
       .combine(getFavoriteSessionsUseCase()) { agenda, favoriteSessions ->
         agenda.toUISessions(favoriteSessions)
+      }
+      .combine(localPreferencesRepository.showOnlyBookmarkedSessions) { sessions, showOnlyBookmarked ->
+        if (showOnlyBookmarked) {
+          sessions.filter { it.isBookmarked }
+        } else {
+          sessions
+        }
       }
 
   val sessionsDay1 = sessions.map { sessions -> sessions.filter { it.session.startsAt.date == DAY_1_DATE } }

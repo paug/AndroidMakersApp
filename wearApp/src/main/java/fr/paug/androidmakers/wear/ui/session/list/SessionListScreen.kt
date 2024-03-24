@@ -16,9 +16,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.layout
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.foundation.lazy.items
 import androidx.wear.compose.material.CircularProgressIndicator
@@ -44,16 +43,25 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.Month
 
 @Composable
-fun SessionListScreen(sessions: List<UISession>?, title: String) {
+fun SessionListScreen(
+    sessions: List<UISession>?,
+    title: String,
+) {
   if (sessions == null) {
     Loading()
   } else {
-    SessionList(sessions, title)
+    SessionList(
+        sessions = sessions,
+        title = title,
+    )
   }
 }
 
 @Composable
-private fun SessionList(sessions: List<UISession>, title: String) {
+private fun SessionList(
+    sessions: List<UISession>,
+    title: String,
+) {
   val columnState = rememberResponsiveColumnState()
   ScalingLazyColumn(
       columnState = columnState,
@@ -64,20 +72,18 @@ private fun SessionList(sessions: List<UISession>, title: String) {
         Text(text = title)
       }
     }
-    items(sessions, key = { it.session.id }) { session ->
-      SessionItem(session)
-    }
-  }
-}
-
-fun Modifier.matchRowSize(): Modifier {
-  return layout { measurable, constraints ->
-    if (constraints.maxHeight == Constraints.Infinity) {
-      layout(0, 0) {}
+    if (sessions.isEmpty()) {
+      item {
+        Text(
+            text = stringResource(id = R.string.session_list_noSessions),
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.caption2,
+        )
+      }
     } else {
-      val placeable = measurable.measure(constraints)
-      layout(placeable.width, placeable.height) {
-        placeable.place(0, 0)
+      items(sessions, key = { it.session.id }) { session ->
+        SessionItem(session)
       }
     }
   }

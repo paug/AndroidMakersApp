@@ -63,6 +63,7 @@ dependencies {
   implementation(libs.wear.compose.navigation)
   implementation(platform(libs.firebase.bom))
   implementation(libs.firebase.auth.ktx)
+  implementation(libs.kprefs)
   coreLibraryDesugaring(libs.desugar.jdk.libs)
   debugImplementation(libs.compose.ui.tooling)
 
