@@ -8,13 +8,11 @@ import com.google.android.horologist.auth.composables.dialogs.SignedInConfirmati
 import com.google.android.horologist.auth.composables.screens.AuthErrorScreen
 import com.google.android.horologist.auth.ui.googlesignin.signin.GoogleSignInScreen
 import com.google.android.horologist.compose.layout.ScreenScaffold
-import org.koin.androidx.compose.koinViewModel
 
 private const val TAG = "SignInScreen"
 
 @Composable
 fun SignInScreen(
-    viewModel: SignInViewModel = koinViewModel(),
     onSignInSuccess: () -> Unit,
     onDismissOrTimeout: () -> Unit,
 ) {
@@ -29,10 +27,11 @@ fun SignInScreen(
         },
         viewModel = GoogleSignInViewModel(
             onSignInSuccess = {
-              viewModel.onSignInSuccess()
               onSignInSuccess()
             },
-            onSignInFailed = viewModel::onSignInFailed
+            onSignInFailed = {
+              Log.d(TAG, "onSignInFailed")
+            }
         )
     ) { successState ->
       SignedInConfirmationDialog(

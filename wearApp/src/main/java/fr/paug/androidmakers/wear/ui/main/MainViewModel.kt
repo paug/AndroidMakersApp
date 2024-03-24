@@ -19,10 +19,12 @@ import fr.paug.androidmakers.wear.applicationContext
 import fr.paug.androidmakers.wear.data.LocalPreferencesRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
@@ -43,7 +45,7 @@ class MainViewModel(
     private val userRepository: UserRepository,
     localPreferencesRepository: LocalPreferencesRepository,
     getAgendaUseCase: GetAgendaUseCase,
-    syncBookmarksUseCase: SyncBookmarksUseCase,
+    private val syncBookmarksUseCase: SyncBookmarksUseCase,
     getFavoriteSessionsUseCase: GetFavoriteSessionsUseCase,
 ) : AndroidViewModel(application) {
   private val _user = MutableStateFlow<User?>(null)
@@ -53,17 +55,20 @@ class MainViewModel(
   init {
     viewModelScope.launch {
       _user.emit(userRepository.getUser())
-
-      val currentUser = _user.value
-      if (currentUser != null) {
-        // fire & forget
-        // This is racy but oh well...
-        syncBookmarksUseCase(currentUser.id)
-      }
+      maybeSyncBookmarks()
     }
   }
 
-  private val sessions: Flow<List<UISession>> = getAgendaUseCase()
+  private suspend fun maybeSyncBookmarks() {
+    val currentUser = _user.value
+    if (currentUser != null) {
+      Log.d(TAG, "Syncing bookmarks")
+      syncBookmarksUseCase(currentUser.id)
+      Log.d(TAG, "Bookmarks synced")
+    }
+  }
+
+  private val sessions: Flow<List<UISession>?> = getAgendaUseCase()
       .filter { it.isSuccess }
       .map { it.getOrThrow() }
       .combine(getFavoriteSessionsUseCase()) { agenda, favoriteSessions ->
@@ -76,10 +81,11 @@ class MainViewModel(
           sessions
         }
       }
+      .stateIn(viewModelScope, SharingStarted.Lazily, null)
 
-  val sessionsDay1 = sessions.map { sessions -> sessions.filter { it.session.startsAt.date == DAY_1_DATE } }
+  val sessionsDay1 = sessions.map { sessions -> sessions?.filter { it.session.startsAt.date == DAY_1_DATE } }
 
-  val sessionsDay2 = sessions.map { sessions -> sessions.filter { it.session.startsAt.date == DAY_2_DATE } }
+  val sessionsDay2 = sessions.map { sessions -> sessions?.filter { it.session.startsAt.date == DAY_2_DATE } }
 
   /**
    * Get the day of the conference, based on the current date.
@@ -95,6 +101,9 @@ class MainViewModel(
 
   fun onSignInSuccess() {
     _user.value = userRepository.getUser()
+    viewModelScope.launch {
+      maybeSyncBookmarks()
+    }
   }
 
   fun signOut() {

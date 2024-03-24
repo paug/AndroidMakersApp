@@ -4,9 +4,9 @@
     <string name="main_day1">Day 1</string>
     <string name="main_day2">Day 2</string>
 
-    <string name="session_list_noSessions">No bookmarked sessions</string>
+    <string name="session_list_noSessions">No favorite sessions</string>
 
     <string name="settings_signIn">Sign in</string>
     <string name="settings_signOut">Sign out</string>
-    <string name="settings_showBookmarksOnly">Show bookmarks only</string>
+    <string name="settings_showBookmarksOnly">Show favorites only</string>
 </resources>

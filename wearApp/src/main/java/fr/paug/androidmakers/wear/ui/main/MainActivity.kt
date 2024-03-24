@@ -42,22 +42,27 @@ fun WearApp(
     viewModel: MainViewModel = koinViewModel(),
 ) {
   val navController = rememberSwipeDismissableNavController()
+  val onSignInClick: () -> Unit = {
+    navController.navigate(Navigation.SIGN_IN)
+  }
+  val onSignInDismissOrTimeout: () -> Unit = {
+    navController.popBackStack()
+  }
+  val onSignInSuccess = viewModel::onSignInSuccess
   AndroidMakersWearTheme {
     AppScaffold {
       SwipeDismissableNavHost(navController = navController, startDestination = Navigation.MAIN) {
         composable(Navigation.MAIN) {
           MainScreen(
-              onSignInClick = { navController.navigate(Navigation.SIGN_IN) },
+              onSignInClick = onSignInClick,
               onSignOutClick = { viewModel.signOut() },
               viewModel = viewModel,
           )
         }
         composable(Navigation.SIGN_IN) {
           SignInScreen(
-              onSignInSuccess = {
-                viewModel.onSignInSuccess()
-              },
-              onDismissOrTimeout = navController::popBackStack
+              onSignInSuccess = onSignInSuccess,
+              onDismissOrTimeout = onSignInDismissOrTimeout
           )
         }
       }
@@ -73,13 +78,16 @@ fun MainScreen(
 ) {
   ScreenScaffold {
     val pagerState: PagerState = rememberPagerState(initialPage = viewModel.getConferenceDay() + 1, pageCount = { 3 })
+    val user: User? by viewModel.user.collectAsState()
+    val sessionsDay1: List<UISession>? by viewModel.sessionsDay1.collectAsState(initial = null)
+    val sessionsDay2: List<UISession>? by viewModel.sessionsDay2.collectAsState(initial = null)
+
     PagerScreen(
         modifier = Modifier.fillMaxSize(),
         state = pagerState
     ) { page ->
       when (page) {
         0 -> {
-          val user: User? by viewModel.user.collectAsState()
           SettingsScreen(
               user = user,
               onSignInClick = onSignInClick,
@@ -88,12 +96,10 @@ fun MainScreen(
         }
 
         1 -> {
-          val sessionsDay1: List<UISession>? by viewModel.sessionsDay1.collectAsState(initial = null)
           SessionListScreen(sessions = sessionsDay1, title = stringResource(id = R.string.main_day1))
         }
 
         2 -> {
-          val sessionsDay2: List<UISession>? by viewModel.sessionsDay2.collectAsState(initial = null)
           SessionListScreen(sessions = sessionsDay2, title = stringResource(id = R.string.main_day2))
         }
       }
