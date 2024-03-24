@@ -15,6 +15,7 @@ private const val TAG = "SignInScreen"
 @Composable
 fun SignInScreen(
     viewModel: SignInViewModel = koinViewModel(),
+    onSignInSuccess: () -> Unit,
     onDismissOrTimeout: () -> Unit,
 ) {
   ScreenScaffold {
@@ -26,7 +27,13 @@ fun SignInScreen(
         failedContent = {
           AuthErrorScreen()
         },
-        viewModel = GoogleSignInViewModel(onSignInSuccess = viewModel::onSignInSuccess, onSignInFailed = viewModel::onSignInFailed)
+        viewModel = GoogleSignInViewModel(
+            onSignInSuccess = {
+              viewModel.onSignInSuccess()
+              onSignInSuccess()
+            },
+            onSignInFailed = viewModel::onSignInFailed
+        )
     ) { successState ->
       SignedInConfirmationDialog(
           modifier = Modifier.fillMaxSize(),

@@ -4,12 +4,18 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import fr.androidmakers.domain.interactor.GetAgendaUseCase
 import fr.androidmakers.domain.interactor.GetFavoriteSessionsUseCase
 import fr.androidmakers.domain.interactor.SyncBookmarksUseCase
 import fr.androidmakers.domain.model.Agenda
 import fr.androidmakers.domain.model.User
 import fr.androidmakers.domain.repo.UserRepository
+import fr.paug.androidmakers.wear.R
+import fr.paug.androidmakers.wear.applicationContext
 import fr.paug.androidmakers.wear.data.LocalPreferencesRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,7 +40,7 @@ private val DAY_2_DATE = DAY_1_DATE.plus(1, DateTimeUnit.DAY)
 
 class MainViewModel(
     application: Application,
-    userRepository: UserRepository,
+    private val userRepository: UserRepository,
     localPreferencesRepository: LocalPreferencesRepository,
     getAgendaUseCase: GetAgendaUseCase,
     syncBookmarksUseCase: SyncBookmarksUseCase,
@@ -85,6 +91,23 @@ class MainViewModel(
     } else {
       1
     }
+  }
+
+  fun onSignInSuccess() {
+    _user.value = userRepository.getUser()
+  }
+
+  fun signOut() {
+    val googleSignInClient = GoogleSignIn.getClient(
+        applicationContext,
+        GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(applicationContext.getString(R.string.default_web_client_id))
+            .build()
+    )
+    googleSignInClient.signOut()
+    googleSignInClient.revokeAccess()
+    Firebase.auth.signOut()
+    _user.value = null
   }
 }
 
