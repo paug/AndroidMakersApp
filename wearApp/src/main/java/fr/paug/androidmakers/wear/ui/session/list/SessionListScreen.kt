@@ -100,7 +100,7 @@ private fun SessionItem(session: UISession) {
         Spacer(modifier = Modifier.height(2.dp))
         Text(
             text = session.speakers.joinToString { it.getFullNameAndCompany() },
-            color = MaterialTheme.colors.primary,
+            color = MaterialTheme.colors.primaryVariant,
         )
         Spacer(modifier = Modifier.height(4.dp))
       }
