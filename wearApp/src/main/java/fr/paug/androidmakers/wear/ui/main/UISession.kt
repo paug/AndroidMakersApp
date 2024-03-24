@@ -4,8 +4,10 @@ import fr.androidmakers.domain.model.Room
 import fr.androidmakers.domain.model.Session
 import fr.androidmakers.domain.model.Speaker
 
-data class SessionDetails(
+data class UISession(
     val session: Session,
     val speakers: List<Speaker>,
     val room: Room,
-)
+) {
+  val formattedDuration: String = session.duration.inWholeMinutes.toString() + " min"
+}

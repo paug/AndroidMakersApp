@@ -1,14 +1,14 @@
 package fr.androidmakers.store.graphql
 
-import fr.androidmakers.store.graphql.fragment.RoomDetails
-import fr.androidmakers.store.graphql.fragment.SessionDetails
-import fr.androidmakers.store.graphql.fragment.SpeakerDetails
 import fr.androidmakers.domain.model.Complexity
 import fr.androidmakers.domain.model.Room
 import fr.androidmakers.domain.model.Session
 import fr.androidmakers.domain.model.SocialsItem
 import fr.androidmakers.domain.model.Speaker
 import fr.androidmakers.domain.model.Venue
+import fr.androidmakers.store.graphql.fragment.RoomDetails
+import fr.androidmakers.store.graphql.fragment.SessionDetails
+import fr.androidmakers.store.graphql.fragment.SpeakerDetails
 
 fun SpeakerDetails.toSpeaker(): Speaker {
   return Speaker(

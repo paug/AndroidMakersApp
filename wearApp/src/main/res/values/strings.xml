@@ -2,4 +2,6 @@
     <string name="app_name" translatable="false">Android Makers by droidcon</string>
     <string name="main_signIn">Sign in</string>
     <string name="main_signOut">Sign out</string>
+    <string name="main_day1">Day 1</string>
+    <string name="main_day2">Day 2</string>
 </resources>

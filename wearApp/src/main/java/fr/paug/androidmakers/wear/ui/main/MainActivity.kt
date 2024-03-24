@@ -99,7 +99,7 @@ fun MainScreen(
     onSignOutClick: () -> Unit,
 ) {
   ScreenScaffold {
-    val pagerState: PagerState = rememberPagerState(initialPage = 1, pageCount = { 3 })
+    val pagerState: PagerState = rememberPagerState(initialPage = viewModel.getConferenceDay() + 1, pageCount = { 3 })
     PagerScreen(
         modifier = Modifier.fillMaxSize(),
         state = pagerState
@@ -115,13 +115,13 @@ fun MainScreen(
         }
 
         1 -> {
-          val sessionsDay1: List<SessionDetails>? by viewModel.sessionsDay1.collectAsState(initial = null)
-          SessionListScreen(sessions = sessionsDay1)
+          val sessionsDay1: List<UISession>? by viewModel.sessionsDay1.collectAsState(initial = null)
+          SessionListScreen(sessions = sessionsDay1, title = stringResource(id = R.string.main_day1))
         }
 
         2 -> {
-          val sessionsDay2: List<SessionDetails>? by viewModel.sessionsDay2.collectAsState(initial = null)
-          SessionListScreen(sessions = sessionsDay2)
+          val sessionsDay2: List<UISession>? by viewModel.sessionsDay2.collectAsState(initial = null)
+          SessionListScreen(sessions = sessionsDay2, title = stringResource(id = R.string.main_day2))
         }
       }
     }
