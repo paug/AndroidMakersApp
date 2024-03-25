@@ -317,7 +317,6 @@ private fun Speakers(
       }
     }
   }
-
 }
 
 @Composable

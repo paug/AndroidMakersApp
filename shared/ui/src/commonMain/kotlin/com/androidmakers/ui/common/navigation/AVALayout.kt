@@ -1,5 +1,8 @@
 package com.androidmakers.ui.common.navigation
 
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -57,6 +60,7 @@ import moe.tlaster.precompose.navigation.NavOptions
 import moe.tlaster.precompose.navigation.Navigator
 import moe.tlaster.precompose.navigation.PopUpTo
 import moe.tlaster.precompose.navigation.rememberNavigator
+import moe.tlaster.precompose.navigation.transition.NavTransition
 
 /**
  * AVA stands for Agenda/Venue/About.
@@ -68,7 +72,7 @@ import moe.tlaster.precompose.navigation.rememberNavigator
 fun AVALayout(
     versionCode: String,
     versionName: String,
-    onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
+    onSessionClick: (sessionId: String) -> Unit,
     user: User?,
     navigateToSpeakerDetails: (String) -> Unit,
 ) {
@@ -229,24 +233,33 @@ private fun AVANavHost(
     versionCode: String,
     versionName: String,
     avaNavController: Navigator,
-    onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
+    onSessionClick: (sessionId: String) -> Unit,
     agendaFilterDrawerState: DrawerState,
     navigateToSpeakerDetails: (String) -> Unit,
 ) {
   NavHost(avaNavController, initialRoute = AVANavigationRoute.AGENDA.name) {
 
-    scene(route = AVANavigationRoute.AGENDA.name) {
+    scene(
+      route = AVANavigationRoute.AGENDA.name,
+      navTransition = defaultNavTransition
+    ) {
       AgendaLayout(
           agendaFilterDrawerState = agendaFilterDrawerState,
           onSessionClick = onSessionClick
       )
     }
 
-    scene(route = AVANavigationRoute.VENUE.name) {
+    scene(
+      route = AVANavigationRoute.VENUE.name,
+      navTransition = defaultNavTransition
+    ) {
       VenuePager()
     }
 
-    scene(route = AVANavigationRoute.SPEAKERS.name) {
+    scene(
+      route = AVANavigationRoute.SPEAKERS.name,
+      navTransition = defaultNavTransition
+    ) {
 
       val speakerViewModel = koinViewModel(vmClass = SpeakerListViewModel::class)
       SpeakerScreen(
@@ -255,18 +268,30 @@ private fun AVANavHost(
       )
     }
 
-    scene(route = AVANavigationRoute.ABOUT.name) {
+    scene(
+      route = AVANavigationRoute.ABOUT.name,
+      navTransition = defaultNavTransition
+    ) {
       AboutScreen(
           versionCode = versionCode,
           versionName = versionName
       )
     }
 
-    scene(route = AVANavigationRoute.SPONSORS.name) {
+    scene(
+      route = AVANavigationRoute.SPONSORS.name,
+      navTransition = defaultNavTransition
+    ) {
       SponsorsScreen(
           onSponsorClick = {}
       )
     }
-
   }
 }
+
+private val defaultNavTransition = NavTransition(
+  createTransition = fadeIn(),
+  pauseTransition = fadeOut(),
+  resumeTransition = fadeIn(),
+  destroyTransition = fadeOut()
+)
