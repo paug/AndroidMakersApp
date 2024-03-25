@@ -7,6 +7,7 @@ import fr.androidmakers.domain.interactor.GetFavoriteSessionsUseCase
 import fr.androidmakers.domain.interactor.GetPartnersUseCase
 import fr.androidmakers.domain.interactor.OpenCocUseCase
 import fr.androidmakers.domain.interactor.OpenFaqUseCase
+import fr.androidmakers.domain.interactor.OpenLinkUseCase
 import fr.androidmakers.domain.interactor.OpenMapUseCase
 import fr.androidmakers.domain.interactor.OpenPartnerLinkUseCase
 import fr.androidmakers.domain.interactor.OpenXAccountUseCase
@@ -34,4 +35,5 @@ val domainModule = module {
   factory { GetPartnersUseCase(get()) }
   factory { GetFavoriteSessionsUseCase(get()) }
   factory { OpenPartnerLinkUseCase(get()) }
+  factory { OpenLinkUseCase(get()) }
 }

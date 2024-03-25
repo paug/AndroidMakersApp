@@ -78,7 +78,6 @@ private fun MainNavHost(
       SessionDetailScreen(
           viewModel = sessionDetailViewModel,
           onBackClick = { mainNavController.popBackStack() },
-          onBookmarkClick = { bookmarked -> sessionDetailViewModel.bookmark(bookmarked) },
       )
     }
 

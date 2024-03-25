@@ -1,30 +1,23 @@
 package com.androidmakers.ui.agenda
 
-import androidx.compose.runtime.Composable
 import com.androidmakers.ui.model.Lce
 import com.androidmakers.ui.model.SessionDetailState
-import dev.icerock.moko.resources.compose.stringResource
+import fr.androidmakers.domain.interactor.OpenLinkUseCase
 import fr.androidmakers.domain.interactor.SetSessionBookmarkUseCase
 import fr.androidmakers.domain.interactor.ShareSessionUseCase
-import fr.androidmakers.domain.model.Room
-import fr.androidmakers.domain.model.Session
-import fr.androidmakers.domain.model.Speaker
+import fr.androidmakers.domain.model.SocialsItem
 import fr.androidmakers.domain.repo.BookmarksRepository
 import fr.androidmakers.domain.repo.RoomsRepository
 import fr.androidmakers.domain.repo.SessionsRepository
 import fr.androidmakers.domain.repo.SpeakersRepository
 import fr.androidmakers.domain.utils.formatTimeInterval
-import fr.paug.androidmakers.ui.MR
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flattenMerge
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
-import kotlinx.datetime.toLocalDateTime
 import moe.tlaster.precompose.viewmodel.ViewModel
 import moe.tlaster.precompose.viewmodel.viewModelScope
 
@@ -37,6 +30,7 @@ class SessionDetailViewModel(
     private val speakersRepository: SpeakersRepository,
     private val setSessionBookmarkUseCase: SetSessionBookmarkUseCase,
     private val shareSessionUseCase: ShareSessionUseCase,
+  private val openLinkUseCase: OpenLinkUseCase,
 ) : ViewModel() {
 
   private val session = sessionsRepository.getSession(sessionId)
@@ -101,5 +95,9 @@ class SessionDetailViewModel(
       shareSessionUseCase(
           it, speakers.first(), formattedDateAndRoom.first())
     }
+  }
+
+  fun openLink(socialsItem: SocialsItem) {
+    socialsItem.url?.let { openLinkUseCase(it) }
   }
 }
