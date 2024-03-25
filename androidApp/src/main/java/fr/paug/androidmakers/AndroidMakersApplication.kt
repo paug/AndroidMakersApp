@@ -12,7 +12,6 @@ class AndroidMakersApplication : Application() {
   lateinit var openFeedback: OpenFeedback
 
   override fun onCreate() {
-    instance_ = this
     super.onCreate()
 
     DependenciesBuilder(this).inject(
@@ -29,12 +28,5 @@ class AndroidMakersApplication : Application() {
             databaseUrl = "https://open-feedback-42.firebaseio.com"
         )
     )
-  }
-
-  companion object {
-    private var instance_: AndroidMakersApplication? = null
-    fun instance(): AndroidMakersApplication {
-      return instance_!!
-    }
   }
 }

@@ -66,4 +66,15 @@
 
     <string name="speaker_search_placeholder">Recherche</string>
 
+    <string name="feedbackWaiting">Revenez plus tard pour donner votre retour.</string>
+
+    <string name="info">infos</string>
+
+    <string name="share">Partager la session</string>
+    <string name="session_date_with_room">%1$s, %2$s</string>
+
+    <string name="x_hashtag">#AMxDC24</string>
+    <string name="x_hashtag_for_query">AMxDC24</string>
+    <string name="x_user_name">AndroidMakersFR</string>
+
 </resources>

@@ -16,7 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
-import com.androidmakers.ui.about.AboutActions
+import com.androidmakers.ui.MainLayout
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -27,10 +27,9 @@ import com.google.firebase.messaging.FirebaseMessaging
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.GoogleAuthProvider
 import dev.gitlive.firebase.auth.auth
-import fr.androidmakers.domain.model.Partner
 import fr.androidmakers.store.firebase.toUser
+import fr.paug.androidmakers.BuildConfig
 import fr.paug.androidmakers.R
-import fr.paug.androidmakers.ui.components.MainLayout
 import fr.paug.androidmakers.ui.theme.AndroidMakersTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -77,15 +76,9 @@ class MainActivity : AppCompatActivity() {
             }
 
             MainLayout(
-                aboutActions = AboutActions(
-                    onFaqClick = ::onFaqClick,
-                    onCodeOfConductClick = ::onCodeOfConductClick,
-                    onXHashtagClick = ::onXHashtagClick,
-                    onXLogoClick = ::onXLogoClick,
-                    onYouTubeLogoClick = ::onYouTubeLogoClick,
-                    onSponsorClick = ::onSponsorClick,
-                ),
                 user = userState.value,
+                versionName = BuildConfig.VERSION_NAME,
+                versionCode = BuildConfig.VERSION_CODE.toString(),
             )
           }
         }
@@ -104,22 +97,6 @@ class MainActivity : AppCompatActivity() {
     })
   }
 
-  private fun onFaqClick() {
-    viewModel.openFaqUseCase()
-  }
-
-  private fun onCodeOfConductClick() {
-    viewModel.openCocUseCase()
-  }
-
-  private fun onXHashtagClick() {
-    viewModel.openXHashtagUseCase()
-  }
-
-  private fun onXLogoClick() {
-    viewModel.openXAccountUseCase()
-  }
-
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     super.onActivityResult(requestCode, resultCode, data)
 
@@ -132,8 +109,6 @@ class MainActivity : AppCompatActivity() {
           val idToken = account.idToken
           when {
             idToken != null -> {
-              // Got an ID token from Google. Use it to authenticate
-              // with Firebase.
               // Got an ID token from Google. Use it to authenticate
               // with Firebase.
               val firebaseCredential = GoogleAuthProvider.credential(idToken, null)
@@ -158,15 +133,6 @@ class MainActivity : AppCompatActivity() {
         }
       }
     }
-  }
-
-  private fun onYouTubeLogoClick() {
-    viewModel.openYoutubeUseCase()
-  }
-
-  private fun onSponsorClick(partner: Partner) {
-    viewModel.openPartnerLinkUseCase(partner)
-    //CustomTabUtil.openChromeTab(this, url)
   }
 
   fun signout() {

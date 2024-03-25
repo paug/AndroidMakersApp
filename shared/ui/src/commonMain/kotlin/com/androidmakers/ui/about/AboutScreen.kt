@@ -26,22 +26,13 @@ import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import fr.androidmakers.domain.model.Partner
 import fr.paug.androidmakers.ui.MR
-
-class AboutActions(
-    val onFaqClick: () -> Unit = {},
-    val onCodeOfConductClick: () -> Unit = {},
-    val onXHashtagClick: () -> Unit = {},
-    val onXLogoClick: () -> Unit = {},
-    val onYouTubeLogoClick: () -> Unit = {},
-    val onSponsorClick: (partner: Partner) -> Unit = {},
-)
-
+import moe.tlaster.precompose.koin.koinViewModel
 @Composable
 fun AboutScreen(
     versionName: String,
     versionCode: String,
-    aboutActions: AboutActions,
 ) {
+  val viewModel = koinViewModel(vmClass = AboutViewModel::class)
   Column(
       modifier = Modifier
           .fillMaxSize()
@@ -50,14 +41,14 @@ fun AboutScreen(
       verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically)
   ) {
     IntroCard(
-        onFaqClick = aboutActions.onFaqClick,
-        onCocClick = aboutActions.onCodeOfConductClick
+        onFaqClick = { viewModel.openFaq() },
+        onCocClick = { viewModel.openCoc() }
     )
 
     SocialCard(
-        aboutActions.onXHashtagClick,
-        aboutActions.onXLogoClick,
-        aboutActions.onYouTubeLogoClick
+        { viewModel.openXHashtag() },
+        { viewModel.openXAccount() },
+        { viewModel.openYoutube() }
     )
 
     Text(
