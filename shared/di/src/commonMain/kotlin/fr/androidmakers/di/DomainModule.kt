@@ -7,12 +7,14 @@ import fr.androidmakers.domain.interactor.GetFavoriteSessionsUseCase
 import fr.androidmakers.domain.interactor.GetPartnersUseCase
 import fr.androidmakers.domain.interactor.OpenCocUseCase
 import fr.androidmakers.domain.interactor.OpenFaqUseCase
+import fr.androidmakers.domain.interactor.OpenLinkUseCase
 import fr.androidmakers.domain.interactor.OpenMapUseCase
 import fr.androidmakers.domain.interactor.OpenPartnerLinkUseCase
 import fr.androidmakers.domain.interactor.OpenXAccountUseCase
 import fr.androidmakers.domain.interactor.OpenXHashtagUseCase
 import fr.androidmakers.domain.interactor.OpenYoutubeUseCase
 import fr.androidmakers.domain.interactor.SetSessionBookmarkUseCase
+import fr.androidmakers.domain.interactor.ShareSessionUseCase
 import fr.androidmakers.domain.interactor.SyncBookmarksUseCase
 import org.koin.core.module.Module
 import org.koin.dsl.module
@@ -33,4 +35,5 @@ val domainModule = module {
   factory { GetPartnersUseCase(get()) }
   factory { GetFavoriteSessionsUseCase(get()) }
   factory { OpenPartnerLinkUseCase(get()) }
+  factory { OpenLinkUseCase(get()) }
 }
