@@ -11,7 +11,10 @@ class AndroidMakersApplication : Application() {
     super.onCreate()
 
     DependenciesBuilder(this).inject(
-        listOf(androidViewModelModule, viewModelModule)
+      listOf(
+        androidViewModelModule,
+        viewModelModule
+      )
     )
   }
 }
