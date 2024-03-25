@@ -11,130 +11,50 @@
 		33243ED227FA154700ECBA97 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 33243ED127FA154700ECBA97 /* FirebaseFirestore */; };
 		33243ED427FA168800ECBA97 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 33243ED327FA168800ECBA97 /* FirebaseAnalyticsWithoutAdIdSupport */; };
 		33243ED627FA171400ECBA97 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 33243ED527FA171400ECBA97 /* FirebaseAuth */; };
-		4538D0CE29CA2DB600BB94DB /* GraphQLData.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4538D0B829CA2DB600BB94DB /* GraphQLData.graphql.swift */; };
-		4538D0CF29CA2DB600BB94DB /* GetTalksQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4538D0BB29CA2DB600BB94DB /* GetTalksQuery.graphql.swift */; };
-		4538D0D229CA2DB600BB94DB /* Instant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4538D0C029CA2DB600BB94DB /* Instant.swift */; };
-		4538D0D329CA2DB600BB94DB /* LocalDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4538D0C129CA2DB600BB94DB /* LocalDate.swift */; };
-		4538D0D429CA2DB600BB94DB /* LocalDateTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4538D0C229CA2DB600BB94DB /* LocalDateTime.swift */; };
-		4538D0D729CA2DB600BB94DB /* Query.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4538D0C629CA2DB600BB94DB /* Query.graphql.swift */; };
-		4538D0D929CA2DB600BB94DB /* SessionConnection.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4538D0C829CA2DB600BB94DB /* SessionConnection.graphql.swift */; };
-		4538D0DA29CA2DB600BB94DB /* Speaker.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4538D0C929CA2DB600BB94DB /* Speaker.graphql.swift */; };
-		4538D0DB29CA2DB600BB94DB /* Session.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4538D0CA29CA2DB600BB94DB /* Session.graphql.swift */; };
-		4538D0DC29CA2DB600BB94DB /* Room.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4538D0CB29CA2DB600BB94DB /* Room.graphql.swift */; };
 		4538D0DD29CA2DB600BB94DB /* SchemaConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4538D0CC29CA2DB600BB94DB /* SchemaConfiguration.swift */; };
-		4538D0DE29CA2DB600BB94DB /* SchemaMetadata.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4538D0CD29CA2DB600BB94DB /* SchemaMetadata.graphql.swift */; };
-		4567FB1729D9E08000724187 /* AgendaListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4567FB1629D9E08000724187 /* AgendaListView.swift */; };
-		4567FB1B29D9E13100724187 /* AgendaRoomListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4567FB1A29D9E13100724187 /* AgendaRoomListView.swift */; };
-		45DAAD7729E4867B0085977B /* AgendaRoomListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DAAD7629E4867B0085977B /* AgendaRoomListViewModel.swift */; };
 		45DAAD7A29E49D430085977B /* Apollo in Frameworks */ = {isa = PBXBuildFile; productRef = 45DAAD7929E49D430085977B /* Apollo */; };
 		45DAAD7C29E49D430085977B /* ApolloSQLite in Frameworks */ = {isa = PBXBuildFile; productRef = 45DAAD7B29E49D430085977B /* ApolloSQLite */; };
-		45EC5A9E29C254A500ABBB7F /* GraphQLTalksProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EC5A9D29C254A500ABBB7F /* GraphQLTalksProvider.swift */; };
 		45EC5AC229C26DCE00ABBB7F /* GraphQLDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EC5AC129C26DCE00ABBB7F /* GraphQLDataProvider.swift */; };
-		45EC5AC429C2701400ABBB7F /* SessionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EC5AC329C2701400ABBB7F /* SessionData.swift */; };
-		6417D57D2BA452A000A1E16C /* SpeakersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6417D57C2BA452A000A1E16C /* SpeakersView.swift */; };
-		6417D57F2BA49F3300A1E16C /* VenueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6417D57E2BA49F3300A1E16C /* VenueView.swift */; };
 		6418BE5D2BA1EC8900F3EA79 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6418BE5C2BA1EC8900F3EA79 /* GoogleService-Info.plist */; };
-		6418BE602BA2F75700F3EA79 /* SponsorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6418BE5F2BA2F75700F3EA79 /* SponsorsView.swift */; };
-		6440520B2B892F0200F87201 /* ResourcesUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6440520A2B892F0200F87201 /* ResourcesUtils.swift */; };
-		647899322B90937800887B74 /* Speaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 647899312B90937800887B74 /* Speaker.swift */; };
-		647899342B9093A000887B74 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 647899332B9093A000887B74 /* Session.swift */; };
-		647899362B9093C000887B74 /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = 647899352B9093C000887B74 /* Room.swift */; };
-		B207015E2353324400F8E2AF /* AgendaDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B207015D2353324400F8E2AF /* AgendaDetailView.swift */; };
-		B20701602353372800F8E2AF /* AgendaDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B207015F2353372800F8E2AF /* AgendaDetailViewModel.swift */; };
-		B225422123FB27FE00C5A83E /* TimeProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B225422023FB27FE00C5A83E /* TimeProvider.swift */; };
 		B265B04223F02D3800EA363D /* FirestoreOpenFeedbackSynchronizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B265B04123F02D3800EA363D /* FirestoreOpenFeedbackSynchronizer.swift */; };
 		B265B04423F05CFE00EA363D /* Timestamp+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B265B04323F05CFE00EA363D /* Timestamp+Codable.swift */; };
 		B265B04723F0691400EA363D /* CodableFirebase in Frameworks */ = {isa = PBXBuildFile; productRef = B265B04623F0691400EA363D /* CodableFirebase */; };
 		B265B04923F1ECA200EA363D /* TalkFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = B265B04823F1ECA200EA363D /* TalkFeedback.swift */; };
-		B265B04B23F32A8700EA363D /* AgendaFeedbackChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B265B04A23F32A8700EA363D /* AgendaFeedbackChoiceView.swift */; };
-		B265B04D23F47E1D00EA363D /* AgendaFeedbackChoiceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B265B04C23F47E1C00EA363D /* AgendaFeedbackChoiceViewModel.swift */; };
-		B268A96B243E445800412523 /* FirestoreRoomsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B268A96A243E445800412523 /* FirestoreRoomsProvider.swift */; };
-		B268A96E24431E7500412523 /* WebButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B268A96D24431E7500412523 /* WebButton.swift */; };
-		B26E853623D49187006C2C9E /* NSAttributedString+HTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26E853523D49187006C2C9E /* NSAttributedString+HTML.swift */; };
-		B26E853823D49242006C2C9E /* AttributedTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26E853723D49242006C2C9E /* AttributedTextView.swift */; };
 		B26E853B23D49D8B006C2C9E /* SwiftRichString in Frameworks */ = {isa = PBXBuildFile; productRef = B26E853A23D49D8B006C2C9E /* SwiftRichString */; };
 		B27CC3DD24549D0A0055D36B /* OpenFeedbackSynchronizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27CC3DC24549D0A0055D36B /* OpenFeedbackSynchronizer.swift */; };
 		B27CC3DF24549E1B0055D36B /* VoteData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27CC3DE24549E1B0055D36B /* VoteData.swift */; };
 		B27CC3E12454A2930055D36B /* JsonOpenFeedbackSynchronizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27CC3E02454A2930055D36B /* JsonOpenFeedbackSynchronizer.swift */; };
-		B2A0669323521AC00062383A /* Language+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A0669223521AC00062383A /* Language+UI.swift */; };
 		B2BC0B8423B91D2100C85F69 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BC0B8323B91D2100C85F69 /* Model.swift */; };
-		B2BC0B8B23BB66EF00C85F69 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BC0B8A23BB66EF00C85F69 /* AboutView.swift */; };
 		B2CD272F234D06530016AA02 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CD272E234D06530016AA02 /* AppDelegate.swift */; };
 		B2CD2731234D06530016AA02 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CD2730234D06530016AA02 /* SceneDelegate.swift */; };
 		B2CD2733234D06530016AA02 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CD2732234D06530016AA02 /* ContentView.swift */; };
 		B2CD2735234D06560016AA02 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2CD2734234D06560016AA02 /* Assets.xcassets */; };
 		B2CD2738234D06560016AA02 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2CD2737234D06560016AA02 /* Preview Assets.xcassets */; };
 		B2CD273B234D06560016AA02 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2CD2739234D06560016AA02 /* LaunchScreen.storyboard */; };
-		B2CD275F234D079B0016AA02 /* AgendaDayListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CD275E234D079B0016AA02 /* AgendaDayListView.swift */; };
-		B2CD2763234D08820016AA02 /* AgendaCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CD2762234D08820016AA02 /* AgendaCellView.swift */; };
-		B2CD2768234D12500016AA02 /* SessionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CD2767234D12500016AA02 /* SessionRepository.swift */; };
-		B2CD276C234D13380016AA02 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CD276B234D13380016AA02 /* Language.swift */; };
-		B2CD276E234D18450016AA02 /* AgendaDayListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CD276D234D18450016AA02 /* AgendaDayListViewModel.swift */; };
 		B2CD4264235789B5009FE6B0 /* DataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CD4263235789B5009FE6B0 /* DataProvider.swift */; };
 		B2CD426923578FBD009FE6B0 /* DocumentSnapshot+Decodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CD426823578FBD009FE6B0 /* DocumentSnapshot+Decodable.swift */; };
 		B2CD426E2362281A009FE6B0 /* URLImage in Frameworks */ = {isa = PBXBuildFile; productRef = B2CD426D2362281A009FE6B0 /* URLImage */; };
 		B2EF3CF523E89FC90078019F /* FeedbackRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EF3CF423E89FC90078019F /* FeedbackRepository.swift */; };
-		B2EF3CF923E8A4C30078019F /* TalkFeedbackViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EF3CF823E8A4C30078019F /* TalkFeedbackViewModel.swift */; };
-		B2EF3CFB23E8A8020078019F /* TalkFeedbackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EF3CFA23E8A8020078019F /* TalkFeedbackView.swift */; };
 		B2F270CA23DC7E2600FD6823 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B2F270C823DC7E2600FD6823 /* Localizable.strings */; };
 		B2F270DB23DC869300FD6823 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = B2F270DA23DC869300FD6823 /* .swiftlint.yml */; };
-		B2F270DE23DC944800FD6823 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F270DD23DC944800FD6823 /* Assets.swift */; };
-		B2FE9FCF24548CB3005FE370 /* RoomData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FE9FCE24548CB3005FE370 /* RoomData.swift */; };
-		B2FE9FD124548CD3005FE370 /* RoomsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FE9FD024548CD3005FE370 /* RoomsProvider.swift */; };
-		B2FE9FD324548D52005FE370 /* JsonRoomsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FE9FD224548D52005FE370 /* JsonRoomsProvider.swift */; };
 		B2FE9FE9245493F3005FE370 /* FirebaseDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FE9FE8245493F3005FE370 /* FirebaseDescriptor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		33CD20B328087FE7005084EF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		4538D0B829CA2DB600BB94DB /* GraphQLData.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphQLData.graphql.swift; sourceTree = "<group>"; };
-		4538D0BB29CA2DB600BB94DB /* GetTalksQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetTalksQuery.graphql.swift; sourceTree = "<group>"; };
-		4538D0C029CA2DB600BB94DB /* Instant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Instant.swift; sourceTree = "<group>"; };
-		4538D0C129CA2DB600BB94DB /* LocalDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalDate.swift; sourceTree = "<group>"; };
-		4538D0C229CA2DB600BB94DB /* LocalDateTime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalDateTime.swift; sourceTree = "<group>"; };
-		4538D0C629CA2DB600BB94DB /* Query.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Query.graphql.swift; sourceTree = "<group>"; };
-		4538D0C829CA2DB600BB94DB /* SessionConnection.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionConnection.graphql.swift; sourceTree = "<group>"; };
-		4538D0C929CA2DB600BB94DB /* Speaker.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Speaker.graphql.swift; sourceTree = "<group>"; };
-		4538D0CA29CA2DB600BB94DB /* Session.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Session.graphql.swift; sourceTree = "<group>"; };
-		4538D0CB29CA2DB600BB94DB /* Room.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Room.graphql.swift; sourceTree = "<group>"; };
 		4538D0CC29CA2DB600BB94DB /* SchemaConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchemaConfiguration.swift; sourceTree = "<group>"; };
-		4538D0CD29CA2DB600BB94DB /* SchemaMetadata.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchemaMetadata.graphql.swift; sourceTree = "<group>"; };
-		4567FB1629D9E08000724187 /* AgendaListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgendaListView.swift; sourceTree = "<group>"; };
-		4567FB1A29D9E13100724187 /* AgendaRoomListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgendaRoomListView.swift; sourceTree = "<group>"; };
 		4595145A29C0F56E003F7B4F /* schema.graphqls */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = schema.graphqls; sourceTree = "<group>"; };
-		4595145B29C0F56E003F7B4F /* queries.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = queries.graphql; sourceTree = "<group>"; };
-		45DAAD7629E4867B0085977B /* AgendaRoomListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgendaRoomListViewModel.swift; sourceTree = "<group>"; };
-		45EC5A9D29C254A500ABBB7F /* GraphQLTalksProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphQLTalksProvider.swift; sourceTree = "<group>"; };
 		45EC5AC129C26DCE00ABBB7F /* GraphQLDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphQLDataProvider.swift; sourceTree = "<group>"; };
-		45EC5AC329C2701400ABBB7F /* SessionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionData.swift; sourceTree = "<group>"; };
-		6417D57C2BA452A000A1E16C /* SpeakersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeakersView.swift; sourceTree = "<group>"; };
-		6417D57E2BA49F3300A1E16C /* VenueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueView.swift; sourceTree = "<group>"; };
 		6418BE5C2BA1EC8900F3EA79 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
-		6418BE5F2BA2F75700F3EA79 /* SponsorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SponsorsView.swift; sourceTree = "<group>"; };
-		6440520A2B892F0200F87201 /* ResourcesUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcesUtils.swift; sourceTree = "<group>"; };
-		647899312B90937800887B74 /* Speaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Speaker.swift; sourceTree = "<group>"; };
-		647899332B9093A000887B74 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
-		647899352B9093C000887B74 /* Room.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
-		B207015D2353324400F8E2AF /* AgendaDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgendaDetailView.swift; sourceTree = "<group>"; };
-		B207015F2353372800F8E2AF /* AgendaDetailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgendaDetailViewModel.swift; sourceTree = "<group>"; };
-		B225422023FB27FE00C5A83E /* TimeProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeProvider.swift; sourceTree = "<group>"; };
 		B265B04123F02D3800EA363D /* FirestoreOpenFeedbackSynchronizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreOpenFeedbackSynchronizer.swift; sourceTree = "<group>"; };
 		B265B04323F05CFE00EA363D /* Timestamp+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Timestamp+Codable.swift"; sourceTree = "<group>"; };
 		B265B04823F1ECA200EA363D /* TalkFeedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkFeedback.swift; sourceTree = "<group>"; };
-		B265B04A23F32A8700EA363D /* AgendaFeedbackChoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgendaFeedbackChoiceView.swift; sourceTree = "<group>"; };
-		B265B04C23F47E1C00EA363D /* AgendaFeedbackChoiceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgendaFeedbackChoiceViewModel.swift; sourceTree = "<group>"; };
-		B268A96A243E445800412523 /* FirestoreRoomsProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirestoreRoomsProvider.swift; sourceTree = "<group>"; };
-		B268A96D24431E7500412523 /* WebButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebButton.swift; sourceTree = "<group>"; };
-		B26E853523D49187006C2C9E /* NSAttributedString+HTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+HTML.swift"; sourceTree = "<group>"; };
-		B26E853723D49242006C2C9E /* AttributedTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributedTextView.swift; sourceTree = "<group>"; };
 		B27CC3DC24549D0A0055D36B /* OpenFeedbackSynchronizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenFeedbackSynchronizer.swift; sourceTree = "<group>"; };
 		B27CC3DE24549E1B0055D36B /* VoteData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteData.swift; sourceTree = "<group>"; };
 		B27CC3E02454A2930055D36B /* JsonOpenFeedbackSynchronizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JsonOpenFeedbackSynchronizer.swift; sourceTree = "<group>"; };
 		B27CC3E22454A9450055D36B /* vote_configuration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = vote_configuration.json; sourceTree = "<group>"; };
 		B29CC7032427A01200FB7EF3 /* AndroidMakers.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AndroidMakers.entitlements; sourceTree = "<group>"; };
-		B2A0669223521AC00062383A /* Language+UI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Language+UI.swift"; sourceTree = "<group>"; };
 		B2BC0B8323B91D2100C85F69 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
-		B2BC0B8A23BB66EF00C85F69 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		B2CD272B234D06530016AA02 /* RobotConf.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RobotConf.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2CD272E234D06530016AA02 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B2CD2730234D06530016AA02 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -142,25 +62,14 @@
 		B2CD2734234D06560016AA02 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B2CD2737234D06560016AA02 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		B2CD273C234D06560016AA02 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B2CD275E234D079B0016AA02 /* AgendaDayListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgendaDayListView.swift; sourceTree = "<group>"; };
-		B2CD2762234D08820016AA02 /* AgendaCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgendaCellView.swift; sourceTree = "<group>"; };
-		B2CD2767234D12500016AA02 /* SessionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionRepository.swift; sourceTree = "<group>"; };
-		B2CD276B234D13380016AA02 /* Language.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
-		B2CD276D234D18450016AA02 /* AgendaDayListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgendaDayListViewModel.swift; sourceTree = "<group>"; };
 		B2CD4263235789B5009FE6B0 /* DataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataProvider.swift; sourceTree = "<group>"; };
 		B2CD426823578FBD009FE6B0 /* DocumentSnapshot+Decodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DocumentSnapshot+Decodable.swift"; sourceTree = "<group>"; };
 		B2ECA77324151B6E00489874 /* OpenFeedback-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "OpenFeedback-Info.plist"; sourceTree = "<group>"; };
 		B2EF3CF423E89FC90078019F /* FeedbackRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackRepository.swift; sourceTree = "<group>"; };
-		B2EF3CF823E8A4C30078019F /* TalkFeedbackViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkFeedbackViewModel.swift; sourceTree = "<group>"; };
-		B2EF3CFA23E8A8020078019F /* TalkFeedbackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkFeedbackView.swift; sourceTree = "<group>"; };
 		B2F270CC23DC7E9200FD6823 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B2F270CD23DC7EBC00FD6823 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B2F270DA23DC869300FD6823 /* .swiftlint.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
-		B2F270DD23DC944800FD6823 /* Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
 		B2FE9FC02454733E005FE370 /* sessions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sessions.json; sourceTree = "<group>"; };
-		B2FE9FCE24548CB3005FE370 /* RoomData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomData.swift; sourceTree = "<group>"; };
-		B2FE9FD024548CD3005FE370 /* RoomsProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomsProvider.swift; sourceTree = "<group>"; };
-		B2FE9FD224548D52005FE370 /* JsonRoomsProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JsonRoomsProvider.swift; sourceTree = "<group>"; };
 		B2FE9FD424548E41005FE370 /* schedule-app.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "schedule-app.json"; sourceTree = "<group>"; };
 		B2FE9FD524548E41005FE370 /* speakers.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = speakers.json; sourceTree = "<group>"; };
 		B2FE9FE424549377005FE370 /* partners.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = partners.json; sourceTree = "<group>"; };
@@ -191,160 +100,27 @@
 		4538D0B729CA2DB600BB94DB /* Generated */ = {
 			isa = PBXGroup;
 			children = (
-				4538D0B829CA2DB600BB94DB /* GraphQLData.graphql.swift */,
-				4538D0B929CA2DB600BB94DB /* Operations */,
 				4538D0BE29CA2DB600BB94DB /* Schema */,
 			);
 			path = Generated;
 			sourceTree = "<group>";
 		};
-		4538D0B929CA2DB600BB94DB /* Operations */ = {
-			isa = PBXGroup;
-			children = (
-				4538D0BA29CA2DB600BB94DB /* Queries */,
-			);
-			path = Operations;
-			sourceTree = "<group>";
-		};
-		4538D0BA29CA2DB600BB94DB /* Queries */ = {
-			isa = PBXGroup;
-			children = (
-				4538D0BB29CA2DB600BB94DB /* GetTalksQuery.graphql.swift */,
-			);
-			path = Queries;
-			sourceTree = "<group>";
-		};
 		4538D0BE29CA2DB600BB94DB /* Schema */ = {
 			isa = PBXGroup;
 			children = (
-				4538D0BF29CA2DB600BB94DB /* CustomScalars */,
-				4538D0C329CA2DB600BB94DB /* Objects */,
 				4538D0CC29CA2DB600BB94DB /* SchemaConfiguration.swift */,
-				4538D0CD29CA2DB600BB94DB /* SchemaMetadata.graphql.swift */,
 			);
 			path = Schema;
-			sourceTree = "<group>";
-		};
-		4538D0BF29CA2DB600BB94DB /* CustomScalars */ = {
-			isa = PBXGroup;
-			children = (
-				4538D0C029CA2DB600BB94DB /* Instant.swift */,
-				4538D0C129CA2DB600BB94DB /* LocalDate.swift */,
-				4538D0C229CA2DB600BB94DB /* LocalDateTime.swift */,
-			);
-			path = CustomScalars;
-			sourceTree = "<group>";
-		};
-		4538D0C329CA2DB600BB94DB /* Objects */ = {
-			isa = PBXGroup;
-			children = (
-				4538D0C629CA2DB600BB94DB /* Query.graphql.swift */,
-				4538D0C829CA2DB600BB94DB /* SessionConnection.graphql.swift */,
-				4538D0C929CA2DB600BB94DB /* Speaker.graphql.swift */,
-				4538D0CA29CA2DB600BB94DB /* Session.graphql.swift */,
-				4538D0CB29CA2DB600BB94DB /* Room.graphql.swift */,
-			);
-			path = Objects;
-			sourceTree = "<group>";
-		};
-		4567FB1829D9E0DB00724187 /* ByDay */ = {
-			isa = PBXGroup;
-			children = (
-				B2CD275E234D079B0016AA02 /* AgendaDayListView.swift */,
-				B2CD276D234D18450016AA02 /* AgendaDayListViewModel.swift */,
-				B2CD2762234D08820016AA02 /* AgendaCellView.swift */,
-			);
-			path = ByDay;
-			sourceTree = "<group>";
-		};
-		4567FB1929D9E10600724187 /* ByRoom */ = {
-			isa = PBXGroup;
-			children = (
-				4567FB1A29D9E13100724187 /* AgendaRoomListView.swift */,
-				45DAAD7629E4867B0085977B /* AgendaRoomListViewModel.swift */,
-			);
-			path = ByRoom;
 			sourceTree = "<group>";
 		};
 		4595145929C0F56E003F7B4F /* GraphQL */ = {
 			isa = PBXGroup;
 			children = (
 				45EC5AC129C26DCE00ABBB7F /* GraphQLDataProvider.swift */,
-				45EC5A9D29C254A500ABBB7F /* GraphQLTalksProvider.swift */,
 				4538D0B729CA2DB600BB94DB /* Generated */,
 				4595145A29C0F56E003F7B4F /* schema.graphqls */,
-				4595145B29C0F56E003F7B4F /* queries.graphql */,
 			);
 			path = GraphQL;
-			sourceTree = "<group>";
-		};
-		6417D57B2BA4528000A1E16C /* Speakers */ = {
-			isa = PBXGroup;
-			children = (
-				6417D57C2BA452A000A1E16C /* SpeakersView.swift */,
-			);
-			path = Speakers;
-			sourceTree = "<group>";
-		};
-		6418BE5E2BA2F73F00F3EA79 /* Sponsors */ = {
-			isa = PBXGroup;
-			children = (
-				6418BE5F2BA2F75700F3EA79 /* SponsorsView.swift */,
-			);
-			path = Sponsors;
-			sourceTree = "<group>";
-		};
-		B225421E23FB22C200C5A83E /* Feedback */ = {
-			isa = PBXGroup;
-			children = (
-				B2EF3CF823E8A4C30078019F /* TalkFeedbackViewModel.swift */,
-				B2EF3CFA23E8A8020078019F /* TalkFeedbackView.swift */,
-				B265B04A23F32A8700EA363D /* AgendaFeedbackChoiceView.swift */,
-				B265B04C23F47E1C00EA363D /* AgendaFeedbackChoiceViewModel.swift */,
-			);
-			path = Feedback;
-			sourceTree = "<group>";
-		};
-		B225421F23FB27ED00C5A83E /* Utils */ = {
-			isa = PBXGroup;
-			children = (
-				B225422023FB27FE00C5A83E /* TimeProvider.swift */,
-				6440520A2B892F0200F87201 /* ResourcesUtils.swift */,
-			);
-			path = Utils;
-			sourceTree = "<group>";
-		};
-		B268A96C24431E5300412523 /* Common */ = {
-			isa = PBXGroup;
-			children = (
-				B268A96D24431E7500412523 /* WebButton.swift */,
-			);
-			path = Common;
-			sourceTree = "<group>";
-		};
-		B26E853423D4913C006C2C9E /* FormattedText */ = {
-			isa = PBXGroup;
-			children = (
-				B26E853523D49187006C2C9E /* NSAttributedString+HTML.swift */,
-				B26E853723D49242006C2C9E /* AttributedTextView.swift */,
-			);
-			path = FormattedText;
-			sourceTree = "<group>";
-		};
-		B2BC0B7C23B90B3500C85F69 /* Location */ = {
-			isa = PBXGroup;
-			children = (
-				6417D57E2BA49F3300A1E16C /* VenueView.swift */,
-			);
-			path = Location;
-			sourceTree = "<group>";
-		};
-		B2BC0B8923BB66D000C85F69 /* About */ = {
-			isa = PBXGroup;
-			children = (
-				B2BC0B8A23BB66EF00C85F69 /* AboutView.swift */,
-			);
-			path = About;
 			sourceTree = "<group>";
 		};
 		B2CD2722234D06530016AA02 = {
@@ -371,7 +147,6 @@
 				B2CD2730234D06530016AA02 /* SceneDelegate.swift */,
 				B2CD2760234D08400016AA02 /* UI */,
 				B2CD2764234D11460016AA02 /* Model */,
-				B2F270D223DC816B00FD6823 /* SwiftGen */,
 				B2F270DA23DC869300FD6823 /* .swiftlint.yml */,
 				B2CD273C234D06560016AA02 /* Info.plist */,
 				B2ECA77324151B6E00489874 /* OpenFeedback-Info.plist */,
@@ -393,45 +168,18 @@
 			isa = PBXGroup;
 			children = (
 				B2CD2732234D06530016AA02 /* ContentView.swift */,
-				B2CD2761234D08530016AA02 /* Agenda */,
-				B2BC0B7C23B90B3500C85F69 /* Location */,
-				B2BC0B8923BB66D000C85F69 /* About */,
-				B26E853423D4913C006C2C9E /* FormattedText */,
-				6418BE5E2BA2F73F00F3EA79 /* Sponsors */,
-				6417D57B2BA4528000A1E16C /* Speakers */,
-				B268A96C24431E5300412523 /* Common */,
-				B225421F23FB27ED00C5A83E /* Utils */,
-				B2A0669223521AC00062383A /* Language+UI.swift */,
 				B2F270BF23DC7B7200FD6823 /* Resources */,
 			);
 			path = UI;
-			sourceTree = "<group>";
-		};
-		B2CD2761234D08530016AA02 /* Agenda */ = {
-			isa = PBXGroup;
-			children = (
-				4567FB1629D9E08000724187 /* AgendaListView.swift */,
-				4567FB1829D9E0DB00724187 /* ByDay */,
-				4567FB1929D9E10600724187 /* ByRoom */,
-				B207015F2353372800F8E2AF /* AgendaDetailViewModel.swift */,
-				B207015D2353324400F8E2AF /* AgendaDetailView.swift */,
-				B225421E23FB22C200C5A83E /* Feedback */,
-			);
-			path = Agenda;
 			sourceTree = "<group>";
 		};
 		B2CD2764234D11460016AA02 /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				B2BC0B8323B91D2100C85F69 /* Model.swift */,
-				B2CD2767234D12500016AA02 /* SessionRepository.swift */,
 				B2EF3CF423E89FC90078019F /* FeedbackRepository.swift */,
-				B2CD276B234D13380016AA02 /* Language.swift */,
 				B265B04823F1ECA200EA363D /* TalkFeedback.swift */,
 				B2FE9FB524546EE2005FE370 /* Data */,
-				647899312B90937800887B74 /* Speaker.swift */,
-				647899332B9093A000887B74 /* Session.swift */,
-				647899352B9093C000887B74 /* Room.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -446,20 +194,10 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		B2F270D223DC816B00FD6823 /* SwiftGen */ = {
-			isa = PBXGroup;
-			children = (
-				B2F270DD23DC944800FD6823 /* Assets.swift */,
-			);
-			path = SwiftGen;
-			sourceTree = "<group>";
-		};
 		B2FE9FB524546EE2005FE370 /* Data */ = {
 			isa = PBXGroup;
 			children = (
 				B2CD4263235789B5009FE6B0 /* DataProvider.swift */,
-				45EC5AC329C2701400ABBB7F /* SessionData.swift */,
-				B2FE9FCE24548CB3005FE370 /* RoomData.swift */,
 				B27CC3DE24549E1B0055D36B /* VoteData.swift */,
 				B2FE9FB824546F88005FE370 /* Providers */,
 			);
@@ -469,7 +207,6 @@
 		B2FE9FB624546F4B005FE370 /* Firestore */ = {
 			isa = PBXGroup;
 			children = (
-				B268A96A243E445800412523 /* FirestoreRoomsProvider.swift */,
 				B265B04123F02D3800EA363D /* FirestoreOpenFeedbackSynchronizer.swift */,
 				B2CD426823578FBD009FE6B0 /* DocumentSnapshot+Decodable.swift */,
 				B265B04323F05CFE00EA363D /* Timestamp+Codable.swift */,
@@ -481,7 +218,6 @@
 		B2FE9FB724546F56005FE370 /* Json */ = {
 			isa = PBXGroup;
 			children = (
-				B2FE9FD224548D52005FE370 /* JsonRoomsProvider.swift */,
 				B27CC3E02454A2930055D36B /* JsonOpenFeedbackSynchronizer.swift */,
 				B2FE9FBF2454733E005FE370 /* Resources */,
 			);
@@ -491,7 +227,6 @@
 		B2FE9FB824546F88005FE370 /* Providers */ = {
 			isa = PBXGroup;
 			children = (
-				B2FE9FD024548CD3005FE370 /* RoomsProvider.swift */,
 				B27CC3DC24549D0A0055D36B /* OpenFeedbackSynchronizer.swift */,
 				B2FE9FB724546F56005FE370 /* Json */,
 				B2FE9FB624546F4B005FE370 /* Firestore */,
@@ -608,6 +343,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		644052092B8922D300F87201 /* 🎨 Generate Moko Resources */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -626,6 +362,7 @@
 		};
 		64F2D2762B878156005B9EAF /* 🏗️ Compile and embedded shared code */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -686,66 +423,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B268A96E24431E7500412523 /* WebButton.swift in Sources */,
 				B265B04923F1ECA200EA363D /* TalkFeedback.swift in Sources */,
 				B2CD272F234D06530016AA02 /* AppDelegate.swift in Sources */,
-				647899342B9093A000887B74 /* Session.swift in Sources */,
-				6417D57F2BA49F3300A1E16C /* VenueView.swift in Sources */,
-				B26E853823D49242006C2C9E /* AttributedTextView.swift in Sources */,
-				4567FB1B29D9E13100724187 /* AgendaRoomListView.swift in Sources */,
-				B268A96B243E445800412523 /* FirestoreRoomsProvider.swift in Sources */,
-				B265B04D23F47E1D00EA363D /* AgendaFeedbackChoiceViewModel.swift in Sources */,
 				B2CD2731234D06530016AA02 /* SceneDelegate.swift in Sources */,
-				B2FE9FD124548CD3005FE370 /* RoomsProvider.swift in Sources */,
-				B2CD2768234D12500016AA02 /* SessionRepository.swift in Sources */,
 				B2CD426923578FBD009FE6B0 /* DocumentSnapshot+Decodable.swift in Sources */,
-				B2F270DE23DC944800FD6823 /* Assets.swift in Sources */,
-				4538D0D729CA2DB600BB94DB /* Query.graphql.swift in Sources */,
-				B2CD276C234D13380016AA02 /* Language.swift in Sources */,
-				B26E853623D49187006C2C9E /* NSAttributedString+HTML.swift in Sources */,
-				4538D0D229CA2DB600BB94DB /* Instant.swift in Sources */,
 				B2FE9FE9245493F3005FE370 /* FirebaseDescriptor.swift in Sources */,
-				4538D0DE29CA2DB600BB94DB /* SchemaMetadata.graphql.swift in Sources */,
-				B2FE9FD324548D52005FE370 /* JsonRoomsProvider.swift in Sources */,
-				4538D0D429CA2DB600BB94DB /* LocalDateTime.swift in Sources */,
 				45EC5AC229C26DCE00ABBB7F /* GraphQLDataProvider.swift in Sources */,
-				4538D0DA29CA2DB600BB94DB /* Speaker.graphql.swift in Sources */,
-				B2EF3CFB23E8A8020078019F /* TalkFeedbackView.swift in Sources */,
-				647899362B9093C000887B74 /* Room.swift in Sources */,
-				6440520B2B892F0200F87201 /* ResourcesUtils.swift in Sources */,
 				4538D0DD29CA2DB600BB94DB /* SchemaConfiguration.swift in Sources */,
-				B2A0669323521AC00062383A /* Language+UI.swift in Sources */,
-				647899322B90937800887B74 /* Speaker.swift in Sources */,
-				B225422123FB27FE00C5A83E /* TimeProvider.swift in Sources */,
-				4538D0CF29CA2DB600BB94DB /* GetTalksQuery.graphql.swift in Sources */,
-				45EC5A9E29C254A500ABBB7F /* GraphQLTalksProvider.swift in Sources */,
-				B2FE9FCF24548CB3005FE370 /* RoomData.swift in Sources */,
-				B2CD276E234D18450016AA02 /* AgendaDayListViewModel.swift in Sources */,
-				6417D57D2BA452A000A1E16C /* SpeakersView.swift in Sources */,
 				B2EF3CF523E89FC90078019F /* FeedbackRepository.swift in Sources */,
-				4567FB1729D9E08000724187 /* AgendaListView.swift in Sources */,
 				B265B04223F02D3800EA363D /* FirestoreOpenFeedbackSynchronizer.swift in Sources */,
 				B2BC0B8423B91D2100C85F69 /* Model.swift in Sources */,
-				45DAAD7729E4867B0085977B /* AgendaRoomListViewModel.swift in Sources */,
 				B27CC3DF24549E1B0055D36B /* VoteData.swift in Sources */,
-				B207015E2353324400F8E2AF /* AgendaDetailView.swift in Sources */,
-				4538D0D329CA2DB600BB94DB /* LocalDate.swift in Sources */,
-				4538D0DC29CA2DB600BB94DB /* Room.graphql.swift in Sources */,
 				B265B04423F05CFE00EA363D /* Timestamp+Codable.swift in Sources */,
-				45EC5AC429C2701400ABBB7F /* SessionData.swift in Sources */,
-				B265B04B23F32A8700EA363D /* AgendaFeedbackChoiceView.swift in Sources */,
 				B27CC3E12454A2930055D36B /* JsonOpenFeedbackSynchronizer.swift in Sources */,
-				4538D0DB29CA2DB600BB94DB /* Session.graphql.swift in Sources */,
-				B2EF3CF923E8A4C30078019F /* TalkFeedbackViewModel.swift in Sources */,
-				4538D0CE29CA2DB600BB94DB /* GraphQLData.graphql.swift in Sources */,
 				B2CD2733234D06530016AA02 /* ContentView.swift in Sources */,
-				B2CD2763234D08820016AA02 /* AgendaCellView.swift in Sources */,
 				B2CD4264235789B5009FE6B0 /* DataProvider.swift in Sources */,
-				B2CD275F234D079B0016AA02 /* AgendaDayListView.swift in Sources */,
-				B20701602353372800F8E2AF /* AgendaDetailViewModel.swift in Sources */,
-				B2BC0B8B23BB66EF00C85F69 /* AboutView.swift in Sources */,
-				6418BE602BA2F75700F3EA79 /* SponsorsView.swift in Sources */,
-				4538D0D929CA2DB600BB94DB /* SessionConnection.graphql.swift in Sources */,
 				B27CC3DD24549D0A0055D36B /* OpenFeedbackSynchronizer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -899,7 +591,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_ASSET_PATHS = "RobotConf/Preview\\ Content";
-				DEVELOPMENT_TEAM = 57MV6634WZ;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)";
@@ -929,7 +621,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_ASSET_PATHS = "RobotConf/Preview\\ Content";
-				DEVELOPMENT_TEAM = 57MV6634WZ;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)";
@@ -979,8 +671,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 10.0.0;
+				kind = exactVersion;
+				version = 10.23.0;
 			};
 		};
 		45DAAD7829E49D430085977B /* XCRemoteSwiftPackageReference "apollo-ios" */ = {

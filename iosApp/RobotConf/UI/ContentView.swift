@@ -9,49 +9,7 @@ struct ContentView: View {
     @State private var selection = 0
 
     var body: some View {
-        TabView(selection: $selection) {
-            AgendaListView()
-                .tabItem {
-                    VStack {
-                        Image("agenda")
-                        Text(stringResource(MR.strings().agenda))
-                    }
-            }.tag(0)
-
-             VenueView()
-                .tabItem {
-                    VStack {
-                        Image("location")
-                        Text(stringResource(MR.strings().venue))
-                    }
-            }.tag(1)
-
-            SpeakersView(
-                onSpeakerClick: { _ in }
-            )
-                .tabItem {
-                    VStack {
-                        Image(systemName: "person.3.fill")
-                        Text(stringResource(MR.strings().speakers))
-                    }
-                }.tag(2)
-
-            SponsorsView()
-                .tabItem {
-                    VStack {
-                        Image(systemName: "seal")
-                        Text(stringResource(MR.strings().sponsors))
-                    }
-                }.tag(3)
-
-            AboutView()
-                .tabItem {
-                    VStack {
-                        Image("about")
-                        Text(stringResource(MR.strings().about))
-                    }
-            }.tag(4)
-        }
+        MainView()
     }
 }
 
@@ -63,3 +21,11 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 #endif
+
+struct MainView: UIViewControllerRepresentable {
+    func makeUIViewController(context: Context) -> UIViewController {
+        return MainLayoutViewController()
+    }
+
+    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
+}

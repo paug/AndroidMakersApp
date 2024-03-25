@@ -17,8 +17,6 @@ kotlin {
       export(project(":shared:ui"))
       export(project(":shared:domain"))
       export(project(":shared:di"))
-      // Temporary
-      export(project(":shared:data"))
       export(libs.moko.resources)
       export(libs.moko.graphics)
     }
@@ -33,8 +31,6 @@ kotlin {
       api(project(":shared:ui"))
       api(project(":shared:domain"))
       api(project(":shared:di"))
-      // Temporary
-      api(project(":shared:data"))
     }
   }
 }

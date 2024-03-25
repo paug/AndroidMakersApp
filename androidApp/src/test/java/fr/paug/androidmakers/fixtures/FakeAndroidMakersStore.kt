@@ -1,14 +1,20 @@
 package fr.paug.androidmakers.fixtures
 
 import fr.androidmakers.domain.model.Partner
+import fr.androidmakers.domain.model.PartnerGroup
 import fr.androidmakers.domain.model.Room
 import fr.androidmakers.domain.model.Session
 import fr.androidmakers.domain.model.Speaker
 import fr.androidmakers.domain.model.Venue
+import fr.androidmakers.domain.repo.PartnersRepository
+import fr.androidmakers.domain.repo.RoomsRepository
+import fr.androidmakers.domain.repo.SessionsRepository
+import fr.androidmakers.domain.repo.SpeakersRepository
+import fr.androidmakers.domain.repo.VenueRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
-class FakeAndroidMakersStore : AndroidMakersStore {
+class FakeAndroidMakersStore : RoomsRepository, VenueRepository, SpeakersRepository, SessionsRepository, PartnersRepository {
   val roomsMutableFlow = MutableStateFlow(Result.success(emptyList<Room>()))
 
   override fun getRooms(): Flow<Result<List<Room>>> = roomsMutableFlow
@@ -29,7 +35,7 @@ class FakeAndroidMakersStore : AndroidMakersStore {
     TODO("Not yet implemented")
   }
 
-  override fun getPartners(): Flow<Result<List<Partner>>> {
+  override fun getPartners(): Flow<Result<List<PartnerGroup>>> {
     TODO("Not yet implemented")
   }
 
