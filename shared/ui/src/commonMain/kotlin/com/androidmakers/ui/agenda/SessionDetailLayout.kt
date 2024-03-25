@@ -41,6 +41,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -58,17 +59,31 @@ import com.androidmakers.ui.theme.AMColor
 import com.seiko.imageloader.rememberImagePainter
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
-import fr.androidmakers.domain.model.Room
-import fr.androidmakers.domain.model.Session
 import fr.androidmakers.domain.model.Speaker
-import fr.androidmakers.domain.utils.formatTimeInterval
 import fr.androidmakers.domain.utils.removeHtmlTags
 import fr.paug.androidmakers.ui.MR
 import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.ui.tooling.preview.Preview
+
+
+@Composable
+fun SessionDetailScreen(
+    viewModel: SessionDetailViewModel,
+    onBackClick: () -> Unit,
+    onBookmarkClick: (bookmarked: Boolean) -> Unit
+) {
+  val sessionDetailState by viewModel.sessionDetailState.collectAsState(
+      initial = Lce.Loading
+  )
+  SessionDetailLayout(
+      sessionDetailState = sessionDetailState,
+      onBackClick = onBackClick,
+      onBookmarkClick = onBookmarkClick,
+      onShareSession = {
+        viewModel.shareSession()
+      }
+  )
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -76,13 +91,10 @@ fun SessionDetailLayout(
     sessionDetailState: Lce<SessionDetailState>,
     onBackClick: () -> Unit,
     onBookmarkClick: (bookmarked: Boolean) -> Unit,
+    onShareSession: () -> Unit,
 ) {
   val formattedDateAndRoom: String? = if (sessionDetailState is Lce.Content) {
-    getFormattedDateAndRoom(
-        room = sessionDetailState.content.room,
-        startTimestamp = sessionDetailState.content.startTimestamp,
-        endTimestamp = sessionDetailState.content.endTimestamp,
-    )
+    sessionDetailState.content.formattedDateAndRoom()
   } else {
     null
   }
@@ -106,14 +118,7 @@ fun SessionDetailLayout(
             actions = {
               if (sessionDetailState is Lce.Content) {
                 IconButton(
-                    onClick = {
-                      // TODO Ideally this should not be handled here but by the caller
-                      shareSession(
-                          session = sessionDetailState.content.session,
-                          sessionDateAndRoom = formattedDateAndRoom!!,
-                          speakersNameList = sessionDetailState.content.speakers.mapNotNull { it.name },
-                      )
-                    }
+                    onClick = onShareSession
                 ) {
                   Icon(
                       Icons.Rounded.Share,
@@ -331,60 +336,6 @@ private fun Speaker(
   }
 }
 
-
-@Composable
-private fun getFormattedDateAndRoom(room: Room, startTimestamp: Instant, endTimestamp: Instant): String {
-  val sessionDate = formatTimeInterval(
-      startTimestamp.toLocalDateTime(TimeZone.currentSystemDefault()),
-      endTimestamp.toLocalDateTime(TimeZone.currentSystemDefault())
-  )
-  return if (room.name.isNotEmpty()) {
-    stringResource(MR.strings.session_date_with_room, sessionDate, room.name)
-  } else {
-    sessionDate
-  }
-}
-
-private fun shareSession(
-    session: Session,
-    sessionDateAndRoom: String,
-    speakersNameList: List<String>
-) {
-  /*
-  val speakers = TextUtils.join(", ", speakersNameList)
-
-  val shareSessionIntent = Intent(Intent.ACTION_SEND)
-  shareSessionIntent.putExtra(Intent.EXTRA_SUBJECT, session.title)
-  if (speakersNameList.isEmpty()) {
-    shareSessionIntent.putExtra(
-        Intent.EXTRA_TEXT,
-        String.format(
-            "%s: %s (%s)",
-            context.getString(R.string.app_name),
-            session.title,
-            sessionDateAndRoom
-        )
-    )
-  } else {
-    shareSessionIntent.putExtra(
-        Intent.EXTRA_TEXT,
-        String.format(
-            "%s: %s (%s, %s, %s)",
-            context.getString(R.string.app_name),
-            session.title,
-            speakers,
-            sessionDateAndRoom,
-            session.language
-        )
-    )
-  }
-  shareSessionIntent.type = "text/plain"
-  val shareSheetIntent = Intent.createChooser(shareSessionIntent, null)
-  context.startActivity(shareSheetIntent)
-
-   */
-}
-
 @Composable
 fun SocialButtons(speaker: Speaker) {
   Row(
@@ -441,5 +392,6 @@ private fun SessionDetailLayoutLoadingPreview() {
       sessionDetailState = Lce.Loading,
       onBackClick = {},
       onBookmarkClick = {},
+      onShareSession = {},
   )
 }

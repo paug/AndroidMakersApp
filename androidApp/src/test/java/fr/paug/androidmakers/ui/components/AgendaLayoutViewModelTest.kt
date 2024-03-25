@@ -1,8 +1,11 @@
 package fr.paug.androidmakers.ui.components
 
+import com.androidmakers.ui.agenda.AgendaLayoutState
+import com.androidmakers.ui.agenda.AgendaLayoutViewModel
+import com.androidmakers.ui.common.SessionFilter
 import fr.androidmakers.domain.model.Room
 import fr.paug.androidmakers.fixtures.FakeAndroidMakersStore
-import fr.paug.androidmakers.util.SessionFilter
+
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -15,7 +18,7 @@ class AgendaLayoutViewModelTest {
   private val fakeStore = FakeAndroidMakersStore()
 
   private val testSubject = AgendaLayoutViewModel(
-      store = fakeStore,
+      roomsRepository = fakeStore,
       scope = { CoroutineScope(Dispatchers.Unconfined) }
   )
 

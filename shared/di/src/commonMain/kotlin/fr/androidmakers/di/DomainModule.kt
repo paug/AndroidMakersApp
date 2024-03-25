@@ -13,6 +13,7 @@ import fr.androidmakers.domain.interactor.OpenXAccountUseCase
 import fr.androidmakers.domain.interactor.OpenXHashtagUseCase
 import fr.androidmakers.domain.interactor.OpenYoutubeUseCase
 import fr.androidmakers.domain.interactor.SetSessionBookmarkUseCase
+import fr.androidmakers.domain.interactor.ShareSessionUseCase
 import fr.androidmakers.domain.interactor.SyncBookmarksUseCase
 import org.koin.core.module.Module
 import org.koin.dsl.module

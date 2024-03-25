@@ -27,7 +27,6 @@ import com.google.firebase.messaging.FirebaseMessaging
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.GoogleAuthProvider
 import dev.gitlive.firebase.auth.auth
-import fr.androidmakers.domain.model.Partner
 import fr.androidmakers.store.firebase.toUser
 import fr.paug.androidmakers.BuildConfig
 import fr.paug.androidmakers.R
@@ -98,22 +97,6 @@ class MainActivity : AppCompatActivity() {
     })
   }
 
-  private fun onFaqClick() {
-    viewModel.openFaqUseCase()
-  }
-
-  private fun onCodeOfConductClick() {
-    viewModel.openCocUseCase()
-  }
-
-  private fun onXHashtagClick() {
-    viewModel.openXHashtagUseCase()
-  }
-
-  private fun onXLogoClick() {
-    viewModel.openXAccountUseCase()
-  }
-
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     super.onActivityResult(requestCode, resultCode, data)
 
@@ -150,15 +133,6 @@ class MainActivity : AppCompatActivity() {
         }
       }
     }
-  }
-
-  private fun onYouTubeLogoClick() {
-    viewModel.openYoutubeUseCase()
-  }
-
-  private fun onSponsorClick(partner: Partner) {
-    viewModel.openPartnerLinkUseCase(partner)
-    //CustomTabUtil.openChromeTab(this, url)
   }
 
   fun signout() {

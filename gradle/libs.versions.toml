@@ -6,22 +6,23 @@ androidxActivity = "1.8.2"
 androidxAppCompat = "1.6.1"
 androidxLifecycle = "2.7.0"
 apollo = "4.0.0-beta.5"
-compose = "1.6.1"
+compose = "1.6.3"
 android-gradle-plugin = "8.2.2"
-compose-compiler = "1.5.7"
-kotlin = "1.9.21"
+compose-compiler = "1.5.11"
+kotlin = "1.9.23"
 material3 = "1.2.0"
 google-services-plugin = "4.4.1"
 crashlytics-plugin = "2.9.9"
 moko = "0.24.0-alpha-4"
 moko-graphics = "0.9.0"
-compose-mp = "1.5.12"
+compose-mp = "1.6.1"
 datastore = "1.1.0-beta02"
-skie = "0.6.1"
+skie = "0.6.2"
 firebase = "1.11.1"
 koin = "3.5.3"
 precompose = "1.6.0-rc02"
-compose-plugin = "1.6.0"
+compose-plugin = "1.6.1"
+image-loader = "1.7.8"
 pullrefresh = "1.3.0"
 androidx-wear-compose = "1.3.0"
 playServicesWearable = "18.1.0"
@@ -39,11 +40,12 @@ apollo-normalized-cache-sqlite = { module = "com.apollographql.apollo3:apollo-no
 apollo-runtime = { module = "com.apollographql.apollo3:apollo-runtime" }
 shared-preferences = "androidx.preference:preference:1.2.1"
 coil-compose = "io.coil-kt:coil-compose:2.5.0"
+qdsfdhvh-imageloader = { module = "io.github.qdsfdhvh:image-loader", version.ref = "image-loader" }
 compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 compose-material = { group = "androidx.compose.material", name = "material", version.ref = "compose" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
-espresso-core = "androidx.test.espresso:espresso-core:3.5.1"
+espresso-core = "androidx.test.espresso:espresso-core:3.5.0"
 firebase-analytics-ktx = { module = "com.google.firebase:firebase-analytics-ktx" }
 firebase-bom = "com.google.firebase:firebase-bom:32.7.2"
 firebase-crashlytics-ktx = { module = "com.google.firebase:firebase-crashlytics-ktx" }

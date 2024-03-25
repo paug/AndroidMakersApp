@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.androidmakers.ui.agenda.SessionDetailLayout
+import com.androidmakers.ui.agenda.SessionDetailScreen
 import com.androidmakers.ui.agenda.SessionDetailViewModel
 import com.androidmakers.ui.common.navigation.AVALayout
 import com.androidmakers.ui.common.navigation.MainNavigationRoute
@@ -74,11 +75,8 @@ private fun MainNavHost(
       val sessionId = it.path<String>("sessionId")
       val sessionDetailViewModel = koinViewModel(vmClass = SessionDetailViewModel::class) { parametersOf(sessionId) }
 
-      val sessionDetailState by sessionDetailViewModel.sessionDetailState.collectAsState(
-          initial = Lce.Loading
-      )
-      SessionDetailLayout(
-          sessionDetailState = sessionDetailState,
+      SessionDetailScreen(
+          viewModel = sessionDetailViewModel,
           onBackClick = { mainNavController.popBackStack() },
           onBookmarkClick = { bookmarked -> sessionDetailViewModel.bookmark(bookmarked) },
       )

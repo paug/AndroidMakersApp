@@ -1,23 +1,30 @@
 package com.androidmakers.ui.agenda
 
+import androidx.compose.runtime.Composable
 import com.androidmakers.ui.model.Lce
 import com.androidmakers.ui.model.SessionDetailState
+import dev.icerock.moko.resources.compose.stringResource
 import fr.androidmakers.domain.interactor.SetSessionBookmarkUseCase
+import fr.androidmakers.domain.interactor.ShareSessionUseCase
+import fr.androidmakers.domain.model.Room
 import fr.androidmakers.domain.model.Session
 import fr.androidmakers.domain.model.Speaker
 import fr.androidmakers.domain.repo.BookmarksRepository
 import fr.androidmakers.domain.repo.RoomsRepository
 import fr.androidmakers.domain.repo.SessionsRepository
 import fr.androidmakers.domain.repo.SpeakersRepository
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import fr.androidmakers.domain.utils.formatTimeInterval
+import fr.paug.androidmakers.ui.MR
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flattenMerge
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
+import kotlinx.datetime.toLocalDateTime
 import moe.tlaster.precompose.viewmodel.ViewModel
 import moe.tlaster.precompose.viewmodel.viewModelScope
 
@@ -29,6 +36,7 @@ class SessionDetailViewModel(
     bookmarksRepository: BookmarksRepository,
     private val speakersRepository: SpeakersRepository,
     private val setSessionBookmarkUseCase: SetSessionBookmarkUseCase,
+    private val shareSessionUseCase: ShareSessionUseCase,
 ) : ViewModel() {
 
   private val session = sessionsRepository.getSession(sessionId)
@@ -37,6 +45,27 @@ class SessionDetailViewModel(
       roomsRepository.getRoom(roomId)
     }
   }.flattenMerge()
+
+  private val speakers = session.mapNotNull { result ->
+    result.getOrNull()?.speakers?.mapNotNull {
+      speakersRepository.getSpeaker(it).first().getOrNull()
+    }
+  }
+
+  private val formattedDateAndRoom = combine(session, room) { sessionResult, roomResult ->
+    sessionResult.getOrNull()?.let {
+      val sessionDate = formatTimeInterval(
+        it.startsAt,
+        it.endsAt
+      )
+      val room = roomResult.getOrNull()?.name
+      if (room?.isNotEmpty() == true) {
+        "$sessionDate, $room"
+      } else {
+        sessionDate
+      }
+    } ?: ""
+  }
 
   private val isBookmarked = bookmarksRepository.isBookmarked(sessionId)
 
@@ -54,7 +83,7 @@ class SessionDetailViewModel(
           SessionDetailState(
               session = session.getOrThrow(),
               room = room.getOrThrow(),
-              speakers = getSpeakers(session.getOrThrow()),
+              speakers = speakers.first(),
               startTimestamp = session.getOrThrow().startsAt.toInstant(TimeZone.currentSystemDefault()),
               endTimestamp = session.getOrThrow().endsAt.toInstant(TimeZone.currentSystemDefault()),
               isBookmarked = isBookmarked,
@@ -63,17 +92,14 @@ class SessionDetailViewModel(
     }
   }
 
-  private suspend fun getSpeakers(session: Session): List<Speaker> {
-    val allSpeakers = speakersRepository.getSpeakers().firstOrNull()
-        ?.recover { emptyList() }
-        ?.getOrThrow()
-        ?: return emptyList()
-
-    val allSpeakersById = allSpeakers.associateBy { it.id }
-    return session.speakers.mapNotNull { allSpeakersById[it] }
-  }
-
   fun bookmark(bookmarked: Boolean) = viewModelScope.launch {
     setSessionBookmarkUseCase(session.first().getOrThrow().id, bookmarked)
+  }
+
+  fun shareSession() = viewModelScope.launch {
+    session.first().getOrNull()?.let {
+      shareSessionUseCase(
+          it, speakers.first(), formattedDateAndRoom.first())
+    }
   }
 }

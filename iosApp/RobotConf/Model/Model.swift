@@ -31,3 +31,4 @@ class Model: RepositoryProvider {
         feedbackRepository = FeedbackRepository(dataProvider: dataProvider)
     }
 }
+

@@ -15,7 +15,6 @@ kotlin {
     it.binaries.framework {
       baseName = "ui"
       isStatic = true
-      export(libs.moko.resources)
     }
   }
 
@@ -30,13 +29,14 @@ kotlin {
       implementation(compose.components.resources)
       implementation(compose.materialIconsExtended)
       implementation(compose.components.uiToolingPreview)
-      implementation(project(":shared:domain"))
-      implementation(project(":shared:di"))
-      api("io.github.qdsfdhvh:image-loader:1.7.8")
+      api(libs.qdsfdhvh.imageloader)
       api(libs.precompose)
       api(libs.precompose.viewmodel)
       api(libs.precompose.koin)
       implementation(libs.materii.pullrefresh)
+
+      implementation(project(":shared:domain"))
+      implementation(project(":shared:di"))
     }
   }
 }
