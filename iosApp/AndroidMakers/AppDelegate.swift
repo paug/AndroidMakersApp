@@ -3,10 +3,8 @@
 //
 
 import UIKit
-import FirebaseAnalytics
-import FirebaseCrashlytics
-import Firebase
 import shared
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,19 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
 
-        if FirebaseDescriptor.isEmbedded(forKind: .main) {
-            FirebaseApp.configure()
-            #if DEBUG
-            Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(false)
-            Analytics.setAnalyticsCollectionEnabled(false)
-            #else
-            Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(true)
-            Analytics.setAnalyticsCollectionEnabled(true)
-            #endif
-        } else {
-            print("⚠️ Firebase descriptor for the main purpose is not embedded, crashlytics disabled.")
-        }
-
+        FirebaseApp.configure()
         DependenciesBuilder().inject(platformModules: [viewModelModule])
 
         return true
