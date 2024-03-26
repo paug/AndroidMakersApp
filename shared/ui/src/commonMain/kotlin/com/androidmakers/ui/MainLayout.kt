@@ -32,7 +32,7 @@ fun MainLayout(
   val navigator = rememberNavigator()
   MainNavHost(
       mainNavController = navigator,
-      onSessionClick = { sessionId, roomId, startTimestamp, endTimestamp ->
+      onSessionClick = { sessionId ->
         navigator.navigate("${MainNavigationRoute.SESSION_DETAIL.name}/$sessionId")
       },
       user = user,
@@ -49,7 +49,7 @@ private fun MainNavHost(
     versionCode: String,
     versionName: String,
     mainNavController: Navigator,
-    onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
+    onSessionClick: (sessionId: String) -> Unit,
     user: User?,
     navigateToSpeakerDetails: (SpeakerId) -> Unit,
 ) {
