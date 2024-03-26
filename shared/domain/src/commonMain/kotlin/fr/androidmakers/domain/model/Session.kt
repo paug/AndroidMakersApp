@@ -1,6 +1,8 @@
 package fr.androidmakers.domain.model
 
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
 import kotlin.time.Duration
 
 data class Session(
@@ -16,11 +18,11 @@ data class Session(
     val platformUrl: String? = null,
     //TODO unsure
     val slidesUrl: String? = null,
-    val duration: Duration = Duration.ZERO,
 
     // TODO move to instant to handle timezone
     val startsAt: LocalDateTime,
     val endsAt: LocalDateTime,
+    val duration: Duration = endsAt.toInstant(TimeZone.UTC) - startsAt.toInstant(TimeZone.UTC),
     val roomId: String,
     val isServiceSession: Boolean,
 )
