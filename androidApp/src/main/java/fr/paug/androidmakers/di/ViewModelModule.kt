@@ -6,6 +6,4 @@ import org.koin.dsl.module
 
 val androidViewModelModule = module {
   viewModel { MainActivityViewModel(get(), get()) }
-
-
 }

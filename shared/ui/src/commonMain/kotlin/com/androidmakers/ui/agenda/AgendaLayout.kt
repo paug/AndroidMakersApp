@@ -43,7 +43,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun AgendaLayout(
     agendaFilterDrawerState: DrawerState,
-    onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
+    onSessionClick: (sessionId: String) -> Unit,
 ) {
   val agendaLayoutViewModel = koinViewModel(vmClass = AgendaLayoutViewModel::class)
   val agendaLayoutState by agendaLayoutViewModel.state.collectAsState()
@@ -73,7 +73,7 @@ fun AgendaLayout(
 @Composable
 private fun AgendaPagerOrLoading(
     sessionFilters: List<SessionFilter>,
-    onSessionClick: (sessionId: String, roomId: String, startTimestamp: Long, endTimestamp: Long) -> Unit,
+    onSessionClick: (sessionId: String) -> Unit,
 ) {
   val viewModel = koinViewModel(vmClass = AgendaPagerViewModel::class)
   val favoriteSessions by viewModel.getFavoriteSessions().collectAsState(emptySet())
@@ -86,10 +86,7 @@ private fun AgendaPagerOrLoading(
         filterList = sessionFilters,
         onSessionClicked = {
           onSessionClick(
-              it.id,
-              it.roomId,
-              it.startDate.toEpochMilliseconds(),
-              it.endDate.toEpochMilliseconds()
+              it.id
           )
         }
     )
@@ -254,6 +251,6 @@ private fun AgendaFilterDrawerPreview() {
 private fun AgendaLayoutPreview() {
   AgendaLayout(
       agendaFilterDrawerState = DrawerState(DrawerValue.Closed, confirmStateChange = { true }),
-      onSessionClick = { _, _, _, _ -> }
+      onSessionClick = { _ -> }
   )
 }
