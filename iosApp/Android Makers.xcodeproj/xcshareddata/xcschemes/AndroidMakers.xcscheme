@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "B2CD272A234D06530016AA02"
-               BuildableName = "RobotConf.app"
-               BlueprintName = "RobotConf"
-               ReferencedContainer = "container:RobotConf.xcodeproj">
+               BuildableName = "Android Makers.app"
+               BlueprintName = "Android Makers"
+               ReferencedContainer = "container:Android Makers.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -35,7 +35,7 @@
                BlueprintIdentifier = "B2CD2740234D06560016AA02"
                BuildableName = "RobotConfTests.xctest"
                BlueprintName = "RobotConfTests"
-               ReferencedContainer = "container:RobotConf.xcodeproj">
+               ReferencedContainer = "container:Android Makers.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
@@ -45,7 +45,7 @@
                BlueprintIdentifier = "B2CD274B234D06560016AA02"
                BuildableName = "RobotConfUITests.xctest"
                BlueprintName = "RobotConfUITests"
-               ReferencedContainer = "container:RobotConf.xcodeproj">
+               ReferencedContainer = "container:Android Makers.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -65,9 +65,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B2CD272A234D06530016AA02"
-            BuildableName = "RobotConf.app"
-            BlueprintName = "RobotConf"
-            ReferencedContainer = "container:RobotConf.xcodeproj">
+            BuildableName = "Android Makers.app"
+            BlueprintName = "Android Makers"
+            ReferencedContainer = "container:Android Makers.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -82,9 +82,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B2CD272A234D06530016AA02"
-            BuildableName = "RobotConf.app"
-            BlueprintName = "RobotConf"
-            ReferencedContainer = "container:RobotConf.xcodeproj">
+            BuildableName = "Android Makers.app"
+            BlueprintName = "Android Makers"
+            ReferencedContainer = "container:Android Makers.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

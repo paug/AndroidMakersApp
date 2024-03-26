@@ -35,7 +35,6 @@
 		B2CD426923578FBD009FE6B0 /* DocumentSnapshot+Decodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CD426823578FBD009FE6B0 /* DocumentSnapshot+Decodable.swift */; };
 		B2CD426E2362281A009FE6B0 /* URLImage in Frameworks */ = {isa = PBXBuildFile; productRef = B2CD426D2362281A009FE6B0 /* URLImage */; };
 		B2EF3CF523E89FC90078019F /* FeedbackRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EF3CF423E89FC90078019F /* FeedbackRepository.swift */; };
-		B2F270CA23DC7E2600FD6823 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B2F270C823DC7E2600FD6823 /* Localizable.strings */; };
 		B2F270DB23DC869300FD6823 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = B2F270DA23DC869300FD6823 /* .swiftlint.yml */; };
 		B2FE9FE9245493F3005FE370 /* FirebaseDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FE9FE8245493F3005FE370 /* FirebaseDescriptor.swift */; };
 /* End PBXBuildFile section */
@@ -55,7 +54,7 @@
 		B27CC3E22454A9450055D36B /* vote_configuration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = vote_configuration.json; sourceTree = "<group>"; };
 		B29CC7032427A01200FB7EF3 /* AndroidMakers.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AndroidMakers.entitlements; sourceTree = "<group>"; };
 		B2BC0B8323B91D2100C85F69 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
-		B2CD272B234D06530016AA02 /* RobotConf.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RobotConf.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B2CD272B234D06530016AA02 /* Android Makers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Android Makers.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2CD272E234D06530016AA02 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B2CD2730234D06530016AA02 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		B2CD2732234D06530016AA02 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -66,8 +65,6 @@
 		B2CD426823578FBD009FE6B0 /* DocumentSnapshot+Decodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DocumentSnapshot+Decodable.swift"; sourceTree = "<group>"; };
 		B2ECA77324151B6E00489874 /* OpenFeedback-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "OpenFeedback-Info.plist"; sourceTree = "<group>"; };
 		B2EF3CF423E89FC90078019F /* FeedbackRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackRepository.swift; sourceTree = "<group>"; };
-		B2F270CC23DC7E9200FD6823 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		B2F270CD23DC7EBC00FD6823 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B2F270DA23DC869300FD6823 /* .swiftlint.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		B2FE9FC02454733E005FE370 /* sessions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sessions.json; sourceTree = "<group>"; };
 		B2FE9FD424548E41005FE370 /* schedule-app.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "schedule-app.json"; sourceTree = "<group>"; };
@@ -126,7 +123,7 @@
 		B2CD2722234D06530016AA02 = {
 			isa = PBXGroup;
 			children = (
-				B2CD272D234D06530016AA02 /* RobotConf */,
+				B2CD272D234D06530016AA02 /* AndroidMakers */,
 				B2CD272C234D06530016AA02 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -134,12 +131,12 @@
 		B2CD272C234D06530016AA02 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B2CD272B234D06530016AA02 /* RobotConf.app */,
+				B2CD272B234D06530016AA02 /* Android Makers.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		B2CD272D234D06530016AA02 /* RobotConf */ = {
+		B2CD272D234D06530016AA02 /* AndroidMakers */ = {
 			isa = PBXGroup;
 			children = (
 				B29CC7032427A01200FB7EF3 /* AndroidMakers.entitlements */,
@@ -153,7 +150,7 @@
 				6418BE5C2BA1EC8900F3EA79 /* GoogleService-Info.plist */,
 				B2CD2736234D06560016AA02 /* Preview Content */,
 			);
-			path = RobotConf;
+			path = AndroidMakers;
 			sourceTree = "<group>";
 		};
 		B2CD2736234D06560016AA02 /* Preview Content */ = {
@@ -189,7 +186,6 @@
 			children = (
 				B2CD2739234D06560016AA02 /* LaunchScreen.storyboard */,
 				B2CD2734234D06560016AA02 /* Assets.xcassets */,
-				B2F270C823DC7E2600FD6823 /* Localizable.strings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -251,9 +247,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		B2CD272A234D06530016AA02 /* RobotConf */ = {
+		B2CD272A234D06530016AA02 /* Android Makers */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B2CD2755234D06560016AA02 /* Build configuration list for PBXNativeTarget "RobotConf" */;
+			buildConfigurationList = B2CD2755234D06560016AA02 /* Build configuration list for PBXNativeTarget "Android Makers" */;
 			buildPhases = (
 				64F2D2762B878156005B9EAF /* 🏗️ Compile and embedded shared code */,
 				B2CD2727234D06530016AA02 /* Sources */,
@@ -267,7 +263,7 @@
 			);
 			dependencies = (
 			);
-			name = RobotConf;
+			name = "Android Makers";
 			packageProductDependencies = (
 				B2CD426D2362281A009FE6B0 /* URLImage */,
 				B26E853A23D49D8B006C2C9E /* SwiftRichString */,
@@ -280,7 +276,7 @@
 				45DAAD7B29E49D430085977B /* ApolloSQLite */,
 			);
 			productName = RobotConf;
-			productReference = B2CD272B234D06530016AA02 /* RobotConf.app */;
+			productReference = B2CD272B234D06530016AA02 /* Android Makers.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -298,7 +294,7 @@
 					};
 				};
 			};
-			buildConfigurationList = B2CD2726234D06530016AA02 /* Build configuration list for PBXProject "RobotConf" */;
+			buildConfigurationList = B2CD2726234D06530016AA02 /* Build configuration list for PBXProject "Android Makers" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -319,7 +315,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				B2CD272A234D06530016AA02 /* RobotConf */,
+				B2CD272A234D06530016AA02 /* Android Makers */,
 			);
 		};
 /* End PBXProject section */
@@ -329,7 +325,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B2F270CA23DC7E2600FD6823 /* Localizable.strings in Resources */,
 				B2CD273B234D06560016AA02 /* LaunchScreen.storyboard in Resources */,
 				B2F270DB23DC869300FD6823 /* .swiftlint.yml in Resources */,
 				B2CD2738234D06560016AA02 /* Preview Assets.xcassets in Resources */,
@@ -396,7 +391,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ \"${CONFIGURATION}\" == \"Debug\" ]; then\n    cp -r \"${SRCROOT}/RobotConf/Model/Data/Providers/Json/Resources/\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app\"\nfi\n";
+			shellScript = "if [ \"${CONFIGURATION}\" == \"Debug\" ]; then\n    cp -r \"${SRCROOT}/AndroidMakers/Model/Data/Providers/Json/Resources/\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app\"\nfi\n";
 		};
 		B27CC3E82455ADD40055D36B /* Copy Firebase plist files */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -414,7 +409,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "MAIN_FIREBASE_FILE=\"${SRCROOT}/RobotConf/GoogleService-Info.plist\"\nOPENFEEDBACK_FIREBASE_FILE=\"${SRCROOT}/RobotConf/OpenFeedback-Info.plist\"\nif [ -f \"${MAIN_FIREBASE_FILE}\" ]; then\n    cp -r \"${MAIN_FIREBASE_FILE}\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app\"\nfi\n\nif [ -f \"${OPENFEEDBACK_FIREBASE_FILE}\" ]; then\n    cp -r \"${OPENFEEDBACK_FIREBASE_FILE}\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app\"\nfi\n";
+			shellScript = "MAIN_FIREBASE_FILE=\"${SRCROOT}/AndroidMakers/GoogleService-Info.plist\"\nOPENFEEDBACK_FIREBASE_FILE=\"${SRCROOT}/AndroidMakers/OpenFeedback-Info.plist\"\nif [ -f \"${MAIN_FIREBASE_FILE}\" ]; then\n    cp -r \"${MAIN_FIREBASE_FILE}\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app\"\nfi\n\nif [ -f \"${OPENFEEDBACK_FIREBASE_FILE}\" ]; then\n    cp -r \"${OPENFEEDBACK_FIREBASE_FILE}\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -451,15 +446,6 @@
 				33CD20B328087FE7005084EF /* Base */,
 			);
 			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-		B2F270C823DC7E2600FD6823 /* Localizable.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				B2F270CC23DC7E9200FD6823 /* fr */,
-				B2F270CD23DC7EBC00FD6823 /* en */,
-			);
-			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -587,15 +573,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = RobotConf/AndroidMakers.entitlements;
+				CODE_SIGN_ENTITLEMENTS = AndroidMakers/AndroidMakers.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 13;
-				DEVELOPMENT_ASSET_PATHS = "RobotConf/Preview\\ Content";
+				DEVELOPMENT_ASSET_PATHS = "\"AndroidMakers/Preview Content\"";
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)";
-				INFOPLIST_FILE = RobotConf/Info.plist;
+				INFOPLIST_FILE = AndroidMakers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -607,7 +593,7 @@
 					shared,
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.paug.RobotConf;
-				PRODUCT_NAME = RobotConf;
+				PRODUCT_NAME = "Android Makers";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -617,15 +603,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = RobotConf/AndroidMakers.entitlements;
+				CODE_SIGN_ENTITLEMENTS = AndroidMakers/AndroidMakers.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 13;
-				DEVELOPMENT_ASSET_PATHS = "RobotConf/Preview\\ Content";
+				DEVELOPMENT_ASSET_PATHS = "\"AndroidMakers/Preview Content\"";
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)";
-				INFOPLIST_FILE = RobotConf/Info.plist;
+				INFOPLIST_FILE = AndroidMakers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -637,7 +623,7 @@
 					shared,
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.paug.RobotConf;
-				PRODUCT_NAME = RobotConf;
+				PRODUCT_NAME = "Android Makers";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -646,7 +632,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		B2CD2726234D06530016AA02 /* Build configuration list for PBXProject "RobotConf" */ = {
+		B2CD2726234D06530016AA02 /* Build configuration list for PBXProject "Android Makers" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B2CD2753234D06560016AA02 /* Debug */,
@@ -655,7 +641,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B2CD2755234D06560016AA02 /* Build configuration list for PBXNativeTarget "RobotConf" */ = {
+		B2CD2755234D06560016AA02 /* Build configuration list for PBXNativeTarget "Android Makers" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B2CD2756234D06560016AA02 /* Debug */,
