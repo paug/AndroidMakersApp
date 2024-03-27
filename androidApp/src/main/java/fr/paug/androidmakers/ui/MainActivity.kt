@@ -13,9 +13,9 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
+import com.androidmakers.ui.LocalPlatformContext
 import com.androidmakers.ui.MainLayout
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -37,8 +37,6 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.compose.KoinContext
 
-val LocalActivity = staticCompositionLocalOf<MainActivity> { throw NotImplementedError() }
-
 class MainActivity : AppCompatActivity() {
   private val viewModel: MainActivityViewModel by viewModel()
 
@@ -57,7 +55,7 @@ class MainActivity : AppCompatActivity() {
       val darkTheme = isSystemInDarkTheme()
 
       CompositionLocalProvider(
-          LocalActivity provides rememberedActivity,
+          LocalPlatformContext provides rememberedActivity,
       ) {
         KoinContext {
           AndroidMakersTheme {

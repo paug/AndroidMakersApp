@@ -1,14 +1,11 @@
 package com.androidmakers.ui
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import com.androidmakers.ui.agenda.SessionDetailLayout
+import androidx.compose.runtime.staticCompositionLocalOf
 import com.androidmakers.ui.agenda.SessionDetailScreen
 import com.androidmakers.ui.agenda.SessionDetailViewModel
 import com.androidmakers.ui.common.navigation.AVALayout
 import com.androidmakers.ui.common.navigation.MainNavigationRoute
-import com.androidmakers.ui.model.Lce
 import com.androidmakers.ui.speakers.SpeakerDetailsRoute
 import com.androidmakers.ui.speakers.SpeakerDetailsViewModel
 import fr.androidmakers.domain.model.SpeakerId
@@ -95,3 +92,7 @@ private fun MainNavHost(
     }
   }
 }
+
+expect class PlatformContext
+
+val LocalPlatformContext = staticCompositionLocalOf<Any?> { null }
