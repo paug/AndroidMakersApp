@@ -53,7 +53,7 @@ class AndroidMakersMessagingService : FirebaseMessagingService() {
     val notificationBuilder = NotificationCompat.Builder(this, channelId)
         .setContentTitle("FCM Message")
         .setContentText(messageBody)
-        .setSmallIcon(R.drawable.notification)
+        .setSmallIcon(R.drawable.ic_notification_small)
         .setAutoCancel(true)
         .setSound(defaultSoundUri)
         .setContentIntent(pendingIntent)

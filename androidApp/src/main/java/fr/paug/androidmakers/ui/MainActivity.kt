@@ -17,6 +17,7 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import com.androidmakers.ui.MainLayout
+import com.androidmakers.ui.theme.AndroidMakersTheme
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -30,7 +31,6 @@ import dev.gitlive.firebase.auth.auth
 import fr.androidmakers.store.firebase.toUser
 import fr.paug.androidmakers.BuildConfig
 import fr.paug.androidmakers.R
-import fr.paug.androidmakers.ui.theme.AndroidMakersTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
