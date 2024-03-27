@@ -18,43 +18,43 @@ class AgendaLayoutViewModelTest {
   private val fakeStore = FakeAndroidMakersStore()
 
   private val testSubject = AgendaLayoutViewModel(
-      roomsRepository = fakeStore,
-      scope = { CoroutineScope(Dispatchers.Unconfined) }
+    roomsRepository = fakeStore,
+    scope = { CoroutineScope(Dispatchers.Unconfined) }
   )
 
   @Test
   fun `initial state should be correct`() = runBlocking {
     assertEquals(
-        AgendaLayoutState(
-            rooms = emptyList(),
-            sessionFilters = emptyList()
-        ),
-        testSubject.state.first()
+      AgendaLayoutState(
+        rooms = emptyList(),
+        sessionFilters = emptyList()
+      ),
+      testSubject.state.first()
     )
   }
 
   @Test
   fun `given non empty session filters state should be correct`() = runBlocking {
     testSubject.onFiltersChanged(
-        listOf(
-            SessionFilter(
-                SessionFilter.FilterType.BOOKMARK,
-                "bookmark"
-            )
+      listOf(
+        SessionFilter(
+          SessionFilter.FilterType.BOOKMARK,
+          "bookmark"
         )
+      )
     )
 
     assertEquals(
-        AgendaLayoutState(
-            rooms = emptyList(),
-            sessionFilters = listOf(
-                SessionFilter(
-                    SessionFilter.FilterType.BOOKMARK,
-                    "bookmark"
-                )
-            )
-        ),
-        testSubject.state.first()
+      AgendaLayoutState(
+        rooms = emptyList(),
+        sessionFilters = listOf(
+          SessionFilter(
+            SessionFilter.FilterType.BOOKMARK,
+            "bookmark"
+          )
+        )
+      ),
+      testSubject.state.first()
     )
   }
 
@@ -63,11 +63,11 @@ class AgendaLayoutViewModelTest {
     fakeStore.roomsMutableFlow.value = Result.failure(RuntimeException("exception"))
 
     assertEquals(
-        AgendaLayoutState(
-            rooms = emptyList(),
-            sessionFilters = emptyList()
-        ),
-        testSubject.state.first()
+      AgendaLayoutState(
+        rooms = emptyList(),
+        sessionFilters = emptyList()
+      ),
+      testSubject.state.first()
     )
   }
 
@@ -76,11 +76,11 @@ class AgendaLayoutViewModelTest {
     fakeStore.roomsMutableFlow.value = Result.success(listOf(Room(id = "id", name = "name")))
 
     assertEquals(
-        AgendaLayoutState(
-            rooms = listOf(Room(id = "id", name = "name")),
-            sessionFilters = emptyList()
-        ),
-        testSubject.state.first()
+      AgendaLayoutState(
+        rooms = listOf(Room(id = "id", name = "name")),
+        sessionFilters = emptyList()
+      ),
+      testSubject.state.first()
     )
   }
 }
