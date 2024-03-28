@@ -1,4 +1,4 @@
-package fr.paug.androidmakers.ui
+package fr.paug.androidmakers
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,7 +13,7 @@ class MainActivityViewModel(
   private val userRepository: UserRepository,
   val syncBookmarksUseCase: SyncBookmarksUseCase
 
-): ViewModel() {
+) : ViewModel() {
   private val _user = MutableStateFlow<User?>(null)
   val user: Flow<User?> = _user
 
@@ -23,9 +23,9 @@ class MainActivityViewModel(
 
       val currentUser = _user.value
       if (currentUser != null) {
-          // fire & forget
-          // This is racy but oh well...
-          syncBookmarksUseCase(currentUser.id)
+        // fire & forget
+        // This is racy but oh well...
+        syncBookmarksUseCase(currentUser.id)
       }
     }
   }
