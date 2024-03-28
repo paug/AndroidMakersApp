@@ -69,9 +69,7 @@ fun AgendaRow(
       headlineContent = {
         Text(
             text = uiSession.title,
-            style = MaterialTheme.typography.titleLarge.copy(
-                fontWeight = FontWeight.Bold
-            ),
+            style = MaterialTheme.typography.titleMedium,
             modifier = maybeClickable(uiSession, onSessionClicked)
         )
       },

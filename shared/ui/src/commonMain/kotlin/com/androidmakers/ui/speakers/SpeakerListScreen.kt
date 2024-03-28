@@ -146,9 +146,7 @@ fun SpeakerItem(
       headlineContent = {
         Text(
             text = speaker.name.orEmpty(),
-            style = MaterialTheme.typography.titleLarge.copy(
-                fontWeight = FontWeight.Bold
-            )
+            style = MaterialTheme.typography.titleMedium,
         )
       },
       supportingContent = speaker.company?.let { company ->

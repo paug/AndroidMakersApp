@@ -53,10 +53,6 @@ fun VenuePager() {
             text = {
               Text(
                   text = stringResource(titles[it]),
-                  style = MaterialTheme.typography.headlineSmall.copy(
-                      color = MaterialTheme.colorScheme.primary,
-                      fontSize = 18.sp
-                  )
               )
             },
             selected = pagerState.currentPage == it,

@@ -149,6 +149,7 @@ private fun ClickableText(
           .clickable(onClick = onClick)
           .padding(8.dp),
       text = text,
+      style = MaterialTheme.typography.titleSmall,
       color = MaterialTheme.colorScheme.primary
   )
 }
