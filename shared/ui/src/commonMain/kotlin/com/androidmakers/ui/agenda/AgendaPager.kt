@@ -49,13 +49,7 @@ fun AgendaPager(
 
         Tab(
             text = {
-              Text(
-                  text = days[it],
-                  style = MaterialTheme.typography.headlineSmall.copy(
-                      color = MaterialTheme.colorScheme.primary,
-                      fontSize = 20.sp
-                  )
-              )
+              Text(days[it])
             },
             selected = pagerState.currentPage == it,
             selectedContentColor = MaterialTheme.colorScheme.onSurface,

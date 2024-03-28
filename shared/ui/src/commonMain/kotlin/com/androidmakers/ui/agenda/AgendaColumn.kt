@@ -31,18 +31,18 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AgendaColumn(
-    sessionsPerStartTime: Map<String, List<UISession>>,
-    onSessionClicked: (UISession) -> Unit,
-    onSessionBookmarked: (UISession, Boolean) -> Unit,
+  sessionsPerStartTime: Map<String, List<UISession>>,
+  onSessionClicked: (UISession) -> Unit,
+  onSessionBookmarked: (UISession, Boolean) -> Unit,
 ) {
   val listState = rememberLazyListState()
 
   LazyColumn(
-      state = listState,
-      modifier = Modifier.fillMaxHeight(),
-      contentPadding = PaddingValues(8.dp),
-      verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically),
-      horizontalAlignment = Alignment.CenterHorizontally
+    state = listState,
+    modifier = Modifier.fillMaxHeight(),
+    contentPadding = PaddingValues(8.dp),
+    verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically),
+    horizontalAlignment = Alignment.CenterHorizontally
 
   ) {
     sessionsPerStartTime.forEach { (key, sessions) ->
@@ -53,19 +53,19 @@ fun AgendaColumn(
 
       item {
         Card(
-            modifier = Modifier.padding(horizontal = 16.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surface,
-                contentColor = MaterialTheme.colorScheme.onSurface
-            ),
-            shape = RoundedCornerShape(16.dp),
+          modifier = Modifier.padding(horizontal = 16.dp),
+          colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface
+          ),
+          shape = RoundedCornerShape(16.dp),
         ) {
           sessions.forEach { uiSession ->
             AgendaRow(
-                modifier = Modifier.animateItemPlacement(),
-                uiSession = uiSession,
-                onSessionClicked = onSessionClicked,
-                onSessionBookmarked = onSessionBookmarked
+              modifier = Modifier.animateItemPlacement(),
+              uiSession = uiSession,
+              onSessionClicked = onSessionClicked,
+              onSessionBookmarked = onSessionBookmarked
             )
           }
         }
@@ -77,26 +77,25 @@ fun AgendaColumn(
 @Composable
 fun TimeSeparator(prettyTime: String) {
   Surface(
-      color = MaterialTheme.colorScheme.background
+    color = MaterialTheme.colorScheme.background
   ) {
     Row(
-        modifier = Modifier
-            .padding(horizontal = 16.dp, vertical = 8.dp)
-            .fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(4.dp)
+      modifier = Modifier
+        .padding(horizontal = 16.dp, vertical = 8.dp)
+        .fillMaxWidth(),
+      verticalAlignment = Alignment.CenterVertically,
+      horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
       Icon(
-          modifier = Modifier.size(24.dp),
-          imageVector = Icons.Rounded.Schedule,
-          tint = MaterialTheme.colorScheme.primary,
-          contentDescription = stringResource(MR.strings.filter),
+        modifier = Modifier.size(24.dp),
+        imageVector = Icons.Rounded.Schedule,
+        tint = MaterialTheme.colorScheme.primary,
+        contentDescription = stringResource(MR.strings.filter),
       )
       Text(
-          text = prettyTime,
-          style = MaterialTheme.typography.headlineSmall.copy(
-              color = MaterialTheme.colorScheme.primary
-          )
+        text = prettyTime,
+        color = MaterialTheme.colorScheme.primary,
+        style = MaterialTheme.typography.titleSmall
       )
     }
   }
