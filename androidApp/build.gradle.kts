@@ -47,6 +47,5 @@ dependencies {
   implementation(libs.koin.androidx.compose)
 
   // Used for tags
-  implementation(libs.openfeedback)
   implementation(project(":shared"))
 }

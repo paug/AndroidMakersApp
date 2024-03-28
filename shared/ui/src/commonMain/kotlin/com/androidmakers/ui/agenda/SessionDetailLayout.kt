@@ -47,9 +47,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.androidmakers.ui.LocalPlatformContext
 import com.androidmakers.ui.common.EmojiUtils
 import com.androidmakers.ui.common.LoadingLayout
 import com.androidmakers.ui.common.separatorColor
@@ -63,6 +65,8 @@ import fr.androidmakers.domain.model.SocialsItem
 import fr.androidmakers.domain.model.Speaker
 import fr.androidmakers.domain.utils.removeHtmlTags
 import fr.paug.androidmakers.ui.MR
+import io.openfeedback.m3.OpenFeedback
+import io.openfeedback.viewmodels.OpenFeedbackFirebaseConfig
 import kotlinx.datetime.Clock
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -225,11 +229,13 @@ private fun SessionDetails(
     )
 
     if (Clock.System.now() > sessionDetails.startTimestamp) {
-      /*SessionFeedbackContainer(
-          openFeedback = AndroidMakersApplication.instance().openFeedback,
-          sessionId = sessionDetails.session.id,
-          language = Locale.getDefault().language,
-      )*/
+      OpenFeedback(
+        config = OpenFeedbackFirebaseConfig.default(
+          context = LocalPlatformContext.current
+        ),
+        projectId = "am2023",
+        sessionId = sessionDetails.session.id,
+      )
     } else {
       Surface(
         shape = RoundedCornerShape(5.dp),
