@@ -1,6 +1,5 @@
 package fr.paug.androidmakers.fixtures
 
-import fr.androidmakers.domain.model.Partner
 import fr.androidmakers.domain.model.PartnerGroup
 import fr.androidmakers.domain.model.Room
 import fr.androidmakers.domain.model.Session
@@ -14,7 +13,8 @@ import fr.androidmakers.domain.repo.VenueRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
-class FakeAndroidMakersStore : RoomsRepository, VenueRepository, SpeakersRepository, SessionsRepository, PartnersRepository {
+class FakeAndroidMakersStore : RoomsRepository, VenueRepository, SpeakersRepository,
+  SessionsRepository, PartnersRepository {
   val roomsMutableFlow = MutableStateFlow(Result.success(emptyList<Room>()))
 
   override fun getRooms(): Flow<Result<List<Room>>> = roomsMutableFlow

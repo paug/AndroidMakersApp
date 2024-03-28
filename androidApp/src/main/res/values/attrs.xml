@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <attr format="reference" name="runtimeTheme" />
+    <attr name="runtimeTheme" format="reference" />
 
 </resources>

@@ -1,4 +1,4 @@
-package fr.paug.androidmakers.ui
+package fr.paug.androidmakers
 
 import android.content.Intent
 import android.graphics.Color
@@ -29,7 +29,6 @@ import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.GoogleAuthProvider
 import dev.gitlive.firebase.auth.auth
 import fr.androidmakers.store.firebase.toUser
-import fr.paug.androidmakers.BuildConfig
 import fr.paug.androidmakers.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -44,7 +43,6 @@ class MainActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
 
     WindowCompat.setDecorFitsSystemWindows(window, false)
-    enableEdgeToEdge()
 
     logFCMToken()
 
@@ -55,28 +53,28 @@ class MainActivity : AppCompatActivity() {
       val darkTheme = isSystemInDarkTheme()
 
       CompositionLocalProvider(
-          LocalPlatformContext provides rememberedActivity,
+        LocalPlatformContext provides rememberedActivity,
       ) {
         KoinContext {
           AndroidMakersTheme {
             DisposableEffect(darkTheme) {
               enableEdgeToEdge(
-                  statusBarStyle = SystemBarStyle.auto(
-                      Color.TRANSPARENT,
-                      Color.TRANSPARENT,
-                  ) { darkTheme },
-                  navigationBarStyle = SystemBarStyle.auto(
-                      Color.TRANSPARENT,
-                      Color.TRANSPARENT,
-                  ) { darkTheme },
+                statusBarStyle = SystemBarStyle.auto(
+                  Color.TRANSPARENT,
+                  Color.TRANSPARENT,
+                ) { darkTheme },
+                navigationBarStyle = SystemBarStyle.auto(
+                  Color.TRANSPARENT,
+                  Color.TRANSPARENT,
+                ) { darkTheme },
               )
               onDispose { }
             }
 
             MainLayout(
-                user = userState.value,
-                versionName = BuildConfig.VERSION_NAME,
-                versionCode = BuildConfig.VERSION_CODE.toString(),
+              user = userState.value,
+              versionName = BuildConfig.VERSION_NAME,
+              versionCode = BuildConfig.VERSION_CODE.toString(),
             )
           }
         }
@@ -101,7 +99,7 @@ class MainActivity : AppCompatActivity() {
     when (requestCode) {
       REQ_SIGNIN -> {
         val task: Task<GoogleSignInAccount> =
-            GoogleSignIn.getSignedInAccountFromIntent(data)
+          GoogleSignIn.getSignedInAccountFromIntent(data)
         try {
           val account: GoogleSignInAccount = task.getResult(ApiException::class.java)
           val idToken = account.idToken
@@ -136,8 +134,8 @@ class MainActivity : AppCompatActivity() {
   fun signout() {
     val activity = this
     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-        .requestIdToken(activity.getString(R.string.default_web_client_id))
-        .build()
+      .requestIdToken(activity.getString(R.string.default_web_client_id))
+      .build()
     val googleSignInClient = GoogleSignIn.getClient(activity, gso)
 
     lifecycleScope.launch {
@@ -151,8 +149,8 @@ class MainActivity : AppCompatActivity() {
   fun signin() {
     val activity = this
     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-        .requestIdToken(activity.getString(R.string.default_web_client_id))
-        .build()
+      .requestIdToken(activity.getString(R.string.default_web_client_id))
+      .build()
     val googleSignInClient = GoogleSignIn.getClient(activity, gso)
 
     activity.startActivityForResult(googleSignInClient.signInIntent, REQ_SIGNIN)
