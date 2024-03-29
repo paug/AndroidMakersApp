@@ -57,7 +57,7 @@ fun AboutScreen(
         text = stringResource(
             MR.strings.version,
             versionName,
-            versionCode
+            versionCode.toInt()
         ),
     )
   }
