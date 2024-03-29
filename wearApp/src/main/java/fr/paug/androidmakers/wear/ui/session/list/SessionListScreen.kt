@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Bookmark
 import androidx.compose.runtime.Composable
@@ -39,6 +40,7 @@ import fr.androidmakers.domain.model.Session
 import fr.androidmakers.domain.model.Speaker
 import fr.paug.androidmakers.wear.R
 import fr.paug.androidmakers.wear.ui.main.UISession
+import fr.paug.androidmakers.wear.ui.theme.amRed
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.Month
 
@@ -109,9 +111,11 @@ private fun SessionItem(session: UISession) {
                 Icon(
                     modifier = Modifier.size(18.dp),
                     imageVector = Icons.Rounded.Bookmark,
-                    tint = MaterialTheme.colors.secondaryVariant,
+                  tint = amRed,
                     contentDescription = "Bookmarked"
                 )
+
+                Spacer(modifier = Modifier.width(2.dp))
               }
 
               Text(
@@ -135,7 +139,7 @@ private fun SessionItem(session: UISession) {
         Spacer(modifier = Modifier.height(2.dp))
         Text(
             text = session.speakers.joinToString { it.getFullNameAndCompany() },
-            color = MaterialTheme.colors.primaryVariant,
+          color = MaterialTheme.colors.primary,
         )
         Spacer(modifier = Modifier.height(4.dp))
       }

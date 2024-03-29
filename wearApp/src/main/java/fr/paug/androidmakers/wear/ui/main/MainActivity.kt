@@ -91,7 +91,7 @@ fun MainScreen(
           SettingsScreen(
               user = user,
               onSignInClick = onSignInClick,
-              onSignOutInClick = onSignOutClick,
+            onSignOutClick = onSignOutClick,
           )
         }
 

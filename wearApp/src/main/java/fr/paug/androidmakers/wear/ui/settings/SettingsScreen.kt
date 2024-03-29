@@ -32,7 +32,7 @@ fun SettingsScreen(
     viewModel: SettingsViewModel = koinViewModel(),
     user: User?,
     onSignInClick: () -> Unit,
-    onSignOutInClick: () -> Unit,
+    onSignOutClick: () -> Unit,
 ) {
   var showSignOutConfirmDialog by remember { mutableStateOf(false) }
   val columnState = rememberResponsiveColumnState()
@@ -80,7 +80,7 @@ fun SettingsScreen(
   SignOutConfirmDialog(
       showDialog = showSignOutConfirmDialog,
       onOk = {
-        onSignOutInClick()
+        onSignOutClick()
         showSignOutConfirmDialog = false
       },
       onCancel = {
@@ -108,7 +108,7 @@ private fun SignOutConfirmDialog(
         },
     ) {
       item {
-        Text(text = "Sign out?")
+        Text(text = stringResource(R.string.settings_signOutConfirm))
       }
     }
   }
@@ -121,6 +121,6 @@ private fun SettingsScreenPreview() {
   SettingsScreen(
       user = null,
       onSignInClick = {},
-      onSignOutInClick = {},
+    onSignOutClick = {},
   )
 }
