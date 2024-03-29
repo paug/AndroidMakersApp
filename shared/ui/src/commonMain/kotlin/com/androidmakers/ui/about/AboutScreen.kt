@@ -2,18 +2,22 @@ package com.androidmakers.ui.about
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,9 +28,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
-import fr.androidmakers.domain.model.Partner
 import fr.paug.androidmakers.ui.MR
 import moe.tlaster.precompose.koin.koinViewModel
+
 @Composable
 fun AboutScreen(
     versionName: String,
@@ -71,8 +75,9 @@ private fun IntroCard(
   Column(Modifier.padding(vertical = 8.dp)) {
     Image(
         modifier = Modifier
-            .height(64.dp)
-            .fillMaxWidth(),
+            .heightIn(max = 128.dp)
+            .fillMaxWidth()
+          .padding(horizontal = 32.dp),
         painter = painterResource(MR.images.logo_android_makers),
         contentDescription = "Logo"
     )
@@ -103,8 +108,12 @@ private fun SocialCard(
     onXLogoClick: () -> Unit,
     onYouTubeLogoClick: () -> Unit
 ) {
+  val darkMode = isSystemInDarkTheme()
   Card(Modifier.fillMaxWidth()) {
-    Column(Modifier.padding(8.dp)) {
+    Column(
+      modifier = Modifier.padding(8.dp),
+      horizontalAlignment = Alignment.CenterHorizontally
+    ) {
       Row(
           Modifier.fillMaxWidth(),
           horizontalArrangement = Arrangement.Center
@@ -113,27 +122,34 @@ private fun SocialCard(
       }
       Row(
           Modifier
-              .fillMaxWidth()
               .padding(top = 8.dp),
-          horizontalArrangement = Arrangement.Center
+          horizontalArrangement = Arrangement.spacedBy(16.dp),
       ) {
-        Icon(
-            modifier = Modifier
-                .size(96.dp, 64.dp)
-                .clickable(onClick = onXLogoClick)
-                .padding(12.dp),
+        IconButton(
+          onClick = onXLogoClick,
+          modifier = Modifier.size(64.dp)
+        ) {
+          Icon(
+            modifier = Modifier.size(36.dp),
             painter = painterResource(MR.images.ic_network_x),
-            tint = Color(0xFF000000),
+            tint = if (darkMode) {
+              Color.White
+            } else {
+              Color.Black
+            },
             contentDescription = "X"
-        )
-        Icon(
-            modifier = Modifier
-                .size(96.dp, 64.dp)
-                .clickable(onClick = onYouTubeLogoClick),
+          )
+        }
+        IconButton(
+          modifier = Modifier.size(64.dp),
+          onClick = onYouTubeLogoClick
+        ) {
+          Image(
+            modifier = Modifier.size(48.dp),
             painter = painterResource(MR.images.ic_network_youtube),
-            tint = Color(0xffff0000),
             contentDescription = "YouTube"
-        )
+          )
+        }
       }
     }
   }
