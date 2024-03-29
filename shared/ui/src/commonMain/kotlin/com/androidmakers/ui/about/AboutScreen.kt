@@ -72,13 +72,20 @@ private fun IntroCard(
     onFaqClick: () -> Unit,
     onCocClick: () -> Unit
 ) {
+  val darkMode = isSystemInDarkTheme()
   Column(Modifier.padding(vertical = 8.dp)) {
     Image(
         modifier = Modifier
             .heightIn(max = 128.dp)
             .fillMaxWidth()
           .padding(horizontal = 32.dp),
-        painter = painterResource(MR.images.logo_android_makers),
+        painter = painterResource(
+          if (darkMode) {
+            MR.images.logo_android_makers_night
+          } else {
+            MR.images.logo_android_makers
+          }
+        ),
         contentDescription = "Logo"
     )
     Text(
