@@ -63,8 +63,6 @@ fun SpeakerDetailsScreen(
 ) {
   val speaker = uiState.speaker
   Scaffold(
-      modifier = Modifier.navigationBarsPadding(),
-      contentWindowInsets = WindowInsets(0, 0, 0, 0),
       topBar = {
         TopAppBar(
             navigationIcon = {
