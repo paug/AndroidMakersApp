@@ -110,8 +110,6 @@ fun SessionDetailLayout(
   }
 
   Scaffold(
-    modifier = Modifier.navigationBarsPadding(),
-    contentWindowInsets = WindowInsets(0, 0, 0, 0),
     topBar = {
       TopAppBar(
         navigationIcon = {
@@ -160,13 +158,14 @@ fun SessionDetailLayout(
       }
     }
   ) { innerPadding ->
-    Box(Modifier.padding(innerPadding)) {
+    Box {
       when (sessionDetailState) {
         is Lce.Loading, Lce.Error -> LoadingLayout()
         is Lce.Content -> SessionDetails(
           sessionDetails = sessionDetailState.content,
           formattedDateAndRoom = formattedDateAndRoom!!,
-          openLink = onOpenLink
+          openLink = onOpenLink,
+          modifier = Modifier.padding(innerPadding)
         )
       }
     }
@@ -175,6 +174,7 @@ fun SessionDetailLayout(
 
 @Composable
 private fun SessionDetails(
+  modifier: Modifier = Modifier,
   sessionDetails: SessionDetailState,
   formattedDateAndRoom: String,
   openLink: (SocialsItem) -> Unit,
@@ -184,6 +184,7 @@ private fun SessionDetails(
     Modifier
       .verticalScroll(state = rememberScrollState())
       .padding(16.dp)
+      .then(modifier)
   ) {
 
     Text(
