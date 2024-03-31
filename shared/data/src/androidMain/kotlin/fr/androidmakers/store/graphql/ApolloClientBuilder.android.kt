@@ -27,10 +27,13 @@ actual class ApolloClientBuilder(
                 request.newBuilder()
                     .addHeader("conference", conference)
                     .apply {
-                      val token = Firebase.auth.currentUser?.getIdToken(false)?.result?.token
-                      if (token != null) {
-                        addHeader("Authorization", "Bearer $token")
-                      }
+                      /**
+                       *
+                       */
+//                      val token = Firebase.auth.currentUser?.getIdToken(false)?.result?.token
+//                      if (token != null) {
+//                        addHeader("Authorization", "Bearer $token")
+//                      }
                     }
                     .build()
             )

@@ -44,7 +44,7 @@ fun Session.toUISession(
       endDate = endsAt.toInstant(eventTimeZone),
       language = language,
       roomId = roomId,
-      room = rooms[roomId]!!.name,
+      room = rooms[roomId]?.name ?: "unknown",
       speakers = this.speakers.mapNotNull { speakers[it]?.toUISpeaker() },
       isServiceSession = isServiceSession,
       isFavorite = isFavorite
