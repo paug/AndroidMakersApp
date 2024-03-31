@@ -13,7 +13,7 @@ import platform.Foundation.NSUserDomainMask
 
 @OptIn(ExperimentalForeignApi::class)
 actual val dataPlatformModule = module {
-  single { ApolloClientBuilder("https://androidmakers-2023.ew.r.appspot.com/graphql", "androidmakers2023", "") }
+  single { ApolloClientBuilder("https://confetti-app.dev/graphql", "androidmakers2024", "") }
 
   single<DataStore<Preferences>> {
     createDataStore {
