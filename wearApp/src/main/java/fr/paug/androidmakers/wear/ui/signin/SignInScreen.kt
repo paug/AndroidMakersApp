@@ -21,6 +21,7 @@ fun SignInScreen(
         modifier = Modifier.fillMaxSize(),
         onAuthCancelled = {
           Log.d(TAG, "onAuthCancelled")
+          onDismissOrTimeout()
         },
         failedContent = {
           AuthErrorScreen()
