@@ -36,8 +36,7 @@ import java.time.Month
 
 private val TAG = MainViewModel::class.java.simpleName
 
-// TODO Update this date with 2024 edition date!
-private val DAY_1_DATE = LocalDate(year = 2023, month = Month.APRIL, dayOfMonth = 27)
+private val DAY_1_DATE = LocalDate(year = 2024, month = Month.APRIL, dayOfMonth = 25)
 private val DAY_2_DATE = DAY_1_DATE.plus(1, DateTimeUnit.DAY)
 
 class MainViewModel(

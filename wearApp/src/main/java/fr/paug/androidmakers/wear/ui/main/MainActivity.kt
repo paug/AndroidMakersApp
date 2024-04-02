@@ -12,11 +12,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.wear.compose.foundation.SwipeToDismissBoxState
+import androidx.wear.compose.foundation.edgeSwipeToDismiss
+import androidx.wear.compose.foundation.rememberSwipeToDismissBoxState
 import androidx.wear.compose.navigation.SwipeDismissableNavHost
 import androidx.wear.compose.navigation.composable
 import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
+import androidx.wear.compose.navigation.rememberSwipeDismissableNavHostState
 import com.google.android.horologist.compose.layout.AppScaffold
-import com.google.android.horologist.compose.layout.ScreenScaffold
 import com.google.android.horologist.compose.pager.PagerScreen
 import fr.androidmakers.domain.model.User
 import fr.paug.androidmakers.wear.R
@@ -39,7 +42,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun WearApp(
-    viewModel: MainViewModel = koinViewModel(),
+  viewModel: MainViewModel = koinViewModel(),
 ) {
   val navController = rememberSwipeDismissableNavController()
   val onSignInClick: () -> Unit = {
@@ -51,18 +54,26 @@ fun WearApp(
   val onSignInSuccess = viewModel::onSignInSuccess
   AndroidMakersWearTheme {
     AppScaffold {
-      SwipeDismissableNavHost(navController = navController, startDestination = Navigation.MAIN) {
+      val swipeToDismissBoxState = rememberSwipeToDismissBoxState()
+      val swipeDismissableNavHostState =
+        rememberSwipeDismissableNavHostState(swipeToDismissBoxState)
+      SwipeDismissableNavHost(
+        navController = navController,
+        startDestination = Navigation.MAIN,
+        state = swipeDismissableNavHostState,
+      ) {
         composable(Navigation.MAIN) {
           MainScreen(
-              onSignInClick = onSignInClick,
-              onSignOutClick = { viewModel.signOut() },
-              viewModel = viewModel,
+            onSignInClick = onSignInClick,
+            onSignOutClick = { viewModel.signOut() },
+            swipeToDismissBoxState = swipeToDismissBoxState,
+            viewModel = viewModel,
           )
         }
         composable(Navigation.SIGN_IN) {
           SignInScreen(
-              onSignInSuccess = onSignInSuccess,
-              onDismissOrTimeout = onSignInDismissOrTimeout
+            onSignInSuccess = onSignInSuccess,
+            onDismissOrTimeout = onSignInDismissOrTimeout
           )
         }
       }
@@ -72,36 +83,38 @@ fun WearApp(
 
 @Composable
 fun MainScreen(
-    viewModel: MainViewModel,
-    onSignInClick: () -> Unit,
-    onSignOutClick: () -> Unit,
+  viewModel: MainViewModel,
+  swipeToDismissBoxState: SwipeToDismissBoxState,
+  onSignInClick: () -> Unit,
+  onSignOutClick: () -> Unit,
 ) {
-  ScreenScaffold {
-    val pagerState: PagerState = rememberPagerState(initialPage = viewModel.getConferenceDay() + 1, pageCount = { 3 })
-    val user: User? by viewModel.user.collectAsState()
-    val sessionsDay1: List<UISession>? by viewModel.sessionsDay1.collectAsState(initial = null)
-    val sessionsDay2: List<UISession>? by viewModel.sessionsDay2.collectAsState(initial = null)
+  val pagerState: PagerState =
+    rememberPagerState(initialPage = viewModel.getConferenceDay() + 1, pageCount = { 3 })
+  val user: User? by viewModel.user.collectAsState()
+  val sessionsDay1: List<UISession>? by viewModel.sessionsDay1.collectAsState(initial = null)
+  val sessionsDay2: List<UISession>? by viewModel.sessionsDay2.collectAsState(initial = null)
 
-    PagerScreen(
-        modifier = Modifier.fillMaxSize(),
-        state = pagerState
-    ) { page ->
-      when (page) {
-        0 -> {
-          SettingsScreen(
-              user = user,
-              onSignInClick = onSignInClick,
-              onSignOutInClick = onSignOutClick,
-          )
-        }
+  PagerScreen(
+    modifier = Modifier
+      .fillMaxSize()
+      .edgeSwipeToDismiss(swipeToDismissBoxState),
+    state = pagerState
+  ) { page ->
+    when (page) {
+      0 -> {
+        SettingsScreen(
+          user = user,
+          onSignInClick = onSignInClick,
+          onSignOutClick = onSignOutClick,
+        )
+      }
 
-        1 -> {
-          SessionListScreen(sessions = sessionsDay1, title = stringResource(id = R.string.main_day1))
-        }
+      1 -> {
+        SessionListScreen(sessions = sessionsDay1, title = stringResource(id = R.string.main_day1))
+      }
 
-        2 -> {
-          SessionListScreen(sessions = sessionsDay2, title = stringResource(id = R.string.main_day2))
-        }
+      2 -> {
+        SessionListScreen(sessions = sessionsDay2, title = stringResource(id = R.string.main_day2))
       }
     }
   }

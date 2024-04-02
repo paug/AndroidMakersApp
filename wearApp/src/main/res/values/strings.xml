@@ -9,4 +9,5 @@
     <string name="settings_signIn">Sign in</string>
     <string name="settings_signOut">Sign out</string>
     <string name="settings_showBookmarksOnly">Show favorites only</string>
+    <string name="settings_signOutConfirm">Sign out?</string>
 </resources>
