@@ -1,4 +1,4 @@
-package fr.paug.androidmakers.wear.ui.main
+package fr.paug.androidmakers.wear.ui.session
 
 import fr.androidmakers.domain.model.Room
 import fr.androidmakers.domain.model.Session
