@@ -30,6 +30,7 @@ import com.androidmakers.ui.common.SocialButtons
 import com.androidmakers.ui.model.Lce
 import com.seiko.imageloader.rememberImagePainter
 import dev.icerock.moko.resources.compose.stringResource
+import fr.androidmakers.domain.model.SocialsItem
 import fr.paug.androidmakers.ui.MR
 
 
@@ -49,6 +50,7 @@ fun SpeakerDetailsRoute(
     is Lce.Content -> {
       SpeakerDetailsScreen(
           uiState = state.content,
+          onSocialItemClick = { speakerDetailsViewModel.openSpeakerLink(it) },
           onBackClick = onBackClick
       )
     }
@@ -59,6 +61,7 @@ fun SpeakerDetailsRoute(
 @Composable
 fun SpeakerDetailsScreen(
     uiState: SpeakerDetailsUiState,
+    onSocialItemClick: (SocialsItem) -> Unit,
     onBackClick: () -> Unit,
 ) {
   val speaker = uiState.speaker
@@ -109,9 +112,7 @@ fun SpeakerDetailsScreen(
 
       SocialButtons(
           speaker = speaker,
-          onClickOnItem = { item ->
-
-          }
+          onClickOnItem = onSocialItemClick
       )
     }
   }
