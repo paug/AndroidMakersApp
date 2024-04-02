@@ -14,8 +14,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Bookmark
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.Hyphens
 import androidx.compose.ui.text.style.LineBreak
@@ -39,6 +42,7 @@ import com.google.android.horologist.compose.material.ListHeaderDefaults
 import com.google.android.horologist.compose.material.ResponsiveListHeader
 import fr.paug.androidmakers.wear.R
 import fr.paug.androidmakers.wear.ui.common.Loading
+import fr.paug.androidmakers.wear.ui.common.PulsatingRedDot
 import fr.paug.androidmakers.wear.ui.session.UISession
 import fr.paug.androidmakers.wear.ui.session.uiSessions
 import fr.paug.androidmakers.wear.ui.theme.amRed
@@ -72,6 +76,22 @@ private fun SessionList(
       last = ScalingLazyColumnDefaults.ItemType.Card,
     )
   )
+
+  // Approximation of about half the height of a card, so the card is centered when scrolling to it.
+  // Maybe there's a way to get the actual height?
+  val scrollOffset = with(LocalDensity.current) { 80.dp.roundToPx() }
+
+  val nextSessionIndex = sessions.nextSessionIndex()
+  if (nextSessionIndex > 0) {
+    LaunchedEffect(Unit) {
+      columnState.state.scrollToItem(
+        // Add 1 to the index to account for the title
+        index = nextSessionIndex + 1,
+        scrollOffset = scrollOffset,
+      )
+    }
+  }
+
   ScreenScaffold(scrollState = columnState) {
     ScalingLazyColumn(
       columnState = columnState,
@@ -103,13 +123,25 @@ private fun SessionList(
   }
 }
 
+private fun List<UISession>.nextSessionIndex(): Int {
+  return indexOfFirst { !it.isOver }
+}
+
 @Composable
 private fun SessionItem(
   session: UISession,
   onSessionClick: (String) -> Unit,
 ) {
   TitleCard(
-    modifier = Modifier.fillMaxWidth(),
+    modifier = Modifier
+      .fillMaxWidth()
+      .let {
+        if (session.isOver) {
+          it.alpha(.7F)
+        } else {
+          it
+        }
+      },
     title = {
       Column(
         modifier = Modifier.fillMaxWidth(),
@@ -138,6 +170,10 @@ private fun SessionItem(
               text = session.session.startsAt.time.toString(),
             )
 
+            if (session.isOngoing) {
+              PulsatingRedDot()
+              Spacer(modifier = Modifier.width(2.dp))
+            }
             Text(
               text = session.formattedDuration,
             )

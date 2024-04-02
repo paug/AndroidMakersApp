@@ -34,6 +34,7 @@ import com.google.android.horologist.compose.layout.ScalingLazyColumnDefaults
 import com.google.android.horologist.compose.layout.ScreenScaffold
 import com.google.android.horologist.compose.layout.rememberResponsiveColumnState
 import fr.paug.androidmakers.wear.ui.common.Loading
+import fr.paug.androidmakers.wear.ui.common.PulsatingRedDot
 import fr.paug.androidmakers.wear.ui.session.UISession
 import fr.paug.androidmakers.wear.ui.session.uiSession1
 import fr.paug.androidmakers.wear.ui.theme.amRed
@@ -86,6 +87,10 @@ private fun Session(session: UISession) {
 
             Spacer(modifier = Modifier.width(16.dp))
 
+            if (session.isOngoing) {
+              PulsatingRedDot()
+              Spacer(modifier = Modifier.width(2.dp))
+            }
             Text(
               text = session.formattedDuration,
             )
