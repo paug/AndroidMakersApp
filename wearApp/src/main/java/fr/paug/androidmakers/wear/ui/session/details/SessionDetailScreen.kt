@@ -1,33 +1,31 @@
 @file:OptIn(ExperimentalHorologistApi::class)
 
-package fr.paug.androidmakers.wear.ui.session.list
+package fr.paug.androidmakers.wear.ui.session.details
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Bookmark
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.Hyphens
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.wear.compose.foundation.lazy.items
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.LocalContentColor
 import androidx.wear.compose.material.LocalTextStyle
 import androidx.wear.compose.material.MaterialTheme
 import androidx.wear.compose.material.Text
-import androidx.wear.compose.material.TitleCard
 import androidx.wear.compose.ui.tooling.preview.WearPreviewDevices
 import androidx.wear.compose.ui.tooling.preview.WearPreviewFontScales
 import com.google.android.horologist.annotations.ExperimentalHorologistApi
@@ -35,41 +33,27 @@ import com.google.android.horologist.compose.layout.ScalingLazyColumn
 import com.google.android.horologist.compose.layout.ScalingLazyColumnDefaults
 import com.google.android.horologist.compose.layout.ScreenScaffold
 import com.google.android.horologist.compose.layout.rememberResponsiveColumnState
-import com.google.android.horologist.compose.material.ListHeaderDefaults
-import com.google.android.horologist.compose.material.ResponsiveListHeader
-import fr.paug.androidmakers.wear.R
 import fr.paug.androidmakers.wear.ui.common.Loading
 import fr.paug.androidmakers.wear.ui.session.UISession
-import fr.paug.androidmakers.wear.ui.session.uiSessions
+import fr.paug.androidmakers.wear.ui.session.uiSession1
 import fr.paug.androidmakers.wear.ui.theme.amRed
 
 @Composable
-fun SessionListScreen(
-  sessions: List<UISession>?,
-  title: String,
-  onSessionClick: (String) -> Unit,
-) {
-  if (sessions == null) {
+fun SessionDetailScreen(viewModel: SessionDetailViewModel) {
+  val session: UISession? by viewModel.uiSession.collectAsState(null)
+  if (session == null) {
     Loading()
   } else {
-    SessionList(
-      sessions = sessions,
-      title = title,
-      onSessionClick = onSessionClick,
-    )
+    Session(session!!)
   }
 }
 
 @Composable
-private fun SessionList(
-  sessions: List<UISession>,
-  title: String,
-  onSessionClick: (String) -> Unit,
-) {
+private fun Session(session: UISession) {
   val columnState = rememberResponsiveColumnState(
     contentPadding = ScalingLazyColumnDefaults.padding(
-      first = ScalingLazyColumnDefaults.ItemType.Card,
-      last = ScalingLazyColumnDefaults.ItemType.Card,
+      first = ScalingLazyColumnDefaults.ItemType.Text,
+      last = ScalingLazyColumnDefaults.ItemType.Text,
     )
   )
   ScreenScaffold(scrollState = columnState) {
@@ -78,48 +62,11 @@ private fun SessionList(
       modifier = Modifier.fillMaxSize()
     ) {
       item {
-        ResponsiveListHeader(contentPadding = ListHeaderDefaults.firstItemPadding()) {
-          Text(text = title)
-        }
-      }
-      if (sessions.isEmpty()) {
-        item {
-          Text(
-            text = stringResource(id = R.string.session_list_noSessions),
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.caption2,
-          )
-        }
-      } else {
-        items(sessions, key = { it.session.id }) { session ->
-          SessionItem(
-            session = session,
-            onSessionClick = onSessionClick,
-          )
-        }
-      }
-    }
-  }
-}
-
-@Composable
-private fun SessionItem(
-  session: UISession,
-  onSessionClick: (String) -> Unit,
-) {
-  TitleCard(
-    modifier = Modifier.fillMaxWidth(),
-    title = {
-      Column(
-        modifier = Modifier.fillMaxWidth(),
-      ) {
         CompositionLocalProvider(
           LocalContentColor provides MaterialTheme.colors.onSurfaceVariant,
           LocalTextStyle provides MaterialTheme.typography.caption1,
         ) {
           Row(
-            modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
           ) {
             if (session.isBookmarked) {
@@ -134,41 +81,94 @@ private fun SessionItem(
             }
 
             Text(
-              modifier = Modifier.weight(1F),
               text = session.session.startsAt.time.toString(),
             )
+
+            Spacer(modifier = Modifier.width(16.dp))
 
             Text(
               text = session.formattedDuration,
             )
           }
         }
-        Spacer(modifier = Modifier.height(4.dp))
+      }
+
+      item {
         Text(
+          modifier = Modifier
+            .padding(horizontal = 8.dp)
+            .padding(top = 12.dp),
           text = session.session.title,
-          style = MaterialTheme.typography.title3.copy(
-            hyphens = Hyphens.Auto,
-            lineBreak = LineBreak.Paragraph,
-          ),
+          textAlign = TextAlign.Center,
+          style = MaterialTheme.typography.title2,
         )
       }
-    },
-    onClick = { onSessionClick(session.session.id) },
-    enabled = !session.session.isServiceSession,
-  ) {
-    if (!session.session.isServiceSession) {
+
       if (session.speakers.isNotEmpty()) {
-        Spacer(modifier = Modifier.height(2.dp))
-        Text(
-          text = session.speakers.joinToString { it.getFullNameAndCompany() },
-          color = MaterialTheme.colors.primary,
-        )
-        Spacer(modifier = Modifier.height(4.dp))
+        item {
+          Text(
+            modifier = Modifier
+              .padding(horizontal = 16.dp)
+              .padding(top = 16.dp),
+            text = session.speakers.joinToString { it.getFullNameAndCompany() },
+            color = MaterialTheme.colors.primary,
+            textAlign = TextAlign.Center,
+          )
+        }
       }
-      Text(
-        text = session.room.name,
-        color = MaterialTheme.colors.secondary,
-      )
+
+      item {
+        Text(
+          text = session.room.name,
+          color = MaterialTheme.colors.secondary,
+          textAlign = TextAlign.Center,
+        )
+      }
+
+      session.session.description?.let { description ->
+        item {
+          Text(
+            modifier = Modifier
+              .fillMaxWidth()
+              .padding(horizontal = 8.dp)
+              .padding(top = 16.dp),
+            text = description,
+            style = MaterialTheme.typography.body1.copy(
+              hyphens = Hyphens.Auto,
+              lineBreak = LineBreak.Paragraph,
+            ),
+          )
+        }
+      }
+
+      session.speakers
+        .filter { it.bio != null }
+        .forEach { speaker ->
+          item {
+            Text(
+              modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .padding(top = 16.dp),
+              text = speaker.getFullNameAndCompany(),
+              color = MaterialTheme.colors.primary,
+              textAlign = TextAlign.Center,
+            )
+          }
+
+          item {
+            Text(
+              modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp),
+              text = speaker.bio!!,
+              style = MaterialTheme.typography.body2.copy(
+                hyphens = Hyphens.Auto,
+                lineBreak = LineBreak.Paragraph,
+                color = MaterialTheme.colors.onSurfaceVariant,
+              ),
+            )
+          }
+        }
     }
   }
 }
@@ -176,13 +176,8 @@ private fun SessionItem(
 @WearPreviewDevices
 @WearPreviewFontScales
 @Composable
-private fun LoadingSessionListScreenPreview() {
-  SessionListScreen(null, stringResource(id = R.string.main_day1), {})
-}
-
-@WearPreviewDevices
-@WearPreviewFontScales
-@Composable
-private fun LoadedSessionListScreenPreview() {
-  SessionListScreen(uiSessions, stringResource(id = R.string.main_day1), {})
+private fun SessionDetailsScreenPreview() {
+  Session(
+    session = uiSession1
+  )
 }

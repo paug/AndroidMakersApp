@@ -17,6 +17,7 @@ import fr.androidmakers.domain.repo.UserRepository
 import fr.paug.androidmakers.wear.R
 import fr.paug.androidmakers.wear.applicationContext
 import fr.paug.androidmakers.wear.data.LocalPreferencesRepository
+import fr.paug.androidmakers.wear.ui.session.UISession
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
