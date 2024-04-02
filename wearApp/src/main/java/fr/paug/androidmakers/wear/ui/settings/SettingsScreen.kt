@@ -21,6 +21,8 @@ import androidx.wear.compose.ui.tooling.preview.WearPreviewDevices
 import androidx.wear.compose.ui.tooling.preview.WearPreviewFontScales
 import com.google.android.horologist.annotations.ExperimentalHorologistApi
 import com.google.android.horologist.compose.layout.ScalingLazyColumn
+import com.google.android.horologist.compose.layout.ScalingLazyColumnDefaults
+import com.google.android.horologist.compose.layout.ScreenScaffold
 import com.google.android.horologist.compose.layout.rememberResponsiveColumnState
 import com.google.android.horologist.compose.material.AlertContent
 import fr.androidmakers.domain.model.User
@@ -29,38 +31,46 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SettingsScreen(
-    viewModel: SettingsViewModel = koinViewModel(),
-    user: User?,
-    onSignInClick: () -> Unit,
-    onSignOutInClick: () -> Unit,
+  viewModel: SettingsViewModel = koinViewModel(),
+  user: User?,
+  onSignInClick: () -> Unit,
+  onSignOutClick: () -> Unit,
 ) {
   var showSignOutConfirmDialog by remember { mutableStateOf(false) }
-  val columnState = rememberResponsiveColumnState()
-  ScalingLazyColumn(
+  val columnState = rememberResponsiveColumnState(
+    contentPadding = ScalingLazyColumnDefaults.padding(
+      first = ScalingLazyColumnDefaults.ItemType.Chip,
+      last = ScalingLazyColumnDefaults.ItemType.Chip,
+    )
+  )
+  ScreenScaffold(scrollState = columnState) {
+    ScalingLazyColumn(
       columnState = columnState,
       modifier = Modifier.fillMaxSize()
-  ) {
-    item {
-      if (user == null) {
-        Chip(
+    ) {
+      item {
+        if (user == null) {
+          Chip(
             modifier = Modifier.fillMaxWidth(),
             label = { Text(stringResource(R.string.settings_signIn)) },
             onClick = onSignInClick
-        )
-      } else {
-        Chip(
+          )
+        } else {
+          Chip(
             modifier = Modifier.fillMaxWidth(),
             label = { Text(stringResource(R.string.settings_signOut)) },
             onClick = {
               showSignOutConfirmDialog = true
             }
-        )
+          )
+        }
       }
-    }
 
-    item {
-      val showOnlyBookmarkedSessions: Boolean by viewModel.showOnlyBookmarkedSessions.collectAsStateWithLifecycle()
-      ToggleChip(
+      item {
+        val showOnlyBookmarkedSessions: Boolean by viewModel.showOnlyBookmarkedSessions.collectAsStateWithLifecycle(
+          false
+        )
+        ToggleChip(
           modifier = Modifier.fillMaxWidth(),
           checked = showOnlyBookmarkedSessions,
           onCheckedChange = { checked ->
@@ -69,46 +79,47 @@ fun SettingsScreen(
           label = { Text(stringResource(R.string.settings_showBookmarksOnly)) },
           toggleControl = {
             Switch(
-                checked = showOnlyBookmarkedSessions,
-                enabled = true,
+              checked = showOnlyBookmarkedSessions,
+              enabled = true,
             )
           },
-      )
+        )
+      }
     }
   }
 
   SignOutConfirmDialog(
-      showDialog = showSignOutConfirmDialog,
-      onOk = {
-        onSignOutInClick()
-        showSignOutConfirmDialog = false
-      },
-      onCancel = {
-        showSignOutConfirmDialog = false
-      },
+    showDialog = showSignOutConfirmDialog,
+    onOk = {
+      onSignOutClick()
+      showSignOutConfirmDialog = false
+    },
+    onCancel = {
+      showSignOutConfirmDialog = false
+    },
   )
 }
 
 @Composable
 private fun SignOutConfirmDialog(
-    showDialog: Boolean,
-    onOk: () -> Unit,
-    onCancel: () -> Unit,
+  showDialog: Boolean,
+  onOk: () -> Unit,
+  onCancel: () -> Unit,
 ) {
   Dialog(
-      showDialog = showDialog,
-      onDismissRequest = onCancel,
+    showDialog = showDialog,
+    onDismissRequest = onCancel,
   ) {
     AlertContent(
-        onOk = {
-          onOk()
-        },
-        onCancel = {
-          onCancel()
-        },
+      onOk = {
+        onOk()
+      },
+      onCancel = {
+        onCancel()
+      },
     ) {
       item {
-        Text(text = "Sign out?")
+        Text(text = stringResource(R.string.settings_signOutConfirm))
       }
     }
   }
@@ -119,8 +130,8 @@ private fun SignOutConfirmDialog(
 @Composable
 private fun SettingsScreenPreview() {
   SettingsScreen(
-      user = null,
-      onSignInClick = {},
-      onSignOutInClick = {},
+    user = null,
+    onSignInClick = {},
+    onSignOutClick = {},
   )
 }

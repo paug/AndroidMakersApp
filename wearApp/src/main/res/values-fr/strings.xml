@@ -7,4 +7,5 @@
     <string name="settings_signIn">Connexion</string>
     <string name="settings_signOut">Déconnexion</string>
     <string name="settings_showBookmarksOnly">Sessions favorites seulement</string>
+    <string name="settings_signOutConfirm">Se déconnecter ?</string>
 </resources>
