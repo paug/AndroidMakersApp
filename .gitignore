@@ -21,9 +21,8 @@ build/
 
 *.apk
 
-app/prod/release/output.json
-/app/keystore.jks
-/app/keystore.properties
+keystore.jks
+keystore.properties
 
 /ar/*.png
 /app/prod
