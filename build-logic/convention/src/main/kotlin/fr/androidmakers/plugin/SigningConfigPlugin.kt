@@ -13,6 +13,7 @@ class SigningConfigPlugin : Plugin<Project> {
       val extension = extensions.getByType<ApplicationExtension>()
       extension.apply {
         val f = project.file("keystore.properties")
+        println("signing: ${f.exists()}")
         signingConfigs.apply {
           val props = Properties()
           if (f.exists()) {
