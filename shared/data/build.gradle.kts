@@ -52,6 +52,8 @@ apollo {
     introspection {
       schemaFile.set(file("src/commonMain/graphql/schema.graphqls"))
       endpointUrl.set("https://confetti-app.dev/graphql")
+
+      // This header is not needed to fetch the schema but it's read by the Apollo IDE plugin which will inject it when executing queries
       headers.set(mapOf("conference" to "androidmakers2024"))
     }
   }
