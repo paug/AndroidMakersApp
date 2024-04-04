@@ -22,9 +22,10 @@ class PartnersGraphQLRepository(private val apolloClient: ApolloClient): Partner
                 title = partnerGroup.title,
                 partners = partnerGroup.partners.map { partner ->
                   Partner(
-                      logoUrl = partner.logoUrl,
+                      logoUrl = partner.logoUrlLight,
                       name = partner.name,
-                      url = partner.url
+                      url = partner.url,
+                      logoUrlDark = partner.logoUrlDark
                   )
                 }
             )

@@ -77,7 +77,7 @@ type PageInfo {
 }
 
 type Partner {
-  logoUrl: String!
+  logoUrl(dark: Boolean): String!
 
   name: String!
 

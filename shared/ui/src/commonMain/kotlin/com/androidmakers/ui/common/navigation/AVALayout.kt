@@ -1,6 +1,5 @@
 package com.androidmakers.ui.common.navigation
 
-import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
@@ -54,7 +53,6 @@ import fr.androidmakers.domain.model.User
 import fr.paug.androidmakers.ui.MR
 import kotlinx.coroutines.launch
 import moe.tlaster.precompose.koin.koinViewModel
-import moe.tlaster.precompose.navigation.BackStackEntry
 import moe.tlaster.precompose.navigation.NavHost
 import moe.tlaster.precompose.navigation.NavOptions
 import moe.tlaster.precompose.navigation.Navigator
@@ -282,9 +280,7 @@ private fun AVANavHost(
       route = AVANavigationRoute.SPONSORS.name,
       navTransition = defaultNavTransition
     ) {
-      SponsorsScreen(
-          onSponsorClick = {}
-      )
+      SponsorsScreen()
     }
   }
 }
