@@ -82,5 +82,6 @@ query GetVenue($id: String!) {
         description
         descriptionFr
         imageUrl
+        floorPlanUrl
     }
 }
