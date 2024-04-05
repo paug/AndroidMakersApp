@@ -77,4 +77,8 @@
     <string name="x_hashtag_for_query">AMxDC24</string>
     <string name="x_user_name">AndroidMakersFR</string>
 
+    <string name="notification_channel_talks">Rappels de sessions</string>
+    <string name="notification_channel_general">Annonces</string>
+
+
 </resources>

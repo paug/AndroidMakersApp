@@ -12,15 +12,18 @@ import androidx.core.app.NotificationManagerCompat
 import com.androidmakers.ui.model.UISession
 import fr.androidmakers.domain.model.Session
 import fr.paug.androidmakers.ui.MR
+import org.jetbrains.compose.resources.StringResource
 
 actual class NotificationUtils(private val context: Context) {
+
     actual fun initNotifications() {
         createChannel(NotificationChannels.GENERAL)
+        createChannel(NotificationChannels.TALKS)
     }
 
     actual fun triggerNotification(session: UISession) {
 
-        val channelId = NotificationChannels.GENERAL.id
+        val channelId = NotificationChannels.TALKS.id
         val notificationBuilder = NotificationCompat.Builder(context, channelId)
             .setContentTitle(session.title)
             .setSmallIcon(MR.images.ic_notification_small.drawableResId)
@@ -51,11 +54,16 @@ actual class NotificationUtils(private val context: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 channelInfo.id,
-                channelInfo.name,
+                channelInfo.displayName(context),
                 NotificationManager.IMPORTANCE_DEFAULT
             )
 
             notificationManager.createNotificationChannel(channel)
         }
     }
+}
+
+private fun NotificationChannels.displayName(context: Context) = when (this) {
+    NotificationChannels.TALKS -> MR.strings.notification_channel_talks.getString(context)
+    NotificationChannels.GENERAL -> MR.strings.notification_channel_general.getString(context)
 }

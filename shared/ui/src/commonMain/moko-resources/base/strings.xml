@@ -81,6 +81,7 @@
     <string name="session_description_placeholder_with_language" translatable="false">%1$s / %2$s / %3$s</string>
     <string name="session_description_placeholder" translatable="false">%1$s / %2$s</string>
     <string name="session_date_with_room">%1$s, %2$s</string>
-
+    <string name="notification_channel_talks">Talk reminders</string>
+    <string name="notification_channel_general">Announcements</string>
 
 </resources>
