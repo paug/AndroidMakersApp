@@ -9,26 +9,28 @@ import fr.androidmakers.domain.repo.SpeakersRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class SpeakersGraphQLRepository(private val apolloClient: ApolloClient): SpeakersRepository {
+class SpeakersGraphQLRepository(private val apolloClient: ApolloClient) : SpeakersRepository {
 
   override fun getSpeakers(): Flow<Result<List<Speaker>>> {
     return apolloClient.query(GetSpeakersQuery())
-        .watch()
-        .ignoreCacheMisses()
-        .map {
-      it.dataAssertNoErrors.speakers.map { it.speakerDetails.toSpeaker() }
-    }.toResultFlow()
+      .fetchPolicy(FetchPolicy.CacheAndNetwork)
+      .watch()
+      .ignoreCacheMisses()
+      .map {
+        it.dataAssertNoErrors.speakers.map { it.speakerDetails.toSpeaker() }
+      }.toResultFlow()
   }
 
   override fun getSpeaker(id: String): Flow<Result<Speaker>> {
     return apolloClient.query(GetSpeakersQuery())
-        .fetchPolicy(FetchPolicy.CacheAndNetwork)
-        .watch()
-        .ignoreCacheMisses()
-        .map {
-          it.dataAssertNoErrors.speakers.map { it.speakerDetails }.singleOrNull { it.id == id }?.toSpeaker()
-              ?: error("no speaker")
-        }
-        .toResultFlow()
+      .fetchPolicy(FetchPolicy.CacheAndNetwork)
+      .watch()
+      .ignoreCacheMisses()
+      .map {
+        it.dataAssertNoErrors.speakers.map { it.speakerDetails }.singleOrNull { it.id == id }
+          ?.toSpeaker()
+          ?: error("no speaker")
+      }
+      .toResultFlow()
   }
 }
