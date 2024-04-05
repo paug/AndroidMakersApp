@@ -66,8 +66,7 @@ lifecycle-runtime-ktx = "androidx.lifecycle:lifecycle-runtime-ktx:2.7.0"
 lifecycle-viewmodel-compose = "androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0"
 material = "com.google.android.material:material:1.11.0"
 navigation-compose = "androidx.navigation:navigation-compose:2.7.7"
-openfeedback = "io.openfeedback:openfeedback:0.2.1"
-openfeedback-m3 = "io.openfeedback:openfeedback-m3:0.2.1"
+openfeedback-m3 = "io.openfeedback:openfeedback-m3:0.2.2"
 play-services-auth = "com.google.android.gms:play-services-auth:20.7.0"
 moko-resources = { module = "dev.icerock.moko:resources", version.ref = "moko" }
 moko-compose = { module = "dev.icerock.moko:resources-compose", version.ref = "moko" }
