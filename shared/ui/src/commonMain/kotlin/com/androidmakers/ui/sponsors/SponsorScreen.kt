@@ -2,6 +2,7 @@ package com.androidmakers.ui.sponsors
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,10 +19,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.androidmakers.ui.model.Lce
 import com.seiko.imageloader.rememberImagePainter
 import fr.androidmakers.domain.model.Partner
@@ -29,15 +28,13 @@ import fr.androidmakers.domain.model.PartnerGroup
 import moe.tlaster.precompose.koin.koinViewModel
 
 @Composable
-fun SponsorsScreen(
-    onSponsorClick: (partner: Partner) -> Unit
-) {
+fun SponsorsScreen() {
   val viewModel = koinViewModel(SponsorsViewModel::class)
   val sponsors by viewModel.values.collectAsState()
 
   SponsorsView(
       partnerList = sponsors,
-      onSponsorClick = onSponsorClick
+      onSponsorClick = { viewModel.openPartnerLink(it) }
   )
 }
 
@@ -73,30 +70,33 @@ fun SponsorsView(
           }) {
             Text(
                 modifier = Modifier
-                    .padding(top = 32.dp, bottom = 8.dp)
+                    .padding(top = 48.dp, bottom = 8.dp)
                     .fillMaxWidth(),
                 textAlign = TextAlign.Start,
                 text = partnerGroup.title.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() },
-                style = MaterialTheme.typography.titleMedium.copy(
-                    color = MaterialTheme.colorScheme.primary,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp
-                )
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.titleMedium
             )
           }
 
           // Sponsor logo
           for (partner in partnerGroup.partners) {
             item {
-              val painter = rememberImagePainter(partner.logoUrl)
+              val logoUrl = if (isSystemInDarkTheme()) {
+                partner.logoUrlDark
+              } else {
+                partner.logoUrl
+            }
+
               Image(
                   modifier = Modifier
                       .fillMaxWidth()
                       .height(80.dp)
                       .clickable {
                         onSponsorClick(partner)
-                      },
-                  painter = painter,
+                      }
+                    .padding(12.dp),
+                  painter = rememberImagePainter(logoUrl),
                   contentDescription = partner.name
               )
             }
