@@ -2,7 +2,7 @@ package com.androidmakers.ui.model
 
 import kotlinx.datetime.Instant
 
-class UISession(
+data class UISession(
     val id: String,
     val title: String,
     val startDate: Instant,
@@ -14,5 +14,5 @@ class UISession(
     val isServiceSession: Boolean,
     var isFavorite: Boolean,
 ) {
-  class Speaker(val name: String)
+  data class Speaker(val name: String)
 }

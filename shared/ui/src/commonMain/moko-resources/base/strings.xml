@@ -83,5 +83,6 @@
     <string name="session_date_with_room">%1$s, %2$s</string>
     <string name="notification_channel_talks">Talk reminders</string>
     <string name="notification_channel_general">Announcements</string>
+    <string name="notification_upcoming_talk">📣 Starting at %s in %s</string>
 
 </resources>
