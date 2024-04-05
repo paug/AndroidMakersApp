@@ -38,7 +38,7 @@ actual class NotificationUtils(private val context: Context) {
         createChannel(NotificationChannels.TALKS)
     }
 
-    actual fun triggerNotification(session: Session) {
+    actual fun triggerNotification(session: UISession) {
 
         val channelId = NotificationChannels.TALKS.id
         val notificationBuilder = NotificationCompat.Builder(context, channelId)
@@ -46,8 +46,8 @@ actual class NotificationUtils(private val context: Context) {
             .setContentText(
                 StringDesc.ResourceFormatted(
                     MR.strings.notification_upcoming_talk,
-                    session.startsAt.formatShortTime(),
-                    "Salle Mobo"
+                    session.startDate.formatShortTime(),
+                    session.room
                 ).toString(context)
             )
             .setSmallIcon(MR.images.ic_notification_small.drawableResId)

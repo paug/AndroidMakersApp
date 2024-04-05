@@ -9,7 +9,7 @@ expect class NotificationUtils {
 
     fun initNotifications()
 
-    fun triggerNotification(session: Session)
+    fun triggerNotification(session: UISession)
 
     fun scheduleNotification(session: UISession)
 
