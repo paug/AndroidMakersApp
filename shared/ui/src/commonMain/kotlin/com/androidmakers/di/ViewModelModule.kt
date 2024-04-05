@@ -16,7 +16,7 @@ val viewModelModule = module {
   factory { VenueViewModel(get(), get(), get()) }
   factory { (speakerId: String) -> SpeakerDetailsViewModel(speakerId, get(), get()) }
   factory { AgendaLayoutViewModel(get()) }
-  factory { AgendaPagerViewModel(get(), get(), get()) }
+  factory { AgendaPagerViewModel(get(), get(), get(), get()) }
   factory { (sessionId: String) -> SessionDetailViewModel(sessionId, get(), get(), get(), get(), get(), get(), get()) }
   factory { AboutViewModel(get(), get(), get(), get(), get()) }
 }

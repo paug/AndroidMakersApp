@@ -17,8 +17,8 @@ kotlin {
 
   sourceSets {
     androidMain.dependencies {
-      implementation(libs.koin.android)
-      implementation(libs.koin.androidx.compose)
+      api(libs.koin.android)
+      api(libs.koin.androidx.compose)
     }
 
     commonMain.dependencies {

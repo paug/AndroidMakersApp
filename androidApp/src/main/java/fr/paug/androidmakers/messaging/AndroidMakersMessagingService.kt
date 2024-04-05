@@ -79,5 +79,4 @@ class AndroidMakersMessagingService : FirebaseMessagingService() {
   companion object {
     const val TAG = "MessagingService"
   }
-
 }
