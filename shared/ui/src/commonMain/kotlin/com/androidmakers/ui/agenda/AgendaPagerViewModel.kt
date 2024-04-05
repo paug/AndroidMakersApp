@@ -29,6 +29,11 @@ class AgendaPagerViewModel(
 
   fun setSessionBookmark(uiSession: UISession, bookmark: Boolean) = viewModelScope.launch {
     setSessionBookmarkUseCase(uiSession.id, bookmark)
-    notificationUtils.triggerNotification(uiSession)
+
+      if (bookmark) {
+          notificationUtils.scheduleNotification(uiSession)
+      } else {
+          notificationUtils.cancelNotification(uiSession)
+      }
   }
 }

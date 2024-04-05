@@ -9,4 +9,10 @@ actual class NotificationUtils {
     actual fun triggerNotification(session: UISession) {
     }
 
+    actual fun scheduleNotification(session: UISession) {
+    }
+
+    actual fun cancelNotification(session: UISession) {
+    }
+
 }

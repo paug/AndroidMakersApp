@@ -1,18 +1,28 @@
 package com.androidmakers.utils
 
 import android.Manifest
+import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.app.ActivityCompat
+import androidx.core.app.AlarmManagerCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.androidmakers.ui.agenda.toUISession
 import com.androidmakers.ui.model.UISession
 import fr.androidmakers.domain.model.Session
 import fr.paug.androidmakers.ui.MR
+import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.StringResource
+import kotlin.random.Random
+import kotlin.time.Duration.Companion.seconds
 
 actual class NotificationUtils(private val context: Context) {
 
@@ -60,6 +70,36 @@ actual class NotificationUtils(private val context: Context) {
 
             notificationManager.createNotificationChannel(channel)
         }
+    }
+
+    actual fun cancelNotification(session: UISession) {
+    }
+
+    actual fun scheduleNotification(session: UISession) {
+        // TODO TEst
+        val session = Session(
+            id = "928928",
+            title = "My session",
+            roomId = "344",
+            startsAt = (Clock.System.now() + 30.seconds).toLocalDateTime(TimeZone.currentSystemDefault()),
+            endsAt =  (Clock.System.now() + 60.seconds).toLocalDateTime(TimeZone.currentSystemDefault()),
+            isServiceSession = false
+        ).toUISession(rooms = emptyMap(), speakers = emptyMap(), isFavorite = false)
+
+        val alarmManager = context.getSystemService(AlarmManager::class.java)
+        val intent = Intent(context, SessionAlarmReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(
+            context,
+            Random.nextInt(),
+            intent,
+            0
+        )
+
+        alarmManager.setExactAndAllowWhileIdle(
+            AlarmManager.RTC_WAKEUP,
+            5_000,
+            pendingIntent
+        )
     }
 }
 
