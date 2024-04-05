@@ -19,7 +19,6 @@ kotlin {
       export(project(":shared:di"))
       export(libs.moko.resources)
       export(libs.moko.graphics)
-      export(libs.openfeedback)
     }
   }
 
@@ -32,7 +31,6 @@ kotlin {
       api(project(":shared:ui"))
       api(project(":shared:domain"))
       api(project(":shared:di"))
-      api(libs.openfeedback)
     }
   }
 }

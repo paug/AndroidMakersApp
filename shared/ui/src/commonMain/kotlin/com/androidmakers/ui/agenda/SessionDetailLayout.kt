@@ -234,7 +234,7 @@ private fun SessionDetails(
         config = OpenFeedbackFirebaseConfig.default(
           context = LocalPlatformContext.current
         ),
-        projectId = "am2023",
+        projectId = "v6kx3QuQkDU4fX0Ta989",
         sessionId = sessionDetails.session.id,
       )
     } else {
