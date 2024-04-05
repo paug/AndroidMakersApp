@@ -12,7 +12,7 @@ import org.koin.dsl.module
 
 val viewModelModule = module {
   factory { SpeakerListViewModel(get()) }
-  factory { SponsorsViewModel(get()) }
+  factory { SponsorsViewModel(get(), get()) }
   factory { VenueViewModel(get(), get(), get()) }
   factory { (speakerId: String) -> SpeakerDetailsViewModel(speakerId, get(), get()) }
   factory { AgendaLayoutViewModel(get()) }

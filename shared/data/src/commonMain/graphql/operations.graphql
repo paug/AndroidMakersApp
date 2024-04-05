@@ -68,7 +68,8 @@ query GetPartnerGroups {
         title
         partners {
             name
-            logoUrl
+            logoUrlLight: logoUrl(dark: false)
+            logoUrlDark: logoUrl(dark: true)
             url
         }
     }
