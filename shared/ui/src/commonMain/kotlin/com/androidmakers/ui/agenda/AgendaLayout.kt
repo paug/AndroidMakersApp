@@ -132,7 +132,6 @@ private fun AgendaFilterDrawer(
             if (checked) add(SessionFilter(SessionFilter.FilterType.LANGUAGE, french))
           }
           onFiltersChanged(newSessionFilters)
-
         }
     )
     val english = "English"
