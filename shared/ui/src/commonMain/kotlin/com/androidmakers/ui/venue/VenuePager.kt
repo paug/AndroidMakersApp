@@ -34,39 +34,39 @@ fun VenuePager() {
   Column(modifier = Modifier.fillMaxWidth()) {
 
     val titles = listOf(
-        MR.strings.venue_conference_tab,
-        MR.strings.venue_afterparty_tab,
-        MR.strings.venue_floor_plan_tab
+      MR.strings.venue_conference_tab,
+      MR.strings.venue_afterparty_tab,
+      MR.strings.venue_floor_plan_tab
     )
 
     val pagerState = rememberPagerState(pageCount = { titles.size })
 
     TabRow(
-        selectedTabIndex = pagerState.currentPage,
-        containerColor = MaterialTheme.colorScheme.background,
-        contentColor = MaterialTheme.colorScheme.onBackground
+      selectedTabIndex = pagerState.currentPage,
+      containerColor = MaterialTheme.colorScheme.background,
+      contentColor = MaterialTheme.colorScheme.onBackground
     ) {
       repeat(titles.size) {
         val coroutineScope = rememberCoroutineScope()
 
         Tab(
-            text = {
-              Text(
-                  text = stringResource(titles[it]),
-              )
-            },
-            selected = pagerState.currentPage == it,
-            onClick = {
-              coroutineScope.launch {
-                pagerState.animateScrollToPage(it)
-              }
-            },
+          text = {
+            Text(
+              text = stringResource(titles[it]),
+            )
+          },
+          selected = pagerState.currentPage == it,
+          onClick = {
+            coroutineScope.launch {
+              pagerState.animateScrollToPage(it)
+            }
+          },
         )
       }
     }
 
     HorizontalPager(
-        state = pagerState,
+      state = pagerState,
     ) { page ->
       when (page) {
         0, 1 -> {
@@ -84,24 +84,32 @@ fun VenuePager() {
 
           LceLayout(lce = venueState.value) { venue ->
             val uiVenue = UIVenue(
-                imageUrl = venue.imageUrl,
-                descriptionEn = venue.description,
-                descriptionFr = venue.descriptionFr,
-                address = venue.address,
-                name = venue.name,
-                coordinates = venue.coordinates,
+              imageUrl = venue.imageUrl,
+              descriptionEn = venue.description,
+              descriptionFr = venue.descriptionFr,
+              address = venue.address,
+              name = venue.name,
+              coordinates = venue.coordinates,
             )
             VenueLayout(
-                uiVenue = uiVenue,
-                onClickOnMap = {
-                  viewModel.openMapUseCase(uiVenue.coordinates ?: "", uiVenue.name)
-                }
+              uiVenue = uiVenue,
+              onClickOnMap = {
+                viewModel.openMapUseCase(uiVenue.coordinates ?: "", uiVenue.name)
+              }
             )
           }
         }
 
         else -> {
-          FloorPlan()
+          val flow = remember(page) {
+            viewModel.getConferenceVenueUseCase()
+          }.map {
+            it.toLce()
+          }
+          val venueState = flow.collectAsState(initial = Lce.Loading)
+          LceLayout(lce = venueState.value) { venue ->
+            FloorPlan(venue.floorPlanUrl)
+          }
         }
       }
     }
