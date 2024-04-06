@@ -14,5 +14,4 @@ fun MainLayoutViewController(): UIViewController =
             versionCode = "1.0",
         )
       }
-
     }

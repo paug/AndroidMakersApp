@@ -13,6 +13,7 @@ import fr.androidmakers.domain.model.User
 import moe.tlaster.precompose.koin.koinViewModel
 import moe.tlaster.precompose.navigation.NavHost
 import moe.tlaster.precompose.navigation.Navigator
+import moe.tlaster.precompose.navigation.SwipeProperties
 import moe.tlaster.precompose.navigation.path
 import moe.tlaster.precompose.navigation.rememberNavigator
 import org.koin.core.parameter.parametersOf
@@ -67,6 +68,7 @@ private fun MainNavHost(
 
     scene(
         route = "${MainNavigationRoute.SESSION_DETAIL.name}/{sessionId}",
+        swipeProperties = SwipeProperties(),
     ) {
 
       val sessionId = it.path<String>("sessionId")
@@ -79,7 +81,8 @@ private fun MainNavHost(
     }
 
     scene(
-        route = "${MainNavigationRoute.SPEAKER_DETAIL.name}/{speakerId}"
+        route = "${MainNavigationRoute.SPEAKER_DETAIL.name}/{speakerId}",
+        swipeProperties = SwipeProperties(),
     ) { backstackEntry ->
       val speakerId = backstackEntry.path<String>("speakerId")
 
