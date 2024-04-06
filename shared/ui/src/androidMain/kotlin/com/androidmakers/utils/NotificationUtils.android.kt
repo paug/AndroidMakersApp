@@ -10,6 +10,7 @@ import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import androidx.core.app.ActivityCompat
 import androidx.core.app.AlarmManagerCompat
@@ -41,6 +42,15 @@ actual class NotificationUtils(private val context: Context) {
     actual fun triggerNotification(session: UISession) {
 
         val channelId = NotificationChannels.TALKS.id
+        val intent = Intent(Intent.ACTION_VIEW,
+            Uri.parse("https://androidmakers.droidcon.com/agenda/${session.id}"))
+        val pendingIntent = PendingIntent.getActivity(
+            context,
+            0,
+            intent,
+            FLAG_IMMUTABLE
+        )
+
         val notificationBuilder = NotificationCompat.Builder(context, channelId)
             .setContentTitle(session.title)
             .setContentText(
@@ -50,6 +60,7 @@ actual class NotificationUtils(private val context: Context) {
                     session.room
                 ).toString(context)
             )
+            .setContentIntent(pendingIntent)
             .setSmallIcon(MR.images.ic_notification_small.drawableResId)
             .setAutoCancel(true)
 

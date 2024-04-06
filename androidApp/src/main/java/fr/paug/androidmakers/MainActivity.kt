@@ -12,7 +12,10 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import com.androidmakers.ui.LocalPlatformContext
@@ -38,6 +41,13 @@ import org.koin.compose.KoinContext
 
 class MainActivity : AppCompatActivity() {
   private val viewModel: MainActivityViewModel by viewModel()
+
+  private var deeplink: String? = null
+
+  override fun onNewIntent(intent: Intent?) {
+    super.onNewIntent(intent)
+    deeplink = intent?.data.toString()
+  }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -71,10 +81,23 @@ class MainActivity : AppCompatActivity() {
               onDispose { }
             }
 
+            var deeplink: String? by remember { mutableStateOf(null) }
+
+            intent.data?.let {
+              deeplink = it.toString()
+            }
+
+            addOnNewIntentListener {
+              it.data?.let {
+                deeplink = it.toString()
+              }
+            }
+
             MainLayout(
               user = userState.value,
               versionName = BuildConfig.VERSION_NAME,
               versionCode = BuildConfig.VERSION_CODE.toString(),
+              deeplink = deeplink,
             )
           }
         }

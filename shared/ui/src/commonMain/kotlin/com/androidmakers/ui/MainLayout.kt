@@ -1,6 +1,7 @@
 package com.androidmakers.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.staticCompositionLocalOf
 import com.androidmakers.ui.agenda.SessionDetailScreen
 import com.androidmakers.ui.agenda.SessionDetailViewModel
@@ -24,7 +25,8 @@ import org.koin.core.parameter.parametersOf
 fun MainLayout(
     versionCode: String,
     versionName: String,
-    user: User?
+    user: User?,
+    deeplink: String? = null,
 ) {
   val navigator = rememberNavigator()
   MainNavHost(
@@ -38,6 +40,7 @@ fun MainLayout(
       },
       versionCode = versionCode,
       versionName = versionName,
+      deeplink = deeplink
   )
 }
 
@@ -49,13 +52,21 @@ private fun MainNavHost(
     onSessionClick: (sessionId: String) -> Unit,
     user: User?,
     navigateToSpeakerDetails: (SpeakerId) -> Unit,
+    deeplink: String? = null,
 ) {
+    LaunchedEffect(deeplink) {
+        deeplink?.let {
+            mainNavController.navigate(deeplink)
+        }
+    }
+
   NavHost(
       navigator = mainNavController,
       initialRoute = MainNavigationRoute.AVA.name
   ) {
 
     scene(route = MainNavigationRoute.AVA.name) {
+
       AVALayout(
           versionCode = versionCode,
           versionName = versionName,
@@ -67,6 +78,7 @@ private fun MainNavHost(
 
     scene(
         route = "${MainNavigationRoute.SESSION_DETAIL.name}/{sessionId}",
+        deepLinks = listOf("https://androidmakers.droidcon.com/agenda/{sessionId}")
     ) {
 
       val sessionId = it.path<String>("sessionId")
@@ -79,7 +91,8 @@ private fun MainNavHost(
     }
 
     scene(
-        route = "${MainNavigationRoute.SPEAKER_DETAIL.name}/{speakerId}"
+        route = "${MainNavigationRoute.SPEAKER_DETAIL.name}/{speakerId}",
+        deepLinks = listOf("https://androidmakers.droidcon.com/speakers/{speakerId}")
     ) { backstackEntry ->
       val speakerId = backstackEntry.path<String>("speakerId")
 
