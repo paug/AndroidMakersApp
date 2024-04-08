@@ -67,7 +67,7 @@ fun GetVenueQuery.Venue.toVenue(): Venue {
       coordinates = coordinates ?: "",
       descriptionFr = descriptionFr,
       description = description,
-      floorPlanUrl = floorPlanUrl!!,
+      floorPlanUrl = floorPlanUrl,
       imageUrl = imageUrl ?: ""
   )
 }
