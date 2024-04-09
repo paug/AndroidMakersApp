@@ -10,7 +10,7 @@ import org.koin.dsl.module
 actual val dataPlatformModule = module {
   single { ApolloClientBuilder(
       androidContext(),
-    "https://confetti-app.dev/graphql",
+    "https://androidmakers.fr/graphql",
       "androidmakers2024")
   }
 
