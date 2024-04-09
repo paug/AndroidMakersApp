@@ -14,6 +14,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 import com.androidmakers.ui.common.LceLayout
 import com.androidmakers.ui.model.Lce
@@ -53,6 +54,8 @@ fun VenuePager() {
           text = {
             Text(
               text = stringResource(titles[it]),
+              overflow = TextOverflow.Ellipsis,
+              maxLines = 1
             )
           },
           selected = pagerState.currentPage == it,
@@ -108,7 +111,7 @@ fun VenuePager() {
           }
           val venueState = flow.collectAsState(initial = Lce.Loading)
           LceLayout(lce = venueState.value) { venue ->
-            FloorPlan(venue.floorPlanUrl)
+            FloorPlan(venue.floorPlanUrl ?: "")
           }
         }
       }
