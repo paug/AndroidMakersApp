@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import fr.paug.androidmakers.ui.MR
 import com.androidmakers.ui.model.UISession
 import dev.icerock.moko.resources.compose.stringResource
+import fr.androidmakers.domain.interactor.ApplyForAppClinicUseCase
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -34,6 +35,7 @@ fun AgendaColumn(
   sessionsPerStartTime: Map<String, List<UISession>>,
   onSessionClicked: (UISession) -> Unit,
   onSessionBookmarked: (UISession, Boolean) -> Unit,
+  onApplyForAppClinicClicked: () -> Unit,
 ) {
   val listState = rememberLazyListState()
 
@@ -65,7 +67,8 @@ fun AgendaColumn(
               modifier = Modifier.animateItemPlacement(),
               uiSession = uiSession,
               onSessionClicked = onSessionClicked,
-              onSessionBookmarked = onSessionBookmarked
+              onSessionBookmarked = onSessionBookmarked,
+              onApplyForAppClinic = onApplyForAppClinicClicked
             )
           }
         }

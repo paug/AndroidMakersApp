@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.BookmarkAdd
 import androidx.compose.material.icons.rounded.BookmarkRemove
 import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.ListItem
@@ -27,7 +28,9 @@ import androidx.compose.ui.unit.dp
 import com.androidmakers.ui.common.EmojiUtils
 import com.androidmakers.ui.model.UISession
 import com.androidmakers.ui.theme.AMColor
+import dev.icerock.moko.resources.compose.stringResource
 import fr.androidmakers.domain.model.Session
+import fr.paug.androidmakers.ui.MR
 import kotlinx.datetime.Instant
 import kotlinx.datetime.toInstant
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -64,6 +67,7 @@ fun AgendaRow(
     modifier: Modifier = Modifier,
     onSessionClicked: (UISession) -> Unit,
     onSessionBookmarked: (UISession, Boolean) -> Unit,
+    onApplyForAppClinic: () -> Unit,
 ) {
   ListItem(
       modifier = modifier,
@@ -82,6 +86,19 @@ fun AgendaRow(
             modifier = maybeClickable(uiSession, onSessionClicked).padding(top = 12.dp),
             horizontalAlignment = Alignment.Start,
         ) {
+
+          if(uiSession.isAppClinic) {
+            Button(
+              onClick = onApplyForAppClinic,
+              modifier = Modifier.padding(bottom = 8.dp)
+            ) {
+              Text(
+                text = stringResource(MR.strings.session_app_clinic_apply),
+                style = MaterialTheme.typography.labelMedium
+              )
+            }
+          }
+
           val speakers = uiSession.speakers.joinToString(", ") { it.name }
           if (speakers.isNotBlank()) {
             Text(
@@ -156,7 +173,7 @@ fun UISession.formattedDuration(): String {
 @Preview
 @Composable
 private fun AgendaRowPreview() {
-  AgendaRow(fakeUiSession, onSessionClicked = {}, onSessionBookmarked = { _,_ -> })
+  AgendaRow(fakeUiSession, onSessionClicked = {}, onSessionBookmarked = { _,_ -> }, onApplyForAppClinic = {})
 }
 
 private val fakeUiSession = UISession(

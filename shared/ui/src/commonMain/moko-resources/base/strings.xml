@@ -81,6 +81,6 @@
     <string name="session_description_placeholder_with_language" translatable="false">%1$s / %2$s / %3$s</string>
     <string name="session_description_placeholder" translatable="false">%1$s / %2$s</string>
     <string name="session_date_with_room">%1$s, %2$s</string>
-
+    <string name="session_app_clinic_apply">Apply for App-Clinic</string>
 
 </resources>

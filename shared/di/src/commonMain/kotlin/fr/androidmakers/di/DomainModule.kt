@@ -1,5 +1,6 @@
 package fr.androidmakers.di
 
+import fr.androidmakers.domain.interactor.ApplyForAppClinicUseCase
 import fr.androidmakers.domain.interactor.GetAfterpartyVenueUseCase
 import fr.androidmakers.domain.interactor.GetAgendaUseCase
 import fr.androidmakers.domain.interactor.GetConferenceVenueUseCase
@@ -36,4 +37,5 @@ val domainModule = module {
   factory { GetFavoriteSessionsUseCase(get()) }
   factory { OpenPartnerLinkUseCase(get()) }
   factory { OpenLinkUseCase(get()) }
+  factory { ApplyForAppClinicUseCase(get()) }
 }

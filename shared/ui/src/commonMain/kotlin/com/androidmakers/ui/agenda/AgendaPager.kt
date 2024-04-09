@@ -19,6 +19,7 @@ import com.androidmakers.ui.common.EmptyLayout
 import com.androidmakers.ui.common.SessionFilter
 import com.androidmakers.ui.common.SwipeRefreshableLceLayout
 import com.androidmakers.ui.model.UISession
+import fr.androidmakers.domain.interactor.ApplyForAppClinicUseCase
 import fr.androidmakers.domain.utils.formatShortTime
 import kotlinx.coroutines.launch
 import moe.tlaster.precompose.koin.koinViewModel
@@ -81,6 +82,7 @@ fun AgendaPager(
           AgendaColumn(
               sessionsPerStartTime = addSeparators(items),
               onSessionClicked = onSessionClicked,
+              onApplyForAppClinicClicked = viewModel::applyForAppClinic,
               onSessionBookmarked = { uiSession, bookmarked ->
                 viewModel.setSessionBookmark(uiSession, bookmarked)
               }
