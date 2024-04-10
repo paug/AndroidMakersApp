@@ -18,6 +18,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.Hyphens
@@ -25,6 +26,7 @@ import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.foundation.lazy.items
+import androidx.wear.compose.material.CardDefaults
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.LocalContentColor
 import androidx.wear.compose.material.LocalTextStyle
@@ -142,6 +144,11 @@ private fun SessionItem(
           it
         }
       },
+    backgroundPainter = if (session.session.isServiceSession) {
+      ColorPainter(MaterialTheme.colors.surface.copy(alpha = .6F))
+    } else {
+      CardDefaults.cardBackgroundPainter()
+    },
     title = {
       Column(
         modifier = Modifier.fillMaxWidth(),
