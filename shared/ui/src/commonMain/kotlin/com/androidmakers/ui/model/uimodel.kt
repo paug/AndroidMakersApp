@@ -13,6 +13,7 @@ class UISession(
     val speakers: List<Speaker>,
     val isServiceSession: Boolean,
     var isFavorite: Boolean,
+    var isAppClinic: Boolean = false,
 ) {
   class Speaker(val name: String)
 }
