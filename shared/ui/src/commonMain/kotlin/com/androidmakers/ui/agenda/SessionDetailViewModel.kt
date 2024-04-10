@@ -2,6 +2,7 @@ package com.androidmakers.ui.agenda
 
 import com.androidmakers.ui.model.Lce
 import com.androidmakers.ui.model.SessionDetailState
+import fr.androidmakers.domain.interactor.ApplyForAppClinicUseCase
 import fr.androidmakers.domain.interactor.OpenLinkUseCase
 import fr.androidmakers.domain.interactor.SetSessionBookmarkUseCase
 import fr.androidmakers.domain.interactor.ShareSessionUseCase
@@ -30,7 +31,8 @@ class SessionDetailViewModel(
     private val speakersRepository: SpeakersRepository,
     private val setSessionBookmarkUseCase: SetSessionBookmarkUseCase,
     private val shareSessionUseCase: ShareSessionUseCase,
-  private val openLinkUseCase: OpenLinkUseCase,
+    private val openLinkUseCase: OpenLinkUseCase,
+    private val applyForAppClinicUseCase: ApplyForAppClinicUseCase,
 ) : ViewModel() {
 
   private val session = sessionsRepository.getSession(sessionId)
@@ -99,5 +101,9 @@ class SessionDetailViewModel(
 
   fun openLink(socialsItem: SocialsItem) {
     socialsItem.url?.let { openLinkUseCase(it) }
+  }
+
+  fun applyForAppClinic() {
+    applyForAppClinicUseCase()
   }
 }

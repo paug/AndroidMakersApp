@@ -28,6 +28,7 @@ import androidx.compose.material.icons.rounded.BookmarkRemove
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.Public
 import androidx.compose.material.icons.rounded.Share
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -47,6 +48,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -63,6 +65,7 @@ import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import fr.androidmakers.domain.model.SocialsItem
 import fr.androidmakers.domain.model.Speaker
+import fr.androidmakers.domain.model.isAppClinic
 import fr.androidmakers.domain.utils.removeHtmlTags
 import fr.paug.androidmakers.ui.MR
 import io.openfeedback.m3.OpenFeedback
@@ -90,6 +93,9 @@ fun SessionDetailScreen(
     },
     onOpenLink = {
       viewModel.openLink(it)
+    },
+    onApplyForAppClinic = {
+      viewModel.applyForAppClinic()
     }
   )
 }
@@ -102,6 +108,7 @@ fun SessionDetailLayout(
   onBookmarkClick: (bookmarked: Boolean) -> Unit,
   onShareSession: () -> Unit,
   onOpenLink: (SocialsItem) -> Unit,
+  onApplyForAppClinic: () -> Unit,
 ) {
   val formattedDateAndRoom: String? = if (sessionDetailState is Lce.Content) {
     sessionDetailState.content.formattedDateAndRoom()
@@ -165,6 +172,7 @@ fun SessionDetailLayout(
           sessionDetails = sessionDetailState.content,
           formattedDateAndRoom = formattedDateAndRoom!!,
           openLink = onOpenLink,
+          onApplyForAppClinic = onApplyForAppClinic,
           modifier = Modifier.padding(innerPadding)
         )
       }
@@ -178,6 +186,7 @@ private fun SessionDetails(
   sessionDetails: SessionDetailState,
   formattedDateAndRoom: String,
   openLink: (SocialsItem) -> Unit,
+  onApplyForAppClinic: () -> Unit,
 ) {
 
   Column(
@@ -215,6 +224,20 @@ private fun SessionDetails(
       textAlign = TextAlign.Start,
       style = MaterialTheme.typography.bodyLarge,
     )
+
+    if(sessionDetails.session.isAppClinic()) {
+      Button(
+        onClick = onApplyForAppClinic,
+        modifier = Modifier.padding(top = 16.dp)
+          .align(Alignment.CenterHorizontally),
+      ) {
+        Text(
+          text = stringResource(MR.strings.session_app_clinic_apply),
+          style = MaterialTheme.typography.bodyLarge,
+          fontWeight = FontWeight.Bold,
+        )
+      }
+    }
 
     ChipList(sessionDetails)
 
@@ -428,5 +451,6 @@ private fun SessionDetailLayoutLoadingPreview() {
     onBookmarkClick = {},
     onShareSession = {},
     onOpenLink = {},
+    onApplyForAppClinic = {}
   )
 }

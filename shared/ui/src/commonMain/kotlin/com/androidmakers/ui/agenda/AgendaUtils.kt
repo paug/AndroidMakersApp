@@ -6,6 +6,7 @@ import fr.androidmakers.domain.model.Agenda
 import fr.androidmakers.domain.model.Room
 import fr.androidmakers.domain.model.Session
 import fr.androidmakers.domain.model.Speaker
+import fr.androidmakers.domain.model.isAppClinic
 import fr.androidmakers.domain.utils.eventTimeZone
 import fr.androidmakers.domain.utils.formatMediumDate
 import kotlinx.datetime.LocalDate
@@ -47,7 +48,8 @@ fun Session.toUISession(
       room = rooms[roomId]?.name ?: "unknown",
       speakers = this.speakers.mapNotNull { speakers[it]?.toUISpeaker() },
       isServiceSession = isServiceSession,
-      isFavorite = isFavorite
+      isFavorite = isFavorite,
+      isAppClinic = isAppClinic()
   )
 }
 
