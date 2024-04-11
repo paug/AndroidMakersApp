@@ -47,7 +47,7 @@ apollo {
   service("service") {
     packageName.set("fr.androidmakers.store.graphql")
     generateDataBuilders.set(true)
-    mapScalar("LocalDateTime", "kotlinx.datetime.LocalDateTime", "com.apollographql.apollo3.adapter.KotlinxLocalDateTimeAdapter")
+    mapScalar("GraphQLLocalDateTime", "kotlinx.datetime.LocalDateTime", "com.apollographql.apollo3.adapter.KotlinxLocalDateTimeAdapter")
 
     introspection {
       schemaFile.set(file("src/commonMain/graphql/schema.graphqls"))

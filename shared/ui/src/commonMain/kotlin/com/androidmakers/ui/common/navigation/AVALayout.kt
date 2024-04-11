@@ -34,6 +34,7 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,15 +44,17 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.androidmakers.ui.about.AboutScreen
 import com.androidmakers.ui.agenda.AgendaLayout
+import com.androidmakers.ui.common.SigninButton
+import com.androidmakers.ui.common.SigninCallbacks
 import com.androidmakers.ui.speakers.SpeakerListViewModel
 import com.androidmakers.ui.speakers.SpeakerScreen
 import com.androidmakers.ui.sponsors.SponsorsScreen
 import com.androidmakers.ui.venue.VenuePager
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
-import fr.androidmakers.domain.model.User
 import fr.paug.androidmakers.ui.MR
 import kotlinx.coroutines.launch
+import moe.tlaster.precompose.flow.collectAsStateWithLifecycle
 import moe.tlaster.precompose.koin.koinViewModel
 import moe.tlaster.precompose.navigation.NavHost
 import moe.tlaster.precompose.navigation.NavOptions
@@ -71,15 +74,19 @@ fun AVALayout(
     versionCode: String,
     versionName: String,
     onSessionClick: (sessionId: String) -> Unit,
-    user: User?,
     navigateToSpeakerDetails: (String) -> Unit,
+    signinCallbacks: SigninCallbacks,
 ) {
   val avaNavController = rememberNavigator()
   val navBackStackEntry by avaNavController.currentEntry.collectAsState(null)
   val currentRoute = navBackStackEntry?.route?.route
+  val userFlow = remember { UserData().userRepository.user }
 
   val agendaFilterDrawerState = rememberDrawerState(DrawerValue.Closed)
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+
+  val user by userFlow.collectAsStateWithLifecycle()
+
   Scaffold(
       modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
       contentWindowInsets = WindowInsets(0, 0, 0, 0),
@@ -89,7 +96,6 @@ fun AVALayout(
             colors = TopAppBarDefaults.topAppBarColors(
                 containerColor = MaterialTheme.colorScheme.background,
                 scrolledContainerColor = MaterialTheme.colorScheme.background,
-//                navigationIconContentColor =,
                 titleContentColor = MaterialTheme.colorScheme.onBackground,
                 actionIconContentColor = MaterialTheme.colorScheme.onBackground,
             ),
@@ -129,7 +135,7 @@ fun AVALayout(
                   )
                 }
               }
-              //SigninButton(user)
+              SigninButton(user, signinCallbacks)
             }
         )
       },

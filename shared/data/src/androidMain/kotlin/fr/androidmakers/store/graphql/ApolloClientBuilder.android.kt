@@ -1,6 +1,7 @@
 package fr.androidmakers.store.graphql
 
 import android.content.Context
+import android.service.autofill.UserData
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.http.HttpRequest
 import com.apollographql.apollo3.api.http.HttpResponse
@@ -11,11 +12,15 @@ import com.apollographql.apollo3.network.http.HttpInterceptor
 import com.apollographql.apollo3.network.http.HttpInterceptorChain
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import fr.androidmakers.domain.repo.UserRepository
+import fr.androidmakers.store.firebase.FirebaseUserRepository
+import java.util.PrimitiveIterator
 
 actual class ApolloClientBuilder(
-    context: Context,
-    private val url: String,
-    private val conference: String
+  context: Context,
+  private val url: String,
+  private val conference: String,
+  private val userRepository: UserRepository,
 ) {
   private val memoryCacheFactory = MemoryCacheFactory(20_000_000).chain(SqlNormalizedCacheFactory(context))
   actual fun build(): ApolloClient {
@@ -30,10 +35,10 @@ actual class ApolloClientBuilder(
                       /**
                        *
                        */
-//                      val token = Firebase.auth.currentUser?.getIdToken(false)?.result?.token
-//                      if (token != null) {
-//                        addHeader("Authorization", "Bearer $token")
-//                      }
+                      val token = userRepository.getUser()?.idToken
+                      if (token != null) {
+                        addHeader("Authorization", "Bearer $token")
+                      }
                     }
                     .build()
             )
