@@ -1,5 +1,5 @@
 [versions]
-version-code = "1457"
+version-code = "1458"
 sdk-compile = "34"
 sdk-min = "24"
 androidxActivity = "1.8.2"
