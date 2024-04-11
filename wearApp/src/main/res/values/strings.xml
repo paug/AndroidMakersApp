@@ -10,4 +10,5 @@
     <string name="settings_signOut">Sign out</string>
     <string name="settings_showBookmarksOnly">Show favorites only</string>
     <string name="settings_signOutConfirm">Sign out?</string>
+    <string name="settings_refresh">Refresh</string>
 </resources>

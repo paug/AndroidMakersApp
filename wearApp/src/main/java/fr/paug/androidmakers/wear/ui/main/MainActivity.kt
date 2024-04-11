@@ -150,6 +150,7 @@ fun MainScreen(
           user = user,
           onSignInClick = onSignInClick,
           onSignOutClick = onSignOutClick,
+          onRefreshClick = viewModel::refresh
         )
       }
 

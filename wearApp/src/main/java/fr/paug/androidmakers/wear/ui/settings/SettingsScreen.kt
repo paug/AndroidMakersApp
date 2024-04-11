@@ -35,6 +35,7 @@ fun SettingsScreen(
   user: User?,
   onSignInClick: () -> Unit,
   onSignOutClick: () -> Unit,
+  onRefreshClick: () -> Unit,
 ) {
   var showSignOutConfirmDialog by remember { mutableStateOf(false) }
   val columnState = rememberResponsiveColumnState(
@@ -48,6 +49,14 @@ fun SettingsScreen(
       columnState = columnState,
       modifier = Modifier.fillMaxSize()
     ) {
+      item {
+        Chip(
+          modifier = Modifier.fillMaxWidth(),
+          label = { Text(stringResource(R.string.settings_refresh)) },
+          onClick = onRefreshClick
+        )
+      }
+
       item {
         if (user == null) {
           Chip(
@@ -133,5 +142,6 @@ private fun SettingsScreenPreview() {
     user = null,
     onSignInClick = {},
     onSignOutClick = {},
+    onRefreshClick = {},
   )
 }

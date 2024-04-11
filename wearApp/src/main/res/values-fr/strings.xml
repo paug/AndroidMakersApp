@@ -8,4 +8,5 @@
     <string name="settings_signOut">Déconnexion</string>
     <string name="settings_showBookmarksOnly">Sessions favorites seulement</string>
     <string name="settings_signOutConfirm">Se déconnecter ?</string>
+    <string name="settings_refresh">Rafraîchir</string>
 </resources>
