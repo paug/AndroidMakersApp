@@ -11,10 +11,8 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -49,7 +47,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -66,7 +63,6 @@ import dev.icerock.moko.resources.compose.stringResource
 import fr.androidmakers.domain.model.SocialsItem
 import fr.androidmakers.domain.model.Speaker
 import fr.androidmakers.domain.model.isAppClinic
-import fr.androidmakers.domain.utils.removeHtmlTags
 import fr.paug.androidmakers.ui.MR
 import io.openfeedback.m3.OpenFeedback
 import io.openfeedback.viewmodels.OpenFeedbackFirebaseConfig
@@ -220,7 +216,7 @@ private fun SessionDetails(
 
     Text(
       modifier = Modifier.padding(top = 16.dp),
-      text = sessionDetails.session.description?.removeHtmlTags() ?: "",
+      text = sessionDetails.session.description ?: "",
       textAlign = TextAlign.Start,
       style = MaterialTheme.typography.bodyLarge,
     )
