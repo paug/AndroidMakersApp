@@ -1,18 +1,23 @@
 query Bookmarks {
-    bookmarks {
-        id
-        sessionIds
+    bookmarkConnection {
+        nodes {
+            id
+        }
     }
 }
 
 mutation AddBookmark($sessionId: String!) {
     addBookmark(sessionId: $sessionId) {
-        sessionIds
+        nodes {
+            id
+        }
     }
 }
 
 mutation RemoveBookmark($sessionId: String!) {
     removeBookmark(sessionId: $sessionId) {
-        sessionIds
+        nodes {
+            id
+        }
     }
 }

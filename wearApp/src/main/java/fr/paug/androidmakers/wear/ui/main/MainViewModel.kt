@@ -14,7 +14,6 @@ import fr.androidmakers.domain.interactor.SyncBookmarksUseCase
 import fr.androidmakers.domain.model.Agenda
 import fr.androidmakers.domain.model.User
 import fr.androidmakers.domain.repo.UserRepository
-import fr.paug.androidmakers.wear.R
 import fr.paug.androidmakers.wear.applicationContext
 import fr.paug.androidmakers.wear.data.LocalPreferencesRepository
 import fr.paug.androidmakers.wear.ui.session.UISession
@@ -100,8 +99,8 @@ class MainViewModel(
   }
 
   fun onSignInSuccess() {
-    _user.value = userRepository.getUser()
     viewModelScope.launch {
+      _user.value = userRepository.getUser()
       maybeSyncBookmarks()
     }
   }
@@ -110,7 +109,7 @@ class MainViewModel(
     val googleSignInClient = GoogleSignIn.getClient(
         applicationContext,
         GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(applicationContext.getString(R.string.default_web_client_id))
+            .requestIdToken("985196411897-r7edbi9jgo3hfupekcmdrg66inonj0o5.apps.googleusercontent.com")
             .build()
     )
     googleSignInClient.signOut()
