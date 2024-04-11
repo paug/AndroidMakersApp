@@ -3,7 +3,7 @@
 extend type Room @typePolicy(keyFields: "id")
 
 extend type Session @typePolicy(keyFields: "id")
-extend type Query @fieldPolicy(forField: "session", keyArgs: "id")
+extend type RootQuery @fieldPolicy(forField: "session", keyArgs: "id")
 
 extend type Speaker @typePolicy(keyFields: "id")
 

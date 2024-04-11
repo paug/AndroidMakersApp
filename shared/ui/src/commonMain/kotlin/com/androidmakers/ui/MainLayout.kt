@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.staticCompositionLocalOf
 import com.androidmakers.ui.agenda.SessionDetailScreen
 import com.androidmakers.ui.agenda.SessionDetailViewModel
+import com.androidmakers.ui.common.SigninCallbacks
 import com.androidmakers.ui.common.navigation.AVALayout
 import com.androidmakers.ui.common.navigation.MainNavigationRoute
 import com.androidmakers.ui.speakers.SpeakerDetailsRoute
@@ -25,7 +26,7 @@ import org.koin.core.parameter.parametersOf
 fun MainLayout(
     versionCode: String,
     versionName: String,
-    user: User?
+    signinCallbacks: SigninCallbacks,
 ) {
   val navigator = rememberNavigator()
   MainNavHost(
@@ -33,12 +34,12 @@ fun MainLayout(
       onSessionClick = { sessionId ->
         navigator.navigate("${MainNavigationRoute.SESSION_DETAIL.name}/$sessionId")
       },
-      user = user,
       navigateToSpeakerDetails = { speakerId ->
         navigator.navigate("${MainNavigationRoute.SPEAKER_DETAIL.name}/$speakerId")
       },
       versionCode = versionCode,
       versionName = versionName,
+      signingCallbacks = signinCallbacks,
   )
 }
 
@@ -48,8 +49,8 @@ private fun MainNavHost(
     versionName: String,
     mainNavController: Navigator,
     onSessionClick: (sessionId: String) -> Unit,
-    user: User?,
     navigateToSpeakerDetails: (SpeakerId) -> Unit,
+    signingCallbacks: SigninCallbacks,
 ) {
   NavHost(
       navigator = mainNavController,
@@ -61,8 +62,8 @@ private fun MainNavHost(
           versionCode = versionCode,
           versionName = versionName,
           onSessionClick = onSessionClick,
-          user = user,
-          navigateToSpeakerDetails = navigateToSpeakerDetails
+          navigateToSpeakerDetails = navigateToSpeakerDetails,
+          signinCallbacks = signingCallbacks,
       )
     }
 

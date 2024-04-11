@@ -11,12 +11,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import com.androidmakers.ui.LocalPlatformContext
 import com.androidmakers.ui.MainLayout
+import com.androidmakers.ui.common.SigninCallbacks
+import com.androidmakers.ui.common.navigation.UserData
 import com.androidmakers.ui.theme.AndroidMakersTheme
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -29,16 +30,12 @@ import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.GoogleAuthProvider
 import dev.gitlive.firebase.auth.auth
 import fr.androidmakers.store.firebase.toUser
-import fr.paug.androidmakers.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.compose.KoinContext
 
 class MainActivity : AppCompatActivity() {
-  private val viewModel: MainActivityViewModel by viewModel()
-
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
@@ -49,14 +46,12 @@ class MainActivity : AppCompatActivity() {
     setContent {
       val rememberedActivity = remember { this }
 
-      val userState = viewModel.user.collectAsState(null)
-      val darkTheme = isSystemInDarkTheme()
-
       CompositionLocalProvider(
         LocalPlatformContext provides rememberedActivity,
       ) {
         KoinContext {
           AndroidMakersTheme {
+            val darkTheme = isSystemInDarkTheme()
             DisposableEffect(darkTheme) {
               enableEdgeToEdge(
                 statusBarStyle = SystemBarStyle.auto(
@@ -72,9 +67,12 @@ class MainActivity : AppCompatActivity() {
             }
 
             MainLayout(
-              user = userState.value,
               versionName = BuildConfig.VERSION_NAME,
               versionCode = BuildConfig.VERSION_CODE.toString(),
+              signinCallbacks = SigninCallbacks(
+                signin = { signin() },
+                signout = { signout() },
+              )
             )
           }
         }
@@ -114,7 +112,9 @@ class MainActivity : AppCompatActivity() {
                 val result = auth.signInWithCredential(firebaseCredential)
                 // Sign in success, update UI with the signed-in user's information
                 lifecycleScope.launch {
-                  viewModel.setUser(result.user?.toUser())
+                  UserData().userRepository.setUser(result.user?.toUser())
+                  println("user id=${result.user?.uid}")
+                  println("idToken=${result.user?.getIdToken(true)}")
                 }
               }
             }
@@ -124,7 +124,7 @@ class MainActivity : AppCompatActivity() {
         } catch (e: ApiException) {
           e.printStackTrace()
           lifecycleScope.launch {
-            viewModel.setUser(null)
+            UserData().userRepository.setUser(null)
           }
         }
       }
@@ -134,7 +134,7 @@ class MainActivity : AppCompatActivity() {
   fun signout() {
     val activity = this
     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-      .requestIdToken(activity.getString(R.string.default_web_client_id))
+      .requestIdToken("985196411897-r7edbi9jgo3hfupekcmdrg66inonj0o5.apps.googleusercontent.com")
       .build()
     val googleSignInClient = GoogleSignIn.getClient(activity, gso)
 
@@ -142,14 +142,14 @@ class MainActivity : AppCompatActivity() {
       Firebase.auth.signOut()
       googleSignInClient.signOut()
       googleSignInClient.revokeAccess()
-      viewModel.setUser(null)
+      UserData().userRepository.setUser(null)
     }
   }
 
   fun signin() {
     val activity = this
     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-      .requestIdToken(activity.getString(R.string.default_web_client_id))
+      .requestIdToken("985196411897-r7edbi9jgo3hfupekcmdrg66inonj0o5.apps.googleusercontent.com")
       .build()
     val googleSignInClient = GoogleSignIn.getClient(activity, gso)
 
@@ -159,5 +159,5 @@ class MainActivity : AppCompatActivity() {
   companion object {
     const val REQ_SIGNIN = 33
   }
-
 }
+
