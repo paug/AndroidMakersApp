@@ -13,8 +13,8 @@ android {
   defaultConfig {
     applicationId = "fr.paug.androidmakers"
     minSdk = 30
-    targetSdk = 34
-    versionCode = 1
+    targetSdk = 33
+    versionCode = libs.versions.version.code.get().toInt()
     versionName = "1.0"
     vectorDrawables {
       useSupportLibrary = true
