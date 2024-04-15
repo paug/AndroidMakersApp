@@ -27,6 +27,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -38,7 +41,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.androidmakers.ui.common.LoadingLayout
@@ -48,12 +50,12 @@ import dev.icerock.moko.resources.compose.stringResource
 import fr.androidmakers.domain.model.Speaker
 import fr.paug.androidmakers.ui.MR
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable
 fun SpeakerScreen(
     modifier: Modifier = Modifier,
     viewModel: SpeakerListViewModel,
-    navigateToSpeakerDetails: (String) -> Unit,
+    navigateToSpeakerDetails: (Speaker) -> Unit,
 ) {
 
   val state by viewModel.uiState.collectAsState(Lce.Loading)
@@ -112,34 +114,58 @@ fun SpeakerScreen(
             enter = fadeIn(),
             exit = fadeOut(),
         ) {
-          LazyColumn(
-              contentPadding = PaddingValues(start = 0.dp, top = 72.dp, end = 0.dp, bottom = 16.dp),
-              verticalArrangement = Arrangement.spacedBy(8.dp)
-          ) {
-            items(content.speakers.filter { it.name?.contains(text, ignoreCase = true) == true }) { speaker ->
-              SpeakerItem(
-                  speaker = speaker,
-                  navigateToSpeakerDetails = navigateToSpeakerDetails
+          val sizeClass = calculateWindowSizeClass()
+
+          when {
+            // Portrait smartphone
+            sizeClass.widthSizeClass == WindowWidthSizeClass.Compact ->
+              SpeakersListView(
+                content.speakers,
+                filterText = text,
+                navigateToSpeakerDetails = navigateToSpeakerDetails
+              )
+
+            else ->
+              SpeakersGridView(
+                speakers = content.speakers,
+                navigateToSpeakerDetails = navigateToSpeakerDetails
               )
             }
-          }
         }
       }
     }
 
   }
+}
 
+@Composable
+fun SpeakersListView(
+  speakers: List<Speaker>,
+  filterText: String = "",
+  navigateToSpeakerDetails: (Speaker) -> Unit,
+) {
+  LazyColumn(
+    contentPadding = PaddingValues(start = 0.dp, top = 72.dp, end = 0.dp, bottom = 16.dp),
+    verticalArrangement = Arrangement.spacedBy(8.dp)
+  ) {
+    items(speakers.filter { it.name?.contains(filterText, ignoreCase = true) == true }) { speaker ->
+      SpeakerItem(
+        speaker = speaker,
+        navigateToSpeakerDetails = navigateToSpeakerDetails
+      )
+    }
+  }
 }
 
 @Composable
 fun SpeakerItem(
     modifier: Modifier = Modifier,
     speaker: Speaker,
-    navigateToSpeakerDetails: (String) -> Unit,
+    navigateToSpeakerDetails: (Speaker) -> Unit,
 ) {
 
   ListItem(
-      modifier = modifier.clickable(onClick = { navigateToSpeakerDetails(speaker.id) }),
+      modifier = modifier.clickable(onClick = { navigateToSpeakerDetails(speaker) }),
       colors = ListItemDefaults.colors(
           containerColor = MaterialTheme.colorScheme.background,
       ),

@@ -3,6 +3,7 @@ package com.androidmakers.ui.agenda
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -19,6 +20,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -40,6 +44,7 @@ import kotlinx.datetime.todayIn
 import moe.tlaster.precompose.koin.koinViewModel
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable
 fun AgendaLayout(
     agendaFilterDrawerState: DrawerState,
@@ -47,27 +52,33 @@ fun AgendaLayout(
 ) {
   val agendaLayoutViewModel = koinViewModel(vmClass = AgendaLayoutViewModel::class)
   val agendaLayoutState by agendaLayoutViewModel.state.collectAsState()
+  val sizeClass = calculateWindowSizeClass()
 
-  ModalNavigationDrawer(
+  if (sizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
+    ModalNavigationDrawer(
       drawerState = agendaFilterDrawerState,
       drawerContent = {
         ModalDrawerSheet(
-            drawerContainerColor = MaterialTheme.colorScheme.background,
-            drawerContentColor = MaterialTheme.colorScheme.onBackground,
-            drawerShape = RectangleShape,
-            windowInsets = WindowInsets(0, 0, 0, 0),
+          drawerContainerColor = MaterialTheme.colorScheme.background,
+          drawerContentColor = MaterialTheme.colorScheme.onBackground,
+          drawerShape = RectangleShape,
+          windowInsets = WindowInsets(0, 0, 0, 0),
         ) {
+          Spacer(Modifier.width(60.dp))
           AgendaFilterDrawer(
-              rooms = agendaLayoutState.rooms,
-              sessionFilters = agendaLayoutState.sessionFilters,
-              onFiltersChanged = agendaLayoutViewModel::onFiltersChanged
+            rooms = agendaLayoutState.rooms,
+            sessionFilters = agendaLayoutState.sessionFilters,
+            onFiltersChanged = agendaLayoutViewModel::onFiltersChanged
           )
         }
       },
       content = {
         AgendaPagerOrLoading(agendaLayoutState.sessionFilters, onSessionClick)
       }
-  )
+    )
+  } else {
+    AgendaPagerOrLoading(agendaLayoutState.sessionFilters, onSessionClick)
+  }
 }
 
 @Composable

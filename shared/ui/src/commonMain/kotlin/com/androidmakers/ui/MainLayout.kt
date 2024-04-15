@@ -10,7 +10,7 @@ import com.androidmakers.ui.common.navigation.AVALayout
 import com.androidmakers.ui.common.navigation.MainNavigationRoute
 import com.androidmakers.ui.speakers.SpeakerDetailsRoute
 import com.androidmakers.ui.speakers.SpeakerDetailsViewModel
-import fr.androidmakers.domain.model.SpeakerId
+import fr.androidmakers.domain.model.Speaker
 import moe.tlaster.precompose.koin.koinViewModel
 import moe.tlaster.precompose.navigation.NavHost
 import moe.tlaster.precompose.navigation.Navigator
@@ -36,8 +36,8 @@ fun MainLayout(
       onSessionClick = { sessionId ->
         navigator.navigate("${MainNavigationRoute.SESSION_DETAIL.name}/$sessionId")
       },
-      navigateToSpeakerDetails = { speakerId ->
-        navigator.navigate("${MainNavigationRoute.SPEAKER_DETAIL.name}/$speakerId")
+      navigateToSpeakerDetails = { speaker ->
+        navigator.navigate("${MainNavigationRoute.SPEAKER_DETAIL.name}/${speaker.id}")
       },
       versionCode = versionCode,
       versionName = versionName,
@@ -48,12 +48,12 @@ fun MainLayout(
 
 @Composable
 private fun MainNavHost(
-    versionCode: String,
-    versionName: String,
-    mainNavController: Navigator,
-    onSessionClick: (sessionId: String) -> Unit,
-    navigateToSpeakerDetails: (SpeakerId) -> Unit,
-    signingCallbacks: SigninCallbacks,
+  versionCode: String,
+  versionName: String,
+  mainNavController: Navigator,
+  onSessionClick: (sessionId: String) -> Unit,
+  navigateToSpeakerDetails: (Speaker) -> Unit,
+  signingCallbacks: SigninCallbacks,
     deeplink: String? = null,
 ) {
     LaunchedEffect(deeplink) {

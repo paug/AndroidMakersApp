@@ -10,8 +10,9 @@ compose = "1.6.5"
 android-gradle-plugin = "8.2.2"
 compose-compiler = "1.5.11"
 kotlin = "1.9.23"
-coroutines = "1.8.0"
 material3 = "1.2.1"
+coroutines = "1.8.0"
+sizeclass = "0.5.0"
 google-services-plugin = "4.4.1"
 crashlytics-plugin = "2.9.9"
 moko = "0.24.0-alpha-5"
@@ -81,7 +82,7 @@ firebase-auth = { module = "dev.gitlive:firebase-auth", version.ref = "firebase"
 precompose = { module = "moe.tlaster:precompose", version.ref = "precompose" }
 precompose-viewmodel = { module = "moe.tlaster:precompose-viewmodel", version.ref = "precompose" }
 precompose-koin = { module = "moe.tlaster:precompose-koin", version.ref = "precompose" }
-
+windowsizeclass = { module = "dev.chrisbanes.material3:material3-window-size-class-multiplatform", version.ref = "sizeclass" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }

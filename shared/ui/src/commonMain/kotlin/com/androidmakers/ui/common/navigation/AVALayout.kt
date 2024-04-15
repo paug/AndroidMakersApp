@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -27,10 +28,15 @@ import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.NavigationRail
+import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -52,6 +58,7 @@ import com.androidmakers.ui.sponsors.SponsorsScreen
 import com.androidmakers.ui.venue.VenuePager
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
+import fr.androidmakers.domain.model.Speaker
 import fr.paug.androidmakers.ui.MR
 import kotlinx.coroutines.launch
 import moe.tlaster.precompose.flow.collectAsStateWithLifecycle
@@ -68,15 +75,17 @@ import moe.tlaster.precompose.navigation.transition.NavTransition
  *
  * This layout contains the bottom bar, and the selected layout.
  */
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable
 fun AVALayout(
-    versionCode: String,
-    versionName: String,
-    onSessionClick: (sessionId: String) -> Unit,
-    navigateToSpeakerDetails: (String) -> Unit,
-    signinCallbacks: SigninCallbacks,
+  versionCode: String,
+  versionName: String,
+  onSessionClick: (sessionId: String) -> Unit,
+  navigateToSpeakerDetails: (Speaker) -> Unit,
+  signinCallbacks: SigninCallbacks,
 ) {
+  val sizeClass = calculateWindowSizeClass()
+
   val avaNavController = rememberNavigator()
   val navBackStackEntry by avaNavController.currentEntry.collectAsState(null)
   val currentRoute = navBackStackEntry?.route?.route
@@ -120,7 +129,7 @@ fun AVALayout(
               }
             },
             actions = {
-              if (currentRoute == AVANavigationRoute.AGENDA.name) {
+              if (currentRoute == AVANavigationRoute.AGENDA.name && sizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
                 val scope = rememberCoroutineScope()
                 IconButton(
                     onClick = {
@@ -141,58 +150,126 @@ fun AVALayout(
       },
 
       bottomBar = {
-        NavigationBar(
-            containerColor = MaterialTheme.colorScheme.background,
-            contentColor = MaterialTheme.colorScheme.onBackground
-        ) {
-          NavigationBarItem(
-              avaNavController = avaNavController,
-              imageVector = Icons.Rounded.CalendarMonth,
-              label = stringResource(MR.strings.agenda),
-              currentRoute = currentRoute,
-              destinationRoute = AVANavigationRoute.AGENDA
-          )
-          NavigationBarItem(
-              avaNavController = avaNavController,
-              imageVector = Icons.Rounded.LocationCity,
-              label = stringResource(MR.strings.venue),
-              currentRoute = currentRoute,
-              destinationRoute = AVANavigationRoute.VENUE
-          )
-          NavigationBarItem(
-              avaNavController = avaNavController,
-              imageVector = Icons.Rounded.Groups,
-              label = stringResource(MR.strings.speakers),
-              currentRoute = currentRoute,
-              destinationRoute = AVANavigationRoute.SPEAKERS
-          )
-          NavigationBarItem(
-              avaNavController = avaNavController,
-              imageVector = Icons.Rounded.Diamond,
-              label = stringResource(MR.strings.sponsors),
-              currentRoute = currentRoute,
-              destinationRoute = AVANavigationRoute.SPONSORS
-          )
-          NavigationBarItem(
-              avaNavController = avaNavController,
-              imageVector = Icons.Rounded.Info,
-              label = stringResource(MR.strings.about),
-              currentRoute = currentRoute,
-              destinationRoute = AVANavigationRoute.ABOUT
+        if (sizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
+          NavBar(
+            avaNavController,
+            currentRoute
           )
         }
       },
   ) { innerPadding ->
-    Box(Modifier.padding(innerPadding)) {
-      AVANavHost(
+
+    Row(Modifier.fillMaxSize().padding(innerPadding)) {
+      if (sizeClass.widthSizeClass > WindowWidthSizeClass.Compact) {
+        RailBar(
+          avaNavController,
+          currentRoute
+        )
+      }
+
+      Box {
+        AVANavHost(
           versionCode = versionCode,
           versionName = versionName,
           avaNavController = avaNavController,
           onSessionClick = onSessionClick,
           agendaFilterDrawerState = agendaFilterDrawerState,
           navigateToSpeakerDetails = navigateToSpeakerDetails
-      )
+        )
+      }
+
     }
+  }
+}
+
+@Composable
+private fun NavBar(
+  navController: Navigator,
+  currentRoute: String?
+) {
+  NavigationBar(
+    containerColor = MaterialTheme.colorScheme.background,
+    contentColor = MaterialTheme.colorScheme.onBackground
+  ) {
+    NavigationBarItem(
+      avaNavController = navController,
+      imageVector = Icons.Rounded.CalendarMonth,
+      label = stringResource(MR.strings.agenda),
+      currentRoute = currentRoute,
+      destinationRoute = AVANavigationRoute.AGENDA
+    )
+    NavigationBarItem(
+      avaNavController = navController,
+      imageVector = Icons.Rounded.LocationCity,
+      label = stringResource(MR.strings.venue),
+      currentRoute = currentRoute,
+      destinationRoute = AVANavigationRoute.VENUE
+    )
+    NavigationBarItem(
+      avaNavController = navController,
+      imageVector = Icons.Rounded.Groups,
+      label = stringResource(MR.strings.speakers),
+      currentRoute = currentRoute,
+      destinationRoute = AVANavigationRoute.SPEAKERS
+    )
+    NavigationBarItem(
+      avaNavController = navController,
+      imageVector = Icons.Rounded.Diamond,
+      label = stringResource(MR.strings.sponsors),
+      currentRoute = currentRoute,
+      destinationRoute = AVANavigationRoute.SPONSORS
+    )
+    NavigationBarItem(
+      avaNavController = navController,
+      imageVector = Icons.Rounded.Info,
+      label = stringResource(MR.strings.about),
+      currentRoute = currentRoute,
+      destinationRoute = AVANavigationRoute.ABOUT
+    )
+  }
+}
+
+@Composable
+private fun RailBar(
+  navController: Navigator,
+  currentRoute: String?
+) {
+  NavigationRail {
+    NavRailItem(
+      avaNavController = navController,
+      imageVector = Icons.Rounded.CalendarMonth,
+      label = stringResource(MR.strings.agenda),
+      currentRoute = currentRoute,
+      destinationRoute = AVANavigationRoute.AGENDA
+    )
+    NavRailItem(
+      avaNavController = navController,
+      imageVector = Icons.Rounded.LocationCity,
+      label = stringResource(MR.strings.venue),
+      currentRoute = currentRoute,
+      destinationRoute = AVANavigationRoute.VENUE
+    )
+    NavRailItem(
+      avaNavController = navController,
+      imageVector = Icons.Rounded.Groups,
+      label = stringResource(MR.strings.speakers),
+      currentRoute = currentRoute,
+      destinationRoute = AVANavigationRoute.SPEAKERS
+    )
+    NavRailItem(
+      avaNavController = navController,
+      imageVector = Icons.Rounded.Diamond,
+      label = stringResource(MR.strings.sponsors),
+      currentRoute = currentRoute,
+      destinationRoute = AVANavigationRoute.SPONSORS
+    )
+    NavRailItem(
+      avaNavController = navController,
+      imageVector = Icons.Rounded.Info,
+      label = stringResource(MR.strings.about),
+      currentRoute = currentRoute,
+      destinationRoute = AVANavigationRoute.ABOUT
+    )
   }
 }
 
@@ -205,30 +282,55 @@ private fun RowScope.NavigationBarItem(
     destinationRoute: AVANavigationRoute,
 ) {
   this@NavigationBarItem.NavigationBarItem(
-      icon = {
-        Icon(
-            imageVector = imageVector,
-            contentDescription = label
-        )
-      },
-      label = { Text(label) },
-      selected = currentRoute == destinationRoute.name,
-      colors = NavigationBarItemDefaults.colors(
-          selectedIconColor = MaterialTheme.colorScheme.onSurface,
-          selectedTextColor = MaterialTheme.colorScheme.onSurface,
-          unselectedIconColor = MaterialTheme.colorScheme.onSurface,
-          unselectedTextColor = MaterialTheme.colorScheme.onSurface,
-          indicatorColor = MaterialTheme.colorScheme.surface,
-//          disabledIconColor =,
-//          disabledTextColor =
-      ),
-      onClick = {
-        avaNavController.navigate(destinationRoute.name, options = NavOptions(
-            launchSingleTop = true,
-            popUpTo = PopUpTo.First(inclusive = true)
-        )
-        )
-      }
+    icon = {
+      Icon(
+        imageVector = imageVector,
+        contentDescription = label
+      )
+    },
+    label = { Text(label) },
+    selected = currentRoute == destinationRoute.name,
+    colors = NavigationBarItemDefaults.colors(
+      selectedIconColor = MaterialTheme.colorScheme.onSurface,
+      selectedTextColor = MaterialTheme.colorScheme.onSurface,
+      unselectedIconColor = MaterialTheme.colorScheme.onSurface,
+      unselectedTextColor = MaterialTheme.colorScheme.onSurface,
+      indicatorColor = MaterialTheme.colorScheme.surface,
+    ),
+    onClick = {
+      avaNavController.navigate(destinationRoute.name, options = NavOptions(
+        launchSingleTop = true,
+        popUpTo = PopUpTo.First(inclusive = true)
+      )
+      )
+    }
+  )
+}
+
+@Composable
+private fun NavRailItem(
+  avaNavController: Navigator,
+  imageVector: ImageVector,
+  label: String,
+  currentRoute: String?,
+  destinationRoute: AVANavigationRoute,
+) {
+  NavigationRailItem(
+    icon = {
+      Icon(
+        imageVector = imageVector,
+        contentDescription = label
+      )
+    },
+    label = { Text(label) },
+    selected = currentRoute == destinationRoute.name,
+    onClick = {
+      avaNavController.navigate(destinationRoute.name, options = NavOptions(
+        launchSingleTop = true,
+        popUpTo = PopUpTo.First(inclusive = true)
+      )
+      )
+    }
   )
 }
 
@@ -239,7 +341,7 @@ private fun AVANavHost(
     avaNavController: Navigator,
     onSessionClick: (sessionId: String) -> Unit,
     agendaFilterDrawerState: DrawerState,
-    navigateToSpeakerDetails: (String) -> Unit,
+    navigateToSpeakerDetails: (Speaker) -> Unit,
 ) {
   NavHost(avaNavController, initialRoute = AVANavigationRoute.AGENDA.name) {
 

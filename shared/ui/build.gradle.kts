@@ -35,6 +35,7 @@ kotlin {
       api(libs.precompose.koin)
       implementation(libs.openfeedback.m3)
       implementation(libs.materii.pullrefresh)
+      implementation(libs.windowsizeclass)
 
       implementation(project(":shared:domain"))
       implementation(project(":shared:di"))
