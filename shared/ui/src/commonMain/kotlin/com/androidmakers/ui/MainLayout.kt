@@ -11,7 +11,6 @@ import com.androidmakers.ui.common.navigation.MainNavigationRoute
 import com.androidmakers.ui.speakers.SpeakerDetailsRoute
 import com.androidmakers.ui.speakers.SpeakerDetailsViewModel
 import fr.androidmakers.domain.model.SpeakerId
-import fr.androidmakers.domain.model.User
 import moe.tlaster.precompose.koin.koinViewModel
 import moe.tlaster.precompose.navigation.NavHost
 import moe.tlaster.precompose.navigation.Navigator
@@ -81,7 +80,7 @@ private fun MainNavHost(
     scene(
         route = "${MainNavigationRoute.SESSION_DETAIL.name}/{sessionId}",
         swipeProperties = SwipeProperties(),
-        deepLinks = listOf("https://androidmakers.droidcon.com/agenda/{sessionId}")
+        deepLinks = listOf("https://androidmakers.fr/session/{sessionId}")
     ) {
 
       val sessionId = it.path<String>("sessionId")
@@ -95,7 +94,7 @@ private fun MainNavHost(
 
     scene(
         route = "${MainNavigationRoute.SPEAKER_DETAIL.name}/{speakerId}",
-        deepLinks = listOf("https://androidmakers.droidcon.com/speakers/{speakerId}"),
+        deepLinks = listOf("https://androidmakers.fr/speaker/{speakerId}"),
         swipeProperties = SwipeProperties(),
     ) { backstackEntry ->
       val speakerId = backstackEntry.path<String>("speakerId")

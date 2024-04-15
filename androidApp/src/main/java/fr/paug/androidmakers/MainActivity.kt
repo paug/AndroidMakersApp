@@ -40,11 +40,7 @@ import kotlinx.coroutines.launch
 import org.koin.compose.KoinContext
 
 class MainActivity : AppCompatActivity() {
-  private var deeplink: String? = null
-  override fun onNewIntent(intent: Intent?) {
-    super.onNewIntent(intent)
-    deeplink = intent?.data.toString()
-  }
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
@@ -182,5 +178,3 @@ class MainActivity : AppCompatActivity() {
     const val REQ_SIGNIN = 33
   }
 }
-
-

@@ -50,7 +50,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data
-                    android:host="androidmakers.droidcon.com"
+                    android:host="androidmakers.fr"
                     android:scheme="https" />
             </intent-filter>
 
