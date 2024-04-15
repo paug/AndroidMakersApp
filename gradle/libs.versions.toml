@@ -38,6 +38,7 @@ apollo-adapters = { module = "com.apollographql.apollo3:apollo-adapters" }
 apollo-normalized-cache = { module = "com.apollographql.apollo3:apollo-normalized-cache" }
 apollo-normalized-cache-sqlite = { module = "com.apollographql.apollo3:apollo-normalized-cache-sqlite" }
 apollo-runtime = { module = "com.apollographql.apollo3:apollo-runtime" }
+atomicfu = "org.jetbrains.kotlinx:atomicfu:0.20.1"
 shared-preferences = "androidx.preference:preference:1.2.1"
 coil-compose = "io.coil-kt:coil-compose:2.5.0"
 qdsfdhvh-imageloader = { module = "io.github.qdsfdhvh:image-loader", version.ref = "image-loader" }

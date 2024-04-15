@@ -1,9 +1,11 @@
 package fr.androidmakers.store.firebase
 
 import dev.gitlive.firebase.Firebase
+import dev.gitlive.firebase.auth.FirebaseUser
 import dev.gitlive.firebase.auth.auth
 import fr.androidmakers.domain.model.User
 import fr.androidmakers.domain.repo.UserRepository
+import kotlinx.atomicfu.atomic
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,12 +13,13 @@ import kotlinx.coroutines.launch
 
 @OptIn(DelicateCoroutinesApi::class)
 class FirebaseUserRepository : UserRepository {
+  private var currentUser = atomic<FirebaseUser?>(null)
   override val user = MutableStateFlow<User?>(null)
 
   init {
     GlobalScope.launch {
       try {
-        setUser(Firebase.auth.currentUser?.toUser())
+        setUser(Firebase.auth.currentUser)
       } catch (e: Exception) {
         e.printStackTrace()
       }
@@ -27,7 +30,15 @@ class FirebaseUserRepository : UserRepository {
     return user.value
   }
 
-  override suspend fun setUser(user: User?) {
-    this.user.emit(user)
+  override suspend fun getIdToken(): String? {
+    return currentUser.value?.getIdToken(false)
+  }
+
+  override suspend fun setUser(user: Any?) {
+    check(user is FirebaseUser?) {
+      "Expected FirebaseUser, got '$user'"
+    }
+    currentUser.value = user
+    this.user.emit(user?.toUser())
   }
 }
