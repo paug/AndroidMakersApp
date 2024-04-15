@@ -35,7 +35,7 @@ actual class ApolloClientBuilder(
                       /**
                        *
                        */
-                      val token = userRepository.getUser()?.idToken
+                      val token = userRepository.getIdToken()
                       if (token != null) {
                         addHeader("Authorization", "Bearer $token")
                       }

@@ -38,7 +38,7 @@ class GoogleSignInViewModel(
         try {
           val credential = GoogleAuthProvider.getCredential(idToken!!, null)
           Firebase.auth.signInWithCredential(credential).await()
-          UserData().userRepository.setUser(Firebase.auth.currentUser?.toUser())
+          UserData().userRepository.setUser(Firebase.auth.currentUser)
           onSignInSuccess()
         } catch (e: FirebaseAuthException) {
           Log.w(TAG, "Could not get Firebase auth credential from Google id token", e)
@@ -53,7 +53,6 @@ private suspend fun FirebaseUser.toUser(): User {
   return User(
     id = this.uid,
     photoUrl = this.photoUrl.toString(),
-    idToken = this.getIdToken(true).await().token
   )
 }
 
