@@ -4,5 +4,5 @@ import dev.gitlive.firebase.auth.FirebaseUser
 import fr.androidmakers.domain.model.User
 
 suspend fun FirebaseUser.toUser(): User {
-  return User(uid, photoURL, this.getIdToken(false))
+  return User(uid, photoURL)
 }
