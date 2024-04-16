@@ -1,7 +1,5 @@
 package com.androidmakers.ui
 
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.staticCompositionLocalOf
@@ -114,13 +112,7 @@ private fun MainNavHost(
   }
 }
 
-private val defaultTransition = NavTransition(
-  createTransition = slideInHorizontally { it },
-  pauseTransition = slideOutHorizontally { -it / 4 },
-  destroyTransition = slideOutHorizontally { it },
-  resumeTransition = slideInHorizontally { -it / 4 },
-  exitTargetContentZIndex = 1f
-)
+expect val defaultTransition: NavTransition
 
 expect class PlatformContext
 
