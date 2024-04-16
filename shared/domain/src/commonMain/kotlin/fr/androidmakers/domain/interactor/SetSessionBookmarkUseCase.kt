@@ -10,10 +10,9 @@ class SetSessionBookmarkUseCase(
     private val bookmarksRepository: BookmarksRepository
 ) {
   suspend operator fun invoke(sessionId: String, isBookmark: Boolean) {
-    userRepository.getUser()?.id?.let { token ->
-       sessionsRepository.setBookmark(token, sessionId, isBookmark)
-    }
-
     bookmarksRepository.setBookmarked(sessionId, isBookmark)
+    userRepository.getUser()?.id?.let { token ->
+      sessionsRepository.setBookmark(token, sessionId, isBookmark)
+    }
   }
 }

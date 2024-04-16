@@ -2,7 +2,8 @@ package fr.androidmakers.di
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import fr.androidmakers.store.graphql.ApolloClientBuilder
+import com.apollographql.apollo3.cache.normalized.sql.SqlNormalizedCacheFactory
+import fr.androidmakers.store.graphql.ApolloClient
 import fr.androidmakers.store.local.createDataStore
 import kotlinx.cinterop.ExperimentalForeignApi
 import org.koin.dsl.module
@@ -13,7 +14,12 @@ import platform.Foundation.NSUserDomainMask
 
 @OptIn(ExperimentalForeignApi::class)
 actual val dataPlatformModule = module {
-  single { ApolloClientBuilder("https://androidmakers.fr/graphql", "androidmakers2024", "") }
+  single {
+    ApolloClient(
+      SqlNormalizedCacheFactory(),
+      get()
+    )
+  }
 
   single<DataStore<Preferences>> {
     createDataStore {

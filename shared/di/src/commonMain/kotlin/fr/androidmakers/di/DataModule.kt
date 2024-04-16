@@ -8,7 +8,6 @@ import fr.androidmakers.domain.repo.SpeakersRepository
 import fr.androidmakers.domain.repo.UserRepository
 import fr.androidmakers.domain.repo.VenueRepository
 import fr.androidmakers.store.firebase.FirebaseUserRepository
-import fr.androidmakers.store.graphql.ApolloClientBuilder
 import fr.androidmakers.store.graphql.PartnersGraphQLRepository
 import fr.androidmakers.store.graphql.RoomsGraphQLRepository
 import fr.androidmakers.store.graphql.SessionsGraphQLRepository
@@ -22,7 +21,6 @@ import org.koin.dsl.module
 expect val dataPlatformModule: Module
 
 val dataModule = module {
-  single { get<ApolloClientBuilder>().build() }
   single<PartnersRepository> { PartnersGraphQLRepository(get()) }
   single<RoomsRepository> { RoomsGraphQLRepository(get()) }
   single<SessionsRepository> { SessionsGraphQLRepository(get()) }
