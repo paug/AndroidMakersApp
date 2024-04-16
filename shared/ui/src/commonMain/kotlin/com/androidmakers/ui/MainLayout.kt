@@ -1,6 +1,7 @@
 package com.androidmakers.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.staticCompositionLocalOf
 import com.androidmakers.ui.agenda.SessionDetailScreen
 import com.androidmakers.ui.agenda.SessionDetailViewModel
@@ -10,7 +11,6 @@ import com.androidmakers.ui.common.navigation.MainNavigationRoute
 import com.androidmakers.ui.speakers.SpeakerDetailsRoute
 import com.androidmakers.ui.speakers.SpeakerDetailsViewModel
 import fr.androidmakers.domain.model.SpeakerId
-import fr.androidmakers.domain.model.User
 import moe.tlaster.precompose.koin.koinViewModel
 import moe.tlaster.precompose.navigation.NavHost
 import moe.tlaster.precompose.navigation.Navigator
@@ -27,6 +27,7 @@ fun MainLayout(
     versionCode: String,
     versionName: String,
     signinCallbacks: SigninCallbacks,
+    deeplink: String? = null,
 ) {
   val navigator = rememberNavigator()
   MainNavHost(
@@ -40,6 +41,7 @@ fun MainLayout(
       versionCode = versionCode,
       versionName = versionName,
       signingCallbacks = signinCallbacks,
+      deeplink = deeplink,
   )
 }
 
@@ -51,13 +53,21 @@ private fun MainNavHost(
     onSessionClick: (sessionId: String) -> Unit,
     navigateToSpeakerDetails: (SpeakerId) -> Unit,
     signingCallbacks: SigninCallbacks,
+    deeplink: String? = null,
 ) {
+    LaunchedEffect(deeplink) {
+        deeplink?.let {
+            mainNavController.navigate(deeplink)
+        }
+    }
+
   NavHost(
       navigator = mainNavController,
       initialRoute = MainNavigationRoute.AVA.name
   ) {
 
     scene(route = MainNavigationRoute.AVA.name) {
+
       AVALayout(
           versionCode = versionCode,
           versionName = versionName,
@@ -70,6 +80,7 @@ private fun MainNavHost(
     scene(
         route = "${MainNavigationRoute.SESSION_DETAIL.name}/{sessionId}",
         swipeProperties = SwipeProperties(),
+        deepLinks = listOf("https://androidmakers.fr/session/{sessionId}")
     ) {
 
       val sessionId = it.path<String>("sessionId")
@@ -83,6 +94,7 @@ private fun MainNavHost(
 
     scene(
         route = "${MainNavigationRoute.SPEAKER_DETAIL.name}/{speakerId}",
+        deepLinks = listOf("https://androidmakers.fr/speaker/{speakerId}"),
         swipeProperties = SwipeProperties(),
     ) { backstackEntry ->
       val speakerId = backstackEntry.path<String>("speakerId")
