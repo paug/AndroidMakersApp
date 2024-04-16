@@ -23,10 +23,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import fr.paug.androidmakers.ui.MR
 import com.androidmakers.ui.model.UISession
 import dev.icerock.moko.resources.compose.stringResource
-import fr.androidmakers.domain.interactor.ApplyForAppClinicUseCase
+import fr.paug.androidmakers.ui.MR
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -43,7 +42,7 @@ fun AgendaColumn(
     state = listState,
     modifier = Modifier.fillMaxHeight(),
     contentPadding = PaddingValues(8.dp),
-    verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically),
+    verticalArrangement = Arrangement.spacedBy(12.dp),
     horizontalAlignment = Alignment.CenterHorizontally
 
   ) {
