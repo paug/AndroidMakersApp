@@ -17,6 +17,7 @@ import moe.tlaster.precompose.navigation.Navigator
 import moe.tlaster.precompose.navigation.SwipeProperties
 import moe.tlaster.precompose.navigation.path
 import moe.tlaster.precompose.navigation.rememberNavigator
+import moe.tlaster.precompose.navigation.transition.NavTransition
 import org.koin.core.parameter.parametersOf
 
 /**
@@ -80,7 +81,8 @@ private fun MainNavHost(
     scene(
         route = "${MainNavigationRoute.SESSION_DETAIL.name}/{sessionId}",
         swipeProperties = SwipeProperties(),
-        deepLinks = listOf("https://androidmakers.fr/session/{sessionId}")
+        deepLinks = listOf("https://androidmakers.fr/session/{sessionId}"),
+        navTransition = defaultTransition
     ) {
 
       val sessionId = it.path<String>("sessionId")
@@ -96,6 +98,7 @@ private fun MainNavHost(
         route = "${MainNavigationRoute.SPEAKER_DETAIL.name}/{speakerId}",
         deepLinks = listOf("https://androidmakers.fr/speaker/{speakerId}"),
         swipeProperties = SwipeProperties(),
+        navTransition = defaultTransition
     ) { backstackEntry ->
       val speakerId = backstackEntry.path<String>("speakerId")
 
@@ -108,6 +111,8 @@ private fun MainNavHost(
     }
   }
 }
+
+expect val defaultTransition: NavTransition
 
 expect class PlatformContext
 
