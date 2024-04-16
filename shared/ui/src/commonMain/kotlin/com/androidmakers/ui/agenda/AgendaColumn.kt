@@ -62,13 +62,20 @@ fun AgendaColumn(
           shape = RoundedCornerShape(16.dp),
         ) {
           sessions.forEach { uiSession ->
-            AgendaRow(
-              modifier = Modifier.animateItemPlacement(),
-              uiSession = uiSession,
-              onSessionClicked = onSessionClicked,
-              onSessionBookmarked = onSessionBookmarked,
-              onApplyForAppClinic = onApplyForAppClinicClicked
-            )
+            if (uiSession.isServiceSession) {
+              ServiceSessionRow(
+                uiSession,
+                modifier = Modifier.animateItemPlacement()
+              )
+            } else {
+              SessionRow(
+                modifier = Modifier.animateItemPlacement(),
+                uiSession = uiSession,
+                onSessionClicked = onSessionClicked,
+                onSessionBookmarked = onSessionBookmarked,
+                onApplyForAppClinic = onApplyForAppClinicClicked
+              )
+            }
           }
         }
       }

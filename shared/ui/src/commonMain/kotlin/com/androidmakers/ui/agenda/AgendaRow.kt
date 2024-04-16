@@ -6,6 +6,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.BookmarkAdd
 import androidx.compose.material.icons.rounded.BookmarkRemove
@@ -23,18 +24,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.androidmakers.ui.common.EmojiUtils
 import com.androidmakers.ui.model.UISession
 import com.androidmakers.ui.theme.AMColor
 import dev.icerock.moko.resources.compose.stringResource
-import fr.androidmakers.domain.model.Session
 import fr.paug.androidmakers.ui.MR
 import kotlinx.datetime.Instant
-import kotlinx.datetime.toInstant
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import kotlin.time.Duration
 import kotlin.time.Duration.Companion.hours
 
 @Composable
@@ -62,15 +59,52 @@ fun backgroundColor(uiSession: UISession): Color {
 }
 
 @Composable
-fun AgendaRow(
-    uiSession: UISession,
-    modifier: Modifier = Modifier,
-    onSessionClicked: (UISession) -> Unit,
-    onSessionBookmarked: (UISession, Boolean) -> Unit,
-    onApplyForAppClinic: () -> Unit,
+internal fun ServiceSessionRow(
+  session: UISession,
+  modifier: Modifier = Modifier,
 ) {
   ListItem(
-      modifier = modifier,
+    modifier = modifier,
+    colors = ListItemDefaults.colors(
+      containerColor = MaterialTheme.colorScheme.surface,
+    ),
+    headlineContent = {
+      Text(
+        text = session.title,
+        style = MaterialTheme.typography.titleMedium,
+      )
+    },
+    supportingContent = {
+      Column(
+        modifier = Modifier.padding(top = 12.dp),
+        horizontalAlignment = Alignment.Start,
+      ) {
+        Text(
+          text = session.subtitle(),
+          style = MaterialTheme.typography.bodyMedium,
+          modifier = Modifier.padding(top = 4.dp)
+        )
+      }
+    },
+    trailingContent = {},
+    overlineContent = {},
+  )
+}
+
+@Composable
+internal fun SessionRow(
+  uiSession: UISession,
+  modifier: Modifier = Modifier,
+  onSessionClicked: (UISession) -> Unit,
+  onSessionBookmarked: (UISession, Boolean) -> Unit,
+  onApplyForAppClinic: () -> Unit,
+) {
+  ListItem(
+      modifier = modifier.clickable(
+        onClick = {
+          onSessionClicked.invoke(uiSession)
+        }
+      ),
       colors = ListItemDefaults.colors(
           containerColor = backgroundColor(uiSession),
       ),
@@ -78,16 +112,15 @@ fun AgendaRow(
         Text(
             text = uiSession.title,
             style = MaterialTheme.typography.titleMedium,
-            modifier = maybeClickable(uiSession, onSessionClicked)
         )
       },
       supportingContent = {
         Column(
-            modifier = maybeClickable(uiSession, onSessionClicked).padding(top = 12.dp),
+            modifier = Modifier.padding(top = 12.dp),
             horizontalAlignment = Alignment.Start,
         ) {
 
-          if(uiSession.isAppClinic) {
+          if (uiSession.isAppClinic) {
             Button(
               onClick = onApplyForAppClinic,
               modifier = Modifier.padding(bottom = 8.dp)
@@ -127,6 +160,7 @@ fun AgendaRow(
             )
 
             IconToggleButton(
+                modifier = Modifier.size(48.dp),
                 checked = isBookmarked,
                 onCheckedChange = {
                   onSessionBookmarked(uiSession, it)
@@ -173,7 +207,7 @@ fun UISession.formattedDuration(): String {
 @Preview
 @Composable
 private fun AgendaRowPreview() {
-  AgendaRow(fakeUiSession, onSessionClicked = {}, onSessionBookmarked = { _,_ -> }, onApplyForAppClinic = {})
+  SessionRow(fakeUiSession, onSessionClicked = {}, onSessionBookmarked = { _,_ -> }, onApplyForAppClinic = {})
 }
 
 private val fakeUiSession = UISession(
