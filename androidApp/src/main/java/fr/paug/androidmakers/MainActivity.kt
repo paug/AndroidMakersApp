@@ -130,7 +130,14 @@ class MainActivity : AppCompatActivity() {
                 val result = auth.signInWithCredential(firebaseCredential)
                 // Sign in success, update UI with the signed-in user's information
                 lifecycleScope.launch {
-                  UserData().userRepository.setUser(result.user)
+                  UserData().apply {
+                    userRepository.setUser(result.user)
+                    val uid = result.user?.uid
+                    if (uid != null) {
+                      syncBookmarksUseCase(uid)
+                    }
+                  }
+
                   println("user id=${result.user?.uid}")
                   println("idToken=${result.user?.getIdToken(true)}")
                 }
