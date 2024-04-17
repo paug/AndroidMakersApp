@@ -1,9 +1,6 @@
 package fr.androidmakers.store.graphql
 
 import com.apollographql.apollo3.ApolloClient
-import com.apollographql.apollo3.cache.normalized.FetchPolicy
-import com.apollographql.apollo3.cache.normalized.fetchPolicy
-import com.apollographql.apollo3.cache.normalized.watch
 import fr.androidmakers.domain.model.Room
 import fr.androidmakers.domain.repo.RoomsRepository
 import kotlinx.coroutines.flow.Flow

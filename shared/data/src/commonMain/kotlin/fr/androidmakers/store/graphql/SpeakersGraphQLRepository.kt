@@ -1,9 +1,6 @@
 package fr.androidmakers.store.graphql
 
 import com.apollographql.apollo3.ApolloClient
-import com.apollographql.apollo3.cache.normalized.FetchPolicy
-import com.apollographql.apollo3.cache.normalized.fetchPolicy
-import com.apollographql.apollo3.cache.normalized.watch
 import com.apollographql.apollo3.exception.DefaultApolloException
 import fr.androidmakers.domain.model.Speaker
 import fr.androidmakers.domain.repo.SpeakersRepository
