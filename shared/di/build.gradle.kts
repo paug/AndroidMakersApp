@@ -24,6 +24,7 @@ kotlin {
     commonMain.dependencies {
       implementation(project(":shared:domain"))
       implementation(project(":shared:data"))
+      implementation(libs.apollo.normalized.cache.sqlite)
 
       api(libs.koin.core)
     }
