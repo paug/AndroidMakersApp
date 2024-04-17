@@ -4,6 +4,7 @@ import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.cache.normalized.FetchPolicy
 import com.apollographql.apollo3.cache.normalized.fetchPolicy
 import com.apollographql.apollo3.cache.normalized.watch
+import com.apollographql.apollo3.exception.DefaultApolloException
 import fr.androidmakers.domain.model.Speaker
 import fr.androidmakers.domain.repo.SpeakersRepository
 import kotlinx.coroutines.flow.Flow
@@ -13,24 +14,24 @@ class SpeakersGraphQLRepository(private val apolloClient: ApolloClient) : Speake
 
   override fun getSpeakers(): Flow<Result<List<Speaker>>> {
     return apolloClient.query(GetSpeakersQuery())
-      .fetchPolicy(FetchPolicy.CacheAndNetwork)
-      .watch()
-      .ignoreCacheMisses()
-      .map {
-        it.dataAssertNoErrors.speakers.map { it.speakerDetails.toSpeaker() }
-      }.toResultFlow()
+      .cacheAndNetwork()
+      .map { it.map { it.speakers.map { it.speakerDetails.toSpeaker() } } }
   }
 
   override fun getSpeaker(id: String): Flow<Result<Speaker>> {
     return apolloClient.query(GetSpeakersQuery())
-      .fetchPolicy(FetchPolicy.CacheAndNetwork)
-      .watch()
-      .ignoreCacheMisses()
+      .cacheAndNetwork()
       .map {
-        it.dataAssertNoErrors.speakers.map { it.speakerDetails }.singleOrNull { it.id == id }
-          ?.toSpeaker()
-          ?: error("no speaker")
+        if (it.isSuccess) {
+          val speaker = it.getOrThrow().speakers.map { it.speakerDetails }.singleOrNull { it.id == id }?.toSpeaker()
+          if (speaker != null) {
+            Result.success(speaker)
+          } else {
+            Result.failure(DefaultApolloException("Something wrong happend"))
+          }
+        } else {
+          Result.failure(it.exceptionOrNull()!!)
+        }
       }
-      .toResultFlow()
   }
 }

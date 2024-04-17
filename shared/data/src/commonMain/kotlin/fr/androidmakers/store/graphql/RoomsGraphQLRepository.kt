@@ -18,11 +18,7 @@ class RoomsGraphQLRepository(private val apolloClient: ApolloClient): RoomsRepos
 
   override fun getRooms(): Flow<Result<List<Room>>> {
     return apolloClient.query(GetRoomsQuery())
-        .fetchPolicy(FetchPolicy.NetworkFirst)
-        .watch()
-        .map {
-          it.dataAssertNoErrors.rooms.map { it.roomDetails.toRoom() }
-        }
-        .toResultFlow()
+        .cacheAndNetwork()
+        .map { it.map { it.rooms.map { it.roomDetails.toRoom() } } }
   }
 }
