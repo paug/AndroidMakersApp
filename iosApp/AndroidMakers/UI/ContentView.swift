@@ -8,7 +8,7 @@ import shared
 struct ContentView: View {
     var body: some View {
         MainView()
-            .ignoresSafeArea(.all, edges: [.top, .bottom])
+            .ignoresSafeArea(.all)
     }
 }
 

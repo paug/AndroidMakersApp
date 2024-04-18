@@ -36,7 +36,6 @@
             android:exported="true"
             android:launchMode="singleTask"
             android:name=".MainActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/Theme.AndroidMakers.NoActionBar"
             tools:ignore="LockedOrientationActivity">
             <intent-filter>

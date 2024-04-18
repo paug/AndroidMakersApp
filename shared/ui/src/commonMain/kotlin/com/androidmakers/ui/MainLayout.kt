@@ -1,8 +1,10 @@
 package com.androidmakers.ui
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.unit.dp
 import com.androidmakers.ui.agenda.SessionDetailScreen
 import com.androidmakers.ui.agenda.SessionDetailViewModel
 import com.androidmakers.ui.common.SigninCallbacks
@@ -117,3 +119,4 @@ expect val defaultTransition: NavTransition
 expect class PlatformContext
 
 val LocalPlatformContext = staticCompositionLocalOf<Any?> { null }
+val LocalPadding = staticCompositionLocalOf { PaddingValues(0.dp) }

@@ -23,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.androidmakers.ui.LocalPadding
 import com.androidmakers.ui.model.UISession
 import dev.icerock.moko.resources.compose.stringResource
 import fr.paug.androidmakers.ui.MR
@@ -41,7 +42,12 @@ fun AgendaColumn(
   LazyColumn(
     state = listState,
     modifier = Modifier.fillMaxHeight(),
-    contentPadding = PaddingValues(8.dp),
+    contentPadding = PaddingValues(
+      top = 8.dp,
+      start = 8.dp,
+      end = 8.dp,
+      bottom = 8.dp + LocalPadding.current.calculateBottomPadding()
+    ),
     verticalArrangement = Arrangement.spacedBy(12.dp),
     horizontalAlignment = Alignment.CenterHorizontally
 

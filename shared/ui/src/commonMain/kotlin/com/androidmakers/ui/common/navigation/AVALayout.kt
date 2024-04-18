@@ -7,7 +7,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -27,7 +28,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Scaffold
@@ -35,9 +35,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -45,9 +47,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import com.androidmakers.ui.LocalPadding
 import com.androidmakers.ui.about.AboutScreen
 import com.androidmakers.ui.agenda.AgendaLayout
 import com.androidmakers.ui.common.SigninButton
@@ -97,87 +100,93 @@ fun AVALayout(
   val user by userFlow.collectAsStateWithLifecycle()
 
   Scaffold(
-      modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-      contentWindowInsets = WindowInsets(0, 0, 0, 0),
-      topBar = {
+    topBar = {
+      if (sizeClass.heightSizeClass != WindowHeightSizeClass.Compact) {
         MediumTopAppBar(
-            scrollBehavior = scrollBehavior,
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = MaterialTheme.colorScheme.background,
-                scrolledContainerColor = MaterialTheme.colorScheme.background,
-                titleContentColor = MaterialTheme.colorScheme.onBackground,
-                actionIconContentColor = MaterialTheme.colorScheme.onBackground,
-            ),
-            navigationIcon = {
-              Box(modifier = Modifier.padding(14.dp)) {
-                Image(
-                    modifier = Modifier.size(28.dp),
-                    painter = painterResource(MR.images.notification),
-                    contentDescription = "logo"
-                )
-              }
-            },
-            title = {
-              Row(horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.Start)) {
-
-                Text(
-                    text = stringResource(MR.strings.app_name),
-                    style = MaterialTheme.typography.headlineSmall,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-              }
-            },
-            actions = {
-              if (currentRoute == AVANavigationRoute.AGENDA.name && sizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
-                val scope = rememberCoroutineScope()
-                IconButton(
-                    onClick = {
-                      scope.launch {
-                        if (agendaFilterDrawerState.isClosed) agendaFilterDrawerState.open() else agendaFilterDrawerState.close()
-                      }
-                    }
-                ) {
-                  Icon(
-                      imageVector = Icons.Rounded.FilterList,
-                      contentDescription = stringResource(MR.strings.filter),
-                  )
-                }
-              }
-              SigninButton(user, signinCallbacks)
+          scrollBehavior = scrollBehavior,
+          colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.background,
+            scrolledContainerColor = MaterialTheme.colorScheme.background,
+            titleContentColor = MaterialTheme.colorScheme.onBackground,
+            actionIconContentColor = MaterialTheme.colorScheme.onBackground,
+          ),
+          navigationIcon = {
+            Box(modifier = Modifier.padding(14.dp)) {
+              Image(
+                modifier = Modifier.size(28.dp),
+                painter = painterResource(MR.images.notification),
+                contentDescription = "logo"
+              )
             }
+          },
+          title = {
+            Row(horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.Start)) {
+
+              Text(
+                text = stringResource(MR.strings.app_name),
+                style = MaterialTheme.typography.headlineSmall,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+              )
+            }
+          },
+          actions = {
+            if (currentRoute == AVANavigationRoute.AGENDA.name && sizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
+              val scope = rememberCoroutineScope()
+              IconButton(
+                onClick = {
+                  scope.launch {
+                    if (agendaFilterDrawerState.isClosed) agendaFilterDrawerState.open() else agendaFilterDrawerState.close()
+                  }
+                }
+              ) {
+                Icon(
+                  imageVector = Icons.Rounded.FilterList,
+                  contentDescription = stringResource(MR.strings.filter),
+                )
+              }
+            }
+            SigninButton(user, signinCallbacks)
+          }
         )
-      },
+      }
+    },
 
-      bottomBar = {
-        if (sizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
-          NavBar(
-            avaNavController,
-            currentRoute
-          )
-        }
-      },
-  ) { innerPadding ->
-
-    Row(Modifier.fillMaxSize().padding(innerPadding)) {
-      if (sizeClass.widthSizeClass > WindowWidthSizeClass.Compact) {
-        RailBar(
+    bottomBar = {
+      if (sizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
+        NavBar(
           avaNavController,
           currentRoute
         )
       }
+    },
+  ) { innerPadding ->
 
-      Box {
-        AVANavHost(
-          versionCode = versionCode,
-          versionName = versionName,
-          avaNavController = avaNavController,
-          onSessionClick = onSessionClick,
-          agendaFilterDrawerState = agendaFilterDrawerState,
-          navigateToSpeakerDetails = navigateToSpeakerDetails
-        )
+    CompositionLocalProvider(LocalPadding provides innerPadding) {
+      Row(Modifier.fillMaxSize()) {
+        if (sizeClass.widthSizeClass > WindowWidthSizeClass.Compact) {
+          RailBar(
+            avaNavController,
+            currentRoute
+          )
+        }
+
+        Box(Modifier.padding(
+          top = innerPadding.calculateTopPadding(),
+          start = innerPadding.calculateStartPadding(LayoutDirection.Ltr),
+          end = innerPadding.calculateEndPadding(LayoutDirection.Ltr)
+        )) {
+
+          AVANavHost(
+            versionCode = versionCode,
+            versionName = versionName,
+            avaNavController = avaNavController,
+            onSessionClick = onSessionClick,
+            agendaFilterDrawerState = agendaFilterDrawerState,
+            navigateToSpeakerDetails = navigateToSpeakerDetails
+          )
+        }
       }
-
     }
   }
 }
@@ -234,7 +243,9 @@ private fun RailBar(
   navController: Navigator,
   currentRoute: String?
 ) {
-  NavigationRail {
+  NavigationRail(
+
+  ) {
     NavRailItem(
       avaNavController = navController,
       imageVector = Icons.Rounded.CalendarMonth,
@@ -290,13 +301,6 @@ private fun RowScope.NavigationBarItem(
     },
     label = { Text(label) },
     selected = currentRoute == destinationRoute.name,
-    colors = NavigationBarItemDefaults.colors(
-      selectedIconColor = MaterialTheme.colorScheme.onSurface,
-      selectedTextColor = MaterialTheme.colorScheme.onSurface,
-      unselectedIconColor = MaterialTheme.colorScheme.onSurface,
-      unselectedTextColor = MaterialTheme.colorScheme.onSurface,
-      indicatorColor = MaterialTheme.colorScheme.surface,
-    ),
     onClick = {
       avaNavController.navigate(destinationRoute.name, options = NavOptions(
         launchSingleTop = true,
