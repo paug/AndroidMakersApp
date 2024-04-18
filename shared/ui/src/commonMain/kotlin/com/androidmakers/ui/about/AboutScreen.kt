@@ -5,19 +5,20 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -132,33 +133,46 @@ private fun SocialCard(
               .padding(top = 8.dp),
           horizontalArrangement = Arrangement.spacedBy(16.dp),
       ) {
-        IconButton(
+        SocialIcon(
           onClick = onXLogoClick,
-          modifier = Modifier.size(64.dp)
         ) {
           Icon(
-            modifier = Modifier.size(36.dp),
+            modifier = Modifier.padding(12.dp),
             painter = painterResource(MR.images.ic_network_x),
             tint = if (darkMode) {
               Color.White
             } else {
-              Color.Black
-            },
+              Color.Black },
             contentDescription = "X"
           )
-        }
-        IconButton(
-          modifier = Modifier.size(64.dp),
+      }
+        SocialIcon(
           onClick = onYouTubeLogoClick
         ) {
           Image(
-            modifier = Modifier.size(48.dp),
+            modifier = Modifier.padding(8.dp),
             painter = painterResource(MR.images.ic_network_youtube),
             contentDescription = "YouTube"
           )
         }
       }
     }
+  }
+}
+
+@Composable
+private fun SocialIcon(
+  onClick: () -> Unit,
+  content: @Composable () -> Unit,
+) {
+  Button(
+    modifier = Modifier.size(64.dp),
+    onClick = onClick,
+    shape = CircleShape,
+    contentPadding = PaddingValues(4.dp),
+    colors = ButtonDefaults.textButtonColors()
+  ) {
+    content()
   }
 }
 
