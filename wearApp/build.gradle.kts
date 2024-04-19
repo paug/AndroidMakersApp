@@ -62,7 +62,7 @@ dependencies {
   implementation(libs.androidx.compose.ui.tooling)
   implementation(libs.wear.compose.navigation)
   implementation(platform(libs.firebase.bom))
-  implementation(libs.firebase.auth.ktx)
+  implementation(libs.firebase.auth)
   coreLibraryDesugaring(libs.desugar.jdk.libs)
   debugImplementation(libs.compose.ui.tooling)
 

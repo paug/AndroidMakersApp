@@ -6,11 +6,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.horologist.auth.data.googlesignin.GoogleSignInEventListener
 import com.google.android.horologist.auth.ui.googlesignin.signin.GoogleSignInViewModel
-import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseAuthException
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.auth.auth
+import dev.gitlive.firebase.Firebase
+import dev.gitlive.firebase.auth.FirebaseAuthException
+import dev.gitlive.firebase.auth.FirebaseUser
+import dev.gitlive.firebase.auth.GoogleAuthProvider
+import dev.gitlive.firebase.auth.auth
 import fr.androidmakers.domain.model.User
 import fr.androidmakers.domain.repo.UserRepository
 import fr.paug.androidmakers.wear.R
@@ -36,8 +36,8 @@ class GoogleSignInViewModel(
         Log.d(TAG, "Google sign in success")
         val idToken = account.idToken
         try {
-          val credential = GoogleAuthProvider.getCredential(idToken!!, null)
-          Firebase.auth.signInWithCredential(credential).await()
+          val credential = GoogleAuthProvider.credential(idToken!!, null)
+          Firebase.auth.signInWithCredential(credential)
           UserData().userRepository.setUser(Firebase.auth.currentUser)
           onSignInSuccess()
         } catch (e: FirebaseAuthException) {
@@ -48,13 +48,6 @@ class GoogleSignInViewModel(
       }
     }
 )
-
-private suspend fun FirebaseUser.toUser(): User {
-  return User(
-    id = this.uid,
-    photoUrl = this.photoUrl.toString(),
-  )
-}
 
 class UserData: KoinComponent {
   val userRepository: UserRepository by inject()
