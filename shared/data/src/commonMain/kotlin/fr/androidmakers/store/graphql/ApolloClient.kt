@@ -10,6 +10,8 @@ import com.apollographql.apollo3.network.http.HttpInterceptor
 import com.apollographql.apollo3.network.http.HttpInterceptorChain
 import fr.androidmakers.domain.repo.UserRepository
 
+expect suspend fun getIdToken(userRepository: UserRepository): String?
+
 fun ApolloClient(
   sqlNormalizedCacheFactory: SqlNormalizedCacheFactory,
   userRepository: UserRepository,
@@ -25,7 +27,7 @@ fun ApolloClient(
                 /**
                  *
                  */
-                val token = userRepository.getIdToken()
+                val token = getIdToken(userRepository)
                 if (token != null) {
                   addHeader("Authorization", "Bearer $token")
                 }
