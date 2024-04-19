@@ -56,7 +56,8 @@ fun SessionDetails.toSession(): Session {
       roomId = this.room?.id ?: "",
       endsAt = this.endsAt,
       startsAt = this.startsAt,
-      isServiceSession = this.type == "service"
+      isServiceSession = this.type == "service",
+      type = type
   )
 }
 
