@@ -16,6 +16,7 @@ val uiSession1 = UISession(
     startsAt = LocalDateTime(2023, Month.APRIL, 27, 9, 15),
     endsAt = LocalDateTime(2023, Month.APRIL, 27, 10, 0),
     isServiceSession = false,
+    type = "talk"
   ),
   speakers = listOf(
     Speaker(
@@ -46,6 +47,7 @@ val uiSession2 = UISession(
     startsAt = LocalDateTime(2023, Month.APRIL, 27, 10, 15),
     endsAt = LocalDateTime(2023, Month.APRIL, 27, 11, 0),
     isServiceSession = false,
+    type = "talk"
   ),
   speakers = listOf(
     Speaker(
