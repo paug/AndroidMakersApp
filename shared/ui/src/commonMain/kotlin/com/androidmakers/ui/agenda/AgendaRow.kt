@@ -183,10 +183,12 @@ internal fun SessionRow(
 
 private fun UISession.subtitle() = buildString {
   append(formattedDuration())
-  append(" / $room")
-  val emoji = EmojiUtils.getLanguageInEmoji(language)
-  if (emoji != null) {
-    append(" / $emoji")
+  if (!isServiceSession ) {
+    append(" / $room")
+    val emoji = EmojiUtils.getLanguageInEmoji(language)
+    if (emoji != null) {
+      append(" / $emoji")
+    }
   }
 }
 
