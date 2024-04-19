@@ -2,6 +2,7 @@ package com.androidmakers.ui.agenda
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,6 +25,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.unit.dp
 import com.androidmakers.ui.common.EmojiUtils
 import com.androidmakers.ui.model.UISession
@@ -64,7 +67,11 @@ internal fun ServiceSessionRow(
   modifier: Modifier = Modifier,
 ) {
   ListItem(
-    modifier = modifier,
+    modifier = modifier
+      .focusable()
+      .clearAndSetSemantics {
+      contentDescription = "${session.title}, durée : ${session.subtitle()}"
+    },
     colors = ListItemDefaults.colors(
       containerColor = MaterialTheme.colorScheme.surface,
     ),
@@ -100,7 +107,12 @@ internal fun SessionRow(
   onApplyForAppClinic: () -> Unit,
 ) {
   ListItem(
-      modifier = modifier.clickable(
+      modifier = modifier
+        .clearAndSetSemantics {
+          contentDescription = uiSession.title
+        }
+        .focusable()
+        .clickable(
         onClick = {
           onSessionClicked.invoke(uiSession)
         }

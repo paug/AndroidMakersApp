@@ -22,10 +22,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.unit.dp
 import com.androidmakers.ui.model.UISession
-import dev.icerock.moko.resources.compose.stringResource
-import fr.paug.androidmakers.ui.MR
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -91,7 +91,10 @@ fun TimeSeparator(prettyTime: String) {
     Row(
       modifier = Modifier
         .padding(horizontal = 16.dp, vertical = 8.dp)
-        .fillMaxWidth(),
+        .fillMaxWidth()
+        .clearAndSetSemantics {
+                              contentDescription = timeContentDescription(prettyTime)
+        },
       verticalAlignment = Alignment.CenterVertically,
       horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
@@ -99,7 +102,7 @@ fun TimeSeparator(prettyTime: String) {
         modifier = Modifier.size(24.dp),
         imageVector = Icons.Rounded.Schedule,
         tint = MaterialTheme.colorScheme.primary,
-        contentDescription = stringResource(MR.strings.filter),
+        contentDescription = null,
       )
       Text(
         text = prettyTime,
@@ -114,4 +117,9 @@ fun TimeSeparator(prettyTime: String) {
 @Composable
 private fun TimeSeparatorPreview() {
   TimeSeparator(prettyTime = "3:25 pm")
+}
+
+
+private fun timeContentDescription(string: String): String {
+  return string.replace("([0-9]{1,2}):([0-9]{1,2})", "$1 heures $2 secondes");
 }
