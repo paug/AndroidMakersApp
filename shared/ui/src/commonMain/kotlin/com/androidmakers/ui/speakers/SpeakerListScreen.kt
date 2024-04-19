@@ -4,15 +4,12 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -31,16 +28,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.semantics.isTraversalGroup
-import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import com.androidmakers.ui.common.LoadingLayout
 import com.androidmakers.ui.model.Lce
 import com.seiko.imageloader.rememberImagePainter
@@ -70,42 +66,11 @@ fun SpeakerScreen(
       var active by rememberSaveable { mutableStateOf(false) }
       val content = (state as Lce.Content<SpeakersUiState>).content
 
-      Box(Modifier.fillMaxSize()) {
-        Box(Modifier
-            .semantics { isTraversalGroup = true }
-            .background(MaterialTheme.colorScheme.background)
-            .padding(bottom = 8.dp)
-            .zIndex(1f)
-            .fillMaxWidth()) {
+      var searchHeight by remember { mutableStateOf(56.dp) }
 
-          SearchBar(
-              modifier = Modifier.align(Alignment.TopCenter),
-              query = text,
-              onQueryChange = { text = it },
-              onSearch = { active = false },
-              active = active,
-              colors = SearchBarDefaults.colors(
-                  containerColor = MaterialTheme.colorScheme.surface,
-                  dividerColor = MaterialTheme.colorScheme.primary,
-              ),
-              onActiveChange = {
-                active = it
-              },
-              windowInsets = WindowInsets(0, 0, 0, 0),
-              placeholder = { Text(stringResource(MR.strings.speaker_search_placeholder)) },
-              leadingIcon = { Icon(Icons.Rounded.Search, contentDescription = null) }
-          ) {
-            LazyColumn {
-              val speakers = content.speakers
-              items(speakers.filter { it.name?.contains(text, ignoreCase = true) == true }) { speaker ->
-                SpeakerItem(
-                    speaker = speaker,
-                    navigateToSpeakerDetails = navigateToSpeakerDetails,
-                )
-              }
-            }
-          }
-        }
+      Box(Modifier.fillMaxSize()) {
+
+          val density = LocalDensity.current
 
         AnimatedVisibility(
             visible = !active,
@@ -113,13 +78,45 @@ fun SpeakerScreen(
             exit = fadeOut(),
         ) {
           LazyColumn(
-              contentPadding = PaddingValues(start = 0.dp, top = 72.dp, end = 0.dp, bottom = 16.dp),
+              contentPadding = PaddingValues(top = searchHeight + 16.dp),
               verticalArrangement = Arrangement.spacedBy(8.dp)
           ) {
             items(content.speakers.filter { it.name?.contains(text, ignoreCase = true) == true }) { speaker ->
               SpeakerItem(
                   speaker = speaker,
                   navigateToSpeakerDetails = navigateToSpeakerDetails
+              )
+            }
+          }
+        }
+
+
+        SearchBar(
+          windowInsets = WindowInsets(0.dp, 0.dp, 0.dp, 0.dp),
+          modifier = Modifier.align(Alignment.TopCenter)
+            .onSizeChanged {
+              searchHeight = with(density) { it.height.toDp() }
+            },
+          query = text,
+          onQueryChange = { text = it },
+          onSearch = { active = false },
+          active = active,
+          colors = SearchBarDefaults.colors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            dividerColor = MaterialTheme.colorScheme.primary,
+          ),
+          onActiveChange = {
+            active = it
+          },
+          placeholder = { Text(stringResource(MR.strings.speaker_search_placeholder)) },
+          leadingIcon = { Icon(Icons.Rounded.Search, contentDescription = null) }
+        ) {
+          LazyColumn {
+            val speakers = content.speakers
+            items(speakers.filter { it.name?.contains(text, ignoreCase = true) == true }) { speaker ->
+              SpeakerItem(
+                speaker = speaker,
+                navigateToSpeakerDetails = navigateToSpeakerDetails,
               )
             }
           }

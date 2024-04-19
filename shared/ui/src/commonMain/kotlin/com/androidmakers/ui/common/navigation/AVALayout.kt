@@ -23,12 +23,12 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
@@ -83,7 +83,7 @@ fun AVALayout(
   val userFlow = remember { UserData().userRepository.user }
 
   val agendaFilterDrawerState = rememberDrawerState(DrawerValue.Closed)
-  val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+  val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
   val user by userFlow.collectAsStateWithLifecycle()
 
@@ -91,7 +91,7 @@ fun AVALayout(
       modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
       contentWindowInsets = WindowInsets(0, 0, 0, 0),
       topBar = {
-        MediumTopAppBar(
+        TopAppBar(
             scrollBehavior = scrollBehavior,
             colors = TopAppBarDefaults.topAppBarColors(
                 containerColor = MaterialTheme.colorScheme.background,
@@ -113,7 +113,7 @@ fun AVALayout(
 
                 Text(
                     text = stringResource(MR.strings.app_name),
-                    style = MaterialTheme.typography.headlineSmall,
+                    style = MaterialTheme.typography.titleSmall,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
