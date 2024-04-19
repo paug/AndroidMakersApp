@@ -6,8 +6,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import dev.gitlive.firebase.Firebase
+import dev.gitlive.firebase.auth.auth
 import fr.androidmakers.domain.interactor.GetAgendaUseCase
 import fr.androidmakers.domain.interactor.GetFavoriteSessionsUseCase
 import fr.androidmakers.domain.interactor.SyncBookmarksUseCase
@@ -17,7 +17,9 @@ import fr.androidmakers.domain.repo.UserRepository
 import fr.paug.androidmakers.wear.applicationContext
 import fr.paug.androidmakers.wear.data.LocalPreferencesRepository
 import fr.paug.androidmakers.wear.ui.session.UISession
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -116,6 +118,7 @@ class MainViewModel(
     }
   }
 
+  @OptIn(DelicateCoroutinesApi::class)
   fun signOut() {
     val googleSignInClient = GoogleSignIn.getClient(
       applicationContext,
@@ -125,7 +128,9 @@ class MainViewModel(
     )
     googleSignInClient.signOut()
     googleSignInClient.revokeAccess()
-    Firebase.auth.signOut()
+    GlobalScope.launch {
+      Firebase.auth.signOut()
+    }
     _user.value = null
   }
 
