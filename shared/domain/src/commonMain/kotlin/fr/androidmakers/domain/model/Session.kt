@@ -25,4 +25,5 @@ data class Session(
     val duration: Duration = endsAt.toInstant(TimeZone.UTC) - startsAt.toInstant(TimeZone.UTC),
     val roomId: String,
     val isServiceSession: Boolean,
+    val type: String,
 )

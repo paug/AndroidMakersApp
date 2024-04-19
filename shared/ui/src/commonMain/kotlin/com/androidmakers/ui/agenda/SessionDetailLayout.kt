@@ -248,26 +248,28 @@ private fun SessionDetails(
         .height(16.dp)
     )
 
-    if (Clock.System.now() > sessionDetails.startTimestamp) {
-      OpenFeedback(
-        config = OpenFeedbackFirebaseConfig.default(
-          context = LocalPlatformContext.current
-        ),
-        projectId = "v6kx3QuQkDU4fX0Ta989",
-        sessionId = sessionDetails.session.id,
-      )
-    } else {
-      Surface(
-        shape = RoundedCornerShape(5.dp),
-        border = BorderStroke(1.dp, separatorColor()),
-        modifier = Modifier.fillMaxWidth()
-      ) {
-        Text(
-          modifier = Modifier.padding(horizontal = 4.dp, vertical = 8.dp),
-          text = stringResource(MR.strings.feedbackWaiting),
-          style = MaterialTheme.typography.bodyMedium,
-          textAlign = TextAlign.Center
+    if (sessionDetails.session.type == "talk") {
+      if (Clock.System.now() > sessionDetails.startTimestamp) {
+        OpenFeedback(
+          config = OpenFeedbackFirebaseConfig.default(
+            context = LocalPlatformContext.current
+          ),
+          projectId = "v6kx3QuQkDU4fX0Ta989",
+          sessionId = sessionDetails.session.id,
         )
+      } else {
+        Surface(
+          shape = RoundedCornerShape(5.dp),
+          border = BorderStroke(1.dp, separatorColor()),
+          modifier = Modifier.fillMaxWidth()
+        ) {
+          Text(
+            modifier = Modifier.padding(horizontal = 4.dp, vertical = 8.dp),
+            text = stringResource(MR.strings.feedbackWaiting),
+            style = MaterialTheme.typography.bodyMedium,
+            textAlign = TextAlign.Center
+          )
+        }
       }
     }
 
