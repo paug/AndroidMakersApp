@@ -4,7 +4,7 @@ import fr.androidmakers.domain.repo.BookmarksRepository
 import fr.androidmakers.domain.repo.SessionsRepository
 import kotlinx.coroutines.flow.firstOrNull
 
-class SyncBookmarksUseCase(
+class MergeBookmarksUseCase(
     private val bookmarksRepository: BookmarksRepository,
     private val sessionsRepository: SessionsRepository
 ) {

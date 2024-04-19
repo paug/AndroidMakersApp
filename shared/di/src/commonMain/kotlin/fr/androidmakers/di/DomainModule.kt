@@ -9,14 +9,12 @@ import fr.androidmakers.domain.interactor.GetPartnersUseCase
 import fr.androidmakers.domain.interactor.OpenCocUseCase
 import fr.androidmakers.domain.interactor.OpenFaqUseCase
 import fr.androidmakers.domain.interactor.OpenLinkUseCase
-import fr.androidmakers.domain.interactor.OpenMapUseCase
 import fr.androidmakers.domain.interactor.OpenPartnerLinkUseCase
 import fr.androidmakers.domain.interactor.OpenXAccountUseCase
 import fr.androidmakers.domain.interactor.OpenXHashtagUseCase
 import fr.androidmakers.domain.interactor.OpenYoutubeUseCase
 import fr.androidmakers.domain.interactor.SetSessionBookmarkUseCase
-import fr.androidmakers.domain.interactor.ShareSessionUseCase
-import fr.androidmakers.domain.interactor.SyncBookmarksUseCase
+import fr.androidmakers.domain.interactor.MergeBookmarksUseCase
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
@@ -26,7 +24,7 @@ val domainModule = module {
   factory { GetAgendaUseCase(get(), get(), get()) }
   factory { GetConferenceVenueUseCase(get()) }
   factory { GetAfterpartyVenueUseCase(get()) }
-  factory { SyncBookmarksUseCase(get(), get()) }
+  factory { MergeBookmarksUseCase(get(), get()) }
   factory { OpenFaqUseCase(get()) }
   factory { OpenCocUseCase(get()) }
   factory { OpenYoutubeUseCase(get()) }
