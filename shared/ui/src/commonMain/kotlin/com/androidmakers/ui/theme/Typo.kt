@@ -51,8 +51,8 @@ fun androidMakersTypography() = Typography(
   ),
   titleSmall = TextStyle(
     fontFamily = montserratFamily(),
-    fontWeight = FontWeight.Bold,
-    fontSize = 16.sp,
+    fontWeight = FontWeight.SemiBold,
+    fontSize = 14.sp,
   ),
   labelLarge = TextStyle(
     fontFamily = montserratFamily(),
@@ -61,12 +61,11 @@ fun androidMakersTypography() = Typography(
   ),
   labelMedium = TextStyle(
     fontFamily = montserratFamily(),
-    fontWeight = FontWeight.SemiBold,
     fontSize = 12.sp,
   ),
   labelSmall = TextStyle(
     fontFamily = montserratFamily(),
-    fontSize = 12.sp,
+    fontSize = 11.sp,
   ),
   bodyLarge = TextStyle(
     fontFamily = montserratFamily(),
