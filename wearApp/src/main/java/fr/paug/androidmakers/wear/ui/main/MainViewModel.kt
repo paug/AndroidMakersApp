@@ -6,11 +6,11 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.wearable.Wearable
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.auth
 import fr.androidmakers.domain.interactor.GetAgendaUseCase
 import fr.androidmakers.domain.interactor.GetFavoriteSessionsUseCase
-import fr.androidmakers.domain.interactor.MergeBookmarksUseCase
 import fr.androidmakers.domain.model.Agenda
 import fr.androidmakers.domain.model.User
 import fr.androidmakers.domain.repo.BookmarksRepository
@@ -68,6 +68,14 @@ class MainViewModel(
       _user.emit(userRepository.getUser())
       maybeSyncBookmarks()
       refreshSignal.send(Unit)
+    }
+
+    val messageClient = Wearable.getMessageClient(application)
+    messageClient.addListener {
+      Log.d(TAG, "Received syncBookmarks message")
+      viewModelScope.launch {
+        maybeSyncBookmarks()
+      }
     }
   }
 
