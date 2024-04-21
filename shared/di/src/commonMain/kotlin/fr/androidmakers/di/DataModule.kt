@@ -1,6 +1,7 @@
 package fr.androidmakers.di
 
 import fr.androidmakers.domain.repo.BookmarksRepository
+import fr.androidmakers.domain.repo.MessagingRepository
 import fr.androidmakers.domain.repo.PartnersRepository
 import fr.androidmakers.domain.repo.RoomsRepository
 import fr.androidmakers.domain.repo.SessionsRepository
@@ -14,6 +15,7 @@ import fr.androidmakers.store.graphql.SessionsGraphQLRepository
 import fr.androidmakers.store.graphql.SpeakersGraphQLRepository
 import fr.androidmakers.store.graphql.VenueGraphQLRepository
 import fr.androidmakers.store.local.BookmarksDataStoreRepository
+import fr.androidmakers.store.wear.WearMessagingRepository
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
@@ -29,4 +31,5 @@ val dataModule = module {
   single<VenueRepository> { VenueGraphQLRepository(get()) }
 
   single<BookmarksRepository> { BookmarksDataStoreRepository(get()) }
+  single<MessagingRepository> { WearMessagingRepository(get()) }
 }
