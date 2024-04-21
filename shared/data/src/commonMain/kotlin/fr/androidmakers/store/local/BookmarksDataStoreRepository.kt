@@ -71,6 +71,13 @@ class BookmarksDataStoreRepository(
     save()
   }
 
+  override suspend fun setBookmarks(bookmarks: Set<String>) {
+    bookmarkedSessions.clear()
+    bookmarkedSessions.addAll(bookmarks)
+    selectedSessionIds.value = mutableSetOf<String>().apply { addAll(bookmarkedSessions) }
+    save()
+  }
+
   override fun getFavoriteSessions(): Flow<Set<String>> {
     return selectedSessionIds
   }

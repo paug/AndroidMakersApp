@@ -10,9 +10,11 @@ import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.auth
 import fr.androidmakers.domain.interactor.GetAgendaUseCase
 import fr.androidmakers.domain.interactor.GetFavoriteSessionsUseCase
-import fr.androidmakers.domain.interactor.SyncBookmarksUseCase
+import fr.androidmakers.domain.interactor.MergeBookmarksUseCase
 import fr.androidmakers.domain.model.Agenda
 import fr.androidmakers.domain.model.User
+import fr.androidmakers.domain.repo.BookmarksRepository
+import fr.androidmakers.domain.repo.SessionsRepository
 import fr.androidmakers.domain.repo.UserRepository
 import fr.paug.androidmakers.wear.applicationContext
 import fr.paug.androidmakers.wear.data.LocalPreferencesRepository
@@ -28,6 +30,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -50,7 +53,8 @@ class MainViewModel(
   private val userRepository: UserRepository,
   localPreferencesRepository: LocalPreferencesRepository,
   getAgendaUseCase: GetAgendaUseCase,
-  private val syncBookmarksUseCase: SyncBookmarksUseCase,
+  private val bookmarksRepository: BookmarksRepository,
+  private val sessionsRepository: SessionsRepository,
   getFavoriteSessionsUseCase: GetFavoriteSessionsUseCase,
 ) : AndroidViewModel(application) {
   private val _user = MutableStateFlow<User?>(null)
@@ -71,7 +75,10 @@ class MainViewModel(
     val currentUser = _user.value
     if (currentUser != null) {
       Log.d(TAG, "Syncing bookmarks")
-      syncBookmarksUseCase(currentUser.id)
+      val bookmarks = sessionsRepository.getBookmarks(currentUser.id).first()
+      if (bookmarks.isSuccess) {
+        bookmarksRepository.setBookmarks(bookmarks.getOrThrow())
+      }
       Log.d(TAG, "Bookmarks synced")
     }
   }
