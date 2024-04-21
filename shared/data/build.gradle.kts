@@ -30,7 +30,12 @@ kotlin {
         api(libs.androidx.datastore.preferences)
 
         api(libs.firebase.auth)
+      }
+    }
 
+    androidMain {
+      dependencies {
+        implementation(libs.play.services.wearable)
       }
     }
   }
