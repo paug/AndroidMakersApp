@@ -393,7 +393,7 @@
 				CODE_SIGN_ENTITLEMENTS = AndroidMakers/AndroidMakers.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1465;
+				CURRENT_PROJECT_VERSION = 1468;
 				DEVELOPMENT_ASSET_PATHS = "\"AndroidMakers/Preview Content\"";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 57MV6634WZ;
@@ -406,7 +406,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.1;
+				MARKETING_VERSION = 4.2;
 				OTHER_LDFLAGS = (
 					"-framework",
 					shared,
@@ -427,7 +427,7 @@
 				CODE_SIGN_ENTITLEMENTS = AndroidMakers/AndroidMakers.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1465;
+				CURRENT_PROJECT_VERSION = 1468;
 				DEVELOPMENT_ASSET_PATHS = "\"AndroidMakers/Preview Content\"";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 57MV6634WZ;
@@ -440,7 +440,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.1;
+				MARKETING_VERSION = 4.2;
 				OTHER_LDFLAGS = (
 					"-framework",
 					shared,
