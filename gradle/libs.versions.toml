@@ -41,7 +41,6 @@ atomicfu = "org.jetbrains.kotlinx:atomicfu:0.23.2"
 qdsfdhvh-imageloader = { module = "io.github.qdsfdhvh:image-loader", version.ref = "image-loader" }
 compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
-compose-material = { group = "androidx.compose.material", name = "material", version.ref = "compose" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
 espresso-core = "androidx.test.espresso:espresso-core:3.5.1"
 firebase-bom = "com.google.firebase:firebase-bom:32.8.1"

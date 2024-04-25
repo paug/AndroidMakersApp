@@ -19,7 +19,6 @@ class AndroidComposePlugin : Plugin<Project> {
 
         dependencies {
           add("implementation", libs.findLibrary("compose.material3").get())
-          add("implementation", libs.findLibrary("compose.material").get())
           add("implementation", libs.findLibrary("compose.material.icons.extended").get())
           add("implementation", libs.findLibrary("compose.ui.tooling").get())
           add("implementation", libs.findLibrary("navigation.compose").get())
