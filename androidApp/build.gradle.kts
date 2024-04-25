@@ -12,6 +12,10 @@ android {
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
 
+  compileOptions {
+    isCoreLibraryDesugaringEnabled = true
+  }
+
   buildFeatures.buildConfig = true
 }
 
@@ -19,6 +23,8 @@ dependencies {
   implementation(project(":shared:data"))
   testImplementation(libs.junit)
   androidTestImplementation(libs.espresso.core)
+
+  coreLibraryDesugaring(libs.desugar.jdk.libs)
 
   // Kotlin
   implementation(libs.kotlinx.coroutines.play.services)
