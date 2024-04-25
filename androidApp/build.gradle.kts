@@ -27,8 +27,6 @@ dependencies {
   // Support
   implementation(libs.androidx.activity.compose)
   implementation(libs.androidx.lifecycle.runtime)
-  implementation(libs.androidx.appcompat)
-  implementation(libs.material)
 
   // Firebase
   implementation(platform(libs.firebase.bom))
