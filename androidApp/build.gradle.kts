@@ -35,7 +35,9 @@ dependencies {
 
   implementation(libs.play.services.auth)
 
-  implementation(libs.koin.androidx.compose)
+  implementation(libs.koin.androidx.compose) {
+    exclude(group = "androidx.appcompat", module = "appcompat")
+  }
 
   // Used for tags
   implementation(project(":shared"))

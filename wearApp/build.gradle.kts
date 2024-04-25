@@ -67,7 +67,9 @@ dependencies {
   coreLibraryDesugaring(libs.desugar.jdk.libs)
   debugImplementation(libs.compose.ui.tooling)
 
-  implementation(libs.koin.androidx.compose)
+  implementation(libs.koin.androidx.compose) {
+    exclude(group = "androidx.appcompat", module = "appcompat")
+  }
   implementation(project(":shared:di"))
   implementation(project(":shared:domain"))
 }
