@@ -37,4 +37,5 @@ configurations.configureEach {
 
 android {
   namespace = "fr.paug.androidmakers.di"
+  buildFeatures.buildConfig = true
 }
