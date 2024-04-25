@@ -67,7 +67,6 @@ dependencies {
   coreLibraryDesugaring(libs.desugar.jdk.libs)
   debugImplementation(libs.compose.ui.tooling)
 
-  implementation(libs.koin.android)
   implementation(libs.koin.androidx.compose)
   implementation(project(":shared:di"))
   implementation(project(":shared:domain"))

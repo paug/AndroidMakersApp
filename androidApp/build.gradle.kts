@@ -31,7 +31,6 @@ dependencies {
   // Firebase
   implementation(platform(libs.firebase.bom))
   implementation(libs.firebase.crashlytics.ktx)
-  implementation(libs.firebase.inappmessaging)
   implementation(libs.firebase.messaging)
 
   implementation(libs.play.services.auth)
@@ -39,7 +38,6 @@ dependencies {
   // Image management
   implementation(libs.coil.compose)
 
-  implementation(libs.koin.android)
   implementation(libs.koin.androidx.compose)
 
   // Used for tags
