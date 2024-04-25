@@ -50,6 +50,7 @@ dependencies {
   implementation(libs.play.services.wearable)
   implementation(libs.play.services.auth)
   implementation(libs.androidx.activity.compose)
+  implementation(libs.androidx.lifecycle.viewmodel.compose)
   implementation(libs.androidx.splashscreen)
   implementation(libs.wear.compose.material)
   implementation(libs.wear.compose.foundation)

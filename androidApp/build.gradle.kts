@@ -23,13 +23,11 @@ dependencies {
   // Kotlin
   implementation(libs.kotlinx.coroutines.play.services)
   implementation(libs.kotlinx.coroutines.android)
-  implementation(libs.kotlinx.coroutines.core)
 
   // Support
   implementation(libs.androidx.activity.compose)
-  implementation(libs.androidx.activity)
+  implementation(libs.androidx.lifecycle.runtime)
   implementation(libs.androidx.appcompat)
-
   implementation(libs.material)
 
   // Firebase
