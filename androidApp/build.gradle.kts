@@ -35,9 +35,6 @@ dependencies {
 
   implementation(libs.play.services.auth)
 
-  // Image management
-  implementation(libs.coil.compose)
-
   implementation(libs.koin.androidx.compose)
 
   // Used for tags
