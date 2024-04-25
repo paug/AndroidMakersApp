@@ -17,6 +17,37 @@ android {
   }
 
   buildFeatures.buildConfig = true
+
+  buildTypes {
+    release {
+      kotlinOptions {
+        freeCompilerArgs += listOf(
+          "-Xno-param-assertions",
+          "-Xno-call-assertions",
+          "-Xno-receiver-assertions"
+        )
+      }
+
+      packaging {
+        resources {
+          excludes += listOf(
+            "DebugProbesKt.bin",
+            "kotlin-tooling-metadata.json",
+            "/*.properties",
+            "kotlin/**",
+            "junit/**",
+            "LICENSE-junit.txt",
+            "/*.proto",
+            "google/**",
+            "META-INF/*.version"
+          )
+        }
+        jniLibs {
+          excludes += "**/libdatastore_shared_counter.so"
+        }
+      }
+    }
+  }
 }
 
 dependencies {
