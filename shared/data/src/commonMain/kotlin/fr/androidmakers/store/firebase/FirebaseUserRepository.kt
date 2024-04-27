@@ -31,7 +31,12 @@ class FirebaseUserRepository : UserRepository {
   }
 
   override suspend fun getIdToken(): String? {
-    return currentUser.value?.getIdToken(false)
+    return try {
+      currentUser.value?.getIdToken(false)
+    } catch (e: Exception) {
+      // See https://github.com/firebase/firebase-android-sdk/issues/5328#issuecomment-1719386926
+      null
+    }
   }
 
   override suspend fun setUser(user: Any?) {
