@@ -35,6 +35,11 @@ kotlin {
   }
 }
 
+configurations.configureEach {
+  // Remove unnecessary dependency of Precompose and Moko
+  exclude(group = "androidx.appcompat", module = "appcompat")
+}
+
 android {
   namespace = "fr.paug.androidmakers.shared"
 }

@@ -12,7 +12,42 @@ android {
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
 
+  compileOptions {
+    isCoreLibraryDesugaringEnabled = true
+  }
+
   buildFeatures.buildConfig = true
+
+  buildTypes {
+    release {
+      kotlinOptions {
+        freeCompilerArgs += listOf(
+          "-Xno-param-assertions",
+          "-Xno-call-assertions",
+          "-Xno-receiver-assertions"
+        )
+      }
+
+      packaging {
+        resources {
+          excludes += listOf(
+            "DebugProbesKt.bin",
+            "kotlin-tooling-metadata.json",
+            "/*.properties",
+            "kotlin/**",
+            "junit/**",
+            "LICENSE-junit.txt",
+            "/*.proto",
+            "google/**",
+            "META-INF/*.version"
+          )
+        }
+        jniLibs {
+          excludes += "**/libdatastore_shared_counter.so"
+        }
+      }
+    }
+  }
 }
 
 dependencies {
@@ -20,31 +55,26 @@ dependencies {
   testImplementation(libs.junit)
   androidTestImplementation(libs.espresso.core)
 
+  coreLibraryDesugaring(libs.desugar.jdk.libs)
+
   // Kotlin
   implementation(libs.kotlinx.coroutines.play.services)
   implementation(libs.kotlinx.coroutines.android)
-  implementation(libs.kotlinx.coroutines.core)
 
   // Support
   implementation(libs.androidx.activity.compose)
-  implementation(libs.androidx.activity)
-  implementation(libs.androidx.appcompat)
-
-  implementation(libs.material)
+  implementation(libs.androidx.lifecycle.runtime)
 
   // Firebase
   implementation(platform(libs.firebase.bom))
   implementation(libs.firebase.crashlytics.ktx)
-  implementation(libs.firebase.inappmessaging)
   implementation(libs.firebase.messaging)
 
   implementation(libs.play.services.auth)
 
-  // Image management
-  implementation(libs.coil.compose)
-
-  implementation(libs.koin.android)
-  implementation(libs.koin.androidx.compose)
+  implementation(libs.koin.androidx.compose) {
+    exclude(group = "androidx.appcompat", module = "appcompat")
+  }
 
   // Used for tags
   implementation(project(":shared"))
