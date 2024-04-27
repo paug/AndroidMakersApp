@@ -1,7 +1,7 @@
 plugins {
   alias(libs.plugins.androidmakers.android.application)
-  alias(libs.plugins.androidmakers.android.compose)
   alias(libs.plugins.androidmakers.android.signing)
+  alias(libs.plugins.jetbrainsCompose)
 }
 
 android {
@@ -15,7 +15,6 @@ android {
   compileOptions {
     isCoreLibraryDesugaringEnabled = true
   }
-
   buildFeatures.buildConfig = true
 
   buildTypes {
@@ -55,6 +54,9 @@ dependencies {
   testImplementation(libs.junit)
   androidTestImplementation(libs.espresso.core)
 
+  implementation(libs.compose.material3)
+  implementation(libs.compose.material.icons.extended)
+  implementation(libs.compose.ui.tooling)
   coreLibraryDesugaring(libs.desugar.jdk.libs)
 
   // Kotlin
@@ -78,4 +80,8 @@ dependencies {
 
   // Used for tags
   implementation(project(":shared"))
+}
+
+compose {
+  kotlinCompilerPlugin.set(libs.versions.compose.compiler.get())
 }

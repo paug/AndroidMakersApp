@@ -38,12 +38,7 @@ gradlePlugin {
       id = "fr.androidmakers.kmp.library"
       implementationClass = "fr.androidmakers.plugin.MultiplatformLibraryPlugin"
     }
-
-    register("androidCompose") {
-      id = "fr.androidmakers.android.compose"
-      implementationClass = "fr.androidmakers.plugin.AndroidComposePlugin"
-    }
-
+    
     register("androidSigning") {
       id = "fr.androidmakers.android.signing"
       implementationClass = "fr.androidmakers.plugin.SigningConfigPlugin"
