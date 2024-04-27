@@ -22,7 +22,6 @@ class AndroidApplicationPlugin : Plugin<Project> {
         apply("org.jetbrains.kotlin.android")
         apply("com.google.gms.google-services")
         apply("com.google.firebase.crashlytics")
-        apply("org.jetbrains.kotlin.plugin.serialization")
       }
 
       val extension = extensions.getByType<ApplicationExtension>()

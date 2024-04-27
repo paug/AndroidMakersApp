@@ -17,7 +17,6 @@ kotlin {
 
   sourceSets {
     androidMain.dependencies {
-      implementation(libs.koin.android)
       implementation(libs.koin.androidx.compose)
     }
 
@@ -31,6 +30,12 @@ kotlin {
   }
 }
 
+configurations.configureEach {
+  // Remove unnecessary dependency of Precompose
+  exclude(group = "androidx.appcompat", module = "appcompat")
+}
+
 android {
   namespace = "fr.paug.androidmakers.di"
+  buildFeatures.buildConfig = true
 }

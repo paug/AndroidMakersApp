@@ -38,7 +38,7 @@ class SigningConfigPlugin : Plugin<Project> {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
-                getDefaultProguardFile("proguard-android.txt"),
+                "proguard-defaults.txt",
                 "proguard-rules.pro"
             )
             if (f.exists()) {

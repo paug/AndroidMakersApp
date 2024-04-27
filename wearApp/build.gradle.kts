@@ -16,9 +16,6 @@ android {
     targetSdk = 33
     versionCode = libs.versions.version.code.get().toInt()
     versionName = "1.0"
-    vectorDrawables {
-      useSupportLibrary = true
-    }
   }
 
   compileOptions {
@@ -39,9 +36,33 @@ android {
     kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
   }
 
-  packaging {
-    resources {
-      excludes += "/META-INF/{AL2.0,LGPL2.1}"
+  buildTypes {
+    release {
+      kotlinOptions {
+        freeCompilerArgs += listOf(
+          "-Xno-param-assertions",
+          "-Xno-call-assertions",
+          "-Xno-receiver-assertions"
+        )
+      }
+
+      packaging {
+        resources {
+          excludes += listOf(
+            "DebugProbesKt.bin",
+            "kotlin-tooling-metadata.json",
+            "/*.properties",
+            "kotlin/**",
+            "/*.proto",
+            "google/**",
+            "src/google/**",
+            "META-INF/*.version"
+          )
+        }
+        jniLibs {
+          excludes += "**/libdatastore_shared_counter.so"
+        }
+      }
     }
   }
 }
@@ -50,24 +71,31 @@ dependencies {
   implementation(libs.play.services.wearable)
   implementation(libs.play.services.auth)
   implementation(libs.androidx.activity.compose)
+  implementation(libs.androidx.lifecycle.viewmodel.compose)
   implementation(libs.androidx.splashscreen)
   implementation(libs.wear.compose.material)
   implementation(libs.wear.compose.foundation)
-  implementation(libs.androidx.material.icons.extended)
+  implementation(libs.compose.ui.tooling.preview)
+  implementation(libs.compose.material.icons.extended)
   implementation(libs.horologist.composables)
   implementation(libs.horologist.compose.layout)
   implementation(libs.horologist.compose.material)
   implementation(libs.horologist.auth.ui)
-  implementation(libs.compose.ui.tooling.preview)
-  implementation(libs.androidx.compose.ui.tooling)
+  implementation(libs.wear.compose.ui.tooling)
   implementation(libs.wear.compose.navigation)
   implementation(platform(libs.firebase.bom))
   implementation(libs.firebase.auth)
   coreLibraryDesugaring(libs.desugar.jdk.libs)
   debugImplementation(libs.compose.ui.tooling)
 
-  implementation(libs.koin.android)
-  implementation(libs.koin.androidx.compose)
+  implementation(libs.koin.androidx.compose) {
+    exclude(group = "androidx.appcompat", module = "appcompat")
+  }
   implementation(project(":shared:di"))
   implementation(project(":shared:domain"))
+}
+
+configurations.configureEach {
+  // Remove bogus dependency of Horologist, which itself depends on AppCompat and Material Components
+  exclude(group = "androidx.navigation", module = "navigation-ui-ktx")
 }
