@@ -94,3 +94,8 @@ dependencies {
   implementation(project(":shared:di"))
   implementation(project(":shared:domain"))
 }
+
+configurations.configureEach {
+  // Remove bogus dependency of Horologist, which itself depends on AppCompat and Material Components
+  exclude(group = "androidx.navigation", module = "navigation-ui-ktx")
+}
