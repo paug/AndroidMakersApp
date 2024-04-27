@@ -36,9 +36,33 @@ android {
     kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
   }
 
-  packaging {
-    resources {
-      excludes += "/META-INF/{AL2.0,LGPL2.1}"
+  buildTypes {
+    release {
+      kotlinOptions {
+        freeCompilerArgs += listOf(
+          "-Xno-param-assertions",
+          "-Xno-call-assertions",
+          "-Xno-receiver-assertions"
+        )
+      }
+
+      packaging {
+        resources {
+          excludes += listOf(
+            "DebugProbesKt.bin",
+            "kotlin-tooling-metadata.json",
+            "/*.properties",
+            "kotlin/**",
+            "/*.proto",
+            "google/**",
+            "src/google/**",
+            "META-INF/*.version"
+          )
+        }
+        jniLibs {
+          excludes += "**/libdatastore_shared_counter.so"
+        }
+      }
     }
   }
 }
