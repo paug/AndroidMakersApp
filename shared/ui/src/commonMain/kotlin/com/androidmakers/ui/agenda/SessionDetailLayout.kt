@@ -79,6 +79,7 @@ fun SessionDetailScreen(
     initial = Lce.Loading
   )
   val platformContext = LocalPlatformContext.current
+
   SessionDetailLayout(
     sessionDetailState = sessionDetailState,
     onBackClick = onBackClick,
@@ -89,10 +90,10 @@ fun SessionDetailScreen(
       viewModel.shareSession(platformContext)
     },
     onOpenLink = {
-      viewModel.openLink(it)
+      viewModel.openLink(platformContext, it)
     },
     onApplyForAppClinic = {
-      viewModel.applyForAppClinic()
+      viewModel.applyForAppClinic(platformContext)
     }
   )
 }

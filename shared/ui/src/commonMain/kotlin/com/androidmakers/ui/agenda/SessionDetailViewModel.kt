@@ -99,11 +99,11 @@ class SessionDetailViewModel(
     }
   }
 
-  fun openLink(socialsItem: SocialsItem) {
-    socialsItem.url?.let { openLinkUseCase(it) }
+  fun openLink(platformContext: PlatformContext, socialsItem: SocialsItem) {
+    socialsItem.url?.let { openLinkUseCase(platformContext, it) }
   }
 
-  fun applyForAppClinic() {
-    applyForAppClinicUseCase()
+  fun applyForAppClinic(platformContext: PlatformContext) {
+    applyForAppClinicUseCase(platformContext)
   }
 }
