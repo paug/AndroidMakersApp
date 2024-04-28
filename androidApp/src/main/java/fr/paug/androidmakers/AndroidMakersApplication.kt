@@ -12,7 +12,7 @@ class AndroidMakersApplication : Application() {
   override fun onCreate() {
     super.onCreate()
 
-    initializeOpenFeedback()
+    initializeOpenFeedback(OpenFeedbackFirebaseConfig.default(this))
     DependenciesBuilder(this).inject(
       listOf(
         viewModelModule,
