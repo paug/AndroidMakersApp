@@ -253,9 +253,6 @@ private fun SessionDetails(
     if (sessionDetails.session.type == "talk") {
       if (Clock.System.now() > sessionDetails.startTimestamp) {
         OpenFeedback(
-          config = OpenFeedbackFirebaseConfig.default(
-            context = LocalPlatformContext.current.androidContextOrNull
-          ),
           projectId = "v6kx3QuQkDU4fX0Ta989",
           sessionId = sessionDetails.session.id,
         )

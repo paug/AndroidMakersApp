@@ -2,8 +2,8 @@ plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.kotlin.android)
   alias(libs.plugins.google.services)
-
   alias(libs.plugins.androidmakers.android.signing)
+  alias(libs.plugins.jetbrainsCompose)
 }
 
 android {
@@ -26,14 +26,6 @@ android {
 
   kotlinOptions {
     jvmTarget = "1.8"
-  }
-
-  buildFeatures {
-    compose = true
-  }
-
-  composeOptions {
-    kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
   }
 
   buildTypes {
@@ -98,4 +90,8 @@ dependencies {
 configurations.configureEach {
   // Remove bogus dependency of Horologist, which itself depends on AppCompat and Material Components
   exclude(group = "androidx.navigation", module = "navigation-ui-ktx")
+}
+
+compose {
+  kotlinCompilerPlugin.set(libs.versions.compose.compiler.get())
 }
