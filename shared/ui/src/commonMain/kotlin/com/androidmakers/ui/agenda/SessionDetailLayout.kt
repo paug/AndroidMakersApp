@@ -65,7 +65,6 @@ import fr.androidmakers.domain.model.Speaker
 import fr.androidmakers.domain.model.isAppClinic
 import fr.paug.androidmakers.ui.MR
 import io.openfeedback.m3.OpenFeedback
-import io.openfeedback.viewmodels.OpenFeedbackFirebaseConfig
 import kotlinx.datetime.Clock
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
