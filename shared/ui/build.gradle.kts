@@ -54,3 +54,7 @@ android {
 multiplatformResources {
   resourcesPackage.set("fr.paug.androidmakers.ui")
 }
+
+compose {
+  kotlinCompilerPlugin.set(libs.versions.compose.compiler.get())
+}

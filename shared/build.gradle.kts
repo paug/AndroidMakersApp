@@ -1,7 +1,6 @@
 plugins {
   alias(libs.plugins.androidmakers.kmp.library)
   alias(libs.plugins.moko)
-  alias(libs.plugins.skie)
 }
 
 kotlin {
