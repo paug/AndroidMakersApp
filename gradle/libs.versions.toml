@@ -4,13 +4,13 @@ sdk-compile = "34"
 sdk-min = "24"
 androidxActivity = "1.9.0"
 androidxLifecycle = "2.7.0"
-apollo = "4.0.0-beta.2"
+apollo = "4.0.0-beta.6"
 compose = "1.6.4"
-compose-compiler = "1.5.11"
+compose-compiler = "1.5.11-kt-2.0.0-RC1"
 compose-plugin = "1.6.2"
 precompose = "1.6.0"
 android-gradle-plugin = "8.2.2"
-kotlin = "1.9.23"
+kotlin = "2.0.0-RC1"
 coroutines = "1.8.0"
 material3 = "1.2.1"
 google-services-plugin = "4.4.1"
@@ -18,7 +18,7 @@ crashlytics-plugin = "2.9.9"
 moko = "0.24.0-alpha-5"
 moko-graphics = "0.9.0"
 datastore = "1.1.0"
-skie = "0.6.2"
+skie = "0.6.4"
 firebase = "1.12.0"
 koin = "3.5.6"
 image-loader = "1.7.8"
@@ -47,6 +47,7 @@ firebase-bom = "com.google.firebase:firebase-bom:32.8.1"
 firebase-crashlytics-ktx = { module = "com.google.firebase:firebase-crashlytics-ktx" }
 firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
 junit = "junit:junit:4.13.2"
+kotlin-plugin-compose = { group = "org.jetbrains.kotlin", name = "compose-compiler-gradle-plugin", version.ref = "kotlin" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlinx-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "coroutines" }
