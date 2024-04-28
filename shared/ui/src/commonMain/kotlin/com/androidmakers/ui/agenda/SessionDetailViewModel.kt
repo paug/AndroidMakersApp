@@ -2,6 +2,7 @@ package com.androidmakers.ui.agenda
 
 import com.androidmakers.ui.model.Lce
 import com.androidmakers.ui.model.SessionDetailState
+import fr.androidmakers.domain.PlatformContext
 import fr.androidmakers.domain.interactor.ApplyForAppClinicUseCase
 import fr.androidmakers.domain.interactor.OpenLinkUseCase
 import fr.androidmakers.domain.interactor.SetSessionBookmarkUseCase
@@ -92,10 +93,9 @@ class SessionDetailViewModel(
     setSessionBookmarkUseCase(session.first().getOrThrow().id, bookmarked)
   }
 
-  fun shareSession() = viewModelScope.launch {
+  fun shareSession(platformContext: PlatformContext) = viewModelScope.launch {
     session.first().getOrNull()?.let {
-      shareSessionUseCase(
-          it, speakers.first(), formattedDateAndRoom.first())
+      shareSessionUseCase(platformContext, it, speakers.first(), formattedDateAndRoom.first())
     }
   }
 

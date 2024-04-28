@@ -78,6 +78,7 @@ fun SessionDetailScreen(
   val sessionDetailState by viewModel.sessionDetailState.collectAsState(
     initial = Lce.Loading
   )
+  val platformContext = LocalPlatformContext.current
   SessionDetailLayout(
     sessionDetailState = sessionDetailState,
     onBackClick = onBackClick,
@@ -85,7 +86,7 @@ fun SessionDetailScreen(
       viewModel.bookmark(it)
     },
     onShareSession = {
-      viewModel.shareSession()
+      viewModel.shareSession(platformContext)
     },
     onOpenLink = {
       viewModel.openLink(it)
@@ -252,7 +253,7 @@ private fun SessionDetails(
       if (Clock.System.now() > sessionDetails.startTimestamp) {
         OpenFeedback(
           config = OpenFeedbackFirebaseConfig.default(
-            context = LocalPlatformContext.current
+            context = LocalPlatformContext.current.androidContextOrNull
           ),
           projectId = "v6kx3QuQkDU4fX0Ta989",
           sessionId = sessionDetails.session.id,

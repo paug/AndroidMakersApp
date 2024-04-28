@@ -15,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import com.androidmakers.ui.LocalPlatformContext
@@ -32,6 +33,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.GoogleAuthProvider
 import dev.gitlive.firebase.auth.auth
+import fr.androidmakers.domain.PlatformContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -47,10 +49,9 @@ class MainActivity : ComponentActivity() {
     logFCMToken()
 
     setContent {
-      val rememberedActivity = remember { this }
-
+      val platformContext = PlatformContext(LocalContext.current)
       CompositionLocalProvider(
-        LocalPlatformContext provides rememberedActivity,
+        LocalPlatformContext provides platformContext,
       ) {
         KoinContext {
           AndroidMakersTheme {
