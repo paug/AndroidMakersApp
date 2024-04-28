@@ -85,3 +85,10 @@ dependencies {
 compose {
   kotlinCompilerPlugin.set(libs.versions.compose.compiler.get())
 }
+
+configurations.configureEach {
+  if (name.endsWith("RuntimeClasspath")) {
+    // See https://github.com/Tlaster/PreCompose/issues/317
+    exclude("androidx.compose.ui", "ui-test-junit4-android")
+  }
+}
