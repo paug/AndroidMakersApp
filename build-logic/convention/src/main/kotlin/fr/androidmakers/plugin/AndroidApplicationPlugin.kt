@@ -28,7 +28,7 @@ class AndroidApplicationPlugin : Plugin<Project> {
 }
 
 internal fun Project.configureKotlinAndroid(
-    commonExtension: CommonExtension<*, *, *, *, *>,
+    commonExtension: CommonExtension<*, *, *, *, *, *>,
 ) {
   commonExtension.apply {
     compileSdk = libs.findVersion("sdk.compile").get().displayName.toInt()
