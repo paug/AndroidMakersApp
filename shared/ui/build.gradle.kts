@@ -33,7 +33,7 @@ kotlin {
       api(libs.precompose)
       api(libs.precompose.viewmodel)
       api(libs.precompose.koin)
-      implementation(libs.openfeedback.m3)
+      api(libs.openfeedback.m3)
       implementation(libs.materii.pullrefresh)
 
       implementation(project(":shared:domain"))
