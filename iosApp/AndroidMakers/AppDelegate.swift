@@ -15,6 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
 
+        initializeOpenFeedback(config: Openfeedback_viewmodelOpenFeedbackFirebaseConfig.companion.default(context: nil))
         FirebaseApp.configure()
         DependenciesBuilder().inject(platformModules: [viewModelModule])
 

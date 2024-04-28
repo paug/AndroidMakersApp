@@ -17,6 +17,7 @@ kotlin {
       export(project(":shared:domain"))
       export(project(":shared:di"))
       export(libs.moko.resources)
+      export(libs.openfeedback.m3)
       export(libs.moko.graphics)
     }
   }
