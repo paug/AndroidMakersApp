@@ -40,12 +40,12 @@ import org.koin.compose.KoinContext
 
 class MainActivity : ComponentActivity() {
 
-  private lateinit var credentialManager: CredentialManager
+  private val credentialManager: CredentialManager by lazy(LazyThreadSafetyMode.NONE) {
+    CredentialManager.create(this)
+  }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-
-    credentialManager = CredentialManager.create(this)
 
     WindowCompat.setDecorFitsSystemWindows(window, false)
 
@@ -134,10 +134,7 @@ class MainActivity : ComponentActivity() {
 
     lifecycleScope.launch {
       try {
-        val response = credentialManager.getCredential(
-          request = request,
-          context = this@MainActivity,
-        )
+        val response = credentialManager.getCredential(this@MainActivity, request)
         val credential = response.credential
         if (credential is CustomCredential && credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
           try {
