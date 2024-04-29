@@ -20,6 +20,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -61,7 +63,27 @@ fun AgendaColumn(
           ),
           shape = RoundedCornerShape(16.dp),
         ) {
-          sessions.forEach { uiSession ->
+          sessions.forEachIndexed { index, uiSession ->
+            val sessionBeforeIsServiceSession = remember {
+              derivedStateOf {
+                if (index > 0) {
+                  sessions[index - 1].isServiceSession
+                } else {
+                  false
+                }
+              }
+            }
+
+            val sessionAfterIsServiceSession = remember {
+              derivedStateOf {
+                if (index < sessions.lastIndex) {
+                  sessions[sessions.lastIndex].isServiceSession
+                } else {
+                  false
+                }
+              }
+            }
+
             if (uiSession.isServiceSession) {
               ServiceSessionRow(
                 uiSession,
@@ -73,7 +95,9 @@ fun AgendaColumn(
                 uiSession = uiSession,
                 onSessionClicked = onSessionClicked,
                 onSessionBookmarked = onSessionBookmarked,
-                onApplyForAppClinic = onApplyForAppClinicClicked
+                onApplyForAppClinic = onApplyForAppClinicClicked,
+                sessionBeforeIsServiceSession = sessionBeforeIsServiceSession.value,
+                sessionAfterIsServiceSession = sessionAfterIsServiceSession.value
               )
             }
           }
