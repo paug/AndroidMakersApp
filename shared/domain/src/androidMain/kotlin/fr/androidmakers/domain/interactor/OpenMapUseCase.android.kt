@@ -9,10 +9,11 @@ actual class OpenMapUseCase(
     private val urlOpener: UrlOpener
 ) {
   actual operator fun invoke(platformContext: PlatformContext, coordinates: String, name: String) {
-    val venueCoordinatesUri = Uri.parse(
-        "geo:" + coordinates +
-            "?q=" + Uri.encode(name)
-    )
+    val venueCoordinatesUri = Uri.Builder()
+      .scheme("geo")
+      .encodedAuthority(coordinates)
+      .appendQueryParameter("q", name)
+      .build()
     try {
       val intent = Intent(Intent.ACTION_VIEW, venueCoordinatesUri)
       platformContext.context.startActivity(intent)
