@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.BookmarkAdd
 import androidx.compose.material.icons.rounded.BookmarkRemove
@@ -23,6 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.androidmakers.ui.common.EmojiUtils
@@ -98,13 +100,32 @@ internal fun SessionRow(
   onSessionClicked: (UISession) -> Unit,
   onSessionBookmarked: (UISession, Boolean) -> Unit,
   onApplyForAppClinic: () -> Unit,
+  sessionBeforeIsServiceSession: Boolean = false,
+  sessionAfterIsServiceSession: Boolean = false,
 ) {
+  val clipModifier = when {
+    sessionBeforeIsServiceSession -> Modifier.clip(
+      shape = RoundedCornerShape(
+        topStart = 16.dp,
+        topEnd = 16.dp
+      )
+    )
+    sessionAfterIsServiceSession -> Modifier.clip(
+      shape = RoundedCornerShape(
+        bottomStart = 16.dp,
+        bottomEnd = 16.dp
+      )
+    )
+    else -> Modifier
+  }
+
   ListItem(
       modifier = modifier.clickable(
         onClick = {
           onSessionClicked.invoke(uiSession)
         }
-      ),
+      )
+        .then(clipModifier),
       colors = ListItemDefaults.colors(
           containerColor = backgroundColor(uiSession),
       ),
@@ -209,7 +230,12 @@ fun UISession.formattedDuration(): String {
 @Preview
 @Composable
 private fun AgendaRowPreview() {
-  SessionRow(fakeUiSession, onSessionClicked = {}, onSessionBookmarked = { _,_ -> }, onApplyForAppClinic = {})
+  SessionRow(
+    fakeUiSession,
+    onSessionClicked = {},
+    onSessionBookmarked = { _, _ -> },
+    onApplyForAppClinic = {}
+  )
 }
 
 private val fakeUiSession = UISession(
