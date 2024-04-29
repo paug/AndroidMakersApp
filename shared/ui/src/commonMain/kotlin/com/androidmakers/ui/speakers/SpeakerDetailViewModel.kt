@@ -1,6 +1,7 @@
 package com.androidmakers.ui.speakers
 
 import com.androidmakers.ui.model.Lce
+import fr.androidmakers.domain.PlatformContext
 import fr.androidmakers.domain.interactor.OpenLinkUseCase
 import fr.androidmakers.domain.model.SocialsItem
 import fr.androidmakers.domain.model.Speaker
@@ -35,8 +36,8 @@ class SpeakerDetailsViewModel(
           initialValue = Lce.Loading
       )
 
-  fun openSpeakerLink(socialsItem: SocialsItem) {
-    socialsItem.url?.let { openLinkUseCase(it) }
+  fun openSpeakerLink(platformContext: PlatformContext, socialsItem: SocialsItem) {
+    socialsItem.url?.let { openLinkUseCase(platformContext, it) }
   }
 }
 

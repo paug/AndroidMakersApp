@@ -50,10 +50,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.androidmakers.ui.LocalPlatformContext
 import com.androidmakers.ui.common.EmojiUtils
 import com.androidmakers.ui.common.LoadingLayout
 import com.androidmakers.ui.common.separatorColor
+import com.androidmakers.ui.getPlatformContext
 import com.androidmakers.ui.model.Lce
 import com.androidmakers.ui.model.SessionDetailState
 import com.androidmakers.ui.theme.AMColor
@@ -65,7 +65,6 @@ import fr.androidmakers.domain.model.Speaker
 import fr.androidmakers.domain.model.isAppClinic
 import fr.paug.androidmakers.ui.MR
 import io.openfeedback.m3.OpenFeedback
-import io.openfeedback.viewmodels.OpenFeedbackFirebaseConfig
 import kotlinx.datetime.Clock
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -78,6 +77,8 @@ fun SessionDetailScreen(
   val sessionDetailState by viewModel.sessionDetailState.collectAsState(
     initial = Lce.Loading
   )
+  val platformContext = getPlatformContext()
+
   SessionDetailLayout(
     sessionDetailState = sessionDetailState,
     onBackClick = onBackClick,
@@ -85,13 +86,13 @@ fun SessionDetailScreen(
       viewModel.bookmark(it)
     },
     onShareSession = {
-      viewModel.shareSession()
+      viewModel.shareSession(platformContext)
     },
     onOpenLink = {
-      viewModel.openLink(it)
+      viewModel.openLink(platformContext, it)
     },
     onApplyForAppClinic = {
-      viewModel.applyForAppClinic()
+      viewModel.applyForAppClinic(platformContext)
     }
   )
 }

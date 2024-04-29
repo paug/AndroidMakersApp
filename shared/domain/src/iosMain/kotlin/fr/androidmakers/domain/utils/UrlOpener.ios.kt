@@ -1,12 +1,13 @@
 package fr.androidmakers.domain.utils
 
+import fr.androidmakers.domain.PlatformContext
 import platform.Foundation.NSURL
 import platform.UIKit.UIApplication
 import platform.darwin.dispatch_async
 import platform.darwin.dispatch_get_main_queue
 
 actual class UrlOpener {
-  actual fun openUrl(url: String): Boolean {
+  actual fun openUrl(platformContext: PlatformContext, url: String): Boolean {
     val urlObj = NSURL(string = url)
     return if (UIApplication.sharedApplication.canOpenURL(urlObj)) {
       val application = UIApplication.sharedApplication
@@ -22,4 +23,3 @@ actual class UrlOpener {
     }
   }
 }
-

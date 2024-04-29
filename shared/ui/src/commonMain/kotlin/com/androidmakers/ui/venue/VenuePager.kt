@@ -15,8 +15,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.sp
 import com.androidmakers.ui.common.LceLayout
+import com.androidmakers.ui.getPlatformContext
 import com.androidmakers.ui.model.Lce
 import com.androidmakers.ui.model.UIVenue
 import com.androidmakers.ui.model.toLce
@@ -94,10 +94,11 @@ fun VenuePager() {
               name = venue.name,
               coordinates = venue.coordinates,
             )
+            val platformContext = getPlatformContext()
             VenueLayout(
               uiVenue = uiVenue,
               onClickOnMap = {
-                viewModel.openMapUseCase(uiVenue.coordinates ?: "", uiVenue.name)
+                viewModel.openMapUseCase(platformContext, uiVenue.coordinates.orEmpty(), uiVenue.name)
               }
             )
           }

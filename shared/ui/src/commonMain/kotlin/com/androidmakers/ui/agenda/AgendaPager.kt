@@ -14,12 +14,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.sp
 import com.androidmakers.ui.common.EmptyLayout
 import com.androidmakers.ui.common.SessionFilter
 import com.androidmakers.ui.common.SwipeRefreshableLceLayout
+import com.androidmakers.ui.getPlatformContext
 import com.androidmakers.ui.model.UISession
-import fr.androidmakers.domain.interactor.ApplyForAppClinicUseCase
 import fr.androidmakers.domain.utils.formatShortTime
 import kotlinx.coroutines.launch
 import moe.tlaster.precompose.koin.koinViewModel
@@ -79,10 +78,11 @@ fun AgendaPager(
           items.filter { favoriteSessions.contains(it.id) }.forEach {
               it.isFavorite = true
           }
+          val platformContext = getPlatformContext()
           AgendaColumn(
               sessionsPerStartTime = addSeparators(items),
               onSessionClicked = onSessionClicked,
-              onApplyForAppClinicClicked = viewModel::applyForAppClinic,
+              onApplyForAppClinicClicked = { viewModel.applyForAppClinic(platformContext) },
               onSessionBookmarked = { uiSession, bookmarked ->
                 viewModel.setSessionBookmark(uiSession, bookmarked)
               }

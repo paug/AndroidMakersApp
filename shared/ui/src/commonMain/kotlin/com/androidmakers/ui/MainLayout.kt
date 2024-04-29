@@ -2,7 +2,6 @@ package com.androidmakers.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.staticCompositionLocalOf
 import com.androidmakers.ui.agenda.SessionDetailScreen
 import com.androidmakers.ui.agenda.SessionDetailViewModel
 import com.androidmakers.ui.common.SigninCallbacks
@@ -10,6 +9,7 @@ import com.androidmakers.ui.common.navigation.AVALayout
 import com.androidmakers.ui.common.navigation.MainNavigationRoute
 import com.androidmakers.ui.speakers.SpeakerDetailsRoute
 import com.androidmakers.ui.speakers.SpeakerDetailsViewModel
+import fr.androidmakers.domain.PlatformContext
 import fr.androidmakers.domain.model.SpeakerId
 import moe.tlaster.precompose.koin.koinViewModel
 import moe.tlaster.precompose.navigation.NavHost
@@ -114,6 +114,5 @@ private fun MainNavHost(
 
 expect val defaultTransition: NavTransition
 
-expect class PlatformContext
-
-val LocalPlatformContext = staticCompositionLocalOf<Any?> { null }
+@Composable
+expect fun getPlatformContext(): PlatformContext
