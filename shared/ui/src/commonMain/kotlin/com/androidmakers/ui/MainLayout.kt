@@ -2,7 +2,6 @@ package com.androidmakers.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.staticCompositionLocalOf
 import com.androidmakers.ui.agenda.SessionDetailScreen
 import com.androidmakers.ui.agenda.SessionDetailViewModel
 import com.androidmakers.ui.common.SigninCallbacks
@@ -115,4 +114,5 @@ private fun MainNavHost(
 
 expect val defaultTransition: NavTransition
 
-val LocalPlatformContext = staticCompositionLocalOf<PlatformContext> { error("CompositionLocal PlatformContext not present") }
+@Composable
+expect fun getPlatformContext(): PlatformContext

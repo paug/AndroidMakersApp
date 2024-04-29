@@ -50,10 +50,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.androidmakers.ui.LocalPlatformContext
 import com.androidmakers.ui.common.EmojiUtils
 import com.androidmakers.ui.common.LoadingLayout
 import com.androidmakers.ui.common.separatorColor
+import com.androidmakers.ui.getPlatformContext
 import com.androidmakers.ui.model.Lce
 import com.androidmakers.ui.model.SessionDetailState
 import com.androidmakers.ui.theme.AMColor
@@ -77,7 +77,7 @@ fun SessionDetailScreen(
   val sessionDetailState by viewModel.sessionDetailState.collectAsState(
     initial = Lce.Loading
   )
-  val platformContext = LocalPlatformContext.current
+  val platformContext = getPlatformContext()
 
   SessionDetailLayout(
     sessionDetailState = sessionDetailState,

@@ -27,7 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.androidmakers.ui.LocalPlatformContext
+import com.androidmakers.ui.getPlatformContext
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import fr.paug.androidmakers.ui.MR
@@ -46,7 +46,7 @@ fun AboutScreen(
           .padding(16.dp),
       verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically)
   ) {
-    val platformContext = LocalPlatformContext.current
+    val platformContext = getPlatformContext()
 
     IntroCard(
         onFaqClick = { viewModel.openFaq(platformContext) },
