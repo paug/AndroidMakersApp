@@ -27,6 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.androidmakers.ui.common.LoadingLayout
 import com.androidmakers.ui.common.SocialButtons
+import com.androidmakers.ui.getPlatformContext
 import com.androidmakers.ui.model.Lce
 import com.seiko.imageloader.rememberImagePainter
 import dev.icerock.moko.resources.compose.stringResource
@@ -48,10 +49,11 @@ fun SpeakerDetailsRoute(
     }
 
     is Lce.Content -> {
+      val platformContext = getPlatformContext()
       SpeakerDetailsScreen(
-          uiState = state.content,
-          onSocialItemClick = { speakerDetailsViewModel.openSpeakerLink(it) },
-          onBackClick = onBackClick
+        uiState = state.content,
+        onSocialItemClick = { speakerDetailsViewModel.openSpeakerLink(platformContext, it) },
+        onBackClick = onBackClick
       )
     }
   }

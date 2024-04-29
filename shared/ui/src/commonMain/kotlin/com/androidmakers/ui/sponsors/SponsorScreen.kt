@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.androidmakers.ui.getPlatformContext
 import com.androidmakers.ui.model.Lce
 import com.seiko.imageloader.rememberImagePainter
 import fr.androidmakers.domain.model.Partner
@@ -31,10 +32,11 @@ import moe.tlaster.precompose.koin.koinViewModel
 fun SponsorsScreen() {
   val viewModel = koinViewModel(SponsorsViewModel::class)
   val sponsors by viewModel.values.collectAsState()
+  val platformContext = getPlatformContext()
 
   SponsorsView(
       partnerList = sponsors,
-      onSponsorClick = { viewModel.openPartnerLink(it) }
+      onSponsorClick = { viewModel.openPartnerLink(platformContext, it) }
   )
 }
 
