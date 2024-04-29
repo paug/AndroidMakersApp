@@ -20,7 +20,7 @@ actual class OpenMapUseCase(
       // Open in Webview
       urlOpener.openUrl(
         platformContext = platformContext,
-        url = "https://www.google.com/maps/?q=" + coordinates.replace(" ", "")
+        url = "https://www.google.com/maps/?q=" + coordinates.filter { it != ' ' }
       )
     }
   }
