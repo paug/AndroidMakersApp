@@ -72,7 +72,10 @@ dependencies {
   implementation(libs.firebase.crashlytics.ktx)
   implementation(libs.firebase.messaging)
 
-  implementation(libs.play.services.auth)
+  // Credentials
+  implementation(libs.androidx.credentials)
+  implementation(libs.androidx.credentials.playServicesAuth)
+  implementation(libs.googleid)
 
   implementation(libs.koin.androidx.compose) {
     exclude(group = "androidx.appcompat", module = "appcompat")
