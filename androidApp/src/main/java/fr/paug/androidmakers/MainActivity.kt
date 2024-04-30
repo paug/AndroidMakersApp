@@ -1,6 +1,5 @@
 package fr.paug.androidmakers
 
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -15,27 +14,33 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.core.view.WindowCompat
+import androidx.credentials.ClearCredentialStateRequest
+import androidx.credentials.CredentialManager
+import androidx.credentials.CustomCredential
+import androidx.credentials.GetCredentialRequest
+import androidx.credentials.exceptions.GetCredentialException
 import androidx.lifecycle.lifecycleScope
 import com.androidmakers.ui.MainLayout
 import com.androidmakers.ui.common.SigninCallbacks
 import com.androidmakers.ui.common.navigation.UserData
 import com.androidmakers.ui.theme.AndroidMakersTheme
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
+import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
 import com.google.firebase.messaging.FirebaseMessaging
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.GoogleAuthProvider
 import dev.gitlive.firebase.auth.auth
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import org.koin.compose.KoinContext
 
 class MainActivity : ComponentActivity() {
+
+  private val credentialManager: CredentialManager by lazy(LazyThreadSafetyMode.NONE) {
+    CredentialManager.create(this)
+  }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -79,8 +84,8 @@ class MainActivity : ComponentActivity() {
             versionCode = BuildConfig.VERSION_CODE.toString(),
             deeplink = deeplink,
             signinCallbacks = SigninCallbacks(
-              signin = { signin() },
-              signout = { signout() },
+              signin = ::signIn,
+              signout = ::signOut,
             )
           )
         }
@@ -89,89 +94,74 @@ class MainActivity : ComponentActivity() {
   }
 
   private fun logFCMToken() {
-    FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-      if (!task.isSuccessful) {
-        Log.w("MainActivity", "Fetching FCM registration token failed", task.exception)
-        return@OnCompleteListener
-      }
-      val token = task.result
-      Log.d("MainActivity", token)
-    })
-  }
-
-  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-    super.onActivityResult(requestCode, resultCode, data)
-
-    when (requestCode) {
-      REQ_SIGNIN -> {
-        val task: Task<GoogleSignInAccount> =
-          GoogleSignIn.getSignedInAccountFromIntent(data)
-        try {
-          val account: GoogleSignInAccount = task.getResult(ApiException::class.java)
-          val idToken = account.idToken
-          when {
-            idToken != null -> {
-              // Got an ID token from Google. Use it to authenticate
-              // with Firebase.
-              val firebaseCredential = GoogleAuthProvider.credential(idToken, null)
-              val auth = Firebase.auth
-
-              CoroutineScope(Dispatchers.Default).launch {
-                val result = auth.signInWithCredential(firebaseCredential)
-                // Sign in success, update UI with the signed-in user's information
-                lifecycleScope.launch {
-                  UserData().apply {
-                    userRepository.setUser(result.user)
-                    val uid = result.user?.uid
-                    if (uid != null) {
-                      mergeBookmarksUseCase(uid)
-                    }
-                  }
-
-                  println("user id=${result.user?.uid}")
-                  println("idToken=${result.user?.getIdToken(true)}")
-                }
-              }
-            }
-
-            else -> {}
-          }
-        } catch (e: ApiException) {
-          e.printStackTrace()
-          lifecycleScope.launch {
-            UserData().userRepository.setUser(null)
-          }
+    lifecycleScope.launch {
+      try {
+        val token = FirebaseMessaging.getInstance().token.await()
+        Log.d(TAG, "FCM registration token: $token")
+      } catch (e: Exception) {
+        if (e is CancellationException) {
+          throw e
         }
+        Log.w(TAG, "Fetching FCM registration token failed", e)
       }
     }
   }
 
-  fun signout() {
-    val activity = this
-    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-      .requestIdToken("985196411897-r7edbi9jgo3hfupekcmdrg66inonj0o5.apps.googleusercontent.com")
-      .build()
-    val googleSignInClient = GoogleSignIn.getClient(activity, gso)
-
+  private fun signOut() {
     lifecycleScope.launch {
       Firebase.auth.signOut()
-      googleSignInClient.signOut()
-      googleSignInClient.revokeAccess()
+      credentialManager.clearCredentialState(ClearCredentialStateRequest())
       UserData().userRepository.setUser(null)
     }
   }
 
-  fun signin() {
-    val activity = this
-    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-      .requestIdToken("985196411897-r7edbi9jgo3hfupekcmdrg66inonj0o5.apps.googleusercontent.com")
+  private fun signIn() {
+    val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
+      .setFilterByAuthorizedAccounts(false)
+      .setServerClientId(SERVER_CLIENT_ID)
       .build()
-    val googleSignInClient = GoogleSignIn.getClient(activity, gso)
+    val request: GetCredentialRequest = GetCredentialRequest.Builder()
+      .addCredentialOption(googleIdOption)
+      .build()
 
-    activity.startActivityForResult(googleSignInClient.signInIntent, REQ_SIGNIN)
+    lifecycleScope.launch {
+      try {
+        val response = credentialManager.getCredential(this@MainActivity, request)
+        val credential = response.credential
+        if (credential is CustomCredential && credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
+          try {
+            handleGoogleIdTokenCredential(GoogleIdTokenCredential.createFrom(credential.data))
+          } catch (e: GoogleIdTokenParsingException) {
+            Log.e(TAG, "Received an invalid google id token response", e)
+          }
+        } else {
+          Log.e(TAG, "Unexpected type of credential")
+        }
+      } catch (e: GetCredentialException) {
+        Log.e(TAG, "Retrieving of credential failed", e)
+        UserData().userRepository.setUser(null)
+      }
+    }
+  }
+
+  private suspend fun handleGoogleIdTokenCredential(googleIdTokenCredential: GoogleIdTokenCredential) {
+    // Got an ID token from Google. Use it to authenticate with Firebase.GoogleSignIn
+    val firebaseCredential = GoogleAuthProvider.credential(googleIdTokenCredential.idToken, null)
+    val result = Firebase.auth.signInWithCredential(firebaseCredential)
+    // Sign in success, update UI with the signed-in user's information
+    with(UserData()) {
+      userRepository.setUser(result.user)
+      result.user?.uid?.let {
+        mergeBookmarksUseCase(it)
+      }
+    }
+
+    Log.d(TAG, "user id=${result.user?.uid}")
+    Log.d(TAG, "idToken=${result.user?.getIdToken(true)}")
   }
 
   companion object {
-    const val REQ_SIGNIN = 33
+    private const val TAG = "MainActivity"
+    private const val SERVER_CLIENT_ID = "985196411897-r7edbi9jgo3hfupekcmdrg66inonj0o5.apps.googleusercontent.com"
   }
 }
