@@ -22,6 +22,9 @@ kotlin {
       api(libs.kotlinx.datetime)
       implementation(libs.okio)
     }
+    androidMain.dependencies {
+      implementation(libs.androidx.core)
+    }
   }
 }
 

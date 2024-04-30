@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.androidmakers.ui.getPlatformContext
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import fr.paug.androidmakers.ui.MR
@@ -45,15 +46,17 @@ fun AboutScreen(
           .padding(16.dp),
       verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically)
   ) {
+    val platformContext = getPlatformContext()
+
     IntroCard(
-        onFaqClick = { viewModel.openFaq() },
-        onCocClick = { viewModel.openCoc() }
+        onFaqClick = { viewModel.openFaq(platformContext) },
+        onCocClick = { viewModel.openCoc(platformContext) }
     )
 
     SocialCard(
-        { viewModel.openXHashtag() },
-        { viewModel.openXAccount() },
-        { viewModel.openYoutube() }
+        { viewModel.openXHashtag(platformContext) },
+        { viewModel.openXAccount(platformContext) },
+        { viewModel.openYoutube(platformContext) }
     )
 
     Text(

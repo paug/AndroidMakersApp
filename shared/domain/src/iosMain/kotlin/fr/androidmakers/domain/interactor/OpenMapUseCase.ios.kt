@@ -1,5 +1,6 @@
 package fr.androidmakers.domain.interactor
 
+import fr.androidmakers.domain.PlatformContext
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.NativePtr
 import kotlinx.cinterop.cValuesOf
@@ -17,7 +18,7 @@ import platform.MapKit.MKPlacemark
 
 actual class OpenMapUseCase {
   @OptIn(ExperimentalForeignApi::class)
-  actual operator fun invoke(coordinates: String, name: String) {
+  actual operator fun invoke(platformContext: PlatformContext, coordinates: String, name: String) {
     val coordinateArray = coordinates.split(",")
     if (coordinateArray.size == 2) {
       val latitude = coordinateArray[0].toDoubleOrNull()

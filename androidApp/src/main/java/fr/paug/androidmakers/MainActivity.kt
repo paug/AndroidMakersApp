@@ -8,7 +8,6 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -21,7 +20,6 @@ import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.exceptions.GetCredentialException
 import androidx.lifecycle.lifecycleScope
-import com.androidmakers.ui.LocalPlatformContext
 import com.androidmakers.ui.MainLayout
 import com.androidmakers.ui.common.SigninCallbacks
 import com.androidmakers.ui.common.navigation.UserData
@@ -52,50 +50,44 @@ class MainActivity : ComponentActivity() {
     logFCMToken()
 
     setContent {
-      val rememberedActivity = remember { this }
+      KoinContext {
+        AndroidMakersTheme {
+          val darkTheme = isSystemInDarkTheme()
+          DisposableEffect(darkTheme) {
+            enableEdgeToEdge(
+              statusBarStyle = SystemBarStyle.auto(
+                Color.TRANSPARENT,
+                Color.TRANSPARENT,
+              ) { darkTheme },
+              navigationBarStyle = SystemBarStyle.auto(
+                Color.TRANSPARENT,
+                Color.TRANSPARENT,
+              ) { darkTheme },
+            )
+            onDispose { }
+          }
 
-      CompositionLocalProvider(
-        LocalPlatformContext provides rememberedActivity,
-      ) {
-        KoinContext {
-          AndroidMakersTheme {
-            val darkTheme = isSystemInDarkTheme()
-            DisposableEffect(darkTheme) {
-              enableEdgeToEdge(
-                statusBarStyle = SystemBarStyle.auto(
-                  Color.TRANSPARENT,
-                  Color.TRANSPARENT,
-                ) { darkTheme },
-                navigationBarStyle = SystemBarStyle.auto(
-                  Color.TRANSPARENT,
-                  Color.TRANSPARENT,
-                ) { darkTheme },
-              )
-              onDispose { }
-            }
+          var deeplink: String? by remember { mutableStateOf(null) }
 
-            var deeplink: String? by remember { mutableStateOf(null) }
+          intent.data?.let {
+            deeplink = it.toString()
+          }
 
-            intent.data?.let {
+          addOnNewIntentListener {
+            it.data?.let {
               deeplink = it.toString()
             }
-
-            addOnNewIntentListener {
-              it.data?.let {
-                deeplink = it.toString()
-              }
-            }
-
-            MainLayout(
-              versionName = BuildConfig.VERSION_NAME,
-              versionCode = BuildConfig.VERSION_CODE.toString(),
-              deeplink = deeplink,
-              signinCallbacks = SigninCallbacks(
-                signin = ::signIn,
-                signout = ::signOut,
-              )
-            )
           }
+
+          MainLayout(
+            versionName = BuildConfig.VERSION_NAME,
+            versionCode = BuildConfig.VERSION_CODE.toString(),
+            deeplink = deeplink,
+            signinCallbacks = SigninCallbacks(
+              signin = ::signIn,
+              signout = ::signOut,
+            )
+          )
         }
       }
     }

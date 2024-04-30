@@ -3,6 +3,7 @@ version-code = "1467"
 sdk-compile = "34"
 sdk-min = "24"
 androidxActivity = "1.9.0"
+androidxCore = "1.13.0"
 androidxCredentials = "1.2.2"
 androidxLifecycle = "2.7.0"
 apollo = "4.0.0-beta.6"
@@ -32,6 +33,7 @@ okio = "3.9.0"
 
 [libraries]
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
+androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
 androidx-credentials = { group = "androidx.credentials", name = "credentials", version.ref = "androidxCredentials" }
 androidx-credentials-playServicesAuth = { group = "androidx.credentials", name = "credentials-play-services-auth", version.ref = "androidxCredentials" }
 androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
