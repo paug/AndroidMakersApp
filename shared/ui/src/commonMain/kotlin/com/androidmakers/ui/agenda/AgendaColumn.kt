@@ -37,6 +37,7 @@ fun AgendaColumn(
   onSessionClicked: (UISession) -> Unit,
   onSessionBookmarked: (UISession, Boolean) -> Unit,
   onApplyForAppClinicClicked: () -> Unit,
+  onFetchMoreItems: () -> Unit,
 ) {
   val listState = rememberLazyListState()
 
@@ -103,6 +104,10 @@ fun AgendaColumn(
           }
         }
       }
+    }
+
+    item {
+      onFetchMoreItems()
     }
   }
 }

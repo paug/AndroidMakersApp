@@ -39,7 +39,7 @@ class FakeAndroidMakersStore : RoomsRepository, VenueRepository, SpeakersReposit
     TODO("Not yet implemented")
   }
 
-  override fun getSessions(): Flow<Result<List<Session>>> {
+  override fun watchSessions(): Flow<Result<List<Session>>> {
     TODO("Not yet implemented")
   }
 

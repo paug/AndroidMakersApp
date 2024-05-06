@@ -1,7 +1,10 @@
-query GetSessions {
-    sessions(first: 1000) {
+query GetSessions($after: String) {
+    sessions(first: 10, after: $after) {
         nodes {
             ...SessionDetails
+        }
+        pageInfo {
+            endCursor
         }
     }
 }

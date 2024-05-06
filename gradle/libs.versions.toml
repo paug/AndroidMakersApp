@@ -39,8 +39,8 @@ androidx-credentials-playServicesAuth = { group = "androidx.credentials", name =
 androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
 apollo-adapters = { module = "com.apollographql.apollo3:apollo-adapters", version.ref = "apollo" }
-apollo-normalized-cache = { module = "com.apollographql.apollo3:apollo-normalized-cache", version.ref = "apollo" }
-apollo-normalized-cache-sqlite = { module = "com.apollographql.apollo3:apollo-normalized-cache-sqlite", version.ref = "apollo" }
+apollo-normalized-cache = { module = "com.apollographql.apollo3:apollo-normalized-cache-incubating", version.ref = "apollo" }
+apollo-normalized-cache-sqlite = { module = "com.apollographql.apollo3:apollo-normalized-cache-sqlite-incubating", version.ref = "apollo" }
 apollo-runtime = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "apollo" }
 atomicfu = "org.jetbrains.kotlinx:atomicfu:0.23.2"
 qdsfdhvh-imageloader = { module = "io.github.qdsfdhvh:image-loader", version.ref = "image-loader" }

@@ -1,6 +1,7 @@
 package fr.androidmakers.di
 
 import fr.androidmakers.domain.interactor.ApplyForAppClinicUseCase
+import fr.androidmakers.domain.interactor.FetchNextSessionsPageUseCase
 import fr.androidmakers.domain.interactor.GetAfterpartyVenueUseCase
 import fr.androidmakers.domain.interactor.GetAgendaUseCase
 import fr.androidmakers.domain.interactor.GetConferenceVenueUseCase
@@ -22,6 +23,7 @@ expect val domainPlatformModule: Module
 
 val domainModule = module {
   factory { GetAgendaUseCase(get(), get(), get()) }
+  factory { FetchNextSessionsPageUseCase(get()) }
   factory { GetConferenceVenueUseCase(get()) }
   factory { GetAfterpartyVenueUseCase(get()) }
   factory { MergeBookmarksUseCase(get(), get()) }

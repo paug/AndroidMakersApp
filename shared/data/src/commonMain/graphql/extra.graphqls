@@ -1,10 +1,20 @@
-# noinspection GraphQLUnresolvedReference,GraphQLMissingType
+extend schema
+@link(
+    url: "https://specs.apollo.dev/kotlin_labs/v0.3",
+    import: ["@typePolicy", "@fieldPolicy"]
+)
 
 extend type Room @typePolicy(keyFields: "id")
 
 extend type Session @typePolicy(keyFields: "id")
-extend type RootQuery @fieldPolicy(forField: "session", keyArgs: "id")
+
+extend type RootQuery
+@fieldPolicy(forField: "session", keyArgs: "id")
+@fieldPolicy(forField: "sessions", paginationArgs: "first after")
+@typePolicy(embeddedFields: "sessions")
 
 extend type Speaker @typePolicy(keyFields: "id")
 
 extend type Venue @typePolicy(keyFields: "name")
+
+extend type SessionConnection @typePolicy(embeddedFields: "pageInfo")

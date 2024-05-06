@@ -14,15 +14,11 @@ class GetAgendaUseCase(
 ) {
   operator fun invoke(): Flow<Result<Agenda>> {
     return combine(
-        sessionsRepository.getSessions(),
+      sessionsRepository.watchSessions(),
         roomsRepository.getRooms(),
         speakersRepository.getSpeakers(),
     ) { sessions, rooms, speakers ->
 
-      sessions.exceptionOrNull()?.let {
-        it.printStackTrace()
-        return@combine Result.failure(it)
-      }
       rooms.exceptionOrNull()?.let {
         it.printStackTrace()
         return@combine Result.failure(it)
@@ -34,7 +30,7 @@ class GetAgendaUseCase(
 
       Result.success(
           Agenda(
-              sessions = sessions.getOrThrow().associateBy { it.id },
+            sessions = sessions.associateBy { it.id },
               rooms = rooms.getOrThrow().associateBy { it.id },
               speakers = speakers.getOrThrow().associateBy { it.id }
           )
