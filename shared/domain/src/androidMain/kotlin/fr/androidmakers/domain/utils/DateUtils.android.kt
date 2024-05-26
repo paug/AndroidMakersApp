@@ -41,8 +41,9 @@ private val mediumDateFormatterProvider = { locale: Locale ->
 }.memoize()
 
 actual fun LocalDateTime.formatShortTime(): String {
-  val shortTimeFormatter = shortTimeFormatterProvider(Locale.getDefault())
-  return time.toJavaLocalTime().format(shortTimeFormatter).lowercase(Locale.getDefault())
+  val locale = Locale.getDefault()
+  val shortTimeFormatter = shortTimeFormatterProvider(locale)
+  return time.toJavaLocalTime().format(shortTimeFormatter).lowercase(locale)
 }
 
 actual fun Instant.formatShortTime(): String {
@@ -52,8 +53,9 @@ actual fun Instant.formatShortTime(): String {
 }
 
 actual fun LocalDate.formatMediumDate(): String {
-  val mediumDateFormatter = mediumDateFormatterProvider(Locale.getDefault())
-  return toJavaLocalDate().format(mediumDateFormatter).lowercase(Locale.getDefault())
+  val locale = Locale.getDefault()
+  val mediumDateFormatter = mediumDateFormatterProvider(locale)
+  return toJavaLocalDate().format(mediumDateFormatter).lowercase(locale)
 }
 
 actual fun formatTimeInterval(startDate: LocalDateTime, endDate: LocalDateTime): String {
