@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicReference
 /**
  * Memoize the result of the function call until the key changes.
  */
-private fun <K, V> ((K) -> V).memoize() : ((K) -> V) {
+private fun <K, V> ((K) -> V).memoize() : (K) -> V {
   val cache = AtomicReference<Pair<K, V>?>(null)
   return { key: K ->
     val currentPair = cache.get()
