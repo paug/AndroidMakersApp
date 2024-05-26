@@ -15,33 +15,33 @@ import java.util.Locale
 import java.util.concurrent.atomic.AtomicReference
 
 /**
- * Lazily compute a value from the given key and cache it until the key changes.
+ * Memoize the result of the function call until the key changes.
  */
-private class KeyValueCache<K, V>(private val factory: (K) -> V) {
-  private val cache = AtomicReference<Pair<K, V>?>(null)
-
-  fun get(key: K): V {
+private fun <K, V> ((K) -> V).memoize() : ((K) -> V) {
+  val cache = AtomicReference<Pair<K, V>?>(null)
+  return { key: K ->
     val currentPair = cache.get()
     if (currentPair != null && currentPair.first == key) {
-      return currentPair.second
+      currentPair.second
+    } else {
+      val newPair = key to this(key)
+      // Only update the cache if it didn't change in the meantime
+      cache.compareAndSet(currentPair, newPair)
+      newPair.second
     }
-    val newPair = key to factory(key)
-    // Only update the cache if it didn't change in the meantime
-    cache.compareAndSet(currentPair, newPair)
-    return newPair.second
   }
 }
 
-private val shortTimeFormatterCache = KeyValueCache { locale: Locale ->
+private val shortTimeFormatterProvider = { locale: Locale ->
   DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).withLocale(locale)
-}
+}.memoize()
 
-private val mediumDateFormatterCache = KeyValueCache { locale: Locale ->
+private val mediumDateFormatterProvider = { locale: Locale ->
   DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(locale)
-}
+}.memoize()
 
 actual fun LocalDateTime.formatShortTime(): String {
-  val shortTimeFormatter = shortTimeFormatterCache.get(Locale.getDefault())
+  val shortTimeFormatter = shortTimeFormatterProvider(Locale.getDefault())
   return time.toJavaLocalTime().format(shortTimeFormatter).lowercase(Locale.getDefault())
 }
 
@@ -52,7 +52,7 @@ actual fun Instant.formatShortTime(): String {
 }
 
 actual fun LocalDate.formatMediumDate(): String {
-  val mediumDateFormatter = mediumDateFormatterCache.get(Locale.getDefault())
+  val mediumDateFormatter = mediumDateFormatterProvider(Locale.getDefault())
   return toJavaLocalDate().format(mediumDateFormatter).lowercase(Locale.getDefault())
 }
 
