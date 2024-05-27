@@ -58,7 +58,7 @@ kotlin-plugin-compose = { group = "org.jetbrains.kotlin", name = "compose-compil
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlinx-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "coroutines" }
-kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.5.0"
+kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.6.0"
 openfeedback-m3 = "io.openfeedback:openfeedback-m3:0.2.3"
 play-services-auth = "com.google.android.gms:play-services-auth:21.1.0"
 moko-resources = { module = "dev.icerock.moko:resources", version.ref = "moko" }
