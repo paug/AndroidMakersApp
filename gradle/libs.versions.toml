@@ -107,7 +107,7 @@ skie = { id = "co.touchlab.skie", version.ref = "skie" }
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
 
 ## Custom plugins
-androidmakers-android-application = { id = "fr.androidmakers.android.application", version = "unspecified" }
-androidmakers-kmp-library = { id = "fr.androidmakers.kmp.library", version = "unspecified" }
-androidmakers-android-compose = { id = "fr.androidmakers.android.compose", version = "unspecified" }
-androidmakers-android-signing = { id = "fr.androidmakers.android.signing", version = "unspecified" }
+androidmakers-android-application = { id = "fr.androidmakers.android.application" }
+androidmakers-kmp-library = { id = "fr.androidmakers.kmp.library" }
+androidmakers-android-compose = { id = "fr.androidmakers.android.compose" }
+androidmakers-android-signing = { id = "fr.androidmakers.android.signing" }
