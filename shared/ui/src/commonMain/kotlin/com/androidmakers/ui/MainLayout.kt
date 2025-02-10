@@ -56,11 +56,15 @@ private fun MainNavHost(
     signingCallbacks: SigninCallbacks,
     deeplink: String? = null,
 ) {
-    LaunchedEffect(deeplink) {
-        deeplink?.let {
-            mainNavController.navigate(deeplink)
-        }
+  LaunchedEffect(deeplink) {
+    deeplink?.let {
+      try {
+        mainNavController.navigate(deeplink)
+      } catch (e: IllegalStateException) {
+        // Invalid route URL
+      }
     }
+  }
 
   NavHost(
       navigator = mainNavController,

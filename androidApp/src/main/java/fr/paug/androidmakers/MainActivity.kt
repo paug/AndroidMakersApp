@@ -1,5 +1,6 @@
 package fr.paug.androidmakers
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -10,9 +11,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.produceState
+import androidx.core.util.Consumer
 import androidx.core.view.WindowCompat
 import androidx.credentials.ClearCredentialStateRequest
 import androidx.credentials.CredentialManager
@@ -49,6 +49,8 @@ class MainActivity : ComponentActivity() {
 
     logFCMToken()
 
+    val initialDeepLink: String? = if (savedInstanceState == null) intent.dataString else null
+
     setContent {
       KoinContext {
         AndroidMakersTheme {
@@ -67,16 +69,14 @@ class MainActivity : ComponentActivity() {
             onDispose { }
           }
 
-          var deeplink: String? by remember { mutableStateOf(null) }
-
-          intent.data?.let {
-            deeplink = it.toString()
-          }
-
-          addOnNewIntentListener {
-            it.data?.let {
-              deeplink = it.toString()
+          val deeplink: String? by produceState(initialDeepLink) {
+            val listener = Consumer<Intent> { newIntent ->
+              newIntent.dataString?.let {
+                value = it
+              }
             }
+            addOnNewIntentListener(listener)
+            awaitDispose { removeOnNewIntentListener(listener) }
           }
 
           MainLayout(
