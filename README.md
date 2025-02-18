@@ -1,3 +1,5 @@
+[![Continuous Integration](https://github.com/paug/AndroidMakersApp/actions/workflows/pr.yml/badge.svg)](https://github.com/paug/AndroidMakersApp/actions/workflows/pr.yml)
+
 <h1>Android Makers conference app</h1>
 
 Android App for Android Makers (by droidcon) Paris Conferences https://androidmakers.droidcon.com
@@ -16,5 +18,3 @@ This app was built by the community 💚. PRs are welcome, see [CONTRIBUTING.md]
 <a href="https://github.com/paug/androidmakersapp/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=paug/androidmakersapp" />
 </a>
-
-
