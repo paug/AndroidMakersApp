@@ -5,8 +5,10 @@ import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 class AndroidApplicationPlugin : Plugin<Project> {
@@ -37,7 +39,6 @@ internal fun Project.configureKotlinAndroid(
       minSdk = libs.findVersion("sdk.min").get().displayName.toInt()
     }
 
-
     compileOptions {
       sourceCompatibility = JavaVersion.VERSION_17
       targetCompatibility = JavaVersion.VERSION_17
@@ -49,8 +50,8 @@ internal fun Project.configureKotlinAndroid(
 
 private fun Project.configureKotlin() {
   tasks.withType<KotlinCompile>().configureEach {
-    kotlinOptions {
-      jvmTarget = JavaVersion.VERSION_17.toString()
+    compilerOptions {
+      jvmTarget = JvmTarget.JVM_17
     }
   }
 }
