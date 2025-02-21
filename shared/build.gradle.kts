@@ -1,6 +1,6 @@
 plugins {
   alias(libs.plugins.androidmakers.kmp.library)
-  alias(libs.plugins.moko)
+  alias(libs.plugins.moko.resources)
 }
 
 kotlin {
@@ -16,9 +16,9 @@ kotlin {
       export(project(":shared:ui"))
       export(project(":shared:domain"))
       export(project(":shared:di"))
+      export(libs.moko.graphics)
       export(libs.moko.resources)
       export(libs.openfeedback.m3)
-      export(libs.moko.graphics)
     }
   }
 

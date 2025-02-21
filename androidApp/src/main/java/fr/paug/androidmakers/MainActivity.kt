@@ -1,19 +1,14 @@
 package fr.paug.androidmakers
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
-import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.core.util.Consumer
-import androidx.core.view.WindowCompat
 import androidx.credentials.ClearCredentialStateRequest
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
@@ -45,7 +40,7 @@ class MainActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
-    WindowCompat.setDecorFitsSystemWindows(window, false)
+    enableEdgeToEdge()
 
     logFCMToken()
 
@@ -54,21 +49,6 @@ class MainActivity : ComponentActivity() {
     setContent {
       KoinContext {
         AndroidMakersTheme {
-          val darkTheme = isSystemInDarkTheme()
-          DisposableEffect(darkTheme) {
-            enableEdgeToEdge(
-              statusBarStyle = SystemBarStyle.auto(
-                Color.TRANSPARENT,
-                Color.TRANSPARENT,
-              ) { darkTheme },
-              navigationBarStyle = SystemBarStyle.auto(
-                Color.TRANSPARENT,
-                Color.TRANSPARENT,
-              ) { darkTheme },
-            )
-            onDispose { }
-          }
-
           val deeplink: String? by produceState(initialDeepLink) {
             val listener = Consumer<Intent> { newIntent ->
               newIntent.dataString?.let {
