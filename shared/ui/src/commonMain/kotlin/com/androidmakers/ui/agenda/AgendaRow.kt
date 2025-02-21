@@ -2,7 +2,6 @@ package com.androidmakers.ui.agenda
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -11,7 +10,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.BookmarkAdd
 import androidx.compose.material.icons.rounded.BookmarkRemove
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconToggleButton
@@ -21,7 +19,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,21 +32,6 @@ import fr.paug.androidmakers.ui.MR
 import kotlinx.datetime.Instant
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.time.Duration.Companion.hours
-
-@Composable
-private fun maybeClickable(uiSession: UISession, onSessionClicked: ((UISession) -> Unit)): Modifier {
-  return if (uiSession.isServiceSession.not()) {
-    Modifier.clickable(
-        interactionSource = remember { MutableInteractionSource() },
-        indication = rememberRipple(bounded = false),
-        onClick = {
-          onSessionClicked.invoke(uiSession)
-        }
-    )
-  } else {
-    Modifier
-  }
-}
 
 @Composable
 fun backgroundColor(uiSession: UISession): Color {
