@@ -8,7 +8,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -92,7 +91,6 @@ fun SpeakerScreen(
 
 
         SearchBar(
-          windowInsets = WindowInsets(0.dp, 0.dp, 0.dp, 0.dp),
           modifier = Modifier.align(Alignment.TopCenter)
             .onSizeChanged {
               searchHeight = with(density) { it.height.toDp() }
