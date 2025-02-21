@@ -9,7 +9,7 @@ plugins {
 
 android {
   namespace = "fr.paug.androidmakers.wear"
-  compileSdk = 34
+  compileSdk = 35
 
   defaultConfig {
     applicationId = "fr.paug.androidmakers"
