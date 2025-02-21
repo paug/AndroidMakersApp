@@ -2,6 +2,7 @@ plugins {
   alias(libs.plugins.androidmakers.android.application)
   alias(libs.plugins.androidmakers.android.signing)
   alias(libs.plugins.jetbrainsCompose)
+  alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -52,7 +53,7 @@ android {
 dependencies {
   implementation(project(":shared:data"))
   testImplementation(libs.junit)
-  androidTestImplementation(libs.espresso.core)
+  androidTestImplementation(libs.androidx.test.espresso.core)
 
   implementation(libs.compose.material3)
   implementation(libs.compose.material.icons.extended)
@@ -83,10 +84,6 @@ dependencies {
 
   // Used for tags
   implementation(project(":shared"))
-}
-
-compose {
-  kotlinCompilerPlugin.set(libs.versions.compose.compiler.get())
 }
 
 configurations.configureEach {

@@ -4,6 +4,7 @@ plugins {
   alias(libs.plugins.google.services)
   alias(libs.plugins.androidmakers.android.signing)
   alias(libs.plugins.jetbrainsCompose)
+  alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -90,8 +91,4 @@ dependencies {
 configurations.configureEach {
   // Remove bogus dependency of Horologist, which itself depends on AppCompat and Material Components
   exclude(group = "androidx.navigation", module = "navigation-ui-ktx")
-}
-
-compose {
-  kotlinCompilerPlugin.set(libs.versions.compose.compiler.get())
 }

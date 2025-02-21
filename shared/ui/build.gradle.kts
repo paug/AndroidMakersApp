@@ -1,7 +1,8 @@
 plugins {
   alias(libs.plugins.androidmakers.kmp.library)
-  alias(libs.plugins.moko)
+  alias(libs.plugins.moko.resources)
   alias(libs.plugins.jetbrainsCompose)
+  alias(libs.plugins.compose.compiler)
 }
 
 kotlin {
@@ -20,8 +21,7 @@ kotlin {
 
   sourceSets {
     commonMain.dependencies {
-      api(libs.moko.resources)
-      api(libs.moko.compose)
+      api(libs.moko.resources.compose)
       implementation(compose.runtime)
       implementation(compose.foundation)
       implementation(compose.material3)
@@ -53,8 +53,4 @@ android {
 
 multiplatformResources {
   resourcesPackage.set("fr.paug.androidmakers.ui")
-}
-
-compose {
-  kotlinCompilerPlugin.set(libs.versions.compose.compiler.get())
 }
