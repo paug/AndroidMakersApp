@@ -53,7 +53,6 @@ android {
 dependencies {
   implementation(project(":shared:data"))
   testImplementation(libs.junit)
-  androidTestImplementation(libs.androidx.test.espresso.core)
 
   implementation(libs.compose.material3)
   implementation(libs.compose.material.icons.extended)
