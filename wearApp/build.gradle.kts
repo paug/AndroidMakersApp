@@ -79,7 +79,7 @@ dependencies {
   implementation(platform(libs.firebase.bom))
   implementation(libs.firebase.auth)
   coreLibraryDesugaring(libs.desugar.jdk.libs)
-  debugImplementation(libs.compose.ui.tooling)
+  debugImplementation(libs.wear.compose.ui.tooling)
 
   implementation(libs.koin.androidx.compose) {
     exclude(group = "androidx.appcompat", module = "appcompat")
