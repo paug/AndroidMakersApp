@@ -8,11 +8,10 @@ androidx-activity = "1.9.3"
 androidx-core = "1.15.0"
 androidx-credentials = "1.3.0"
 androidx-datastore = "1.1.2"
-androidx-lifecycle = "2.8.0"    # Align with the JetBrains Lifecycle version
+androidx-lifecycle = "2.8.7"    # Used by the Wear OS app only
 androidx-wear-compose = "1.4.1"
 apollo = "4.0.0-beta.7"
-compose = "1.6.8"           # Align with the JetBrains Compose version
-compose-material3 = "1.2.1" # Align with the JetBrains Compose version
+compose = "1.7.8"               # Used by the Wear OS app only
 crashlytics-plugin = "3.0.3"
 firebase-auth = "1.12.0"
 firebase-bom = "33.9.0"
@@ -20,6 +19,7 @@ google-services-plugin = "4.4.2"
 googleid = "1.1.1"
 horologist = "0.6.22"
 jetbrainsCompose = "1.6.11"
+jetbrainsLifecycle = "2.8.4"
 junit = "4.13.2"
 koin = "4.0.2"
 kotlin = "2.1.10"
@@ -42,7 +42,6 @@ androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "and
 androidx-credentials = { group = "androidx.credentials", name = "credentials", version.ref = "androidx-credentials" }
 androidx-credentials-playServicesAuth = { group = "androidx.credentials", name = "credentials-play-services-auth", version.ref = "androidx-credentials" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "androidx-datastore" }
-androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
 apollo-adapters = { module = "com.apollographql.apollo3:apollo-adapters", version.ref = "apollo" }
 apollo-normalized-cache = { module = "com.apollographql.apollo3:apollo-normalized-cache", version.ref = "apollo" }
@@ -50,13 +49,12 @@ apollo-normalized-cache-sqlite = { module = "com.apollographql.apollo3:apollo-no
 apollo-runtime = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "apollo" }
 qdsfdhvh-imageloader = { module = "io.github.qdsfdhvh:image-loader", version.ref = "qdsfdhvh-imageloader" }
 compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "compose" }
-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "compose-material3" }
-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 firebase-auth = { module = "dev.gitlive:firebase-auth", version.ref = "firebase-auth" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
 firebase-crashlytics-ktx = { module = "com.google.firebase:firebase-crashlytics-ktx" }
 firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
+jetbrains-lifecycle-runtime = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime", version.ref = "jetbrainsLifecycle" }
 junit = { module = "junit:junit", version.ref = "junit" }
 googleid = { group = "com.google.android.libraries.identity.googleid", name = "googleid", version.ref = "googleid" }
 kotlinx-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kotlinx-atomicfu" }

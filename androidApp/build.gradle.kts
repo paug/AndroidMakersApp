@@ -54,9 +54,9 @@ dependencies {
   implementation(project(":shared:data"))
   testImplementation(libs.junit)
 
-  implementation(libs.compose.material3)
-  implementation(libs.compose.material.icons.extended)
-  implementation(libs.compose.ui.tooling)
+  implementation(compose.material3)
+  implementation(compose.materialIconsExtended)
+  implementation(compose.uiTooling)
   coreLibraryDesugaring(libs.desugar.jdk.libs)
 
   // Kotlin
@@ -65,7 +65,7 @@ dependencies {
 
   // Support
   implementation(libs.androidx.activity.compose)
-  implementation(libs.androidx.lifecycle.runtime)
+  implementation(libs.jetbrains.lifecycle.runtime)
 
   // Firebase
   implementation(platform(libs.firebase.bom))
