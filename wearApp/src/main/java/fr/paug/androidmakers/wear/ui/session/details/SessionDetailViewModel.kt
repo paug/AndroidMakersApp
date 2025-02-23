@@ -68,4 +68,4 @@ class SessionDetailViewModel(
   }
 }
 
-private fun <T> Flow<Result<T>>.filterSuccess(): Flow<T> = mapNotNull { it.getOrNull() }
+private fun <T: Any> Flow<Result<T>>.filterSuccess(): Flow<T> = mapNotNull { it.getOrNull() }
