@@ -13,8 +13,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Bookmark
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.Hyphens
@@ -41,11 +41,12 @@ import fr.paug.androidmakers.wear.ui.theme.amRed
 
 @Composable
 fun SessionDetailScreen(viewModel: SessionDetailViewModel) {
-  val session: UISession? by viewModel.uiSession.collectAsState(null)
+  val sessionState: State<UISession?> = viewModel.uiSession.collectAsState(null)
+  val session = sessionState.value
   if (session == null) {
     Loading()
   } else {
-    Session(session!!)
+    Session(session)
   }
 }
 
@@ -146,34 +147,33 @@ private fun Session(session: UISession) {
         }
       }
 
-      session.speakers
-        .filter { it.bio != null }
-        .forEach { speaker ->
-          item {
-            Text(
-              modifier = Modifier
-                .padding(horizontal = 16.dp)
-                .padding(top = 16.dp),
-              text = speaker.getFullNameAndCompany(),
-              color = MaterialTheme.colors.primary,
-              textAlign = TextAlign.Center,
-            )
-          }
-
-          item {
-            Text(
-              modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 8.dp),
-              text = speaker.bio!!,
-              style = MaterialTheme.typography.body2.copy(
-                hyphens = Hyphens.Auto,
-                lineBreak = LineBreak.Paragraph,
-                color = MaterialTheme.colors.onSurfaceVariant,
-              ),
-            )
-          }
+      for (speaker in session.speakers) {
+        val bio = speaker.bio ?: continue
+        item {
+          Text(
+            modifier = Modifier
+              .padding(horizontal = 16.dp)
+              .padding(top = 16.dp),
+            text = speaker.getFullNameAndCompany(),
+            color = MaterialTheme.colors.primary,
+            textAlign = TextAlign.Center,
+          )
         }
+
+        item {
+          Text(
+            modifier = Modifier
+              .fillMaxWidth()
+              .padding(horizontal = 8.dp),
+            text = bio,
+            style = MaterialTheme.typography.body2.copy(
+              hyphens = Hyphens.Auto,
+              lineBreak = LineBreak.Paragraph,
+              color = MaterialTheme.colors.onSurfaceVariant,
+            ),
+          )
+        }
+      }
     }
   }
 }
