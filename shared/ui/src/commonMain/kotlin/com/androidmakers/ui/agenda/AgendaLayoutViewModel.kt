@@ -25,13 +25,10 @@ class AgendaLayoutViewModel(
   private val sessionFilters = MutableStateFlow(emptyList<SessionFilter>())
 
   val state: StateFlow<AgendaLayoutState> = combine(
-      roomsRepository.getRooms()
-          .map { rooms ->
-            rooms.recover { emptyList() }
-                .getOrThrow()
-          },
-      sessionFilters,
-      ::AgendaLayoutState
+    roomsRepository.getRooms()
+      .map { it.getOrNull() ?: emptyList() },
+    sessionFilters,
+    ::AgendaLayoutState
   ).stateIn(scope(), SharingStarted.WhileSubscribed(), AgendaLayoutState())
 
   fun onFiltersChanged(sessionFilters: List<SessionFilter>) {

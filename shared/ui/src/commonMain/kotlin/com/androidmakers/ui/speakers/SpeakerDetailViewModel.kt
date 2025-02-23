@@ -21,14 +21,18 @@ class SpeakerDetailsViewModel(
 
   val uiState: StateFlow<Lce<SpeakerDetailsUiState>> = speakersRepository
       .getSpeaker(speakerId).map {
-        val exception = it.exceptionOrNull()
-        if (exception != null) {
-          Lce.Error
-        } else {
-          Lce.Content(SpeakerDetailsUiState(
-              speaker = it.getOrThrow()
-          ))
-        }
+        it.fold(
+          onSuccess = { speaker ->
+            Lce.Content(
+              SpeakerDetailsUiState(
+                speaker = speaker
+              )
+            )
+          },
+          onFailure = {
+            Lce.Error
+          }
+        )
       }
       .stateIn(
           scope = viewModelScope,

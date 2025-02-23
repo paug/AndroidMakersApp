@@ -17,26 +17,26 @@ class GetAgendaUseCase(
         sessionsRepository.getSessions(),
         roomsRepository.getRooms(),
         speakersRepository.getSpeakers(),
-    ) { sessions, rooms, speakers ->
+    ) { sessionsResult, roomsResult, speakersResult ->
 
-      sessions.exceptionOrNull()?.let {
+      val sessions = sessionsResult.getOrElse {
         it.printStackTrace()
         return@combine Result.failure(it)
       }
-      rooms.exceptionOrNull()?.let {
+      val rooms = roomsResult.getOrElse {
         it.printStackTrace()
         return@combine Result.failure(it)
       }
-      speakers.exceptionOrNull()?.let {
+      val speakers = speakersResult.getOrElse {
         it.printStackTrace()
         return@combine Result.failure(it)
       }
 
       Result.success(
           Agenda(
-              sessions = sessions.getOrThrow().associateBy { it.id },
-              rooms = rooms.getOrThrow().associateBy { it.id },
-              speakers = speakers.getOrThrow().associateBy { it.id }
+              sessions = sessions.associateBy { it.id },
+              rooms = rooms.associateBy { it.id },
+              speakers = speakers.associateBy { it.id }
           )
       )
     }

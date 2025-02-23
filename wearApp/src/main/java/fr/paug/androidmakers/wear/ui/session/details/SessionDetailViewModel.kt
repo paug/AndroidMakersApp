@@ -14,10 +14,10 @@ import fr.paug.androidmakers.wear.ui.session.UISession
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -68,5 +68,4 @@ class SessionDetailViewModel(
   }
 }
 
-private fun <T> Flow<Result<T>>.filterSuccess(): Flow<T> =
-  filter { it.isSuccess }.map { it.getOrThrow() }
+private fun <T> Flow<Result<T>>.filterSuccess(): Flow<T> = mapNotNull { it.getOrNull() }
