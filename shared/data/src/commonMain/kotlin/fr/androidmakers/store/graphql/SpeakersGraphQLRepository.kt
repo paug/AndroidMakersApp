@@ -19,16 +19,19 @@ class SpeakersGraphQLRepository(private val apolloClient: ApolloClient) : Speake
     return apolloClient.query(GetSpeakersQuery())
       .cacheAndNetwork()
       .map {
-        if (it.isSuccess) {
-          val speaker = it.getOrThrow().speakers.map { it.speakerDetails }.singleOrNull { it.id == id }?.toSpeaker()
-          if (speaker != null) {
-            Result.success(speaker)
-          } else {
-            Result.failure(DefaultApolloException("Something wrong happend"))
+        it.fold(
+          onSuccess = { value ->
+            val speaker = value.speakers.map { it.speakerDetails }.singleOrNull { it.id == id }?.toSpeaker()
+            if (speaker != null) {
+              Result.success(speaker)
+            } else {
+              Result.failure(DefaultApolloException("Something wrong happened"))
+            }
+          },
+          onFailure = { exception ->
+            Result.failure(exception)
           }
-        } else {
-          Result.failure(it.exceptionOrNull()!!)
-        }
+        )
       }
   }
 }

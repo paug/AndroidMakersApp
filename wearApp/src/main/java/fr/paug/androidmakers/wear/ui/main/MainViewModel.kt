@@ -29,10 +29,10 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.consumeAsFlow
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
@@ -84,8 +84,8 @@ class MainViewModel(
     if (currentUser != null) {
       Log.d(TAG, "Syncing bookmarks")
       val bookmarks = sessionsRepository.getBookmarks(currentUser.id).first()
-      if (bookmarks.isSuccess) {
-        bookmarksRepository.setBookmarks(bookmarks.getOrThrow())
+      bookmarks.onSuccess {
+        bookmarksRepository.setBookmarks(it)
       }
       Log.d(TAG, "Bookmarks synced")
     }
@@ -94,8 +94,7 @@ class MainViewModel(
   @OptIn(ExperimentalCoroutinesApi::class)
   private val sessions: Flow<List<UISession>?> = refreshSignal.consumeAsFlow()
     .flatMapLatest { getAgendaUseCase() }
-    .filter { it.isSuccess }
-    .map { it.getOrThrow() }
+    .mapNotNull { it.getOrNull() }
     .combine(getFavoriteSessionsUseCase()) { agenda, favoriteSessions ->
       agenda.toUISessions(favoriteSessions)
     }

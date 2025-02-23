@@ -27,15 +27,16 @@ internal fun <T : Operation.Data> ApolloCall<T>.cacheAndNetwork(): Flow<Result<T
     fetchPolicy(FetchPolicy.CacheAndNetwork)
       .toFlow()
       .collect {
-        if (it.data != null) {
+        val data = it.data
+        if (data != null) {
           hasData = true
-          emit(Result.success(it.data!!))
+          emit(Result.success(data))
         } else {
-          exception = it.exception ?: DefaultApolloException("No data found")
+          exception = it.exception
         }
       }
     if (!hasData) {
-      emit(Result.failure(exception!!))
+      emit(Result.failure(exception ?: DefaultApolloException("No data found")))
     }
   }
 }
