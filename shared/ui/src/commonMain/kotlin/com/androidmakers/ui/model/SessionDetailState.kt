@@ -19,7 +19,8 @@ class SessionDetailState(
     fun formattedDateAndRoom(): String {
         val formattedDate = formatTimeInterval(
             startTimestamp.toLocalDateTime(TimeZone.currentSystemDefault()),
-            endTimestamp.toLocalDateTime(TimeZone.currentSystemDefault()))
+            endTimestamp.toLocalDateTime(TimeZone.currentSystemDefault())
+        )
         return if (room.name.isNotEmpty()) {
             "$formattedDate, ${room.name}"
         } else {

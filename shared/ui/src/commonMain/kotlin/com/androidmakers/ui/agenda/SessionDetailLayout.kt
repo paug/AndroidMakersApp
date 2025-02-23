@@ -107,12 +107,6 @@ fun SessionDetailLayout(
   onOpenLink: (SocialsItem) -> Unit,
   onApplyForAppClinic: () -> Unit,
 ) {
-  val formattedDateAndRoom: String? = if (sessionDetailState is Lce.Content) {
-    sessionDetailState.content.formattedDateAndRoom()
-  } else {
-    null
-  }
-
   Scaffold(
     topBar = {
       TopAppBar(
@@ -167,7 +161,7 @@ fun SessionDetailLayout(
         is Lce.Loading, Lce.Error -> LoadingLayout()
         is Lce.Content -> SessionDetails(
           sessionDetails = sessionDetailState.content,
-          formattedDateAndRoom = formattedDateAndRoom!!,
+          formattedDateAndRoom = sessionDetailState.content.formattedDateAndRoom(),
           openLink = onOpenLink,
           onApplyForAppClinic = onApplyForAppClinic,
           modifier = Modifier.padding(innerPadding)

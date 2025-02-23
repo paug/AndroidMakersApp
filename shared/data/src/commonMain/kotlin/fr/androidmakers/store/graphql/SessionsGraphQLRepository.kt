@@ -16,9 +16,7 @@ class SessionsGraphQLRepository(private val apolloClient: ApolloClient) : Sessio
       RemoveBookmarkMutation(sessionId)
     }
     val response = apolloClient.mutation(mutation).execute()
-    if (response.exception != null) {
-      response.exception!!.printStackTrace()
-    }
+    response.exception?.printStackTrace()
   }
 
   override fun getSession(id: String): Flow<Result<Session>> {

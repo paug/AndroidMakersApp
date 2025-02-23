@@ -9,12 +9,11 @@ class MergeBookmarksUseCase(
     private val sessionsRepository: SessionsRepository
 ) {
   suspend operator fun invoke(userId: String) {
-    val bookmarks = sessionsRepository
-        .getBookmarks(userId)
-        .firstOrNull()
-        ?.getOrNull()
-    bookmarks?.let {
-      bookmarksRepository.merge(it)
-    }
+    sessionsRepository
+      .getBookmarks(userId)
+      .firstOrNull()
+      ?.onSuccess { bookmarks ->
+        bookmarksRepository.merge(bookmarks)
+      }
   }
 }
