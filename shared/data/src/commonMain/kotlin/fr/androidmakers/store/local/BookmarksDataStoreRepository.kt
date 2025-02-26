@@ -6,83 +6,46 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import fr.androidmakers.domain.repo.BookmarksRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.FlowCollector
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.runBlocking
 
 class BookmarksDataStoreRepository(
-    private val dataStore: DataStore<Preferences>
+  private val dataStore: DataStore<Preferences>
 ) : BookmarksRepository {
-  private var bookmarkedSessions: MutableSet<String> = HashSet()
 
-  private var selectedSessionIds: MutableStateFlow<Set<String>>
-
-  init {
-    val prefSet = runBlocking {
-      dataStore.data.map { prefs ->
-        prefs[stringSetPreferencesKey(PREF_SELECTED_SESSIONS)]
-      }.first()
+  private suspend fun update(transform: suspend (existing: Set<String>) -> Set<String>) {
+    dataStore.edit { prefs ->
+      prefs[PREF_KEY_SELECTED_SESSIONS] = transform(prefs[PREF_KEY_SELECTED_SESSIONS].orEmpty())
     }
-    if (prefSet != null) {
-      bookmarkedSessions.addAll(prefSet)
-    }
-
-    selectedSessionIds = MutableStateFlow(
-        mutableSetOf<String>().apply {
-          addAll(bookmarkedSessions)
-        }
-    )
   }
 
   override suspend fun setBookmarked(sessionId: String, bookmarked: Boolean) {
     if (bookmarked) {
-      bookmarkedSessions.add(sessionId)
+      update { it + sessionId }
     } else {
-      bookmarkedSessions.remove(sessionId)
+      update { it - sessionId }
     }
-    selectedSessionIds.value = mutableSetOf<String>().apply { addAll(bookmarkedSessions) }
-    save()
   }
 
   override fun isBookmarked(id: String): Flow<Boolean> {
-    return dataStore.data.map { prefs ->
-      val set = prefs[stringSetPreferencesKey(PREF_SELECTED_SESSIONS)] ?: emptySet()
-      set.contains(id)
-    }
-  }
-
-  private suspend fun save() {
-    dataStore.edit { prefs ->
-      prefs[stringSetPreferencesKey(PREF_SELECTED_SESSIONS)] = bookmarkedSessions
-    }
+    return favoriteSessions.map { id in it }
   }
 
   /**
-   * This is called after a successful signin or at startup to merge the remote bookmarks into
+   * This is called after a successful sign-in or at startup to merge the remote bookmarks into
    * the local ones
    */
   override suspend fun merge(bookmarks: Set<String>) {
-    bookmarkedSessions.addAll(bookmarks)
-
-    selectedSessionIds.value = mutableSetOf<String>().apply { addAll(bookmarkedSessions) }
-    save()
+    update { it + bookmarks }
   }
 
   override suspend fun setBookmarks(bookmarks: Set<String>) {
-    bookmarkedSessions.clear()
-    bookmarkedSessions.addAll(bookmarks)
-    selectedSessionIds.value = mutableSetOf<String>().apply { addAll(bookmarkedSessions) }
-    save()
+    update { bookmarks }
   }
 
-  override fun getFavoriteSessions(): Flow<Set<String>> {
-    return selectedSessionIds
-  }
+  override val favoriteSessions: Flow<Set<String>> =
+    dataStore.data.map { it[PREF_KEY_SELECTED_SESSIONS].orEmpty() }
 
   companion object {
-    private const val PREF_SELECTED_SESSIONS = "selected_sessions"
+    private val PREF_KEY_SELECTED_SESSIONS = stringSetPreferencesKey("selected_sessions")
   }
 }
