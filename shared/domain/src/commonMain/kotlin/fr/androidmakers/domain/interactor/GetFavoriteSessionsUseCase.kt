@@ -6,5 +6,5 @@ import fr.androidmakers.domain.repo.BookmarksRepository
 class GetFavoriteSessionsUseCase(
     private val bookmarksRepository: BookmarksRepository
 ) {
-  operator fun invoke() = bookmarksRepository.getFavoriteSessions()
+  operator fun invoke() = bookmarksRepository.favoriteSessions
 }

@@ -9,6 +9,5 @@ interface BookmarksRepository {
   suspend fun merge(bookmarks: Set<String>)
   suspend fun setBookmarks(bookmarks: Set<String>)
 
-  // TODO Temporary for iOS
-  fun getFavoriteSessions(): Flow<Set<String>>
+  val favoriteSessions: Flow<Set<String>>
 }
