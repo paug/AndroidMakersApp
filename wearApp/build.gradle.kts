@@ -41,7 +41,9 @@ android {
             "/*.proto",
             "google/**",
             "src/google/**",
-            "META-INF/*.version"
+            "META-INF/*.version",
+            "core/**",
+            "java/**"
           )
         }
         jniLibs {
