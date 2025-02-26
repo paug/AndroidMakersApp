@@ -8,25 +8,18 @@ import fr.androidmakers.domain.interactor.GetAgendaUseCase
 import fr.androidmakers.domain.interactor.GetFavoriteSessionsUseCase
 import fr.androidmakers.domain.interactor.SetSessionBookmarkUseCase
 import fr.androidmakers.domain.model.Agenda
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import moe.tlaster.precompose.viewmodel.viewModelScope
 
 class AgendaPagerViewModel(
-  private val getAgendaUseCase: GetAgendaUseCase,
+  getAgendaUseCase: GetAgendaUseCase,
   private val setSessionBookmarkUseCase: SetSessionBookmarkUseCase,
   private val getFavoriteSessionsUseCase: GetFavoriteSessionsUseCase,
   private val applyForAppClinicUseCase: ApplyForAppClinicUseCase,
-) : LceViewModel<Agenda>() {
-  override fun produce(): Flow<Result<Agenda>> {
-    return getAgendaUseCase()
-  }
-
+) : LceViewModel<Agenda>(
+  produce = { getAgendaUseCase() }
+) {
   fun getFavoriteSessions() = getFavoriteSessionsUseCase()
-
-  init {
-    launch(false)
-  }
 
   fun setSessionBookmark(uiSession: UISession, bookmark: Boolean) = viewModelScope.launch {
     setSessionBookmarkUseCase(uiSession.id, bookmark)
