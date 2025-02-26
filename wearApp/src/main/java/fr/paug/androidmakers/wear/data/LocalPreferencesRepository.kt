@@ -21,7 +21,6 @@ class LocalPreferencesRepository(
   }
 
   companion object {
-    private val PREF_KEY_SHOW_ONLY_BOOKMARK_SESSIONS =
-      booleanPreferencesKey("show_only_bookmark_sessions")
+    private val PREF_KEY_SHOW_ONLY_BOOKMARK_SESSIONS = booleanPreferencesKey("show_only_bookmark_sessions")
   }
 }
