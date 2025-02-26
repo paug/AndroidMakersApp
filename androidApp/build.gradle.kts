@@ -20,14 +20,6 @@ android {
 
   buildTypes {
     release {
-      kotlinOptions {
-        freeCompilerArgs += listOf(
-          "-Xno-param-assertions",
-          "-Xno-call-assertions",
-          "-Xno-receiver-assertions"
-        )
-      }
-
       packaging {
         resources {
           excludes += listOf(
