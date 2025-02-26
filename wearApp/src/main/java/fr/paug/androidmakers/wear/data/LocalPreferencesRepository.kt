@@ -10,18 +10,18 @@ import kotlinx.coroutines.flow.map
 class LocalPreferencesRepository(
   private val dataStore: DataStore<Preferences>
 ) {
-
-  companion object {
-    private const val PREF_SHOW_ONLY_BOOKMARK_SESSIONS = "show_only_bookmark_sessions"
-  }
-
   val showOnlyBookmarkedSessions: Flow<Boolean> = dataStore.data.map { prefs ->
-    prefs[booleanPreferencesKey(PREF_SHOW_ONLY_BOOKMARK_SESSIONS)] ?: false
+    prefs[PREF_KEY_SHOW_ONLY_BOOKMARK_SESSIONS] ?: false
   }
 
   suspend fun setShowOnlyBookmarkedSessions(showOnlyBookmarkedSessions: Boolean) {
     dataStore.edit { prefs ->
-      prefs[booleanPreferencesKey(PREF_SHOW_ONLY_BOOKMARK_SESSIONS)] = showOnlyBookmarkedSessions
+      prefs[PREF_KEY_SHOW_ONLY_BOOKMARK_SESSIONS] = showOnlyBookmarkedSessions
     }
+  }
+
+  companion object {
+    private val PREF_KEY_SHOW_ONLY_BOOKMARK_SESSIONS =
+      booleanPreferencesKey("show_only_bookmark_sessions")
   }
 }
