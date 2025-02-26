@@ -14,8 +14,8 @@ import moe.tlaster.precompose.viewmodel.ViewModel
 import moe.tlaster.precompose.viewmodel.viewModelScope
 
 data class AgendaLayoutState(
-    val rooms: List<Room> = emptyList(),
-    val sessionFilters: List<SessionFilter> = emptyList()
+  val rooms: List<Room> = emptyList(),
+  val sessionFilters: List<SessionFilter> = emptyList()
 )
 
 class AgendaLayoutViewModel(
@@ -26,12 +26,16 @@ class AgendaLayoutViewModel(
 
   val state: StateFlow<AgendaLayoutState> = combine(
     roomsRepository.getRooms()
-      .map { it.getOrNull() ?: emptyList() },
+      .map { it.getOrNull().orEmpty() },
     sessionFilters,
     ::AgendaLayoutState
-  ).stateIn(scope(), SharingStarted.WhileSubscribed(), AgendaLayoutState())
+  ).stateIn(
+    scope = scope(),
+    started = SharingStarted.Eagerly,
+    initialValue = AgendaLayoutState()
+  )
 
-  fun onFiltersChanged(sessionFilters: List<SessionFilter>) {
-    this.sessionFilters.value = sessionFilters
+  fun onFiltersChanged(newSessionFilters: List<SessionFilter>) {
+    sessionFilters.value = newSessionFilters
   }
 }

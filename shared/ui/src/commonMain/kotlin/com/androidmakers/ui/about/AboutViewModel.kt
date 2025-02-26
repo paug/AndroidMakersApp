@@ -13,6 +13,4 @@ class AboutViewModel(
     val openYoutube: OpenYoutubeUseCase,
     val openCoc: OpenCocUseCase,
     val openFaq: OpenFaqUseCase
-): ViewModel() {
-
-}
+): ViewModel()
