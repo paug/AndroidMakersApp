@@ -1,6 +1,5 @@
 package com.androidmakers.ui.speakers
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -25,11 +24,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import com.androidmakers.ui.common.LoadingLayout
 import com.androidmakers.ui.common.SocialButtons
 import com.androidmakers.ui.getPlatformContext
 import com.androidmakers.ui.model.Lce
-import com.seiko.imageloader.rememberImagePainter
 import dev.icerock.moko.resources.compose.stringResource
 import fr.androidmakers.domain.model.SocialsItem
 import fr.paug.androidmakers.ui.MR
@@ -37,7 +36,6 @@ import fr.paug.androidmakers.ui.MR
 
 @Composable
 fun SpeakerDetailsRoute(
-    modifier: Modifier = Modifier,
     speakerDetailsViewModel: SpeakerDetailsViewModel,
     onBackClick: () -> Unit,
 ) {
@@ -93,11 +91,11 @@ fun SpeakerDetailsScreen(
     ) {
 
       speaker.photoUrl?.let { photoUrl ->
-        Image(
+        AsyncImage(
+            model = photoUrl,
             modifier = Modifier
                 .size(64.dp)
                 .clip(CircleShape),
-            painter = rememberImagePainter(photoUrl),
             contentDescription = stringResource(MR.strings.speakers)
         )
       }

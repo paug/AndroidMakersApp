@@ -1,6 +1,5 @@
 package com.androidmakers.ui.common
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AccountCircle
@@ -14,7 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import com.seiko.imageloader.rememberImagePainter
+import coil3.compose.AsyncImage
 import dev.icerock.moko.resources.compose.stringResource
 import fr.androidmakers.domain.model.User
 import fr.paug.androidmakers.ui.MR
@@ -37,9 +36,9 @@ actual fun SigninButton(
         contentDescription = stringResource(MR.strings.signin)
       )
     } else {
-      Image(
+      AsyncImage(
+        model = user.photoUrl,
         modifier = Modifier.clip(CircleShape),
-        painter = rememberImagePainter(user.photoUrl.orEmpty()),
         contentDescription = stringResource(MR.strings.signout)
       )
     }
