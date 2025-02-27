@@ -112,7 +112,7 @@ fun VenuePager() {
           }
           val venueState = flow.collectAsState(initial = Lce.Loading)
           LceLayout(lce = venueState.value) { venue ->
-            FloorPlan(venue.floorPlanUrl ?: "")
+            FloorPlan(venue.floorPlanUrl.orEmpty())
           }
         }
       }

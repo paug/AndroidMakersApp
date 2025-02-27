@@ -1,6 +1,5 @@
 package com.androidmakers.ui.agenda
 
-import androidx.compose.runtime.Composable
 import com.androidmakers.ui.model.UISession
 import fr.androidmakers.domain.model.Agenda
 import fr.androidmakers.domain.model.Room
@@ -12,50 +11,49 @@ import fr.androidmakers.domain.utils.formatMediumDate
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.toInstant
 
-@Composable
 fun agendaToDays(agenda: Agenda, favoriteSessions: Set<String>): List<DaySchedule> {
-
-  return agenda.sessions.groupBy { it.startsAt.date }
-      .entries
-      .map {
-        DaySchedule(
-            title = it.key.formatMediumDate(),
-            date = it.key,
-            sessions = it.value.sortedBy { it.startsAt }
-                .map { it.toUISession(agenda.rooms, agenda.speakers, favoriteSessions.contains(it.id)) }
-        )
-      }
+  return agenda.sessions
+    .sortedBy { it.startsAt }
+    .groupBy { it.startsAt.date }
+    .map { (date, sessions) ->
+      DaySchedule(
+        title = date.formatMediumDate(),
+        date = date,
+        sessions = sessions
+          .map { it.toUISession(agenda.rooms, agenda.speakers, it.id in favoriteSessions) }
+      )
+    }
 }
 
 fun Speaker.toUISpeaker(): UISession.Speaker {
   return UISession.Speaker(
-      name = name ?: ""
+    name = name.orEmpty()
   )
 }
 
 fun Session.toUISession(
-    rooms: Map<String, Room>,
-    speakers: Map<String, Speaker>,
-    isFavorite: Boolean
+  rooms: Map<String, Room>,
+  speakers: Map<String, Speaker>,
+  isFavorite: Boolean
 ): UISession {
   return UISession(
-      id = id,
-      title = title,
-      startDate = startsAt.toInstant(eventTimeZone),
-      endDate = endsAt.toInstant(eventTimeZone),
-      language = language,
-      roomId = roomId,
-      room = rooms[roomId]?.name ?: "unknown",
-      speakers = this.speakers.mapNotNull { speakers[it]?.toUISpeaker() },
-      isServiceSession = isServiceSession,
-      isFavorite = isFavorite,
-      isAppClinic = isAppClinic()
+    id = id,
+    title = title,
+    startDate = startsAt.toInstant(eventTimeZone),
+    endDate = endsAt.toInstant(eventTimeZone),
+    language = language,
+    roomId = roomId,
+    room = rooms[roomId]?.name ?: "unknown",
+    speakers = this.speakers.mapNotNull { speakers[it]?.toUISpeaker() },
+    isServiceSession = isServiceSession,
+    isFavorite = isFavorite,
+    isAppClinic = isAppClinic()
   )
 }
 
 
 class DaySchedule(
-    val title: String,
-    val date: LocalDate,
-    val sessions: List<UISession>
+  val title: String,
+  val date: LocalDate,
+  val sessions: List<UISession>
 )

@@ -6,21 +6,24 @@ import fr.androidmakers.domain.PlatformContext
 import fr.androidmakers.domain.interactor.ApplyForAppClinicUseCase
 import fr.androidmakers.domain.interactor.GetAgendaUseCase
 import fr.androidmakers.domain.interactor.SetSessionBookmarkUseCase
-import fr.androidmakers.domain.model.Agenda
 import fr.androidmakers.domain.repo.BookmarksRepository
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import moe.tlaster.precompose.viewmodel.viewModelScope
 
 class AgendaPagerViewModel(
   getAgendaUseCase: GetAgendaUseCase,
   private val setSessionBookmarkUseCase: SetSessionBookmarkUseCase,
-  private val bookmarksRepository: BookmarksRepository,
+  bookmarksRepository: BookmarksRepository,
   private val applyForAppClinicUseCase: ApplyForAppClinicUseCase,
-) : LceViewModel<Agenda>(
-  produce = { getAgendaUseCase() }
+) : LceViewModel<List<DaySchedule>>(
+  produce = {
+    getAgendaUseCase()
+      .combine(bookmarksRepository.favoriteSessions) { agendaResult, favoriteSessions ->
+        agendaResult.map { agenda -> agendaToDays(agenda, favoriteSessions) }
+      }
+  }
 ) {
-  fun getFavoriteSessions() = bookmarksRepository.favoriteSessions
-
   fun setSessionBookmark(uiSession: UISession, bookmark: Boolean) = viewModelScope.launch {
     setSessionBookmarkUseCase(uiSession.id, bookmark)
   }

@@ -10,8 +10,6 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import com.androidmakers.ui.common.EmptyLayout
@@ -68,19 +66,14 @@ fun AgendaPager(
         state = pagerState,
     ) { page ->
       val viewModel = koinViewModel(vmClass = AgendaPagerViewModel::class)
-      val favoriteSessions by viewModel.getFavoriteSessions().collectAsState(emptySet())
-      SwipeRefreshableLceLayout(viewModel = viewModel) {
-        val days = agendaToDays(it, favoriteSessions)
-        val items = days[page].sessions.filter(filterList)
-        if (items.isEmpty()) {
+      SwipeRefreshableLceLayout(viewModel = viewModel) { daySchedules ->
+        val sessions = daySchedules[page].sessions.filter(filterList)
+        if (sessions.isEmpty()) {
           EmptyLayout()
         } else {
-          items.filter { favoriteSessions.contains(it.id) }.forEach {
-              it.isFavorite = true
-          }
           val platformContext = getPlatformContext()
           AgendaColumn(
-              sessionsPerStartTime = addSeparators(items),
+              sessionsPerStartTime = sessions.groupBy { it.startDate.formatShortTime() },
               onSessionClicked = onSessionClicked,
               onApplyForAppClinicClicked = { viewModel.applyForAppClinic(platformContext) },
               onSessionBookmarked = { uiSession, bookmarked ->
@@ -91,19 +84,6 @@ fun AgendaPager(
       }
     }
   }
-}
-
-private fun addSeparators(
-    sessions: List<UISession>
-): Map<String, List<UISession>> {
-  return sessions.map {
-    it.startDate.formatShortTime() to it
-  }
-      .groupBy(
-          keySelector = { it.first }
-      ) {
-        it.second
-      }
 }
 
 // algorithm to filter sessions by applying filters, if the filters is same category we keep

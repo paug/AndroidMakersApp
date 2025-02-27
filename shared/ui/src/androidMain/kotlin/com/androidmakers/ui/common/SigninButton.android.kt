@@ -39,7 +39,7 @@ actual fun SigninButton(
     } else {
       Image(
         modifier = Modifier.clip(CircleShape),
-        painter = rememberImagePainter(user.photoUrl ?: ""),
+        painter = rememberImagePainter(user.photoUrl.orEmpty()),
         contentDescription = stringResource(MR.strings.signout)
       )
     }

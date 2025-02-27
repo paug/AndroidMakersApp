@@ -8,7 +8,6 @@ import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toNSDate
 import platform.Foundation.NSDateFormatter
-import platform.Foundation.NSDateFormatterLongStyle
 import platform.Foundation.NSDateFormatterMediumStyle
 import platform.Foundation.NSDateFormatterShortStyle
 import platform.Foundation.NSDateInterval
@@ -44,5 +43,5 @@ actual fun formatTimeInterval(startDate: LocalDateTime, endDate: LocalDateTime):
   val startNSDate = startDate.toInstant(TimeZone.currentSystemDefault()).toNSDate()
   val endNSDate = endDate.toInstant(TimeZone.currentSystemDefault()).toNSDate()
 
-  return datFormatter.stringFromDateInterval(NSDateInterval(startNSDate, endNSDate)) ?: ""
+  return datFormatter.stringFromDateInterval(NSDateInterval(startNSDate, endNSDate)).orEmpty()
 }

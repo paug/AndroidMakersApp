@@ -16,7 +16,6 @@ import kotlinx.coroutines.flow.update
 import moe.tlaster.precompose.viewmodel.ViewModel
 import moe.tlaster.precompose.viewmodel.viewModelScope
 
-
 abstract class LceViewModel<T>(
   produce: () -> Flow<Result<T>>
 ) : ViewModel() {
