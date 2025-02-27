@@ -34,7 +34,6 @@ class SessionDetailViewModel(
     sessionId: String,
     sessionsRepository: SessionsRepository,
     private val roomsRepository: RoomsRepository,
-    // TODO remove the reference to repositories here
     bookmarksRepository: BookmarksRepository,
     private val speakersRepository: SpeakersRepository,
     private val setSessionBookmarkUseCase: SetSessionBookmarkUseCase,
@@ -76,12 +75,10 @@ class SessionDetailViewModel(
       )
     }
 
-  private val isBookmarked = bookmarksRepository.isBookmarked(sessionId)
-
-  val sessionDetailState = combine(
-      session,
-      room,
-      isBookmarked,
+  val sessionDetailState: Flow<Lce<SessionDetailState>> = combine(
+    session,
+    room,
+    bookmarksRepository.isBookmarked(sessionId),
   ) { sessionResult, roomResult, isBookmarked ->
 
     val session = sessionResult.getOrElse {

@@ -85,7 +85,6 @@ fun WearApp(
     currentRoute = backStackEntry.destination.route ?: ""
   }
 
-  val onSignInSuccess = viewModel::onSignInSuccess
   AndroidMakersWearTheme {
     AppScaffold {
       SwipeDismissableNavHost(
@@ -106,7 +105,6 @@ fun WearApp(
         }
         composable(Navigation.signIn) {
           SignInScreen(
-            onSignInSuccess = onSignInSuccess,
             onDismissOrTimeout = onSignInDismissOrTimeout
           )
         }

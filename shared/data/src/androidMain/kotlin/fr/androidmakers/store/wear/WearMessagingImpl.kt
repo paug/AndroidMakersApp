@@ -7,7 +7,7 @@ import kotlinx.coroutines.tasks.await
 
 class WearMessagingImpl(context: Context) : WearMessaging {
   companion object {
-    const val MESSAGE_SYNC_BOOKMARKS = "syncBookmarks"
+    private const val MESSAGE_SYNC_BOOKMARKS = "syncBookmarks"
   }
 
   private val nodeClient = Wearable.getNodeClient(context)

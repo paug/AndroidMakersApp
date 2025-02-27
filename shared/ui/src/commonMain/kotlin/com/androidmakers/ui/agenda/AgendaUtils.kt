@@ -15,7 +15,7 @@ import kotlinx.datetime.toInstant
 @Composable
 fun agendaToDays(agenda: Agenda, favoriteSessions: Set<String>): List<DaySchedule> {
 
-  return agenda.sessions.values.groupBy { it.startsAt.date }
+  return agenda.sessions.groupBy { it.startsAt.date }
       .entries
       .map {
         DaySchedule(
