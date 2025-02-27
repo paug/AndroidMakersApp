@@ -12,8 +12,8 @@ class UISession(
     val roomId: String,
     val speakers: List<Speaker>,
     val isServiceSession: Boolean,
-    var isFavorite: Boolean,
-    var isAppClinic: Boolean = false,
+    val isFavorite: Boolean,
+    val isAppClinic: Boolean = false,
 ) {
   class Speaker(val name: String)
 }

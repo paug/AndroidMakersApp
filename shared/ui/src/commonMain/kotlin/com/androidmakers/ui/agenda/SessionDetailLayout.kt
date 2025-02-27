@@ -211,7 +211,7 @@ private fun SessionDetails(
 
     Text(
       modifier = Modifier.padding(top = 16.dp),
-      text = sessionDetails.session.description ?: "",
+      text = sessionDetails.session.description.orEmpty(),
       textAlign = TextAlign.Start,
       style = MaterialTheme.typography.bodyLarge,
     )
@@ -347,7 +347,7 @@ private fun Speaker(
 ) {
 
   Column(
-    modifier = Modifier.padding(16.dp),
+    modifier = modifier.padding(16.dp),
     verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically),
     horizontalAlignment = Alignment.Start
   ) {
@@ -395,7 +395,7 @@ fun SocialButtons(
       IconButton(
         onClick = { openLink(socialsItem) }
       ) {
-        val socialName = socialsItem.name?.lowercase() ?: ""
+        val socialName = socialsItem.name?.lowercase().orEmpty()
         when {
           socialName.contains("twitter") || socialName == "x" -> {
             Icon(

@@ -76,18 +76,13 @@ private fun AgendaPagerOrLoading(
     onSessionClick: (sessionId: String) -> Unit,
 ) {
   val viewModel = koinViewModel(vmClass = AgendaPagerViewModel::class)
-  val favoriteSessions by viewModel.getFavoriteSessions().collectAsState(emptySet())
-  ButtonRefreshableLceLayout(viewModel) {
-    val days = agendaToDays(it, favoriteSessions)
-
+  ButtonRefreshableLceLayout(viewModel) { daySchedules ->
     AgendaPager(
-        initialPageIndex = days.todayPageIndex(),
-        days = days.map { it.title },
+        initialPageIndex = daySchedules.todayPageIndex(),
+        days = daySchedules.map { it.title },
         filterList = sessionFilters,
         onSessionClicked = {
-          onSessionClick(
-              it.id
-          )
+          onSessionClick(it.id)
         }
     )
   }
@@ -96,7 +91,7 @@ private fun AgendaPagerOrLoading(
 /** Returns the index of today's [DaySchedule] in `this`, or zero. */
 private fun List<DaySchedule>.todayPageIndex(): Int {
   val today = Clock.System.todayIn(eventTimeZone)
-  return withIndex().firstOrNull { it.value.date == today }?.index ?: 0
+  return indexOfFirst { it.date == today }.coerceAtLeast(0)
 }
 
 @Composable

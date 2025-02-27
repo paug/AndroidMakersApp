@@ -47,13 +47,13 @@ fun SessionDetails.toSession(): Session {
       description = description,
       title = title,
       complexity = complexity?.let { Complexity.valueOf(it) },
-      language = language ?: "",
+      language = language.orEmpty(),
       platformUrl = "",
       slido = "",
       speakers = speakers.map { it.id },
       tags = tags,
       videoURL = "",
-      roomId = this.room?.id ?: "",
+      roomId = this.room?.id.orEmpty(),
       endsAt = this.endsAt,
       startsAt = this.startsAt,
       isServiceSession = this.type == "service",
@@ -64,11 +64,11 @@ fun SessionDetails.toSession(): Session {
 fun GetVenueQuery.Venue.toVenue(): Venue {
   return Venue(
       name = name,
-      address = address ?: "",
-      coordinates = coordinates ?: "",
+      address = address.orEmpty(),
+      coordinates = coordinates.orEmpty(),
       descriptionFr = descriptionFr,
       description = description,
       floorPlanUrl = floorPlanUrl,
-      imageUrl = imageUrl ?: ""
+      imageUrl = imageUrl.orEmpty()
   )
 }

@@ -15,7 +15,7 @@ actual class ShareSessionUseCase {
     speakers: List<Speaker>,
     formattedDateAndRoom: String
   ) {
-    val speakersString = speakers.joinToString(", ") { it.name ?: "" }
+    val speakersString = speakers.joinToString(", ") { it.name.orEmpty() }
 
     val sessionInfos = if (speakers.isEmpty()) {
       NSString.stringWithFormat(
