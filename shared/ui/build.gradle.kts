@@ -34,6 +34,7 @@ kotlin {
       api(libs.precompose.viewmodel)
       api(libs.precompose.koin)
       api(libs.openfeedback.m3)
+      implementation(libs.okio)   // Used by Openfeedback
       implementation(libs.materii.pullrefresh)
 
       implementation(project(":shared:domain"))
