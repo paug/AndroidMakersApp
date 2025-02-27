@@ -1,17 +1,16 @@
 package fr.paug.androidmakers.wear.ui.settings
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import fr.paug.androidmakers.wear.data.LocalPreferencesRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class SettingsViewModel(
-  application: Application,
   private val localPreferencesRepository: LocalPreferencesRepository,
-) : AndroidViewModel(application) {
+) : ViewModel() {
 
-  val showOnlyBookmarkedSessions = localPreferencesRepository.showOnlyBookmarkedSessions
+  val showOnlyBookmarkedSessions: Flow<Boolean> = localPreferencesRepository.showOnlyBookmarkedSessions
 
   fun setShowOnlyBookmarkedSessions(showOnlyBookmarkedSessions: Boolean) {
     viewModelScope.launch {

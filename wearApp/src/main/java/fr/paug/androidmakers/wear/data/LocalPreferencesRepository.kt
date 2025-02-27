@@ -11,7 +11,7 @@ class LocalPreferencesRepository(
   private val dataStore: DataStore<Preferences>
 ) {
   val showOnlyBookmarkedSessions: Flow<Boolean> = dataStore.data.map { prefs ->
-    prefs[PREF_KEY_SHOW_ONLY_BOOKMARK_SESSIONS] ?: false
+    prefs[PREF_KEY_SHOW_ONLY_BOOKMARK_SESSIONS] == true
   }
 
   suspend fun setShowOnlyBookmarkedSessions(showOnlyBookmarkedSessions: Boolean) {

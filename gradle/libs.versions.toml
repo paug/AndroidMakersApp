@@ -23,7 +23,6 @@ jetbrainsLifecycle = "2.8.4"
 junit = "4.13.2"
 koin = "4.0.2"
 kotlin = "2.1.10"
-kotlinx-atomicfu = "0.27.0"
 kotlinx-coroutines = "1.10.1"
 kotlinx-datetime = "0.6.2"
 moko-resources = "0.24.5"
@@ -57,7 +56,6 @@ firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
 jetbrains-lifecycle-runtime = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime", version.ref = "jetbrainsLifecycle" }
 junit = { module = "junit:junit", version.ref = "junit" }
 googleid = { group = "com.google.android.libraries.identity.googleid", name = "googleid", version.ref = "googleid" }
-kotlinx-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kotlinx-atomicfu" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "kotlinx-coroutines" }

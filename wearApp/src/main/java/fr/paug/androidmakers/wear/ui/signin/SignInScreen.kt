@@ -7,13 +7,14 @@ import androidx.compose.ui.Modifier
 import com.google.android.horologist.auth.composables.dialogs.SignedInConfirmationDialog
 import com.google.android.horologist.auth.composables.screens.AuthErrorScreen
 import com.google.android.horologist.auth.ui.googlesignin.signin.GoogleSignInScreen
+import com.google.android.horologist.auth.ui.googlesignin.signin.GoogleSignInViewModel
 import com.google.android.horologist.compose.layout.ScreenScaffold
+import org.koin.androidx.compose.koinViewModel
 
 private const val TAG = "SignInScreen"
 
 @Composable
 fun SignInScreen(
-    onSignInSuccess: () -> Unit,
     onDismissOrTimeout: () -> Unit,
 ) {
   ScreenScaffold {
@@ -26,14 +27,7 @@ fun SignInScreen(
         failedContent = {
           AuthErrorScreen()
         },
-        viewModel = GoogleSignInViewModel(
-            onSignInSuccess = {
-              onSignInSuccess()
-            },
-            onSignInFailed = {
-              Log.d(TAG, "onSignInFailed")
-            }
-        )
+        viewModel = koinViewModel<GoogleSignInViewModel>()
     ) { successState ->
       SignedInConfirmationDialog(
           modifier = Modifier.fillMaxSize(),

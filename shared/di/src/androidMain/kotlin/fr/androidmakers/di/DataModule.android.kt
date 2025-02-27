@@ -25,7 +25,7 @@ actual val dataPlatformModule = module {
     }
   }
 
-  single<WearMessaging> {
+  factory<WearMessaging> {
     WearMessagingImpl(get())
   }
 }
