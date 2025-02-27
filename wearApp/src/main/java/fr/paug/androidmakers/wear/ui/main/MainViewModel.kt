@@ -1,6 +1,5 @@
 package fr.paug.androidmakers.wear.ui.main
 
-import android.app.Application
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,7 +7,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.wearable.MessageClient
 import com.google.android.gms.wearable.MessageClient.OnMessageReceivedListener
 import com.google.android.gms.wearable.MessageEvent
-import com.google.android.gms.wearable.Wearable
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.auth
 import fr.androidmakers.domain.interactor.GetAgendaUseCase
@@ -50,7 +48,7 @@ private val DAY_1_DATE = LocalDate(year = 2024, month = Month.APRIL, dayOfMonth 
 private val DAY_2_DATE = DAY_1_DATE.plus(1, DateTimeUnit.DAY)
 
 class MainViewModel(
-  application: Application,
+  messageClient: MessageClient,
   userRepository: UserRepository,
   private val googleSignInClient: GoogleSignInClient,
   localPreferencesRepository: LocalPreferencesRepository,
@@ -64,8 +62,8 @@ class MainViewModel(
     initialValue = userRepository.currentUser
   )
 
-  private val sessionsRefreshTrigger = MutableStateFlow(0)
   private val bookmarksRefreshTrigger = MutableStateFlow(0)
+  private val sessionsRefreshTrigger = MutableStateFlow(0)
 
   init {
     viewModelScope.launch {
@@ -75,7 +73,7 @@ class MainViewModel(
     }
 
     viewModelScope.launch {
-      Wearable.getMessageClient(application).getEventsFlow().collect { messageEvent ->
+      messageClient.getEventsFlow().collect { messageEvent ->
         if (messageEvent.path == MESSAGE_SYNC_BOOKMARKS) {
           Log.d(TAG, "Received syncBookmarks message")
           bookmarksRefreshTrigger.update { it + 1 }
@@ -151,8 +149,8 @@ class MainViewModel(
   }
 
   fun refresh() {
-    sessionsRefreshTrigger.update { it + 1 }
     bookmarksRefreshTrigger.update { it + 1 }
+    sessionsRefreshTrigger.update { it + 1 }
   }
 
   companion object {

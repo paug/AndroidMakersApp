@@ -28,7 +28,7 @@ val signInModule = module {
         .build()
     )
   }
-  single<GoogleSignInEventListener> {
+  factory<GoogleSignInEventListener> {
     object : GoogleSignInEventListener {
       override suspend fun onSignedIn(account: GoogleSignInAccount) {
         Log.d(TAG, "Google sign in success")
