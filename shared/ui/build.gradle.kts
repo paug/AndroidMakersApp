@@ -30,9 +30,10 @@ kotlin {
       implementation(compose.materialIconsExtended)
       implementation(compose.components.uiToolingPreview)
       api(libs.coil.compose)
-      api(libs.precompose)
-      api(libs.precompose.viewmodel)
-      api(libs.precompose.koin)
+      api(libs.jetbrains.navigation.compose)
+      api(libs.jetbrains.lifecycle.viewmodel)
+      api(libs.koin.compose)
+      api(libs.koin.compose.viewmodel)
       api(libs.openfeedback.m3)
       implementation(libs.kotlinx.coroutines.core)
       implementation(libs.okio)   // Used by Openfeedback
