@@ -25,7 +25,6 @@ kotlin {
         implementation(libs.apollo.normalized.cache.sqlite)
         implementation(libs.apollo.normalized.cache)
 
-        implementation(libs.kotlinx.atomicfu)
         api(libs.androidx.datastore.preferences)
 
         api(libs.firebase.auth)

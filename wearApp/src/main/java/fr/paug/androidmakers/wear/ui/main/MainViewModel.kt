@@ -2,38 +2,34 @@ package fr.paug.androidmakers.wear.ui.main
 
 import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.wearable.Wearable
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.auth
 import fr.androidmakers.domain.interactor.GetAgendaUseCase
-import fr.androidmakers.domain.interactor.GetFavoriteSessionsUseCase
 import fr.androidmakers.domain.model.Agenda
 import fr.androidmakers.domain.model.User
 import fr.androidmakers.domain.repo.BookmarksRepository
 import fr.androidmakers.domain.repo.SessionsRepository
 import fr.androidmakers.domain.repo.UserRepository
-import fr.paug.androidmakers.wear.applicationContext
 import fr.paug.androidmakers.wear.data.LocalPreferencesRepository
 import fr.paug.androidmakers.wear.ui.session.UISession
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
@@ -51,36 +47,33 @@ private val DAY_2_DATE = DAY_1_DATE.plus(1, DateTimeUnit.DAY)
 class MainViewModel(
   application: Application,
   private val userRepository: UserRepository,
+  private val googleSignInClient: GoogleSignInClient,
   localPreferencesRepository: LocalPreferencesRepository,
   getAgendaUseCase: GetAgendaUseCase,
   private val bookmarksRepository: BookmarksRepository,
   private val sessionsRepository: SessionsRepository,
-  getFavoriteSessionsUseCase: GetFavoriteSessionsUseCase,
-) : AndroidViewModel(application) {
-  private val _user = MutableStateFlow<User?>(null)
+) : ViewModel() {
+  val user: StateFlow<User?>
+    get() = userRepository.user
 
-  val user: StateFlow<User?> = _user
-
-  private val refreshSignal = Channel<Unit>()
+  private val sessionsRefreshTrigger = MutableStateFlow(0)
+  private val bookmarksRefreshTrigger = MutableStateFlow(0)
 
   init {
     viewModelScope.launch {
-      _user.emit(userRepository.getUser())
-      maybeSyncBookmarks()
-      refreshSignal.send(Unit)
+      // Sync bookmarks when the user changes or a refresh is requested
+      combine(user, bookmarksRefreshTrigger) { currentUser, trigger -> currentUser }
+        .collectLatest { currentUser -> maybeSyncBookmarks(currentUser) }
     }
 
     val messageClient = Wearable.getMessageClient(application)
     messageClient.addListener {
       Log.d(TAG, "Received syncBookmarks message")
-      viewModelScope.launch {
-        maybeSyncBookmarks()
-      }
+      bookmarksRefreshTrigger.update { it + 1 }
     }
   }
 
-  private suspend fun maybeSyncBookmarks() {
-    val currentUser = _user.value
+  private suspend fun maybeSyncBookmarks(currentUser: User?) {
     if (currentUser != null) {
       Log.d(TAG, "Syncing bookmarks")
       val bookmarks = sessionsRepository.getBookmarks(currentUser.id).first()
@@ -92,25 +85,30 @@ class MainViewModel(
   }
 
   @OptIn(ExperimentalCoroutinesApi::class)
-  private val sessions: Flow<List<UISession>?> = refreshSignal.consumeAsFlow()
-    .flatMapLatest { getAgendaUseCase() }
-    .mapNotNull { it.getOrNull() }
-    .combine(getFavoriteSessionsUseCase()) { agenda, favoriteSessions ->
-      agenda.toUISessions(favoriteSessions)
+  private val sessions: Flow<List<UISession>?> = combine(
+    sessionsRefreshTrigger
+      .flatMapLatest { getAgendaUseCase() }
+      .mapNotNull { it.getOrNull() },
+    bookmarksRepository.favoriteSessions,
+    localPreferencesRepository.showOnlyBookmarkedSessions
+  ) { agenda, favoriteSessions, showOnlyBookmarked ->
+    val sessions = agenda.toUISessions(favoriteSessions)
+    if (showOnlyBookmarked) {
+      sessions.filter { it.isBookmarked }
+    } else {
+      sessions
     }
-    .combine(localPreferencesRepository.showOnlyBookmarkedSessions) { sessions, showOnlyBookmarked ->
-      if (showOnlyBookmarked) {
-        sessions.filter { it.isBookmarked }
-      } else {
-        sessions
-      }
-    }
-    .stateIn(viewModelScope, SharingStarted.Lazily, null)
+  }
+    .stateIn(
+      scope = viewModelScope,
+      started = SharingStarted.Eagerly,
+      initialValue = null
+    )
 
-  val sessionsDay1 =
+  val sessionsDay1: Flow<List<UISession>?> =
     sessions.map { sessions -> sessions?.filter { it.session.startsAt.date == DAY_1_DATE } }
 
-  val sessionsDay2 =
+  val sessionsDay2: Flow<List<UISession>?> =
     sessions.map { sessions -> sessions?.filter { it.session.startsAt.date == DAY_2_DATE } }
 
   /**
@@ -125,39 +123,23 @@ class MainViewModel(
     }
   }
 
-  fun onSignInSuccess() {
-    viewModelScope.launch {
-      _user.value = userRepository.getUser()
-      maybeSyncBookmarks()
-    }
-  }
-
-  @OptIn(DelicateCoroutinesApi::class)
   fun signOut() {
-    val googleSignInClient = GoogleSignIn.getClient(
-      applicationContext,
-      GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-        .requestIdToken("985196411897-r7edbi9jgo3hfupekcmdrg66inonj0o5.apps.googleusercontent.com")
-        .build()
-    )
-    googleSignInClient.signOut()
-    googleSignInClient.revokeAccess()
-    GlobalScope.launch {
+    viewModelScope.launch(NonCancellable) {
+      googleSignInClient.signOut()
+      googleSignInClient.revokeAccess()
       Firebase.auth.signOut()
+      userRepository.setUser(null)
     }
-    _user.value = null
   }
 
   fun refresh() {
-    viewModelScope.launch {
-      maybeSyncBookmarks()
-      refreshSignal.send(Unit)
-    }
+    sessionsRefreshTrigger.update { it + 1 }
+    bookmarksRefreshTrigger.update { it + 1 }
   }
 }
 
 private fun Agenda.toUISessions(favoriteSessions: Set<String>): List<UISession> {
-  return sessions.values.mapNotNull { session ->
+  return sessions.mapNotNull { session ->
     UISession(
       session = session,
       speakers = session.speakers.map {

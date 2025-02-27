@@ -27,6 +27,7 @@ import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.GoogleAuthProvider
 import dev.gitlive.firebase.auth.auth
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import org.koin.compose.KoinContext
@@ -88,7 +89,7 @@ class MainActivity : ComponentActivity() {
   }
 
   private fun signOut() {
-    lifecycleScope.launch {
+    lifecycleScope.launch(NonCancellable) {
       Firebase.auth.signOut()
       credentialManager.clearCredentialState(ClearCredentialStateRequest())
       UserData().userRepository.setUser(null)

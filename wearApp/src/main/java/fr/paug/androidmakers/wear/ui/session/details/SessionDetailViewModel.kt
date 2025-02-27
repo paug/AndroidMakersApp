@@ -32,7 +32,11 @@ class SessionDetailViewModel(
 
   private val session: Flow<Session> = sessionsRepository.getSession(sessionId)
     .filterSuccess()
-    .stateIn(viewModelScope, started = SharingStarted.Lazily, initialValue = null)
+    .stateIn(
+      scope = viewModelScope,
+      started = SharingStarted.Eagerly,
+      initialValue = null
+    )
     .filterNotNull()
 
   private val room: Flow<Room> = session.map { session ->
