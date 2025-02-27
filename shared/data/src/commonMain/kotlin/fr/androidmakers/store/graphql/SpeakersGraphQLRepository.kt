@@ -1,7 +1,7 @@
 package fr.androidmakers.store.graphql
 
-import com.apollographql.apollo3.ApolloClient
-import com.apollographql.apollo3.exception.DefaultApolloException
+import com.apollographql.apollo.ApolloClient
+import com.apollographql.apollo.exception.DefaultApolloException
 import fr.androidmakers.domain.model.Speaker
 import fr.androidmakers.domain.repo.SpeakersRepository
 import kotlinx.coroutines.flow.Flow
