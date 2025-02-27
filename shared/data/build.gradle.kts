@@ -26,6 +26,7 @@ kotlin {
         implementation(libs.apollo.normalized.cache)
 
         api(libs.androidx.datastore.preferences)
+        implementation(libs.kotlinx.coroutines.core)
         implementation(libs.okio) // Used by DataStore and others
 
         api(libs.firebase.auth)
