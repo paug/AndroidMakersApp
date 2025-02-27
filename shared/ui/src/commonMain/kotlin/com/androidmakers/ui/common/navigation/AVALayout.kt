@@ -80,12 +80,12 @@ fun AVALayout(
   val avaNavController = rememberNavigator()
   val navBackStackEntry by avaNavController.currentEntry.collectAsState(null)
   val currentRoute = navBackStackEntry?.route?.route
-  val userFlow = remember { UserData().userRepository.user }
+  val userRepository = remember { UserData().userRepository }
 
   val agendaFilterDrawerState = rememberDrawerState(DrawerValue.Closed)
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
-  val user by userFlow.collectAsStateWithLifecycle()
+  val user by userRepository.user.collectAsStateWithLifecycle(userRepository.currentUser)
 
   Scaffold(
       modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),

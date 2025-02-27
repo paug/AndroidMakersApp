@@ -92,7 +92,6 @@ class MainActivity : ComponentActivity() {
     lifecycleScope.launch(NonCancellable) {
       Firebase.auth.signOut()
       credentialManager.clearCredentialState(ClearCredentialStateRequest())
-      UserData().userRepository.setUser(null)
     }
   }
 
@@ -120,7 +119,6 @@ class MainActivity : ComponentActivity() {
         }
       } catch (e: GetCredentialException) {
         Log.e(TAG, "Retrieving of credential failed", e)
-        UserData().userRepository.setUser(null)
       }
     }
   }
@@ -131,7 +129,6 @@ class MainActivity : ComponentActivity() {
     val result = Firebase.auth.signInWithCredential(firebaseCredential)
     // Sign in success, update UI with the signed-in user's information
     with(UserData()) {
-      userRepository.setUser(result.user)
       result.user?.uid?.let {
         mergeBookmarksUseCase(it)
       }

@@ -46,15 +46,18 @@ private val DAY_2_DATE = DAY_1_DATE.plus(1, DateTimeUnit.DAY)
 
 class MainViewModel(
   application: Application,
-  private val userRepository: UserRepository,
+  userRepository: UserRepository,
   private val googleSignInClient: GoogleSignInClient,
   localPreferencesRepository: LocalPreferencesRepository,
   getAgendaUseCase: GetAgendaUseCase,
   private val bookmarksRepository: BookmarksRepository,
   private val sessionsRepository: SessionsRepository,
 ) : ViewModel() {
-  val user: StateFlow<User?>
-    get() = userRepository.user
+  val user: StateFlow<User?> = userRepository.user.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.Eagerly,
+    initialValue = userRepository.currentUser
+  )
 
   private val sessionsRefreshTrigger = MutableStateFlow(0)
   private val bookmarksRefreshTrigger = MutableStateFlow(0)
@@ -128,7 +131,6 @@ class MainViewModel(
       googleSignInClient.signOut()
       googleSignInClient.revokeAccess()
       Firebase.auth.signOut()
-      userRepository.setUser(null)
     }
   }
 

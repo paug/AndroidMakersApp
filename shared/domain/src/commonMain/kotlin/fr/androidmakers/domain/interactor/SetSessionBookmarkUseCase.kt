@@ -13,7 +13,7 @@ class SetSessionBookmarkUseCase(
 ) {
   suspend operator fun invoke(sessionId: String, isBookmark: Boolean) {
     bookmarksRepository.setBookmarked(sessionId, isBookmark)
-    userRepository.user.value?.id?.let { token ->
+    userRepository.currentUser?.id?.let { token ->
       sessionsRepository.setBookmark(token, sessionId, isBookmark)
     }
     messagingRepository.sendSyncBookmarksMessage()
