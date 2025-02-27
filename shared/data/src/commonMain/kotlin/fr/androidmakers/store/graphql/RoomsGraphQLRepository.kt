@@ -1,6 +1,6 @@
 package fr.androidmakers.store.graphql
 
-import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo.ApolloClient
 import fr.androidmakers.domain.model.Room
 import fr.androidmakers.domain.repo.RoomsRepository
 import kotlinx.coroutines.flow.Flow

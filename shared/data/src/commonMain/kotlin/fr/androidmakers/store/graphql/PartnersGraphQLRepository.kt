@@ -1,6 +1,6 @@
 package fr.androidmakers.store.graphql
 
-import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo.ApolloClient
 import fr.androidmakers.domain.model.Partner
 import fr.androidmakers.domain.model.PartnerGroup
 import fr.androidmakers.domain.repo.PartnersRepository
