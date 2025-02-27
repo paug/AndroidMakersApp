@@ -30,7 +30,7 @@ fun SocialButtons(
             onClickOnItem(socialsItem)
           }
       ) {
-        val socialName = socialsItem.name?.lowercase() ?: ""
+        val socialName = socialsItem.name?.lowercase().orEmpty()
         when {
           socialName.contains("twitter") || socialName == "x" -> {
             Icon(

@@ -82,7 +82,7 @@ fun WearApp(
   }
 
   navController.currentBackStackEntryAsState().value?.let { backStackEntry ->
-    currentRoute = backStackEntry.destination.route ?: ""
+    currentRoute = backStackEntry.destination.route.orEmpty()
   }
 
   AndroidMakersWearTheme {
