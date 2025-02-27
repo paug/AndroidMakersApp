@@ -50,6 +50,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
 import com.androidmakers.ui.common.EmojiUtils
 import com.androidmakers.ui.common.LoadingLayout
 import com.androidmakers.ui.common.separatorColor
@@ -57,7 +58,6 @@ import com.androidmakers.ui.getPlatformContext
 import com.androidmakers.ui.model.Lce
 import com.androidmakers.ui.model.SessionDetailState
 import com.androidmakers.ui.theme.AMColor
-import com.seiko.imageloader.rememberImagePainter
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import fr.androidmakers.domain.model.SocialsItem
@@ -352,11 +352,11 @@ private fun Speaker(
     horizontalAlignment = Alignment.Start
   ) {
     speaker.photoUrl?.let { speakerPhotoUrl ->
-      Image(
+      AsyncImage(
+        model = speakerPhotoUrl,
         modifier = Modifier
           .size(64.dp)
           .clip(CircleShape),
-        painter = rememberImagePainter(speakerPhotoUrl),
         contentDescription = stringResource(MR.strings.speakers)
       )
     }

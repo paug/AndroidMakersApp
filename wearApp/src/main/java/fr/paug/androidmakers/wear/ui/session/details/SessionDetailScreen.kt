@@ -136,8 +136,7 @@ private fun Session(session: UISession) {
           Text(
             modifier = Modifier
               .fillMaxWidth()
-              .padding(horizontal = 8.dp)
-              .padding(top = 16.dp),
+              .padding(start = 8.dp, top = 16.dp, end = 8.dp),
             text = description,
             style = MaterialTheme.typography.body1.copy(
               hyphens = Hyphens.Auto,

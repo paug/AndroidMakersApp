@@ -12,6 +12,7 @@ androidx-lifecycle = "2.8.7"    # Used by the Wear OS app only
 androidx-wear-compose = "1.4.1"
 apollo = "4.1.1"
 apollo-adapters = "0.0.4"
+coil = "3.0.0-alpha10"          # TODO upgrade after migrating to Compose 1.7
 compose = "1.7.8"               # Used by the Wear OS app only
 crashlytics-plugin = "3.0.3"
 firebase-auth = "1.12.0"
@@ -26,6 +27,7 @@ koin = "4.0.2"
 kotlin = "2.1.10"
 kotlinx-coroutines = "1.10.1"
 kotlinx-datetime = "0.6.2"
+ktor = "3.1.1"
 moko-resources = "0.24.5"
 moko-graphics = "0.10.0"
 okhttp = "4.12.0"
@@ -35,7 +37,6 @@ playServices-auth = "21.3.0"
 playServices-wearable = "19.0.0"
 precompose = "1.6.1"
 pullrefresh = "1.3.0"
-qdsfdhvh-imageloader = "1.10.0"
 
 [libraries]
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidx-activity" }
@@ -48,20 +49,23 @@ apollo-adapters-kotlinx-datetime = { module = "com.apollographql.adapters:apollo
 apollo-normalized-cache = { module = "com.apollographql.apollo:apollo-normalized-cache", version.ref = "apollo" }
 apollo-normalized-cache-sqlite = { module = "com.apollographql.apollo:apollo-normalized-cache-sqlite", version.ref = "apollo" }
 apollo-runtime = { module = "com.apollographql.apollo:apollo-runtime", version.ref = "apollo" }
-qdsfdhvh-imageloader = { module = "io.github.qdsfdhvh:image-loader", version.ref = "qdsfdhvh-imageloader" }
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil" }
+coil-network-ktor3 = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
 compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "compose" }
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 firebase-auth = { module = "dev.gitlive:firebase-auth", version.ref = "firebase-auth" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
 firebase-crashlytics-ktx = { module = "com.google.firebase:firebase-crashlytics-ktx" }
 firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
+googleid = { group = "com.google.android.libraries.identity.googleid", name = "googleid", version.ref = "googleid" }
 jetbrains-lifecycle-runtime = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime", version.ref = "jetbrainsLifecycle" }
 junit = { module = "junit:junit", version.ref = "junit" }
-googleid = { group = "com.google.android.libraries.identity.googleid", name = "googleid", version.ref = "googleid" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "kotlinx-coroutines" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
+ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
 materii-pullrefresh = { group = "dev.materii.pullrefresh", name = "pullrefresh", version.ref = "pullrefresh" }
 moko-resources = { module = "dev.icerock.moko:resources", version.ref = "moko-resources" }
 moko-resources_compose = { module = "dev.icerock.moko:resources-compose", version.ref = "moko-resources" }

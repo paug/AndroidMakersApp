@@ -29,7 +29,7 @@ kotlin {
       implementation(compose.components.resources)
       implementation(compose.materialIconsExtended)
       implementation(compose.components.uiToolingPreview)
-      api(libs.qdsfdhvh.imageloader)
+      api(libs.coil.compose)
       api(libs.precompose)
       api(libs.precompose.viewmodel)
       api(libs.precompose.koin)
@@ -40,12 +40,21 @@ kotlin {
       implementation(project(":shared:domain"))
       implementation(project(":shared:di"))
     }
+    androidMain.dependencies {
+      implementation(libs.coil.network.okhttp)
+    }
+    iosMain.dependencies {
+      implementation(libs.coil.network.ktor3)
+      implementation(libs.ktor.client.darwin)
+    }
   }
 }
 
 configurations.configureEach {
   // Remove unnecessary dependency of Precompose and Moko
   exclude(group = "androidx.appcompat", module = "appcompat")
+  // Disable Android Drawable support in Coil
+  exclude(group = "com.google.accompanist", module = "accompanist-drawablepainter")
 }
 
 android {

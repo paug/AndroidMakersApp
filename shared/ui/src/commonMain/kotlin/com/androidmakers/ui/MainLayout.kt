@@ -2,6 +2,10 @@ package com.androidmakers.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import coil3.ImageLoader
+import coil3.annotation.ExperimentalCoilApi
+import coil3.compose.setSingletonImageLoaderFactory
+import coil3.request.crossfade
 import com.androidmakers.ui.agenda.SessionDetailScreen
 import com.androidmakers.ui.agenda.SessionDetailViewModel
 import com.androidmakers.ui.common.SigninCallbacks
@@ -23,6 +27,7 @@ import org.koin.core.parameter.parametersOf
 /**
  * The main layout: entry point of the application
  */
+@OptIn(ExperimentalCoilApi::class)
 @Composable
 fun MainLayout(
     versionCode: String,
@@ -30,6 +35,12 @@ fun MainLayout(
     signinCallbacks: SigninCallbacks,
     deeplink: String? = null,
 ) {
+  setSingletonImageLoaderFactory { context ->
+    ImageLoader.Builder(context)
+      .crossfade(true)
+      .build()
+  }
+
   val navigator = rememberNavigator()
   MainNavHost(
       mainNavController = navigator,

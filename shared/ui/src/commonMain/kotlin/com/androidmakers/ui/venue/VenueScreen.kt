@@ -1,8 +1,6 @@
 package com.androidmakers.ui.venue
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -17,8 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import com.androidmakers.ui.model.UIVenue
-import com.seiko.imageloader.rememberImagePainter
 import dev.icerock.moko.resources.compose.stringResource
 import fr.paug.androidmakers.ui.MR
 
@@ -29,13 +27,11 @@ fun VenueLayout(
 ) {
   Column(
       modifier = Modifier
-          .fillMaxWidth()
-          .fillMaxHeight()
+          .fillMaxSize()
           .verticalScroll(rememberScrollState())
   ) {
-    val painter = rememberImagePainter(uiVenue.imageUrl)
-    Image(
-        painter = painter,
+    AsyncImage(
+        model = uiVenue.imageUrl,
         contentDescription = null,
         contentScale = ContentScale.FillWidth,
         modifier = Modifier

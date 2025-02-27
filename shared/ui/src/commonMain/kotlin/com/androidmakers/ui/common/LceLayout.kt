@@ -2,7 +2,7 @@ package com.androidmakers.ui.common
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -26,9 +26,7 @@ import fr.paug.androidmakers.ui.MR
 @Composable
 fun LoadingLayout() {
   Box(
-      modifier = Modifier
-          .fillMaxWidth()
-          .fillMaxHeight(),
+      modifier = Modifier.fillMaxSize(),
       contentAlignment = Alignment.Center
   ) {
     CircularProgressIndicator()
@@ -58,9 +56,7 @@ fun ErrorLayout(
     onClick: (() -> Unit)? = null
 ) {
   Box(
-      modifier = Modifier
-          .fillMaxWidth()
-          .fillMaxHeight(),
+      modifier = Modifier.fillMaxSize(),
       contentAlignment = Alignment.Center
   ) {
     Column(
@@ -88,8 +84,7 @@ fun ErrorLayout(
 fun EmptyLayout(modifier: Modifier = Modifier) {
   Box(
       modifier = modifier
-          .fillMaxWidth()
-          .fillMaxHeight()
+          .fillMaxSize()
           .padding(16.dp),
       contentAlignment = Alignment.Center
   ) {
