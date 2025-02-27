@@ -20,7 +20,6 @@ kotlin {
     commonMain.dependencies {
       implementation(libs.kotlinx.coroutines.core)
       api(libs.kotlinx.datetime)
-      implementation(libs.okio)
     }
     androidMain.dependencies {
       implementation(libs.androidx.core)

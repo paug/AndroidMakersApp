@@ -1,13 +1,13 @@
 package fr.androidmakers.store.graphql
 
-import com.apollographql.apollo3.ApolloCall
-import com.apollographql.apollo3.api.ApolloResponse
-import com.apollographql.apollo3.api.Operation
-import com.apollographql.apollo3.cache.normalized.FetchPolicy
-import com.apollographql.apollo3.cache.normalized.fetchPolicy
-import com.apollographql.apollo3.exception.ApolloException
-import com.apollographql.apollo3.exception.CacheMissException
-import com.apollographql.apollo3.exception.DefaultApolloException
+import com.apollographql.apollo.ApolloCall
+import com.apollographql.apollo.api.ApolloResponse
+import com.apollographql.apollo.api.Operation
+import com.apollographql.apollo.cache.normalized.FetchPolicy
+import com.apollographql.apollo.cache.normalized.fetchPolicy
+import com.apollographql.apollo.exception.ApolloException
+import com.apollographql.apollo.exception.CacheMissException
+import com.apollographql.apollo.exception.DefaultApolloException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNot
 import kotlinx.coroutines.flow.flow

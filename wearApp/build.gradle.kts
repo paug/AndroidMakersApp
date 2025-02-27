@@ -75,6 +75,9 @@ dependencies {
   coreLibraryDesugaring(libs.desugar.jdk.libs)
   debugImplementation(libs.wear.compose.ui.tooling)
 
+  implementation(libs.androidx.datastore.preferences) // Used by Horologist Auth
+  implementation(libs.okio)                           // Used by DataStore
+
   implementation(libs.koin.androidx.compose) {
     exclude(group = "androidx.appcompat", module = "appcompat")
   }

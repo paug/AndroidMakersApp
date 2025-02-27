@@ -24,6 +24,7 @@ kotlin {
       implementation(project(":shared:domain"))
       implementation(project(":shared:data"))
       implementation(libs.apollo.normalized.cache.sqlite)
+      implementation(libs.okio)
 
       api(libs.koin.core)
     }
