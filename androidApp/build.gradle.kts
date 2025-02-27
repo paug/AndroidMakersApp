@@ -52,8 +52,8 @@ dependencies {
   coreLibraryDesugaring(libs.desugar.jdk.libs)
 
   // Kotlin
-  implementation(libs.kotlinx.coroutines.play.services)
   implementation(libs.kotlinx.coroutines.android)
+  implementation(libs.kotlinx.coroutines.play.services)
 
   // Support
   implementation(libs.androidx.activity.compose)

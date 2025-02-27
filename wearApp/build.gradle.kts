@@ -57,6 +57,7 @@ android {
 dependencies {
   implementation(libs.play.services.wearable)
   implementation(libs.play.services.auth)
+  implementation(libs.androidx.core)
   implementation(libs.androidx.activity.compose)
   implementation(libs.androidx.lifecycle.viewmodel.compose)
   implementation(libs.androidx.splashscreen)
@@ -71,6 +72,7 @@ dependencies {
   implementation(libs.wear.compose.ui.tooling)
   implementation(libs.wear.compose.navigation)
   implementation(platform(libs.firebase.bom))
+  implementation(libs.kotlinx.coroutines.android)
   implementation(libs.firebase.auth)
   coreLibraryDesugaring(libs.desugar.jdk.libs)
   debugImplementation(libs.wear.compose.ui.tooling)
@@ -83,9 +85,4 @@ dependencies {
   }
   implementation(project(":shared:di"))
   implementation(project(":shared:domain"))
-}
-
-configurations.configureEach {
-  // Remove bogus dependency of Horologist, which itself depends on AppCompat and Material Components
-  exclude(group = "androidx.navigation", module = "navigation-ui-ktx")
 }
