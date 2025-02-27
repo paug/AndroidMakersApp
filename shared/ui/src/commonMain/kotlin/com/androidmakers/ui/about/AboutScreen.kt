@@ -82,7 +82,7 @@ private fun IntroCard(
         modifier = Modifier
             .heightIn(max = 128.dp)
             .fillMaxWidth()
-          .padding(horizontal = 32.dp),
+            .padding(horizontal = 32.dp),
         painter = painterResource(
           if (darkMode) {
             MR.images.logo_android_makers_night
@@ -99,7 +99,6 @@ private fun IntroCard(
     Row(
         Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center
-
     ) {
       ClickableText(
           text = stringResource(MR.strings.faq),

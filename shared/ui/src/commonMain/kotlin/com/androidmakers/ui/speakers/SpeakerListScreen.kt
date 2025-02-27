@@ -3,7 +3,6 @@ package com.androidmakers.ui.speakers
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -37,9 +36,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import com.androidmakers.ui.common.LoadingLayout
 import com.androidmakers.ui.model.Lce
-import com.seiko.imageloader.rememberImagePainter
 import dev.icerock.moko.resources.compose.stringResource
 import fr.androidmakers.domain.model.Speaker
 import fr.paug.androidmakers.ui.MR
@@ -47,11 +46,9 @@ import fr.paug.androidmakers.ui.MR
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SpeakerScreen(
-    modifier: Modifier = Modifier,
     viewModel: SpeakerListViewModel,
     navigateToSpeakerDetails: (String) -> Unit,
 ) {
-
   val state by viewModel.uiState.collectAsState(Lce.Loading)
 
   when (state) {
@@ -156,11 +153,11 @@ fun SpeakerItem(
       },
       leadingContent = {
         speaker.photoUrl?.let { url ->
-          Image(
+          AsyncImage(
+              model = url,
               modifier = Modifier
                   .size(64.dp)
                   .clip(CircleShape),
-              painter = rememberImagePainter(url),
               contentDescription = stringResource(MR.strings.speakers)
           )
         }
