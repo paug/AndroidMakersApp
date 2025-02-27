@@ -5,6 +5,9 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.wearable.MessageClient
+import com.google.android.gms.wearable.MessageClient.OnMessageReceivedListener
+import com.google.android.gms.wearable.MessageEvent
 import com.google.android.gms.wearable.Wearable
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.auth
@@ -18,10 +21,12 @@ import fr.paug.androidmakers.wear.data.LocalPreferencesRepository
 import fr.paug.androidmakers.wear.ui.session.UISession
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
@@ -69,11 +74,22 @@ class MainViewModel(
         .collectLatest { currentUser -> maybeSyncBookmarks(currentUser) }
     }
 
-    val messageClient = Wearable.getMessageClient(application)
-    messageClient.addListener {
-      Log.d(TAG, "Received syncBookmarks message")
-      bookmarksRefreshTrigger.update { it + 1 }
+    viewModelScope.launch {
+      Wearable.getMessageClient(application).getEventsFlow().collect { messageEvent ->
+        if (messageEvent.path == MESSAGE_SYNC_BOOKMARKS) {
+          Log.d(TAG, "Received syncBookmarks message")
+          bookmarksRefreshTrigger.update { it + 1 }
+        }
+      }
     }
+  }
+
+  private fun MessageClient.getEventsFlow(): Flow<MessageEvent> = callbackFlow<MessageEvent> {
+    val listener = OnMessageReceivedListener { messageEvent ->
+      trySend(messageEvent)
+    }
+    addListener(listener)
+    awaitClose { removeListener(listener) }
   }
 
   private suspend fun maybeSyncBookmarks(currentUser: User?) {
@@ -137,6 +153,10 @@ class MainViewModel(
   fun refresh() {
     sessionsRefreshTrigger.update { it + 1 }
     bookmarksRefreshTrigger.update { it + 1 }
+  }
+
+  companion object {
+    private const val MESSAGE_SYNC_BOOKMARKS = "syncBookmarks"
   }
 }
 
