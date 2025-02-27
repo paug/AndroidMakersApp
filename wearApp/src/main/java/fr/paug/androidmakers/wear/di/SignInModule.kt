@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package fr.paug.androidmakers.wear.di
 
 import android.util.Log
