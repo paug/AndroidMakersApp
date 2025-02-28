@@ -34,7 +34,7 @@ kotlin {
 }
 
 configurations.configureEach {
-  // Remove unnecessary dependency of Precompose and Moko
+  // Remove unnecessary dependency of Moko
   exclude(group = "androidx.appcompat", module = "appcompat")
 }
 
