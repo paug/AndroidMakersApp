@@ -19,8 +19,7 @@ import com.androidmakers.ui.getPlatformContext
 import com.androidmakers.ui.model.UISession
 import fr.androidmakers.domain.utils.formatShortTime
 import kotlinx.coroutines.launch
-import moe.tlaster.precompose.koin.koinViewModel
-
+import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -65,7 +64,7 @@ fun AgendaPager(
     HorizontalPager(
         state = pagerState,
     ) { page ->
-      val viewModel = koinViewModel(vmClass = AgendaPagerViewModel::class)
+      val viewModel = koinViewModel<AgendaPagerViewModel>()
       SwipeRefreshableLceLayout(viewModel = viewModel) { daySchedules ->
         val sessions = daySchedules[page].sessions.filter(filterList)
         if (sessions.isEmpty()) {

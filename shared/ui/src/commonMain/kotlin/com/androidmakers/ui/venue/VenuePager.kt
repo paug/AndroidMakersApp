@@ -24,13 +24,12 @@ import dev.icerock.moko.resources.compose.stringResource
 import fr.paug.androidmakers.ui.MR
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import moe.tlaster.precompose.koin.koinViewModel
-
+import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun VenuePager() {
-  val viewModel = koinViewModel(VenueViewModel::class)
+  val viewModel = koinViewModel<VenueViewModel>()
 
   Column(modifier = Modifier.fillMaxWidth()) {
 
