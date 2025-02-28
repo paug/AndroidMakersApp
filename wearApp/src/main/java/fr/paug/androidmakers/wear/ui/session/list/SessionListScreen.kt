@@ -154,7 +154,7 @@ private fun SessionItem(
         modifier = Modifier.fillMaxWidth(),
       ) {
         CompositionLocalProvider(
-          LocalContentColor provides MaterialTheme.colors.onSurfaceVariant,
+          LocalContentColor provides MaterialTheme.colors.onSurface,
           LocalTextStyle provides MaterialTheme.typography.caption1,
         ) {
           Row(

@@ -1,6 +1,7 @@
 package com.androidmakers.ui.speakers
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.clickable
@@ -9,6 +10,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -33,8 +36,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.androidmakers.ui.common.LoadingLayout
@@ -60,17 +65,17 @@ fun SpeakerScreen(
     is Lce.Content -> {
 
       var text by rememberSaveable { mutableStateOf("") }
-      var active by rememberSaveable { mutableStateOf(false) }
+      var expanded by rememberSaveable { mutableStateOf(false) }
       val content = (state as Lce.Content<SpeakersUiState>).content
 
       var searchHeight by remember { mutableStateOf(56.dp) }
 
       Box(Modifier.fillMaxSize()) {
 
-          val density = LocalDensity.current
+        val density = LocalDensity.current
 
         AnimatedVisibility(
-            visible = !active,
+            visible = !expanded,
             enter = fadeIn(),
             exit = fadeOut(),
         ) {
@@ -87,26 +92,33 @@ fun SpeakerScreen(
           }
         }
 
+        val horizontalPadding: Dp by animateDpAsState(if (expanded) 0.dp else 24.dp)
 
         SearchBar(
-          windowInsets = WindowInsets(0.dp, 0.dp, 0.dp, 0.dp),
-          modifier = Modifier.align(Alignment.TopCenter)
+          inputField = {
+            SearchBarDefaults.InputField(
+              modifier = Modifier.fillMaxWidth(),
+              query = text,
+              onQueryChange = { text = it },
+              onSearch = { expanded = false },
+              expanded = expanded,
+              onExpandedChange = { expanded = it },
+              placeholder = { Text(stringResource(MR.strings.speaker_search_placeholder)) },
+              leadingIcon = { Icon(Icons.Rounded.Search, contentDescription = null) }
+            )
+          },
+          expanded = expanded,
+          onExpandedChange = { expanded = it },
+          modifier = Modifier
+            .align(Alignment.TopCenter)
+            .padding(horizontal = horizontalPadding)
             .onSizeChanged {
               searchHeight = with(density) { it.height.toDp() }
             },
-          query = text,
-          onQueryChange = { text = it },
-          onSearch = { active = false },
-          active = active,
           colors = SearchBarDefaults.colors(
-            containerColor = MaterialTheme.colorScheme.surface,
-            dividerColor = MaterialTheme.colorScheme.primary,
+            dividerColor = MaterialTheme.colorScheme.primary
           ),
-          onActiveChange = {
-            active = it
-          },
-          placeholder = { Text(stringResource(MR.strings.speaker_search_placeholder)) },
-          leadingIcon = { Icon(Icons.Rounded.Search, contentDescription = null) }
+          windowInsets = WindowInsets(0.dp, 0.dp, 0.dp, 0.dp)
         ) {
           LazyColumn {
             val speakers = content.speakers
@@ -135,7 +147,7 @@ fun SpeakerItem(
   ListItem(
       modifier = modifier.clickable(onClick = { navigateToSpeakerDetails(speaker.id) }),
       colors = ListItemDefaults.colors(
-          containerColor = MaterialTheme.colorScheme.background,
+          containerColor = Color.Transparent,
       ),
       headlineContent = {
         Text(
@@ -161,7 +173,6 @@ fun SpeakerItem(
               contentDescription = stringResource(MR.strings.speakers)
           )
         }
-      },
-      trailingContent = {},
+      }
   )
 }

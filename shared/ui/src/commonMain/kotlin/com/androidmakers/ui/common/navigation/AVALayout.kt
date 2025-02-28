@@ -139,10 +139,7 @@ fun AVALayout(
       },
 
       bottomBar = {
-        NavigationBar(
-            containerColor = MaterialTheme.colorScheme.background,
-            contentColor = MaterialTheme.colorScheme.onBackground
-        ) {
+        NavigationBar {
           NavigationBarItem(
               avaNavController = avaNavController,
               imageVector = Icons.Rounded.CalendarMonth,
