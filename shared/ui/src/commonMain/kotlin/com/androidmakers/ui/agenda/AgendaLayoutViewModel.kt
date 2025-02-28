@@ -18,19 +18,33 @@ data class AgendaLayoutState(
   val sessionFilters: List<SessionFilter> = emptyList()
 )
 
-class AgendaLayoutViewModel(
-    roomsRepository: RoomsRepository,
-    scope: ViewModel.() -> CoroutineScope = { viewModelScope }
-) : ViewModel() {
+class AgendaLayoutViewModel : ViewModel {
   private val sessionFilters = MutableStateFlow(emptyList<SessionFilter>())
 
-  val state: StateFlow<AgendaLayoutState> = combine(
+  val state: StateFlow<AgendaLayoutState>
+
+  constructor(
+    roomsRepository: RoomsRepository
+  ) : super() {
+    state = createState(roomsRepository)
+  }
+
+  constructor(
+    roomsRepository: RoomsRepository,
+    coroutineScope: CoroutineScope
+  ) : super(coroutineScope) {
+    state = createState(roomsRepository)
+  }
+
+  private fun createState(
+    roomsRepository: RoomsRepository
+  ): StateFlow<AgendaLayoutState> = combine(
     roomsRepository.getRooms()
       .map { it.getOrNull().orEmpty() },
     sessionFilters,
     ::AgendaLayoutState
   ).stateIn(
-    scope = scope(),
+    scope = viewModelScope,
     started = SharingStarted.Eagerly,
     initialValue = AgendaLayoutState()
   )
