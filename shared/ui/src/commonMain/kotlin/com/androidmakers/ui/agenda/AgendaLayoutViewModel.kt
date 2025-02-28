@@ -1,5 +1,7 @@
 package com.androidmakers.ui.agenda
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.androidmakers.ui.common.SessionFilter
 import fr.androidmakers.domain.model.Room
 import fr.androidmakers.domain.repo.RoomsRepository
@@ -10,8 +12,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import moe.tlaster.precompose.viewmodel.ViewModel
-import moe.tlaster.precompose.viewmodel.viewModelScope
 
 data class AgendaLayoutState(
   val rooms: List<Room> = emptyList(),
