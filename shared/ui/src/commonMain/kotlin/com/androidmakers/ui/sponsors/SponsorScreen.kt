@@ -1,6 +1,5 @@
 package com.androidmakers.ui.sponsors
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
@@ -26,11 +25,11 @@ import com.androidmakers.ui.getPlatformContext
 import com.androidmakers.ui.model.Lce
 import fr.androidmakers.domain.model.Partner
 import fr.androidmakers.domain.model.PartnerGroup
-import moe.tlaster.precompose.koin.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun SponsorsScreen() {
-  val viewModel = koinViewModel(SponsorsViewModel::class)
+  val viewModel = koinViewModel<SponsorsViewModel>()
   val sponsors by viewModel.values.collectAsState()
   val platformContext = getPlatformContext()
 

@@ -37,15 +37,15 @@ import fr.androidmakers.domain.utils.eventTimeZone
 import fr.paug.androidmakers.ui.MR
 import kotlinx.datetime.Clock
 import kotlinx.datetime.todayIn
-import moe.tlaster.precompose.koin.koinViewModel
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun AgendaLayout(
     agendaFilterDrawerState: DrawerState,
     onSessionClick: (sessionId: String) -> Unit,
 ) {
-  val agendaLayoutViewModel = koinViewModel(vmClass = AgendaLayoutViewModel::class)
+  val agendaLayoutViewModel = koinViewModel<AgendaLayoutViewModel>()
   val agendaLayoutState by agendaLayoutViewModel.state.collectAsState()
 
   ModalNavigationDrawer(
@@ -75,7 +75,7 @@ private fun AgendaPagerOrLoading(
     sessionFilters: List<SessionFilter>,
     onSessionClick: (sessionId: String) -> Unit,
 ) {
-  val viewModel = koinViewModel(vmClass = AgendaPagerViewModel::class)
+  val viewModel = koinViewModel<AgendaPagerViewModel>()
   ButtonRefreshableLceLayout(viewModel) { daySchedules ->
     AgendaPager(
         initialPageIndex = daySchedules.todayPageIndex(),

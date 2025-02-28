@@ -21,7 +21,7 @@ kotlin {
 
   sourceSets {
     commonMain.dependencies {
-      api(libs.moko.resources.compose)
+      implementation(libs.moko.resources.compose)
       implementation(compose.runtime)
       implementation(compose.foundation)
       implementation(compose.material3)
@@ -29,10 +29,12 @@ kotlin {
       implementation(compose.components.resources)
       implementation(compose.materialIconsExtended)
       implementation(compose.components.uiToolingPreview)
-      api(libs.coil.compose)
-      api(libs.precompose)
-      api(libs.precompose.viewmodel)
-      api(libs.precompose.koin)
+      implementation(libs.coil.compose)
+      implementation(libs.jetbrains.navigation.compose)
+      implementation(libs.jetbrains.lifecycle.runtime.compose)
+      implementation(libs.jetbrains.lifecycle.viewmodel.compose)
+      implementation(libs.koin.compose)
+      implementation(libs.koin.compose.viewmodel)
       api(libs.openfeedback.m3)
       implementation(libs.kotlinx.coroutines.core)
       implementation(libs.okio)   // Used by Openfeedback
@@ -52,7 +54,7 @@ kotlin {
 }
 
 configurations.configureEach {
-  // Remove unnecessary dependency of Precompose and Moko
+  // Remove unnecessary dependency of Moko
   exclude(group = "androidx.appcompat", module = "appcompat")
   // Disable Android Drawable support in Coil
   exclude(group = "com.google.accompanist", module = "accompanist-drawablepainter")

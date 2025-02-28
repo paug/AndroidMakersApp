@@ -1,5 +1,6 @@
 package com.androidmakers.ui.agenda
 
+import androidx.lifecycle.viewModelScope
 import com.androidmakers.ui.common.LceViewModel
 import com.androidmakers.ui.model.UISession
 import fr.androidmakers.domain.PlatformContext
@@ -9,7 +10,6 @@ import fr.androidmakers.domain.interactor.SetSessionBookmarkUseCase
 import fr.androidmakers.domain.repo.BookmarksRepository
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
-import moe.tlaster.precompose.viewmodel.viewModelScope
 
 class AgendaPagerViewModel(
   getAgendaUseCase: GetAgendaUseCase,

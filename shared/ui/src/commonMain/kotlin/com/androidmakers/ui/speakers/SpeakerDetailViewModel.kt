@@ -1,5 +1,7 @@
 package com.androidmakers.ui.speakers
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.androidmakers.ui.model.Lce
 import com.androidmakers.ui.model.toLce
 import fr.androidmakers.domain.PlatformContext
@@ -11,8 +13,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import moe.tlaster.precompose.viewmodel.ViewModel
-import moe.tlaster.precompose.viewmodel.viewModelScope
 
 class SpeakerDetailsViewModel(
   speakerId: String,

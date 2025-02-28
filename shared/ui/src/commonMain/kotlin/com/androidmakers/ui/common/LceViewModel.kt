@@ -1,5 +1,7 @@
 package com.androidmakers.ui.common
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.androidmakers.ui.model.Lce
 import com.androidmakers.ui.model.toLce
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -13,8 +15,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import moe.tlaster.precompose.viewmodel.ViewModel
-import moe.tlaster.precompose.viewmodel.viewModelScope
 
 abstract class LceViewModel<T>(
   produce: () -> Flow<Result<T>>

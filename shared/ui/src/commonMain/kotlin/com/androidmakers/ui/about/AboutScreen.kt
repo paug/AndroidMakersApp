@@ -31,14 +31,14 @@ import com.androidmakers.ui.getPlatformContext
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import fr.paug.androidmakers.ui.MR
-import moe.tlaster.precompose.koin.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun AboutScreen(
     versionName: String,
     versionCode: String,
 ) {
-  val viewModel = koinViewModel(vmClass = AboutViewModel::class)
+  val viewModel = koinViewModel<AboutViewModel>()
   Column(
       modifier = Modifier
           .fillMaxSize()
