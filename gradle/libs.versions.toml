@@ -36,7 +36,6 @@ okio = "3.10.2"
 openfeedback-m3 = "0.2.3"
 playServices-auth = "21.3.0"
 playServices-wearable = "19.0.0"
-pullrefresh = "1.3.0"
 
 [libraries]
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidx-activity" }
@@ -69,7 +68,6 @@ kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutine
 kotlinx-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "kotlinx-coroutines" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
-materii-pullrefresh = { group = "dev.materii.pullrefresh", name = "pullrefresh", version.ref = "pullrefresh" }
 moko-resources = { module = "dev.icerock.moko:resources", version.ref = "moko-resources" }
 moko-resources_compose = { module = "dev.icerock.moko:resources-compose", version.ref = "moko-resources" }
 moko-graphics = { module = "dev.icerock.moko:graphics", version.ref = "moko-graphics" }
