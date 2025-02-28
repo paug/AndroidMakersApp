@@ -65,7 +65,7 @@ private fun Session(session: UISession) {
     ) {
       item {
         CompositionLocalProvider(
-          LocalContentColor provides MaterialTheme.colors.onSurface,
+          LocalContentColor provides MaterialTheme.colors.onSurfaceVariant,
           LocalTextStyle provides MaterialTheme.typography.caption1,
         ) {
           Row(
@@ -168,7 +168,7 @@ private fun Session(session: UISession) {
             style = MaterialTheme.typography.body2.copy(
               hyphens = Hyphens.Auto,
               lineBreak = LineBreak.Paragraph,
-              color = MaterialTheme.colors.onSurface,
+              color = MaterialTheme.colors.onSurfaceVariant,
             ),
           )
         }
