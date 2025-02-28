@@ -21,7 +21,7 @@ kotlin {
 
   sourceSets {
     commonMain.dependencies {
-      api(libs.moko.resources.compose)
+      implementation(libs.moko.resources.compose)
       implementation(compose.runtime)
       implementation(compose.foundation)
       implementation(compose.material3)
@@ -29,11 +29,12 @@ kotlin {
       implementation(compose.components.resources)
       implementation(compose.materialIconsExtended)
       implementation(compose.components.uiToolingPreview)
-      api(libs.coil.compose)
-      api(libs.jetbrains.navigation.compose)
-      api(libs.jetbrains.lifecycle.viewmodel)
-      api(libs.koin.compose)
-      api(libs.koin.compose.viewmodel)
+      implementation(libs.coil.compose)
+      implementation(libs.jetbrains.navigation.compose)
+      implementation(libs.jetbrains.lifecycle.runtime.compose)
+      implementation(libs.jetbrains.lifecycle.viewmodel.compose)
+      implementation(libs.koin.compose)
+      implementation(libs.koin.compose.viewmodel)
       api(libs.openfeedback.m3)
       implementation(libs.kotlinx.coroutines.core)
       implementation(libs.okio)   // Used by Openfeedback

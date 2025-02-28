@@ -75,7 +75,7 @@ private fun AgendaPagerOrLoading(
     sessionFilters: List<SessionFilter>,
     onSessionClick: (sessionId: String) -> Unit,
 ) {
-  val viewModel = koinViewModel(vmClass = AgendaPagerViewModel::class)
+  val viewModel = koinViewModel<AgendaPagerViewModel>()
   ButtonRefreshableLceLayout(viewModel) { daySchedules ->
     AgendaPager(
         initialPageIndex = daySchedules.todayPageIndex(),

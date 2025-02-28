@@ -32,7 +32,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -42,11 +41,16 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.androidmakers.ui.about.AboutScreen
 import com.androidmakers.ui.agenda.AgendaLayout
 import com.androidmakers.ui.common.SigninButton
 import com.androidmakers.ui.common.SigninCallbacks
-import com.androidmakers.ui.speakers.SpeakerListViewModel
 import com.androidmakers.ui.speakers.SpeakerScreen
 import com.androidmakers.ui.sponsors.SponsorsScreen
 import com.androidmakers.ui.venue.VenuePager
@@ -54,14 +58,7 @@ import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import fr.paug.androidmakers.ui.MR
 import kotlinx.coroutines.launch
-import moe.tlaster.precompose.flow.collectAsStateWithLifecycle
-import moe.tlaster.precompose.koin.koinViewModel
-import moe.tlaster.precompose.navigation.NavHost
-import moe.tlaster.precompose.navigation.NavOptions
-import moe.tlaster.precompose.navigation.Navigator
-import moe.tlaster.precompose.navigation.PopUpTo
-import moe.tlaster.precompose.navigation.rememberNavigator
-import moe.tlaster.precompose.navigation.transition.NavTransition
+import org.koin.compose.viewmodel.koinViewModel
 
 /**
  * AVA stands for Agenda/Venue/About.
@@ -77,9 +74,9 @@ fun AVALayout(
     navigateToSpeakerDetails: (String) -> Unit,
     signinCallbacks: SigninCallbacks,
 ) {
-  val avaNavController = rememberNavigator()
-  val navBackStackEntry by avaNavController.currentEntry.collectAsState(null)
-  val currentRoute = navBackStackEntry?.route?.route
+  val avaNavController = rememberNavController()
+  val navBackStackEntry by avaNavController.currentBackStackEntryAsState()
+  val currentRoute = navBackStackEntry?.destination?.route
   val userRepository = remember { UserData().userRepository }
 
   val agendaFilterDrawerState = rememberDrawerState(DrawerValue.Closed)
@@ -198,13 +195,13 @@ fun AVALayout(
 
 @Composable
 private fun RowScope.NavigationBarItem(
-    avaNavController: Navigator,
+    avaNavController: NavHostController,
     imageVector: ImageVector,
     label: String,
     currentRoute: String?,
     destinationRoute: AVANavigationRoute,
 ) {
-  this@NavigationBarItem.NavigationBarItem(
+  NavigationBarItem(
       icon = {
         Icon(
             imageVector = imageVector,
@@ -223,11 +220,15 @@ private fun RowScope.NavigationBarItem(
 //          disabledTextColor =
       ),
       onClick = {
-        avaNavController.navigate(destinationRoute.name, options = NavOptions(
-            launchSingleTop = true,
-            popUpTo = PopUpTo.First(inclusive = true)
-        )
-        )
+        if (currentRoute != destinationRoute.name) {
+          if (destinationRoute == AVANavigationRoute.AGENDA) {
+            avaNavController.popBackStack()
+          } else {
+            avaNavController.navigate(destinationRoute.name) {
+              popUpTo(AVANavigationRoute.AGENDA.name)
+            }
+          }
+        }
       }
   )
 }
@@ -236,64 +237,45 @@ private fun RowScope.NavigationBarItem(
 private fun AVANavHost(
     versionCode: String,
     versionName: String,
-    avaNavController: Navigator,
+    avaNavController: NavHostController,
     onSessionClick: (sessionId: String) -> Unit,
     agendaFilterDrawerState: DrawerState,
     navigateToSpeakerDetails: (String) -> Unit,
 ) {
-  NavHost(avaNavController, initialRoute = AVANavigationRoute.AGENDA.name) {
+  NavHost(
+    navController = avaNavController,
+    startDestination = AVANavigationRoute.AGENDA.name,
+    enterTransition = { fadeIn() },
+    exitTransition = { fadeOut() }
+  ) {
 
-    scene(
-      route = AVANavigationRoute.AGENDA.name,
-      navTransition = defaultNavTransition
-    ) {
+    composable(route = AVANavigationRoute.AGENDA.name) {
       AgendaLayout(
-          agendaFilterDrawerState = agendaFilterDrawerState,
-          onSessionClick = onSessionClick
+        agendaFilterDrawerState = agendaFilterDrawerState,
+        onSessionClick = onSessionClick
       )
     }
 
-    scene(
-      route = AVANavigationRoute.VENUE.name,
-      navTransition = defaultNavTransition
-    ) {
+    composable(route = AVANavigationRoute.VENUE.name) {
       VenuePager()
     }
 
-    scene(
-      route = AVANavigationRoute.SPEAKERS.name,
-      navTransition = defaultNavTransition
-    ) {
-
-      val speakerViewModel = koinViewModel(vmClass = SpeakerListViewModel::class)
+    composable(route = AVANavigationRoute.SPEAKERS.name) {
       SpeakerScreen(
-          viewModel = speakerViewModel,
+          viewModel = koinViewModel(),
           navigateToSpeakerDetails = navigateToSpeakerDetails
       )
     }
 
-    scene(
-      route = AVANavigationRoute.ABOUT.name,
-      navTransition = defaultNavTransition
-    ) {
+    composable(route = AVANavigationRoute.ABOUT.name) {
       AboutScreen(
-          versionCode = versionCode,
-          versionName = versionName
+        versionCode = versionCode,
+        versionName = versionName
       )
     }
 
-    scene(
-      route = AVANavigationRoute.SPONSORS.name,
-      navTransition = defaultNavTransition
-    ) {
+    composable(route = AVANavigationRoute.SPONSORS.name) {
       SponsorsScreen()
     }
   }
 }
-
-private val defaultNavTransition = NavTransition(
-  createTransition = fadeIn(),
-  pauseTransition = fadeOut(),
-  resumeTransition = fadeIn(),
-  destroyTransition = fadeOut()
-)

@@ -65,7 +65,7 @@ fun AgendaPager(
         state = pagerState,
     ) { page ->
       val viewModel = koinViewModel<AgendaPagerViewModel>()
-      SwipeRefreshableLceLayout(viewModel = viewModel) { daySchedules ->
+      SwipeRefreshableLceLayout(viewModel) { daySchedules ->
         val sessions = daySchedules[page].sessions.filter(filterList)
         if (sessions.isEmpty()) {
           EmptyLayout()

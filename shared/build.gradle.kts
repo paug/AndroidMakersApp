@@ -24,7 +24,7 @@ kotlin {
 
   sourceSets {
     commonMain.dependencies {
-      api(libs.moko.resources)
+      implementation(libs.moko.resources)
 
       api(project(":shared:ui"))
       api(project(":shared:domain"))

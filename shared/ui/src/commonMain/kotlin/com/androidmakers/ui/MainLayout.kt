@@ -1,27 +1,26 @@
 package com.androidmakers.ui
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.navigation.NavDeepLink
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import coil3.ImageLoader
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.setSingletonImageLoaderFactory
 import coil3.request.crossfade
 import com.androidmakers.ui.agenda.SessionDetailScreen
-import com.androidmakers.ui.agenda.SessionDetailViewModel
 import com.androidmakers.ui.common.SigninCallbacks
 import com.androidmakers.ui.common.navigation.AVALayout
 import com.androidmakers.ui.common.navigation.MainNavigationRoute
 import com.androidmakers.ui.speakers.SpeakerDetailsRoute
-import com.androidmakers.ui.speakers.SpeakerDetailsViewModel
 import fr.androidmakers.domain.PlatformContext
 import fr.androidmakers.domain.model.SpeakerId
-import moe.tlaster.precompose.koin.koinViewModel
-import moe.tlaster.precompose.navigation.NavHost
-import moe.tlaster.precompose.navigation.Navigator
-import moe.tlaster.precompose.navigation.SwipeProperties
-import moe.tlaster.precompose.navigation.path
-import moe.tlaster.precompose.navigation.rememberNavigator
-import moe.tlaster.precompose.navigation.transition.NavTransition
+import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
 /**
@@ -41,14 +40,14 @@ fun MainLayout(
       .build()
   }
 
-  val navigator = rememberNavigator()
+  val navController = rememberNavController()
   MainNavHost(
-      mainNavController = navigator,
+      mainNavController = navController,
       onSessionClick = { sessionId ->
-        navigator.navigate("${MainNavigationRoute.SESSION_DETAIL.name}/$sessionId")
+        navController.navigate("${MainNavigationRoute.SESSION_DETAIL.name}/$sessionId")
       },
       navigateToSpeakerDetails = { speakerId ->
-        navigator.navigate("${MainNavigationRoute.SPEAKER_DETAIL.name}/$speakerId")
+        navController.navigate("${MainNavigationRoute.SPEAKER_DETAIL.name}/$speakerId")
       },
       versionCode = versionCode,
       versionName = versionName,
@@ -61,7 +60,7 @@ fun MainLayout(
 private fun MainNavHost(
     versionCode: String,
     versionName: String,
-    mainNavController: Navigator,
+    mainNavController: NavHostController,
     onSessionClick: (sessionId: String) -> Unit,
     navigateToSpeakerDetails: (SpeakerId) -> Unit,
     signingCallbacks: SigninCallbacks,
@@ -78,56 +77,62 @@ private fun MainNavHost(
   }
 
   NavHost(
-      navigator = mainNavController,
-      initialRoute = MainNavigationRoute.AVA.name
+    navController = mainNavController,
+    startDestination = MainNavigationRoute.AVA.name,
+    enterTransition = { defaultEnterTransition },
+    exitTransition = { defaultExitTransition },
+    popEnterTransition = { defaultPopEnterTransition },
+    popExitTransition = { defaultPopExitTransition }
   ) {
 
-    scene(route = MainNavigationRoute.AVA.name) {
-
+    composable(route = MainNavigationRoute.AVA.name) {
       AVALayout(
-          versionCode = versionCode,
-          versionName = versionName,
-          onSessionClick = onSessionClick,
-          navigateToSpeakerDetails = navigateToSpeakerDetails,
-          signinCallbacks = signingCallbacks,
+        versionCode = versionCode,
+        versionName = versionName,
+        onSessionClick = onSessionClick,
+        navigateToSpeakerDetails = navigateToSpeakerDetails,
+        signinCallbacks = signingCallbacks,
       )
     }
 
-    scene(
-        route = "${MainNavigationRoute.SESSION_DETAIL.name}/{sessionId}",
-        swipeProperties = SwipeProperties(),
-        deepLinks = listOf("https://androidmakers.fr/session/{sessionId}"),
-        navTransition = defaultTransition
-    ) {
-
-      val sessionId = it.path<String>("sessionId")
-      val sessionDetailViewModel = koinViewModel(vmClass = SessionDetailViewModel::class) { parametersOf(sessionId) }
+    composable(
+      route = "${MainNavigationRoute.SESSION_DETAIL.name}/{sessionId}",
+      deepLinks = listOf(
+        NavDeepLink.Builder()
+          .setUriPattern("https://androidmakers.fr/session/{sessionId}")
+          .build()
+      )
+    ) { backStackEntry ->
+      val sessionId = backStackEntry.arguments?.getString("sessionId").orEmpty()
 
       SessionDetailScreen(
-          viewModel = sessionDetailViewModel,
-          onBackClick = { mainNavController.popBackStack() },
+        viewModel = koinViewModel { parametersOf(sessionId) },
+        onBackClick = { mainNavController.popBackStack() },
       )
     }
 
-    scene(
-        route = "${MainNavigationRoute.SPEAKER_DETAIL.name}/{speakerId}",
-        deepLinks = listOf("https://androidmakers.fr/speaker/{speakerId}"),
-        swipeProperties = SwipeProperties(),
-        navTransition = defaultTransition
+    composable(
+      route = "${MainNavigationRoute.SPEAKER_DETAIL.name}/{speakerId}",
+      deepLinks = listOf(
+        NavDeepLink.Builder()
+          .setUriPattern("https://androidmakers.fr/speaker/{speakerId}")
+          .build()
+      )
     ) { backstackEntry ->
-      val speakerId = backstackEntry.path<String>("speakerId")
-
-      val speakerDetailsViewModel = koinViewModel(vmClass = SpeakerDetailsViewModel::class) { parametersOf(speakerId) }
+      val speakerId = backstackEntry.arguments?.getString("speakerId").orEmpty()
 
       SpeakerDetailsRoute(
-          speakerDetailsViewModel = speakerDetailsViewModel,
-          onBackClick = { mainNavController.popBackStack() },
+        speakerDetailsViewModel = koinViewModel { parametersOf(speakerId) },
+        onBackClick = { mainNavController.popBackStack() },
       )
     }
   }
 }
 
-expect val defaultTransition: NavTransition
+expect val defaultEnterTransition: EnterTransition
+expect val defaultExitTransition: ExitTransition
+expect val defaultPopEnterTransition: EnterTransition
+expect val defaultPopExitTransition: ExitTransition
 
 @Composable
 expect fun getPlatformContext(): PlatformContext
