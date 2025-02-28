@@ -38,7 +38,7 @@ fun backgroundColor(uiSession: UISession): Color {
   return if (uiSession.isServiceSession) {
     MaterialTheme.colorScheme.surface
   } else {
-    MaterialTheme.colorScheme.surfaceVariant
+    MaterialTheme.colorScheme.surfaceContainerHighest
   }
 }
 

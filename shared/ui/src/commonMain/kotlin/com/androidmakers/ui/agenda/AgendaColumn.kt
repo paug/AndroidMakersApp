@@ -87,11 +87,11 @@ fun AgendaColumn(
             if (uiSession.isServiceSession) {
               ServiceSessionRow(
                 uiSession,
-                modifier = Modifier.animateItemPlacement()
+                modifier = Modifier.animateItem()
               )
             } else {
               SessionRow(
-                modifier = Modifier.animateItemPlacement(),
+                modifier = Modifier.animateItem(),
                 uiSession = uiSession,
                 onSessionClicked = onSessionClicked,
                 onSessionBookmarked = onSessionBookmarked,
