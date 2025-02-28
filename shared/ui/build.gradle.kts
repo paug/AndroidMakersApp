@@ -38,7 +38,6 @@ kotlin {
       api(libs.openfeedback.m3)
       implementation(libs.kotlinx.coroutines.core)
       implementation(libs.okio)   // Used by Openfeedback
-      implementation(libs.materii.pullrefresh)
 
       implementation(project(":shared:domain"))
       implementation(project(":shared:di"))
