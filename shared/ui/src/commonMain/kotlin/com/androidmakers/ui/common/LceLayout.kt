@@ -3,24 +3,23 @@ package com.androidmakers.ui.common
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.androidmakers.ui.model.Lce
 import dev.icerock.moko.resources.compose.stringResource
-import dev.materii.pullrefresh.PullRefreshIndicator
-import dev.materii.pullrefresh.PullRefreshState
-import dev.materii.pullrefresh.pullRefresh
-import dev.materii.pullrefresh.rememberPullRefreshState
 import fr.paug.androidmakers.ui.MR
 
 @Composable
@@ -100,75 +99,37 @@ fun <T> ButtonRefreshableLceLayout(
     viewModel: LceViewModel<T>,
     content: @Composable (T) -> Unit
 ) {
-  val isRefreshing = viewModel.isRefreshing.collectAsState()
-  val lce = viewModel.values.collectAsState()
+  val isRefreshing by viewModel.isRefreshing.collectAsState()
+  val lce by viewModel.values.collectAsState()
 
   LceLayout(
-      lce = lce.value,
+      lce = lce,
       onRetry = { viewModel.refresh() },
-      isRefreshing = isRefreshing.value
+      isRefreshing = isRefreshing
   ) {
     content(it)
   }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <T> SwipeRefreshableLceLayout(
     viewModel: LceViewModel<T>,
     content: @Composable (T) -> Unit
 ) {
-  val isRefreshing = viewModel.isRefreshing.collectAsState()
-  val lce = viewModel.values.collectAsState()
-  val pullRefreshState = rememberPullRefreshState(isRefreshing.value, { viewModel.refresh() })
+  val isRefreshing by viewModel.isRefreshing.collectAsState()
+  val lce by viewModel.values.collectAsState()
+  val pullRefreshState = rememberPullToRefreshState()
 
-  PullRefreshLayout(
-      state = pullRefreshState
+  PullToRefreshBox(
+    isRefreshing = isRefreshing,
+    onRefresh = { viewModel.refresh() },
+    state = pullRefreshState
   ) {
     LceLayout(
-        lce = lce.value,
+      lce = lce,
     ) {
       content(it)
     }
-  }
-}
-
-
-// TODO this is a temporary function
-// To be removed when Materii-PullToRefresh will be available in 1.4.0
-@Composable
-fun PullRefreshLayout(
-    state: PullRefreshState,
-    modifier: Modifier = Modifier,
-    flipped: Boolean = false,
-    enabled: Boolean = true,
-    indicator: @Composable () -> Unit = {
-      PullRefreshIndicator(
-          state = state,
-          flipped = flipped
-      )
-    },
-    content: @Composable () -> Unit
-) {
-  Box(
-      modifier = Modifier
-          .pullRefresh(
-              state = state,
-              inverse = flipped,
-              enabled = enabled
-          )
-          .then(modifier)
-  ) {
-    val indicatorAlignment = if (flipped) Alignment.BottomCenter else Alignment.TopCenter
-
-    content()
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .align(indicatorAlignment),
-        contentAlignment = Alignment.Center
-    ) {
-      indicator()
-    }
-
   }
 }
