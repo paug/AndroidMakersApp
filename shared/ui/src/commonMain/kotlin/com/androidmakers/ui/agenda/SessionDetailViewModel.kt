@@ -1,5 +1,7 @@
 package com.androidmakers.ui.agenda
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.androidmakers.ui.model.Lce
 import com.androidmakers.ui.model.SessionDetailState
 import fr.androidmakers.domain.PlatformContext
@@ -26,8 +28,6 @@ import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.launch
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
-import moe.tlaster.precompose.viewmodel.ViewModel
-import moe.tlaster.precompose.viewmodel.viewModelScope
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class SessionDetailViewModel(

@@ -19,7 +19,7 @@ class AgendaLayoutViewModelTest {
 
   private val testSubject = AgendaLayoutViewModel(
     roomsRepository = fakeStore,
-    scope = { CoroutineScope(Dispatchers.Unconfined) }
+    coroutineScope = CoroutineScope(Dispatchers.Unconfined)
   )
 
   @Test

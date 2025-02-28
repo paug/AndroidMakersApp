@@ -24,10 +24,8 @@ kotlin {
 
   sourceSets {
     commonMain.dependencies {
-      api(libs.moko.resources)
+      implementation(libs.moko.resources)
 
-      // Temporary
-      api(libs.precompose.koin)
       api(project(":shared:ui"))
       api(project(":shared:domain"))
       api(project(":shared:di"))
@@ -36,7 +34,7 @@ kotlin {
 }
 
 configurations.configureEach {
-  // Remove unnecessary dependency of Precompose and Moko
+  // Remove unnecessary dependency of Moko
   exclude(group = "androidx.appcompat", module = "appcompat")
 }
 

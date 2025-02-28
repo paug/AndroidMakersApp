@@ -7,7 +7,6 @@ import androidx.compose.ui.Modifier
 import com.google.android.horologist.auth.composables.dialogs.SignedInConfirmationDialog
 import com.google.android.horologist.auth.composables.screens.AuthErrorScreen
 import com.google.android.horologist.auth.ui.googlesignin.signin.GoogleSignInScreen
-import com.google.android.horologist.auth.ui.googlesignin.signin.GoogleSignInViewModel
 import com.google.android.horologist.compose.layout.ScreenScaffold
 import org.koin.androidx.compose.koinViewModel
 
@@ -27,7 +26,7 @@ fun SignInScreen(
         failedContent = {
           AuthErrorScreen()
         },
-        viewModel = koinViewModel<GoogleSignInViewModel>()
+        viewModel = koinViewModel()
     ) { successState ->
       SignedInConfirmationDialog(
           modifier = Modifier.fillMaxSize(),

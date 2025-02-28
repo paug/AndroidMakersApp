@@ -76,10 +76,3 @@ dependencies {
   // Used for tags
   implementation(project(":shared"))
 }
-
-configurations.configureEach {
-  if (name.endsWith("RuntimeClasspath")) {
-    // See https://github.com/Tlaster/PreCompose/issues/317
-    exclude("androidx.compose.ui", "ui-test-junit4-android")
-  }
-}
