@@ -42,6 +42,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -220,14 +221,14 @@ private fun RowScope.NavigationBarItem(
 //          disabledTextColor =
       ),
       onClick = {
-        if (currentRoute != destinationRoute.name) {
-          if (destinationRoute == AVANavigationRoute.AGENDA) {
-            avaNavController.popBackStack()
-          } else {
-            avaNavController.navigate(destinationRoute.name) {
-              popUpTo(AVANavigationRoute.AGENDA.name)
+        avaNavController.navigate(destinationRoute.name) {
+          avaNavController.graph.findStartDestination().route?.let { startRoute ->
+            popUpTo(startRoute) {
+              saveState = true
             }
           }
+          launchSingleTop = true
+          restoreState = true
         }
       }
   )
