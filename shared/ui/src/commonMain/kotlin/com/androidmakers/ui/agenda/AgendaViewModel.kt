@@ -14,6 +14,7 @@ import fr.androidmakers.domain.model.Room
 import fr.androidmakers.domain.repo.BookmarksRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -38,8 +39,8 @@ class AgendaViewModel(
       }
   }
 ) {
-  private val _sessionFilters = MutableStateFlow(emptyList<SessionFilter>())
-  val sessionFilters = _sessionFilters.asStateFlow()
+  private val _sessionFilters = MutableStateFlow(emptySet<SessionFilter>())
+  val sessionFilters: StateFlow<Set<SessionFilter>> = _sessionFilters.asStateFlow()
 
   val rooms: Flow<List<Room>> = values.map { stateLce ->
     when (stateLce) {
@@ -48,7 +49,7 @@ class AgendaViewModel(
     }
   }.distinctUntilChanged()
 
-  fun onFiltersChanged(newSessionFilters: List<SessionFilter>) {
+  fun onFiltersChanged(newSessionFilters: Set<SessionFilter>) {
     _sessionFilters.value = newSessionFilters
   }
 
