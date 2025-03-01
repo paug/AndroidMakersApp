@@ -7,5 +7,5 @@ interface SpeakersRepository {
 
   fun getSpeaker(id: String): Flow<Result<Speaker>>
 
-  fun getSpeakers(): Flow<Result<List<Speaker>>>
+  fun getSpeakers(refresh: Boolean): Flow<Result<List<Speaker>>>
 }

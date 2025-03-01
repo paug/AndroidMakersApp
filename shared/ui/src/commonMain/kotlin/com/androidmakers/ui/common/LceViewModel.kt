@@ -14,16 +14,17 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 
 abstract class LceViewModel<T>(
-  produce: () -> Flow<Result<T>>
+  produce: (refresh: Boolean) -> Flow<Result<T>>
 ) : ViewModel() {
-  private val loadingTrigger = MutableStateFlow(0)
+  private class LoadingTrigger(val refresh: Boolean)
+
+  private val loadingTrigger = MutableStateFlow(LoadingTrigger(refresh = false))
 
   @OptIn(ExperimentalCoroutinesApi::class)
-  val values: StateFlow<Lce<T>> = loadingTrigger.flatMapLatest {
-    produce()
+  val values: StateFlow<Lce<T>> = loadingTrigger.flatMapLatest { trigger ->
+    produce(trigger.refresh)
       .map { it.toLce() }
       .onEach {
         _isRefreshing.value = false
@@ -39,6 +40,6 @@ abstract class LceViewModel<T>(
 
   fun refresh() {
     _isRefreshing.value = true
-    loadingTrigger.update { it + 1 }
+    loadingTrigger.value = LoadingTrigger(refresh = true)
   }
 }
