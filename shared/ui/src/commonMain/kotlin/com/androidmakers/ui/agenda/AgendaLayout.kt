@@ -92,7 +92,7 @@ private fun AgendaPagerOrLoading(
   uiStateLce: Lce<AgendaState>,
   isRefreshing: Boolean,
   onRefresh: () -> Unit,
-  sessionFilters: List<SessionFilter>,
+  sessionFilters: Set<SessionFilter>,
   onSessionClick: (UISession) -> Unit,
   onApplyForAppClinicClick: () -> Unit,
   onSessionBookmark: (UISession, Boolean) -> Unit
@@ -108,7 +108,7 @@ private fun AgendaPagerOrLoading(
         isRefreshing = isRefreshing,
         onRefresh = onRefresh,
         initialPageIndex = days.todayPageIndex(),
-        filterList = sessionFilters,
+        sessionFilters = sessionFilters,
         onSessionClick = onSessionClick,
         onApplyForAppClinicClick = onApplyForAppClinicClick,
         onSessionBookmark = onSessionBookmark
@@ -125,65 +125,43 @@ private fun List<DaySchedule>.todayPageIndex(): Int {
 @Composable
 private fun AgendaFilterDrawer(
     rooms: List<Room>,
-    sessionFilters: List<SessionFilter>,
-    onFiltersChanged: (List<SessionFilter>) -> Unit,
+    sessionFilters: Set<SessionFilter>,
+    onFiltersChanged: (Set<SessionFilter>) -> Unit,
 ) {
   Column(modifier = Modifier.fillMaxWidth()) {
     HeaderItem(stringResource(MR.strings.filter))
     FilterItem(
-        text = stringResource(MR.strings.bookmarked),
-        imageVector = Icons.Rounded.Bookmark,
-        checked = sessionFilters.any { it.type == SessionFilter.FilterType.BOOKMARK },
-        onCheck = { checked ->
-          val newSessionFilters = sessionFilters.toMutableList().apply {
-            removeAll { it.type == SessionFilter.FilterType.BOOKMARK }
-            if (checked) add(SessionFilter(SessionFilter.FilterType.BOOKMARK, ""))
-          }
-          onFiltersChanged(newSessionFilters)
-        }
+      filter = SessionFilter.Bookmark,
+      filters = sessionFilters,
+      text = stringResource(MR.strings.bookmarked),
+      imageVector = Icons.Rounded.Bookmark,
+      onFiltersChanged = onFiltersChanged
     )
 
     HeaderItem(stringResource(MR.strings.language))
-    val french = "French"
     FilterItem(
-        text = stringResource(MR.strings.french),
-        language = french,
-        checked = sessionFilters.any { it.type == SessionFilter.FilterType.LANGUAGE && it.value == french },
-        onCheck = { checked ->
-          val newSessionFilters = sessionFilters.toMutableList().apply {
-            removeAll { it.type == SessionFilter.FilterType.LANGUAGE && it.value == french }
-            if (checked) add(SessionFilter(SessionFilter.FilterType.LANGUAGE, french))
-          }
-          onFiltersChanged(newSessionFilters)
-        }
+      filter = SessionFilter.Language(SessionFilter.Language.FRENCH),
+      filters = sessionFilters,
+      text = stringResource(MR.strings.french),
+      language = SessionFilter.Language.FRENCH,
+      onFiltersChanged = onFiltersChanged
     )
-    val english = "English"
     FilterItem(
-        text = stringResource(MR.strings.english),
-        language = english,
-        checked = sessionFilters.any { it.type == SessionFilter.FilterType.LANGUAGE && it.value == english },
-        onCheck = { checked ->
-          val newSessionFilters = sessionFilters.toMutableList().apply {
-            removeAll { it.type == SessionFilter.FilterType.LANGUAGE && it.value == english }
-            if (checked) add(SessionFilter(SessionFilter.FilterType.LANGUAGE, english))
-          }
-          onFiltersChanged(newSessionFilters)
-        }
+      filter = SessionFilter.Language(SessionFilter.Language.ENGLISH),
+      filters = sessionFilters,
+      text = stringResource(MR.strings.english),
+      language = SessionFilter.Language.ENGLISH,
+      onFiltersChanged = onFiltersChanged
     )
 
     HeaderItem(stringResource(MR.strings.rooms))
     for (room in rooms) {
       FilterItem(
-          text = room.name,
-          imageVector = Icons.Rounded.Room,
-          checked = sessionFilters.any { it.type == SessionFilter.FilterType.ROOM && it.value == room.id },
-          onCheck = { checked ->
-            val newSessionFilters = sessionFilters.toMutableList().apply {
-              removeAll { it.type == SessionFilter.FilterType.ROOM && it.value == room.id }
-              if (checked) add(SessionFilter(SessionFilter.FilterType.ROOM, room.id))
-            }
-            onFiltersChanged(newSessionFilters)
-          }
+        filter = SessionFilter.Room(room.id),
+        filters = sessionFilters,
+        text = room.name,
+        imageVector = Icons.Rounded.Room,
+        onFiltersChanged = onFiltersChanged
       )
     }
   }
@@ -191,17 +169,24 @@ private fun AgendaFilterDrawer(
 
 @Composable
 private fun FilterItem(
+    filter: SessionFilter,
+    filters: Set<SessionFilter>,
     text: String,
     imageVector: ImageVector? = null,
     language: String? = null,
-    checked: Boolean,
-    onCheck: (checked: Boolean) -> Unit,
+    onFiltersChanged: (Set<SessionFilter>) -> Unit,
 ) {
+  val checked = filter in filters
   Row(
       modifier = Modifier
           .fillMaxWidth()
           .clickable {
-            onCheck(!checked)
+            val newSessionFilters = if (checked) {
+              filters - filter
+            } else {
+              filters + filter
+            }
+            onFiltersChanged(newSessionFilters)
           },
       verticalAlignment = Alignment.CenterVertically,
   ) {
@@ -260,9 +245,7 @@ private fun AgendaFilterDrawerPreview() {
           Room("", "Room 3"),
           Room("", "Room 4")
       ),
-      sessionFilters = listOf(
-          SessionFilter(type = SessionFilter.FilterType.BOOKMARK, value = "")
-      ),
+      sessionFilters = setOf(SessionFilter.Bookmark),
       onFiltersChanged = {}
   )
 }
