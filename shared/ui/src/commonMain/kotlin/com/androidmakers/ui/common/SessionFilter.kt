@@ -10,7 +10,7 @@ sealed interface SessionFilter {
     override fun matches(session: UISession) = session.isFavorite
   }
 
-  data class Language(val value: String): SessionFilter {
+  data class Language(val value: String) : SessionFilter {
     override fun matches(session: UISession) = session.language == value
 
     companion object {
@@ -19,7 +19,7 @@ sealed interface SessionFilter {
     }
   }
 
-  data class Room(val id: String): SessionFilter {
+  data class Room(val id: String) : SessionFilter {
     override fun matches(session: UISession): Boolean = session.roomId == id
   }
 }
