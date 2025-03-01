@@ -1,83 +1,88 @@
 package com.androidmakers.ui.agenda
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import com.androidmakers.ui.common.EmptyLayout
 import com.androidmakers.ui.common.SessionFilter
-import com.androidmakers.ui.common.SwipeRefreshableLceLayout
-import com.androidmakers.ui.getPlatformContext
 import com.androidmakers.ui.model.UISession
 import fr.androidmakers.domain.utils.formatShortTime
 import kotlinx.coroutines.launch
-import org.koin.compose.viewmodel.koinViewModel
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AgendaPager(
+    days: List<DaySchedule>,
+    isRefreshing: Boolean,
+    onRefresh: () -> Unit,
     initialPageIndex: Int,
-    days: List<String>,
-    onSessionClicked: (UISession) -> Unit,
-    filterList: List<SessionFilter>
+    filterList: List<SessionFilter>,
+    onSessionClick: (UISession) -> Unit,
+    onApplyForAppClinicClick: () -> Unit,
+    onSessionBookmark: (UISession, Boolean) -> Unit
 ) {
   Column(
       modifier = Modifier.fillMaxWidth()
   ) {
 
     val pagerState = rememberPagerState(
-        pageCount = { days.size }, initialPage = initialPageIndex)
+      initialPage = initialPageIndex,
+      pageCount = { days.size }
+    )
 
     TabRow(
         selectedTabIndex = pagerState.currentPage,
         containerColor = MaterialTheme.colorScheme.background,
         contentColor = MaterialTheme.colorScheme.onBackground
     ) {
-      repeat(days.size) {
+      days.forEachIndexed { index, day ->
         val coroutineScope = rememberCoroutineScope()
-
         Tab(
-            text = {
-              Text(days[it])
-            },
-            selected = pagerState.currentPage == it,
-            selectedContentColor = MaterialTheme.colorScheme.onSurface,
-            unselectedContentColor = MaterialTheme.colorScheme.onSurface,
-            onClick = {
-              coroutineScope.launch {
-                pagerState.animateScrollToPage(it)
-              }
-            },
-
-            )
+          text = {
+            Text(day.title)
+          },
+          selected = pagerState.currentPage == index,
+          selectedContentColor = MaterialTheme.colorScheme.onSurface,
+          unselectedContentColor = MaterialTheme.colorScheme.onSurface,
+          onClick = {
+            coroutineScope.launch {
+              pagerState.animateScrollToPage(index)
+            }
+          }
+        )
       }
     }
 
     HorizontalPager(
         state = pagerState,
     ) { page ->
-      val viewModel = koinViewModel<AgendaPagerViewModel>()
-      SwipeRefreshableLceLayout(viewModel) { daySchedules ->
-        val sessions = daySchedules[page].sessions.filter(filterList)
+      val pullRefreshState = rememberPullToRefreshState()
+
+      PullToRefreshBox(
+        isRefreshing = isRefreshing,
+        onRefresh = onRefresh,
+        state = pullRefreshState
+      ) {
+        val sessions = days[page].sessions.filter(filterList)
         if (sessions.isEmpty()) {
           EmptyLayout()
         } else {
-          val platformContext = getPlatformContext()
           AgendaColumn(
               sessionsPerStartTime = sessions.groupBy { it.startDate.formatShortTime() },
-              onSessionClicked = onSessionClicked,
-              onApplyForAppClinicClicked = { viewModel.applyForAppClinic(platformContext) },
-              onSessionBookmarked = { uiSession, bookmarked ->
-                viewModel.setSessionBookmark(uiSession, bookmarked)
-              }
+              onSessionClick = onSessionClick,
+              onApplyForAppClinicClick = onApplyForAppClinicClick,
+              onSessionBookmark = onSessionBookmark
           )
         }
       }

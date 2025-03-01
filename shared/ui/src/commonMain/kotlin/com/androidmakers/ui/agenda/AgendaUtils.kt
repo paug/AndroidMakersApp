@@ -12,6 +12,8 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.toInstant
 
 fun agendaToDays(agenda: Agenda, favoriteSessions: Set<String>): List<DaySchedule> {
+  val roomsById = agenda.rooms.associateBy { it.id }
+  val speakersById = agenda.speakers.associateBy { it.id }
   return agenda.sessions
     .sortedBy { it.startsAt }
     .groupBy { it.startsAt.date }
@@ -20,7 +22,7 @@ fun agendaToDays(agenda: Agenda, favoriteSessions: Set<String>): List<DaySchedul
         title = date.formatMediumDate(),
         date = date,
         sessions = sessions
-          .map { it.toUISession(agenda.rooms, agenda.speakers, it.id in favoriteSessions) }
+          .map { it.toUISession(roomsById, speakersById, it.id in favoriteSessions) }
       )
     }
 }
