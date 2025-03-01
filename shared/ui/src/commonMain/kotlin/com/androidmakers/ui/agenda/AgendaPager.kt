@@ -27,7 +27,7 @@ fun AgendaPager(
     isRefreshing: Boolean,
     onRefresh: () -> Unit,
     initialPageIndex: Int,
-    filterList: List<SessionFilter>,
+    sessionFilters: Set<SessionFilter>,
     onSessionClick: (UISession) -> Unit,
     onApplyForAppClinicClick: () -> Unit,
     onSessionBookmark: (UISession, Boolean) -> Unit
@@ -74,7 +74,7 @@ fun AgendaPager(
         onRefresh = onRefresh,
         state = pullRefreshState
       ) {
-        val sessions = days[page].sessions.filter(filterList)
+        val sessions = days[page].sessions.filter(sessionFilters)
         if (sessions.isEmpty()) {
           EmptyLayout()
         } else {
@@ -96,46 +96,18 @@ fun AgendaPager(
 // the algorithm is inspired by Inverted index
 // time complexity is O(n * m) where n is the number of sessions and m is the number of filters
 private fun List<UISession>.filter(
-    filterList: List<SessionFilter>
+    filters: Collection<SessionFilter>
 ): List<UISession> {
-  if (filterList.isEmpty()) {
+  if (filters.isEmpty()) {
     return this
   }
 
-  val sessionsByFilterType =
-      mutableMapOf<SessionFilter.FilterType, MutableList<UISession>>()
-  for (filter in filterList) {
-    if (!sessionsByFilterType.containsKey(filter.type)) {
-      sessionsByFilterType[filter.type] = mutableListOf()
+  val filtersByType = filters.groupBy { it::class }.values
+
+  return filter { session ->
+    // Match if at least one filter of each type matches
+    filtersByType.all { filter ->
+      filter.any { it.matches(session) }
     }
   }
-  for (session in this) {
-    for (filter in filterList) {
-      when (filter.type) {
-        SessionFilter.FilterType.BOOKMARK -> {
-          val bookmarked = session.isFavorite
-          if (bookmarked) {
-            sessionsByFilterType[filter.type]?.add(session)
-          }
-        }
-
-        SessionFilter.FilterType.LANGUAGE -> {
-          if (filter.value == session.language) {
-            sessionsByFilterType[filter.type]?.add(session)
-          }
-        }
-
-        SessionFilter.FilterType.ROOM -> {
-          if (filter.value == session.roomId) {
-            sessionsByFilterType[filter.type]?.add(session)
-          }
-        }
-      }
-    }
-  }
-
-  //get union join of all ScheduleSessions
-  val origin = sessionsByFilterType.values.flatten().toMutableSet()
-  sessionsByFilterType.values.forEach { origin.retainAll(it) }
-  return origin.sortedBy { it.startDate }
 }
