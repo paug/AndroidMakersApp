@@ -21,10 +21,13 @@ class SpeakersGraphQLRepository(private val apolloClient: ApolloClient) : Speake
   }
 
   override fun getSpeaker(id: String): Flow<Result<Speaker>> {
-    return getSpeakers(false).map { speakersResult ->
-      speakersResult.mapCatching { speakers ->
-        speakers.firstOrNull { it.id == id } ?: error("Speaker not found")
+    return apolloClient.query(GetSpeakersQuery())
+      .cacheAndNetwork()
+      .map { dataResult ->
+        dataResult.mapCatching { data ->
+          data.speakers.firstOrNull { it.speakerDetails.id == id }?.speakerDetails?.toSpeaker()
+            ?: error("Speaker not found")
+        }
       }
-    }
   }
 }
