@@ -32,7 +32,6 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
@@ -62,13 +61,15 @@ class MainViewModel(
     initialValue = userRepository.currentUser
   )
 
-  private val bookmarksRefreshTrigger = MutableStateFlow(0)
-  private val sessionsRefreshTrigger = MutableStateFlow(0)
+  private class LoadingTrigger(val refresh: Boolean)
+
+  private val bookmarksSyncTrigger = MutableStateFlow(LoadingTrigger(refresh = true))
+  private val sessionsLoadingTrigger = MutableStateFlow(LoadingTrigger(refresh = false))
 
   init {
     viewModelScope.launch {
       // Sync bookmarks when the user changes or a refresh is requested
-      combine(user, bookmarksRefreshTrigger) { currentUser, trigger -> currentUser }
+      combine(user, bookmarksSyncTrigger) { currentUser, _ -> currentUser }
         .collectLatest { currentUser -> maybeSyncBookmarks(currentUser) }
     }
 
@@ -76,7 +77,7 @@ class MainViewModel(
       messageClient.getEventsFlow().collect { messageEvent ->
         if (messageEvent.path == MESSAGE_SYNC_BOOKMARKS) {
           Log.d(TAG, "Received syncBookmarks message")
-          bookmarksRefreshTrigger.update { it + 1 }
+          bookmarksSyncTrigger.value = LoadingTrigger(refresh = true)
         }
       }
     }
@@ -103,8 +104,8 @@ class MainViewModel(
 
   @OptIn(ExperimentalCoroutinesApi::class)
   private val sessions: Flow<List<UISession>?> = combine(
-    sessionsRefreshTrigger
-      .flatMapLatest { getAgendaUseCase() }
+    sessionsLoadingTrigger
+      .flatMapLatest { trigger -> getAgendaUseCase(trigger.refresh) }
       .mapNotNull { it.getOrNull() },
     bookmarksRepository.favoriteSessions,
     localPreferencesRepository.showOnlyBookmarkedSessions
@@ -149,8 +150,8 @@ class MainViewModel(
   }
 
   fun refresh() {
-    bookmarksRefreshTrigger.update { it + 1 }
-    sessionsRefreshTrigger.update { it + 1 }
+    bookmarksSyncTrigger.value = LoadingTrigger(refresh = true)
+    sessionsLoadingTrigger.value = LoadingTrigger(refresh = true)
   }
 
   companion object {

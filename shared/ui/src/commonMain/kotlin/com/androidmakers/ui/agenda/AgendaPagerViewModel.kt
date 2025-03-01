@@ -17,8 +17,8 @@ class AgendaPagerViewModel(
   bookmarksRepository: BookmarksRepository,
   private val applyForAppClinicUseCase: ApplyForAppClinicUseCase,
 ) : LceViewModel<List<DaySchedule>>(
-  produce = {
-    getAgendaUseCase()
+  produce = { refresh ->
+    getAgendaUseCase(refresh)
       .combine(bookmarksRepository.favoriteSessions) { agendaResult, favoriteSessions ->
         agendaResult.map { agenda -> agendaToDays(agenda, favoriteSessions) }
       }

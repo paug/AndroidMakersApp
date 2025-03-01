@@ -12,11 +12,11 @@ class GetAgendaUseCase(
     private val speakersRepository: SpeakersRepository,
     private val roomsRepository: RoomsRepository,
 ) {
-  operator fun invoke(): Flow<Result<Agenda>> {
+  operator fun invoke(refresh: Boolean): Flow<Result<Agenda>> {
     return combine(
-        sessionsRepository.getSessions(),
-        roomsRepository.getRooms(),
-        speakersRepository.getSpeakers(),
+        sessionsRepository.getSessions(refresh),
+        roomsRepository.getRooms(refresh),
+        speakersRepository.getSpeakers(refresh),
     ) { sessionsResult, roomsResult, speakersResult ->
 
       val sessions = sessionsResult.getOrElse {

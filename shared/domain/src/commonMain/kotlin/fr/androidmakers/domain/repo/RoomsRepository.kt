@@ -7,5 +7,5 @@ interface RoomsRepository {
 
   fun getRoom(id: String): Flow<Result<Room>>
 
-  fun getRooms(): Flow<Result<List<Room>>>
+  fun getRooms(refresh: Boolean): Flow<Result<List<Room>>>
 }

@@ -11,9 +11,9 @@ class PartnersGraphQLRepository(private val apolloClient: ApolloClient): Partner
   override fun getPartners(): Flow<Result<List<PartnerGroup>>> {
     return apolloClient.query(GetPartnerGroupsQuery())
         .cacheAndNetwork()
-        .map {
-          it.map {
-            it.partnerGroups.map { partnerGroup ->
+        .map { dataResult ->
+          dataResult.map { data ->
+            data.partnerGroups.map { partnerGroup ->
               PartnerGroup(
                 title = partnerGroup.title,
                 partners = partnerGroup.partners.map { partner ->
