@@ -34,9 +34,9 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun AgendaColumn(
   sessionsPerStartTime: Map<String, List<UISession>>,
-  onSessionClicked: (UISession) -> Unit,
-  onSessionBookmarked: (UISession, Boolean) -> Unit,
-  onApplyForAppClinicClicked: () -> Unit,
+  onSessionClick: (UISession) -> Unit,
+  onSessionBookmark: (UISession, Boolean) -> Unit,
+  onApplyForAppClinicClick: () -> Unit,
 ) {
   val listState = rememberLazyListState()
 
@@ -93,9 +93,9 @@ fun AgendaColumn(
               SessionRow(
                 modifier = Modifier.animateItem(),
                 uiSession = uiSession,
-                onSessionClicked = onSessionClicked,
-                onSessionBookmarked = onSessionBookmarked,
-                onApplyForAppClinic = onApplyForAppClinicClicked,
+                onSessionClick = onSessionClick,
+                onSessionBookmark = onSessionBookmark,
+                onApplyForAppClinicClick = onApplyForAppClinicClick,
                 sessionBeforeIsServiceSession = sessionBeforeIsServiceSession.value,
                 sessionAfterIsServiceSession = sessionAfterIsServiceSession.value
               )

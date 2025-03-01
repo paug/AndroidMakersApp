@@ -35,8 +35,8 @@ class GetAgendaUseCase(
       Result.success(
           Agenda(
               sessions = sessions,
-              rooms = rooms.associateBy { it.id },
-              speakers = speakers.associateBy { it.id }
+              rooms = rooms,
+              speakers = speakers
           )
       )
     }
