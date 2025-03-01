@@ -20,7 +20,7 @@
     <string name="language">Language</string>
     <string name="room">Room</string>
     <string name="rooms">Rooms</string>
-    <string name="empty_events">Sorry, there is nothing conference available for currently selected filters.</string>
+    <string name="empty_events">Sorry, there is no session available for the currently selected filters.</string>
 
     <string name="english">English</string>
     <string name="french">French</string>
