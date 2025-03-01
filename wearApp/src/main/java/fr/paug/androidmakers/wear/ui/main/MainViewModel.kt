@@ -160,16 +160,18 @@ class MainViewModel(
 }
 
 private fun Agenda.toUISessions(favoriteSessions: Set<String>): List<UISession> {
+  val speakersById = speakers.associateBy { it.id }
+  val roomsById = rooms.associateBy { it.id }
   return sessions.mapNotNull { session ->
     UISession(
       session = session,
       speakers = session.speakers.map {
-        speakers[it] ?: run {
+        speakersById[it] ?: run {
           Log.d(TAG, "Speaker $it not found")
           return@mapNotNull null
         }
       },
-      room = rooms[session.roomId] ?: run {
+      room = roomsById[session.roomId] ?: run {
         Log.d(TAG, "Room ${session.roomId} not found")
         return@mapNotNull null
       },

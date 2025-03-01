@@ -79,9 +79,9 @@ internal fun ServiceSessionRow(
 internal fun SessionRow(
   uiSession: UISession,
   modifier: Modifier = Modifier,
-  onSessionClicked: (UISession) -> Unit,
-  onSessionBookmarked: (UISession, Boolean) -> Unit,
-  onApplyForAppClinic: () -> Unit,
+  onSessionClick: (UISession) -> Unit,
+  onSessionBookmark: (UISession, Boolean) -> Unit,
+  onApplyForAppClinicClick: () -> Unit,
   sessionBeforeIsServiceSession: Boolean = false,
   sessionAfterIsServiceSession: Boolean = false,
 ) {
@@ -104,7 +104,7 @@ internal fun SessionRow(
   ListItem(
       modifier = modifier.clickable(
         onClick = {
-          onSessionClicked.invoke(uiSession)
+          onSessionClick(uiSession)
         }
       )
         .then(clipModifier),
@@ -125,7 +125,7 @@ internal fun SessionRow(
 
           if (uiSession.isAppClinic) {
             Button(
-              onClick = onApplyForAppClinic,
+              onClick = onApplyForAppClinicClick,
               modifier = Modifier.padding(bottom = 8.dp)
             ) {
               Text(
@@ -166,7 +166,7 @@ internal fun SessionRow(
                 modifier = Modifier.size(48.dp),
                 checked = isBookmarked,
                 onCheckedChange = {
-                  onSessionBookmarked(uiSession, it)
+                  onSessionBookmark(uiSession, it)
                 },
             ) {
               Icon(
@@ -214,9 +214,9 @@ fun UISession.formattedDuration(): String {
 private fun AgendaRowPreview() {
   SessionRow(
     fakeUiSession,
-    onSessionClicked = {},
-    onSessionBookmarked = { _, _ -> },
-    onApplyForAppClinic = {}
+    onSessionClick = {},
+    onSessionBookmark = { _, _ -> },
+    onApplyForAppClinicClick = {}
   )
 }
 

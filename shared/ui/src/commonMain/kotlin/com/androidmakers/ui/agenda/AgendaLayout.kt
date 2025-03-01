@@ -28,9 +28,13 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.androidmakers.ui.common.ButtonRefreshableLceLayout
 import com.androidmakers.ui.common.EmojiUtils
+import com.androidmakers.ui.common.LceLayout
 import com.androidmakers.ui.common.SessionFilter
+import com.androidmakers.ui.getPlatformContext
+import com.androidmakers.ui.model.AgendaPagerState
+import com.androidmakers.ui.model.Lce
+import com.androidmakers.ui.model.UISession
 import dev.icerock.moko.resources.compose.stringResource
 import fr.androidmakers.domain.model.Room
 import fr.androidmakers.domain.utils.eventTimeZone
@@ -44,9 +48,12 @@ import org.koin.compose.viewmodel.koinViewModel
 fun AgendaLayout(
     agendaFilterDrawerState: DrawerState,
     onSessionClick: (sessionId: String) -> Unit,
+    viewModel: AgendaViewModel = koinViewModel()
 ) {
-  val agendaLayoutViewModel = koinViewModel<AgendaLayoutViewModel>()
-  val agendaLayoutState by agendaLayoutViewModel.state.collectAsState()
+  val rooms by viewModel.rooms.collectAsState(emptyList())
+  val sessionFilters by viewModel.sessionFilters.collectAsState()
+  val uiStateLce by viewModel.values.collectAsState()
+  val isRefreshing by viewModel.isRefreshing.collectAsState()
 
   ModalNavigationDrawer(
       drawerState = agendaFilterDrawerState,
@@ -58,32 +65,53 @@ fun AgendaLayout(
             windowInsets = WindowInsets(0, 0, 0, 0),
         ) {
           AgendaFilterDrawer(
-              rooms = agendaLayoutState.rooms,
-              sessionFilters = agendaLayoutState.sessionFilters,
-              onFiltersChanged = agendaLayoutViewModel::onFiltersChanged
+              rooms = rooms,
+              sessionFilters = sessionFilters,
+              onFiltersChanged = viewModel::onFiltersChanged
           )
         }
       },
       content = {
-        AgendaPagerOrLoading(agendaLayoutState.sessionFilters, onSessionClick)
+        val context = getPlatformContext()
+
+        AgendaPagerOrLoading(
+          uiStateLce = uiStateLce,
+          isRefreshing = isRefreshing,
+          onRefresh = viewModel::refresh,
+          sessionFilters = sessionFilters,
+          onSessionClick = { onSessionClick(it.id) },
+          onApplyForAppClinicClick = { viewModel.applyForAppClinic(context) },
+          onSessionBookmark = viewModel::setSessionBookmark,
+        )
       }
   )
 }
 
 @Composable
 private fun AgendaPagerOrLoading(
+    uiStateLce: Lce<AgendaPagerState>,
+    isRefreshing: Boolean,
+    onRefresh: () -> Unit,
     sessionFilters: List<SessionFilter>,
-    onSessionClick: (sessionId: String) -> Unit,
+    onSessionClick: (UISession) -> Unit,
+    onApplyForAppClinicClick: () -> Unit,
+    onSessionBookmark: (UISession, Boolean) -> Unit
 ) {
-  val viewModel = koinViewModel<AgendaPagerViewModel>()
-  ButtonRefreshableLceLayout(viewModel) { daySchedules ->
+  LceLayout(
+    lce = uiStateLce,
+    isRefreshing = isRefreshing,
+    onRetry = onRefresh
+  ) { uiState ->
+    val days = uiState.days
     AgendaPager(
-        initialPageIndex = daySchedules.todayPageIndex(),
-        days = daySchedules.map { it.title },
+        days = days,
+        isRefreshing = isRefreshing,
+        onRefresh = onRefresh,
+        initialPageIndex = days.todayPageIndex(),
         filterList = sessionFilters,
-        onSessionClicked = {
-          onSessionClick(it.id)
-        }
+        onSessionClick = onSessionClick,
+        onApplyForAppClinicClick = onApplyForAppClinicClick,
+        onSessionBookmark = onSessionBookmark
     )
   }
 }
