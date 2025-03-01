@@ -32,7 +32,7 @@ import com.androidmakers.ui.common.EmojiUtils
 import com.androidmakers.ui.common.LceLayout
 import com.androidmakers.ui.common.SessionFilter
 import com.androidmakers.ui.getPlatformContext
-import com.androidmakers.ui.model.AgendaPagerState
+import com.androidmakers.ui.model.AgendaState
 import com.androidmakers.ui.model.Lce
 import com.androidmakers.ui.model.UISession
 import dev.icerock.moko.resources.compose.stringResource
@@ -89,13 +89,13 @@ fun AgendaLayout(
 
 @Composable
 private fun AgendaPagerOrLoading(
-    uiStateLce: Lce<AgendaPagerState>,
-    isRefreshing: Boolean,
-    onRefresh: () -> Unit,
-    sessionFilters: List<SessionFilter>,
-    onSessionClick: (UISession) -> Unit,
-    onApplyForAppClinicClick: () -> Unit,
-    onSessionBookmark: (UISession, Boolean) -> Unit
+  uiStateLce: Lce<AgendaState>,
+  isRefreshing: Boolean,
+  onRefresh: () -> Unit,
+  sessionFilters: List<SessionFilter>,
+  onSessionClick: (UISession) -> Unit,
+  onApplyForAppClinicClick: () -> Unit,
+  onSessionBookmark: (UISession, Boolean) -> Unit
 ) {
   LceLayout(
     lce = uiStateLce,

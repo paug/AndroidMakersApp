@@ -3,7 +3,7 @@ package com.androidmakers.ui.agenda
 import androidx.lifecycle.viewModelScope
 import com.androidmakers.ui.common.LceViewModel
 import com.androidmakers.ui.common.SessionFilter
-import com.androidmakers.ui.model.AgendaPagerState
+import com.androidmakers.ui.model.AgendaState
 import com.androidmakers.ui.model.Lce
 import com.androidmakers.ui.model.UISession
 import fr.androidmakers.domain.PlatformContext
@@ -25,12 +25,12 @@ class AgendaViewModel(
   private val setSessionBookmarkUseCase: SetSessionBookmarkUseCase,
   bookmarksRepository: BookmarksRepository,
   private val applyForAppClinicUseCase: ApplyForAppClinicUseCase,
-) : LceViewModel<AgendaPagerState>(
+) : LceViewModel<AgendaState>(
   produce = { refresh ->
     getAgendaUseCase(refresh)
       .combine(bookmarksRepository.favoriteSessions) { agendaResult, favoriteSessions ->
         agendaResult.map { agenda ->
-          AgendaPagerState(
+          AgendaState(
             days = agendaToDays(agenda, favoriteSessions),
             rooms = agenda.rooms
           )
