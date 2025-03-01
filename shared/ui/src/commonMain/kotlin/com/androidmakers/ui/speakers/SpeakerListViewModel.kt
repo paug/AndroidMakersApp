@@ -12,13 +12,14 @@ class SpeakerListViewModel(
     speakersRepository: SpeakersRepository
 ) : ViewModel() {
 
-  val uiState: Flow<Lce<SpeakersUiState>> = speakersRepository.getSpeakers().map { result ->
-    result.map {
-      SpeakersUiState(
-        speakers = it
-      )
-    }.toLce()
-  }
+  val uiState: Flow<Lce<SpeakersUiState>> = speakersRepository.getSpeakers(false)
+    .map { result ->
+      result.map {
+        SpeakersUiState(
+          speakers = it
+        )
+      }.toLce()
+    }
 }
 
 data class SpeakersUiState(

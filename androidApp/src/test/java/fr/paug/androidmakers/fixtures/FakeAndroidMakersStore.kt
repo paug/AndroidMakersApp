@@ -17,7 +17,7 @@ class FakeAndroidMakersStore : RoomsRepository, VenueRepository, SpeakersReposit
   SessionsRepository, PartnersRepository {
   val roomsMutableFlow = MutableStateFlow(Result.success(emptyList<Room>()))
 
-  override fun getRooms(): Flow<Result<List<Room>>> = roomsMutableFlow
+  override fun getRooms(refresh: Boolean): Flow<Result<List<Room>>> = roomsMutableFlow
 
   override fun getVenue(id: String): Flow<Result<Venue>> {
     TODO("Not yet implemented")
@@ -39,11 +39,11 @@ class FakeAndroidMakersStore : RoomsRepository, VenueRepository, SpeakersReposit
     TODO("Not yet implemented")
   }
 
-  override fun getSessions(): Flow<Result<List<Session>>> {
+  override fun getSessions(refresh: Boolean): Flow<Result<List<Session>>> {
     TODO("Not yet implemented")
   }
 
-  override fun getSpeakers(): Flow<Result<List<Speaker>>> {
+  override fun getSpeakers(refresh: Boolean): Flow<Result<List<Speaker>>> {
     TODO("Not yet implemented")
   }
 

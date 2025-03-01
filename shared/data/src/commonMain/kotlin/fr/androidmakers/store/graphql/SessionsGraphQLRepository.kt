@@ -22,22 +22,30 @@ class SessionsGraphQLRepository(private val apolloClient: ApolloClient) : Sessio
   override fun getSession(id: String): Flow<Result<Session>> {
     return apolloClient.query(GetSessionQuery(id))
       .cacheAndNetwork()
-      .map { it.map { it.session.sessionDetails.toSession() } }
+      .map { dataResult ->
+        dataResult.map { data ->
+          data.session.sessionDetails.toSession()
+        }
+      }
   }
 
   override fun getBookmarks(uid: String): Flow<Result<Set<String>>> {
     return apolloClient.query(BookmarksQuery())
       .fetchPolicy(FetchPolicy.NetworkOnly)
       .toFlow()
-      .map {
-        it.dataAssertNoErrors.bookmarkConnection.nodes.map { it.id }.toSet()
+      .map { response ->
+        response.dataAssertNoErrors.bookmarkConnection.nodes.map { it.id }.toSet()
       }
       .toResultFlow()
   }
 
-  override fun getSessions(): Flow<Result<List<Session>>> {
+  override fun getSessions(refresh: Boolean): Flow<Result<List<Session>>> {
     return apolloClient.query(GetSessionsQuery())
-      .cacheAndNetwork()
-      .map { it.map { it.sessions.nodes.map { it.sessionDetails.toSession() } } }
+      .cacheAndNetwork(refresh)
+      .map { dataResult ->
+        dataResult.map { data ->
+          data.sessions.nodes.map { it.sessionDetails.toSession() }
+        }
+      }
   }
 }

@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 interface SessionsRepository {
   fun getSession(id: String): Flow<Result<Session>>
 
-  fun getSessions(): Flow<Result<List<Session>>>
+  fun getSessions(refresh: Boolean): Flow<Result<List<Session>>>
 
   fun getBookmarks(userId: String): Flow<Result<Set<String>>>
 

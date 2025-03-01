@@ -20,11 +20,13 @@ internal fun <T : Operation.Data> Flow<ApolloResponse<T>>.ignoreCacheMisses(): F
 }
 
 
-internal fun <T : Operation.Data> ApolloCall<T>.cacheAndNetwork(): Flow<Result<T>> {
+internal fun <T : Operation.Data> ApolloCall<T>.cacheAndNetwork(
+  refresh: Boolean = false
+): Flow<Result<T>> {
   return flow {
     var hasData = false
     var exception: ApolloException? = null
-    fetchPolicy(FetchPolicy.CacheAndNetwork)
+    fetchPolicy(if (refresh) FetchPolicy.NetworkFirst else FetchPolicy.CacheAndNetwork)
       .toFlow()
       .collect {
         val data = it.data

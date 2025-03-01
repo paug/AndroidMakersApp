@@ -39,7 +39,7 @@ class AgendaLayoutViewModel : ViewModel {
   private fun createState(
     roomsRepository: RoomsRepository
   ): StateFlow<AgendaLayoutState> = combine(
-    roomsRepository.getRooms()
+    roomsRepository.getRooms(false)
       .map { it.getOrNull().orEmpty() },
     sessionFilters,
     ::AgendaLayoutState
