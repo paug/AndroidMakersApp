@@ -50,6 +50,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.androidmakers.ui.about.AboutScreen
 import com.androidmakers.ui.agenda.AgendaLayout
+import com.androidmakers.ui.common.BackHandlerCompat
 import com.androidmakers.ui.common.SigninButton
 import com.androidmakers.ui.common.SigninCallbacks
 import com.androidmakers.ui.speakers.SpeakerScreen
@@ -120,10 +121,19 @@ fun AVALayout(
             actions = {
               if (currentRoute == AVANavigationRoute.AGENDA.name) {
                 val scope = rememberCoroutineScope()
+                BackHandlerCompat(enabled = agendaFilterDrawerState.isOpen) {
+                  scope.launch {
+                    agendaFilterDrawerState.close()
+                  }
+                }
                 IconButton(
                     onClick = {
                       scope.launch {
-                        if (agendaFilterDrawerState.isClosed) agendaFilterDrawerState.open() else agendaFilterDrawerState.close()
+                        if (agendaFilterDrawerState.isClosed) {
+                          agendaFilterDrawerState.open()
+                        } else {
+                          agendaFilterDrawerState.close()
+                        }
                       }
                     }
                 ) {
