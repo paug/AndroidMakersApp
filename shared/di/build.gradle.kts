@@ -31,11 +31,6 @@ kotlin {
   }
 }
 
-configurations.configureEach {
-  // Remove unnecessary dependency of Precompose and Koin Android
-  exclude(group = "androidx.appcompat", module = "appcompat")
-}
-
 android {
   namespace = "fr.paug.androidmakers.di"
   buildFeatures.buildConfig = true
