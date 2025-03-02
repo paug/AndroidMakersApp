@@ -16,6 +16,7 @@ android {
     minSdk = 30
     targetSdk = 33
     versionCode = libs.versions.version.code.get().toInt()
+    androidResources.localeFilters += listOf("en", "fr")
     versionName = "1.0"
   }
 
@@ -42,6 +43,7 @@ android {
             "google/**",
             "src/google/**",
             "META-INF/*.version",
+            "META-INF/androidx/**",
             "core/**",
             "java/**"
           )

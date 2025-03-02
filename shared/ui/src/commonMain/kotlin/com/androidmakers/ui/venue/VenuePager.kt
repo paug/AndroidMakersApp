@@ -1,6 +1,5 @@
 package com.androidmakers.ui.venue
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.pager.HorizontalPager
@@ -26,7 +25,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun VenuePager() {
   val viewModel = koinViewModel<VenueViewModel>()

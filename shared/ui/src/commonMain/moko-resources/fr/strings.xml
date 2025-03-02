@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Android Makers by droidcon</string>
 
-    <string name="version">Version %s (%s)</string>
+    <string name="version">Version %1$s (%2$s)</string>
 
     <string name="agenda">Agenda</string>
     <string name="venue">Lieu</string>
@@ -15,7 +15,6 @@
 
     <string name="filter">Filtres</string>
     <string name="bookmarked">Favoris</string>
-    <string name="language">Langues</string>
     <string name="room">Salle</string>
     <string name="rooms">Salles</string>
     <string name="empty_events">Désolé, aucune conférence n‘est disponible pour les filtres actuellement sélectionnés.</string>
@@ -62,7 +61,7 @@
     <string name="ask_speaker">Posez une question au speaker sur Slido</string>
 
     <!-- Info about the session. It is `date` at `start time` - `end time`-->
-    <string name="session_detail">%s à %s - %s</string>
+    <string name="session_detail">%1$s à %2$s - %3$s</string>
 
     <string name="speaker_search_placeholder">Recherche</string>
 
