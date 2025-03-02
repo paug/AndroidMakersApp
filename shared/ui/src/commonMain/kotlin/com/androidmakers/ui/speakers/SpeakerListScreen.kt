@@ -17,9 +17,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Clear
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
@@ -28,6 +30,7 @@ import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -68,6 +71,8 @@ fun SpeakerScreen(
       var expanded by rememberSaveable { mutableStateOf(false) }
       val content = (state as Lce.Content<SpeakersUiState>).content
 
+      val filteredSpeakers = content.speakers.filter { it.name?.contains(text, ignoreCase = true) == true }
+
       var searchHeight by remember { mutableStateOf(56.dp) }
 
       Box(Modifier.fillMaxSize()) {
@@ -83,7 +88,7 @@ fun SpeakerScreen(
               contentPadding = PaddingValues(top = searchHeight + 16.dp),
               verticalArrangement = Arrangement.spacedBy(8.dp)
           ) {
-            items(content.speakers.filter { it.name?.contains(text, ignoreCase = true) == true }) { speaker ->
+            items(filteredSpeakers) { speaker ->
               SpeakerItem(
                   speaker = speaker,
                   navigateToSpeakerDetails = navigateToSpeakerDetails
@@ -93,6 +98,7 @@ fun SpeakerScreen(
         }
 
         val horizontalPadding: Dp by animateDpAsState(if (expanded) 0.dp else 24.dp)
+        val hasQuery by remember { derivedStateOf { text.isNotEmpty() } }
 
         SearchBar(
           inputField = {
@@ -104,7 +110,16 @@ fun SpeakerScreen(
               expanded = expanded,
               onExpandedChange = { expanded = it },
               placeholder = { Text(stringResource(MR.strings.speaker_search_placeholder)) },
-              leadingIcon = { Icon(Icons.Rounded.Search, contentDescription = null) }
+              leadingIcon = { Icon(Icons.Rounded.Search, contentDescription = null) },
+              trailingIcon = {
+                if (hasQuery) {
+                  IconButton(
+                    onClick = { text = "" }
+                  ) {
+                    Icon(Icons.Rounded.Clear, contentDescription = null)
+                  }
+                }
+              }
             )
           },
           expanded = expanded,
@@ -121,10 +136,13 @@ fun SpeakerScreen(
           windowInsets = WindowInsets(0.dp, 0.dp, 0.dp, 0.dp)
         ) {
           LazyColumn {
-            val speakers = content.speakers
-            items(speakers.filter { it.name?.contains(text, ignoreCase = true) == true }) { speaker ->
+            items(
+              items = filteredSpeakers,
+              key = { it.id }
+            ) { speaker ->
               SpeakerItem(
                 speaker = speaker,
+                modifier = Modifier.animateItem(),
                 navigateToSpeakerDetails = navigateToSpeakerDetails,
               )
             }
@@ -139,8 +157,8 @@ fun SpeakerScreen(
 
 @Composable
 fun SpeakerItem(
-    modifier: Modifier = Modifier,
     speaker: Speaker,
+    modifier: Modifier = Modifier,
     navigateToSpeakerDetails: (String) -> Unit,
 ) {
 
