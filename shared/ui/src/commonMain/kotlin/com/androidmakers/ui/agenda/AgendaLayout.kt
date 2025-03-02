@@ -255,7 +255,7 @@ private fun AgendaFilterDrawerPreview() {
 @Composable
 private fun AgendaLayoutPreview() {
   AgendaLayout(
-      agendaFilterDrawerState = DrawerState(DrawerValue.Closed, confirmStateChange = { true }),
+      agendaFilterDrawerState = DrawerState(DrawerValue.Closed),
       onSessionClick = { _ -> }
   )
 }
