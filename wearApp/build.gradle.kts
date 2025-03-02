@@ -42,6 +42,7 @@ android {
             "google/**",
             "src/google/**",
             "META-INF/*.version",
+            "META-INF/androidx/**",
             "core/**",
             "java/**"
           )
