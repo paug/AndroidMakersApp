@@ -16,6 +16,7 @@ android {
     minSdk = 30
     targetSdk = 33
     versionCode = libs.versions.version.code.get().toInt()
+    androidResources.localeFilters += listOf("en", "fr")
     versionName = "1.0"
   }
 

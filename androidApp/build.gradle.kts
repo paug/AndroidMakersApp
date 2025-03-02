@@ -10,6 +10,7 @@ android {
     namespace = "fr.paug.androidmakers"
     versionCode = libs.versions.version.code.get().toInt()
     versionName = libs.versions.version.code.get()
+    androidResources.localeFilters += listOf("en", "fr")
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
 
