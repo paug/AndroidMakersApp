@@ -10,10 +10,13 @@ import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import dev.icerock.moko.resources.compose.painterResource
 import fr.androidmakers.domain.model.SocialsItem
 import fr.androidmakers.domain.model.Speaker
-import fr.paug.androidmakers.ui.MR
+import fr.paug.androidmakers.ui.Res
+import fr.paug.androidmakers.ui.ic_network_blog
+import fr.paug.androidmakers.ui.ic_network_linkedin
+import fr.paug.androidmakers.ui.ic_network_x
+import org.jetbrains.compose.resources.painterResource
 
 
 @Composable
@@ -35,21 +38,21 @@ fun SocialButtons(
           socialName.contains("twitter") || socialName == "x" -> {
             Icon(
                 modifier = Modifier.size(24.dp),
-                painter = painterResource(MR.images.ic_network_x),
+                painter = painterResource(Res.drawable.ic_network_x),
                 contentDescription = socialsItem.name
             )
           }
 
           socialName.contains("blog") -> {
             Icon(
-                painter = painterResource(MR.images.ic_network_blog),
+                painter = painterResource(Res.drawable.ic_network_blog),
                 contentDescription = socialsItem.name
             )
           }
 
           socialName.contains("linkedin") -> {
             Icon(
-                painter = painterResource(MR.images.ic_network_linkedin),
+                painter = painterResource(Res.drawable.ic_network_linkedin),
                 contentDescription = socialsItem.name
             )
           }
