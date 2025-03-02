@@ -3,7 +3,6 @@ package fr.paug.androidmakers.wear.ui.main
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -123,7 +122,6 @@ fun WearApp(
   }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MainScreen(
   viewModel: MainViewModel,

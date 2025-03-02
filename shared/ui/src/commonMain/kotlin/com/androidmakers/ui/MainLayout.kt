@@ -10,7 +10,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import coil3.ImageLoader
-import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.setSingletonImageLoaderFactory
 import coil3.request.crossfade
 import com.androidmakers.ui.agenda.SessionDetailScreen
@@ -26,7 +25,6 @@ import org.koin.core.parameter.parametersOf
 /**
  * The main layout: entry point of the application
  */
-@OptIn(ExperimentalCoilApi::class)
 @Composable
 fun MainLayout(
     versionCode: String,
