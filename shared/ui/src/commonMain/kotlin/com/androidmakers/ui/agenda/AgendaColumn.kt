@@ -26,8 +26,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.androidmakers.ui.model.UISession
-import dev.icerock.moko.resources.compose.stringResource
-import fr.paug.androidmakers.ui.MR
+import fr.paug.androidmakers.ui.Res
+import fr.paug.androidmakers.ui.filter
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -123,7 +124,7 @@ fun TimeSeparator(prettyTime: String) {
         modifier = Modifier.size(24.dp),
         imageVector = Icons.Rounded.Schedule,
         tint = MaterialTheme.colorScheme.primary,
-        contentDescription = stringResource(MR.strings.filter),
+        contentDescription = stringResource(Res.string.filter),
       )
       Text(
         text = prettyTime,

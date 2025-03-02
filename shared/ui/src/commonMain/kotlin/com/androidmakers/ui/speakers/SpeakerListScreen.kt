@@ -47,9 +47,11 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.androidmakers.ui.common.LoadingLayout
 import com.androidmakers.ui.model.Lce
-import dev.icerock.moko.resources.compose.stringResource
 import fr.androidmakers.domain.model.Speaker
-import fr.paug.androidmakers.ui.MR
+import fr.paug.androidmakers.ui.Res
+import fr.paug.androidmakers.ui.speaker_search_placeholder
+import fr.paug.androidmakers.ui.speakers
+import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -109,13 +111,13 @@ fun SpeakerScreen(
               onSearch = { expanded = false },
               expanded = expanded,
               onExpandedChange = { expanded = it },
-              placeholder = { Text(stringResource(MR.strings.speaker_search_placeholder)) },
+              placeholder = { Text(stringResource(Res.string.speaker_search_placeholder)) },
               leadingIcon = {
                 if (expanded) {
                   IconButton(onClick = { expanded = false }) {
                     Icon(
                       Icons.AutoMirrored.Rounded.ArrowBack,
-                      contentDescription = stringResource(MR.strings.back)
+                      contentDescription = stringResource(Res.string.back)
                     )
                   }
                 } else {
@@ -196,7 +198,7 @@ fun SpeakerItem(
               modifier = Modifier
                   .size(64.dp)
                   .clip(CircleShape),
-              contentDescription = stringResource(MR.strings.speakers)
+              contentDescription = stringResource(Res.string.speakers)
           )
         }
       }

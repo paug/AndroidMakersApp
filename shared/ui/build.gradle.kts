@@ -1,6 +1,5 @@
 plugins {
   alias(libs.plugins.androidmakers.kmp.library)
-  alias(libs.plugins.moko.resources)
   alias(libs.plugins.jetbrainsCompose)
   alias(libs.plugins.compose.compiler)
 }
@@ -21,12 +20,12 @@ kotlin {
 
   sourceSets {
     commonMain.dependencies {
-      implementation(libs.moko.resources.compose)
       implementation(compose.runtime)
       implementation(compose.foundation)
-      implementation(compose.material3)
       implementation(compose.ui)
+      implementation(compose.material3)
       implementation(compose.materialIconsExtended)
+      implementation(compose.components.resources)
       implementation(compose.components.uiToolingPreview)
       implementation(libs.coil.compose)
       implementation(libs.jetbrains.navigation.compose)
@@ -62,6 +61,6 @@ android {
   namespace = "fr.paug.androidmakers.ui"
 }
 
-multiplatformResources {
-  resourcesPackage.set("fr.paug.androidmakers.ui")
+compose.resources {
+  packageOfResClass = "fr.paug.androidmakers.ui"
 }

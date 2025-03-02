@@ -28,9 +28,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.androidmakers.ui.getPlatformContext
-import dev.icerock.moko.resources.compose.painterResource
-import dev.icerock.moko.resources.compose.stringResource
-import fr.paug.androidmakers.ui.MR
+import fr.paug.androidmakers.ui.Res
+import fr.paug.androidmakers.ui.about_android_makers
+import fr.paug.androidmakers.ui.code_of_conduct
+import fr.paug.androidmakers.ui.faq
+import fr.paug.androidmakers.ui.ic_network_x
+import fr.paug.androidmakers.ui.ic_network_youtube
+import fr.paug.androidmakers.ui.logo_android_makers
+import fr.paug.androidmakers.ui.version
+import fr.paug.androidmakers.ui.x_hashtag
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -63,7 +71,7 @@ fun AboutScreen(
         modifier = Modifier.fillMaxWidth(),
         textAlign = TextAlign.Center,
         text = stringResource(
-            MR.strings.version,
+            Res.string.version,
             versionName,
             versionCode
         ),
@@ -83,29 +91,23 @@ private fun IntroCard(
             .heightIn(max = 128.dp)
             .fillMaxWidth()
             .padding(horizontal = 32.dp),
-        painter = painterResource(
-          if (darkMode) {
-            MR.images.logo_android_makers_night
-          } else {
-            MR.images.logo_android_makers
-          }
-        ),
+        painter = painterResource(Res.drawable.logo_android_makers),
         contentDescription = "Logo"
     )
     Text(
         modifier = Modifier.padding(16.dp),
-        text = stringResource(MR.strings.about_android_makers)
+        text = stringResource(Res.string.about_android_makers)
     )
     Row(
         Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center
     ) {
       ClickableText(
-          text = stringResource(MR.strings.faq),
+          text = stringResource(Res.string.faq),
           onClick = onFaqClick
       )
       ClickableText(
-          text = stringResource(MR.strings.code_of_conduct),
+          text = stringResource(Res.string.code_of_conduct),
           onClick = onCocClick
       )
     }
@@ -128,7 +130,7 @@ private fun SocialCard(
           Modifier.fillMaxWidth(),
           horizontalArrangement = Arrangement.Center
       ) {
-        ClickableText(stringResource(MR.strings.x_hashtag), onXHashtagClick)
+        ClickableText(stringResource(Res.string.x_hashtag), onXHashtagClick)
       }
       Row(
           Modifier
@@ -140,7 +142,7 @@ private fun SocialCard(
         ) {
           Icon(
             modifier = Modifier.padding(12.dp),
-            painter = painterResource(MR.images.ic_network_x),
+            painter = painterResource(Res.drawable.ic_network_x),
             tint = if (darkMode) {
               Color.White
             } else {
@@ -153,7 +155,7 @@ private fun SocialCard(
         ) {
           Image(
             modifier = Modifier.padding(8.dp),
-            painter = painterResource(MR.images.ic_network_youtube),
+            painter = painterResource(Res.drawable.ic_network_youtube),
             contentDescription = "YouTube"
           )
         }
