@@ -53,7 +53,7 @@ kotlin {
 }
 
 configurations.configureEach {
-  // Remove unnecessary dependency of Moko
+  // Remove unnecessary transitive dependency
   exclude(group = "androidx.appcompat", module = "appcompat")
   // Disable Android Drawable support in Coil
   exclude(group = "com.google.accompanist", module = "accompanist-drawablepainter")
