@@ -92,10 +92,8 @@ fun AVALayout(
         TopAppBar(
             scrollBehavior = scrollBehavior,
             colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = MaterialTheme.colorScheme.background,
-                scrolledContainerColor = MaterialTheme.colorScheme.background,
-                titleContentColor = MaterialTheme.colorScheme.onBackground,
-                actionIconContentColor = MaterialTheme.colorScheme.onBackground,
+                scrolledContainerColor = MaterialTheme.colorScheme.surface,
+                actionIconContentColor = MaterialTheme.colorScheme.onSurface,
             ),
             navigationIcon = {
               Box(modifier = Modifier.padding(14.dp)) {
