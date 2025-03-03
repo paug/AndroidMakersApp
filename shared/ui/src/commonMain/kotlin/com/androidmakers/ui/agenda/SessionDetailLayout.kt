@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -156,13 +157,19 @@ fun SessionDetailLayout(
   ) { innerPadding ->
     Box {
       when (sessionDetailState) {
-        is Lce.Loading, Lce.Error -> LoadingLayout()
+        is Lce.Loading, Lce.Error -> LoadingLayout(
+          modifier = Modifier
+            .padding(innerPadding)
+            .consumeWindowInsets(innerPadding)
+        )
         is Lce.Content -> SessionDetails(
           sessionDetails = sessionDetailState.content,
           formattedDateAndRoom = sessionDetailState.content.formattedDateAndRoom,
           openLink = onOpenLink,
           onApplyForAppClinic = onApplyForAppClinic,
-          modifier = Modifier.padding(innerPadding)
+          modifier = Modifier
+            .padding(innerPadding)
+            .consumeWindowInsets(innerPadding)
         )
       }
     }

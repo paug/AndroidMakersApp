@@ -2,6 +2,7 @@ package com.androidmakers.ui.speakers
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -85,8 +86,9 @@ fun SpeakerDetailsScreen(
     Column(
         modifier = Modifier
           .verticalScroll(rememberScrollState())
-            .padding(innerPadding)
-            .padding(16.dp),
+          .padding(innerPadding)
+          .consumeWindowInsets(innerPadding)
+          .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically)
     ) {
 
