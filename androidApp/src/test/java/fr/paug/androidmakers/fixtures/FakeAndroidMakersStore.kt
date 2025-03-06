@@ -23,10 +23,6 @@ class FakeAndroidMakersStore : RoomsRepository, VenueRepository, SpeakersReposit
     TODO("Not yet implemented")
   }
 
-  override fun getSpeaker(id: String): Flow<Result<Speaker>> {
-    TODO("Not yet implemented")
-  }
-
   override fun getRoom(id: String): Flow<Result<Room>> {
     TODO("Not yet implemented")
   }
@@ -44,6 +40,14 @@ class FakeAndroidMakersStore : RoomsRepository, VenueRepository, SpeakersReposit
   }
 
   override fun getSpeakers(refresh: Boolean): Flow<Result<List<Speaker>>> {
+    TODO("Not yet implemented")
+  }
+
+  override fun getSpeaker(id: String): Flow<Result<Speaker>> {
+    TODO("Not yet implemented")
+  }
+
+  override fun getSpeakers(ids: List<String>): Flow<Result<List<Speaker>>> {
     TODO("Not yet implemented")
   }
 
