@@ -38,6 +38,7 @@
             android:launchMode="singleTask"
             android:name=".MainActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/Theme.AndroidMakers.Starting"
             tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

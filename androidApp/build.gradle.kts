@@ -59,6 +59,8 @@ dependencies {
   implementation(libs.kotlinx.coroutines.play.services)
 
   // Support
+  implementation(libs.androidx.core)
+  implementation(libs.androidx.core.splashscreen)
   implementation(libs.androidx.activity.compose)
   implementation(libs.jetbrains.lifecycle.runtime)
 
