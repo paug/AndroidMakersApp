@@ -51,8 +51,8 @@ class SessionDetailViewModel(
   }
 
   private val speakers: Flow<List<Speaker>> = session.mapNotNull { result ->
-    result.getOrNull()?.speakers?.mapNotNull {
-      speakersRepository.getSpeaker(it).first().getOrNull()
+    result.getOrNull()?.speakers?.let { speakerIds ->
+      speakersRepository.getSpeakers(speakerIds).first().getOrNull()
     }
   }
 
