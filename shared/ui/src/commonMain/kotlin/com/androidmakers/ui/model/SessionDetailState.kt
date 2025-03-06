@@ -16,15 +16,16 @@ class SessionDetailState(
     val endTimestamp: Instant,
     val isBookmarked: Boolean,
 ) {
-    fun formattedDateAndRoom(): String {
-        val formattedDate = formatTimeInterval(
-            startTimestamp.toLocalDateTime(TimeZone.currentSystemDefault()),
-            endTimestamp.toLocalDateTime(TimeZone.currentSystemDefault())
-        )
-        return if (room.name.isNotEmpty()) {
-            "$formattedDate, ${room.name}"
-        } else {
-            formattedDate
+    val formattedDateAndRoom: String
+        get() {
+            val formattedDate = formatTimeInterval(
+                startTimestamp.toLocalDateTime(TimeZone.currentSystemDefault()),
+                endTimestamp.toLocalDateTime(TimeZone.currentSystemDefault())
+            )
+            return if (room.name.isNotEmpty()) {
+                "$formattedDate, ${room.name}"
+            } else {
+                formattedDate
+            }
         }
-    }
 }

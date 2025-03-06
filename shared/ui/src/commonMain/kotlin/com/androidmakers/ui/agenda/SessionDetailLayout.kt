@@ -74,9 +74,7 @@ fun SessionDetailScreen(
   viewModel: SessionDetailViewModel,
   onBackClick: () -> Unit,
 ) {
-  val sessionDetailState by viewModel.sessionDetailState.collectAsState(
-    initial = Lce.Loading
-  )
+  val sessionDetailState by viewModel.sessionDetailState.collectAsState()
   val platformContext = getPlatformContext()
 
   SessionDetailLayout(
@@ -161,7 +159,7 @@ fun SessionDetailLayout(
         is Lce.Loading, Lce.Error -> LoadingLayout()
         is Lce.Content -> SessionDetails(
           sessionDetails = sessionDetailState.content,
-          formattedDateAndRoom = sessionDetailState.content.formattedDateAndRoom(),
+          formattedDateAndRoom = sessionDetailState.content.formattedDateAndRoom,
           openLink = onOpenLink,
           onApplyForAppClinic = onApplyForAppClinic,
           modifier = Modifier.padding(innerPadding)
