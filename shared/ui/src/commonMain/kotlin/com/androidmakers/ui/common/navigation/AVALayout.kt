@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -88,15 +88,12 @@ fun AVALayout(
 
   Scaffold(
       modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-      contentWindowInsets = WindowInsets(0, 0, 0, 0),
       topBar = {
         TopAppBar(
             scrollBehavior = scrollBehavior,
             colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = MaterialTheme.colorScheme.background,
-                scrolledContainerColor = MaterialTheme.colorScheme.background,
-                titleContentColor = MaterialTheme.colorScheme.onBackground,
-                actionIconContentColor = MaterialTheme.colorScheme.onBackground,
+                scrolledContainerColor = MaterialTheme.colorScheme.surface,
+                actionIconContentColor = MaterialTheme.colorScheme.onSurface,
             ),
             navigationIcon = {
               Box(modifier = Modifier.padding(14.dp)) {
@@ -188,7 +185,10 @@ fun AVALayout(
         }
       },
   ) { innerPadding ->
-    Box(Modifier.padding(innerPadding)) {
+    Box(
+      Modifier.padding(innerPadding)
+        .consumeWindowInsets(innerPadding)
+    ) {
       AVANavHost(
           versionCode = versionCode,
           versionName = versionName,

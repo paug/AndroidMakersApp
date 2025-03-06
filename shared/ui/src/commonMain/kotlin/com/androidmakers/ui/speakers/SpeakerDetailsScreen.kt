@@ -2,6 +2,7 @@ package com.androidmakers.ui.speakers
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -16,12 +17,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
@@ -65,7 +68,9 @@ fun SpeakerDetailsScreen(
     onBackClick: () -> Unit,
 ) {
   val speaker = uiState.speaker
+  val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
   Scaffold(
+      modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
       topBar = {
         TopAppBar(
             navigationIcon = {
@@ -78,15 +83,17 @@ fun SpeakerDetailsScreen(
             },
             title = {
               // Nothing to do
-            }
+            },
+            scrollBehavior = scrollBehavior
         )
       }
   ) { innerPadding ->
     Column(
         modifier = Modifier
           .verticalScroll(rememberScrollState())
-            .padding(innerPadding)
-            .padding(16.dp),
+          .padding(innerPadding)
+          .consumeWindowInsets(innerPadding)
+          .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically)
     ) {
 

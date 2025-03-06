@@ -18,9 +18,11 @@ import dev.icerock.moko.resources.compose.stringResource
 import fr.paug.androidmakers.ui.MR
 
 @Composable
-fun LoadingLayout() {
+fun LoadingLayout(
+  modifier: Modifier = Modifier
+) {
   Box(
-      modifier = Modifier.fillMaxSize(),
+      modifier = modifier.fillMaxSize(),
       contentAlignment = Alignment.Center
   ) {
     CircularProgressIndicator()
