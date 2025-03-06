@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -39,6 +40,7 @@ import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -46,6 +48,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -105,7 +108,9 @@ fun SessionDetailLayout(
   onOpenLink: (SocialsItem) -> Unit,
   onApplyForAppClinic: () -> Unit,
 ) {
+  val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
   Scaffold(
+    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     topBar = {
       TopAppBar(
         navigationIcon = {
@@ -130,7 +135,8 @@ fun SessionDetailLayout(
               )
             }
           }
-        }
+        },
+        scrollBehavior = scrollBehavior
       )
     },
     floatingActionButton = {
@@ -156,13 +162,19 @@ fun SessionDetailLayout(
   ) { innerPadding ->
     Box {
       when (sessionDetailState) {
-        is Lce.Loading, Lce.Error -> LoadingLayout()
+        is Lce.Loading, Lce.Error -> LoadingLayout(
+          modifier = Modifier
+            .padding(innerPadding)
+            .consumeWindowInsets(innerPadding)
+        )
         is Lce.Content -> SessionDetails(
           sessionDetails = sessionDetailState.content,
           formattedDateAndRoom = sessionDetailState.content.formattedDateAndRoom,
           openLink = onOpenLink,
           onApplyForAppClinic = onApplyForAppClinic,
-          modifier = Modifier.padding(innerPadding)
+          modifier = Modifier
+            .padding(innerPadding)
+            .consumeWindowInsets(innerPadding)
         )
       }
     }
