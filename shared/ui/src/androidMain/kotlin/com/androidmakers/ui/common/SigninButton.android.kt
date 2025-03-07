@@ -14,9 +14,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import coil3.compose.AsyncImage
-import dev.icerock.moko.resources.compose.stringResource
 import fr.androidmakers.domain.model.User
-import fr.paug.androidmakers.ui.MR
+import fr.paug.androidmakers.ui.Res
+import fr.paug.androidmakers.ui.signin
+import fr.paug.androidmakers.ui.signout
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 actual fun SigninButton(
@@ -33,13 +35,13 @@ actual fun SigninButton(
     if (user == null) {
       Icon(
         imageVector = Icons.Rounded.AccountCircle,
-        contentDescription = stringResource(MR.strings.signin)
+        contentDescription = stringResource(Res.string.signin)
       )
     } else {
       AsyncImage(
         model = user.photoUrl,
         modifier = Modifier.clip(CircleShape),
-        contentDescription = stringResource(MR.strings.signout)
+        contentDescription = stringResource(Res.string.signout)
       )
     }
   }
@@ -51,7 +53,7 @@ actual fun SigninButton(
     if (user == null) {
       DropdownMenuItem(
         text = {
-          Text(stringResource(MR.strings.signin))
+          Text(stringResource(Res.string.signin))
         },
         onClick = {
           expandedState.value = false
@@ -61,7 +63,7 @@ actual fun SigninButton(
     } else {
       DropdownMenuItem(
         text = {
-          Text(stringResource(MR.strings.signout))
+          Text(stringResource(Res.string.signout))
         },
         onClick = {
           expandedState.value = false

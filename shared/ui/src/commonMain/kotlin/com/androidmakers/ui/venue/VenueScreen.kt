@@ -17,8 +17,9 @@ import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.androidmakers.ui.model.UIVenue
-import dev.icerock.moko.resources.compose.stringResource
-import fr.paug.androidmakers.ui.MR
+import fr.paug.androidmakers.ui.Res
+import fr.paug.androidmakers.ui.locate_on_map
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun VenueLayout(
@@ -66,7 +67,7 @@ fun VenueLayout(
             .fillMaxSize()
             .padding(horizontal = 8.dp),
         onClick = { uiVenue.coordinates?.let { onClickOnMap(it) } }) {
-      Text(text = stringResource(MR.strings.locate_on_map))
+      Text(text = stringResource(Res.string.locate_on_map))
     }
   }
 }
