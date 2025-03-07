@@ -49,6 +49,7 @@ import com.androidmakers.ui.common.LoadingLayout
 import com.androidmakers.ui.model.Lce
 import fr.androidmakers.domain.model.Speaker
 import fr.paug.androidmakers.ui.Res
+import fr.paug.androidmakers.ui.back
 import fr.paug.androidmakers.ui.speaker_search_placeholder
 import fr.paug.androidmakers.ui.speakers
 import org.jetbrains.compose.resources.stringResource
