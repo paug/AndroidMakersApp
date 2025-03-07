@@ -23,6 +23,7 @@ build/
 *.apk
 
 keystore.jks
+keystore.release
 keystore.properties
 
 /ar/*.png
