@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Clear
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -109,12 +110,21 @@ fun SpeakerScreen(
               expanded = expanded,
               onExpandedChange = { expanded = it },
               placeholder = { Text(stringResource(MR.strings.speaker_search_placeholder)) },
-              leadingIcon = { Icon(Icons.Rounded.Search, contentDescription = null) },
+              leadingIcon = {
+                if (expanded) {
+                  IconButton(onClick = { expanded = false }) {
+                    Icon(
+                      Icons.AutoMirrored.Rounded.ArrowBack,
+                      contentDescription = stringResource(MR.strings.back)
+                    )
+                  }
+                } else {
+                  Icon(Icons.Rounded.Search, contentDescription = null)
+                }
+              },
               trailingIcon = {
                 if (hasQuery) {
-                  IconButton(
-                    onClick = { text = "" }
-                  ) {
+                  IconButton(onClick = { text = "" }) {
                     Icon(Icons.Rounded.Clear, contentDescription = null)
                   }
                 }
