@@ -7,16 +7,9 @@ plugins {
 kotlin {
   applyDefaultHierarchyTemplate()
 
-  listOf(
-      iosX64(),
-      iosArm64(),
-      iosSimulatorArm64()
-  ).forEach {
-    it.binaries.framework {
-      baseName = "ui"
-      isStatic = true
-    }
-  }
+  iosX64()
+  iosArm64()
+  iosSimulatorArm64()
 
   sourceSets {
     commonMain.dependencies {
@@ -33,7 +26,7 @@ kotlin {
       implementation(libs.jetbrains.lifecycle.viewmodel.compose)
       implementation(libs.koin.compose)
       implementation(libs.koin.compose.viewmodel)
-      api(libs.openfeedback.m3)
+      api(libs.openfeedback.viewmodel)
       implementation(libs.kotlinx.coroutines.core)
       implementation(libs.okio)   // Used by Openfeedback
 

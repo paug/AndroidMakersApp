@@ -4,17 +4,9 @@ plugins {
 
 kotlin {
 
-  listOf(
-      iosX64(),
-      iosArm64(),
-      iosSimulatorArm64()
-  ).forEach {
-    it.binaries.framework {
-      baseName = "domain"
-      isStatic = true
-      export(libs.kotlinx.datetime)
-    }
-  }
+  iosX64()
+  iosArm64()
+  iosSimulatorArm64()
 
   sourceSets {
     commonMain.dependencies {

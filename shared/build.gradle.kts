@@ -16,6 +16,7 @@ kotlin {
       export(project(":shared:domain"))
       export(project(":shared:di"))
       export(libs.openfeedback.m3)
+      export(libs.openfeedback.viewmodel)
     }
   }
 

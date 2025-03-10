@@ -77,7 +77,7 @@ import fr.paug.androidmakers.ui.info
 import fr.paug.androidmakers.ui.session_app_clinic_apply
 import fr.paug.androidmakers.ui.share
 import fr.paug.androidmakers.ui.speakers
-import io.openfeedback.m3.OpenFeedback
+import io.openfeedback.OpenFeedback
 import kotlinx.datetime.Clock
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource

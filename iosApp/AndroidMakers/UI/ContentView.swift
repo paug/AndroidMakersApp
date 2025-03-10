@@ -14,7 +14,7 @@ struct ContentView: View {
 
 struct MainView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIViewController {
-        return MainLayoutViewController()
+        return MainLayoutViewControllerKt.MainLayoutViewController()
     }
 
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
