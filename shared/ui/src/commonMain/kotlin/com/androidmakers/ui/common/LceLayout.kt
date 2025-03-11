@@ -14,8 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.androidmakers.ui.model.Lce
-import dev.icerock.moko.resources.compose.stringResource
-import fr.paug.androidmakers.ui.MR
+import fr.paug.androidmakers.ui.Res
+import fr.paug.androidmakers.ui.empty_events
+import fr.paug.androidmakers.ui.ohno
+import fr.paug.androidmakers.ui.retry
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun LoadingLayout(
@@ -59,7 +62,7 @@ fun ErrorLayout(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
       Text(
-          text = stringResource(MR.strings.ohno),
+          text = stringResource(Res.string.ohno),
           textAlign = TextAlign.Center
       )
       if (onClick != null) {
@@ -68,7 +71,7 @@ fun ErrorLayout(
             onClick = onClick,
             enabled = enabled
         ) {
-          Text(text = stringResource(MR.strings.retry))
+          Text(text = stringResource(Res.string.retry))
         }
       }
     }
@@ -85,7 +88,7 @@ fun EmptyLayout(modifier: Modifier = Modifier) {
       contentAlignment = Alignment.Center
   ) {
     Text(
-        text = stringResource(MR.strings.empty_events),
+        text = stringResource(Res.string.empty_events),
         textAlign = TextAlign.Center
     )
   }

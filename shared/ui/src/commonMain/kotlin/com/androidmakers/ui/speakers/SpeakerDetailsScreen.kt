@@ -32,9 +32,11 @@ import com.androidmakers.ui.common.LoadingLayout
 import com.androidmakers.ui.common.SocialButtons
 import com.androidmakers.ui.getPlatformContext
 import com.androidmakers.ui.model.Lce
-import dev.icerock.moko.resources.compose.stringResource
 import fr.androidmakers.domain.model.SocialsItem
-import fr.paug.androidmakers.ui.MR
+import fr.paug.androidmakers.ui.Res
+import fr.paug.androidmakers.ui.back
+import fr.paug.androidmakers.ui.speakers
+import org.jetbrains.compose.resources.stringResource
 
 
 @Composable
@@ -77,7 +79,7 @@ fun SpeakerDetailsScreen(
               IconButton(onClick = onBackClick) {
                 Icon(
                     Icons.AutoMirrored.Rounded.ArrowBack,
-                    contentDescription = stringResource(MR.strings.back)
+                    contentDescription = stringResource(Res.string.back)
                 )
               }
             },
@@ -103,7 +105,7 @@ fun SpeakerDetailsScreen(
             modifier = Modifier
                 .size(64.dp)
                 .clip(CircleShape),
-            contentDescription = stringResource(MR.strings.speakers)
+            contentDescription = stringResource(Res.string.speakers)
         )
       }
 

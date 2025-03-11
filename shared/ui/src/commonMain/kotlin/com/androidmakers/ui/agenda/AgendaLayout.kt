@@ -36,12 +36,18 @@ import com.androidmakers.ui.getPlatformContext
 import com.androidmakers.ui.model.AgendaState
 import com.androidmakers.ui.model.Lce
 import com.androidmakers.ui.model.UISession
-import dev.icerock.moko.resources.compose.stringResource
 import fr.androidmakers.domain.model.Room
 import fr.androidmakers.domain.utils.eventTimeZone
-import fr.paug.androidmakers.ui.MR
+import fr.paug.androidmakers.ui.Res
+import fr.paug.androidmakers.ui.bookmarked
+import fr.paug.androidmakers.ui.english
+import fr.paug.androidmakers.ui.filter
+import fr.paug.androidmakers.ui.french
+import fr.paug.androidmakers.ui.language
+import fr.paug.androidmakers.ui.rooms
 import kotlinx.datetime.Clock
 import kotlinx.datetime.todayIn
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -133,32 +139,32 @@ private fun AgendaFilterDrawer(
       .fillMaxWidth()
       .verticalScroll(state = rememberScrollState())
   ) {
-    HeaderItem(stringResource(MR.strings.filter))
+    HeaderItem(stringResource(Res.string.filter))
     FilterItem(
       filter = SessionFilter.Bookmark,
       filters = sessionFilters,
-      text = stringResource(MR.strings.bookmarked),
+      text = stringResource(Res.string.bookmarked),
       imageVector = Icons.Rounded.Bookmark,
       onFiltersChanged = onFiltersChanged
     )
 
-    HeaderItem(stringResource(MR.strings.language))
+    HeaderItem(stringResource(Res.string.language))
     FilterItem(
       filter = SessionFilter.Language(SessionFilter.Language.FRENCH),
       filters = sessionFilters,
-      text = stringResource(MR.strings.french),
+      text = stringResource(Res.string.french),
       language = SessionFilter.Language.FRENCH,
       onFiltersChanged = onFiltersChanged
     )
     FilterItem(
       filter = SessionFilter.Language(SessionFilter.Language.ENGLISH),
       filters = sessionFilters,
-      text = stringResource(MR.strings.english),
+      text = stringResource(Res.string.english),
       language = SessionFilter.Language.ENGLISH,
       onFiltersChanged = onFiltersChanged
     )
 
-    HeaderItem(stringResource(MR.strings.rooms))
+    HeaderItem(stringResource(Res.string.rooms))
     for (room in rooms) {
       FilterItem(
         filter = SessionFilter.Room(room.id),

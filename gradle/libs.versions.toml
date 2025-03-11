@@ -23,18 +23,18 @@ googleid = "1.1.1"
 horologist = "0.6.23"
 jetbrainsCompose = "1.7.3"
 jetbrainsLifecycle = "2.8.4"
-jetbrainsNavigation = "2.8.0-alpha13"
+# if you update this, you probably need to update all other compose dependencies
+# see https://youtrack.jetbrains.com/issue/CMP-7571
+jetbrainsNavigation = "2.7.0-alpha07"
 junit = "4.13.2"
 koin = "4.0.2"
 kotlin = "2.1.10"
 kotlinx-coroutines = "1.10.1"
 kotlinx-datetime = "0.6.2"
 ktor = "3.1.1"
-moko-resources = "0.24.5"
-moko-graphics = "0.10.0"
 okhttp = "4.12.0"
 okio = "3.10.2"
-openfeedback-m3 = "0.2.3"
+openfeedback = "1.0.0-alpha.4"
 playServices-auth = "21.3.0"
 playServices-wearable = "19.0.0"
 
@@ -70,12 +70,10 @@ kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutine
 kotlinx-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "kotlinx-coroutines" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
-moko-resources = { module = "dev.icerock.moko:resources", version.ref = "moko-resources" }
-moko-resources_compose = { module = "dev.icerock.moko:resources-compose", version.ref = "moko-resources" }
-moko-graphics = { module = "dev.icerock.moko:graphics", version.ref = "moko-graphics" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 okio = { group = "com.squareup.okio", name = "okio", version.ref = "okio" }
-openfeedback-m3 = { module = "io.openfeedback:openfeedback-m3", version.ref = "openfeedback-m3" }
+openfeedback-m3 = { module = "io.openfeedback:openfeedback-m3", version.ref = "openfeedback" }
+openfeedback-viewmodel = { module = "io.openfeedback:openfeedback-viewmodel", version.ref = "openfeedback" }
 play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServices-auth" }
 
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
@@ -111,7 +109,6 @@ google-services = { id = "com.google.gms.google-services", version.ref = "google
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "jetbrainsCompose" }
 kmp = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-moko-resources = { id = "dev.icerock.mobile.multiplatform-resources", version.ref = "moko-resources" }
 
 ## Custom plugins
 androidmakers-android-application = { id = "fr.androidmakers.android.application" }

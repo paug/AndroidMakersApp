@@ -1,6 +1,5 @@
 plugins {
   alias(libs.plugins.androidmakers.kmp.library)
-  alias(libs.plugins.moko.resources)
   alias(libs.plugins.jetbrainsCompose)
   alias(libs.plugins.compose.compiler)
 }
@@ -8,25 +7,18 @@ plugins {
 kotlin {
   applyDefaultHierarchyTemplate()
 
-  listOf(
-      iosX64(),
-      iosArm64(),
-      iosSimulatorArm64()
-  ).forEach {
-    it.binaries.framework {
-      baseName = "ui"
-      isStatic = true
-    }
-  }
+  iosX64()
+  iosArm64()
+  iosSimulatorArm64()
 
   sourceSets {
     commonMain.dependencies {
-      implementation(libs.moko.resources.compose)
       implementation(compose.runtime)
       implementation(compose.foundation)
-      implementation(compose.material3)
       implementation(compose.ui)
+      implementation(compose.material3)
       implementation(compose.materialIconsExtended)
+      implementation(compose.components.resources)
       implementation(compose.components.uiToolingPreview)
       implementation(libs.coil.compose)
       implementation(libs.jetbrains.navigation.compose)
@@ -34,7 +26,7 @@ kotlin {
       implementation(libs.jetbrains.lifecycle.viewmodel.compose)
       implementation(libs.koin.compose)
       implementation(libs.koin.compose.viewmodel)
-      api(libs.openfeedback.m3)
+      api(libs.openfeedback.viewmodel)
       implementation(libs.kotlinx.coroutines.core)
       implementation(libs.okio)   // Used by Openfeedback
 
@@ -62,6 +54,6 @@ android {
   namespace = "fr.paug.androidmakers.ui"
 }
 
-multiplatformResources {
-  resourcesPackage.set("fr.paug.androidmakers.ui")
+compose.resources {
+  packageOfResClass = "fr.paug.androidmakers.ui"
 }

@@ -56,10 +56,18 @@ import com.androidmakers.ui.common.SigninCallbacks
 import com.androidmakers.ui.speakers.SpeakerScreen
 import com.androidmakers.ui.sponsors.SponsorsScreen
 import com.androidmakers.ui.venue.VenuePager
-import dev.icerock.moko.resources.compose.painterResource
-import dev.icerock.moko.resources.compose.stringResource
-import fr.paug.androidmakers.ui.MR
+import fr.paug.androidmakers.ui.Res
+import fr.paug.androidmakers.ui.about
+import fr.paug.androidmakers.ui.agenda
+import fr.paug.androidmakers.ui.app_name
+import fr.paug.androidmakers.ui.filter
+import fr.paug.androidmakers.ui.notification
+import fr.paug.androidmakers.ui.speakers
+import fr.paug.androidmakers.ui.sponsors
+import fr.paug.androidmakers.ui.venue
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 /**
@@ -99,7 +107,7 @@ fun AVALayout(
               Box(modifier = Modifier.padding(14.dp)) {
                 Image(
                     modifier = Modifier.size(28.dp),
-                    painter = painterResource(MR.images.notification),
+                    painter = painterResource(Res.drawable.notification),
                     contentDescription = "logo"
                 )
               }
@@ -108,7 +116,7 @@ fun AVALayout(
               Row(horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.Start)) {
 
                 Text(
-                    text = stringResource(MR.strings.app_name),
+                    text = stringResource(Res.string.app_name),
                     style = MaterialTheme.typography.titleSmall,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
@@ -136,7 +144,7 @@ fun AVALayout(
                 ) {
                   Icon(
                       imageVector = Icons.Rounded.FilterList,
-                      contentDescription = stringResource(MR.strings.filter),
+                      contentDescription = stringResource(Res.string.filter),
                   )
                 }
               }
@@ -150,35 +158,35 @@ fun AVALayout(
           NavigationBarItem(
               avaNavController = avaNavController,
               imageVector = Icons.Rounded.CalendarMonth,
-              label = stringResource(MR.strings.agenda),
+              label = stringResource(Res.string.agenda),
               currentRoute = currentRoute,
               destinationRoute = AVANavigationRoute.AGENDA
           )
           NavigationBarItem(
               avaNavController = avaNavController,
               imageVector = Icons.Rounded.LocationCity,
-              label = stringResource(MR.strings.venue),
+              label = stringResource(Res.string.venue),
               currentRoute = currentRoute,
               destinationRoute = AVANavigationRoute.VENUE
           )
           NavigationBarItem(
               avaNavController = avaNavController,
               imageVector = Icons.Rounded.Groups,
-              label = stringResource(MR.strings.speakers),
+              label = stringResource(Res.string.speakers),
               currentRoute = currentRoute,
               destinationRoute = AVANavigationRoute.SPEAKERS
           )
           NavigationBarItem(
               avaNavController = avaNavController,
               imageVector = Icons.Rounded.Diamond,
-              label = stringResource(MR.strings.sponsors),
+              label = stringResource(Res.string.sponsors),
               currentRoute = currentRoute,
               destinationRoute = AVANavigationRoute.SPONSORS
           )
           NavigationBarItem(
               avaNavController = avaNavController,
               imageVector = Icons.Rounded.Info,
-              label = stringResource(MR.strings.about),
+              label = stringResource(Res.string.about),
               currentRoute = currentRoute,
               destinationRoute = AVANavigationRoute.ABOUT
           )
