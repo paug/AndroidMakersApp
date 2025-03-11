@@ -16,7 +16,7 @@ apollo-adapters = "0.0.4"
 coil = "3.1.0"
 compose = "1.7.8"               # Used by the Wear OS app only
 crashlytics-plugin = "3.0.3"
-firebase-auth = "1.12.0"        # Do not upgrade until openfeedback upgrades the same dependency
+firebase-auth = "2.1.0"        # Do not upgrade until openfeedback upgrades the same dependency
 firebase-bom = "33.10.0"
 google-services-plugin = "4.4.2"
 googleid = "1.1.1"
@@ -25,7 +25,7 @@ jetbrainsCompose = "1.7.3"
 jetbrainsLifecycle = "2.8.4"
 # if you update this, you probably need to update all other compose dependencies
 # see https://youtrack.jetbrains.com/issue/CMP-7571
-jetbrainsNavigation = "2.7.0-alpha07"
+jetbrainsNavigation = "2.8.0-alpha12"
 junit = "4.13.2"
 koin = "4.0.2"
 kotlin = "2.1.10"
