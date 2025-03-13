@@ -20,7 +20,7 @@ import com.androidmakers.ui.MainLayout
 import com.androidmakers.ui.common.SigninCallbacks
 import com.androidmakers.ui.common.navigation.UserData
 import com.androidmakers.ui.theme.AndroidMakersTheme
-import com.google.android.libraries.identity.googleid.GetGoogleIdOption
+import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
 import com.google.firebase.messaging.FirebaseMessaging
@@ -98,9 +98,8 @@ class MainActivity : ComponentActivity() {
   }
 
   private fun signIn() {
-    val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
-      .setFilterByAuthorizedAccounts(false)
-      .setServerClientId(SERVER_CLIENT_ID)
+    // See https://github.com/android/identity-samples/issues/86
+    val googleIdOption = GetSignInWithGoogleOption.Builder(SERVER_CLIENT_ID)
       .build()
     val request: GetCredentialRequest = GetCredentialRequest.Builder()
       .addCredentialOption(googleIdOption)
@@ -142,6 +141,13 @@ class MainActivity : ComponentActivity() {
 
   companion object {
     private const val TAG = "MainActivity"
-    private const val SERVER_CLIENT_ID = "985196411897-r7edbi9jgo3hfupekcmdrg66inonj0o5.apps.googleusercontent.com"
+
+    /**
+     * This is taken from the firebase google-services.json
+     * It is the same value for both debug and release builds.
+     * For some reason, trying to use the client ids from the google cloud console doesn't work 🤷‍♂️
+     * See https://github.com/android/identity-samples/issues/53#issuecomment-2579235790
+     */
+    private val SERVER_CLIENT_ID = "985196411897-r7edbi9jgo3hfupekcmdrg66inonj0o5.apps.googleusercontent.com"
   }
 }
