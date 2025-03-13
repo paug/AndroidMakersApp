@@ -32,6 +32,7 @@ import fr.paug.androidmakers.ui.Res
 import fr.paug.androidmakers.ui.about_android_makers
 import fr.paug.androidmakers.ui.code_of_conduct
 import fr.paug.androidmakers.ui.faq
+import fr.paug.androidmakers.ui.ic_network_bluesky
 import fr.paug.androidmakers.ui.ic_network_x
 import fr.paug.androidmakers.ui.ic_network_youtube
 import fr.paug.androidmakers.ui.logo_android_makers
@@ -63,6 +64,7 @@ fun AboutScreen(
 
     SocialCard(
         { viewModel.openXHashtag(platformContext) },
+        { viewModel.openBlueSkyAccount(platformContext) },
         { viewModel.openXAccount(platformContext) },
         { viewModel.openYoutube(platformContext) }
     )
@@ -116,9 +118,10 @@ private fun IntroCard(
 
 @Composable
 private fun SocialCard(
-    onXHashtagClick: () -> Unit,
-    onXLogoClick: () -> Unit,
-    onYouTubeLogoClick: () -> Unit
+  onXHashtagClick: () -> Unit,
+  onBlueskyLogoClick: () -> Unit,
+  onXLogoClick: () -> Unit,
+  onYouTubeLogoClick: () -> Unit
 ) {
   val darkMode = isSystemInDarkTheme()
   Card(Modifier.fillMaxWidth()) {
@@ -138,6 +141,15 @@ private fun SocialCard(
           horizontalArrangement = Arrangement.spacedBy(16.dp),
       ) {
         SocialIcon(
+          onClick = onBlueskyLogoClick,
+        ) {
+          Icon(
+            modifier = Modifier.padding(12.dp),
+            painter = painterResource(Res.drawable.ic_network_bluesky),
+            contentDescription = "Bluesky"
+          )
+        }
+        SocialIcon(
           onClick = onXLogoClick,
         ) {
           Icon(
@@ -149,7 +161,7 @@ private fun SocialCard(
               Color.Black },
             contentDescription = "X"
           )
-      }
+        }
         SocialIcon(
           onClick = onYouTubeLogoClick
         ) {
