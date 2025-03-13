@@ -65,8 +65,8 @@
     <!-- Info about the session. It is `date` at `start time` - `end time`-->
     <string name="session_detail">%1$s at %2$s - %3$s</string>
 
-    <string name="x_hashtag" translatable="false">#AMxDC24</string>
-    <string name="x_hashtag_for_query" translatable="false">AMxDC24</string>
+    <string name="x_hashtag" translatable="false">#AMxDC25</string>
+    <string name="x_hashtag_for_query" translatable="false">AMxDC25</string>
     <string name="x_user_name" translatable="false">AndroidMakersFR</string>
 
     <string name="speaker_search_placeholder">Search</string>

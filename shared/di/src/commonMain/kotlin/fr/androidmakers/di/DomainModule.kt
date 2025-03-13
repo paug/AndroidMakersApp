@@ -13,6 +13,7 @@ import fr.androidmakers.domain.interactor.OpenLinkUseCase
 import fr.androidmakers.domain.interactor.OpenPartnerLinkUseCase
 import fr.androidmakers.domain.interactor.OpenXAccountUseCase
 import fr.androidmakers.domain.interactor.OpenXHashtagUseCase
+import fr.androidmakers.domain.interactor.OpenBlueskyAccountUseCase
 import fr.androidmakers.domain.interactor.OpenYoutubeUseCase
 import fr.androidmakers.domain.interactor.SetSessionBookmarkUseCase
 import org.koin.core.module.Module
@@ -29,6 +30,7 @@ val domainModule = module {
   factory { OpenCocUseCase(get()) }
   factory { OpenYoutubeUseCase(get()) }
   factory { OpenXHashtagUseCase(get()) }
+  factory { OpenBlueskyAccountUseCase(get()) }
   factory { OpenXAccountUseCase(get()) }
   factory { SetSessionBookmarkUseCase(get(), get(), get(), get()) }
   factory { GetPartnersUseCase(get()) }

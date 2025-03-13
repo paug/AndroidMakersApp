@@ -6,8 +6,8 @@ object Constants {
     const val coc = "https://androidmakers.droidcon.com/code-of-conduct/"
     const val youtubeWeb = "https://www.youtube.com/channel/UCkatLlah5weIpN23LqMgdTg"
     const val youtubeApp = "youtube://www.youtube.com/channel/UCkatLlah5weIpN23LqMgdTg"
-    const val xHashtagWeb = "https://x.com/search?q=AMxDC24"
-    const val xHashtagApp = "twitter://search?query=AMxDC24"
+    const val xHashtagWeb = "https://x.com/search?q=AMxDC25"
+    const val xHashtagApp = "twitter://search?query=AMxDC25"
     const val xAccountWeb = "https://x.com/AndroidMakersFR"
     const val xAccountApp = "twitter://user?screen_name=AndroidMakersFR"
   }
