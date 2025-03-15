@@ -7,14 +7,16 @@ import com.androidmakers.ui.speakers.SpeakerDetailsViewModel
 import com.androidmakers.ui.speakers.SpeakerListViewModel
 import com.androidmakers.ui.sponsors.SponsorsViewModel
 import com.androidmakers.ui.venue.VenueViewModel
+import org.koin.core.module.dsl.viewModel
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 val viewModelModule = module {
-  factory { SpeakerListViewModel(get()) }
-  factory { SponsorsViewModel(get(), get()) }
-  factory { VenueViewModel(get(), get(), get()) }
-  factory { (speakerId: String) -> SpeakerDetailsViewModel(speakerId, get(), get()) }
-  factory { AgendaViewModel(get(), get(), get(), get()) }
-  factory { (sessionId: String) -> SessionDetailViewModel(sessionId, get(), get(), get(), get(), get(), get(), get(), get()) }
-  factory { AboutViewModel(get(), get(), get(), get(), get(), get()) }
+  viewModelOf(::SpeakerListViewModel)
+  viewModelOf(::SponsorsViewModel)
+  viewModelOf(::VenueViewModel)
+  viewModel { (speakerId: String) -> SpeakerDetailsViewModel(speakerId, get(), get()) }
+  viewModelOf(::AgendaViewModel)
+  viewModel { (sessionId: String) -> SessionDetailViewModel(sessionId, get(), get(), get(), get(), get(), get(), get(), get()) }
+  viewModelOf(::AboutViewModel)
 }

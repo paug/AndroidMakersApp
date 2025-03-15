@@ -33,7 +33,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -56,6 +55,7 @@ import com.androidmakers.ui.common.SigninCallbacks
 import com.androidmakers.ui.speakers.SpeakerScreen
 import com.androidmakers.ui.sponsors.SponsorsScreen
 import com.androidmakers.ui.venue.VenuePager
+import fr.androidmakers.domain.repo.UserRepository
 import fr.paug.androidmakers.ui.Res
 import fr.paug.androidmakers.ui.about
 import fr.paug.androidmakers.ui.agenda
@@ -68,6 +68,7 @@ import fr.paug.androidmakers.ui.venue
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
 /**
@@ -83,11 +84,11 @@ fun AVALayout(
     onSessionClick: (sessionId: String) -> Unit,
     navigateToSpeakerDetails: (String) -> Unit,
     signinCallbacks: SigninCallbacks,
+    userRepository: UserRepository = koinInject(),
 ) {
   val avaNavController = rememberNavController()
   val navBackStackEntry by avaNavController.currentBackStackEntryAsState()
   val currentRoute = navBackStackEntry?.destination?.route
-  val userRepository = remember { UserData().userRepository }
 
   val agendaFilterDrawerState = rememberDrawerState(DrawerValue.Closed)
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()

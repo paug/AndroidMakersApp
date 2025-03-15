@@ -18,7 +18,6 @@ import androidx.credentials.exceptions.GetCredentialException
 import androidx.lifecycle.lifecycleScope
 import com.androidmakers.ui.MainLayout
 import com.androidmakers.ui.common.SigninCallbacks
-import com.androidmakers.ui.common.navigation.UserData
 import com.androidmakers.ui.theme.AndroidMakersTheme
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
@@ -27,10 +26,12 @@ import com.google.firebase.messaging.FirebaseMessaging
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.GoogleAuthProvider
 import dev.gitlive.firebase.auth.auth
+import fr.androidmakers.domain.interactor.MergeBookmarksUseCase
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import org.koin.android.ext.android.inject
 import org.koin.compose.KoinContext
 
 class MainActivity : ComponentActivity() {
@@ -38,6 +39,8 @@ class MainActivity : ComponentActivity() {
   private val credentialManager: CredentialManager by lazy(LazyThreadSafetyMode.NONE) {
     CredentialManager.create(this)
   }
+
+  private val mergeBookmarksUseCase: MergeBookmarksUseCase by inject(mode = LazyThreadSafetyMode.NONE)
 
   override fun onCreate(savedInstanceState: Bundle?) {
     installSplashScreen()
@@ -129,10 +132,8 @@ class MainActivity : ComponentActivity() {
     val firebaseCredential = GoogleAuthProvider.credential(googleIdTokenCredential.idToken, null)
     val result = Firebase.auth.signInWithCredential(firebaseCredential)
     // Sign in success, update UI with the signed-in user's information
-    with(UserData()) {
-      result.user?.uid?.let {
-        mergeBookmarksUseCase(it)
-      }
+    result.user?.uid?.let {
+      mergeBookmarksUseCase(it)
     }
 
     Log.d(TAG, "user id=${result.user?.uid}")
