@@ -14,10 +14,10 @@ android {
   defaultConfig {
     applicationId = "fr.paug.androidmakers"
     minSdk = 30
-    targetSdk = 33
+    targetSdk = 35
     versionCode = libs.versions.version.code.get().toInt()
+    versionName = libs.versions.version.code.get()
     androidResources.localeFilters += listOf("en", "fr")
-    versionName = "1.0"
   }
 
   compileOptions {
