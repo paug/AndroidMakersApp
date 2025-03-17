@@ -12,7 +12,7 @@ class SigningConfigPlugin : Plugin<Project> {
     with(target) {
       val extension = extensions.getByType<ApplicationExtension>()
       extension.apply {
-        val f = project.file("keystore.properties")
+        val f = project.rootProject.file("androidApp/keystore.properties")
         signingConfigs.apply {
           val props = Properties()
           if (f.exists()) {
@@ -21,14 +21,14 @@ class SigningConfigPlugin : Plugin<Project> {
           create("release").apply {
             keyAlias = props.getProperty("keyAlias")
             keyPassword = props.getProperty("keyAliasPassword")
-            storeFile = project.file("keystore.release")
+            storeFile = project.rootProject.file("androidApp/keystore.release")
             storePassword = props.getProperty("keyAliasPassword")
           }
 
           getByName("debug").apply {
             keyAlias = "debug"
             keyPassword = "androidmakers"
-            storeFile = project.file("keystore.debug")
+            storeFile = project.rootProject.file("androidApp/keystore.debug")
             storePassword = "androidmakers"
           }
         }
