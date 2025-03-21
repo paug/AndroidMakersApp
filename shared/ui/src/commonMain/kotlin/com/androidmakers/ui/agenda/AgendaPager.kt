@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import com.androidmakers.ui.common.EmptyLayout
@@ -68,18 +69,23 @@ fun AgendaPager(
         state = pagerState,
     ) { page ->
       val pullRefreshState = rememberPullToRefreshState()
+      val day = days[page]
+      val sessionsPerStartTime = remember(day, sessionFilters) {
+        day.sessions
+          .filter(sessionFilters)
+          .groupBy { it.startDate.formatShortTime() }
+      }
 
       PullToRefreshBox(
         isRefreshing = isRefreshing,
         onRefresh = onRefresh,
         state = pullRefreshState
       ) {
-        val sessions = days[page].sessions.filter(sessionFilters)
-        if (sessions.isEmpty()) {
+        if (sessionsPerStartTime.isEmpty()) {
           EmptyLayout()
         } else {
           AgendaColumn(
-              sessionsPerStartTime = sessions.groupBy { it.startDate.formatShortTime() },
+              sessionsPerStartTime = sessionsPerStartTime,
               onSessionClick = onSessionClick,
               onApplyForAppClinicClick = onApplyForAppClinicClick,
               onSessionBookmark = onSessionBookmark
