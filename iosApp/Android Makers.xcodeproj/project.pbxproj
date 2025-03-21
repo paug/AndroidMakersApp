@@ -7,11 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		616F42D32D7F43B600540EC0 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 616F42D22D7F43B600540EC0 /* FirebaseAuth */; };
-		616F42D52D7F43B600540EC0 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 616F42D42D7F43B600540EC0 /* FirebaseCore */; };
-		616F42D72D7F43B600540EC0 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 616F42D62D7F43B600540EC0 /* FirebaseCrashlytics */; };
-		616F42D92D7F43B600540EC0 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 616F42D82D7F43B600540EC0 /* FirebaseFirestore */; };
 		616F42DB2D7F8E8300540EC0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 616F42DA2D7F8E8300540EC0 /* GoogleService-Info.plist */; };
+		61C8A7672D8B199B0046C2CC /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 61C8A7662D8B199B0046C2CC /* FirebaseCore */; };
+		61C8A7692D8B199B0046C2CC /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 61C8A7682D8B199B0046C2CC /* FirebaseFirestore */; };
+		61C8A76B2D8B1C490046C2CC /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 61C8A76A2D8B1C490046C2CC /* FirebaseAuth */; };
 		B2CD272F234D06530016AA02 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CD272E234D06530016AA02 /* AppDelegate.swift */; };
 		B2CD2731234D06530016AA02 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CD2730234D06530016AA02 /* SceneDelegate.swift */; };
 		B2CD2733234D06530016AA02 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CD2732234D06530016AA02 /* ContentView.swift */; };
@@ -22,7 +21,6 @@
 
 /* Begin PBXFileReference section */
 		33CD20B328087FE7005084EF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		6129B5822D7F3FA5005122B6 /* firebase-ios-sdk */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "firebase-ios-sdk"; path = "/Users/martinbonnin/Library/Developer/Xcode/DerivedData/Android_Makers-apusnlhmclyhkxgkhncfixjudntz/SourcePackages/checkouts/firebase-ios-sdk"; sourceTree = "<absolute>"; };
 		616F42DA2D7F8E8300540EC0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		B29CC7032427A01200FB7EF3 /* AndroidMakers.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AndroidMakers.entitlements; sourceTree = "<group>"; };
 		B2CD272B234D06530016AA02 /* Android Makers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Android Makers.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -39,10 +37,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				616F42D72D7F43B600540EC0 /* FirebaseCrashlytics in Frameworks */,
-				616F42D92D7F43B600540EC0 /* FirebaseFirestore in Frameworks */,
-				616F42D52D7F43B600540EC0 /* FirebaseCore in Frameworks */,
-				616F42D32D7F43B600540EC0 /* FirebaseAuth in Frameworks */,
+				61C8A7672D8B199B0046C2CC /* FirebaseCore in Frameworks */,
+				61C8A76B2D8B1C490046C2CC /* FirebaseAuth in Frameworks */,
+				61C8A7692D8B199B0046C2CC /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -52,7 +49,6 @@
 		6129B5812D7F3F56005122B6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				6129B5822D7F3FA5005122B6 /* firebase-ios-sdk */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -125,7 +121,6 @@
 				B2CD2727234D06530016AA02 /* Sources */,
 				B2CD2728234D06530016AA02 /* Frameworks */,
 				B2CD2729234D06530016AA02 /* Resources */,
-				B27CC3E82455ADD40055D36B /* Copy Firebase plist files */,
 			);
 			buildRules = (
 			);
@@ -133,10 +128,9 @@
 			);
 			name = "Android Makers";
 			packageProductDependencies = (
-				616F42D22D7F43B600540EC0 /* FirebaseAuth */,
-				616F42D42D7F43B600540EC0 /* FirebaseCore */,
-				616F42D62D7F43B600540EC0 /* FirebaseCrashlytics */,
-				616F42D82D7F43B600540EC0 /* FirebaseFirestore */,
+				61C8A7662D8B199B0046C2CC /* FirebaseCore */,
+				61C8A7682D8B199B0046C2CC /* FirebaseFirestore */,
+				61C8A76A2D8B1C490046C2CC /* FirebaseAuth */,
 			);
 			productName = RobotConf;
 			productReference = B2CD272B234D06530016AA02 /* Android Makers.app */;
@@ -168,7 +162,7 @@
 			);
 			mainGroup = B2CD2722234D06530016AA02;
 			packageReferences = (
-				616F42D12D7F43B600540EC0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				61C8A7632D8B199B0046C2CC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = B2CD272C234D06530016AA02 /* Products */;
 			projectDirPath = "";
@@ -211,25 +205,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"$SRCROOT/..\"\n./gradlew :shared:embedAndSignAppleFrameworkForXcode  \n";
-		};
-		B27CC3E82455ADD40055D36B /* Copy Firebase plist files */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Firebase plist files";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "MAIN_FIREBASE_FILE=\"${SRCROOT}/AndroidMakers/GoogleService-Info.plist\"\nOPENFEEDBACK_FIREBASE_FILE=\"${SRCROOT}/AndroidMakers/OpenFeedback-Info.plist\"\nif [ -f \"${MAIN_FIREBASE_FILE}\" ]; then\n    cp -r \"${MAIN_FIREBASE_FILE}\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app\"\nfi\n\nif [ -f \"${OPENFEEDBACK_FIREBASE_FILE}\" ]; then\n    cp -r \"${OPENFEEDBACK_FIREBASE_FILE}\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app\"\nfi\n";
+			shellScript = "cd \"$SRCROOT/..\"\n./gradlew :shared:embedAndSignAppleFrameworkForXcode\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -381,12 +357,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = AndroidMakers/AndroidMakers.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1465;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1470;
 				DEVELOPMENT_ASSET_PATHS = "\"AndroidMakers/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 57MV6634WZ;
+				DEVELOPMENT_TEAM = 57MV6634WZ;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)";
@@ -396,16 +371,17 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.1;
+				MARKETING_VERSION = 1470;
 				OTHER_LDFLAGS = (
 					"-framework",
 					shared,
 					"-lsqlite3",
+					"-ObjC",
+					"-ld_classic",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.paug.RobotConf;
 				PRODUCT_NAME = "Android Makers";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Robot 2024";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -416,12 +392,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = AndroidMakers/AndroidMakers.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1465;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1470;
 				DEVELOPMENT_ASSET_PATHS = "\"AndroidMakers/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 57MV6634WZ;
+				DEVELOPMENT_TEAM = 57MV6634WZ;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)";
@@ -431,16 +406,17 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.1;
+				MARKETING_VERSION = 1470;
 				OTHER_LDFLAGS = (
 					"-framework",
 					shared,
 					"-lsqlite3",
+					"-ObjC",
+					"-ld_classic",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.paug.RobotConf;
 				PRODUCT_NAME = "Android Makers";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Robot 2024";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -470,36 +446,31 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		616F42D12D7F43B600540EC0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+		61C8A7632D8B199B0046C2CC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 11.9.0;
+				minimumVersion = 11.10.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		616F42D22D7F43B600540EC0 /* FirebaseAuth */ = {
+		61C8A7662D8B199B0046C2CC /* FirebaseCore */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 616F42D12D7F43B600540EC0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAuth;
-		};
-		616F42D42D7F43B600540EC0 /* FirebaseCore */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 616F42D12D7F43B600540EC0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = 61C8A7632D8B199B0046C2CC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseCore;
 		};
-		616F42D62D7F43B600540EC0 /* FirebaseCrashlytics */ = {
+		61C8A7682D8B199B0046C2CC /* FirebaseFirestore */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 616F42D12D7F43B600540EC0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseCrashlytics;
-		};
-		616F42D82D7F43B600540EC0 /* FirebaseFirestore */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 616F42D12D7F43B600540EC0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = 61C8A7632D8B199B0046C2CC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
+		};
+		61C8A76A2D8B1C490046C2CC /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 61C8A7632D8B199B0046C2CC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

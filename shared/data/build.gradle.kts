@@ -13,6 +13,7 @@ kotlin {
     commonMain {
       dependencies {
         api(project(":shared:domain"))
+        api(project(":shared:data"))
         api(libs.apollo.runtime)
         implementation(libs.apollo.adapters.kotlinx.datetime)
         implementation(libs.apollo.normalized.cache.sqlite)
