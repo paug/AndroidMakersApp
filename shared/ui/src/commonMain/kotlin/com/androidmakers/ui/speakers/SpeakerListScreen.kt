@@ -69,12 +69,13 @@ fun SpeakerScreen(
     }
 
     is Lce.Content -> {
-
       var text by rememberSaveable { mutableStateOf("") }
       var expanded by rememberSaveable { mutableStateOf(false) }
-      val content = (state as Lce.Content<SpeakersUiState>).content
 
-      val filteredSpeakers = content.speakers.filter { it.name?.contains(text, ignoreCase = true) == true }
+      val speakers = (state as Lce.Content<SpeakersUiState>).content.speakers
+      val filteredSpeakers = remember(speakers, text) {
+          speakers.filter { it.name?.contains(text, ignoreCase = true) == true }
+      }
 
       var searchHeight by remember { mutableStateOf(56.dp) }
 
