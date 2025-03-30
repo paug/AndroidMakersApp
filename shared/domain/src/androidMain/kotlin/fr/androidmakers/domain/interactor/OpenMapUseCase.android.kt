@@ -6,8 +6,8 @@ import android.content.Intent
 import android.net.Uri
 import androidx.core.net.toUri
 
-actual class OpenMapUseCase() {
-  actual operator fun invoke(context: Context, coordinates: String, name: String) {
+class AndroidOpenMapUseCase : OpenMapUseCase {
+  override operator fun invoke(context: Context, coordinates: String, name: String) {
     val venueCoordinatesUri = Uri.Builder()
       .scheme("geo")
       .encodedAuthority(coordinates)

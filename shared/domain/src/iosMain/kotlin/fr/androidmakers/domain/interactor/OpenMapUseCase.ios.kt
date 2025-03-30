@@ -6,9 +6,9 @@ import platform.CoreLocation.CLLocationCoordinate2DMake
 import platform.MapKit.MKMapItem
 import platform.MapKit.MKPlacemark
 
-actual class OpenMapUseCase {
+class IosOpenMapUseCase : OpenMapUseCase {
   @OptIn(ExperimentalForeignApi::class)
-  actual operator fun invoke(context: PlatformContext, coordinates: String, name: String) {
+  override operator fun invoke(context: PlatformContext, coordinates: String, name: String) {
     val coordinateArray = coordinates.split(",")
     if (coordinateArray.size == 2) {
       val latitude = coordinateArray[0].toDoubleOrNull()
