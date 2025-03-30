@@ -94,11 +94,11 @@ fun VenuePager() {
               name = venue.name,
               coordinates = venue.coordinates,
             )
-            val platformContext = getPlatformContext()
+            val context = getPlatformContext()
             VenueLayout(
               uiVenue = uiVenue,
               onClickOnMap = {
-                viewModel.openMapUseCase(platformContext, uiVenue.coordinates.orEmpty(), uiVenue.name)
+                viewModel.openMapUseCase(context, uiVenue.coordinates.orEmpty(), uiVenue.name)
               }
             )
           }

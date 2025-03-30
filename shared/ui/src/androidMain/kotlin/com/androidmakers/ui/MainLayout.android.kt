@@ -16,4 +16,4 @@ actual val defaultPopEnterTransition: EnterTransition = fadeIn() + scaleIn(initi
 actual val defaultPopExitTransition: ExitTransition = fadeOut() + scaleOut(targetScale = 0.9f)
 
 @Composable
-actual fun getPlatformContext(): PlatformContext = PlatformContext(LocalContext.current)
+actual fun getPlatformContext(): PlatformContext = LocalContext.current

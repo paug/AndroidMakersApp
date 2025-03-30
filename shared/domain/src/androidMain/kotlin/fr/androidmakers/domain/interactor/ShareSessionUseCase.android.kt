@@ -1,18 +1,17 @@
 package fr.androidmakers.domain.interactor
 
+import android.content.Context
 import androidx.core.app.ShareCompat
-import fr.androidmakers.domain.PlatformContext
 import fr.androidmakers.domain.model.Session
 import fr.androidmakers.domain.model.Speaker
 
 actual class ShareSessionUseCase {
   actual operator fun invoke(
-    platformContext: PlatformContext,
+    context: Context,
     session: Session,
     speakers: List<Speaker>,
     formattedDateAndRoom: String
   ) {
-    val context = platformContext.context
     val shareText = if (speakers.isEmpty()) {
       "%s: %s (%s)".format(
         // TODO put this in resources

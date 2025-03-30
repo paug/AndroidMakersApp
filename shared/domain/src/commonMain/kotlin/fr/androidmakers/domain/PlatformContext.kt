@@ -1,3 +1,3 @@
 package fr.androidmakers.domain
 
-expect class PlatformContext
+expect abstract class PlatformContext

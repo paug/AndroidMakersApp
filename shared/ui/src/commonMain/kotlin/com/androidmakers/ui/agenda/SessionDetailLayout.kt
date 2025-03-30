@@ -92,7 +92,7 @@ fun SessionDetailScreen(
   onBackClick: () -> Unit,
 ) {
   val sessionDetailState by viewModel.sessionDetailState.collectAsState()
-  val platformContext = getPlatformContext()
+  val context = getPlatformContext()
   val urlOpener = LocalUriHandler.current.toUrlOpener()
 
   SessionDetailLayout(
@@ -102,7 +102,7 @@ fun SessionDetailScreen(
       viewModel.bookmark(it)
     },
     onShareSession = {
-      viewModel.shareSession(platformContext)
+      viewModel.shareSession(context)
     },
     onOpenLink = {
       viewModel.openLink(urlOpener, it)

@@ -76,12 +76,12 @@ class SessionDetailViewModel(
     }
   }
 
-  fun shareSession(platformContext: PlatformContext) = viewModelScope.launch {
+  fun shareSession(context: PlatformContext) = viewModelScope.launch {
     val lce = sessionDetailState.first { it !is Lce.Loading }
     if (lce is Lce.Content) {
       val state = lce.content
       shareSessionUseCase(
-        platformContext = platformContext,
+        context = context,
         session = state.session,
         speakers = state.speakers,
         formattedDateAndRoom = state.formattedDateAndRoom

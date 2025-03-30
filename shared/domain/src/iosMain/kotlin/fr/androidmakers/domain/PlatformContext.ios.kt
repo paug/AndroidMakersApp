@@ -1,3 +1,7 @@
 package fr.androidmakers.domain
 
-actual object PlatformContext
+actual abstract class PlatformContext private constructor() {
+  companion object {
+    val INSTANCE = object : PlatformContext() {}
+  }
+}

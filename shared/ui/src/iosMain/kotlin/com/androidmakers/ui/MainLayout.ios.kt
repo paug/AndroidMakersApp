@@ -13,4 +13,4 @@ actual val defaultPopEnterTransition: EnterTransition = slideInHorizontally(init
 actual val defaultPopExitTransition: ExitTransition = slideOutHorizontally(targetOffsetX = { it })
 
 @Composable
-actual fun getPlatformContext(): PlatformContext = PlatformContext
+actual fun getPlatformContext(): PlatformContext = PlatformContext.INSTANCE
