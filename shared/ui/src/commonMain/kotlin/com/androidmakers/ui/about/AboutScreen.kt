@@ -25,9 +25,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.androidmakers.ui.getPlatformContext
+import com.androidmakers.ui.common.toUrlOpener
 import fr.paug.androidmakers.ui.Res
 import fr.paug.androidmakers.ui.about_android_makers
 import fr.paug.androidmakers.ui.code_of_conduct
@@ -55,18 +56,18 @@ fun AboutScreen(
           .padding(16.dp),
       verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically)
   ) {
-    val platformContext = getPlatformContext()
+    val urlOpener = LocalUriHandler.current.toUrlOpener()
 
     IntroCard(
-        onFaqClick = { viewModel.openFaq(platformContext) },
-        onCocClick = { viewModel.openCoc(platformContext) }
+        onFaqClick = { viewModel.openFaq(urlOpener) },
+        onCocClick = { viewModel.openCoc(urlOpener) }
     )
 
     SocialCard(
-        { viewModel.openXHashtag(platformContext) },
-        { viewModel.openBlueSkyAccount(platformContext) },
-        { viewModel.openXAccount(platformContext) },
-        { viewModel.openYoutube(platformContext) }
+        { viewModel.openXHashtag(urlOpener) },
+        { viewModel.openBlueSkyAccount(urlOpener) },
+        { viewModel.openXAccount(urlOpener) },
+        { viewModel.openYoutube(urlOpener) }
     )
 
     Text(
@@ -86,7 +87,6 @@ private fun IntroCard(
     onFaqClick: () -> Unit,
     onCocClick: () -> Unit
 ) {
-  val darkMode = isSystemInDarkTheme()
   Column(Modifier.padding(vertical = 8.dp)) {
     Image(
         modifier = Modifier

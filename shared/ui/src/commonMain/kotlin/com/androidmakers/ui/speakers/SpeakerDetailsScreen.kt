@@ -25,12 +25,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.androidmakers.ui.common.LoadingLayout
 import com.androidmakers.ui.common.SocialButtons
-import com.androidmakers.ui.getPlatformContext
+import com.androidmakers.ui.common.toUrlOpener
 import com.androidmakers.ui.model.Lce
 import fr.androidmakers.domain.model.SocialsItem
 import fr.paug.androidmakers.ui.Res
@@ -52,10 +53,10 @@ fun SpeakerDetailsRoute(
     }
 
     is Lce.Content -> {
-      val platformContext = getPlatformContext()
+      val urlOpener = LocalUriHandler.current.toUrlOpener()
       SpeakerDetailsScreen(
         uiState = state.content,
-        onSocialItemClick = { speakerDetailsViewModel.openSpeakerLink(platformContext, it) },
+        onSocialItemClick = { speakerDetailsViewModel.openSpeakerLink(urlOpener, it) },
         onBackClick = onBackClick
       )
     }

@@ -1,13 +1,12 @@
 package fr.androidmakers.domain.interactor
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
+import androidx.core.net.toUri
 import fr.androidmakers.domain.PlatformContext
-import fr.androidmakers.domain.utils.UrlOpener
 
-actual class OpenMapUseCase(
-    private val urlOpener: UrlOpener
-) {
+actual class OpenMapUseCase() {
   actual operator fun invoke(platformContext: PlatformContext, coordinates: String, name: String) {
     val venueCoordinatesUri = Uri.Builder()
       .scheme("geo")
@@ -17,12 +16,14 @@ actual class OpenMapUseCase(
     try {
       val intent = Intent(Intent.ACTION_VIEW, venueCoordinatesUri)
       platformContext.context.startActivity(intent)
-    } catch (e: Exception) {
-      // Open in Webview
-      urlOpener.openUrl(
-        platformContext = platformContext,
-        url = "https://www.google.com/maps/?q=" + coordinates.filter { it != ' ' }
-      )
+    } catch (_: ActivityNotFoundException) {
+      // Open in browser
+      val fallbackUri = ("https://www.google.com/maps/?q=" + coordinates.filter { it != ' ' }).toUri()
+      try {
+        val intent = Intent(Intent.ACTION_VIEW, fallbackUri)
+        platformContext.context.startActivity(intent)
+      } catch (_: ActivityNotFoundException) {
+      }
     }
   }
 }

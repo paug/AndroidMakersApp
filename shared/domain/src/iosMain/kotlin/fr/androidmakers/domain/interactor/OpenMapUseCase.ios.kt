@@ -2,17 +2,7 @@ package fr.androidmakers.domain.interactor
 
 import fr.androidmakers.domain.PlatformContext
 import kotlinx.cinterop.ExperimentalForeignApi
-import kotlinx.cinterop.NativePtr
-import kotlinx.cinterop.cValuesOf
-import kotlinx.cinterop.objcPtr
-import platform.CoreLocation.CLGeocoder
-import platform.CoreLocation.CLLocationCoordinate2D
 import platform.CoreLocation.CLLocationCoordinate2DMake
-import platform.CoreLocation.CLLocationDegrees
-import platform.Foundation.NSLocale
-import platform.Foundation.NSNumberFormatter
-import platform.Foundation.NSNumberFormatterDecimalStyle
-import platform.Foundation.NSNumberFormatterStyle
 import platform.MapKit.MKMapItem
 import platform.MapKit.MKPlacemark
 

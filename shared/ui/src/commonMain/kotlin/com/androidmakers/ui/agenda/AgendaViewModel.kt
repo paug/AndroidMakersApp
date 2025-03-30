@@ -6,12 +6,12 @@ import com.androidmakers.ui.common.SessionFilter
 import com.androidmakers.ui.model.AgendaState
 import com.androidmakers.ui.model.Lce
 import com.androidmakers.ui.model.UISession
-import fr.androidmakers.domain.PlatformContext
 import fr.androidmakers.domain.interactor.ApplyForAppClinicUseCase
 import fr.androidmakers.domain.interactor.GetAgendaUseCase
 import fr.androidmakers.domain.interactor.SetSessionBookmarkUseCase
 import fr.androidmakers.domain.model.Room
 import fr.androidmakers.domain.repo.BookmarksRepository
+import fr.androidmakers.domain.utils.UrlOpener
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -57,7 +57,7 @@ class AgendaViewModel(
     setSessionBookmarkUseCase(uiSession.id, bookmark)
   }
 
-  fun applyForAppClinic(platformContext: PlatformContext) {
-    applyForAppClinicUseCase(platformContext)
+  fun applyForAppClinic(urlOpener: UrlOpener) {
+    applyForAppClinicUseCase(urlOpener)
   }
 }

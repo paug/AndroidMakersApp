@@ -15,8 +15,8 @@ val viewModelModule = module {
   viewModelOf(::SpeakerListViewModel)
   viewModelOf(::SponsorsViewModel)
   viewModelOf(::VenueViewModel)
-  viewModel { (speakerId: String) -> SpeakerDetailsViewModel(speakerId, get(), get()) }
+  viewModel { (speakerId: String) -> SpeakerDetailsViewModel(speakerId, get()) }
   viewModelOf(::AgendaViewModel)
-  viewModel { (sessionId: String) -> SessionDetailViewModel(sessionId, get(), get(), get(), get(), get(), get(), get(), get()) }
+  viewModel { (sessionId: String) -> SessionDetailViewModel(sessionId, get(), get(), get(), get(), get(), get(), get()) }
   viewModelOf(::AboutViewModel)
 }
