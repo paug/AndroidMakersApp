@@ -8,8 +8,8 @@ import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 import org.koin.core.module.Module
 
-actual class DependenciesBuilder(private val context: Context) {
-  actual fun inject(platformModules: List<Module>) {
+class DependenciesBuilder(private val context: Context) {
+  fun inject(platformModules: List<Module>) {
     startKoin {
       if (BuildConfig.DEBUG) {
         androidLogger(Level.DEBUG)

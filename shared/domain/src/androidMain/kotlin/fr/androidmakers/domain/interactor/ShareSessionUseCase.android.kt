@@ -5,8 +5,8 @@ import androidx.core.app.ShareCompat
 import fr.androidmakers.domain.model.Session
 import fr.androidmakers.domain.model.Speaker
 
-actual class ShareSessionUseCase {
-  actual operator fun invoke(
+class AndroidShareSessionUseCase : ShareSessionUseCase {
+  override operator fun invoke(
     context: Context,
     session: Session,
     speakers: List<Speaker>,

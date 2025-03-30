@@ -8,8 +8,8 @@ import platform.Foundation.stringWithFormat
 import platform.UIKit.UIActivityViewController
 import platform.UIKit.UIApplication
 
-actual class ShareSessionUseCase {
-  actual operator fun invoke(
+class IosShareSessionUseCase : ShareSessionUseCase {
+  override operator fun invoke(
     context: PlatformContext,
     session: Session,
     speakers: List<Speaker>,

@@ -5,7 +5,7 @@ import fr.androidmakers.domain.model.Session
 import fr.androidmakers.domain.model.Speaker
 
 // TODO to be improved
-expect class ShareSessionUseCase {
+interface ShareSessionUseCase {
   operator fun invoke(
     context: PlatformContext,
     session: Session,
