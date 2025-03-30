@@ -18,10 +18,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import com.androidmakers.ui.getPlatformContext
+import com.androidmakers.ui.common.toUrlOpener
 import com.androidmakers.ui.model.Lce
 import fr.androidmakers.domain.model.Partner
 import fr.androidmakers.domain.model.PartnerGroup
@@ -31,11 +32,11 @@ import org.koin.compose.viewmodel.koinViewModel
 fun SponsorsScreen() {
   val viewModel = koinViewModel<SponsorsViewModel>()
   val sponsors by viewModel.values.collectAsState()
-  val platformContext = getPlatformContext()
+  val urlOpener = LocalUriHandler.current.toUrlOpener()
 
   SponsorsView(
       partnerList = sponsors,
-      onSponsorClick = { viewModel.openPartnerLink(platformContext, it) }
+      onSponsorClick = { viewModel.openPartnerLink(urlOpener, it) }
   )
 }
 

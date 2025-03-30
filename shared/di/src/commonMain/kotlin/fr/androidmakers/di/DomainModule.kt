@@ -10,7 +10,6 @@ import fr.androidmakers.domain.interactor.MergeBookmarksUseCase
 import fr.androidmakers.domain.interactor.OpenBlueskyAccountUseCase
 import fr.androidmakers.domain.interactor.OpenCocUseCase
 import fr.androidmakers.domain.interactor.OpenFaqUseCase
-import fr.androidmakers.domain.interactor.OpenLinkUseCase
 import fr.androidmakers.domain.interactor.OpenPartnerLinkUseCase
 import fr.androidmakers.domain.interactor.OpenXAccountUseCase
 import fr.androidmakers.domain.interactor.OpenXHashtagUseCase
@@ -37,6 +36,5 @@ val domainModule = module {
   factoryOf(::GetPartnersUseCase)
   factoryOf(::GetFavoriteSessionsUseCase)
   factoryOf(::OpenPartnerLinkUseCase)
-  factoryOf(::OpenLinkUseCase)
   factoryOf(::ApplyForAppClinicUseCase)
 }

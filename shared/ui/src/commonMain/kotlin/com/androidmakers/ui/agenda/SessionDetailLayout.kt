@@ -49,6 +49,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -57,6 +58,7 @@ import coil3.compose.AsyncImage
 import com.androidmakers.ui.common.EmojiUtils
 import com.androidmakers.ui.common.LoadingLayout
 import com.androidmakers.ui.common.separatorColor
+import com.androidmakers.ui.common.toUrlOpener
 import com.androidmakers.ui.getPlatformContext
 import com.androidmakers.ui.model.Lce
 import com.androidmakers.ui.model.SessionDetailState
@@ -90,7 +92,8 @@ fun SessionDetailScreen(
   onBackClick: () -> Unit,
 ) {
   val sessionDetailState by viewModel.sessionDetailState.collectAsState()
-  val platformContext = getPlatformContext()
+  val context = getPlatformContext()
+  val urlOpener = LocalUriHandler.current.toUrlOpener()
 
   SessionDetailLayout(
     sessionDetailState = sessionDetailState,
@@ -99,13 +102,13 @@ fun SessionDetailScreen(
       viewModel.bookmark(it)
     },
     onShareSession = {
-      viewModel.shareSession(platformContext)
+      viewModel.shareSession(context)
     },
     onOpenLink = {
-      viewModel.openLink(platformContext, it)
+      viewModel.openLink(urlOpener, it)
     },
     onApplyForAppClinic = {
-      viewModel.applyForAppClinic(platformContext)
+      viewModel.applyForAppClinic(urlOpener)
     }
   )
 }

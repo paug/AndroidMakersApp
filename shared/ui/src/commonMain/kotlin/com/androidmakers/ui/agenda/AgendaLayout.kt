@@ -27,12 +27,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.androidmakers.ui.common.EmojiUtils
 import com.androidmakers.ui.common.LceLayout
 import com.androidmakers.ui.common.SessionFilter
-import com.androidmakers.ui.getPlatformContext
+import com.androidmakers.ui.common.toUrlOpener
 import com.androidmakers.ui.model.AgendaState
 import com.androidmakers.ui.model.Lce
 import com.androidmakers.ui.model.UISession
@@ -78,7 +79,7 @@ fun AgendaLayout(
         }
       },
       content = {
-        val context = getPlatformContext()
+        val urlOpener = LocalUriHandler.current.toUrlOpener()
 
         AgendaPagerOrLoading(
           uiStateLce = uiStateLce,
@@ -86,7 +87,7 @@ fun AgendaLayout(
           onRefresh = viewModel::refresh,
           sessionFilters = sessionFilters,
           onSessionClick = { onSessionClick(it.id) },
-          onApplyForAppClinicClick = { viewModel.applyForAppClinic(context) },
+          onApplyForAppClinicClick = { viewModel.applyForAppClinic(urlOpener) },
           onSessionBookmark = viewModel::setSessionBookmark,
         )
       }

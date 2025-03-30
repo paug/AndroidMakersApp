@@ -6,7 +6,6 @@ import com.androidmakers.ui.model.Lce
 import com.androidmakers.ui.model.SessionDetailState
 import fr.androidmakers.domain.PlatformContext
 import fr.androidmakers.domain.interactor.ApplyForAppClinicUseCase
-import fr.androidmakers.domain.interactor.OpenLinkUseCase
 import fr.androidmakers.domain.interactor.SetSessionBookmarkUseCase
 import fr.androidmakers.domain.interactor.ShareSessionUseCase
 import fr.androidmakers.domain.model.SocialsItem
@@ -14,6 +13,7 @@ import fr.androidmakers.domain.repo.BookmarksRepository
 import fr.androidmakers.domain.repo.RoomsRepository
 import fr.androidmakers.domain.repo.SessionsRepository
 import fr.androidmakers.domain.repo.SpeakersRepository
+import fr.androidmakers.domain.utils.UrlOpener
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -34,7 +34,6 @@ class SessionDetailViewModel(
     private val speakersRepository: SpeakersRepository,
     private val setSessionBookmarkUseCase: SetSessionBookmarkUseCase,
     private val shareSessionUseCase: ShareSessionUseCase,
-    private val openLinkUseCase: OpenLinkUseCase,
     private val applyForAppClinicUseCase: ApplyForAppClinicUseCase,
 ) : ViewModel() {
 
@@ -77,12 +76,12 @@ class SessionDetailViewModel(
     }
   }
 
-  fun shareSession(platformContext: PlatformContext) = viewModelScope.launch {
+  fun shareSession(context: PlatformContext) = viewModelScope.launch {
     val lce = sessionDetailState.first { it !is Lce.Loading }
     if (lce is Lce.Content) {
       val state = lce.content
       shareSessionUseCase(
-        platformContext = platformContext,
+        context = context,
         session = state.session,
         speakers = state.speakers,
         formattedDateAndRoom = state.formattedDateAndRoom
@@ -90,11 +89,11 @@ class SessionDetailViewModel(
     }
   }
 
-  fun openLink(platformContext: PlatformContext, socialsItem: SocialsItem) {
-    socialsItem.url?.let { openLinkUseCase(platformContext, it) }
+  fun openLink(urlOpener: UrlOpener, socialsItem: SocialsItem) {
+    socialsItem.url?.let { urlOpener.openUrl(it) }
   }
 
-  fun applyForAppClinic(platformContext: PlatformContext) {
-    applyForAppClinicUseCase(platformContext)
+  fun applyForAppClinic(urlOpener: UrlOpener) {
+    applyForAppClinicUseCase(urlOpener)
   }
 }

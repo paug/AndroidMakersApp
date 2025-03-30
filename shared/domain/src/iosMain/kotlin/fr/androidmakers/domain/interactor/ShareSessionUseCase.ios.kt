@@ -10,7 +10,7 @@ import platform.UIKit.UIApplication
 
 actual class ShareSessionUseCase {
   actual operator fun invoke(
-    platformContext: PlatformContext,
+    context: PlatformContext,
     session: Session,
     speakers: List<Speaker>,
     formattedDateAndRoom: String
