@@ -85,7 +85,6 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-
 @Composable
 fun SessionDetailScreen(
   viewModel: SessionDetailViewModel,
