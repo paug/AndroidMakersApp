@@ -10,5 +10,6 @@ object Constants {
     const val xHashtagApp = "twitter://search?query=AMxDC25"
     const val xAccountWeb = "https://x.com/AndroidMakersFR"
     const val xAccountApp = "twitter://user?screen_name=AndroidMakersFR"
+    const val githubRepo = "https://github.com/paug/AndroidMakersApp"
   }
 }

@@ -10,6 +10,7 @@ import fr.androidmakers.domain.interactor.MergeBookmarksUseCase
 import fr.androidmakers.domain.interactor.OpenBlueskyAccountUseCase
 import fr.androidmakers.domain.interactor.OpenCocUseCase
 import fr.androidmakers.domain.interactor.OpenFaqUseCase
+import fr.androidmakers.domain.interactor.OpenGithubRepoUseCase
 import fr.androidmakers.domain.interactor.OpenPartnerLinkUseCase
 import fr.androidmakers.domain.interactor.OpenXAccountUseCase
 import fr.androidmakers.domain.interactor.OpenXHashtagUseCase
@@ -32,6 +33,7 @@ val domainModule = module {
   factoryOf(::OpenXHashtagUseCase)
   factoryOf(::OpenBlueskyAccountUseCase)
   factoryOf(::OpenXAccountUseCase)
+  factoryOf(::OpenGithubRepoUseCase)
   factoryOf(::SetSessionBookmarkUseCase)
   factoryOf(::GetPartnersUseCase)
   factoryOf(::GetFavoriteSessionsUseCase)

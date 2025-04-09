@@ -33,6 +33,7 @@ import fr.paug.androidmakers.ui.Res
 import fr.paug.androidmakers.ui.about_android_makers
 import fr.paug.androidmakers.ui.code_of_conduct
 import fr.paug.androidmakers.ui.faq
+import fr.paug.androidmakers.ui.github_repo
 import fr.paug.androidmakers.ui.ic_network_bluesky
 import fr.paug.androidmakers.ui.ic_network_x
 import fr.paug.androidmakers.ui.ic_network_youtube
@@ -60,7 +61,8 @@ fun AboutScreen(
 
     IntroCard(
         onFaqClick = { viewModel.openFaq(urlOpener) },
-        onCocClick = { viewModel.openCoc(urlOpener) }
+        onCocClick = { viewModel.openCoc(urlOpener) },
+        onGithubRepoClick = { viewModel.openGithubRepo(urlOpener) }
     )
 
     SocialCard(
@@ -85,7 +87,8 @@ fun AboutScreen(
 @Composable
 private fun IntroCard(
     onFaqClick: () -> Unit,
-    onCocClick: () -> Unit
+    onCocClick: () -> Unit,
+    onGithubRepoClick: () -> Unit
 ) {
   Column(Modifier.padding(vertical = 8.dp)) {
     Image(
@@ -111,6 +114,10 @@ private fun IntroCard(
       ClickableText(
           text = stringResource(Res.string.code_of_conduct),
           onClick = onCocClick
+      )
+      ClickableText(
+          text = stringResource(Res.string.github_repo),
+          onClick = onGithubRepoClick
       )
     }
   }
