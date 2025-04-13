@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
@@ -110,16 +111,20 @@ fun SpeakerDetailsScreen(
         )
       }
 
-      Text(
-          text = speaker.name.orEmpty(),
-          style = MaterialTheme.typography.headlineLarge
-      )
+      SelectionContainer {
+        Text(
+            text = speaker.name.orEmpty(),
+            style = MaterialTheme.typography.headlineLarge
+        )
+      }
 
-      Text(
-          text = speaker.bio.orEmpty(),
-          textAlign = TextAlign.Start,
-          style = MaterialTheme.typography.bodyLarge,
-      )
+      SelectionContainer {
+        Text(
+            text = speaker.bio.orEmpty(),
+            textAlign = TextAlign.Start,
+            style = MaterialTheme.typography.bodyLarge,
+        )
+      }
 
       SocialButtons(
           speaker = speaker,
