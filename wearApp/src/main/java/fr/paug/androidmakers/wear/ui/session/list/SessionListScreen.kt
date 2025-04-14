@@ -14,7 +14,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Bookmark
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -45,6 +44,7 @@ import com.google.android.horologist.compose.material.ResponsiveListHeader
 import fr.paug.androidmakers.wear.R
 import fr.paug.androidmakers.wear.ui.common.Loading
 import fr.paug.androidmakers.wear.ui.common.PulsatingRedDot
+import fr.paug.androidmakers.wear.ui.common.SaveableLaunchedEffect
 import fr.paug.androidmakers.wear.ui.session.UISession
 import fr.paug.androidmakers.wear.ui.session.uiSessions
 import fr.paug.androidmakers.wear.ui.theme.amRed
@@ -53,6 +53,7 @@ import fr.paug.androidmakers.wear.ui.theme.amRed
 fun SessionListScreen(
   sessions: List<UISession>?,
   title: String,
+  isResumed: Boolean,
   onSessionClick: (String) -> Unit,
 ) {
   if (sessions == null) {
@@ -61,6 +62,7 @@ fun SessionListScreen(
     SessionList(
       sessions = sessions,
       title = title,
+      isResumed = isResumed,
       onSessionClick = onSessionClick,
     )
   }
@@ -70,6 +72,7 @@ fun SessionListScreen(
 private fun SessionList(
   sessions: List<UISession>,
   title: String,
+  isResumed: Boolean,
   onSessionClick: (String) -> Unit,
 ) {
   val columnState = rememberResponsiveColumnState(
@@ -79,13 +82,13 @@ private fun SessionList(
     )
   )
 
-  // Approximation of about half the height of a card, so the card is centered when scrolling to it.
-  // Maybe there's a way to get the actual height?
-  val scrollOffset = with(LocalDensity.current) { 80.dp.roundToPx() }
-
-  val nextSessionIndex = sessions.nextSessionIndex()
-  if (nextSessionIndex > 0) {
-    LaunchedEffect(Unit) {
+  val density = LocalDensity.current
+  SaveableLaunchedEffect(isResumed) {
+    val nextSessionIndex = sessions.nextSessionIndex()
+    if (nextSessionIndex > 0) {
+      // Approximation of about half the height of a card, so the card is centered when scrolling to it.
+      // Maybe there's a way to get the actual height?
+      val scrollOffset = with(density) { 80.dp.roundToPx() }
       columnState.state.scrollToItem(
         // Add 1 to the index to account for the title
         index = nextSessionIndex + 1,
@@ -220,12 +223,12 @@ private fun SessionItem(
 @WearPreviewFontScales
 @Composable
 private fun LoadingSessionListScreenPreview() {
-  SessionListScreen(null, stringResource(id = R.string.main_day1), {})
+  SessionListScreen(null, stringResource(id = R.string.main_day1), true, {})
 }
 
 @WearPreviewDevices
 @WearPreviewFontScales
 @Composable
 private fun LoadedSessionListScreenPreview() {
-  SessionListScreen(uiSessions, stringResource(id = R.string.main_day1), {})
+  SessionListScreen(uiSessions, stringResource(id = R.string.main_day1), true, {})
 }

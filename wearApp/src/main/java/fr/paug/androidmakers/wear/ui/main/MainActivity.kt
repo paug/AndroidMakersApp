@@ -17,6 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.core.app.ActivityCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import androidx.wear.compose.foundation.SwipeToDismissBoxState
@@ -39,6 +41,7 @@ import fr.paug.androidmakers.wear.ui.session.list.SessionListScreen
 import fr.paug.androidmakers.wear.ui.settings.SettingsScreen
 import fr.paug.androidmakers.wear.ui.signin.SignInScreen
 import fr.paug.androidmakers.wear.ui.theme.AndroidMakersWearTheme
+import kotlinx.coroutines.flow.map
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -86,6 +89,8 @@ fun WearApp(
 
   AndroidMakersWearTheme {
     AppScaffold {
+      val isResumed by LocalLifecycleOwner.current.lifecycle.currentStateFlow.map { it == Lifecycle.State.RESUMED }
+        .collectAsState(false)
       SwipeDismissableNavHost(
         navController = navController,
         startDestination = Navigation.main,
@@ -94,6 +99,7 @@ fun WearApp(
         composable(Navigation.main) {
           MainScreen(
             viewModel = viewModel,
+            isResumed = isResumed,
             swipeToDismissBoxState = swipeToDismissBoxState,
             onSignInClick = onSignInClick,
             onSignOutClick = { viewModel.signOut() },
@@ -125,6 +131,7 @@ fun WearApp(
 @Composable
 fun MainScreen(
   viewModel: MainViewModel,
+  isResumed: Boolean,
   swipeToDismissBoxState: SwipeToDismissBoxState,
   onSignInClick: () -> Unit,
   onSignOutClick: () -> Unit,
@@ -140,7 +147,8 @@ fun MainScreen(
     modifier = Modifier
       .fillMaxSize()
       .edgeSwipeToDismiss(swipeToDismissBoxState),
-    state = pagerState
+    state = pagerState,
+    beyondViewportPageCount = 2,
   ) { page ->
     when (page) {
       0 -> {
@@ -156,6 +164,7 @@ fun MainScreen(
         SessionListScreen(
           sessions = sessionsDay1,
           title = stringResource(id = R.string.main_day1),
+          isResumed = isResumed,
           onSessionClick = onSessionClick
         )
       }
@@ -164,6 +173,7 @@ fun MainScreen(
         SessionListScreen(
           sessions = sessionsDay2,
           title = stringResource(id = R.string.main_day2),
+          isResumed = isResumed,
           onSessionClick = onSessionClick
         )
       }
