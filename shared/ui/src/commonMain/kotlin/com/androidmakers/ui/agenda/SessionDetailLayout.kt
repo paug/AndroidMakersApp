@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -204,6 +205,7 @@ private fun SessionDetails(
   onApplyForAppClinic: () -> Unit,
 ) {
 
+
   Column(
     Modifier
       .verticalScroll(state = rememberScrollState())
@@ -211,10 +213,12 @@ private fun SessionDetails(
       .then(modifier)
   ) {
 
-    Text(
-      text = sessionDetails.session.title,
-      style = MaterialTheme.typography.headlineLarge
-    )
+    SelectionContainer {
+      Text(
+        text = sessionDetails.session.title,
+        style = MaterialTheme.typography.headlineLarge
+      )
+    }
 
     Row(
       modifier = Modifier.padding(top = 16.dp),
@@ -233,12 +237,14 @@ private fun SessionDetails(
       )
     }
 
-    Text(
-      modifier = Modifier.padding(top = 16.dp),
-      text = sessionDetails.session.description.orEmpty(),
-      textAlign = TextAlign.Start,
-      style = MaterialTheme.typography.bodyLarge,
-    )
+    SelectionContainer {
+      Text(
+        modifier = Modifier.padding(top = 16.dp),
+        text = sessionDetails.session.description.orEmpty(),
+        textAlign = TextAlign.Start,
+        style = MaterialTheme.typography.bodyLarge,
+      )
+    }
 
     if(sessionDetails.session.isAppClinic()) {
       Button(
@@ -385,18 +391,22 @@ private fun Speaker(
       )
     }
 
-    Text(
-      text = speaker.getFullNameAndCompany(),
-      style = MaterialTheme.typography.titleLarge,
-    )
+    SelectionContainer {
+      Text(
+        text = speaker.getFullNameAndCompany(),
+        style = MaterialTheme.typography.titleLarge,
+      )
+    }
 
     speaker.bio?.let { bio ->
-      Text(
-        modifier = Modifier.padding(),
-        text = bio,
-        textAlign = TextAlign.Start,
-        style = MaterialTheme.typography.bodyMedium,
-      )
+      SelectionContainer {
+        Text(
+          modifier = Modifier.padding(),
+          text = bio,
+          textAlign = TextAlign.Start,
+          style = MaterialTheme.typography.bodyMedium,
+        )
+      }
     }
 
     SocialButtons(
