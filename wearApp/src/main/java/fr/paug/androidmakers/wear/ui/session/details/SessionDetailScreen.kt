@@ -97,20 +97,29 @@ private fun Session(session: UISession, onBookmarkToggle: (Boolean) -> Unit) {
       item {
         Row(
           verticalAlignment = Alignment.CenterVertically,
-          horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
+          horizontalArrangement = Arrangement.SpaceBetween,
           modifier = Modifier.fillMaxWidth(),
         ) {
-          Text(
-            text = session.formattedDuration,
-            style = MaterialTheme.typography.caption1,
-            color = amPurple,
-            modifier = Modifier
-              .background(
-                color = amPurpleLight,
-                shape = RoundedCornerShape(50)
-              )
-              .padding(horizontal = 10.dp, vertical = 4.dp),
-          )
+          Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+          ) {
+            Text(
+              text = session.formattedDuration,
+              style = MaterialTheme.typography.caption1,
+              color = amPurple,
+              modifier = Modifier
+                .background(
+                  color = amPurpleLight,
+                  shape = RoundedCornerShape(50)
+                )
+                .padding(horizontal = 10.dp, vertical = 4.dp),
+            )
+
+            if (session.isOngoing) {
+              PulsatingRedDot()
+            }
+          }
 
           languageWithFlag(session.session.language)?.let { langText ->
             Text(
@@ -125,10 +134,6 @@ private fun Session(session: UISession, onBookmarkToggle: (Boolean) -> Unit) {
                 .padding(horizontal = 10.dp, vertical = 4.dp),
             )
           }
-
-          if (session.isOngoing) {
-            PulsatingRedDot()
-          }
         }
       }
 
@@ -139,7 +144,7 @@ private fun Session(session: UISession, onBookmarkToggle: (Boolean) -> Unit) {
             .padding(horizontal = 8.dp)
             .padding(top = 8.dp),
           text = session.session.title,
-          textAlign = TextAlign.Center,
+          textAlign = TextAlign.Start,
           style = MaterialTheme.typography.title2.copy(
             fontWeight = FontWeight.Bold,
           ),
@@ -150,7 +155,7 @@ private fun Session(session: UISession, onBookmarkToggle: (Boolean) -> Unit) {
       item {
         Row(
           verticalAlignment = Alignment.CenterVertically,
-          horizontalArrangement = Arrangement.Center,
+          horizontalArrangement = Arrangement.Start,
           modifier = Modifier
             .fillMaxWidth()
             .padding(top = 4.dp),
@@ -196,7 +201,7 @@ private fun Session(session: UISession, onBookmarkToggle: (Boolean) -> Unit) {
             modifier = Modifier
               .fillMaxWidth()
               .padding(horizontal = 8.dp, vertical = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterHorizontally),
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
             verticalArrangement = Arrangement.spacedBy(6.dp),
           ) {
             tags.forEach { tag ->
