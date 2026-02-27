@@ -1,7 +1,10 @@
 package com.androidmakers.ui
 
+import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.savedstate.read
@@ -75,55 +78,62 @@ private fun MainNavHost(
     }
   }
 
-  NavHost(
-    navController = mainNavController,
-    startDestination = MainNavigationRoute.AVA.name,
-    enterTransition = { defaultEnterTransition },
-    exitTransition = { defaultExitTransition },
-    popEnterTransition = { defaultPopEnterTransition },
-    popExitTransition = { defaultPopExitTransition }
-  ) {
+  SharedTransitionLayout {
+    NavHost(
+      navController = mainNavController,
+      startDestination = MainNavigationRoute.AVA.name,
+      enterTransition = { defaultEnterTransition },
+      exitTransition = { defaultExitTransition },
+      popEnterTransition = { defaultPopEnterTransition },
+      popExitTransition = { defaultPopExitTransition }
+    ) {
 
-    composable(route = MainNavigationRoute.AVA.name) {
-      AVALayout(
-        versionCode = versionCode,
-        versionName = versionName,
-        onSessionClick = onSessionClick,
-        navigateToSpeakerDetails = navigateToSpeakerDetails,
-        signinCallbacks = signingCallbacks,
-      )
-    }
+      composable(route = MainNavigationRoute.AVA.name) {
+        AVALayout(
+          versionCode = versionCode,
+          versionName = versionName,
+          onSessionClick = onSessionClick,
+          navigateToSpeakerDetails = navigateToSpeakerDetails,
+          signinCallbacks = signingCallbacks,
+        )
+      }
 
-    composable(
-      route = "${MainNavigationRoute.SESSION_DETAIL.name}/{sessionId}",
-      deepLinks = listOf(
-        NavDeepLink.Builder()
-          .setUriPattern("https://androidmakers.fr/session/{sessionId}")
-          .build()
-      )
-    ) { backStackEntry ->
-      val sessionId = backStackEntry.arguments?.read { getString("sessionId") }.orEmpty()
+      composable(
+        route = "${MainNavigationRoute.SESSION_DETAIL.name}/{sessionId}",
+        deepLinks = listOf(
+          NavDeepLink.Builder()
+            .setUriPattern("https://androidmakers.fr/session/{sessionId}")
+            .build()
+        )
+      ) { backStackEntry ->
+        val sessionId = backStackEntry.arguments?.read { getString("sessionId") }.orEmpty()
 
-      SessionDetailScreen(
-        viewModel = koinViewModel { parametersOf(sessionId) },
-        onBackClick = { mainNavController.popBackStack() },
-      )
-    }
+        SessionDetailScreen(
+          viewModel = koinViewModel { parametersOf(sessionId) },
+          onBackClick = { mainNavController.popBackStack() },
+          onSpeakerClick = navigateToSpeakerDetails,
+          sharedTransitionScope = this@SharedTransitionLayout,
+          animatedVisibilityScope = this@composable,
+        )
+      }
 
-    composable(
-      route = "${MainNavigationRoute.SPEAKER_DETAIL.name}/{speakerId}",
-      deepLinks = listOf(
-        NavDeepLink.Builder()
-          .setUriPattern("https://androidmakers.fr/speaker/{speakerId}")
-          .build()
-      )
-    ) { backstackEntry ->
-      val speakerId = backstackEntry.arguments?.read { getString("speakerId") }.orEmpty()
+      composable(
+        route = "${MainNavigationRoute.SPEAKER_DETAIL.name}/{speakerId}",
+        deepLinks = listOf(
+          NavDeepLink.Builder()
+            .setUriPattern("https://androidmakers.fr/speaker/{speakerId}")
+            .build()
+        )
+      ) { backstackEntry ->
+        val speakerId = backstackEntry.arguments?.read { getString("speakerId") }.orEmpty()
 
-      SpeakerDetailsRoute(
-        speakerDetailsViewModel = koinViewModel { parametersOf(speakerId) },
-        onBackClick = { mainNavController.popBackStack() },
-      )
+        SpeakerDetailsRoute(
+          speakerDetailsViewModel = koinViewModel { parametersOf(speakerId) },
+          onBackClick = { mainNavController.popBackStack() },
+          sharedTransitionScope = this@SharedTransitionLayout,
+          animatedVisibilityScope = this@composable,
+        )
+      }
     }
   }
 }

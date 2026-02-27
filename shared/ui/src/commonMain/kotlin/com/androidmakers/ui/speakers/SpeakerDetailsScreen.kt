@@ -1,5 +1,7 @@
 package com.androidmakers.ui.speakers
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.consumeWindowInsets
@@ -45,6 +47,8 @@ import org.jetbrains.compose.resources.stringResource
 fun SpeakerDetailsRoute(
     speakerDetailsViewModel: SpeakerDetailsViewModel,
     onBackClick: () -> Unit,
+    sharedTransitionScope: SharedTransitionScope? = null,
+    animatedVisibilityScope: AnimatedVisibilityScope? = null,
 ) {
   val uiState by speakerDetailsViewModel.uiState.collectAsStateWithLifecycle()
   when (val state = uiState) {
@@ -58,7 +62,9 @@ fun SpeakerDetailsRoute(
       SpeakerDetailsScreen(
         uiState = state.content,
         onSocialItemClick = { speakerDetailsViewModel.openSpeakerLink(urlOpener, it) },
-        onBackClick = onBackClick
+        onBackClick = onBackClick,
+        sharedTransitionScope = sharedTransitionScope,
+        animatedVisibilityScope = animatedVisibilityScope,
       )
     }
   }
@@ -70,6 +76,8 @@ fun SpeakerDetailsScreen(
     uiState: SpeakerDetailsUiState,
     onSocialItemClick: (SocialsItem) -> Unit,
     onBackClick: () -> Unit,
+    sharedTransitionScope: SharedTransitionScope? = null,
+    animatedVisibilityScope: AnimatedVisibilityScope? = null,
 ) {
   val speaker = uiState.speaker
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
@@ -102,9 +110,19 @@ fun SpeakerDetailsScreen(
     ) {
 
       speaker.photoUrl?.let { photoUrl ->
+        val photoModifier = if (sharedTransitionScope != null && animatedVisibilityScope != null) {
+          with(sharedTransitionScope) {
+            Modifier.sharedElement(
+              sharedContentState = rememberSharedContentState(key = "speaker_photo_${speaker.id}"),
+              animatedVisibilityScope = animatedVisibilityScope,
+            )
+          }
+        } else {
+          Modifier
+        }
         AsyncImage(
             model = photoUrl,
-            modifier = Modifier
+            modifier = photoModifier
                 .size(64.dp)
                 .clip(CircleShape),
             contentDescription = stringResource(Res.string.speakers)

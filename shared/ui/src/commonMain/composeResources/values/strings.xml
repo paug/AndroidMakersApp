@@ -82,4 +82,10 @@
     <string name="session_date_with_room">%1$s, %2$s</string>
     <string name="session_app_clinic_apply">Apply for App-Clinic</string>
 
+    <string name="talk_details">Talk Details</string>
+    <string name="about_this_talk">About this talk</string>
+    <string name="speaker_section">Speaker</string>
+    <string name="add_to_my_agenda">Add to My Agenda</string>
+    <string name="remove_from_my_agenda">Remove from My Agenda</string>
+
 </resources>
