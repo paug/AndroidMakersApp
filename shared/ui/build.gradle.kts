@@ -49,6 +49,7 @@ kotlin {
 
   android {
     namespace = "fr.paug.androidmakers.ui"
+    androidResources.enable = true
   }
 }
 

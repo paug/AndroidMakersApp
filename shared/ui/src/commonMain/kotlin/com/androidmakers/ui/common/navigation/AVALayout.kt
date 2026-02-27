@@ -228,13 +228,11 @@ private fun RowScope.NavigationBarItem(
       label = { Text(label) },
       selected = currentRoute == destinationRoute.name,
       colors = NavigationBarItemDefaults.colors(
-          selectedIconColor = MaterialTheme.colorScheme.onSurface,
-          selectedTextColor = MaterialTheme.colorScheme.onSurface,
-          unselectedIconColor = MaterialTheme.colorScheme.onSurface,
-          unselectedTextColor = MaterialTheme.colorScheme.onSurface,
-          indicatorColor = MaterialTheme.colorScheme.surface,
-//          disabledIconColor =,
-//          disabledTextColor =
+          selectedIconColor = MaterialTheme.colorScheme.primary,
+          selectedTextColor = MaterialTheme.colorScheme.primary,
+          unselectedIconColor = MaterialTheme.colorScheme.outline,
+          unselectedTextColor = MaterialTheme.colorScheme.outline,
+          indicatorColor = MaterialTheme.colorScheme.primaryContainer,
       ),
       onClick = {
         avaNavController.navigate(destinationRoute.name) {

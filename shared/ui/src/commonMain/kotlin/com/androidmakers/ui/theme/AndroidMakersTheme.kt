@@ -5,11 +5,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-// TODO to be changed
 object AMColor {
-  val amBlue = Color(0xff4eb6e3)
-  val amBlueNavy = Color(0xff0014e6)
-  val amRed = Color(0xffff5641)
+  val amPurple = Color(0xFF624BB1)
+  val amPurpleLight = Color(0xFFEDEAF4)
+  val amRed = Color(0xFFFF5641)
   val bookmarked = amRed
 }
 

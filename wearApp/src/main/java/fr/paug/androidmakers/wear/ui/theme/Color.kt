@@ -3,11 +3,13 @@ package fr.paug.androidmakers.wear.ui.theme
 import androidx.compose.ui.graphics.Color
 import androidx.wear.compose.material.Colors
 
-val md_theme_dark_primary = Color(0xFF61D4FF)
-val md_theme_dark_onPrimary = Color(0xFF003545)
+val md_theme_dark_primary = Color(0xFFD0BCFF)
+val md_theme_dark_onPrimary = Color(0xFF381E72)
 val md_theme_dark_secondary = Color(0xFFFFB4A9)
 val md_theme_dark_onSecondary = Color(0xFF690001)
-val amRed = Color(0xffff5641)
+val amRed = Color(0xFFFF5641)
+val amPurple = Color(0xFF624BB1)
+val amPurpleLight = Color(0xFFEDEAF4)
 
 val wearColorPalette: Colors = Colors(
     primary = md_theme_dark_primary,
