@@ -4,6 +4,7 @@ import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.savedstate.read
 import androidx.navigation.NavDeepLink
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -101,7 +102,7 @@ private fun MainNavHost(
           .build()
       )
     ) { backStackEntry ->
-      val sessionId = backStackEntry.arguments?.getString("sessionId").orEmpty()
+      val sessionId = backStackEntry.arguments?.read { getString("sessionId") }.orEmpty()
 
       SessionDetailScreen(
         viewModel = koinViewModel { parametersOf(sessionId) },
@@ -117,7 +118,7 @@ private fun MainNavHost(
           .build()
       )
     ) { backstackEntry ->
-      val speakerId = backstackEntry.arguments?.getString("speakerId").orEmpty()
+      val speakerId = backstackEntry.arguments?.read { getString("speakerId") }.orEmpty()
 
       SpeakerDetailsRoute(
         speakerDetailsViewModel = koinViewModel { parametersOf(speakerId) },

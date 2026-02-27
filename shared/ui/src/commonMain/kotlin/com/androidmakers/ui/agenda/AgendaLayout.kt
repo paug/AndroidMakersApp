@@ -21,7 +21,7 @@ import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,8 +46,8 @@ import fr.paug.androidmakers.ui.filter
 import fr.paug.androidmakers.ui.french
 import fr.paug.androidmakers.ui.language
 import fr.paug.androidmakers.ui.rooms
-import kotlinx.datetime.Clock
 import kotlinx.datetime.todayIn
+import kotlin.time.Clock
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -58,10 +58,10 @@ fun AgendaLayout(
     onSessionClick: (sessionId: String) -> Unit,
     viewModel: AgendaViewModel = koinViewModel()
 ) {
-  val rooms by viewModel.rooms.collectAsState(emptyList())
-  val sessionFilters by viewModel.sessionFilters.collectAsState()
-  val uiStateLce by viewModel.values.collectAsState()
-  val isRefreshing by viewModel.isRefreshing.collectAsState()
+  val rooms by viewModel.rooms.collectAsStateWithLifecycle(emptyList())
+  val sessionFilters by viewModel.sessionFilters.collectAsStateWithLifecycle()
+  val uiStateLce by viewModel.values.collectAsStateWithLifecycle()
+  val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
 
   ModalNavigationDrawer(
       drawerState = agendaFilterDrawerState,

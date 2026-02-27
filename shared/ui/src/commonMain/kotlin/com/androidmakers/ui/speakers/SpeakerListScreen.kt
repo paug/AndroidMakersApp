@@ -29,7 +29,7 @@ import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -60,7 +60,7 @@ fun SpeakerScreen(
     viewModel: SpeakerListViewModel,
     navigateToSpeakerDetails: (String) -> Unit,
 ) {
-  val state by viewModel.uiState.collectAsState(Lce.Loading)
+  val state by viewModel.uiState.collectAsStateWithLifecycle()
 
   when (state) {
     Lce.Loading -> LoadingLayout()

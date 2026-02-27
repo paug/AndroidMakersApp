@@ -14,7 +14,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,7 +31,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun SponsorsScreen() {
   val viewModel = koinViewModel<SponsorsViewModel>()
-  val sponsors by viewModel.values.collectAsState()
+  val sponsors by viewModel.values.collectAsStateWithLifecycle()
   val urlOpener = LocalUriHandler.current.toUrlOpener()
 
   SponsorsView(

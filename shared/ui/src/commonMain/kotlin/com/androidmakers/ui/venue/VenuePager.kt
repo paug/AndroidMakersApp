@@ -9,7 +9,7 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -83,7 +83,7 @@ fun VenuePager() {
               it.toLce()
             }
           }
-          val venueState = flow.collectAsState(initial = Lce.Loading)
+          val venueState = flow.collectAsStateWithLifecycle(initialValue = Lce.Loading)
 
           LceLayout(lce = venueState.value) { venue ->
             val uiVenue = UIVenue(
@@ -110,7 +110,7 @@ fun VenuePager() {
           }.map {
             it.toLce()
           }
-          val venueState = flow.collectAsState(initial = Lce.Loading)
+          val venueState = flow.collectAsStateWithLifecycle(initialValue = Lce.Loading)
           LceLayout(lce = venueState.value) { venue ->
             FloorPlan(venue.floorPlanUrl.orEmpty())
           }

@@ -20,7 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,7 +46,7 @@ fun SpeakerDetailsRoute(
     speakerDetailsViewModel: SpeakerDetailsViewModel,
     onBackClick: () -> Unit,
 ) {
-  val uiState by speakerDetailsViewModel.uiState.collectAsState()
+  val uiState by speakerDetailsViewModel.uiState.collectAsStateWithLifecycle()
   when (val state = uiState) {
     Lce.Loading -> LoadingLayout()
     Lce.Error -> {
