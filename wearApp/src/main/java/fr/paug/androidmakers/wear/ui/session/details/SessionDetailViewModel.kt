@@ -13,6 +13,7 @@ import fr.androidmakers.domain.repo.SpeakersRepository
 import fr.paug.androidmakers.wear.ui.session.UISession
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
@@ -34,7 +35,7 @@ class SessionDetailViewModel(
     .filterSuccess()
     .stateIn(
       scope = viewModelScope,
-      started = SharingStarted.Eagerly,
+      started = SharingStarted.WhileSubscribed(5_000),
       initialValue = null
     )
     .filterNotNull()
@@ -53,7 +54,7 @@ class SessionDetailViewModel(
 
   private val isBookmarked: Flow<Boolean> = bookmarksRepository.isBookmarked(sessionId)
 
-  val uiSession: Flow<UISession> = combine(
+  val uiSession: StateFlow<UISession?> = combine(
     session,
     room,
     speakers,
@@ -65,7 +66,11 @@ class SessionDetailViewModel(
       room = room,
       isBookmarked = isBookmarked,
     )
-  }
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(5_000),
+    initialValue = null
+  )
 
   fun bookmark(bookmarked: Boolean) = viewModelScope.launch {
     setSessionBookmarkUseCase(session.first().id, bookmarked)

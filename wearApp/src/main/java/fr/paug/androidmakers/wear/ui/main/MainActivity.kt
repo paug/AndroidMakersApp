@@ -8,7 +8,7 @@ import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -132,9 +132,9 @@ fun MainScreen(
 ) {
   val pagerState: PagerState =
     rememberPagerState(initialPage = viewModel.getConferenceDay() + 1, pageCount = { 3 })
-  val user: User? by viewModel.user.collectAsState()
-  val sessionsDay1: List<UISession>? by viewModel.sessionsDay1.collectAsState(initial = null)
-  val sessionsDay2: List<UISession>? by viewModel.sessionsDay2.collectAsState(initial = null)
+  val user: User? by viewModel.user.collectAsStateWithLifecycle()
+  val sessionsDay1: List<UISession>? by viewModel.sessionsDay1.collectAsStateWithLifecycle()
+  val sessionsDay2: List<UISession>? by viewModel.sessionsDay2.collectAsStateWithLifecycle()
 
   PagerScreen(
     modifier = Modifier

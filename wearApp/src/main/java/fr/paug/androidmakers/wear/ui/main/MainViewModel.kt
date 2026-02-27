@@ -25,15 +25,15 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
@@ -57,7 +57,7 @@ class MainViewModel(
 ) : ViewModel() {
   val user: StateFlow<User?> = userRepository.user.stateIn(
     scope = viewModelScope,
-    started = SharingStarted.Eagerly,
+    started = SharingStarted.WhileSubscribed(5_000),
     initialValue = userRepository.currentUser
   )
 
@@ -66,22 +66,31 @@ class MainViewModel(
   private val bookmarksSyncTrigger = MutableStateFlow(LoadingTrigger(refresh = true))
   private val sessionsLoadingTrigger = MutableStateFlow(LoadingTrigger(refresh = false))
 
-  init {
-    viewModelScope.launch {
-      // Sync bookmarks when the user changes or a refresh is requested
-      combine(user, bookmarksSyncTrigger) { currentUser, _ -> currentUser }
-        .collectLatest { currentUser -> maybeSyncBookmarks(currentUser) }
+  @OptIn(ExperimentalCoroutinesApi::class)
+  @Suppress("unused")
+  private val bookmarkSync: StateFlow<Unit> = combine(user, bookmarksSyncTrigger) { currentUser, _ -> currentUser }
+    .flatMapLatest { currentUser ->
+      flow { emit(maybeSyncBookmarks(currentUser)) }
     }
+    .stateIn(
+      scope = viewModelScope,
+      started = SharingStarted.Eagerly,
+      initialValue = Unit
+    )
 
-    viewModelScope.launch {
-      messageClient.getEventsFlow().collect { messageEvent ->
-        if (messageEvent.path == MESSAGE_SYNC_BOOKMARKS) {
-          Log.d(TAG, "Received syncBookmarks message")
-          bookmarksSyncTrigger.value = LoadingTrigger(refresh = true)
-        }
+  @Suppress("unused")
+  private val messageSync: StateFlow<Unit> = messageClient.getEventsFlow()
+    .map { messageEvent ->
+      if (messageEvent.path == MESSAGE_SYNC_BOOKMARKS) {
+        Log.d(TAG, "Received syncBookmarks message")
+        bookmarksSyncTrigger.value = LoadingTrigger(refresh = true)
       }
     }
-  }
+    .stateIn(
+      scope = viewModelScope,
+      started = SharingStarted.Eagerly,
+      initialValue = Unit
+    )
 
   private fun MessageClient.getEventsFlow(): Flow<MessageEvent> = callbackFlow<MessageEvent> {
     val listener = OnMessageReceivedListener { messageEvent ->
@@ -103,7 +112,7 @@ class MainViewModel(
   }
 
   @OptIn(ExperimentalCoroutinesApi::class)
-  private val sessions: Flow<List<UISession>?> = combine(
+  private val sessions: StateFlow<List<UISession>?> = combine(
     sessionsLoadingTrigger
       .flatMapLatest { trigger -> getAgendaUseCase(trigger.refresh) }
       .mapNotNull { it.getOrNull() },
@@ -119,15 +128,25 @@ class MainViewModel(
   }
     .stateIn(
       scope = viewModelScope,
-      started = SharingStarted.Eagerly,
+      started = SharingStarted.WhileSubscribed(5_000),
       initialValue = null
     )
 
-  val sessionsDay1: Flow<List<UISession>?> =
+  val sessionsDay1: StateFlow<List<UISession>?> =
     sessions.map { sessions -> sessions?.filter { it.session.startsAt.date == DAY_1_DATE } }
+      .stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = null
+      )
 
-  val sessionsDay2: Flow<List<UISession>?> =
+  val sessionsDay2: StateFlow<List<UISession>?> =
     sessions.map { sessions -> sessions?.filter { it.session.startsAt.date == DAY_2_DATE } }
+      .stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = null
+      )
 
   /**
    * Get the day of the conference, based on the current date.

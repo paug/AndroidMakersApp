@@ -13,8 +13,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Bookmark
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.Hyphens
@@ -41,12 +41,12 @@ import fr.paug.androidmakers.wear.ui.theme.amRed
 
 @Composable
 fun SessionDetailScreen(viewModel: SessionDetailViewModel) {
-  val sessionState: State<UISession?> = viewModel.uiSession.collectAsState(null)
-  val session = sessionState.value
-  if (session == null) {
+  val session by viewModel.uiSession.collectAsStateWithLifecycle()
+  val currentSession = session
+  if (currentSession == null) {
     Loading()
   } else {
-    Session(session)
+    Session(currentSession)
   }
 }
 
