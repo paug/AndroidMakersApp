@@ -43,7 +43,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -80,8 +80,8 @@ import fr.paug.androidmakers.ui.info
 import fr.paug.androidmakers.ui.session_app_clinic_apply
 import fr.paug.androidmakers.ui.share
 import fr.paug.androidmakers.ui.speakers
-import io.openfeedback.OpenFeedback
-import kotlinx.datetime.Clock
+import com.androidmakers.ui.common.OpenFeedbackLayout
+import kotlin.time.Clock
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -91,7 +91,7 @@ fun SessionDetailScreen(
   viewModel: SessionDetailViewModel,
   onBackClick: () -> Unit,
 ) {
-  val sessionDetailState by viewModel.sessionDetailState.collectAsState()
+  val sessionDetailState by viewModel.sessionDetailState.collectAsStateWithLifecycle()
   val context = getPlatformContext()
   val urlOpener = LocalUriHandler.current.toUrlOpener()
 
@@ -275,7 +275,7 @@ private fun SessionDetails(
 
     if (sessionDetails.session.type == "talk") {
       if (Clock.System.now() > sessionDetails.startTimestamp) {
-        OpenFeedback(
+        OpenFeedbackLayout(
           projectId = "v6kx3QuQkDU4fX0Ta989",
           sessionId = sessionDetails.session.id,
         )
