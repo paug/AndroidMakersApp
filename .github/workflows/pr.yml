@@ -14,11 +14,11 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-app:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: set up JDK 21
+      - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
@@ -27,5 +27,61 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
         with:
           validate-wrappers: true
-      - name: Build with Gradle
-        run: ./gradlew clean assembleDebug
+      - name: Build
+        run: ./gradlew assembleDebug :wearApp:assembleDebug
+      - name: Run tests
+        run: ./gradlew allTests
+      - name: Upload debug APKs
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-apks
+          path: |
+            androidApp/build/outputs/apk/debug/*.apk
+            wearApp/build/outputs/apk/debug/*.apk
+          retention-days: 14
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          validate-wrappers: true
+      - name: Run Android Lint
+        run: ./gradlew :androidApp:lintDebug :wearApp:lintDebug
+      - name: Upload lint reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint-reports
+          path: |
+            androidApp/build/reports/lint-results-debug.html
+            wearApp/build/reports/lint-results-debug.html
+
+  detekt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          validate-wrappers: true
+      - name: Run Detekt
+        run: ./gradlew detekt
+      - name: Upload SARIF to GitHub
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: build/reports/detekt/detekt.sarif
