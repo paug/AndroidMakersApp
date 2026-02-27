@@ -10,6 +10,10 @@ kotlin {
   iosSimulatorArm64()
 
   sourceSets {
+    jvmMain.dependencies {
+      implementation(libs.okhttp)
+    }
+
     commonMain {
       dependencies {
         api(project(":shared:domain"))
@@ -19,6 +23,7 @@ kotlin {
         implementation(libs.apollo.normalized.cache)
 
         api(libs.androidx.datastore.preferences)
+        api(libs.androidx.datastore.preferences.core)
         implementation(libs.kotlinx.coroutines.core)
         implementation(libs.okio) // Used by DataStore and others
 
@@ -28,19 +33,16 @@ kotlin {
 
     androidMain {
       dependencies {
+        implementation(project.dependencies.platform(libs.firebase.bom))
         implementation(libs.okhttp)  // Used by Apollo
         implementation(libs.play.services.wearable)
       }
     }
   }
-}
 
-android {
-  namespace = "fr.androidmakers.store.graphql"
-}
-
-dependencies {
-  implementation(platform(libs.firebase.bom))
+  android {
+    namespace = "fr.androidmakers.store.graphql"
+  }
 }
 
 apollo {

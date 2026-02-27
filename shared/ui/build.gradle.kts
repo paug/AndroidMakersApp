@@ -26,7 +26,6 @@ kotlin {
       implementation(libs.jetbrains.lifecycle.viewmodel.compose)
       implementation(libs.koin.compose)
       implementation(libs.koin.compose.viewmodel)
-      api(libs.openfeedback.viewmodel)
       implementation(libs.kotlinx.coroutines.core)
       implementation(libs.okio)   // Used by Openfeedback
 
@@ -35,11 +34,21 @@ kotlin {
     }
     androidMain.dependencies {
       implementation(libs.coil.network.okhttp)
+      api(libs.openfeedback.viewmodel)
     }
     iosMain.dependencies {
       implementation(libs.coil.network.ktor3)
       implementation(libs.ktor.client.darwin)
+      api(libs.openfeedback.viewmodel)
     }
+    jvmMain.dependencies {
+      implementation(libs.coil.network.ktor3)
+      implementation(libs.ktor.client.java)
+    }
+  }
+
+  android {
+    namespace = "fr.paug.androidmakers.ui"
   }
 }
 
@@ -48,10 +57,6 @@ configurations.configureEach {
   exclude(group = "androidx.appcompat", module = "appcompat")
   // Disable Android Drawable support in Coil
   exclude(group = "com.google.accompanist", module = "accompanist-drawablepainter")
-}
-
-android {
-  namespace = "fr.paug.androidmakers.ui"
 }
 
 compose.resources {

@@ -30,11 +30,16 @@ kotlin {
     }
   }
 
+  android {
+    namespace = "fr.paug.androidmakers.shared"
+  }
+
   sourceSets {
     commonMain.dependencies {
       api(project(":shared:ui"))
       api(project(":shared:domain"))
       api(project(":shared:di"))
+      implementation(compose.runtime)
     }
   }
 }
@@ -42,8 +47,4 @@ kotlin {
 configurations.configureEach {
   // Remove unnecessary transitive dependency
   exclude(group = "androidx.appcompat", module = "appcompat")
-}
-
-android {
-  namespace = "fr.paug.androidmakers.shared"
 }

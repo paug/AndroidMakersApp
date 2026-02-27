@@ -8,8 +8,13 @@ kotlin {
   iosArm64()
   iosSimulatorArm64()
 
+  android {
+    namespace = "fr.paug.androidmakers.di"
+  }
+
   sourceSets {
     androidMain.dependencies {
+      implementation(project.dependencies.platform(libs.firebase.bom))
       implementation(libs.koin.android)
     }
 
@@ -22,9 +27,4 @@ kotlin {
       api(libs.koin.core)
     }
   }
-}
-
-android {
-  namespace = "fr.paug.androidmakers.di"
-  buildFeatures.buildConfig = true
 }
