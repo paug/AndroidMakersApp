@@ -64,7 +64,7 @@ fun SpeakerScreen(
 
   when (state) {
     Lce.Loading -> LoadingLayout()
-    Lce.Error -> {
+    is Lce.Error -> {
 
     }
 

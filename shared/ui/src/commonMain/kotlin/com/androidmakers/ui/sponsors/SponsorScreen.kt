@@ -46,7 +46,7 @@ fun SponsorsView(
     onSponsorClick: (partner: Partner) -> Unit
 ) {
   when (partnerList) {
-    is Lce.Loading, Lce.Error -> {
+    is Lce.Loading, is Lce.Error -> {
       Box(
           modifier = Modifier
               .fillMaxWidth()

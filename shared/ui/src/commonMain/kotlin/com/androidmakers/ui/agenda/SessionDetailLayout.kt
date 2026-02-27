@@ -177,7 +177,7 @@ fun SessionDetailLayout(
   ) { innerPadding ->
     Box {
       when (sessionDetailState) {
-        is Lce.Loading, Lce.Error -> LoadingLayout(
+        is Lce.Loading, is Lce.Error -> LoadingLayout(
           modifier = Modifier
             .padding(innerPadding)
             .consumeWindowInsets(innerPadding)

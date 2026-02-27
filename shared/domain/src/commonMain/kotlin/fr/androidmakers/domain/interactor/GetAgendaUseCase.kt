@@ -20,15 +20,12 @@ class GetAgendaUseCase(
     ) { sessionsResult, roomsResult, speakersResult ->
 
       val sessions = sessionsResult.getOrElse {
-        it.printStackTrace()
         return@combine Result.failure(it)
       }
       val rooms = roomsResult.getOrElse {
-        it.printStackTrace()
         return@combine Result.failure(it)
       }
       val speakers = speakersResult.getOrElse {
-        it.printStackTrace()
         return@combine Result.failure(it)
       }
 

@@ -46,8 +46,8 @@ class SessionDetailViewModel(
             speakersRepository.getSpeakers(session.speakers),
             bookmarksRepository.isBookmarked(sessionId)
           ) { roomResult, speakersResult, isBookmarked ->
-            val room = roomResult.getOrElse { return@combine Lce.Error }
-            val speakers = speakersResult.getOrElse { return@combine Lce.Error }
+            val room = roomResult.getOrElse { return@combine Lce.Error(it) }
+            val speakers = speakersResult.getOrElse { return@combine Lce.Error(it) }
             Lce.Content(
               SessionDetailState(
                 session = session,
@@ -61,7 +61,7 @@ class SessionDetailViewModel(
           }.collect(this)
         }
         .onFailure {
-          emit(Lce.Error)
+          emit(Lce.Error(it))
         }
     }.stateIn(
       scope = viewModelScope,

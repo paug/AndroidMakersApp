@@ -1,5 +1,4 @@
-class TestClass {
-  // TODO find a solution to remove this class
-  // It is necessary to build the iOS Framework
-  // Maybe by configuring src sets on iOS?
-}
+// This file ensures the shared module has at least one source file
+// for the iOS framework generation. The actual code lives in the
+// shared:domain, shared:data, shared:ui, and shared:di submodules.
+internal object SharedModuleMarker

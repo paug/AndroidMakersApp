@@ -49,7 +49,7 @@ fun SpeakerDetailsRoute(
   val uiState by speakerDetailsViewModel.uiState.collectAsStateWithLifecycle()
   when (val state = uiState) {
     Lce.Loading -> LoadingLayout()
-    Lce.Error -> {
+    is Lce.Error -> {
 
     }
 
