@@ -3,9 +3,9 @@ package com.androidmakers.ui.common.navigation
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
+
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
+
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.CalendarMonth
 import androidx.compose.material.icons.rounded.Diamond
+import androidx.compose.material.icons.rounded.DynamicFeed
 import androidx.compose.material.icons.rounded.FilterList
 import androidx.compose.material.icons.rounded.Groups
 import androidx.compose.material.icons.rounded.Info
@@ -52,14 +53,17 @@ import com.androidmakers.ui.agenda.AgendaLayout
 import com.androidmakers.ui.common.BackHandlerCompat
 import com.androidmakers.ui.common.SigninButton
 import com.androidmakers.ui.common.SigninCallbacks
+import com.androidmakers.ui.feed.FeedScreen
 import com.androidmakers.ui.speakers.SpeakerScreen
 import com.androidmakers.ui.sponsors.SponsorsScreen
 import com.androidmakers.ui.venue.VenuePager
 import fr.androidmakers.domain.repo.UserRepository
+import fr.androidmakers.domain.utils.FeatureFlags
 import fr.paug.androidmakers.ui.Res
 import fr.paug.androidmakers.ui.about
 import fr.paug.androidmakers.ui.agenda
 import fr.paug.androidmakers.ui.app_name
+import fr.paug.androidmakers.ui.feed
 import fr.paug.androidmakers.ui.filter
 import fr.paug.androidmakers.ui.notification
 import fr.paug.androidmakers.ui.speakers
@@ -105,24 +109,21 @@ fun AVALayout(
                 actionIconContentColor = MaterialTheme.colorScheme.onSurface,
             ),
             navigationIcon = {
-              Box(modifier = Modifier.padding(14.dp)) {
+              Box(modifier = Modifier.padding(12.dp)) {
                 Image(
-                    modifier = Modifier.size(28.dp),
+                    modifier = Modifier.size(32.dp),
                     painter = painterResource(Res.drawable.notification),
                     contentDescription = "logo"
                 )
               }
             },
             title = {
-              Row(horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.Start)) {
-
-                Text(
-                    text = stringResource(Res.string.app_name),
-                    style = MaterialTheme.typography.titleSmall,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-              }
+              Text(
+                  text = stringResource(Res.string.app_name),
+                  style = MaterialTheme.typography.titleMedium,
+                  maxLines = 1,
+                  overflow = TextOverflow.Ellipsis
+              )
             },
             actions = {
               if (currentRoute == AVANavigationRoute.AGENDA.name) {
@@ -156,6 +157,15 @@ fun AVALayout(
 
       bottomBar = {
         NavigationBar {
+          if (FeatureFlags.isFeedEnabled) {
+            NavigationBarItem(
+                avaNavController = avaNavController,
+                imageVector = Icons.Rounded.DynamicFeed,
+                label = stringResource(Res.string.feed),
+                currentRoute = currentRoute,
+                destinationRoute = AVANavigationRoute.FEED
+            )
+          }
           NavigationBarItem(
               avaNavController = avaNavController,
               imageVector = Icons.Rounded.CalendarMonth,
@@ -257,12 +267,22 @@ private fun AVANavHost(
     agendaFilterDrawerState: DrawerState,
     navigateToSpeakerDetails: (String) -> Unit,
 ) {
+  val startDestination = if (FeatureFlags.isFeedEnabled) {
+    AVANavigationRoute.FEED.name
+  } else {
+    AVANavigationRoute.AGENDA.name
+  }
+
   NavHost(
     navController = avaNavController,
-    startDestination = AVANavigationRoute.AGENDA.name,
+    startDestination = startDestination,
     enterTransition = { fadeIn() },
     exitTransition = { fadeOut() }
   ) {
+
+    composable(route = AVANavigationRoute.FEED.name) {
+      FeedScreen()
+    }
 
     composable(route = AVANavigationRoute.AGENDA.name) {
       AgendaLayout(

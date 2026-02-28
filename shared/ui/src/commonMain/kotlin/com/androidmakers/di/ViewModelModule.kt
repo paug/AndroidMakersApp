@@ -2,6 +2,7 @@ package com.androidmakers.di
 
 import com.androidmakers.ui.about.AboutViewModel
 import com.androidmakers.ui.agenda.AgendaViewModel
+import com.androidmakers.ui.feed.FeedViewModel
 import com.androidmakers.ui.agenda.SessionDetailViewModel
 import com.androidmakers.ui.speakers.SpeakerDetailsViewModel
 import com.androidmakers.ui.speakers.SpeakerListViewModel
@@ -19,4 +20,5 @@ val viewModelModule = module {
   viewModelOf(::AgendaViewModel)
   viewModel { (sessionId: String) -> SessionDetailViewModel(sessionId, get(), get(), get(), get(), get(), get(), get()) }
   viewModelOf(::AboutViewModel)
+  viewModelOf(::FeedViewModel)
 }

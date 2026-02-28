@@ -10,6 +10,7 @@ enum class MainNavigationRoute {
 }
 
 enum class AVANavigationRoute {
+  FEED,
   AGENDA,
   VENUE,
   SPEAKERS,

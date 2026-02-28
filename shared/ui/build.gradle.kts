@@ -7,7 +7,6 @@ plugins {
 kotlin {
   applyDefaultHierarchyTemplate()
 
-  iosX64()
   iosArm64()
   iosSimulatorArm64()
 
@@ -16,7 +15,7 @@ kotlin {
       implementation(compose.runtime)
       implementation(compose.foundation)
       implementation(compose.ui)
-      implementation(compose.material3)
+      implementation("org.jetbrains.compose.material3:material3:1.11.0-alpha03")
       implementation(compose.materialIconsExtended)
       implementation(compose.components.resources)
       implementation(compose.components.uiToolingPreview)

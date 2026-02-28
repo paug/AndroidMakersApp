@@ -84,4 +84,7 @@
     <string name="add_to_my_agenda">Ajouter à mon agenda</string>
     <string name="remove_from_my_agenda">Retirer de mon agenda</string>
 
+    <string name="feed">Fil</string>
+    <string name="feed_read_more">Lire la suite</string>
+
 </resources>
