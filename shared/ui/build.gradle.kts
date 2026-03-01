@@ -2,6 +2,7 @@ plugins {
   alias(libs.plugins.androidmakers.kmp.library)
   alias(libs.plugins.jetbrainsCompose)
   alias(libs.plugins.compose.compiler)
+  alias(libs.plugins.kotlin.serialization)
 }
 
 kotlin {
@@ -20,7 +21,7 @@ kotlin {
       implementation(compose.components.resources)
       implementation(compose.components.uiToolingPreview)
       implementation(libs.coil.compose)
-      implementation(libs.jetbrains.navigation.compose)
+      implementation(libs.jetbrains.navigation3.ui)
       implementation(libs.jetbrains.lifecycle.runtime.compose)
       implementation(libs.jetbrains.lifecycle.viewmodel.compose)
       implementation(libs.koin.compose)

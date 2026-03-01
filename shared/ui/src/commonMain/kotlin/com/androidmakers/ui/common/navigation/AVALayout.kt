@@ -1,11 +1,7 @@
 package com.androidmakers.ui.common.navigation
 
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
-
 import androidx.compose.foundation.layout.Box
-
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
@@ -18,7 +14,6 @@ import androidx.compose.material.icons.rounded.FilterList
 import androidx.compose.material.icons.rounded.Groups
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.LocationCity
-import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -35,25 +30,23 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.ui.NavDisplay
 import com.androidmakers.ui.about.AboutScreen
 import com.androidmakers.ui.agenda.AgendaLayout
+import com.androidmakers.ui.agenda.SessionDetailScreen
 import com.androidmakers.ui.common.BackHandlerCompat
 import com.androidmakers.ui.common.SigninButton
 import com.androidmakers.ui.common.SigninCallbacks
 import com.androidmakers.ui.feed.FeedScreen
+import com.androidmakers.ui.speakers.SpeakerDetailsRoute
 import com.androidmakers.ui.speakers.SpeakerScreen
 import com.androidmakers.ui.sponsors.SponsorsScreen
 import com.androidmakers.ui.venue.VenuePager
@@ -74,133 +67,191 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 /**
  * AVA stands for Agenda/Venue/About.
  *
- * This layout contains the bottom bar, and the selected layout.
+ * This layout contains the top bar, bottom bar, and the navigation display.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AVALayout(
     versionCode: String,
     versionName: String,
-    onSessionClick: (sessionId: String) -> Unit,
-    navigateToSpeakerDetails: (String) -> Unit,
+    navigationState: NavigationState,
+    navigator: Navigator,
     signinCallbacks: SigninCallbacks,
     userRepository: UserRepository = koinInject(),
 ) {
-  val avaNavController = rememberNavController()
-  val navBackStackEntry by avaNavController.currentBackStackEntryAsState()
-  val currentRoute = navBackStackEntry?.destination?.route
-
   val agendaFilterDrawerState = rememberDrawerState(DrawerValue.Closed)
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
   val user by userRepository.user.collectAsStateWithLifecycle(userRepository.currentUser)
 
+  // Check if the current top entry is a detail screen (to hide bottom bar)
+  val currentStack = navigationState.backStacks[navigationState.topLevelRoute]
+  val currentTopEntry = currentStack?.lastOrNull()
+  val showBottomBar = currentTopEntry == null || currentTopEntry.isTabKey()
+
+  val entryProvider = entryProvider {
+    // Tab entries
+    entry<FeedKey> {
+      FeedScreen()
+    }
+
+    entry<AgendaKey> {
+      AgendaLayout(
+        agendaFilterDrawerState = agendaFilterDrawerState,
+        onSessionClick = { sessionId -> navigator.navigate(SessionDetailKey(sessionId)) }
+      )
+    }
+
+    entry<VenueKey> {
+      VenuePager()
+    }
+
+    entry<SpeakersKey> {
+      SpeakerScreen(
+        viewModel = koinViewModel(),
+        navigateToSpeakerDetails = { speakerId -> navigator.navigate(SpeakerDetailKey(speakerId)) }
+      )
+    }
+
+    entry<SponsorsKey> {
+      SponsorsScreen()
+    }
+
+    entry<AboutKey> {
+      AboutScreen(
+        versionCode = versionCode,
+        versionName = versionName
+      )
+    }
+
+    // Detail entries
+    entry<SessionDetailKey> { key ->
+      SessionDetailScreen(
+        viewModel = koinViewModel { parametersOf(key.sessionId) },
+        onBackClick = { navigator.goBack() },
+        onSpeakerClick = { speakerId -> navigator.navigate(SpeakerDetailKey(speakerId)) },
+      )
+    }
+
+    entry<SpeakerDetailKey> { key ->
+      SpeakerDetailsRoute(
+        speakerDetailsViewModel = koinViewModel { parametersOf(key.speakerId) },
+        onBackClick = { navigator.goBack() },
+      )
+    }
+  }
+
   Scaffold(
       modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
       topBar = {
-        TopAppBar(
-            scrollBehavior = scrollBehavior,
-            colors = TopAppBarDefaults.topAppBarColors(
-                scrolledContainerColor = MaterialTheme.colorScheme.surface,
-                actionIconContentColor = MaterialTheme.colorScheme.onSurface,
-            ),
-            navigationIcon = {
-              Box(modifier = Modifier.padding(12.dp)) {
-                Image(
-                    modifier = Modifier.size(32.dp),
-                    painter = painterResource(Res.drawable.notification),
-                    contentDescription = "logo"
-                )
-              }
-            },
-            title = {
-              Text(
-                  text = stringResource(Res.string.app_name),
-                  style = MaterialTheme.typography.titleMedium,
-                  maxLines = 1,
-                  overflow = TextOverflow.Ellipsis
-              )
-            },
-            actions = {
-              if (currentRoute == AVANavigationRoute.AGENDA.name) {
-                val scope = rememberCoroutineScope()
-                BackHandlerCompat(enabled = agendaFilterDrawerState.isOpen) {
-                  scope.launch {
-                    agendaFilterDrawerState.close()
-                  }
-                }
-                IconButton(
-                    onClick = {
-                      scope.launch {
-                        if (agendaFilterDrawerState.isClosed) {
-                          agendaFilterDrawerState.open()
-                        } else {
-                          agendaFilterDrawerState.close()
-                        }
-                      }
-                    }
-                ) {
-                  Icon(
-                      imageVector = Icons.Rounded.FilterList,
-                      contentDescription = stringResource(Res.string.filter),
+        if (showBottomBar) {
+          TopAppBar(
+              scrollBehavior = scrollBehavior,
+              colors = TopAppBarDefaults.topAppBarColors(
+                  scrolledContainerColor = MaterialTheme.colorScheme.surface,
+                  actionIconContentColor = MaterialTheme.colorScheme.onSurface,
+              ),
+              navigationIcon = {
+                Box(modifier = Modifier.padding(12.dp)) {
+                  Image(
+                      modifier = Modifier.size(32.dp),
+                      painter = painterResource(Res.drawable.notification),
+                      contentDescription = "logo"
                   )
                 }
+              },
+              title = {
+                Text(
+                    text = stringResource(Res.string.app_name),
+                    style = MaterialTheme.typography.titleMedium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+              },
+              actions = {
+                if (navigationState.topLevelRoute is AgendaKey) {
+                  val scope = rememberCoroutineScope()
+                  BackHandlerCompat(enabled = agendaFilterDrawerState.isOpen) {
+                    scope.launch {
+                      agendaFilterDrawerState.close()
+                    }
+                  }
+                  IconButton(
+                      onClick = {
+                        scope.launch {
+                          if (agendaFilterDrawerState.isClosed) {
+                            agendaFilterDrawerState.open()
+                          } else {
+                            agendaFilterDrawerState.close()
+                          }
+                        }
+                      }
+                  ) {
+                    Icon(
+                        imageVector = Icons.Rounded.FilterList,
+                        contentDescription = stringResource(Res.string.filter),
+                    )
+                  }
+                }
+                SigninButton(user, signinCallbacks)
               }
-              SigninButton(user, signinCallbacks)
-            }
-        )
+          )
+        }
       },
 
       bottomBar = {
-        NavigationBar {
-          if (FeatureFlags.isFeedEnabled) {
+        if (showBottomBar) {
+          NavigationBar {
+            if (FeatureFlags.isFeedEnabled) {
+              NavigationBarItem(
+                  navigator = navigator,
+                  navigationState = navigationState,
+                  imageVector = Icons.Rounded.DynamicFeed,
+                  label = stringResource(Res.string.feed),
+                  destinationRoute = FeedKey
+              )
+            }
             NavigationBarItem(
-                avaNavController = avaNavController,
-                imageVector = Icons.Rounded.DynamicFeed,
-                label = stringResource(Res.string.feed),
-                currentRoute = currentRoute,
-                destinationRoute = AVANavigationRoute.FEED
+                navigator = navigator,
+                navigationState = navigationState,
+                imageVector = Icons.Rounded.CalendarMonth,
+                label = stringResource(Res.string.agenda),
+                destinationRoute = AgendaKey
+            )
+            NavigationBarItem(
+                navigator = navigator,
+                navigationState = navigationState,
+                imageVector = Icons.Rounded.LocationCity,
+                label = stringResource(Res.string.venue),
+                destinationRoute = VenueKey
+            )
+            NavigationBarItem(
+                navigator = navigator,
+                navigationState = navigationState,
+                imageVector = Icons.Rounded.Groups,
+                label = stringResource(Res.string.speakers),
+                destinationRoute = SpeakersKey
+            )
+            NavigationBarItem(
+                navigator = navigator,
+                navigationState = navigationState,
+                imageVector = Icons.Rounded.Diamond,
+                label = stringResource(Res.string.sponsors),
+                destinationRoute = SponsorsKey
+            )
+            NavigationBarItem(
+                navigator = navigator,
+                navigationState = navigationState,
+                imageVector = Icons.Rounded.Info,
+                label = stringResource(Res.string.about),
+                destinationRoute = AboutKey
             )
           }
-          NavigationBarItem(
-              avaNavController = avaNavController,
-              imageVector = Icons.Rounded.CalendarMonth,
-              label = stringResource(Res.string.agenda),
-              currentRoute = currentRoute,
-              destinationRoute = AVANavigationRoute.AGENDA
-          )
-          NavigationBarItem(
-              avaNavController = avaNavController,
-              imageVector = Icons.Rounded.LocationCity,
-              label = stringResource(Res.string.venue),
-              currentRoute = currentRoute,
-              destinationRoute = AVANavigationRoute.VENUE
-          )
-          NavigationBarItem(
-              avaNavController = avaNavController,
-              imageVector = Icons.Rounded.Groups,
-              label = stringResource(Res.string.speakers),
-              currentRoute = currentRoute,
-              destinationRoute = AVANavigationRoute.SPEAKERS
-          )
-          NavigationBarItem(
-              avaNavController = avaNavController,
-              imageVector = Icons.Rounded.Diamond,
-              label = stringResource(Res.string.sponsors),
-              currentRoute = currentRoute,
-              destinationRoute = AVANavigationRoute.SPONSORS
-          )
-          NavigationBarItem(
-              avaNavController = avaNavController,
-              imageVector = Icons.Rounded.Info,
-              label = stringResource(Res.string.about),
-              currentRoute = currentRoute,
-              destinationRoute = AVANavigationRoute.ABOUT
-          )
         }
       },
   ) { innerPadding ->
@@ -208,13 +259,9 @@ fun AVALayout(
       Modifier.padding(innerPadding)
         .consumeWindowInsets(innerPadding)
     ) {
-      AVANavHost(
-          versionCode = versionCode,
-          versionName = versionName,
-          avaNavController = avaNavController,
-          onSessionClick = onSessionClick,
-          agendaFilterDrawerState = agendaFilterDrawerState,
-          navigateToSpeakerDetails = navigateToSpeakerDetails
+      NavDisplay(
+        entries = navigationState.toDecoratedEntries(entryProvider),
+        onBack = { navigator.goBack() }
       )
     }
   }
@@ -222,11 +269,11 @@ fun AVALayout(
 
 @Composable
 private fun RowScope.NavigationBarItem(
-    avaNavController: NavHostController,
+    navigator: Navigator,
+    navigationState: NavigationState,
     imageVector: ImageVector,
     label: String,
-    currentRoute: String?,
-    destinationRoute: AVANavigationRoute,
+    destinationRoute: NavKey,
 ) {
   NavigationBarItem(
       icon = {
@@ -236,7 +283,7 @@ private fun RowScope.NavigationBarItem(
         )
       },
       label = { Text(label) },
-      selected = currentRoute == destinationRoute.name,
+      selected = navigationState.topLevelRoute == destinationRoute,
       colors = NavigationBarItemDefaults.colors(
           selectedIconColor = MaterialTheme.colorScheme.primary,
           selectedTextColor = MaterialTheme.colorScheme.primary,
@@ -245,72 +292,7 @@ private fun RowScope.NavigationBarItem(
           indicatorColor = MaterialTheme.colorScheme.primaryContainer,
       ),
       onClick = {
-        avaNavController.navigate(destinationRoute.name) {
-          avaNavController.graph.findStartDestination().route?.let { startRoute ->
-            popUpTo(startRoute) {
-              saveState = true
-            }
-          }
-          launchSingleTop = true
-          restoreState = true
-        }
+        navigator.navigate(destinationRoute)
       }
   )
-}
-
-@Composable
-private fun AVANavHost(
-    versionCode: String,
-    versionName: String,
-    avaNavController: NavHostController,
-    onSessionClick: (sessionId: String) -> Unit,
-    agendaFilterDrawerState: DrawerState,
-    navigateToSpeakerDetails: (String) -> Unit,
-) {
-  val startDestination = if (FeatureFlags.isFeedEnabled) {
-    AVANavigationRoute.FEED.name
-  } else {
-    AVANavigationRoute.AGENDA.name
-  }
-
-  NavHost(
-    navController = avaNavController,
-    startDestination = startDestination,
-    enterTransition = { fadeIn() },
-    exitTransition = { fadeOut() }
-  ) {
-
-    composable(route = AVANavigationRoute.FEED.name) {
-      FeedScreen()
-    }
-
-    composable(route = AVANavigationRoute.AGENDA.name) {
-      AgendaLayout(
-        agendaFilterDrawerState = agendaFilterDrawerState,
-        onSessionClick = onSessionClick
-      )
-    }
-
-    composable(route = AVANavigationRoute.VENUE.name) {
-      VenuePager()
-    }
-
-    composable(route = AVANavigationRoute.SPEAKERS.name) {
-      SpeakerScreen(
-          viewModel = koinViewModel(),
-          navigateToSpeakerDetails = navigateToSpeakerDetails
-      )
-    }
-
-    composable(route = AVANavigationRoute.ABOUT.name) {
-      AboutScreen(
-        versionCode = versionCode,
-        versionName = versionName
-      )
-    }
-
-    composable(route = AVANavigationRoute.SPONSORS.name) {
-      SponsorsScreen()
-    }
-  }
 }

@@ -101,8 +101,8 @@ fun SessionDetailScreen(
   viewModel: SessionDetailViewModel,
   onBackClick: () -> Unit,
   onSpeakerClick: (speakerId: String) -> Unit,
-  sharedTransitionScope: SharedTransitionScope,
-  animatedVisibilityScope: AnimatedVisibilityScope,
+  sharedTransitionScope: SharedTransitionScope? = null,
+  animatedVisibilityScope: AnimatedVisibilityScope? = null,
 ) {
   val sessionDetailState by viewModel.sessionDetailState.collectAsStateWithLifecycle()
   val context = getPlatformContext()

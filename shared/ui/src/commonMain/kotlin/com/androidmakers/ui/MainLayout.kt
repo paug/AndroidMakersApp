@@ -1,30 +1,24 @@
 package com.androidmakers.ui
 
-import androidx.compose.animation.AnimatedVisibilityScope
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
-import androidx.compose.animation.SharedTransitionLayout
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.savedstate.read
-import androidx.navigation.NavDeepLink
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import androidx.compose.runtime.remember
 import coil3.ImageLoader
 import coil3.compose.setSingletonImageLoaderFactory
 import coil3.request.crossfade
-import com.androidmakers.ui.agenda.SessionDetailScreen
 import com.androidmakers.ui.common.SigninCallbacks
 import com.androidmakers.ui.common.navigation.AVALayout
-import com.androidmakers.ui.common.navigation.MainNavigationRoute
-import com.androidmakers.ui.speakers.SpeakerDetailsRoute
+import com.androidmakers.ui.common.navigation.AgendaKey
+import com.androidmakers.ui.common.navigation.AboutKey
+import com.androidmakers.ui.common.navigation.FeedKey
+import com.androidmakers.ui.common.navigation.Navigator
+import com.androidmakers.ui.common.navigation.SpeakersKey
+import com.androidmakers.ui.common.navigation.SponsorsKey
+import com.androidmakers.ui.common.navigation.VenueKey
+import com.androidmakers.ui.common.navigation.parseDeepLink
+import com.androidmakers.ui.common.navigation.rememberNavigationState
 import fr.androidmakers.domain.PlatformContext
-import fr.androidmakers.domain.model.SpeakerId
-import org.koin.compose.viewmodel.koinViewModel
-import org.koin.core.parameter.parametersOf
+import fr.androidmakers.domain.utils.FeatureFlags
 
 /**
  * The main layout: entry point of the application
@@ -42,106 +36,39 @@ fun MainLayout(
       .build()
   }
 
-  val navController = rememberNavController()
-  MainNavHost(
-      mainNavController = navController,
-      onSessionClick = { sessionId ->
-        navController.navigate("${MainNavigationRoute.SESSION_DETAIL.name}/$sessionId")
-      },
-      navigateToSpeakerDetails = { speakerId ->
-        navController.navigate("${MainNavigationRoute.SPEAKER_DETAIL.name}/$speakerId")
-      },
-      versionCode = versionCode,
-      versionName = versionName,
-      signingCallbacks = signinCallbacks,
-      deeplink = deeplink,
+  val startRoute = if (FeatureFlags.isFeedEnabled) FeedKey else AgendaKey
+  val topLevelRoutes = buildSet {
+    if (FeatureFlags.isFeedEnabled) add(FeedKey)
+    add(AgendaKey)
+    add(VenueKey)
+    add(SpeakersKey)
+    add(SponsorsKey)
+    add(AboutKey)
+  }
+
+  val navigationState = rememberNavigationState(
+    startRoute = startRoute,
+    topLevelRoutes = topLevelRoutes
+  )
+
+  val navigator = remember { Navigator(navigationState) }
+
+  LaunchedEffect(deeplink) {
+    deeplink?.let { uri ->
+      parseDeepLink(uri)?.let { result ->
+        navigator.navigateFromDeepLink(result.tabKey, result.detailKey)
+      }
+    }
+  }
+
+  AVALayout(
+    versionCode = versionCode,
+    versionName = versionName,
+    navigationState = navigationState,
+    navigator = navigator,
+    signinCallbacks = signinCallbacks,
   )
 }
-
-@Composable
-private fun MainNavHost(
-    versionCode: String,
-    versionName: String,
-    mainNavController: NavHostController,
-    onSessionClick: (sessionId: String) -> Unit,
-    navigateToSpeakerDetails: (SpeakerId) -> Unit,
-    signingCallbacks: SigninCallbacks,
-    deeplink: String? = null,
-) {
-  LaunchedEffect(deeplink) {
-    deeplink?.let {
-      try {
-        mainNavController.navigate(deeplink)
-      } catch (e: IllegalStateException) {
-        // Invalid route URL
-      }
-    }
-  }
-
-  SharedTransitionLayout {
-    NavHost(
-      navController = mainNavController,
-      startDestination = MainNavigationRoute.AVA.name,
-      enterTransition = { defaultEnterTransition },
-      exitTransition = { defaultExitTransition },
-      popEnterTransition = { defaultPopEnterTransition },
-      popExitTransition = { defaultPopExitTransition }
-    ) {
-
-      composable(route = MainNavigationRoute.AVA.name) {
-        AVALayout(
-          versionCode = versionCode,
-          versionName = versionName,
-          onSessionClick = onSessionClick,
-          navigateToSpeakerDetails = navigateToSpeakerDetails,
-          signinCallbacks = signingCallbacks,
-        )
-      }
-
-      composable(
-        route = "${MainNavigationRoute.SESSION_DETAIL.name}/{sessionId}",
-        deepLinks = listOf(
-          NavDeepLink.Builder()
-            .setUriPattern("https://androidmakers.fr/session/{sessionId}")
-            .build()
-        )
-      ) { backStackEntry ->
-        val sessionId = backStackEntry.arguments?.read { getString("sessionId") }.orEmpty()
-
-        SessionDetailScreen(
-          viewModel = koinViewModel { parametersOf(sessionId) },
-          onBackClick = { mainNavController.popBackStack() },
-          onSpeakerClick = navigateToSpeakerDetails,
-          sharedTransitionScope = this@SharedTransitionLayout,
-          animatedVisibilityScope = this@composable,
-        )
-      }
-
-      composable(
-        route = "${MainNavigationRoute.SPEAKER_DETAIL.name}/{speakerId}",
-        deepLinks = listOf(
-          NavDeepLink.Builder()
-            .setUriPattern("https://androidmakers.fr/speaker/{speakerId}")
-            .build()
-        )
-      ) { backstackEntry ->
-        val speakerId = backstackEntry.arguments?.read { getString("speakerId") }.orEmpty()
-
-        SpeakerDetailsRoute(
-          speakerDetailsViewModel = koinViewModel { parametersOf(speakerId) },
-          onBackClick = { mainNavController.popBackStack() },
-          sharedTransitionScope = this@SharedTransitionLayout,
-          animatedVisibilityScope = this@composable,
-        )
-      }
-    }
-  }
-}
-
-expect val defaultEnterTransition: EnterTransition
-expect val defaultExitTransition: ExitTransition
-expect val defaultPopEnterTransition: EnterTransition
-expect val defaultPopExitTransition: ExitTransition
 
 @Composable
 expect fun getPlatformContext(): PlatformContext

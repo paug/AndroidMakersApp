@@ -1,19 +1,39 @@
 package com.androidmakers.ui.common.navigation
 
-enum class MainNavigationRoute {
-  /**
-   * AVA stands for Agenda/Venue/About
-   */
-  AVA,
-  SESSION_DETAIL,
-  SPEAKER_DETAIL
+import androidx.navigation3.runtime.NavKey
+import androidx.savedstate.serialization.SavedStateConfiguration
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.polymorphic
+import kotlinx.serialization.modules.subclass
+
+// Top-level tab routes (bottom nav)
+@Serializable data object FeedKey : NavKey
+@Serializable data object AgendaKey : NavKey
+@Serializable data object VenueKey : NavKey
+@Serializable data object SpeakersKey : NavKey
+@Serializable data object SponsorsKey : NavKey
+@Serializable data object AboutKey : NavKey
+
+// Detail routes (full-screen, no bottom nav)
+@Serializable data class SessionDetailKey(val sessionId: String) : NavKey
+@Serializable data class SpeakerDetailKey(val speakerId: String) : NavKey
+
+val navKeySavedStateConfig = SavedStateConfiguration {
+    serializersModule = SerializersModule {
+        polymorphic(NavKey::class) {
+            subclass(FeedKey::class, FeedKey.serializer())
+            subclass(AgendaKey::class, AgendaKey.serializer())
+            subclass(VenueKey::class, VenueKey.serializer())
+            subclass(SpeakersKey::class, SpeakersKey.serializer())
+            subclass(SponsorsKey::class, SponsorsKey.serializer())
+            subclass(AboutKey::class, AboutKey.serializer())
+            subclass(SessionDetailKey::class, SessionDetailKey.serializer())
+            subclass(SpeakerDetailKey::class, SpeakerDetailKey.serializer())
+        }
+    }
 }
 
-enum class AVANavigationRoute {
-  FEED,
-  AGENDA,
-  VENUE,
-  SPEAKERS,
-  SPONSORS,
-  ABOUT,
-}
+fun NavKey.isTabKey(): Boolean =
+    this is FeedKey || this is AgendaKey || this is VenueKey ||
+        this is SpeakersKey || this is SponsorsKey || this is AboutKey
