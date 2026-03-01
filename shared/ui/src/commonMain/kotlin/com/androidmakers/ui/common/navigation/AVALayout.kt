@@ -14,7 +14,6 @@ import androidx.compose.material.icons.rounded.FilterList
 import androidx.compose.material.icons.rounded.Groups
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.LocationCity
-import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -26,10 +25,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -62,7 +63,6 @@ import fr.paug.androidmakers.ui.notification
 import fr.paug.androidmakers.ui.speakers
 import fr.paug.androidmakers.ui.sponsors
 import fr.paug.androidmakers.ui.venue
-import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
@@ -84,8 +84,12 @@ fun AVALayout(
     signinCallbacks: SigninCallbacks,
     userRepository: UserRepository = koinInject(),
 ) {
-  val agendaFilterDrawerState = rememberDrawerState(DrawerValue.Closed)
+  var showAgendaFilterBottomSheet by remember { mutableStateOf(false) }
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+
+  LaunchedEffect(navigationState.topLevelRoute) {
+    showAgendaFilterBottomSheet = false
+  }
 
   val user by userRepository.user.collectAsStateWithLifecycle(userRepository.currentUser)
 
@@ -102,7 +106,8 @@ fun AVALayout(
 
     entry<AgendaKey> {
       AgendaLayout(
-        agendaFilterDrawerState = agendaFilterDrawerState,
+        showFilterBottomSheet = showAgendaFilterBottomSheet,
+        onFilterBottomSheetDismiss = { showAgendaFilterBottomSheet = false },
         onSessionClick = { sessionId -> navigator.navigate(SessionDetailKey(sessionId)) }
       )
     }
@@ -175,22 +180,11 @@ fun AVALayout(
               },
               actions = {
                 if (navigationState.topLevelRoute is AgendaKey) {
-                  val scope = rememberCoroutineScope()
-                  BackHandlerCompat(enabled = agendaFilterDrawerState.isOpen) {
-                    scope.launch {
-                      agendaFilterDrawerState.close()
-                    }
+                  BackHandlerCompat(enabled = showAgendaFilterBottomSheet) {
+                    showAgendaFilterBottomSheet = false
                   }
                   IconButton(
-                      onClick = {
-                        scope.launch {
-                          if (agendaFilterDrawerState.isClosed) {
-                            agendaFilterDrawerState.open()
-                          } else {
-                            agendaFilterDrawerState.close()
-                          }
-                        }
-                      }
+                      onClick = { showAgendaFilterBottomSheet = !showAgendaFilterBottomSheet }
                   ) {
                     Icon(
                         imageVector = Icons.Rounded.FilterList,

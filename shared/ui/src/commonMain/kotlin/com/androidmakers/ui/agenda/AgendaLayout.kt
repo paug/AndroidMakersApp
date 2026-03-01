@@ -1,34 +1,32 @@
 package com.androidmakers.ui.agenda
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Bookmark
-import androidx.compose.material.icons.rounded.Room
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.DrawerState
-import androidx.compose.material3.DrawerValue
+import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalDrawerSheet
-import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.androidmakers.ui.common.EmojiUtils
 import com.androidmakers.ui.common.LceLayout
@@ -52,9 +50,11 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AgendaLayout(
-    agendaFilterDrawerState: DrawerState,
+    showFilterBottomSheet: Boolean,
+    onFilterBottomSheetDismiss: () -> Unit,
     onSessionClick: (sessionId: String) -> Unit,
     viewModel: AgendaViewModel = koinViewModel()
 ) {
@@ -63,35 +63,31 @@ fun AgendaLayout(
   val uiStateLce by viewModel.values.collectAsStateWithLifecycle()
   val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
 
-  ModalNavigationDrawer(
-      drawerState = agendaFilterDrawerState,
-      drawerContent = {
-        ModalDrawerSheet(
-            drawerContainerColor = MaterialTheme.colorScheme.surface,
-            drawerContentColor = MaterialTheme.colorScheme.onSurface,
-            drawerShape = RectangleShape,
-        ) {
-          AgendaFilterDrawer(
-              rooms = rooms,
-              sessionFilters = sessionFilters,
-              onFiltersChanged = viewModel::onFiltersChanged
-          )
-        }
-      },
-      content = {
-        val urlOpener = LocalUriHandler.current.toUrlOpener()
+  val urlOpener = LocalUriHandler.current.toUrlOpener()
 
-        AgendaPagerOrLoading(
-          uiStateLce = uiStateLce,
-          isRefreshing = isRefreshing,
-          onRefresh = viewModel::refresh,
-          sessionFilters = sessionFilters,
-          onSessionClick = { onSessionClick(it.id) },
-          onApplyForAppClinicClick = { viewModel.applyForAppClinic(urlOpener) },
-          onSessionBookmark = viewModel::setSessionBookmark,
-        )
-      }
+  AgendaPagerOrLoading(
+    uiStateLce = uiStateLce,
+    isRefreshing = isRefreshing,
+    onRefresh = viewModel::refresh,
+    sessionFilters = sessionFilters,
+    onSessionClick = { onSessionClick(it.id) },
+    onApplyForAppClinicClick = { viewModel.applyForAppClinic(urlOpener) },
+    onSessionBookmark = viewModel::setSessionBookmark,
   )
+
+  if (showFilterBottomSheet) {
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    ModalBottomSheet(
+        onDismissRequest = onFilterBottomSheetDismiss,
+        sheetState = sheetState,
+    ) {
+      AgendaFilterDrawer(
+          rooms = rooms,
+          sessionFilters = sessionFilters,
+          onFiltersChanged = viewModel::onFiltersChanged
+      )
+    }
+  }
 }
 
 @Composable
@@ -129,6 +125,7 @@ private fun List<DaySchedule>.todayPageIndex(): Int {
   return indexOfFirst { it.date == today }.coerceAtLeast(0)
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun AgendaFilterDrawer(
     rooms: List<Room>,
@@ -139,124 +136,120 @@ private fun AgendaFilterDrawer(
     modifier = Modifier
       .fillMaxWidth()
       .verticalScroll(state = rememberScrollState())
+      .padding(horizontal = 16.dp)
+      .padding(bottom = 24.dp)
   ) {
-    HeaderItem(stringResource(Res.string.filter))
-    FilterItem(
-      filter = SessionFilter.Bookmark,
-      filters = sessionFilters,
-      text = stringResource(Res.string.bookmarked),
-      imageVector = Icons.Rounded.Bookmark,
-      onFiltersChanged = onFiltersChanged
-    )
-
-    HeaderItem(stringResource(Res.string.language))
-    FilterItem(
-      filter = SessionFilter.Language(SessionFilter.Language.FRENCH),
-      filters = sessionFilters,
-      text = stringResource(Res.string.french),
-      language = SessionFilter.Language.FRENCH,
-      onFiltersChanged = onFiltersChanged
-    )
-    FilterItem(
-      filter = SessionFilter.Language(SessionFilter.Language.ENGLISH),
-      filters = sessionFilters,
-      text = stringResource(Res.string.english),
-      language = SessionFilter.Language.ENGLISH,
-      onFiltersChanged = onFiltersChanged
-    )
-
-    HeaderItem(stringResource(Res.string.rooms))
-    for (room in rooms) {
-      FilterItem(
-        filter = SessionFilter.Room(room.id),
-        filters = sessionFilters,
-        text = room.name,
-        imageVector = Icons.Rounded.Room,
-        onFiltersChanged = onFiltersChanged
-      )
-    }
-  }
-}
-
-@Composable
-private fun FilterItem(
-    filter: SessionFilter,
-    filters: Set<SessionFilter>,
-    text: String,
-    imageVector: ImageVector? = null,
-    language: String? = null,
-    onFiltersChanged: (Set<SessionFilter>) -> Unit,
-) {
-  val checked = filter in filters
-  Row(
-      modifier = Modifier
-          .fillMaxWidth()
-          .clickable {
-            val newSessionFilters = if (checked) {
-              filters - filter
-            } else {
-              filters + filter
-            }
-            onFiltersChanged(newSessionFilters)
-          },
+    // Title row
+    Row(
+      modifier = Modifier.fillMaxWidth(),
       verticalAlignment = Alignment.CenterVertically,
-  ) {
-    val textLeftMargin = 48.dp
-    if (imageVector != null) {
-      Icon(
-          modifier = Modifier.width(textLeftMargin),
-          imageVector = imageVector,
-          tint = MaterialTheme.colorScheme.onSurface,
-          contentDescription = text
-      )
-    }
-    if (language != null) {
+    ) {
       Text(
-          modifier = Modifier.width(textLeftMargin),
-          textAlign = TextAlign.Center,
-          text = EmojiUtils.getLanguageInEmoji(language)!!,
-          style = MaterialTheme.typography.bodyMedium
+        text = stringResource(Res.string.filter),
+        style = MaterialTheme.typography.titleLarge,
+        modifier = Modifier.weight(1f),
+      )
+      if (sessionFilters.isNotEmpty()) {
+        TextButton(onClick = { onFiltersChanged(emptySet()) }) {
+          Icon(
+            imageVector = Icons.Rounded.Close,
+            contentDescription = null,
+            modifier = Modifier.padding(end = 4.dp),
+          )
+          Text("Clear")
+        }
+      }
+    }
+
+    // Bookmark
+    FilterSection(title = null) {
+      FilterChip(
+        selected = SessionFilter.Bookmark in sessionFilters,
+        onClick = { onFiltersChanged(sessionFilters.toggle(SessionFilter.Bookmark)) },
+        label = { Text(stringResource(Res.string.bookmarked)) },
+        leadingIcon = {
+          Icon(
+            imageVector = Icons.Rounded.Bookmark,
+            contentDescription = null,
+          )
+        },
       )
     }
-    Text(
-        modifier = Modifier
-            .weight(1f)
-            .padding(start = if (imageVector == null && language == null) textLeftMargin else 0.dp),
-        text = text
-    )
-    Checkbox(
-        modifier = Modifier
-            .width(48.dp)
-            .height(48.dp),
-        checked = checked,
-        onCheckedChange = null
-    )
+
+    // Language
+    FilterSection(title = stringResource(Res.string.language)) {
+      val french = SessionFilter.Language(SessionFilter.Language.FRENCH)
+      FilterChip(
+        selected = french in sessionFilters,
+        onClick = { onFiltersChanged(sessionFilters.toggle(french)) },
+        label = {
+          Text("${EmojiUtils.getLanguageInEmoji(SessionFilter.Language.FRENCH)} ${stringResource(Res.string.french)}")
+        },
+      )
+      val english = SessionFilter.Language(SessionFilter.Language.ENGLISH)
+      FilterChip(
+        selected = english in sessionFilters,
+        onClick = { onFiltersChanged(sessionFilters.toggle(english)) },
+        label = {
+          Text("${EmojiUtils.getLanguageInEmoji(SessionFilter.Language.ENGLISH)} ${stringResource(Res.string.english)}")
+        },
+      )
+    }
+
+    // Rooms
+    FilterSection(title = stringResource(Res.string.rooms)) {
+      for (room in rooms) {
+        val filter = SessionFilter.Room(room.id)
+        FilterChip(
+          selected = filter in sessionFilters,
+          onClick = { onFiltersChanged(sessionFilters.toggle(filter)) },
+          label = { Text(room.name) },
+        )
+      }
+    }
   }
 }
 
-@Composable
-private fun HeaderItem(text: String) {
-  Text(
-      modifier = Modifier
-          .fillMaxWidth()
-          .padding(12.dp),
-      text = text,
-      style = MaterialTheme.typography.titleMedium
-  )
+private fun Set<SessionFilter>.toggle(filter: SessionFilter): Set<SessionFilter> {
+  return if (filter in this) this - filter else this + filter
 }
 
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun FilterSection(
+    title: String?,
+    content: @Composable () -> Unit,
+) {
+  if (title != null) {
+    Spacer(modifier = Modifier.padding(top = 8.dp))
+    Text(
+      text = title,
+      style = MaterialTheme.typography.titleMedium,
+    )
+  }
+  FlowRow(
+    horizontalArrangement = Arrangement.spacedBy(8.dp),
+    verticalArrangement = Arrangement.spacedBy(8.dp),
+    modifier = Modifier.padding(top = 8.dp),
+  ) {
+    content()
+  }
+}
 
 @Preview
 @Composable
 private fun AgendaFilterDrawerPreview() {
   AgendaFilterDrawer(
       rooms = listOf(
-          Room("", "Room 1"),
-          Room("", "Room 2"),
-          Room("", "Room 3"),
-          Room("", "Room 4")
+          Room("", "Moebius"),
+          Room("", "Blin"),
+          Room("", "202"),
+          Room("", "BoF")
       ),
-      sessionFilters = setOf(SessionFilter.Bookmark),
+      sessionFilters = setOf(
+          SessionFilter.Bookmark,
+          SessionFilter.Language(SessionFilter.Language.FRENCH)
+      ),
       onFiltersChanged = {}
   )
 }
@@ -266,7 +259,8 @@ private fun AgendaFilterDrawerPreview() {
 @Composable
 private fun AgendaLayoutPreview() {
   AgendaLayout(
-      agendaFilterDrawerState = DrawerState(DrawerValue.Closed),
+      showFilterBottomSheet = false,
+      onFilterBottomSheetDismiss = {},
       onSessionClick = { _ -> }
   )
 }
