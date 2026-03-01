@@ -217,13 +217,15 @@ fun AVALayout(
                 label = stringResource(Res.string.agenda),
                 destinationRoute = AgendaKey
             )
-            NavigationBarItem(
-                navigator = navigator,
-                navigationState = navigationState,
-                imageVector = Icons.Rounded.LocationCity,
-                label = stringResource(Res.string.venue),
-                destinationRoute = VenueKey
-            )
+            if (!FeatureFlags.isFeedEnabled) {
+              NavigationBarItem(
+                  navigator = navigator,
+                  navigationState = navigationState,
+                  imageVector = Icons.Rounded.LocationCity,
+                  label = stringResource(Res.string.venue),
+                  destinationRoute = VenueKey
+              )
+            }
             NavigationBarItem(
                 navigator = navigator,
                 navigationState = navigationState,

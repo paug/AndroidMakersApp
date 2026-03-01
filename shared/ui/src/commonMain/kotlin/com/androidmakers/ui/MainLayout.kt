@@ -40,7 +40,7 @@ fun MainLayout(
   val topLevelRoutes = buildSet {
     if (FeatureFlags.isFeedEnabled) add(FeedKey)
     add(AgendaKey)
-    add(VenueKey)
+    if (!FeatureFlags.isFeedEnabled) add(VenueKey)
     add(SpeakersKey)
     add(SponsorsKey)
     add(AboutKey)

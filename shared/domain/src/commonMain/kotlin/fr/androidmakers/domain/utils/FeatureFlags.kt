@@ -1,5 +1,5 @@
 package fr.androidmakers.domain.utils
 
 object FeatureFlags {
-  const val isFeedEnabled: Boolean = false
+  const val isFeedEnabled: Boolean = true
 }
