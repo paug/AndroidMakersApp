@@ -1,11 +1,12 @@
 package com.androidmakers.ui.about
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,23 +15,35 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
+import androidx.compose.material.icons.rounded.Code
+import androidx.compose.material.icons.rounded.Gavel
+import androidx.compose.material.icons.rounded.QuestionAnswer
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.androidmakers.ui.common.toUrlOpener
 import fr.paug.androidmakers.ui.Res
+import fr.paug.androidmakers.ui.about
 import fr.paug.androidmakers.ui.about_android_makers
+import fr.paug.androidmakers.ui.about_event_tagline
+import fr.paug.androidmakers.ui.about_links
 import fr.paug.androidmakers.ui.code_of_conduct
 import fr.paug.androidmakers.ui.faq
 import fr.paug.androidmakers.ui.github_repo
@@ -38,6 +51,7 @@ import fr.paug.androidmakers.ui.ic_network_bluesky
 import fr.paug.androidmakers.ui.ic_network_x
 import fr.paug.androidmakers.ui.ic_network_youtube
 import fr.paug.androidmakers.ui.logo_android_makers
+import fr.paug.androidmakers.ui.social
 import fr.paug.androidmakers.ui.version
 import fr.paug.androidmakers.ui.x_hashtag
 import org.jetbrains.compose.resources.painterResource
@@ -50,73 +64,123 @@ fun AboutScreen(
     versionCode: String,
 ) {
   val viewModel = koinViewModel<AboutViewModel>()
+  val urlOpener = LocalUriHandler.current.toUrlOpener()
+
   Column(
       modifier = Modifier
           .fillMaxSize()
           .verticalScroll(state = rememberScrollState())
           .padding(16.dp),
-      verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically)
+      verticalArrangement = Arrangement.spacedBy(16.dp)
   ) {
-    val urlOpener = LocalUriHandler.current.toUrlOpener()
+    HeroSection()
 
-    IntroCard(
+    AboutCard()
+
+    LinksCard(
         onFaqClick = { viewModel.openFaq(urlOpener) },
         onCocClick = { viewModel.openCoc(urlOpener) },
         onGithubRepoClick = { viewModel.openGithubRepo(urlOpener) }
     )
 
     SocialCard(
-        { viewModel.openXHashtag(urlOpener) },
-        { viewModel.openBlueSkyAccount(urlOpener) },
-        { viewModel.openXAccount(urlOpener) },
-        { viewModel.openYoutube(urlOpener) }
+        onXHashtagClick = { viewModel.openXHashtag(urlOpener) },
+        onBlueskyLogoClick = { viewModel.openBlueSkyAccount(urlOpener) },
+        onXLogoClick = { viewModel.openXAccount(urlOpener) },
+        onYouTubeLogoClick = { viewModel.openYoutube(urlOpener) }
     )
 
     Text(
         modifier = Modifier.fillMaxWidth(),
         textAlign = TextAlign.Center,
-        text = stringResource(
-            Res.string.version,
-            versionName,
-            versionCode
-        ),
+        text = stringResource(Res.string.version, versionName, versionCode),
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant
     )
   }
 }
 
 @Composable
-private fun IntroCard(
+private fun HeroSection() {
+  Column(
+      modifier = Modifier.fillMaxWidth(),
+      horizontalAlignment = Alignment.CenterHorizontally
+  ) {
+    Image(
+        modifier = Modifier
+            .heightIn(max = 96.dp)
+            .fillMaxWidth()
+            .padding(horizontal = 32.dp),
+        painter = painterResource(Res.drawable.logo_android_makers),
+        contentDescription = "Android Makers"
+    )
+    Text(
+        modifier = Modifier.padding(top = 8.dp),
+        text = stringResource(Res.string.about_event_tagline),
+        style = MaterialTheme.typography.headlineSmall,
+        color = MaterialTheme.colorScheme.onBackground,
+        textAlign = TextAlign.Center
+    )
+  }
+}
+
+@Composable
+private fun SectionHeader(title: String) {
+  Text(
+      modifier = Modifier.padding(bottom = 8.dp),
+      text = title,
+      style = MaterialTheme.typography.titleMedium,
+      fontWeight = FontWeight.Bold,
+      color = MaterialTheme.colorScheme.onSurface
+  )
+}
+
+@Composable
+private fun AboutCard() {
+  Surface(
+      modifier = Modifier.fillMaxWidth(),
+      shape = RoundedCornerShape(16.dp),
+      color = MaterialTheme.colorScheme.surfaceContainerHigh
+  ) {
+    Column(modifier = Modifier.padding(16.dp)) {
+      SectionHeader(title = stringResource(Res.string.about))
+      Text(
+          text = stringResource(Res.string.about_android_makers),
+          style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 22.sp),
+          color = MaterialTheme.colorScheme.onSurfaceVariant
+      )
+    }
+  }
+}
+
+@Composable
+private fun LinksCard(
     onFaqClick: () -> Unit,
     onCocClick: () -> Unit,
     onGithubRepoClick: () -> Unit
 ) {
-  Column(Modifier.padding(vertical = 8.dp)) {
-    Image(
-        modifier = Modifier
-            .heightIn(max = 128.dp)
-            .fillMaxWidth()
-            .padding(horizontal = 32.dp),
-        painter = painterResource(Res.drawable.logo_android_makers),
-        contentDescription = "Logo"
-    )
-    Text(
-        modifier = Modifier.padding(16.dp),
-        text = stringResource(Res.string.about_android_makers)
-    )
-    Row(
-        Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center
-    ) {
-      ClickableText(
-          text = stringResource(Res.string.faq),
+  Surface(
+      modifier = Modifier.fillMaxWidth(),
+      shape = RoundedCornerShape(16.dp),
+      color = MaterialTheme.colorScheme.surfaceContainerHigh
+  ) {
+    Column(modifier = Modifier.padding(16.dp)) {
+      SectionHeader(title = stringResource(Res.string.about_links))
+      LinkRow(
+          icon = Icons.Rounded.QuestionAnswer,
+          label = stringResource(Res.string.faq),
           onClick = onFaqClick
       )
-      ClickableText(
-          text = stringResource(Res.string.code_of_conduct),
+      HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+      LinkRow(
+          icon = Icons.Rounded.Gavel,
+          label = stringResource(Res.string.code_of_conduct),
           onClick = onCocClick
       )
-      ClickableText(
-          text = stringResource(Res.string.github_repo),
+      HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+      LinkRow(
+          icon = Icons.Rounded.Code,
+          label = stringResource(Res.string.github_repo),
           onClick = onGithubRepoClick
       )
     }
@@ -124,58 +188,108 @@ private fun IntroCard(
 }
 
 @Composable
+private fun LinkRow(
+    icon: ImageVector,
+    label: String,
+    onClick: () -> Unit
+) {
+  Row(
+      modifier = Modifier
+          .fillMaxWidth()
+          .clickable(onClick = onClick)
+          .padding(vertical = 12.dp),
+      verticalAlignment = Alignment.CenterVertically
+  ) {
+    Icon(
+        imageVector = icon,
+        contentDescription = null,
+        tint = MaterialTheme.colorScheme.primary,
+        modifier = Modifier.size(24.dp)
+    )
+    Text(
+        modifier = Modifier
+            .weight(1f)
+            .padding(horizontal = 16.dp),
+        text = label,
+        style = MaterialTheme.typography.bodyLarge,
+        color = MaterialTheme.colorScheme.onSurface
+    )
+    Icon(
+        imageVector = Icons.AutoMirrored.Rounded.KeyboardArrowRight,
+        contentDescription = null,
+        tint = MaterialTheme.colorScheme.onSurfaceVariant
+    )
+  }
+}
+
+@Composable
 private fun SocialCard(
-  onXHashtagClick: () -> Unit,
-  onBlueskyLogoClick: () -> Unit,
-  onXLogoClick: () -> Unit,
-  onYouTubeLogoClick: () -> Unit
+    onXHashtagClick: () -> Unit,
+    onBlueskyLogoClick: () -> Unit,
+    onXLogoClick: () -> Unit,
+    onYouTubeLogoClick: () -> Unit
 ) {
   val darkMode = isSystemInDarkTheme()
-  Card(Modifier.fillMaxWidth()) {
+
+  Surface(
+      modifier = Modifier.fillMaxWidth(),
+      shape = RoundedCornerShape(16.dp),
+      color = MaterialTheme.colorScheme.surfaceContainerHigh
+  ) {
     Column(
-      modifier = Modifier.padding(8.dp),
-      horizontalAlignment = Alignment.CenterHorizontally
+        modifier = Modifier.padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-      Row(
-          Modifier.fillMaxWidth(),
-          horizontalArrangement = Arrangement.Center
+      SectionHeader(title = stringResource(Res.string.social))
+
+      Box(
+          modifier = Modifier
+              .clip(RoundedCornerShape(8.dp))
+              .background(MaterialTheme.colorScheme.primaryContainer)
+              .clickable(onClick = onXHashtagClick)
+              .padding(horizontal = 16.dp, vertical = 8.dp)
       ) {
-        ClickableText(stringResource(Res.string.x_hashtag), onXHashtagClick)
+        Text(
+            text = stringResource(Res.string.x_hashtag),
+            style = MaterialTheme.typography.labelLarge,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onPrimaryContainer
+        )
       }
+
       Row(
-          Modifier
-              .padding(top = 8.dp),
-          horizontalArrangement = Arrangement.spacedBy(16.dp),
+          modifier = Modifier.padding(top = 16.dp),
+          horizontalArrangement = Arrangement.spacedBy(24.dp)
       ) {
-        SocialIcon(
-          onClick = onBlueskyLogoClick,
+        SocialIconWithLabel(
+            onClick = onBlueskyLogoClick,
+            label = "Bluesky"
         ) {
           Icon(
-            modifier = Modifier.padding(12.dp),
-            painter = painterResource(Res.drawable.ic_network_bluesky),
-            contentDescription = "Bluesky"
+              modifier = Modifier.size(24.dp),
+              painter = painterResource(Res.drawable.ic_network_bluesky),
+              contentDescription = "Bluesky"
           )
         }
-        SocialIcon(
-          onClick = onXLogoClick,
+        SocialIconWithLabel(
+            onClick = onXLogoClick,
+            label = "X"
         ) {
           Icon(
-            modifier = Modifier.padding(12.dp),
-            painter = painterResource(Res.drawable.ic_network_x),
-            tint = if (darkMode) {
-              Color.White
-            } else {
-              Color.Black },
-            contentDescription = "X"
+              modifier = Modifier.size(24.dp),
+              painter = painterResource(Res.drawable.ic_network_x),
+              tint = if (darkMode) Color.White else Color.Black,
+              contentDescription = "X"
           )
         }
-        SocialIcon(
-          onClick = onYouTubeLogoClick
+        SocialIconWithLabel(
+            onClick = onYouTubeLogoClick,
+            label = "YouTube"
         ) {
           Image(
-            modifier = Modifier.padding(8.dp),
-            painter = painterResource(Res.drawable.ic_network_youtube),
-            contentDescription = "YouTube"
+              modifier = Modifier.size(24.dp),
+              painter = painterResource(Res.drawable.ic_network_youtube),
+              contentDescription = "YouTube"
           )
         }
       }
@@ -184,32 +298,29 @@ private fun SocialCard(
 }
 
 @Composable
-private fun SocialIcon(
-  onClick: () -> Unit,
-  content: @Composable () -> Unit,
-) {
-  Button(
-    modifier = Modifier.size(64.dp),
-    onClick = onClick,
-    shape = CircleShape,
-    contentPadding = PaddingValues(4.dp),
-    colors = ButtonDefaults.textButtonColors()
-  ) {
-    content()
-  }
-}
-
-@Composable
-private fun ClickableText(
-    text: String,
+private fun SocialIconWithLabel(
     onClick: () -> Unit,
+    label: String,
+    content: @Composable () -> Unit,
 ) {
-  Text(
-      modifier = Modifier
-          .clickable(onClick = onClick)
-          .padding(8.dp),
-      text = text,
-      style = MaterialTheme.typography.titleSmall,
-      color = MaterialTheme.colorScheme.primary
-  )
+  Column(
+      horizontalAlignment = Alignment.CenterHorizontally,
+      verticalArrangement = Arrangement.spacedBy(4.dp)
+  ) {
+    Surface(
+        modifier = Modifier.size(56.dp),
+        shape = CircleShape,
+        color = MaterialTheme.colorScheme.surfaceContainer,
+        onClick = onClick
+    ) {
+      Box(contentAlignment = Alignment.Center) {
+        content()
+      }
+    }
+    Text(
+        text = label,
+        style = MaterialTheme.typography.labelSmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant
+    )
+  }
 }

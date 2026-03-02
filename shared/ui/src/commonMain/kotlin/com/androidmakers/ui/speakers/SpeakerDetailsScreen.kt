@@ -85,6 +85,10 @@ fun SpeakerDetailsScreen(
       modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
       topBar = {
         TopAppBar(
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = MaterialTheme.colorScheme.background,
+                scrolledContainerColor = MaterialTheme.colorScheme.background,
+            ),
             navigationIcon = {
               IconButton(onClick = onBackClick) {
                 Icon(

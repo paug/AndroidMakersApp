@@ -4,8 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.pager.PagerState
-import androidx.compose.foundation.pager.rememberPagerState
+import androidx.wear.compose.foundation.pager.PagerState
+import androidx.wear.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -45,10 +45,9 @@ import org.koin.core.parameter.parametersOf
 class MainActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    installSplashScreen()
     setContent {
-      installSplashScreen()
       WearApp(onSwipeToDismissRootLevel = { ActivityCompat.finishAffinity(this) })
-      setTheme(android.R.style.Theme_DeviceDefault)
     }
   }
 }
@@ -111,7 +110,9 @@ fun WearApp(
           Navigation.sessionDetail,
           arguments = listOf(navArgument(Navigation.id) { type = NavType.StringType })
         ) {
-          val sessionId = it.arguments!!.getString(Navigation.id)!!
+          val sessionId = requireNotNull(it.arguments?.getString(Navigation.id)) {
+            "Session detail requires a '${Navigation.id}' argument"
+          }
           val sessionDetailViewModel: SessionDetailViewModel =
             koinViewModel { parametersOf(sessionId) }
 

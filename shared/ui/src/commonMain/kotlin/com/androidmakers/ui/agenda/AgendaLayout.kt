@@ -44,6 +44,7 @@ import fr.paug.androidmakers.ui.filter
 import fr.paug.androidmakers.ui.french
 import fr.paug.androidmakers.ui.language
 import fr.paug.androidmakers.ui.rooms
+import fr.paug.androidmakers.ui.tags
 import kotlinx.datetime.todayIn
 import kotlin.time.Clock
 import org.jetbrains.compose.resources.stringResource
@@ -59,6 +60,7 @@ fun AgendaLayout(
     viewModel: AgendaViewModel = koinViewModel()
 ) {
   val rooms by viewModel.rooms.collectAsStateWithLifecycle(emptyList())
+  val tags by viewModel.tags.collectAsStateWithLifecycle(emptyList())
   val sessionFilters by viewModel.sessionFilters.collectAsStateWithLifecycle()
   val uiStateLce by viewModel.values.collectAsStateWithLifecycle()
   val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
@@ -83,6 +85,7 @@ fun AgendaLayout(
     ) {
       AgendaFilterDrawer(
           rooms = rooms,
+          tags = tags,
           sessionFilters = sessionFilters,
           onFiltersChanged = viewModel::onFiltersChanged
       )
@@ -129,6 +132,7 @@ private fun List<DaySchedule>.todayPageIndex(): Int {
 @Composable
 private fun AgendaFilterDrawer(
     rooms: List<Room>,
+    tags: List<String> = emptyList(),
     sessionFilters: Set<SessionFilter>,
     onFiltersChanged: (Set<SessionFilter>) -> Unit,
 ) {
@@ -207,6 +211,20 @@ private fun AgendaFilterDrawer(
         )
       }
     }
+
+    // Tags
+    if (tags.isNotEmpty()) {
+      FilterSection(title = stringResource(Res.string.tags)) {
+        for (tag in tags) {
+          val filter = SessionFilter.Tag(tag)
+          FilterChip(
+            selected = filter in sessionFilters,
+            onClick = { onFiltersChanged(sessionFilters.toggle(filter)) },
+            label = { Text(tag) },
+          )
+        }
+      }
+    }
   }
 }
 
@@ -246,6 +264,7 @@ private fun AgendaFilterDrawerPreview() {
           Room("", "202"),
           Room("", "BoF")
       ),
+      tags = listOf("Architecture", "Compose", "Kotlin", "Testing"),
       sessionFilters = setOf(
           SessionFilter.Bookmark,
           SessionFilter.Language(SessionFilter.Language.FRENCH)

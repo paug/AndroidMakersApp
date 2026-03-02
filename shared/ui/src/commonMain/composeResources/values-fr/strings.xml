@@ -16,6 +16,7 @@
     <string name="bookmarked">Favoris</string>
     <string name="room">Salle</string>
     <string name="rooms">Salles</string>
+  <string name="tags">Tags</string>
     <string name="empty_events">Désolé, aucune conférence n‘est disponible pour les filtres actuellement sélectionnés.</string>
 
     <string name="english">Anglais</string>
@@ -42,18 +43,7 @@
     <string name="intermediate">Intermédiaire</string>
     <string name="expert">Expert</string>
 
-    <string name="about_android_makers">AndroidMakers by droidcon est un événement de deux jours qui se tiendra les 10 et 11 Avril 2025.
-        \n\nRejoignez-nous pour aborder le présent et futur d‘Android avec les meilleurs experts du domaine.
-        Il y aura des sessions techniques, des ateliers et des rencontres avec vos speakers préférés.
-        \n\nTous les talks seront enregistrées, et mis sur la chaîne YouTube.</string>
-
-    <string name="current_session">En cours</string>
-    <string name="upcoming_session">Bientôt</string>
-
-    <!-- Specific iOS -->
-    <string name="about_am">À propos d\'AM 24</string>
-    <string name="locations">Lieux</string>
-    <string name="directions">Localiser</string>
+  <string name="about_android_makers">AndroidMakers by droidcon est un événement de deux jours qui se tiendra les 10 et 11 Avril 2025. Rejoignez-nous pour aborder le présent et futur d‘Android avec les meilleurs experts du domaine. Il y aura des sessions techniques, des ateliers et des rencontres avec vos speakers préférés. Tous les talks seront enregistrées, et mis sur la chaîne YouTube.</string>
 
     <string name="open_slides">Voir les slides</string>
     <string name="feedback_not_available">Cette présentation ne peut pas être commentée pour l\'instant.\nVeuillez revenir après y avoir assisté.</string>
@@ -67,13 +57,11 @@
 
     <string name="feedbackWaiting">Revenez plus tard pour donner votre retour.</string>
 
-    <string name="info">infos</string>
-
     <string name="share">Partager la session</string>
     <string name="session_date_with_room">%1$s, %2$s</string>
 
-    <string name="x_hashtag">#AMxDC25</string>
-    <string name="x_hashtag_for_query">AMxDC25</string>
+  <string name="x_hashtag">#AMxDC26</string>
+  <string name="x_hashtag_for_query">AMxDC26</string>
     <string name="x_user_name">AndroidMakersFR</string>
 
     <string name="session_app_clinic_apply">Proposer mon application</string>
@@ -86,5 +74,8 @@
 
     <string name="feed">Fil</string>
     <string name="feed_read_more">Lire la suite</string>
+
+  <string name="about_links">Liens</string>
+  <string name="about_event_tagline">Deux jours dédiés à Android à Paris</string>
 
 </resources>

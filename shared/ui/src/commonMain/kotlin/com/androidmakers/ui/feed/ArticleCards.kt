@@ -92,7 +92,7 @@ fun ArticleCardWithImage(
   Surface(
     modifier = modifier.fillMaxWidth(),
     shape = RoundedCornerShape(24.dp),
-    tonalElevation = 1.dp,
+    color = MaterialTheme.colorScheme.surfaceContainerHigh,
   ) {
     Column {
       Box {
@@ -175,7 +175,7 @@ fun ArticleCardWithLocation(
   Surface(
     modifier = modifier.fillMaxWidth(),
     shape = RoundedCornerShape(16.dp),
-    tonalElevation = 1.dp,
+    color = MaterialTheme.colorScheme.surfaceContainerHigh,
   ) {
     Column(modifier = Modifier.padding(16.dp)) {
       CategoryTimeRow(article.category, article.timeAgo)
@@ -241,7 +241,7 @@ fun ArticleCardWithThumbnail(
   Surface(
     modifier = modifier.fillMaxWidth(),
     shape = RoundedCornerShape(16.dp),
-    tonalElevation = 1.dp,
+    color = MaterialTheme.colorScheme.surfaceContainerHigh,
   ) {
     Row(
       modifier = Modifier.padding(16.dp),

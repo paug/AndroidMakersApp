@@ -18,6 +18,7 @@
     <string name="bookmarked">Favorite</string>
     <string name="room">Room</string>
     <string name="rooms">Rooms</string>
+  <string name="tags">Tags</string>
     <string name="empty_events">Sorry, there is no session available for the currently selected filters.</string>
 
     <string name="english">English</string>
@@ -45,17 +46,7 @@
     <string name="expert">Expert</string>
 
     <!--About-->
-    <string name="about_android_makers">Android Makers by droidcon is a two days event held in Paris on April 10th and 11th 2025.
-        \n\nJoin us in tackling the present and future of Android with the hottest experts of the domain.
-        There\'ll be technical sessions, workshops and opportunities to meet your favorites speakers.
-        \n\nAll the Talks will be recorded, and uploaded on the Youtube channel.</string>
-
-    <string name="current_session">Current</string>
-    <string name="upcoming_session">Upcoming</string>
-
-    <string name="about_am">About AM 24</string>
-    <string name="locations">Locations</string>
-    <string name="directions">Directions</string>
+  <string name="about_android_makers">Android Makers by droidcon is a two days event held in Paris on April 10th and 11th 2025. Join us in tackling the present and future of Android with the hottest experts of the domain. There will be technical sessions, workshops and opportunities to meet your favorites speakers. All the Talks will be recorded, and uploaded on the Youtube channel.</string>
 
     <string name="open_slides">Open the slides</string>
 
@@ -66,14 +57,12 @@
     <!-- Info about the session. It is `date` at `start time` - `end time`-->
     <string name="session_detail">%1$s at %2$s - %3$s</string>
 
-    <string name="x_hashtag" translatable="false">#AMxDC25</string>
-    <string name="x_hashtag_for_query" translatable="false">AMxDC25</string>
+  <string name="x_hashtag" translatable="false">#AMxDC26</string>
+  <string name="x_hashtag_for_query" translatable="false">AMxDC26</string>
     <string name="x_user_name" translatable="false">AndroidMakersFR</string>
 
     <string name="speaker_search_placeholder">Search</string>
     <string name="feedbackWaiting">This talk cannot be reviewed yet. Please come back after attending it.</string>
-
-    <string name="info">infos</string>
 
     <string name="share">Share the session</string>
 
@@ -90,5 +79,8 @@
 
     <string name="feed">Feed</string>
     <string name="feed_read_more">Read More</string>
+
+  <string name="about_links">Links</string>
+  <string name="about_event_tagline">Two days of Android awesomeness in Paris</string>
 
 </resources>

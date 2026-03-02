@@ -11,7 +11,14 @@ sealed interface SessionFilter {
   }
 
   data class Language(val value: String) : SessionFilter {
-    override fun matches(session: UISession) = session.language == value
+    override fun matches(session: UISession): Boolean {
+      val lang = session.language?.lowercase() ?: return false
+      return when (value) {
+        FRENCH -> lang.startsWith("fr")
+        ENGLISH -> lang.startsWith("en")
+        else -> false
+      }
+    }
 
     companion object {
       const val FRENCH = "French"
@@ -21,5 +28,9 @@ sealed interface SessionFilter {
 
   data class Room(val id: String) : SessionFilter {
     override fun matches(session: UISession): Boolean = session.roomId == id
+  }
+
+  data class Tag(val value: String) : SessionFilter {
+    override fun matches(session: UISession): Boolean = value in session.tags
   }
 }

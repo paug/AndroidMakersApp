@@ -49,7 +49,8 @@ fun Session.toUISession(
     speakers = this.speakers.mapNotNull { speakers[it]?.toUISpeaker() },
     isServiceSession = isServiceSession,
     isFavorite = isFavorite,
-    isAppClinic = isAppClinic()
+    isAppClinic = isAppClinic(),
+    tags = tags
   )
 }
 

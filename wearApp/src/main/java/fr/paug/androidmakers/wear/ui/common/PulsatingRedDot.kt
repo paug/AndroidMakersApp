@@ -13,6 +13,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import fr.paug.androidmakers.wear.ui.theme.amRed
 
@@ -42,6 +44,7 @@ fun PulsatingRedDot() {
       modifier = Modifier
         .size(8.dp)
         .background(color = amRed, shape = CircleShape)
+        .semantics { contentDescription = "Session in progress" }
     )
   }
 }

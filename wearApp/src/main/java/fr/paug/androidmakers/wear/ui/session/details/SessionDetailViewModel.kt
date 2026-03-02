@@ -77,4 +77,5 @@ class SessionDetailViewModel(
   }
 }
 
+/** Maps a Flow of Results to a Flow of successful values, silently dropping errors. */
 private fun <T: Any> Flow<Result<T>>.filterSuccess(): Flow<T> = mapNotNull { it.getOrNull() }

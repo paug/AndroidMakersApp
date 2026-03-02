@@ -8,8 +8,8 @@ import coil3.compose.setSingletonImageLoaderFactory
 import coil3.request.crossfade
 import com.androidmakers.ui.common.SigninCallbacks
 import com.androidmakers.ui.common.navigation.AVALayout
-import com.androidmakers.ui.common.navigation.AgendaKey
 import com.androidmakers.ui.common.navigation.AboutKey
+import com.androidmakers.ui.common.navigation.AgendaKey
 import com.androidmakers.ui.common.navigation.FeedKey
 import com.androidmakers.ui.common.navigation.Navigator
 import com.androidmakers.ui.common.navigation.SpeakersKey
@@ -19,6 +19,7 @@ import com.androidmakers.ui.common.navigation.parseDeepLink
 import com.androidmakers.ui.common.navigation.rememberNavigationState
 import fr.androidmakers.domain.PlatformContext
 import fr.androidmakers.domain.utils.FeatureFlags
+
 
 /**
  * The main layout: entry point of the application

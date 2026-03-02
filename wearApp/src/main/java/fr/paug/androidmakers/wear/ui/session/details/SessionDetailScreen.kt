@@ -58,8 +58,8 @@ import fr.paug.androidmakers.wear.ui.session.uiSession1
 import fr.paug.androidmakers.wear.ui.session.uiSession2
 import fr.paug.androidmakers.wear.ui.theme.amChipBackground
 import fr.paug.androidmakers.wear.ui.theme.amChipText
-import fr.paug.androidmakers.wear.ui.theme.amPurple
-import fr.paug.androidmakers.wear.ui.theme.amPurpleLight
+import fr.paug.androidmakers.wear.ui.theme.amGreen
+import fr.paug.androidmakers.wear.ui.theme.amGreenLight
 import fr.paug.androidmakers.wear.ui.theme.amRed
 import fr.paug.androidmakers.wear.ui.theme.amRedDark
 import fr.paug.androidmakers.wear.ui.theme.amRedLight
@@ -107,10 +107,10 @@ private fun Session(session: UISession, onBookmarkToggle: (Boolean) -> Unit) {
             Text(
               text = session.formattedDuration,
               style = MaterialTheme.typography.caption1,
-              color = amPurple,
+              color = amGreen,
               modifier = Modifier
                 .background(
-                  color = amPurpleLight,
+                  color = amGreenLight,
                   shape = RoundedCornerShape(50)
                 )
                 .padding(horizontal = 10.dp, vertical = 4.dp),
@@ -293,7 +293,7 @@ private fun Session(session: UISession, onBookmarkToggle: (Boolean) -> Unit) {
           item {
             TitleCard(
               modifier = Modifier.fillMaxWidth(),
-              backgroundPainter = ColorPainter(amPurpleLight.copy(alpha = 0.15f)),
+              backgroundPainter = ColorPainter(amGreenLight.copy(alpha = 0.15f)),
               title = {
                 Text(
                   text = speaker.name ?: "",
@@ -346,7 +346,7 @@ private fun Session(session: UISession, onBookmarkToggle: (Boolean) -> Unit) {
             )
           },
           colors = ChipDefaults.chipColors(
-            backgroundColor = if (session.isBookmarked) amRed.copy(alpha = 0.8f) else amPurple,
+            backgroundColor = if (session.isBookmarked) amRed.copy(alpha = 0.8f) else amGreen,
             contentColor = Color.White,
             iconColor = Color.White,
           ),

@@ -1,13 +1,17 @@
 package com.androidmakers.ui.speakers
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,6 +19,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Clear
@@ -22,11 +27,10 @@ import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.ListItem
-import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -39,7 +43,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
@@ -59,6 +62,8 @@ import org.jetbrains.compose.resources.stringResource
 fun SpeakerScreen(
     viewModel: SpeakerListViewModel,
     navigateToSpeakerDetails: (String) -> Unit,
+    sharedTransitionScope: SharedTransitionScope? = null,
+    animatedVisibilityScope: AnimatedVisibilityScope? = null,
 ) {
   val state by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -89,13 +94,15 @@ fun SpeakerScreen(
             exit = fadeOut(),
         ) {
           LazyColumn(
-              contentPadding = PaddingValues(top = searchHeight + 16.dp),
-              verticalArrangement = Arrangement.spacedBy(8.dp)
+              contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = searchHeight + 16.dp),
+              verticalArrangement = Arrangement.spacedBy(12.dp)
           ) {
             items(filteredSpeakers) { speaker ->
               SpeakerItem(
                   speaker = speaker,
-                  navigateToSpeakerDetails = navigateToSpeakerDetails
+                  navigateToSpeakerDetails = navigateToSpeakerDetails,
+                  sharedTransitionScope = sharedTransitionScope,
+                  animatedVisibilityScope = animatedVisibilityScope,
               )
             }
           }
@@ -147,7 +154,10 @@ fun SpeakerScreen(
             dividerColor = MaterialTheme.colorScheme.primary
           )
         ) {
-          LazyColumn {
+          LazyColumn(
+            contentPadding = PaddingValues(horizontal = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+          ) {
             items(
               items = filteredSpeakers,
               key = { it.id }
@@ -156,6 +166,8 @@ fun SpeakerScreen(
                 speaker = speaker,
                 modifier = Modifier.animateItem(),
                 navigateToSpeakerDetails = navigateToSpeakerDetails,
+                sharedTransitionScope = sharedTransitionScope,
+                animatedVisibilityScope = animatedVisibilityScope,
               )
             }
           }
@@ -172,37 +184,52 @@ fun SpeakerItem(
     speaker: Speaker,
     modifier: Modifier = Modifier,
     navigateToSpeakerDetails: (String) -> Unit,
+    sharedTransitionScope: SharedTransitionScope? = null,
+    animatedVisibilityScope: AnimatedVisibilityScope? = null,
 ) {
 
-  ListItem(
-      modifier = modifier.clickable(onClick = { navigateToSpeakerDetails(speaker.id) }),
-      colors = ListItemDefaults.colors(
-          containerColor = Color.Transparent,
-      ),
-      headlineContent = {
+  Surface(
+      modifier = modifier.fillMaxWidth().clickable(onClick = { navigateToSpeakerDetails(speaker.id) }),
+      shape = RoundedCornerShape(16.dp),
+      color = MaterialTheme.colorScheme.surfaceContainerHigh,
+  ) {
+    Row(
+        modifier = Modifier.padding(16.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+      speaker.photoUrl?.let { url ->
+        val photoModifier = if (sharedTransitionScope != null && animatedVisibilityScope != null) {
+          with(sharedTransitionScope) {
+            Modifier.sharedElement(
+              sharedContentState = rememberSharedContentState(key = "speaker_photo_${speaker.id}"),
+              animatedVisibilityScope = animatedVisibilityScope,
+            )
+          }
+        } else {
+          Modifier
+        }
+        AsyncImage(
+            model = url,
+            modifier = photoModifier
+                .size(56.dp)
+                .clip(CircleShape),
+            contentDescription = stringResource(Res.string.speakers)
+        )
+      }
+      Column {
         Text(
             text = speaker.name.orEmpty(),
             style = MaterialTheme.typography.titleMedium,
         )
-      },
-      supportingContent = speaker.company?.let { company ->
-        {
+        speaker.company?.let { company ->
           Text(
               text = company,
-              style = MaterialTheme.typography.labelMedium,
-          )
-        }
-      },
-      leadingContent = {
-        speaker.photoUrl?.let { url ->
-          AsyncImage(
-              model = url,
-              modifier = Modifier
-                  .size(64.dp)
-                  .clip(CircleShape),
-              contentDescription = stringResource(Res.string.speakers)
+              style = MaterialTheme.typography.bodyMedium,
+              color = MaterialTheme.colorScheme.onSurfaceVariant,
           )
         }
       }
-  )
+    }
+  }
 }

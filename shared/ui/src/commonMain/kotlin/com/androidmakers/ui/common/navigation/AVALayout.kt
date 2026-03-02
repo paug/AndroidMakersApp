@@ -1,7 +1,9 @@
 package com.androidmakers.ui.common.navigation
 
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
@@ -15,6 +17,7 @@ import androidx.compose.material.icons.rounded.Groups
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.LocationCity
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -39,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import androidx.navigation3.ui.NavDisplay
 import com.androidmakers.ui.about.AboutScreen
 import com.androidmakers.ui.agenda.AgendaLayout
@@ -98,59 +102,6 @@ fun AVALayout(
   val currentTopEntry = currentStack?.lastOrNull()
   val showBottomBar = currentTopEntry == null || currentTopEntry.isTabKey()
 
-  val entryProvider = entryProvider {
-    // Tab entries
-    entry<FeedKey> {
-      FeedScreen()
-    }
-
-    entry<AgendaKey> {
-      AgendaLayout(
-        showFilterBottomSheet = showAgendaFilterBottomSheet,
-        onFilterBottomSheetDismiss = { showAgendaFilterBottomSheet = false },
-        onSessionClick = { sessionId -> navigator.navigate(SessionDetailKey(sessionId)) }
-      )
-    }
-
-    entry<VenueKey> {
-      VenuePager()
-    }
-
-    entry<SpeakersKey> {
-      SpeakerScreen(
-        viewModel = koinViewModel(),
-        navigateToSpeakerDetails = { speakerId -> navigator.navigate(SpeakerDetailKey(speakerId)) }
-      )
-    }
-
-    entry<SponsorsKey> {
-      SponsorsScreen()
-    }
-
-    entry<AboutKey> {
-      AboutScreen(
-        versionCode = versionCode,
-        versionName = versionName
-      )
-    }
-
-    // Detail entries
-    entry<SessionDetailKey> { key ->
-      SessionDetailScreen(
-        viewModel = koinViewModel { parametersOf(key.sessionId) },
-        onBackClick = { navigator.goBack() },
-        onSpeakerClick = { speakerId -> navigator.navigate(SpeakerDetailKey(speakerId)) },
-      )
-    }
-
-    entry<SpeakerDetailKey> { key ->
-      SpeakerDetailsRoute(
-        speakerDetailsViewModel = koinViewModel { parametersOf(key.speakerId) },
-        onBackClick = { navigator.goBack() },
-      )
-    }
-  }
-
   Scaffold(
       modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
       topBar = {
@@ -158,7 +109,8 @@ fun AVALayout(
           TopAppBar(
               scrollBehavior = scrollBehavior,
               colors = TopAppBarDefaults.topAppBarColors(
-                  scrolledContainerColor = MaterialTheme.colorScheme.surface,
+                containerColor = MaterialTheme.colorScheme.background,
+                scrolledContainerColor = MaterialTheme.colorScheme.background,
                   actionIconContentColor = MaterialTheme.colorScheme.onSurface,
               ),
               navigationIcon = {
@@ -200,7 +152,9 @@ fun AVALayout(
 
       bottomBar = {
         if (showBottomBar) {
-          NavigationBar {
+          Column {
+            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+            NavigationBar(containerColor = MaterialTheme.colorScheme.surface) {
             if (FeatureFlags.isFeedEnabled) {
               NavigationBarItem(
                   navigator = navigator,
@@ -247,6 +201,7 @@ fun AVALayout(
                 label = stringResource(Res.string.about),
                 destinationRoute = AboutKey
             )
+            }
           }
         }
       },
@@ -255,10 +210,73 @@ fun AVALayout(
       Modifier.padding(innerPadding)
         .consumeWindowInsets(innerPadding)
     ) {
-      NavDisplay(
-        entries = navigationState.toDecoratedEntries(entryProvider),
-        onBack = { navigator.goBack() }
-      )
+      SharedTransitionLayout {
+        val sharedTransitionScope = this
+
+        val entryProvider = entryProvider {
+          // Tab entries
+          entry<FeedKey> {
+            FeedScreen()
+          }
+
+          entry<AgendaKey> {
+            AgendaLayout(
+              showFilterBottomSheet = showAgendaFilterBottomSheet,
+              onFilterBottomSheetDismiss = { showAgendaFilterBottomSheet = false },
+              onSessionClick = { sessionId -> navigator.navigate(SessionDetailKey(sessionId)) }
+            )
+          }
+
+          entry<VenueKey> {
+            VenuePager()
+          }
+
+          entry<SpeakersKey> {
+            SpeakerScreen(
+              viewModel = koinViewModel(),
+              navigateToSpeakerDetails = { speakerId -> navigator.navigate(SpeakerDetailKey(speakerId)) },
+              sharedTransitionScope = sharedTransitionScope,
+              animatedVisibilityScope = LocalNavAnimatedContentScope.current,
+            )
+          }
+
+          entry<SponsorsKey> {
+            SponsorsScreen()
+          }
+
+          entry<AboutKey> {
+            AboutScreen(
+              versionCode = versionCode,
+              versionName = versionName
+            )
+          }
+
+          // Detail entries
+          entry<SessionDetailKey> { key ->
+            SessionDetailScreen(
+              viewModel = koinViewModel(key = key.sessionId) { parametersOf(key.sessionId) },
+              onBackClick = { navigator.goBack() },
+              onSpeakerClick = { speakerId -> navigator.navigate(SpeakerDetailKey(speakerId)) },
+              sharedTransitionScope = sharedTransitionScope,
+              animatedVisibilityScope = LocalNavAnimatedContentScope.current,
+            )
+          }
+
+          entry<SpeakerDetailKey> { key ->
+            SpeakerDetailsRoute(
+              speakerDetailsViewModel = koinViewModel(key = key.speakerId) { parametersOf(key.speakerId) },
+              onBackClick = { navigator.goBack() },
+              sharedTransitionScope = sharedTransitionScope,
+              animatedVisibilityScope = LocalNavAnimatedContentScope.current,
+            )
+          }
+        }
+
+        NavDisplay(
+          entries = navigationState.toDecoratedEntries(entryProvider),
+          onBack = { navigator.goBack() }
+        )
+      }
     }
   }
 }
@@ -283,8 +301,8 @@ private fun RowScope.NavigationBarItem(
       colors = NavigationBarItemDefaults.colors(
           selectedIconColor = MaterialTheme.colorScheme.primary,
           selectedTextColor = MaterialTheme.colorScheme.primary,
-          unselectedIconColor = MaterialTheme.colorScheme.outline,
-          unselectedTextColor = MaterialTheme.colorScheme.outline,
+        unselectedIconColor = MaterialTheme.colorScheme.onSurface,
+        unselectedTextColor = MaterialTheme.colorScheme.onSurface,
           indicatorColor = MaterialTheme.colorScheme.primaryContainer,
       ),
       onClick = {

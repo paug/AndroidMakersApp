@@ -29,7 +29,9 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -39,12 +41,9 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.plus
 import kotlinx.datetime.todayIn
-import java.time.Month
+import kotlinx.datetime.Month
 
 private val TAG = MainViewModel::class.java.simpleName
-
-private val DAY_1_DATE = LocalDate(year = 2025, month = Month.APRIL, dayOfMonth = 10)
-private val DAY_2_DATE = DAY_1_DATE.plus(1, DateTimeUnit.DAY)
 
 class MainViewModel(
   messageClient: MessageClient,
@@ -66,31 +65,25 @@ class MainViewModel(
   private val bookmarksSyncTrigger = MutableStateFlow(LoadingTrigger(refresh = true))
   private val sessionsLoadingTrigger = MutableStateFlow(LoadingTrigger(refresh = false))
 
-  @OptIn(ExperimentalCoroutinesApi::class)
-  @Suppress("unused")
-  private val bookmarkSync: StateFlow<Unit> = combine(user, bookmarksSyncTrigger) { currentUser, _ -> currentUser }
-    .flatMapLatest { currentUser ->
-      flow { emit(maybeSyncBookmarks(currentUser)) }
-    }
-    .stateIn(
-      scope = viewModelScope,
-      started = SharingStarted.Eagerly,
-      initialValue = Unit
-    )
-
-  @Suppress("unused")
-  private val messageSync: StateFlow<Unit> = messageClient.getEventsFlow()
-    .map { messageEvent ->
-      if (messageEvent.path == MESSAGE_SYNC_BOOKMARKS) {
-        Log.d(TAG, "Received syncBookmarks message")
-        bookmarksSyncTrigger.value = LoadingTrigger(refresh = true)
+  init {
+    // Sync bookmarks when user changes or sync is triggered
+    @OptIn(ExperimentalCoroutinesApi::class)
+    combine(user, bookmarksSyncTrigger) { currentUser, _ -> currentUser }
+      .flatMapLatest { currentUser ->
+        flow { emit(maybeSyncBookmarks(currentUser)) }
       }
-    }
-    .stateIn(
-      scope = viewModelScope,
-      started = SharingStarted.Eagerly,
-      initialValue = Unit
-    )
+      .launchIn(viewModelScope)
+
+    // Listen for sync messages from the phone app
+    messageClient.getEventsFlow()
+      .onEach { messageEvent ->
+        if (messageEvent.path == MESSAGE_SYNC_BOOKMARKS) {
+          Log.d(TAG, "Received syncBookmarks message")
+          bookmarksSyncTrigger.value = LoadingTrigger(refresh = true)
+        }
+      }
+      .launchIn(viewModelScope)
+  }
 
   private fun MessageClient.getEventsFlow(): Flow<MessageEvent> = callbackFlow<MessageEvent> {
     val listener = OnMessageReceivedListener { messageEvent ->
@@ -175,6 +168,8 @@ class MainViewModel(
 
   companion object {
     private const val MESSAGE_SYNC_BOOKMARKS = "syncBookmarks"
+    val DAY_1_DATE = LocalDate(year = 2025, month = Month.APRIL, day = 10)
+    val DAY_2_DATE = DAY_1_DATE.plus(1, DateTimeUnit.DAY)
   }
 }
 

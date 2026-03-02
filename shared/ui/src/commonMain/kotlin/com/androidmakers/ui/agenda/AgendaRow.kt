@@ -1,27 +1,34 @@
 package com.androidmakers.ui.agenda
 
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.BookmarkAdd
 import androidx.compose.material.icons.rounded.BookmarkRemove
 import androidx.compose.material3.Button
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.androidmakers.ui.common.EmojiUtils
@@ -35,47 +42,36 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.time.Duration.Companion.hours
 
 @Composable
-fun backgroundColor(uiSession: UISession): Color {
-  return if (uiSession.isServiceSession) {
-    MaterialTheme.colorScheme.surface
-  } else {
-    MaterialTheme.colorScheme.surfaceContainerHighest
-  }
-}
-
-@Composable
 internal fun ServiceSessionRow(
   session: UISession,
   modifier: Modifier = Modifier,
 ) {
-  ListItem(
+  Surface(
     modifier = modifier,
-    colors = ListItemDefaults.colors(
-      containerColor = MaterialTheme.colorScheme.surface,
-    ),
-    headlineContent = {
+    shape = RoundedCornerShape(16.dp),
+    color = MaterialTheme.colorScheme.surfaceContainer,
+  ) {
+    Column(
+      modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 16.dp, vertical = 12.dp),
+      horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
       Text(
         text = session.title,
-        style = MaterialTheme.typography.titleMedium,
+        style = MaterialTheme.typography.titleSmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
       )
-    },
-    supportingContent = {
-      Column(
-        modifier = Modifier.padding(top = 12.dp),
-        horizontalAlignment = Alignment.Start,
-      ) {
-        Text(
-          text = session.subtitle(),
-          style = MaterialTheme.typography.bodyMedium,
-          modifier = Modifier.padding(top = 4.dp)
-        )
-      }
-    },
-    trailingContent = {},
-    overlineContent = {},
-  )
+      Text(
+        text = session.formattedDuration(),
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.outline,
+      )
+    }
+  }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal fun SessionRow(
   uiSession: UISession,
@@ -83,116 +79,145 @@ internal fun SessionRow(
   onSessionClick: (UISession) -> Unit,
   onSessionBookmark: (UISession, Boolean) -> Unit,
   onApplyForAppClinicClick: () -> Unit,
-  sessionBeforeIsServiceSession: Boolean = false,
-  sessionAfterIsServiceSession: Boolean = false,
 ) {
-  val clipModifier = when {
-    sessionBeforeIsServiceSession -> Modifier.clip(
-      shape = RoundedCornerShape(
-        topStart = 16.dp,
-        topEnd = 16.dp
-      )
+  ElevatedCard(
+    modifier = modifier,
+    onClick = { onSessionClick(uiSession) },
+    shape = RoundedCornerShape(20.dp),
+    colors = CardDefaults.elevatedCardColors(
+      containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+    ),
+    elevation = CardDefaults.elevatedCardElevation(defaultElevation = 0.dp),
+  ) {
+    val isBookmarked = uiSession.isFavorite
+    val imageVector = if (isBookmarked) Icons.Rounded.BookmarkRemove
+    else Icons.Rounded.BookmarkAdd
+    val tint by animateColorAsState(
+      if (isBookmarked) AMColor.bookmarked
+      else MaterialTheme.colorScheme.outline
     )
-    sessionAfterIsServiceSession -> Modifier.clip(
-      shape = RoundedCornerShape(
-        bottomStart = 16.dp,
-        bottomEnd = 16.dp
-      )
-    )
-    else -> Modifier
-  }
 
-  ListItem(
-      modifier = modifier.clickable(
-        onClick = {
-          onSessionClick(uiSession)
+    ListItem(
+      colors = ListItemDefaults.colors(containerColor = Color.Transparent),
+      overlineContent = {
+        FlowRow(
+          horizontalArrangement = Arrangement.spacedBy(6.dp),
+          verticalArrangement = Arrangement.spacedBy(6.dp),
+        ) {
+          uiSession.tags.forEach { tag ->
+            TagChip(tag)
+          }
+          RoomChip(uiSession.room)
         }
-      )
-        .then(clipModifier),
-      colors = ListItemDefaults.colors(
-          containerColor = backgroundColor(uiSession),
-      ),
+      },
       headlineContent = {
         Text(
-            text = uiSession.title,
-            style = MaterialTheme.typography.titleMedium,
+          text = uiSession.title,
+          modifier = Modifier.padding(top = 4.dp),
+          style = MaterialTheme.typography.titleMedium,
+          maxLines = 2,
         )
       },
       supportingContent = {
-        Column(
-            modifier = Modifier.padding(top = 12.dp),
-            horizontalAlignment = Alignment.Start,
-        ) {
-
-          if (uiSession.isAppClinic) {
-            Button(
-              onClick = onApplyForAppClinicClick,
-              modifier = Modifier.padding(bottom = 8.dp)
-            ) {
-              Text(
-                text = stringResource(Res.string.session_app_clinic_apply),
-                style = MaterialTheme.typography.labelMedium
-              )
-            }
-          }
-
+        Column(modifier = Modifier.padding(top = 4.dp)) {
           val speakers = uiSession.speakers.joinToString(", ") { it.name }
           if (speakers.isNotBlank()) {
             Text(
-                text = speakers,
-                style = MaterialTheme.typography.bodyMedium,
+              text = speakers,
+              style = MaterialTheme.typography.bodySmall,
+              color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
           }
 
-          Text(
-              text = uiSession.subtitle(),
-              style = MaterialTheme.typography.bodyMedium,
-              modifier = Modifier.padding(top = 4.dp)
-          )
-        }
-      },
-      trailingContent = {
-        if (!uiSession.isServiceSession) {
-          Box {
-            val isBookmarked = uiSession.isFavorite
-            val imageVector = if (isBookmarked) Icons.Rounded.BookmarkRemove
-            else Icons.Rounded.BookmarkAdd
+          Row(
+            modifier = Modifier.padding(top = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+          ) {
+            DurationChip(uiSession.formattedDuration())
 
-            val tint by animateColorAsState(
-                if (isBookmarked) AMColor.bookmarked
-                else Color.LightGray
-            )
-
-            IconToggleButton(
-                modifier = Modifier.size(48.dp),
-                checked = isBookmarked,
-                onCheckedChange = {
-                  onSessionBookmark(uiSession, it)
-                },
-            ) {
-              Icon(
-                  imageVector = imageVector,
-                  contentDescription = "favorite",
-                  tint = tint
+            val emoji = EmojiUtils.getLanguageInEmoji(uiSession.language)
+            if (emoji != null) {
+              Text(
+                text = emoji,
+                modifier = Modifier.padding(start = 8.dp),
+                style = MaterialTheme.typography.bodySmall,
               )
+            }
+
+            if (uiSession.isAppClinic) {
+              Spacer(modifier = Modifier.width(8.dp))
+              Button(
+                onClick = onApplyForAppClinicClick,
+              ) {
+                Text(
+                  text = stringResource(Res.string.session_app_clinic_apply),
+                  style = MaterialTheme.typography.labelMedium,
+                )
+              }
             }
           }
         }
       },
-      overlineContent = {
-        // Nothing to do
+      trailingContent = {
+        IconToggleButton(
+          modifier = Modifier.size(32.dp),
+          checked = isBookmarked,
+          onCheckedChange = { onSessionBookmark(uiSession, it) },
+        ) {
+          Icon(
+            imageVector = imageVector,
+            contentDescription = "favorite",
+            tint = tint,
+            modifier = Modifier.size(20.dp),
+          )
+        }
       },
-  )
+    )
+  }
 }
 
-private fun UISession.subtitle() = buildString {
-  append(formattedDuration())
-  if (!isServiceSession ) {
-    append(" / $room")
-    val emoji = EmojiUtils.getLanguageInEmoji(language)
-    if (emoji != null) {
-      append(" / $emoji")
-    }
+@Composable
+private fun TagChip(tag: String) {
+  Surface(
+    shape = RoundedCornerShape(8.dp),
+    color = MaterialTheme.colorScheme.secondaryContainer,
+  ) {
+    Text(
+      text = tag,
+      modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
+      style = MaterialTheme.typography.labelSmall,
+      color = MaterialTheme.colorScheme.onSecondaryContainer,
+    )
+  }
+}
+
+@Composable
+private fun RoomChip(room: String) {
+  Surface(
+    shape = RoundedCornerShape(8.dp),
+    color = MaterialTheme.colorScheme.primaryContainer,
+  ) {
+    Text(
+      text = room,
+      modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
+      style = MaterialTheme.typography.labelSmall,
+      color = MaterialTheme.colorScheme.onPrimaryContainer,
+    )
+  }
+}
+
+@Composable
+private fun DurationChip(duration: String) {
+  Surface(
+    shape = RoundedCornerShape(8.dp),
+    color = MaterialTheme.colorScheme.surfaceContainer,
+  ) {
+    Text(
+      text = duration,
+      modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
+      style = MaterialTheme.typography.labelSmall,
+      color = MaterialTheme.colorScheme.onSurface,
+    )
   }
 }
 
@@ -231,5 +256,6 @@ private val fakeUiSession = UISession(
     startDate = Instant.parse("2022-04-25T09:00:00+02:00"),
     endDate = Instant.parse("2022-04-25T10:00:00+02:00"),
     isServiceSession = false,
-    isFavorite = false
+    isFavorite = false,
+    tags = listOf("Kotlin", "Architecture"),
 )

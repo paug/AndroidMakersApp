@@ -3,9 +3,11 @@ package com.androidmakers.ui.common
 object EmojiUtils {
 
   fun getLanguageInEmoji(language: String?): String? {
+    if (language == null) return null
+    val lower = language.lowercase()
     return when {
-      language.equals("english", ignoreCase = true) -> "\uD83C\uDDEC\uD83C\uDDE7"
-      language.equals("french", ignoreCase = true) -> "\uD83C\uDDEB\uD83C\uDDF7"
+      lower.startsWith("fr") -> "\uD83C\uDDEB\uD83C\uDDF7"
+      lower.startsWith("en") -> "\uD83C\uDDEC\uD83C\uDDE7"
       else -> null
     }
   }
