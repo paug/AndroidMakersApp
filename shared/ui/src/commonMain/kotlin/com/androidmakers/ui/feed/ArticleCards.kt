@@ -14,6 +14,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.graphics.RectangleShape
+import com.androidmakers.ui.theme.LocalIsNeobrutalism
+import com.androidmakers.ui.theme.neoBrutalBorder
+import com.androidmakers.ui.theme.neoBrutalElevation
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.LocationOn
 import androidx.compose.material3.Icon
@@ -71,6 +75,7 @@ fun OverlappingAvatars(
   avatarUrls: List<String>,
   modifier: Modifier = Modifier,
 ) {
+  val circularShape = if (LocalIsNeobrutalism.current) RectangleShape else CircleShape
   Row(modifier = modifier) {
     avatarUrls.forEachIndexed { index, url ->
       AsyncImage(
@@ -80,7 +85,7 @@ fun OverlappingAvatars(
         modifier = Modifier
           .size(28.dp)
           .offset(x = (-8 * index).dp)
-          .clip(CircleShape),
+          .clip(circularShape),
       )
     }
   }
@@ -91,9 +96,11 @@ fun ArticleCardWithImage(
   article: FeedItem.Article,
   modifier: Modifier = Modifier,
 ) {
+  val topClipShape = if (LocalIsNeobrutalism.current) RectangleShape
+    else RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
   Surface(
-    modifier = modifier.fillMaxWidth(),
-    shape = RoundedCornerShape(24.dp),
+    modifier = modifier.fillMaxWidth().neoBrutalElevation(),
+    shape = MaterialTheme.shapes.extraLarge,
     color = MaterialTheme.colorScheme.surfaceContainerHigh,
   ) {
     Column {
@@ -105,7 +112,7 @@ fun ArticleCardWithImage(
           modifier = Modifier
             .fillMaxWidth()
             .height(180.dp)
-            .clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)),
+            .clip(topClipShape),
         )
         val badge = article.categoryBadge
         if (badge != null) {
@@ -117,9 +124,10 @@ fun ArticleCardWithImage(
             letterSpacing = 0.5.sp,
             modifier = Modifier
               .padding(12.dp)
+              .neoBrutalBorder()
               .background(
                 MaterialTheme.colorScheme.primary.copy(alpha = 0.85f),
-                RoundedCornerShape(6.dp)
+                MaterialTheme.shapes.extraSmall
               )
               .padding(horizontal = 8.dp, vertical = 4.dp),
           )
@@ -175,8 +183,8 @@ fun ArticleCardWithLocation(
   modifier: Modifier = Modifier,
 ) {
   Surface(
-    modifier = modifier.fillMaxWidth(),
-    shape = RoundedCornerShape(16.dp),
+    modifier = modifier.fillMaxWidth().neoBrutalElevation(),
+    shape = MaterialTheme.shapes.large,
     color = MaterialTheme.colorScheme.surfaceContainerHigh,
   ) {
     Column(modifier = Modifier.padding(16.dp)) {
@@ -204,7 +212,7 @@ fun ArticleCardWithLocation(
             .padding(top = 12.dp)
             .background(
               MaterialTheme.colorScheme.primaryContainer,
-              RoundedCornerShape(12.dp)
+              MaterialTheme.shapes.medium
             )
             .padding(12.dp),
           verticalAlignment = Alignment.CenterVertically,
@@ -244,8 +252,8 @@ fun ArticleCardWithThumbnail(
   modifier: Modifier = Modifier,
 ) {
   Surface(
-    modifier = modifier.fillMaxWidth(),
-    shape = RoundedCornerShape(16.dp),
+    modifier = modifier.fillMaxWidth().neoBrutalElevation(),
+    shape = MaterialTheme.shapes.large,
     color = MaterialTheme.colorScheme.surfaceContainerHigh,
   ) {
     Row(
@@ -277,7 +285,7 @@ fun ArticleCardWithThumbnail(
         contentScale = ContentScale.Crop,
         modifier = Modifier
           .size(96.dp)
-          .clip(RoundedCornerShape(12.dp)),
+          .clip(MaterialTheme.shapes.medium),
       )
     }
   }

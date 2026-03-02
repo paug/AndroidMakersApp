@@ -220,12 +220,12 @@ private fun SessionItem(
 @WearPreviewFontScales
 @Composable
 private fun LoadingSessionListScreenPreview() {
-  SessionListScreen(null, stringResource(id = R.string.main_day1), {})
+  SessionListScreen(null, "Apr 10, 2025", {})
 }
 
 @WearPreviewDevices
 @WearPreviewFontScales
 @Composable
 private fun LoadedSessionListScreenPreview() {
-  SessionListScreen(uiSessions, stringResource(id = R.string.main_day1), {})
+  SessionListScreen(uiSessions, "Apr 10, 2025", {})
 }

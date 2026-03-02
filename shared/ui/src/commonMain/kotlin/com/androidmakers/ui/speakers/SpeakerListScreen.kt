@@ -20,6 +20,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.graphics.RectangleShape
+import com.androidmakers.ui.theme.LocalIsNeobrutalism
+import com.androidmakers.ui.theme.neoBrutalElevation
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Clear
@@ -188,9 +191,10 @@ fun SpeakerItem(
     animatedVisibilityScope: AnimatedVisibilityScope? = null,
 ) {
 
+  val circularShape = if (LocalIsNeobrutalism.current) RectangleShape else CircleShape
   Surface(
-      modifier = modifier.fillMaxWidth().clickable(onClick = { navigateToSpeakerDetails(speaker.id) }),
-      shape = RoundedCornerShape(16.dp),
+      modifier = modifier.fillMaxWidth().neoBrutalElevation().clickable(onClick = { navigateToSpeakerDetails(speaker.id) }),
+      shape = MaterialTheme.shapes.large,
       color = MaterialTheme.colorScheme.surfaceContainerHigh,
   ) {
     Row(
@@ -213,7 +217,7 @@ fun SpeakerItem(
             model = url,
             modifier = photoModifier
                 .size(56.dp)
-                .clip(CircleShape),
+                .clip(circularShape),
             contentDescription = stringResource(Res.string.speakers)
         )
       }

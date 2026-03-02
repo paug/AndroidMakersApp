@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.ui.graphics.RectangleShape
+import com.androidmakers.ui.theme.LocalIsNeobrutalism
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -113,6 +115,7 @@ fun SpeakerDetailsScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically)
     ) {
 
+      val circularShape = if (LocalIsNeobrutalism.current) RectangleShape else CircleShape
       speaker.photoUrl?.let { photoUrl ->
         val photoModifier = if (sharedTransitionScope != null && animatedVisibilityScope != null) {
           with(sharedTransitionScope) {
@@ -128,7 +131,7 @@ fun SpeakerDetailsScreen(
             model = photoUrl,
             modifier = photoModifier
                 .size(64.dp)
-                .clip(CircleShape),
+                .clip(circularShape),
             contentDescription = stringResource(Res.string.speakers)
         )
       }

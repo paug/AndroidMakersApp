@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -32,6 +31,8 @@ import com.androidmakers.ui.common.LoadingLayout
 import com.androidmakers.ui.common.toUrlOpener
 import com.androidmakers.ui.model.Lce
 import com.androidmakers.ui.theme.LocalIsDarkTheme
+import com.androidmakers.ui.theme.neoBrutalBorder
+import com.androidmakers.ui.theme.neoBrutalElevation
 import fr.androidmakers.domain.model.Partner
 import fr.androidmakers.domain.model.PartnerGroup
 import org.koin.compose.viewmodel.koinViewModel
@@ -88,8 +89,8 @@ private fun TierCard(
     onSponsorClick: (Partner) -> Unit
 ) {
   Surface(
-      modifier = Modifier.fillMaxWidth(),
-      shape = RoundedCornerShape(16.dp),
+      modifier = Modifier.fillMaxWidth().neoBrutalElevation(),
+      shape = MaterialTheme.shapes.large,
       color = MaterialTheme.colorScheme.surfaceContainerHigh
   ) {
     Column(modifier = Modifier.padding(16.dp)) {
@@ -140,8 +141,9 @@ private fun PartnerLogo(
       horizontalAlignment = Alignment.CenterHorizontally
   ) {
     Surface(
+        modifier = Modifier.neoBrutalBorder(),
         onClick = onClick,
-        shape = RoundedCornerShape(12.dp),
+        shape = MaterialTheme.shapes.medium,
         color = MaterialTheme.colorScheme.surfaceContainer
     ) {
       AsyncImage(

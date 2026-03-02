@@ -1,6 +1,5 @@
 package com.androidmakers.ui
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -46,14 +45,8 @@ fun MainLayout(
 
   val themeRepository = koinInject<ThemeRepository>()
   val themePreference by themeRepository.themePreference.collectAsState(ThemePreference.System)
-  val isSystemDark = isSystemInDarkTheme()
-  val useDarkTheme = when (themePreference) {
-    ThemePreference.System -> isSystemDark
-    ThemePreference.Light -> false
-    ThemePreference.Dark -> true
-  }
 
-  AndroidMakersTheme(useDarkTheme = useDarkTheme) {
+  AndroidMakersTheme(themePreference = themePreference) {
 
   val startRoute = if (FeatureFlags.isFeedEnabled) FeedKey else AgendaKey
   val topLevelRoutes = buildSet {

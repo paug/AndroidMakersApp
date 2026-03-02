@@ -15,12 +15,17 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
+import androidx.compose.material.icons.rounded.AutoAwesome
 import androidx.compose.material.icons.rounded.Code
+import androidx.compose.material.icons.rounded.DarkMode
 import androidx.compose.material.icons.rounded.Gavel
+import androidx.compose.material.icons.rounded.LightMode
 import androidx.compose.material.icons.rounded.QuestionAnswer
+import androidx.compose.material.icons.rounded.SettingsBrightness
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -45,6 +50,9 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.androidmakers.ui.common.toUrlOpener
 import com.androidmakers.ui.theme.LocalIsDarkTheme
+import com.androidmakers.ui.theme.LocalIsNeobrutalism
+import com.androidmakers.ui.theme.neoBrutalBorder
+import com.androidmakers.ui.theme.neoBrutalElevation
 import fr.androidmakers.domain.model.ThemePreference
 import fr.paug.androidmakers.ui.Res
 import fr.paug.androidmakers.ui.about
@@ -63,6 +71,7 @@ import fr.paug.androidmakers.ui.social
 import fr.paug.androidmakers.ui.theme
 import fr.paug.androidmakers.ui.theme_dark
 import fr.paug.androidmakers.ui.theme_light
+import fr.paug.androidmakers.ui.theme_neobrutalism
 import fr.paug.androidmakers.ui.theme_system
 import fr.paug.androidmakers.ui.version
 import fr.paug.androidmakers.ui.x_hashtag
@@ -156,8 +165,8 @@ private fun SectionHeader(title: String) {
 @Composable
 private fun AboutCard() {
   Surface(
-      modifier = Modifier.fillMaxWidth(),
-      shape = RoundedCornerShape(16.dp),
+      modifier = Modifier.fillMaxWidth().neoBrutalElevation(),
+      shape = MaterialTheme.shapes.large,
       color = MaterialTheme.colorScheme.surfaceContainerHigh
   ) {
     Column(modifier = Modifier.padding(16.dp)) {
@@ -178,8 +187,8 @@ private fun LinksCard(
     onGithubRepoClick: () -> Unit
 ) {
   Surface(
-      modifier = Modifier.fillMaxWidth(),
-      shape = RoundedCornerShape(16.dp),
+      modifier = Modifier.fillMaxWidth().neoBrutalElevation(),
+      shape = MaterialTheme.shapes.large,
       color = MaterialTheme.colorScheme.surfaceContainerHigh
   ) {
     Column(modifier = Modifier.padding(16.dp)) {
@@ -250,8 +259,8 @@ private fun SocialCard(
   val darkMode = LocalIsDarkTheme.current
 
   Surface(
-      modifier = Modifier.fillMaxWidth(),
-      shape = RoundedCornerShape(16.dp),
+      modifier = Modifier.fillMaxWidth().neoBrutalElevation(),
+      shape = MaterialTheme.shapes.large,
       color = MaterialTheme.colorScheme.surfaceContainerHigh
   ) {
     Column(
@@ -262,7 +271,7 @@ private fun SocialCard(
 
       Box(
           modifier = Modifier
-              .clip(RoundedCornerShape(8.dp))
+              .clip(MaterialTheme.shapes.small)
               .background(MaterialTheme.colorScheme.primaryContainer)
               .clickable(onClick = onXHashtagClick)
               .padding(horizontal = 16.dp, vertical = 8.dp)
@@ -325,9 +334,10 @@ private fun SocialIconWithLabel(
       horizontalAlignment = Alignment.CenterHorizontally,
       verticalArrangement = Arrangement.spacedBy(4.dp)
   ) {
+    val circularShape = if (LocalIsNeobrutalism.current) RectangleShape else CircleShape
     Surface(
-        modifier = Modifier.size(56.dp),
-        shape = CircleShape,
+        modifier = Modifier.size(56.dp).neoBrutalBorder(),
+        shape = circularShape,
         color = MaterialTheme.colorScheme.surfaceContainer,
         onClick = onClick
     ) {
@@ -350,8 +360,8 @@ private fun SettingsCard(
     onThemePreferenceChange: (ThemePreference) -> Unit
 ) {
   Surface(
-      modifier = Modifier.fillMaxWidth(),
-      shape = RoundedCornerShape(16.dp),
+      modifier = Modifier.fillMaxWidth().neoBrutalElevation(),
+      shape = MaterialTheme.shapes.large,
       color = MaterialTheme.colorScheme.surfaceContainerHigh
   ) {
     Column(modifier = Modifier.padding(16.dp)) {
@@ -363,19 +373,31 @@ private fun SettingsCard(
           modifier = Modifier.padding(bottom = 8.dp)
       )
       val options = ThemePreference.entries
+      val icons = mapOf(
+          ThemePreference.System to Icons.Rounded.SettingsBrightness,
+          ThemePreference.Light to Icons.Rounded.LightMode,
+          ThemePreference.Dark to Icons.Rounded.DarkMode,
+          ThemePreference.Neobrutalism to Icons.Rounded.AutoAwesome,
+      )
       val labels = mapOf(
           ThemePreference.System to stringResource(Res.string.theme_system),
           ThemePreference.Light to stringResource(Res.string.theme_light),
           ThemePreference.Dark to stringResource(Res.string.theme_dark),
+          ThemePreference.Neobrutalism to stringResource(Res.string.theme_neobrutalism),
       )
       SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
         options.forEachIndexed { index, option ->
           SegmentedButton(
               selected = themePreference == option,
               onClick = { onThemePreferenceChange(option) },
-              shape = SegmentedButtonDefaults.itemShape(index = index, count = options.size)
+              shape = SegmentedButtonDefaults.itemShape(index = index, count = options.size),
+              icon = {},
           ) {
-            Text(text = labels[option].orEmpty())
+            Icon(
+                imageVector = icons[option]!!,
+                contentDescription = labels[option],
+                modifier = Modifier.size(20.dp),
+            )
           }
         }
       }

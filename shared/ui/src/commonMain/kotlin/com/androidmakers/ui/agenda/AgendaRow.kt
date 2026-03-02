@@ -11,15 +11,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.BookmarkAdd
 import androidx.compose.material.icons.rounded.BookmarkRemove
 import androidx.compose.material.icons.rounded.LocationOn
 import androidx.compose.material.icons.rounded.Schedule
 import androidx.compose.material3.Button
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
@@ -34,6 +31,8 @@ import androidx.compose.ui.unit.dp
 import com.androidmakers.ui.common.EmojiUtils
 import com.androidmakers.ui.model.UISession
 import com.androidmakers.ui.theme.AMColor
+import com.androidmakers.ui.theme.neoBrutalBorder
+import com.androidmakers.ui.theme.neoBrutalElevation
 import fr.paug.androidmakers.ui.Res
 import fr.paug.androidmakers.ui.session_app_clinic_apply
 import kotlinx.datetime.Instant
@@ -47,8 +46,8 @@ internal fun ServiceSessionRow(
   modifier: Modifier = Modifier,
 ) {
   Surface(
-    modifier = modifier,
-    shape = RoundedCornerShape(16.dp),
+    modifier = modifier.neoBrutalElevation(),
+    shape = MaterialTheme.shapes.large,
     color = MaterialTheme.colorScheme.surfaceContainer,
   ) {
     Column(
@@ -80,14 +79,11 @@ internal fun SessionRow(
   onSessionBookmark: (UISession, Boolean) -> Unit,
   onApplyForAppClinicClick: () -> Unit,
 ) {
-  ElevatedCard(
-    modifier = modifier,
+  Surface(
+    modifier = modifier.neoBrutalElevation(),
     onClick = { onSessionClick(uiSession) },
-    shape = RoundedCornerShape(20.dp),
-    colors = CardDefaults.elevatedCardColors(
-      containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-    ),
-    elevation = CardDefaults.elevatedCardElevation(defaultElevation = 0.dp),
+    shape = MaterialTheme.shapes.large,
+    color = MaterialTheme.colorScheme.surfaceContainerHigh,
   ) {
     val isBookmarked = uiSession.isFavorite
     val imageVector = if (isBookmarked) Icons.Rounded.BookmarkRemove
@@ -156,7 +152,10 @@ internal fun SessionRow(
       // 5. App Clinic
       if (uiSession.isAppClinic) {
         Spacer(modifier = Modifier.height(8.dp))
-        Button(onClick = onApplyForAppClinicClick) {
+        Button(
+          onClick = onApplyForAppClinicClick,
+          modifier = Modifier.neoBrutalElevation(shadowOffset = 2.dp),
+        ) {
           Text(
             text = stringResource(Res.string.session_app_clinic_apply),
             style = MaterialTheme.typography.labelMedium,
@@ -170,7 +169,8 @@ internal fun SessionRow(
 @Composable
 private fun TagChip(tag: String) {
   Surface(
-    shape = RoundedCornerShape(8.dp),
+    modifier = Modifier.neoBrutalBorder(),
+    shape = MaterialTheme.shapes.small,
     color = MaterialTheme.colorScheme.secondaryContainer,
   ) {
     Text(

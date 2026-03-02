@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Warning
@@ -24,6 +23,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.androidmakers.ui.theme.neoBrutalBorder
 import fr.androidmakers.domain.model.FeedItem
 
 @Composable
@@ -32,7 +32,7 @@ fun AlertBannerCard(
   onDismiss: () -> Unit,
   modifier: Modifier = Modifier,
 ) {
-  val shape = RoundedCornerShape(12.dp)
+  val shape = MaterialTheme.shapes.medium
   val containerColor = MaterialTheme.colorScheme.errorContainer
   val contentColor = MaterialTheme.colorScheme.onErrorContainer
   val borderColor = MaterialTheme.colorScheme.error.copy(alpha = 0.3f)
@@ -40,6 +40,7 @@ fun AlertBannerCard(
   Row(
     modifier = modifier
       .fillMaxWidth()
+      .neoBrutalBorder()
       .clip(shape)
       .background(containerColor)
       .border(1.dp, borderColor, shape)

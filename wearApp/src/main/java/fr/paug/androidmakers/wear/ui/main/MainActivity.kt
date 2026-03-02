@@ -14,7 +14,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.core.app.ActivityCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavType
@@ -31,8 +30,6 @@ import androidx.wear.compose.navigation.rememberSwipeDismissableNavHostState
 import com.google.android.horologist.compose.layout.AppScaffold
 import com.google.android.horologist.compose.pager.PagerScreen
 import fr.androidmakers.domain.model.User
-import fr.paug.androidmakers.wear.R
-import fr.paug.androidmakers.wear.ui.session.UISession
 import fr.paug.androidmakers.wear.ui.session.details.SessionDetailScreen
 import fr.paug.androidmakers.wear.ui.session.details.SessionDetailViewModel
 import fr.paug.androidmakers.wear.ui.session.list.SessionListScreen
@@ -131,11 +128,24 @@ fun MainScreen(
   onSignOutClick: () -> Unit,
   onSessionClick: (String) -> Unit,
 ) {
-  val pagerState: PagerState =
-    rememberPagerState(initialPage = viewModel.getConferenceDay() + 1, pageCount = { 3 })
   val user: User? by viewModel.user.collectAsStateWithLifecycle()
-  val sessionsDay1: List<UISession>? by viewModel.sessionsDay1.collectAsStateWithLifecycle()
-  val sessionsDay2: List<UISession>? by viewModel.sessionsDay2.collectAsStateWithLifecycle()
+  val days: List<WearDaySchedule>? by viewModel.days.collectAsStateWithLifecycle()
+
+  val pagerState: PagerState = rememberPagerState(
+    initialPage = 0,
+    pageCount = { 1 + (days?.size ?: 0) }
+  )
+
+  // Scroll to the current conference day once days are loaded
+  LaunchedEffect(days) {
+    val loadedDays = days
+    if (loadedDays != null && loadedDays.isNotEmpty()) {
+      val targetPage = viewModel.getConferenceDay(loadedDays) + 1
+      if (pagerState.currentPage == 0) {
+        pagerState.scrollToPage(targetPage)
+      }
+    }
+  }
 
   PagerScreen(
     modifier = Modifier
@@ -153,18 +163,11 @@ fun MainScreen(
         )
       }
 
-      1 -> {
+      else -> {
+        val day = days?.getOrNull(page - 1)
         SessionListScreen(
-          sessions = sessionsDay1,
-          title = stringResource(id = R.string.main_day1),
-          onSessionClick = onSessionClick
-        )
-      }
-
-      2 -> {
-        SessionListScreen(
-          sessions = sessionsDay2,
-          title = stringResource(id = R.string.main_day2),
+          sessions = day?.sessions,
+          title = day?.title.orEmpty(),
           onSessionClick = onSessionClick
         )
       }

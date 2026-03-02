@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -74,6 +75,9 @@ import com.androidmakers.ui.getPlatformContext
 import com.androidmakers.ui.model.Lce
 import com.androidmakers.ui.model.SessionDetailState
 import com.androidmakers.ui.theme.AMColor
+import com.androidmakers.ui.theme.LocalIsNeobrutalism
+import com.androidmakers.ui.theme.neoBrutalBorder
+import com.androidmakers.ui.theme.neoBrutalElevation
 import fr.androidmakers.domain.model.SocialsItem
 import fr.androidmakers.domain.model.Speaker
 import fr.androidmakers.domain.model.isAppClinic
@@ -245,6 +249,7 @@ fun SessionDetailLayout(
           if (isBookmarked) AMColor.amRed else Color.White
         )
         FloatingActionButton(
+          modifier = Modifier.neoBrutalElevation(shadowOffset = 2.dp),
           containerColor = backgroundColor,
           onClick = { onBookmarkClick(!isBookmarked) }
         ) {
@@ -319,7 +324,8 @@ private fun SessionDetails(
         modifier = Modifier
           .padding(horizontal = 16.dp)
           .padding(top = 16.dp)
-          .align(Alignment.CenterHorizontally),
+          .align(Alignment.CenterHorizontally)
+          .neoBrutalElevation(shadowOffset = 2.dp),
       ) {
         Text(
           text = stringResource(Res.string.session_app_clinic_apply),
@@ -351,9 +357,9 @@ private fun SessionDetails(
           )
         } else {
           Surface(
-            shape = RoundedCornerShape(16.dp),
+            shape = MaterialTheme.shapes.large,
             border = BorderStroke(1.dp, separatorColor()),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().neoBrutalElevation()
           ) {
             Text(
               modifier = Modifier.padding(horizontal = 4.dp, vertical = 8.dp),
@@ -379,8 +385,9 @@ private fun HeaderCard(sessionDetails: SessionDetailState) {
   Surface(
     modifier = Modifier
       .fillMaxWidth()
-      .padding(horizontal = 16.dp),
-    shape = RoundedCornerShape(16.dp),
+      .padding(horizontal = 16.dp)
+      .neoBrutalElevation(),
+    shape = MaterialTheme.shapes.large,
     color = MaterialTheme.colorScheme.surfaceContainerHigh
   ) {
     Column(modifier = Modifier.padding(25.dp)) {
@@ -474,10 +481,13 @@ private fun HeaderCard(sessionDetails: SessionDetailState) {
 
 @Composable
 private fun TagChip(text: String) {
+  val chipShape = MaterialTheme.shapes.small
   Surface(
-    shape = RoundedCornerShape(8.dp),
+    shape = chipShape,
     color = MaterialTheme.colorScheme.surfaceContainerHigh,
-    modifier = Modifier.border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(8.dp))
+    modifier = Modifier
+      .border(1.dp, MaterialTheme.colorScheme.outlineVariant, chipShape)
+      .neoBrutalBorder()
   ) {
     Text(
       text = text.uppercase(),
@@ -497,7 +507,8 @@ private fun DurationBadge(duration: Duration) {
   val customColors = sessionDetailCustomColors()
   val minutes = duration.inWholeMinutes
   Surface(
-    shape = RoundedCornerShape(12.dp),
+    modifier = Modifier.neoBrutalBorder(),
+    shape = MaterialTheme.shapes.medium,
     color = customColors.durationBadgeBg,
   ) {
     Text(
@@ -513,7 +524,8 @@ private fun DurationBadge(duration: Duration) {
 private fun LanguageBadge(language: String, emoji: String?) {
   val customColors = sessionDetailCustomColors()
   Surface(
-    shape = RoundedCornerShape(12.dp),
+    modifier = Modifier.neoBrutalBorder(),
+    shape = MaterialTheme.shapes.medium,
     border = BorderStroke(1.dp, customColors.languageBadgeBorder),
     color = customColors.languageBadgeBg
   ) {
@@ -541,12 +553,13 @@ private fun VideoSection(
   openLink: (SocialsItem) -> Unit,
 ) {
   val customColors = sessionDetailCustomColors()
+  val circularShape = if (LocalIsNeobrutalism.current) RectangleShape else CircleShape
   Box(
     modifier = Modifier
       .fillMaxWidth()
       .padding(horizontal = 16.dp)
       .height(192.dp)
-      .clip(RoundedCornerShape(16.dp))
+      .clip(MaterialTheme.shapes.large)
       .background(
         Brush.linearGradient(
           colors = listOf(
@@ -559,7 +572,7 @@ private fun VideoSection(
     contentAlignment = Alignment.Center
   ) {
     Surface(
-      shape = CircleShape,
+      shape = circularShape,
       color = Color.White.copy(alpha = 0.8f),
       modifier = Modifier.size(56.dp)
     ) {
@@ -608,7 +621,8 @@ private fun DescriptionSection(description: String) {
       title = stringResource(Res.string.about_this_talk)
     )
     Surface(
-      shape = RoundedCornerShape(16.dp),
+      modifier = Modifier.neoBrutalElevation(),
+      shape = MaterialTheme.shapes.large,
       color = MaterialTheme.colorScheme.surfaceContainerHigh
     ) {
       SelectionContainer {
@@ -657,9 +671,11 @@ private fun SpeakerCard(
   animatedVisibilityScope: AnimatedVisibilityScope?,
 ) {
   val customColors = sessionDetailCustomColors()
+  val circularShape = if (LocalIsNeobrutalism.current) RectangleShape else CircleShape
   Surface(
+    modifier = Modifier.neoBrutalElevation(),
     onClick = onClick,
-    shape = RoundedCornerShape(16.dp),
+    shape = MaterialTheme.shapes.large,
     color = MaterialTheme.colorScheme.surfaceContainerHigh
   ) {
     Row(
@@ -686,17 +702,17 @@ private fun SpeakerCard(
             contentDescription = stringResource(Res.string.speakers),
             modifier = photoModifier
               .size(56.dp)
-              .clip(CircleShape)
-              .border(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.2f), CircleShape)
+              .clip(circularShape)
+              .border(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.2f), circularShape)
           )
           // Green online dot
           Box(
             modifier = Modifier
               .size(14.dp)
               .align(Alignment.BottomEnd)
-              .background(MaterialTheme.colorScheme.surfaceContainerHigh, CircleShape)
+              .background(MaterialTheme.colorScheme.surfaceContainerHigh, circularShape)
               .padding(2.dp)
-              .background(customColors.onlineDot, CircleShape)
+              .background(customColors.onlineDot, circularShape)
           )
         }
         Spacer(modifier = Modifier.width(16.dp))

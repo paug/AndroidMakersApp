@@ -142,3 +142,45 @@ val DarkDefaultColorScheme = darkColorScheme(
     outlineVariant = md_theme_dark_outlineVariant,
     scrim = md_theme_dark_scrim,
 )
+
+// Neobrutalism colors
+val neobrutal_primary = Color(0xFF00E676)
+val neobrutal_secondary = Color(0xFFFF4081)
+val neobrutal_tertiary = Color(0xFFFFEA00)
+val neobrutal_background = Color(0xFFFFECB3)
+val neobrutal_surface = Color(0xFFFFF8E1)
+val neobrutal_onColor = Color(0xFF000000)
+
+val NeoBrutalColorScheme = lightColorScheme(
+    primary = neobrutal_primary,
+    onPrimary = neobrutal_onColor,
+    primaryContainer = Color(0xFFB9F6CA),
+    onPrimaryContainer = neobrutal_onColor,
+    secondary = neobrutal_secondary,
+    onSecondary = neobrutal_onColor,
+    secondaryContainer = neobrutal_secondary,
+    onSecondaryContainer = neobrutal_onColor,
+    tertiary = neobrutal_tertiary,
+    onTertiary = neobrutal_onColor,
+    tertiaryContainer = neobrutal_tertiary,
+    onTertiaryContainer = neobrutal_onColor,
+    error = Color(0xFFFF1744),
+    errorContainer = Color(0xFFFF8A80),
+    onError = neobrutal_onColor,
+    onErrorContainer = neobrutal_onColor,
+    background = neobrutal_background,
+    onBackground = neobrutal_onColor,
+    surface = neobrutal_surface,
+    onSurface = neobrutal_onColor,
+    onSurfaceVariant = neobrutal_onColor,
+    surfaceContainer = neobrutal_background,
+    surfaceContainerHigh = neobrutal_surface,
+    surfaceContainerHighest = Color(0xFFFFFFFF),
+    outline = neobrutal_onColor,
+    inverseOnSurface = neobrutal_background,
+    inverseSurface = neobrutal_onColor,
+    inversePrimary = neobrutal_primary,
+    surfaceTint = neobrutal_primary,
+    outlineVariant = neobrutal_onColor,
+    scrim = neobrutal_onColor,
+)
