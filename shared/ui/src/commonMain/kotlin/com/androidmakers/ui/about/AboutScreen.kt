@@ -96,16 +96,16 @@ fun AboutScreen(
         onGithubRepoClick = { viewModel.openGithubRepo(urlOpener) }
     )
 
+    SettingsCard(
+      themePreference = themePreference,
+      onThemePreferenceChange = { viewModel.setThemePreference(it) }
+    )
+
     SocialCard(
         onXHashtagClick = { viewModel.openXHashtag(urlOpener) },
         onBlueskyLogoClick = { viewModel.openBlueSkyAccount(urlOpener) },
         onXLogoClick = { viewModel.openXAccount(urlOpener) },
         onYouTubeLogoClick = { viewModel.openYoutube(urlOpener) }
-    )
-
-    SettingsCard(
-        themePreference = themePreference,
-        onThemePreferenceChange = { viewModel.setThemePreference(it) }
     )
 
     Text(
