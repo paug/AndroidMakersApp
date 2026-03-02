@@ -28,6 +28,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
+import androidx.compose.material3.adaptive.navigation3.ListDetailSceneStrategy
+import androidx.compose.material3.adaptive.navigation3.rememberListDetailSceneStrategy
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -44,6 +48,7 @@ import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import androidx.navigation3.ui.NavDisplay
+import androidx.window.core.layout.WindowSizeClass.Companion.WIDTH_DP_MEDIUM_LOWER_BOUND
 import com.androidmakers.ui.about.AboutScreen
 import com.androidmakers.ui.agenda.AgendaLayout
 import com.androidmakers.ui.agenda.SessionDetailScreen
@@ -78,7 +83,7 @@ import org.koin.core.parameter.parametersOf
  *
  * This layout contains the top bar, bottom bar, and the navigation display.
  */
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3AdaptiveApi::class)
 @Composable
 fun AVALayout(
     versionCode: String,
@@ -97,10 +102,15 @@ fun AVALayout(
 
   val user by userRepository.user.collectAsStateWithLifecycle(userRepository.currentUser)
 
-  // Check if the current top entry is a detail screen (to hide bottom bar)
+  // On wide screens with list-detail, both panes are shown together,
+  // so we keep bars visible even when a detail entry is on top.
+  val windowAdaptiveInfo = currentWindowAdaptiveInfo()
+  val isWideScreen = windowAdaptiveInfo.windowSizeClass
+      .isWidthAtLeastBreakpoint(WIDTH_DP_MEDIUM_LOWER_BOUND)
   val currentStack = navigationState.backStacks[navigationState.topLevelRoute]
   val currentTopEntry = currentStack?.lastOrNull()
   val showBottomBar = currentTopEntry == null || currentTopEntry.isTabKey()
+      || (isWideScreen && currentTopEntry is SessionDetailKey)
 
   Scaffold(
       modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -154,7 +164,7 @@ fun AVALayout(
         if (showBottomBar) {
           Column {
             HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-            NavigationBar(containerColor = MaterialTheme.colorScheme.surface) {
+            NavigationBar(containerColor = MaterialTheme.colorScheme.surfaceContainer) {
             if (FeatureFlags.isFeedEnabled) {
               NavigationBarItem(
                   navigator = navigator,
@@ -219,11 +229,15 @@ fun AVALayout(
             FeedScreen()
           }
 
-          entry<AgendaKey> {
+          entry<AgendaKey>(
+            metadata = ListDetailSceneStrategy.listPane(
+              detailPlaceholder = {}
+            )
+          ) {
             AgendaLayout(
               showFilterBottomSheet = showAgendaFilterBottomSheet,
               onFilterBottomSheetDismiss = { showAgendaFilterBottomSheet = false },
-              onSessionClick = { sessionId -> navigator.navigate(SessionDetailKey(sessionId)) }
+              onSessionClick = { sessionId -> navigator.navigateToSessionDetail(sessionId) }
             )
           }
 
@@ -252,11 +266,14 @@ fun AVALayout(
           }
 
           // Detail entries
-          entry<SessionDetailKey> { key ->
+          entry<SessionDetailKey>(
+            metadata = ListDetailSceneStrategy.detailPane()
+          ) { key ->
             SessionDetailScreen(
               viewModel = koinViewModel(key = key.sessionId) { parametersOf(key.sessionId) },
               onBackClick = { navigator.goBack() },
               onSpeakerClick = { speakerId -> navigator.navigate(SpeakerDetailKey(speakerId)) },
+              showBackButton = !isWideScreen,
               sharedTransitionScope = sharedTransitionScope,
               animatedVisibilityScope = LocalNavAnimatedContentScope.current,
             )
@@ -272,8 +289,11 @@ fun AVALayout(
           }
         }
 
+        val listDetailStrategy = rememberListDetailSceneStrategy<NavKey>()
+
         NavDisplay(
           entries = navigationState.toDecoratedEntries(entryProvider),
+          sceneStrategy = listDetailStrategy,
           onBack = { navigator.goBack() }
         )
       }

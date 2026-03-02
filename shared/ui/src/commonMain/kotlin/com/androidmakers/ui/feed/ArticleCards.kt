@@ -51,16 +51,18 @@ fun CategoryTimeRow(
       fontWeight = FontWeight.SemiBold,
       letterSpacing = 0.5.sp,
     )
-    Text(
-      text = " \u2022 ",
-      color = color,
-      fontSize = 11.sp,
-    )
-    Text(
-      text = timeAgo,
-      color = color,
-      fontSize = 11.sp,
-    )
+    if (timeAgo.isNotEmpty()) {
+      Text(
+        text = " \u2022 ",
+        color = color,
+        fontSize = 11.sp,
+      )
+      Text(
+        text = timeAgo,
+        color = color,
+        fontSize = 11.sp,
+      )
+    }
   }
 }
 
@@ -221,11 +223,14 @@ fun ArticleCardWithLocation(
               fontWeight = FontWeight.SemiBold,
               fontSize = 14.sp,
             )
-            Text(
-              text = location.time,
-              color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f),
-              fontSize = 12.sp,
-            )
+            val time = location.time
+            if (time != null) {
+              Text(
+                text = time,
+                color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f),
+                fontSize = 12.sp,
+              )
+            }
           }
         }
       }

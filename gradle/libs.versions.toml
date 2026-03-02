@@ -26,7 +26,8 @@ jetbrainsCompose = "1.11.0-alpha03"
 jetbrainsLifecycle = "2.10.0-alpha07"
 # if you update this, you probably need to update all other compose dependencies
 # see https://youtrack.jetbrains.com/issue/CMP-7571
-nav3-ui = "1.0.0-alpha05"
+material3-adaptive-nav3 = "1.3.0-alpha05"
+nav3-ui = "1.1.0-alpha03"
 junit = "4.13.2"
 koin = "4.1.1"
 kotlin = "2.3.10"
@@ -65,6 +66,7 @@ googleid = { group = "com.google.android.libraries.identity.googleid", name = "g
 jetbrains-lifecycle-runtime = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime", version.ref = "jetbrainsLifecycle" }
 jetbrains-lifecycle-runtime-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "jetbrainsLifecycle" }
 jetbrains-lifecycle-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "jetbrainsLifecycle" }
+jetbrains-material3-adaptive-navigation3 = { module = "org.jetbrains.compose.material3.adaptive:adaptive-navigation3", version.ref = "material3-adaptive-nav3" }
 jetbrains-navigation3-ui = { module = "org.jetbrains.androidx.navigation3:navigation3-ui", version.ref = "nav3-ui" }
 junit = { module = "junit:junit", version.ref = "junit" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }

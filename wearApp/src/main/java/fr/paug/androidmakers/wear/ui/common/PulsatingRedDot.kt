@@ -13,9 +13,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import fr.paug.androidmakers.wear.R
 import fr.paug.androidmakers.wear.ui.theme.amRed
 
 @Composable
@@ -39,12 +41,13 @@ fun Pulsating(content: @Composable () -> Unit) {
 
 @Composable
 fun PulsatingRedDot() {
+  val sessionInProgress = stringResource(R.string.session_in_progress)
   Pulsating {
     Box(
       modifier = Modifier
         .size(8.dp)
         .background(color = amRed, shape = CircleShape)
-        .semantics { contentDescription = "Session in progress" }
+        .semantics { contentDescription = sessionInProgress }
     )
   }
 }

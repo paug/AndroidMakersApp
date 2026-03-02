@@ -78,4 +78,10 @@
   <string name="about_links">Liens</string>
   <string name="about_event_tagline">Deux jours dédiés à Android à Paris</string>
 
+  <string name="settings">Paramètres</string>
+  <string name="theme">Thème</string>
+  <string name="theme_system">Système</string>
+  <string name="theme_light">Clair</string>
+  <string name="theme_dark">Sombre</string>
+
 </resources>

@@ -26,5 +26,5 @@ sealed interface FeedItem {
 
 data class LocationInfo(
   val name: String,
-  val time: String,
+  val time: String? = null,
 )

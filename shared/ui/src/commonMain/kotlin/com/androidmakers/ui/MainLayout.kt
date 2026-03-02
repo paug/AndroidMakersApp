@@ -1,7 +1,10 @@
 package com.androidmakers.ui
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import coil3.ImageLoader
 import coil3.compose.setSingletonImageLoaderFactory
@@ -17,8 +20,12 @@ import com.androidmakers.ui.common.navigation.SponsorsKey
 import com.androidmakers.ui.common.navigation.VenueKey
 import com.androidmakers.ui.common.navigation.parseDeepLink
 import com.androidmakers.ui.common.navigation.rememberNavigationState
+import com.androidmakers.ui.theme.AndroidMakersTheme
 import fr.androidmakers.domain.PlatformContext
+import fr.androidmakers.domain.model.ThemePreference
+import fr.androidmakers.domain.repo.ThemeRepository
 import fr.androidmakers.domain.utils.FeatureFlags
+import org.koin.compose.koinInject
 
 
 /**
@@ -36,6 +43,17 @@ fun MainLayout(
       .crossfade(true)
       .build()
   }
+
+  val themeRepository = koinInject<ThemeRepository>()
+  val themePreference by themeRepository.themePreference.collectAsState(ThemePreference.System)
+  val isSystemDark = isSystemInDarkTheme()
+  val useDarkTheme = when (themePreference) {
+    ThemePreference.System -> isSystemDark
+    ThemePreference.Light -> false
+    ThemePreference.Dark -> true
+  }
+
+  AndroidMakersTheme(useDarkTheme = useDarkTheme) {
 
   val startRoute = if (FeatureFlags.isFeedEnabled) FeedKey else AgendaKey
   val topLevelRoutes = buildSet {
@@ -69,6 +87,8 @@ fun MainLayout(
     navigator = navigator,
     signinCallbacks = signinCallbacks,
   )
+
+  } // AndroidMakersTheme
 }
 
 @Composable

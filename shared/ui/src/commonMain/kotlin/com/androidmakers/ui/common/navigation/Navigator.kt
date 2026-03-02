@@ -30,6 +30,17 @@ class Navigator(val state: NavigationState) {
     }
 
     /**
+     * Navigate to a session detail, replacing any existing session detail in the stack.
+     * This ensures clicking a different session in list-detail mode swaps the detail pane
+     * instead of stacking.
+     */
+    fun navigateToSessionDetail(sessionId: String) {
+        val stack = state.backStacks[state.topLevelRoute] ?: return
+        stack.removeAll { it is SessionDetailKey }
+        stack.add(SessionDetailKey(sessionId))
+    }
+
+    /**
      * Navigate from a deep link: switch to the given tab and push the detail key onto that tab's
      * back stack.
      */

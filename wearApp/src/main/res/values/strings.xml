@@ -16,4 +16,5 @@
     <string name="session_detail_speakers">Speakers</string>
     <string name="session_detail_addBookmark">Add to favorites</string>
     <string name="session_detail_removeBookmark">Remove from favorites</string>
+    <string name="session_in_progress">Session in progress</string>
 </resources>

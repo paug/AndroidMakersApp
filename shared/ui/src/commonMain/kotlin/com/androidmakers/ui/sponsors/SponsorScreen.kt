@@ -1,6 +1,5 @@
 package com.androidmakers.ui.sponsors
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -32,6 +31,7 @@ import com.androidmakers.ui.common.ErrorLayout
 import com.androidmakers.ui.common.LoadingLayout
 import com.androidmakers.ui.common.toUrlOpener
 import com.androidmakers.ui.model.Lce
+import com.androidmakers.ui.theme.LocalIsDarkTheme
 import fr.androidmakers.domain.model.Partner
 import fr.androidmakers.domain.model.PartnerGroup
 import org.koin.compose.viewmodel.koinViewModel
@@ -129,7 +129,7 @@ private fun PartnerLogo(
     partner: Partner,
     onClick: () -> Unit
 ) {
-  val logoUrl = if (isSystemInDarkTheme()) {
+  val logoUrl = if (LocalIsDarkTheme.current) {
     partner.logoUrlDark
   } else {
     partner.logoUrl

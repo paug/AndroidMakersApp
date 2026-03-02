@@ -8,20 +8,20 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.BookmarkAdd
 import androidx.compose.material.icons.rounded.BookmarkRemove
+import androidx.compose.material.icons.rounded.LocationOn
+import androidx.compose.material.icons.rounded.Schedule
 import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconToggleButton
-import androidx.compose.material3.ListItem
-import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -29,7 +29,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.androidmakers.ui.common.EmojiUtils
 import com.androidmakers.ui.model.UISession
@@ -97,70 +97,19 @@ internal fun SessionRow(
       else MaterialTheme.colorScheme.outline
     )
 
-    ListItem(
-      colors = ListItemDefaults.colors(containerColor = Color.Transparent),
-      overlineContent = {
-        FlowRow(
-          horizontalArrangement = Arrangement.spacedBy(6.dp),
-          verticalArrangement = Arrangement.spacedBy(6.dp),
-        ) {
-          uiSession.tags.forEach { tag ->
-            TagChip(tag)
-          }
-          RoomChip(uiSession.room)
-        }
-      },
-      headlineContent = {
+    Column(modifier = Modifier.padding(16.dp)) {
+      // 1. Title + Bookmark
+      Row(verticalAlignment = Alignment.Top) {
         Text(
           text = uiSession.title,
-          modifier = Modifier.padding(top = 4.dp),
+          modifier = Modifier.weight(1f),
           style = MaterialTheme.typography.titleMedium,
+          color = MaterialTheme.colorScheme.onSurface,
           maxLines = 2,
+          overflow = TextOverflow.Ellipsis,
         )
-      },
-      supportingContent = {
-        Column(modifier = Modifier.padding(top = 4.dp)) {
-          val speakers = uiSession.speakers.joinToString(", ") { it.name }
-          if (speakers.isNotBlank()) {
-            Text(
-              text = speakers,
-              style = MaterialTheme.typography.bodySmall,
-              color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-          }
-
-          Row(
-            modifier = Modifier.padding(top = 8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-          ) {
-            DurationChip(uiSession.formattedDuration())
-
-            val emoji = EmojiUtils.getLanguageInEmoji(uiSession.language)
-            if (emoji != null) {
-              Text(
-                text = emoji,
-                modifier = Modifier.padding(start = 8.dp),
-                style = MaterialTheme.typography.bodySmall,
-              )
-            }
-
-            if (uiSession.isAppClinic) {
-              Spacer(modifier = Modifier.width(8.dp))
-              Button(
-                onClick = onApplyForAppClinicClick,
-              ) {
-                Text(
-                  text = stringResource(Res.string.session_app_clinic_apply),
-                  style = MaterialTheme.typography.labelMedium,
-                )
-              }
-            }
-          }
-        }
-      },
-      trailingContent = {
         IconToggleButton(
-          modifier = Modifier.size(32.dp),
+          modifier = Modifier.size(48.dp),
           checked = isBookmarked,
           onCheckedChange = { onSessionBookmark(uiSession, it) },
         ) {
@@ -168,11 +117,53 @@ internal fun SessionRow(
             imageVector = imageVector,
             contentDescription = "favorite",
             tint = tint,
-            modifier = Modifier.size(20.dp),
+            modifier = Modifier.size(24.dp),
           )
         }
-      },
-    )
+      }
+
+      // 2. Speakers
+      val speakers = uiSession.speakers.joinToString(", ") { it.name }
+      if (speakers.isNotBlank()) {
+        Text(
+          text = speakers,
+          style = MaterialTheme.typography.bodySmall,
+          color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+      }
+
+      // 3. MetaRow — room, duration, language
+      MetaRow(
+        room = uiSession.room,
+        duration = uiSession.formattedDuration(),
+        language = uiSession.language,
+      )
+
+      // 4. Tags
+      if (uiSession.tags.isNotEmpty()) {
+        Spacer(modifier = Modifier.height(8.dp))
+        FlowRow(
+          horizontalArrangement = Arrangement.spacedBy(6.dp),
+          verticalArrangement = Arrangement.spacedBy(6.dp),
+        ) {
+          uiSession.tags.forEach { tag ->
+            TagChip(tag)
+          }
+        }
+      }
+
+      // 5. App Clinic
+      if (uiSession.isAppClinic) {
+        Spacer(modifier = Modifier.height(8.dp))
+        Button(onClick = onApplyForAppClinicClick) {
+          Text(
+            text = stringResource(Res.string.session_app_clinic_apply),
+            style = MaterialTheme.typography.labelMedium,
+          )
+        }
+      }
+    }
   }
 }
 
@@ -192,32 +183,56 @@ private fun TagChip(tag: String) {
 }
 
 @Composable
-private fun RoomChip(room: String) {
-  Surface(
-    shape = RoundedCornerShape(8.dp),
-    color = MaterialTheme.colorScheme.primaryContainer,
+private fun MetaRow(
+  room: String,
+  duration: String,
+  language: String?,
+) {
+  Row(
+    verticalAlignment = Alignment.CenterVertically,
+    horizontalArrangement = Arrangement.spacedBy(4.dp),
   ) {
+    Icon(
+      imageVector = Icons.Rounded.LocationOn,
+      contentDescription = null,
+      modifier = Modifier.size(14.dp),
+      tint = MaterialTheme.colorScheme.onSurfaceVariant,
+    )
     Text(
       text = room,
-      modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
-      style = MaterialTheme.typography.labelSmall,
-      color = MaterialTheme.colorScheme.onPrimaryContainer,
+      style = MaterialTheme.typography.bodySmall,
+      color = MaterialTheme.colorScheme.onSurfaceVariant,
     )
-  }
-}
-
-@Composable
-private fun DurationChip(duration: String) {
-  Surface(
-    shape = RoundedCornerShape(8.dp),
-    color = MaterialTheme.colorScheme.surfaceContainer,
-  ) {
+    Text(
+      text = "\u2022",
+      style = MaterialTheme.typography.bodySmall,
+      color = MaterialTheme.colorScheme.onSurfaceVariant,
+      modifier = Modifier.padding(horizontal = 2.dp),
+    )
+    Icon(
+      imageVector = Icons.Rounded.Schedule,
+      contentDescription = null,
+      modifier = Modifier.size(14.dp),
+      tint = MaterialTheme.colorScheme.onSurfaceVariant,
+    )
     Text(
       text = duration,
-      modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
-      style = MaterialTheme.typography.labelSmall,
-      color = MaterialTheme.colorScheme.onSurface,
+      style = MaterialTheme.typography.bodySmall,
+      color = MaterialTheme.colorScheme.onSurfaceVariant,
     )
+    val emoji = EmojiUtils.getLanguageInEmoji(language)
+    if (emoji != null) {
+      Text(
+        text = "\u2022",
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        modifier = Modifier.padding(horizontal = 2.dp),
+      )
+      Text(
+        text = emoji,
+        style = MaterialTheme.typography.bodySmall,
+      )
+    }
   }
 }
 
@@ -235,27 +250,143 @@ fun UISession.formattedDuration(): String {
   }
 }
 
+// region Previews
+
 @Preview
 @Composable
-private fun AgendaRowPreview() {
+private fun SessionRowDefaultPreview() {
   SessionRow(
-    fakeUiSession,
+    uiSession = UISession(
+      id = "1",
+      title = "Building Reactive UIs with Compose and State",
+      language = "french",
+      speakers = listOf(UISession.Speaker("John Doe")),
+      roomId = "1",
+      room = "Moebius",
+      startDate = Instant.parse("2022-04-25T09:00:00+02:00"),
+      endDate = Instant.parse("2022-04-25T09:40:00+02:00"),
+      isServiceSession = false,
+      isFavorite = false,
+      tags = listOf("Kotlin", "Compose"),
+    ),
     onSessionClick = {},
     onSessionBookmark = { _, _ -> },
     onApplyForAppClinicClick = {}
   )
 }
 
-private val fakeUiSession = UISession(
-    id = "1",
-    title = "Why did the chicken cross the road?",
-    language = "french",
-    speakers = listOf(UISession.Speaker("chicken1")),
-    roomId = "1",
-    room = "Moebius",
-    startDate = Instant.parse("2022-04-25T09:00:00+02:00"),
-    endDate = Instant.parse("2022-04-25T10:00:00+02:00"),
-    isServiceSession = false,
-    isFavorite = false,
-    tags = listOf("Kotlin", "Architecture"),
-)
+@Preview
+@Composable
+private fun SessionRowBookmarkedPreview() {
+  SessionRow(
+    uiSession = UISession(
+      id = "2",
+      title = "Advanced Kotlin Coroutines in Production",
+      language = "english",
+      speakers = listOf(UISession.Speaker("John Doe"), UISession.Speaker("Jane Smith")),
+      roomId = "2",
+      room = "Blin",
+      startDate = Instant.parse("2022-04-25T10:00:00+02:00"),
+      endDate = Instant.parse("2022-04-25T10:40:00+02:00"),
+      isServiceSession = false,
+      isFavorite = true,
+      tags = listOf("Kotlin", "Coroutines", "Architecture"),
+    ),
+    onSessionClick = {},
+    onSessionBookmark = { _, _ -> },
+    onApplyForAppClinicClick = {}
+  )
+}
+
+@Preview
+@Composable
+private fun SessionRowNoTagsPreview() {
+  SessionRow(
+    uiSession = UISession(
+      id = "3",
+      title = "Fireside Chat: The Future of Android",
+      language = null,
+      speakers = listOf(UISession.Speaker("Alice Martin")),
+      roomId = "1",
+      room = "Moebius",
+      startDate = Instant.parse("2022-04-25T14:00:00+02:00"),
+      endDate = Instant.parse("2022-04-25T14:45:00+02:00"),
+      isServiceSession = false,
+      isFavorite = false,
+    ),
+    onSessionClick = {},
+    onSessionBookmark = { _, _ -> },
+    onApplyForAppClinicClick = {}
+  )
+}
+
+@Preview
+@Composable
+private fun SessionRowAppClinicPreview() {
+  SessionRow(
+    uiSession = UISession(
+      id = "4",
+      title = "App Clinic: Get Your App Reviewed",
+      language = "english",
+      speakers = emptyList(),
+      roomId = "3",
+      room = "242",
+      startDate = Instant.parse("2022-04-25T11:00:00+02:00"),
+      endDate = Instant.parse("2022-04-25T11:40:00+02:00"),
+      isServiceSession = false,
+      isFavorite = false,
+      isAppClinic = true,
+    ),
+    onSessionClick = {},
+    onSessionBookmark = { _, _ -> },
+    onApplyForAppClinicClick = {}
+  )
+}
+
+@Preview
+@Composable
+private fun SessionRowManySpeakersPreview() {
+  SessionRow(
+    uiSession = UISession(
+      id = "5",
+      title = "Panel: Multiplatform in the Real World",
+      language = "english",
+      speakers = listOf(
+        UISession.Speaker("John Doe"),
+        UISession.Speaker("Jane Smith"),
+        UISession.Speaker("Alice Martin"),
+      ),
+      roomId = "1",
+      room = "Moebius",
+      startDate = Instant.parse("2022-04-25T15:00:00+02:00"),
+      endDate = Instant.parse("2022-04-25T15:40:00+02:00"),
+      isServiceSession = false,
+      isFavorite = true,
+      tags = listOf("KMP"),
+    ),
+    onSessionClick = {},
+    onSessionBookmark = { _, _ -> },
+    onApplyForAppClinicClick = {}
+  )
+}
+
+@Preview
+@Composable
+private fun ServiceSessionRowPreview() {
+  ServiceSessionRow(
+    session = UISession(
+      id = "6",
+      title = "Lunch Break",
+      language = null,
+      speakers = emptyList(),
+      roomId = "",
+      room = "",
+      startDate = Instant.parse("2022-04-25T12:00:00+02:00"),
+      endDate = Instant.parse("2022-04-25T13:00:00+02:00"),
+      isServiceSession = true,
+      isFavorite = false,
+    ),
+  )
+}
+
+// endregion

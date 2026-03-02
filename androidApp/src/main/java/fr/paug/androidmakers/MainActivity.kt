@@ -18,7 +18,6 @@ import androidx.credentials.exceptions.GetCredentialException
 import androidx.lifecycle.lifecycleScope
 import com.androidmakers.ui.MainLayout
 import com.androidmakers.ui.common.SigninCallbacks
-import com.androidmakers.ui.theme.AndroidMakersTheme
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
@@ -54,27 +53,25 @@ class MainActivity : ComponentActivity() {
 
     setContent {
       KoinContext {
-        AndroidMakersTheme {
-          val deeplink: String? by produceState(initialDeepLink) {
-            val listener = Consumer<Intent> { newIntent ->
-              newIntent.dataString?.let {
-                value = it
-              }
+        val deeplink: String? by produceState(initialDeepLink) {
+          val listener = Consumer<Intent> { newIntent ->
+            newIntent.dataString?.let {
+              value = it
             }
-            addOnNewIntentListener(listener)
-            awaitDispose { removeOnNewIntentListener(listener) }
           }
-
-          MainLayout(
-            versionName = BuildConfig.VERSION_NAME,
-            versionCode = BuildConfig.VERSION_CODE.toString(),
-            deeplink = deeplink,
-            signinCallbacks = SigninCallbacks(
-              signin = ::signIn,
-              signout = ::signOut,
-            )
-          )
+          addOnNewIntentListener(listener)
+          awaitDispose { removeOnNewIntentListener(listener) }
         }
+
+        MainLayout(
+          versionName = BuildConfig.VERSION_NAME,
+          versionCode = BuildConfig.VERSION_CODE.toString(),
+          deeplink = deeplink,
+          signinCallbacks = SigninCallbacks(
+            signin = ::signIn,
+            signout = ::signOut,
+          )
+        )
       }
     }
   }

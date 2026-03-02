@@ -99,78 +99,45 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.time.Clock
 import kotlin.time.Duration
 
-private data class SessionDetailColorScheme(
-  val screenBackground: Color,
-  val cardBackground: Color,
+/**
+ * Custom colors with no M3 equivalent — badges, gradients, and status indicators.
+ */
+private data class SessionDetailCustomColors(
   val durationBadgeBg: Color,
   val durationBadgeText: Color,
   val languageBadgeBg: Color,
   val languageBadgeBorder: Color,
   val languageBadgeText: Color,
-  val titleText: Color,
-  val metaText: Color,
-  val tagBg: Color,
-  val tagBorder: Color,
-  val tagText: Color,
-  val descriptionText: Color,
   val videoGradientStart: Color,
   val videoGradientEnd: Color,
-  val speakerName: Color,
-  val speakerCompany: Color,
-  val speakerHandle: Color,
   val onlineDot: Color,
-  val photoBorder: Color,
 )
 
-private val LightSessionDetailColors = SessionDetailColorScheme(
-  screenBackground = Color(0xFFF2F2F7),
-  cardBackground = Color.White,
+private val LightCustomColors = SessionDetailCustomColors(
   durationBadgeBg = Color(0xFFE8F5E9),
   durationBadgeText = Color(0xFF166534),
   languageBadgeBg = Color(0xFFFEF2F2),
   languageBadgeBorder = Color(0xFFFEE2E2),
   languageBadgeText = Color(0xFFDC2626),
-  titleText = Color(0xFF111827),
-  metaText = Color(0xFF6B7280),
-  tagBg = Color(0xFFF9FAFB),
-  tagBorder = Color(0xFFF3F4F6),
-  tagText = Color(0xFF4B5563),
-  descriptionText = Color(0xFF4B5563),
   videoGradientStart = Color(0xFFF0FDF4),
   videoGradientEnd = Color(0xFFECFDF5),
-  speakerName = Color(0xFF111827),
-  speakerCompany = Color(0xFF6B7280),
-  speakerHandle = Color(0xFF9CA3AF),
   onlineDot = Color(0xFF22C55E),
-  photoBorder = Color(0xFF6B7280).copy(alpha = 0.2f),
 )
 
-private val DarkSessionDetailColors = SessionDetailColorScheme(
-  screenBackground = Color(0xFF1C1B1F),
-  cardBackground = Color(0xFF2B2930),
+private val DarkCustomColors = SessionDetailCustomColors(
   durationBadgeBg = Color(0xFF1B3A26),
   durationBadgeText = Color(0xFF86EFAC),
   languageBadgeBg = Color(0xFF3B1212),
   languageBadgeBorder = Color(0xFF5C1D1D),
   languageBadgeText = Color(0xFFFCA5A5),
-  titleText = Color(0xFFE6E1E5),
-  metaText = Color(0xFF9CA3AF),
-  tagBg = Color(0xFF2B2930),
-  tagBorder = Color(0xFF3F3F46),
-  tagText = Color(0xFF9CA3AF),
-  descriptionText = Color(0xFF9CA3AF),
   videoGradientStart = Color(0xFF1A2E1F),
   videoGradientEnd = Color(0xFF162B1B),
-  speakerName = Color(0xFFE6E1E5),
-  speakerCompany = Color(0xFF9CA3AF),
-  speakerHandle = Color(0xFF6B7280),
   onlineDot = Color(0xFF22C55E),
-  photoBorder = Color(0xFF9CA3AF).copy(alpha = 0.2f),
 )
 
 @Composable
-private fun sessionDetailColors(): SessionDetailColorScheme {
-  return if (isSystemInDarkTheme()) DarkSessionDetailColors else LightSessionDetailColors
+private fun sessionDetailCustomColors(): SessionDetailCustomColors {
+  return if (isSystemInDarkTheme()) DarkCustomColors else LightCustomColors
 }
 
 @Composable
@@ -178,6 +145,7 @@ fun SessionDetailScreen(
   viewModel: SessionDetailViewModel,
   onBackClick: () -> Unit,
   onSpeakerClick: (speakerId: String) -> Unit,
+  showBackButton: Boolean = true,
   sharedTransitionScope: SharedTransitionScope? = null,
   animatedVisibilityScope: AnimatedVisibilityScope? = null,
 ) {
@@ -201,6 +169,7 @@ fun SessionDetailScreen(
       viewModel.applyForAppClinic(urlOpener)
     },
     onSpeakerClick = onSpeakerClick,
+    showBackButton = showBackButton,
     sharedTransitionScope = sharedTransitionScope,
     animatedVisibilityScope = animatedVisibilityScope,
   )
@@ -216,14 +185,14 @@ fun SessionDetailLayout(
   onOpenLink: (SocialsItem) -> Unit,
   onApplyForAppClinic: () -> Unit,
   onSpeakerClick: (speakerId: String) -> Unit,
+  showBackButton: Boolean = true,
   sharedTransitionScope: SharedTransitionScope? = null,
   animatedVisibilityScope: AnimatedVisibilityScope? = null,
 ) {
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-  val colors = sessionDetailColors()
   Scaffold(
     modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-    containerColor = colors.screenBackground,
+    containerColor = MaterialTheme.colorScheme.background,
     topBar = {
       TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
@@ -231,11 +200,13 @@ fun SessionDetailLayout(
           scrolledContainerColor = MaterialTheme.colorScheme.background,
         ),
         navigationIcon = {
-          IconButton(onClick = onBackClick) {
-            Icon(
-              Icons.AutoMirrored.Rounded.ArrowBack,
-              contentDescription = stringResource(Res.string.back)
-            )
+          if (showBackButton) {
+            IconButton(onClick = onBackClick) {
+              Icon(
+                Icons.AutoMirrored.Rounded.ArrowBack,
+                contentDescription = stringResource(Res.string.back)
+              )
+            }
           }
         },
         title = {
@@ -404,14 +375,13 @@ private fun SessionDetails(
 @Composable
 private fun HeaderCard(sessionDetails: SessionDetailState) {
   val session = sessionDetails.session
-  val colors = sessionDetailColors()
 
   Surface(
     modifier = Modifier
       .fillMaxWidth()
       .padding(horizontal = 16.dp),
     shape = RoundedCornerShape(16.dp),
-    color = colors.cardBackground
+    color = MaterialTheme.colorScheme.surfaceContainerHigh
   ) {
     Column(modifier = Modifier.padding(25.dp)) {
       // Badges row
@@ -436,7 +406,7 @@ private fun HeaderCard(sessionDetails: SessionDetailState) {
           text = session.title,
           style = MaterialTheme.typography.headlineSmall,
           fontWeight = FontWeight.Bold,
-          color = colors.titleText,
+          color = MaterialTheme.colorScheme.onSurface,
           modifier = Modifier.padding(top = 16.dp)
         )
       }
@@ -455,30 +425,30 @@ private fun HeaderCard(sessionDetails: SessionDetailState) {
           imageVector = Icons.Rounded.Schedule,
           contentDescription = null,
           modifier = Modifier.size(16.dp),
-          tint = colors.metaText
+          tint = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Text(
           text = formattedDate,
           style = MaterialTheme.typography.bodySmall,
-          color = colors.metaText
+          color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         if (sessionDetails.room.name.isNotEmpty()) {
           Text(
             text = "\u2022",
             style = MaterialTheme.typography.bodySmall,
-            color = colors.metaText,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(horizontal = 4.dp)
           )
           Icon(
             imageVector = Icons.Rounded.LocationOn,
             contentDescription = null,
             modifier = Modifier.size(16.dp),
-            tint = colors.metaText
+            tint = MaterialTheme.colorScheme.onSurfaceVariant
           )
           Text(
             text = sessionDetails.room.name,
             style = MaterialTheme.typography.bodySmall,
-            color = colors.metaText
+            color = MaterialTheme.colorScheme.onSurfaceVariant
           )
         }
       }
@@ -504,11 +474,10 @@ private fun HeaderCard(sessionDetails: SessionDetailState) {
 
 @Composable
 private fun TagChip(text: String) {
-  val colors = sessionDetailColors()
   Surface(
     shape = RoundedCornerShape(8.dp),
-    color = colors.tagBg,
-    modifier = Modifier.border(1.dp, colors.tagBorder, RoundedCornerShape(8.dp))
+    color = MaterialTheme.colorScheme.surfaceContainerHigh,
+    modifier = Modifier.border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(8.dp))
   ) {
     Text(
       text = text.uppercase(),
@@ -518,41 +487,41 @@ private fun TagChip(text: String) {
         fontSize = 12.sp,
         letterSpacing = 0.6.sp
       ),
-      color = colors.tagText
+      color = MaterialTheme.colorScheme.onSurfaceVariant
     )
   }
 }
 
 @Composable
 private fun DurationBadge(duration: Duration) {
-  val colors = sessionDetailColors()
+  val customColors = sessionDetailCustomColors()
   val minutes = duration.inWholeMinutes
   Surface(
     shape = RoundedCornerShape(12.dp),
-    color = colors.durationBadgeBg,
+    color = customColors.durationBadgeBg,
   ) {
     Text(
       text = "${minutes}min",
       modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
       style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Medium),
-      color = colors.durationBadgeText
+      color = customColors.durationBadgeText
     )
   }
 }
 
 @Composable
 private fun LanguageBadge(language: String, emoji: String?) {
-  val colors = sessionDetailColors()
+  val customColors = sessionDetailCustomColors()
   Surface(
     shape = RoundedCornerShape(12.dp),
-    border = BorderStroke(1.dp, colors.languageBadgeBorder),
-    color = colors.languageBadgeBg
+    border = BorderStroke(1.dp, customColors.languageBadgeBorder),
+    color = customColors.languageBadgeBg
   ) {
     Text(
       text = if (emoji != null) "$language $emoji" else language,
       modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
       style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Medium),
-      color = colors.languageBadgeText
+      color = customColors.languageBadgeText
     )
   }
 }
@@ -571,7 +540,7 @@ private fun VideoSection(
   videoURL: String,
   openLink: (SocialsItem) -> Unit,
 ) {
-  val colors = sessionDetailColors()
+  val customColors = sessionDetailCustomColors()
   Box(
     modifier = Modifier
       .fillMaxWidth()
@@ -581,8 +550,8 @@ private fun VideoSection(
       .background(
         Brush.linearGradient(
           colors = listOf(
-            colors.videoGradientStart,
-            colors.videoGradientEnd
+            customColors.videoGradientStart,
+            customColors.videoGradientEnd
           )
         )
       )
@@ -608,7 +577,6 @@ private fun VideoSection(
 
 @Composable
 private fun SectionHeader(icon: ImageVector, title: String) {
-  val colors = sessionDetailColors()
   Row(
     verticalAlignment = Alignment.CenterVertically,
     horizontalArrangement = Arrangement.spacedBy(6.dp),
@@ -618,7 +586,7 @@ private fun SectionHeader(icon: ImageVector, title: String) {
       imageVector = icon,
       contentDescription = null,
       modifier = Modifier.size(16.dp),
-      tint = colors.metaText
+      tint = MaterialTheme.colorScheme.onSurfaceVariant
     )
     Text(
       text = title.uppercase(),
@@ -627,14 +595,13 @@ private fun SectionHeader(icon: ImageVector, title: String) {
         fontSize = 12.sp,
         letterSpacing = 0.6.sp
       ),
-      color = colors.metaText
+      color = MaterialTheme.colorScheme.onSurfaceVariant
     )
   }
 }
 
 @Composable
 private fun DescriptionSection(description: String) {
-  val colors = sessionDetailColors()
   Column(modifier = Modifier.padding(horizontal = 16.dp)) {
     SectionHeader(
       icon = Icons.Rounded.Info,
@@ -642,14 +609,14 @@ private fun DescriptionSection(description: String) {
     )
     Surface(
       shape = RoundedCornerShape(16.dp),
-      color = colors.cardBackground
+      color = MaterialTheme.colorScheme.surfaceContainerHigh
     ) {
       SelectionContainer {
         Text(
           text = description,
           modifier = Modifier.padding(25.dp),
           style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 22.75.sp),
-          color = colors.descriptionText,
+          color = MaterialTheme.colorScheme.onSurfaceVariant,
           textAlign = TextAlign.Start
         )
       }
@@ -689,11 +656,11 @@ private fun SpeakerCard(
   sharedTransitionScope: SharedTransitionScope?,
   animatedVisibilityScope: AnimatedVisibilityScope?,
 ) {
-  val colors = sessionDetailColors()
+  val customColors = sessionDetailCustomColors()
   Surface(
     onClick = onClick,
     shape = RoundedCornerShape(16.dp),
-    color = colors.cardBackground
+    color = MaterialTheme.colorScheme.surfaceContainerHigh
   ) {
     Row(
       modifier = Modifier
@@ -720,16 +687,16 @@ private fun SpeakerCard(
             modifier = photoModifier
               .size(56.dp)
               .clip(CircleShape)
-              .border(1.dp, colors.photoBorder, CircleShape)
+              .border(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.2f), CircleShape)
           )
           // Green online dot
           Box(
             modifier = Modifier
               .size(14.dp)
               .align(Alignment.BottomEnd)
-              .background(colors.cardBackground, CircleShape)
+              .background(MaterialTheme.colorScheme.surfaceContainerHigh, CircleShape)
               .padding(2.dp)
-              .background(colors.onlineDot, CircleShape)
+              .background(customColors.onlineDot, CircleShape)
           )
         }
         Spacer(modifier = Modifier.width(16.dp))
@@ -742,7 +709,7 @@ private fun SpeakerCard(
             text = name,
             style = MaterialTheme.typography.bodyLarge.copy(fontSize = 16.sp),
             fontWeight = FontWeight.Bold,
-            color = colors.speakerName
+            color = MaterialTheme.colorScheme.onSurface
           )
         }
         speaker.company?.let { company ->
@@ -750,7 +717,7 @@ private fun SpeakerCard(
             Text(
               text = company,
               style = MaterialTheme.typography.bodySmall.copy(fontSize = 12.sp),
-              color = colors.speakerCompany
+              color = MaterialTheme.colorScheme.onSurfaceVariant
             )
           }
         }
@@ -761,7 +728,7 @@ private fun SpeakerCard(
             Text(
               text = "@$handle",
               style = MaterialTheme.typography.bodySmall.copy(fontSize = 12.sp),
-              color = colors.speakerHandle
+              color = MaterialTheme.colorScheme.outline
             )
           }
         }
@@ -771,7 +738,7 @@ private fun SpeakerCard(
       Icon(
         imageVector = Icons.AutoMirrored.Rounded.KeyboardArrowRight,
         contentDescription = null,
-        tint = colors.metaText
+        tint = MaterialTheme.colorScheme.onSurfaceVariant
       )
     }
   }
