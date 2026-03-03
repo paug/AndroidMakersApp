@@ -23,6 +23,10 @@ style:
   UnusedPrivateMember:
     active: true
     allowedNames: "(_.*)"
+    ignoreAnnotated:
+      - 'Preview'
+      - 'WearPreviewDevices'
+      - 'WearPreviewFontScales'
 
 naming:
   FunctionNaming:

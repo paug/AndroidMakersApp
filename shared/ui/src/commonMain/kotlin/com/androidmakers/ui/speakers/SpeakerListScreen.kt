@@ -19,10 +19,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.ui.graphics.RectangleShape
-import com.androidmakers.ui.theme.LocalIsNeobrutalism
-import com.androidmakers.ui.theme.neoBrutalElevation
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Clear
@@ -36,7 +32,6 @@ import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -46,13 +41,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.androidmakers.ui.common.LoadingLayout
 import com.androidmakers.ui.model.Lce
+import com.androidmakers.ui.theme.LocalIsNeobrutalism
+import com.androidmakers.ui.theme.neoBrutalElevation
 import fr.androidmakers.domain.model.Speaker
 import fr.paug.androidmakers.ui.Res
 import fr.paug.androidmakers.ui.back
@@ -88,98 +87,147 @@ fun SpeakerScreen(
       var searchHeight by remember { mutableStateOf(56.dp) }
 
       Box(Modifier.fillMaxSize()) {
+        SpeakerListContent(
+          visible = !expanded,
+          speakers = filteredSpeakers,
+          searchHeight = searchHeight,
+          navigateToSpeakerDetails = navigateToSpeakerDetails,
+          sharedTransitionScope = sharedTransitionScope,
+          animatedVisibilityScope = animatedVisibilityScope,
+        )
 
-        val density = LocalDensity.current
-
-        AnimatedVisibility(
-            visible = !expanded,
-            enter = fadeIn(),
-            exit = fadeOut(),
-        ) {
-          LazyColumn(
-              contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = searchHeight + 16.dp),
-              verticalArrangement = Arrangement.spacedBy(12.dp)
-          ) {
-            items(filteredSpeakers) { speaker ->
-              SpeakerItem(
-                  speaker = speaker,
-                  navigateToSpeakerDetails = navigateToSpeakerDetails,
-                  sharedTransitionScope = sharedTransitionScope,
-                  animatedVisibilityScope = animatedVisibilityScope,
-              )
-            }
-          }
-        }
-
-        val horizontalPadding: Dp by animateDpAsState(if (expanded) 0.dp else 24.dp)
-        val hasQuery by remember { derivedStateOf { text.isNotEmpty() } }
-
-        SearchBar(
-          inputField = {
-            SearchBarDefaults.InputField(
-              modifier = Modifier.fillMaxWidth(),
-              query = text,
-              onQueryChange = { text = it },
-              onSearch = { expanded = false },
-              expanded = expanded,
-              onExpandedChange = { expanded = it },
-              placeholder = { Text(stringResource(Res.string.speaker_search_placeholder)) },
-              leadingIcon = {
-                if (expanded) {
-                  IconButton(onClick = { expanded = false }) {
-                    Icon(
-                      Icons.AutoMirrored.Rounded.ArrowBack,
-                      contentDescription = stringResource(Res.string.back)
-                    )
-                  }
-                } else {
-                  Icon(Icons.Rounded.Search, contentDescription = null)
-                }
-              },
-              trailingIcon = {
-                if (hasQuery) {
-                  IconButton(onClick = { text = "" }) {
-                    Icon(Icons.Rounded.Clear, contentDescription = null)
-                  }
-                }
-              }
-            )
-          },
+        SpeakerSearchBar(
+          text = text,
+          onTextChange = { text = it },
           expanded = expanded,
           onExpandedChange = { expanded = it },
-          modifier = Modifier
-            .align(Alignment.TopCenter)
-            .padding(horizontal = horizontalPadding)
-            .onSizeChanged {
-              searchHeight = with(density) { it.height.toDp() }
-            },
-          colors = SearchBarDefaults.colors(
-            dividerColor = MaterialTheme.colorScheme.primary
-          )
-        ) {
-          LazyColumn(
-            contentPadding = PaddingValues(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-          ) {
-            items(
-              items = filteredSpeakers,
-              key = { it.id }
-            ) { speaker ->
-              SpeakerItem(
-                speaker = speaker,
-                modifier = Modifier.animateItem(),
-                navigateToSpeakerDetails = navigateToSpeakerDetails,
-                sharedTransitionScope = sharedTransitionScope,
-                animatedVisibilityScope = animatedVisibilityScope,
-              )
-            }
-          }
-        }
+          filteredSpeakers = filteredSpeakers,
+          navigateToSpeakerDetails = navigateToSpeakerDetails,
+          sharedTransitionScope = sharedTransitionScope,
+          animatedVisibilityScope = animatedVisibilityScope,
+          onSearchHeightChanged = { searchHeight = it },
+          modifier = Modifier.align(Alignment.TopCenter),
+        )
       }
     }
 
   }
 
+}
+
+@Suppress("LongParameterList")
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun SpeakerSearchBar(
+  text: String,
+  onTextChange: (String) -> Unit,
+  expanded: Boolean,
+  onExpandedChange: (Boolean) -> Unit,
+  filteredSpeakers: List<Speaker>,
+  navigateToSpeakerDetails: (String) -> Unit,
+  sharedTransitionScope: SharedTransitionScope?,
+  animatedVisibilityScope: AnimatedVisibilityScope?,
+  onSearchHeightChanged: (Dp) -> Unit,
+  modifier: Modifier = Modifier,
+) {
+  val density = LocalDensity.current
+  val horizontalPadding: Dp by animateDpAsState(if (expanded) 0.dp else 24.dp)
+  val hasQuery by remember { derivedStateOf { text.isNotEmpty() } }
+
+  SearchBar(
+    inputField = {
+      SearchBarDefaults.InputField(
+        modifier = Modifier.fillMaxWidth(),
+        query = text,
+        onQueryChange = onTextChange,
+        onSearch = { onExpandedChange(false) },
+        expanded = expanded,
+        onExpandedChange = onExpandedChange,
+        placeholder = { Text(stringResource(Res.string.speaker_search_placeholder)) },
+        leadingIcon = {
+          if (expanded) {
+            IconButton(onClick = { onExpandedChange(false) }) {
+              Icon(
+                Icons.AutoMirrored.Rounded.ArrowBack,
+                contentDescription = stringResource(Res.string.back)
+              )
+            }
+          } else {
+            Icon(Icons.Rounded.Search, contentDescription = null)
+          }
+        },
+        trailingIcon = {
+          if (hasQuery) {
+            IconButton(onClick = { onTextChange("") }) {
+              Icon(Icons.Rounded.Clear, contentDescription = null)
+            }
+          }
+        }
+      )
+    },
+    expanded = expanded,
+    onExpandedChange = onExpandedChange,
+    modifier = modifier
+      .padding(horizontal = horizontalPadding)
+      .onSizeChanged {
+        onSearchHeightChanged(with(density) { it.height.toDp() })
+      },
+    colors = SearchBarDefaults.colors(
+      dividerColor = MaterialTheme.colorScheme.primary
+    )
+  ) {
+    LazyColumn(
+      contentPadding = PaddingValues(horizontal = 16.dp),
+      verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+      items(
+        items = filteredSpeakers,
+        key = { it.id }
+      ) { speaker ->
+        SpeakerItem(
+          speaker = speaker,
+          modifier = Modifier.animateItem(),
+          navigateToSpeakerDetails = navigateToSpeakerDetails,
+          sharedTransitionScope = sharedTransitionScope,
+          animatedVisibilityScope = animatedVisibilityScope,
+        )
+      }
+    }
+  }
+}
+
+@Composable
+private fun SpeakerListContent(
+  visible: Boolean,
+  speakers: List<Speaker>,
+  searchHeight: Dp,
+  navigateToSpeakerDetails: (String) -> Unit,
+  sharedTransitionScope: SharedTransitionScope?,
+  animatedVisibilityScope: AnimatedVisibilityScope?,
+) {
+  AnimatedVisibility(
+    visible = visible,
+    enter = fadeIn(),
+    exit = fadeOut(),
+  ) {
+    LazyColumn(
+      contentPadding = PaddingValues(
+        start = 16.dp,
+        end = 16.dp,
+        top = searchHeight + 16.dp,
+      ),
+      verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+      items(speakers) { speaker ->
+        SpeakerItem(
+          speaker = speaker,
+          navigateToSpeakerDetails = navigateToSpeakerDetails,
+          sharedTransitionScope = sharedTransitionScope,
+          animatedVisibilityScope = animatedVisibilityScope,
+        )
+      }
+    }
+  }
 }
 
 @Composable
@@ -193,7 +241,10 @@ fun SpeakerItem(
 
   val circularShape = if (LocalIsNeobrutalism.current) RectangleShape else CircleShape
   Surface(
-      modifier = modifier.fillMaxWidth().neoBrutalElevation().clickable(onClick = { navigateToSpeakerDetails(speaker.id) }),
+    modifier = modifier
+      .fillMaxWidth()
+      .neoBrutalElevation()
+      .clickable(onClick = { navigateToSpeakerDetails(speaker.id) }),
       shape = MaterialTheme.shapes.large,
       color = MaterialTheme.colorScheme.surfaceContainerHigh,
   ) {

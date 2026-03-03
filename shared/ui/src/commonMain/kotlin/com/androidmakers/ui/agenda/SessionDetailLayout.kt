@@ -24,8 +24,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -50,6 +48,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -57,6 +56,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalUriHandler
@@ -78,6 +78,7 @@ import com.androidmakers.ui.theme.AMColor
 import com.androidmakers.ui.theme.LocalIsNeobrutalism
 import com.androidmakers.ui.theme.neoBrutalBorder
 import com.androidmakers.ui.theme.neoBrutalElevation
+import fr.androidmakers.domain.model.Complexity
 import fr.androidmakers.domain.model.SocialsItem
 import fr.androidmakers.domain.model.Speaker
 import fr.androidmakers.domain.model.isAppClinic
@@ -179,6 +180,7 @@ fun SessionDetailScreen(
   )
 }
 
+@Suppress("LongParameterList")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SessionDetailLayout(
@@ -198,68 +200,20 @@ fun SessionDetailLayout(
     modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     containerColor = MaterialTheme.colorScheme.background,
     topBar = {
-      TopAppBar(
-        colors = TopAppBarDefaults.topAppBarColors(
-          containerColor = MaterialTheme.colorScheme.background,
-          scrolledContainerColor = MaterialTheme.colorScheme.background,
-        ),
-        navigationIcon = {
-          if (showBackButton) {
-            IconButton(onClick = onBackClick) {
-              Icon(
-                Icons.AutoMirrored.Rounded.ArrowBack,
-                contentDescription = stringResource(Res.string.back)
-              )
-            }
-          }
-        },
-        title = {
-          Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-          ) {
-            Icon(
-              painter = painterResource(Res.drawable.notification),
-              contentDescription = null,
-              modifier = Modifier.size(24.dp)
-            )
-            Text(
-              text = stringResource(Res.string.talk_details),
-              style = MaterialTheme.typography.titleMedium
-            )
-          }
-        },
-        actions = {
-          if (sessionDetailState is Lce.Content) {
-            IconButton(onClick = onShareSession) {
-              Icon(
-                Icons.Rounded.Share,
-                contentDescription = stringResource(Res.string.share)
-              )
-            }
-          }
-        },
-        scrollBehavior = scrollBehavior
+      SessionDetailTopAppBar(
+        scrollBehavior = scrollBehavior,
+        showBackButton = showBackButton,
+        onBackClick = onBackClick,
+        hasContent = sessionDetailState is Lce.Content,
+        onShareSession = onShareSession,
       )
     },
     floatingActionButton = {
       if (sessionDetailState is Lce.Content) {
-        val isBookmarked = sessionDetailState.content.isBookmarked
-        val backgroundColor by animateColorAsState(
-          if (isBookmarked) AMColor.amRed else Color.White
+        SessionDetailFab(
+          isBookmarked = sessionDetailState.content.isBookmarked,
+          onBookmarkClick = onBookmarkClick,
         )
-        FloatingActionButton(
-          modifier = Modifier.neoBrutalElevation(shadowOffset = 2.dp),
-          containerColor = backgroundColor,
-          onClick = { onBookmarkClick(!isBookmarked) }
-        ) {
-          Crossfade(isBookmarked) { bookmarked ->
-            Icon(
-              imageVector = if (bookmarked) Icons.Rounded.BookmarkRemove else Icons.Rounded.BookmarkAdd,
-              contentDescription = stringResource(Res.string.bookmarked)
-            )
-          }
-        }
       }
     }
   ) { innerPadding ->
@@ -280,6 +234,82 @@ fun SessionDetailLayout(
         modifier = Modifier
           .padding(innerPadding)
           .consumeWindowInsets(innerPadding)
+      )
+    }
+  }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun SessionDetailTopAppBar(
+  scrollBehavior: TopAppBarScrollBehavior,
+  showBackButton: Boolean,
+  onBackClick: () -> Unit,
+  hasContent: Boolean,
+  onShareSession: () -> Unit,
+) {
+  TopAppBar(
+    colors = TopAppBarDefaults.topAppBarColors(
+      containerColor = MaterialTheme.colorScheme.background,
+      scrolledContainerColor = MaterialTheme.colorScheme.background,
+    ),
+    navigationIcon = {
+      if (showBackButton) {
+        IconButton(onClick = onBackClick) {
+          Icon(
+            Icons.AutoMirrored.Rounded.ArrowBack,
+            contentDescription = stringResource(Res.string.back)
+          )
+        }
+      }
+    },
+    title = {
+      Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+      ) {
+        Icon(
+          painter = painterResource(Res.drawable.notification),
+          contentDescription = null,
+          modifier = Modifier.size(24.dp)
+        )
+        Text(
+          text = stringResource(Res.string.talk_details),
+          style = MaterialTheme.typography.titleMedium
+        )
+      }
+    },
+    actions = {
+      if (hasContent) {
+        IconButton(onClick = onShareSession) {
+          Icon(
+            Icons.Rounded.Share,
+            contentDescription = stringResource(Res.string.share)
+          )
+        }
+      }
+    },
+    scrollBehavior = scrollBehavior
+  )
+}
+
+@Composable
+private fun SessionDetailFab(
+  isBookmarked: Boolean,
+  onBookmarkClick: (Boolean) -> Unit,
+) {
+  val backgroundColor by animateColorAsState(
+    if (isBookmarked) AMColor.amRed else Color.White
+  )
+  FloatingActionButton(
+    modifier = Modifier.neoBrutalElevation(shadowOffset = 2.dp),
+    containerColor = backgroundColor,
+    onClick = { onBookmarkClick(!isBookmarked) }
+  ) {
+    Crossfade(isBookmarked) { bookmarked ->
+      Icon(
+        imageVector = if (bookmarked) Icons.Rounded.BookmarkRemove else Icons.Rounded.BookmarkAdd,
+        contentDescription = stringResource(Res.string.bookmarked)
       )
     }
   }
@@ -377,7 +407,6 @@ private fun SessionDetails(
   }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun HeaderCard(sessionDetails: SessionDetailState) {
   val session = sessionDetails.session
@@ -391,21 +420,10 @@ private fun HeaderCard(sessionDetails: SessionDetailState) {
     color = MaterialTheme.colorScheme.surfaceContainerHigh
   ) {
     Column(modifier = Modifier.padding(25.dp)) {
-      // Badges row
-      Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
-      ) {
-        DurationBadge(duration = session.duration)
-
-        val languageLabel = session.language.asLanguageResource()
-        if (languageLabel != null) {
-          LanguageBadge(
-            language = languageLabel,
-            emoji = EmojiUtils.getLanguageInEmoji(session.language)
-          )
-        }
-      }
+      SessionHeaderBadgesRow(
+        duration = session.duration,
+        language = session.language,
+      )
 
       // Title
       SelectionContainer {
@@ -418,62 +436,104 @@ private fun HeaderCard(sessionDetails: SessionDetailState) {
         )
       }
 
-      // Date/time + Room row with icons
       val formattedDate = formatTimeInterval(
         sessionDetails.startTimestamp.toLocalDateTime(TimeZone.currentSystemDefault()),
         sessionDetails.endTimestamp.toLocalDateTime(TimeZone.currentSystemDefault())
       )
-      Row(
-        modifier = Modifier.padding(top = 8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(4.dp)
-      ) {
-        Icon(
-          imageVector = Icons.Rounded.Schedule,
-          contentDescription = null,
-          modifier = Modifier.size(16.dp),
-          tint = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-        Text(
-          text = formattedDate,
-          style = MaterialTheme.typography.bodySmall,
-          color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-        if (sessionDetails.room.name.isNotEmpty()) {
-          Text(
-            text = "\u2022",
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(horizontal = 4.dp)
-          )
-          Icon(
-            imageVector = Icons.Rounded.LocationOn,
-            contentDescription = null,
-            modifier = Modifier.size(16.dp),
-            tint = MaterialTheme.colorScheme.onSurfaceVariant
-          )
-          Text(
-            text = sessionDetails.room.name,
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-          )
-        }
-      }
+      SessionHeaderDateRoomRow(
+        formattedDate = formattedDate,
+        roomName = sessionDetails.room.name,
+      )
 
-      // Tags
-      if (session.tags.isNotEmpty() || session.complexity != null) {
-        FlowRow(
-          modifier = Modifier.padding(top = 8.dp),
-          horizontalArrangement = Arrangement.spacedBy(8.dp),
-          verticalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-          for (tag in session.tags) {
-            TagChip(text = tag)
-          }
-          session.complexity?.let { complexity ->
-            TagChip(text = complexity.name)
-          }
-        }
+      SessionHeaderTagsRow(
+        tags = session.tags,
+        complexity = session.complexity,
+      )
+    }
+  }
+}
+
+@Composable
+private fun SessionHeaderBadgesRow(
+  duration: Duration,
+  language: String,
+) {
+  Row(
+    modifier = Modifier.fillMaxWidth(),
+    horizontalArrangement = Arrangement.SpaceBetween
+  ) {
+    DurationBadge(duration = duration)
+
+    val languageLabel = language.asLanguageResource()
+    if (languageLabel != null) {
+      LanguageBadge(
+        language = languageLabel,
+        emoji = EmojiUtils.getLanguageInEmoji(language)
+      )
+    }
+  }
+}
+
+@Composable
+private fun SessionHeaderDateRoomRow(
+  formattedDate: String,
+  roomName: String,
+) {
+  Row(
+    modifier = Modifier.padding(top = 8.dp),
+    verticalAlignment = Alignment.CenterVertically,
+    horizontalArrangement = Arrangement.spacedBy(4.dp)
+  ) {
+    Icon(
+      imageVector = Icons.Rounded.Schedule,
+      contentDescription = null,
+      modifier = Modifier.size(16.dp),
+      tint = MaterialTheme.colorScheme.onSurfaceVariant
+    )
+    Text(
+      text = formattedDate,
+      style = MaterialTheme.typography.bodySmall,
+      color = MaterialTheme.colorScheme.onSurfaceVariant
+    )
+    if (roomName.isNotEmpty()) {
+      Text(
+        text = "\u2022",
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        modifier = Modifier.padding(horizontal = 4.dp)
+      )
+      Icon(
+        imageVector = Icons.Rounded.LocationOn,
+        contentDescription = null,
+        modifier = Modifier.size(16.dp),
+        tint = MaterialTheme.colorScheme.onSurfaceVariant
+      )
+      Text(
+        text = roomName,
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant
+      )
+    }
+  }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun SessionHeaderTagsRow(
+  tags: List<String>,
+  complexity: Complexity?,
+) {
+  if (tags.isNotEmpty() || complexity != null) {
+    FlowRow(
+      modifier = Modifier.padding(top = 8.dp),
+      horizontalArrangement = Arrangement.spacedBy(8.dp),
+      verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+      for (tag in tags) {
+        TagChip(text = tag)
+      }
+      complexity?.let {
+        TagChip(text = it.name)
       }
     }
   }
@@ -670,8 +730,6 @@ private fun SpeakerCard(
   sharedTransitionScope: SharedTransitionScope?,
   animatedVisibilityScope: AnimatedVisibilityScope?,
 ) {
-  val customColors = sessionDetailCustomColors()
-  val circularShape = if (LocalIsNeobrutalism.current) RectangleShape else CircleShape
   Surface(
     modifier = Modifier.neoBrutalElevation(),
     onClick = onClick,
@@ -684,71 +742,20 @@ private fun SpeakerCard(
         .padding(16.dp),
       verticalAlignment = Alignment.CenterVertically
     ) {
-      // Photo with green online dot
       speaker.photoUrl?.let { photoUrl ->
-        val photoModifier = if (sharedTransitionScope != null && animatedVisibilityScope != null) {
-          with(sharedTransitionScope) {
-            Modifier.sharedElement(
-              sharedContentState = rememberSharedContentState(key = "speaker_photo_${speaker.id}"),
-              animatedVisibilityScope = animatedVisibilityScope,
-            )
-          }
-        } else {
-          Modifier
-        }
-        Box {
-          AsyncImage(
-            model = photoUrl,
-            contentDescription = stringResource(Res.string.speakers),
-            modifier = photoModifier
-              .size(56.dp)
-              .clip(circularShape)
-              .border(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.2f), circularShape)
-          )
-          // Green online dot
-          Box(
-            modifier = Modifier
-              .size(14.dp)
-              .align(Alignment.BottomEnd)
-              .background(MaterialTheme.colorScheme.surfaceContainerHigh, circularShape)
-              .padding(2.dp)
-              .background(customColors.onlineDot, circularShape)
-          )
-        }
+        SpeakerPhotoWithDot(
+          photoUrl = photoUrl,
+          speakerId = speaker.id,
+          sharedTransitionScope = sharedTransitionScope,
+          animatedVisibilityScope = animatedVisibilityScope,
+        )
         Spacer(modifier = Modifier.width(16.dp))
       }
 
-      // Name + company + handle
-      Column(modifier = Modifier.weight(1f)) {
-        speaker.name?.let { name ->
-          Text(
-            text = name,
-            style = MaterialTheme.typography.bodyLarge.copy(fontSize = 16.sp),
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onSurface
-          )
-        }
-        speaker.company?.let { company ->
-          if (company.isNotBlank()) {
-            Text(
-              text = company,
-              style = MaterialTheme.typography.bodySmall.copy(fontSize = 12.sp),
-              color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-          }
-        }
-        // Show first social handle if available
-        speaker.socials?.filterNotNull()?.firstOrNull()?.let { social ->
-          val handle = extractHandle(social)
-          if (handle != null) {
-            Text(
-              text = "@$handle",
-              style = MaterialTheme.typography.bodySmall.copy(fontSize = 12.sp),
-              color = MaterialTheme.colorScheme.outline
-            )
-          }
-        }
-      }
+      SpeakerTextInfo(
+        speaker = speaker,
+        modifier = Modifier.weight(1f),
+      )
 
       // Chevron
       Icon(
@@ -756,6 +763,83 @@ private fun SpeakerCard(
         contentDescription = null,
         tint = MaterialTheme.colorScheme.onSurfaceVariant
       )
+    }
+  }
+}
+
+@Composable
+private fun SpeakerPhotoWithDot(
+  photoUrl: String,
+  speakerId: String,
+  sharedTransitionScope: SharedTransitionScope?,
+  animatedVisibilityScope: AnimatedVisibilityScope?,
+) {
+  val customColors = sessionDetailCustomColors()
+  val circularShape = if (LocalIsNeobrutalism.current) RectangleShape else CircleShape
+  val photoModifier = if (sharedTransitionScope != null && animatedVisibilityScope != null) {
+    with(sharedTransitionScope) {
+      Modifier.sharedElement(
+        sharedContentState = rememberSharedContentState(key = "speaker_photo_$speakerId"),
+        animatedVisibilityScope = animatedVisibilityScope,
+      )
+    }
+  } else {
+    Modifier
+  }
+  Box {
+    AsyncImage(
+      model = photoUrl,
+      contentDescription = stringResource(Res.string.speakers),
+      modifier = photoModifier
+        .size(56.dp)
+        .clip(circularShape)
+        .border(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.2f), circularShape)
+    )
+    // Green online dot
+    Box(
+      modifier = Modifier
+        .size(14.dp)
+        .align(Alignment.BottomEnd)
+        .background(MaterialTheme.colorScheme.surfaceContainerHigh, circularShape)
+        .padding(2.dp)
+        .background(customColors.onlineDot, circularShape)
+    )
+  }
+}
+
+@Composable
+private fun SpeakerTextInfo(
+  speaker: Speaker,
+  modifier: Modifier = Modifier,
+) {
+  Column(modifier = modifier) {
+    speaker.name?.let { name ->
+      Text(
+        text = name,
+        style = MaterialTheme.typography.bodyLarge.copy(fontSize = 16.sp),
+        fontWeight = FontWeight.Bold,
+        color = MaterialTheme.colorScheme.onSurface
+      )
+    }
+    speaker.company?.let { company ->
+      if (company.isNotBlank()) {
+        Text(
+          text = company,
+          style = MaterialTheme.typography.bodySmall.copy(fontSize = 12.sp),
+          color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+      }
+    }
+    // Show first social handle if available
+    speaker.socials?.filterNotNull()?.firstOrNull()?.let { social ->
+      val handle = extractHandle(social)
+      if (handle != null) {
+        Text(
+          text = "@$handle",
+          style = MaterialTheme.typography.bodySmall.copy(fontSize = 12.sp),
+          color = MaterialTheme.colorScheme.outline
+        )
+      }
     }
   }
 }

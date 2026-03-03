@@ -14,10 +14,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.ui.graphics.RectangleShape
-import com.androidmakers.ui.theme.LocalIsNeobrutalism
-import com.androidmakers.ui.theme.neoBrutalBorder
-import com.androidmakers.ui.theme.neoBrutalElevation
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.LocationOn
 import androidx.compose.material3.Icon
@@ -29,12 +25,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
+import com.androidmakers.ui.theme.LocalIsNeobrutalism
+import com.androidmakers.ui.theme.neoBrutalBorder
+import com.androidmakers.ui.theme.neoBrutalElevation
 import fr.androidmakers.domain.model.FeedItem
 import fr.paug.androidmakers.ui.Res
 import fr.paug.androidmakers.ui.feed_read_more
@@ -96,43 +96,16 @@ fun ArticleCardWithImage(
   article: FeedItem.Article,
   modifier: Modifier = Modifier,
 ) {
-  val topClipShape = if (LocalIsNeobrutalism.current) RectangleShape
-    else RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
   Surface(
     modifier = modifier.fillMaxWidth().neoBrutalElevation(),
     shape = MaterialTheme.shapes.extraLarge,
     color = MaterialTheme.colorScheme.surfaceContainerHigh,
   ) {
     Column {
-      Box {
-        AsyncImage(
-          model = article.imageUrl,
-          contentDescription = null,
-          contentScale = ContentScale.Crop,
-          modifier = Modifier
-            .fillMaxWidth()
-            .height(180.dp)
-            .clip(topClipShape),
-        )
-        val badge = article.categoryBadge
-        if (badge != null) {
-          Text(
-            text = badge,
-            color = MaterialTheme.colorScheme.onPrimary,
-            fontSize = 11.sp,
-            fontWeight = FontWeight.Bold,
-            letterSpacing = 0.5.sp,
-            modifier = Modifier
-              .padding(12.dp)
-              .neoBrutalBorder()
-              .background(
-                MaterialTheme.colorScheme.primary.copy(alpha = 0.85f),
-                MaterialTheme.shapes.extraSmall
-              )
-              .padding(horizontal = 8.dp, vertical = 4.dp),
-          )
-        }
-      }
+      ArticleHeroImage(
+        imageUrl = article.imageUrl,
+        categoryBadge = article.categoryBadge,
+      )
       Column(modifier = Modifier.padding(16.dp)) {
         CategoryTimeRow(article.category, article.timeAgo)
         Text(
@@ -150,28 +123,76 @@ fun ArticleCardWithImage(
           overflow = TextOverflow.Ellipsis,
           modifier = Modifier.padding(top = 4.dp),
         )
-        Row(
-          modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 12.dp),
-          horizontalArrangement = Arrangement.SpaceBetween,
-          verticalAlignment = Alignment.CenterVertically,
-        ) {
-          if (article.avatarUrls.isNotEmpty()) {
-            OverlappingAvatars(article.avatarUrls)
-          } else {
-            Spacer(Modifier)
-          }
-          if (article.readMoreUrl != null) {
-            TextButton(onClick = { }) {
-              Text(
-                text = stringResource(Res.string.feed_read_more),
-                color = MaterialTheme.colorScheme.primary,
-                fontWeight = FontWeight.SemiBold,
-              )
-            }
-          }
-        }
+        ArticleCardFooter(
+          avatarUrls = article.avatarUrls,
+          readMoreUrl = article.readMoreUrl,
+        )
+      }
+    }
+  }
+}
+
+@Composable
+private fun ArticleHeroImage(
+  imageUrl: String?,
+  categoryBadge: String?,
+) {
+  val topClipShape = if (LocalIsNeobrutalism.current) RectangleShape
+  else RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
+  Box {
+    AsyncImage(
+      model = imageUrl,
+      contentDescription = null,
+      contentScale = ContentScale.Crop,
+      modifier = Modifier
+        .fillMaxWidth()
+        .height(180.dp)
+        .clip(topClipShape),
+    )
+    if (categoryBadge != null) {
+      Text(
+        text = categoryBadge,
+        color = MaterialTheme.colorScheme.onPrimary,
+        fontSize = 11.sp,
+        fontWeight = FontWeight.Bold,
+        letterSpacing = 0.5.sp,
+        modifier = Modifier
+          .padding(12.dp)
+          .neoBrutalBorder()
+          .background(
+            MaterialTheme.colorScheme.primary.copy(alpha = 0.85f),
+            MaterialTheme.shapes.extraSmall
+          )
+          .padding(horizontal = 8.dp, vertical = 4.dp),
+      )
+    }
+  }
+}
+
+@Composable
+private fun ArticleCardFooter(
+  avatarUrls: List<String>,
+  readMoreUrl: String?,
+) {
+  Row(
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(top = 12.dp),
+    horizontalArrangement = Arrangement.SpaceBetween,
+    verticalAlignment = Alignment.CenterVertically,
+  ) {
+    if (avatarUrls.isNotEmpty()) {
+      OverlappingAvatars(avatarUrls)
+    } else {
+      Spacer(Modifier)
+    }
+    if (readMoreUrl != null) {
+      TextButton(onClick = { }) {
+        Text(
+          text = stringResource(Res.string.feed_read_more),
+          color = MaterialTheme.colorScheme.primary,
+          fontWeight = FontWeight.SemiBold,
+        )
       }
     }
   }

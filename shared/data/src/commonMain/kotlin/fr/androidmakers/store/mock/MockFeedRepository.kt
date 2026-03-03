@@ -21,7 +21,8 @@ class MockFeedRepository : FeedRepository {
             category = "KEYNOTE",
             timeAgo = "2h ago",
             title = "Opening Keynote: The Future of Android Development",
-            description = "Join us for an exciting keynote session exploring the latest innovations in Android development, from Compose Multiplatform to AI-powered tools.",
+            description = "Join us for an exciting keynote session exploring the latest " +
+              "innovations in Android development, from Compose Multiplatform to AI-powered tools.",
             imageUrl = "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800",
             categoryBadge = "KEYNOTE",
             avatarUrls = listOf(
@@ -47,7 +48,8 @@ class MockFeedRepository : FeedRepository {
             category = "ANNOUNCEMENT",
             timeAgo = "1d ago",
             title = "Swag Alert: Limited Edition T-Shirts",
-            description = "Pick up your exclusive Android Makers t-shirt at the registration desk. Available while supplies last!",
+            description = "Pick up your exclusive Android Makers t-shirt at the registration desk. " +
+              "Available while supplies last!",
             thumbnailUrl = "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=200",
           ),
         )

@@ -2,10 +2,10 @@ package fr.androidmakers.di
 
 import fr.androidmakers.domain.interactor.ApplyForAppClinicUseCase
 import fr.androidmakers.domain.interactor.GetAfterpartyVenueUseCase
-import fr.androidmakers.domain.interactor.GetFeedUseCase
 import fr.androidmakers.domain.interactor.GetAgendaUseCase
 import fr.androidmakers.domain.interactor.GetConferenceVenueUseCase
 import fr.androidmakers.domain.interactor.GetFavoriteSessionsUseCase
+import fr.androidmakers.domain.interactor.GetFeedUseCase
 import fr.androidmakers.domain.interactor.GetPartnersUseCase
 import fr.androidmakers.domain.interactor.MergeBookmarksUseCase
 import fr.androidmakers.domain.interactor.OpenBlueskyAccountUseCase

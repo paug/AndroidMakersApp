@@ -42,14 +42,18 @@ import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.MaterialTheme
 import androidx.wear.compose.material.Text
 import androidx.wear.compose.material.TitleCard
+import androidx.wear.compose.foundation.lazy.ScalingLazyListScope
 import androidx.wear.compose.ui.tooling.preview.WearPreviewDevices
 import androidx.wear.compose.ui.tooling.preview.WearPreviewFontScales
+import kotlinx.datetime.LocalDateTime
 import com.google.android.horologist.annotations.ExperimentalHorologistApi
 import com.google.android.horologist.compose.layout.ScalingLazyColumn
 import com.google.android.horologist.compose.layout.ScalingLazyColumnDefaults
 import com.google.android.horologist.compose.layout.ScreenScaffold
 import com.google.android.horologist.compose.layout.rememberResponsiveColumnState
 import com.google.android.horologist.compose.material.ResponsiveListHeader
+import fr.androidmakers.domain.model.Complexity
+import fr.androidmakers.domain.model.Speaker
 import fr.paug.androidmakers.wear.R
 import fr.paug.androidmakers.wear.ui.common.Loading
 import fr.paug.androidmakers.wear.ui.common.PulsatingRedDot
@@ -79,7 +83,6 @@ fun SessionDetailScreen(viewModel: SessionDetailViewModel) {
   }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun Session(session: UISession, onBookmarkToggle: (Boolean) -> Unit) {
   val columnState = rememberResponsiveColumnState(
@@ -93,51 +96,14 @@ private fun Session(session: UISession, onBookmarkToggle: (Boolean) -> Unit) {
       columnState = columnState,
       modifier = Modifier.fillMaxSize()
     ) {
-      // 1. Metadata pills row — Duration + Language + Ongoing dot
       item {
-        Row(
-          verticalAlignment = Alignment.CenterVertically,
-          horizontalArrangement = Arrangement.SpaceBetween,
-          modifier = Modifier.fillMaxWidth(),
-        ) {
-          Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-          ) {
-            Text(
-              text = session.formattedDuration,
-              style = MaterialTheme.typography.caption1,
-              color = amGreen,
-              modifier = Modifier
-                .background(
-                  color = amGreenLight,
-                  shape = RoundedCornerShape(50)
-                )
-                .padding(horizontal = 10.dp, vertical = 4.dp),
-            )
-
-            if (session.isOngoing) {
-              PulsatingRedDot()
-            }
-          }
-
-          languageWithFlag(session.session.language)?.let { langText ->
-            Text(
-              text = langText,
-              style = MaterialTheme.typography.caption1,
-              color = amRedDark,
-              modifier = Modifier
-                .background(
-                  color = amRedLight,
-                  shape = RoundedCornerShape(50)
-                )
-                .padding(horizontal = 10.dp, vertical = 4.dp),
-            )
-          }
-        }
+        SessionMetadataPills(
+          formattedDuration = session.formattedDuration,
+          isOngoing = session.isOngoing,
+          language = session.session.language,
+        )
       }
 
-      // 2. Title
       item {
         Text(
           modifier = Modifier
@@ -151,210 +117,290 @@ private fun Session(session: UISession, onBookmarkToggle: (Boolean) -> Unit) {
         )
       }
 
-      // 3. Time + Room row with icons
       item {
-        Row(
-          verticalAlignment = Alignment.CenterVertically,
-          horizontalArrangement = Arrangement.Start,
-          modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 4.dp),
-        ) {
-          Icon(
-            imageVector = Icons.Rounded.Schedule,
-            contentDescription = null,
-            modifier = Modifier.size(14.dp),
-            tint = MaterialTheme.colors.onSurfaceVariant,
-          )
-          Spacer(modifier = Modifier.width(4.dp))
-          Text(
-            text = session.session.startsAt.time.toString(),
-            style = MaterialTheme.typography.caption1,
-            color = MaterialTheme.colors.onSurfaceVariant,
-          )
-          Text(
-            text = " \u2022 ",
-            style = MaterialTheme.typography.caption1,
-            color = MaterialTheme.colors.onSurfaceVariant,
-          )
-          Icon(
-            imageVector = Icons.Rounded.Place,
-            contentDescription = null,
-            modifier = Modifier.size(14.dp),
-            tint = MaterialTheme.colors.onSurfaceVariant,
-          )
-          Spacer(modifier = Modifier.width(4.dp))
-          Text(
-            text = session.room.name,
-            style = MaterialTheme.typography.caption1,
-            color = MaterialTheme.colors.onSurfaceVariant,
-          )
-        }
+        SessionTimeRoomRow(
+          startsAt = session.session.startsAt,
+          roomName = session.room.name,
+        )
       }
 
-      // 4. Tags chips row (conditional)
       val tags = session.session.tags
       val complexity = session.session.complexity
       if (tags.isNotEmpty() || complexity != null) {
         item {
-          FlowRow(
-            modifier = Modifier
-              .fillMaxWidth()
-              .padding(horizontal = 8.dp, vertical = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(6.dp),
-            verticalArrangement = Arrangement.spacedBy(6.dp),
-          ) {
-            tags.forEach { tag ->
-              Text(
-                text = tag,
-                style = MaterialTheme.typography.caption2,
-                color = amChipText,
-                modifier = Modifier
-                  .background(
-                    color = amChipBackground,
-                    shape = RoundedCornerShape(8.dp)
-                  )
-                  .padding(horizontal = 8.dp, vertical = 4.dp),
-              )
-            }
-            complexity?.let {
-              Text(
-                text = it.name.lowercase().replaceFirstChar { c -> c.uppercase() },
-                style = MaterialTheme.typography.caption2,
-                color = amChipText,
-                modifier = Modifier
-                  .background(
-                    color = amChipBackground,
-                    shape = RoundedCornerShape(8.dp)
-                  )
-                  .padding(horizontal = 8.dp, vertical = 4.dp),
-              )
-            }
-          }
+          SessionTagsFlowRow(tags = tags, complexity = complexity)
         }
       }
 
-      // 5. Separator
       session.session.description?.let { description ->
-        item {
-          Box(
-            modifier = Modifier
-              .fillMaxWidth()
-              .padding(horizontal = 16.dp, vertical = 8.dp)
-              .height(1.dp)
-              .background(amSeparator)
-          )
-        }
-
-        // 6. "About this talk" header
-        item {
-          ResponsiveListHeader {
-            Text(text = stringResource(R.string.session_detail_about))
-          }
-        }
-
-        // 7. Description body
-        item {
-          Text(
-            modifier = Modifier
-              .fillMaxWidth()
-              .padding(horizontal = 8.dp),
-            text = description,
-            style = MaterialTheme.typography.body2.copy(
-              hyphens = Hyphens.Auto,
-              lineBreak = LineBreak.Paragraph,
-            ),
-            color = MaterialTheme.colors.onSurfaceVariant,
-          )
-        }
+        sessionDescriptionSection(description)
       }
 
-      // 8. Separator + Speakers section
       if (session.speakers.isNotEmpty()) {
-        item {
-          Box(
-            modifier = Modifier
-              .fillMaxWidth()
-              .padding(horizontal = 16.dp, vertical = 8.dp)
-              .height(1.dp)
-              .background(amSeparator)
-          )
-        }
-
-        // 9. "Speakers" header
-        item {
-          ResponsiveListHeader {
-            Text(text = stringResource(R.string.session_detail_speakers))
-          }
-        }
-
-        // 10. Speaker cards
-        for (speaker in session.speakers) {
-          item {
-            TitleCard(
-              modifier = Modifier.fillMaxWidth(),
-              backgroundPainter = ColorPainter(amGreenLight.copy(alpha = 0.15f)),
-              title = {
-                Text(
-                  text = speaker.name ?: "",
-                  fontWeight = FontWeight.Bold,
-                )
-              },
-              onClick = {},
-            ) {
-              Column {
-                if (!speaker.company.isNullOrBlank()) {
-                  Text(
-                    text = speaker.company!!,
-                    style = MaterialTheme.typography.caption2,
-                    color = MaterialTheme.colors.onSurfaceVariant,
-                  )
-                }
-                speaker.bio?.let { bio ->
-                  Text(
-                    text = bio,
-                    style = MaterialTheme.typography.body2,
-                    color = MaterialTheme.colors.onSurfaceVariant,
-                    maxLines = 4,
-                    overflow = TextOverflow.Ellipsis,
-                  )
-                }
-              }
-            }
-          }
-        }
+        sessionSpeakersSection(session.speakers)
       }
 
-      // 11. Bookmark action Chip
       item {
-        Chip(
-          modifier = Modifier.fillMaxWidth(),
-          label = {
-            Text(
-              text = stringResource(
-                if (session.isBookmarked) R.string.session_detail_removeBookmark
-                else R.string.session_detail_addBookmark
-              ),
-            )
-          },
-          icon = {
-            Icon(
-              imageVector = if (session.isBookmarked) Icons.Rounded.BookmarkRemove
-              else Icons.Rounded.BookmarkAdd,
-              contentDescription = null,
-              modifier = Modifier.size(18.dp),
-            )
-          },
-          colors = ChipDefaults.chipColors(
-            backgroundColor = if (session.isBookmarked) amRed.copy(alpha = 0.8f) else amGreen,
-            contentColor = Color.White,
-            iconColor = Color.White,
-          ),
-          onClick = { onBookmarkToggle(!session.isBookmarked) },
+        SessionBookmarkChip(
+          isBookmarked = session.isBookmarked,
+          onBookmarkToggle = onBookmarkToggle,
         )
       }
     }
   }
+}
+
+@Composable
+private fun SessionMetadataPills(
+  formattedDuration: String,
+  isOngoing: Boolean,
+  language: String,
+) {
+  Row(
+    verticalAlignment = Alignment.CenterVertically,
+    horizontalArrangement = Arrangement.SpaceBetween,
+    modifier = Modifier.fillMaxWidth(),
+  ) {
+    Row(
+      verticalAlignment = Alignment.CenterVertically,
+      horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+      Text(
+        text = formattedDuration,
+        style = MaterialTheme.typography.caption1,
+        color = amGreen,
+        modifier = Modifier
+          .background(
+            color = amGreenLight,
+            shape = RoundedCornerShape(50)
+          )
+          .padding(horizontal = 10.dp, vertical = 4.dp),
+      )
+
+      if (isOngoing) {
+        PulsatingRedDot()
+      }
+    }
+
+    languageWithFlag(language)?.let { langText ->
+      Text(
+        text = langText,
+        style = MaterialTheme.typography.caption1,
+        color = amRedDark,
+        modifier = Modifier
+          .background(
+            color = amRedLight,
+            shape = RoundedCornerShape(50)
+          )
+          .padding(horizontal = 10.dp, vertical = 4.dp),
+      )
+    }
+  }
+}
+
+@Composable
+private fun SessionTimeRoomRow(
+  startsAt: LocalDateTime,
+  roomName: String,
+) {
+  Row(
+    verticalAlignment = Alignment.CenterVertically,
+    horizontalArrangement = Arrangement.Start,
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(top = 4.dp),
+  ) {
+    Icon(
+      imageVector = Icons.Rounded.Schedule,
+      contentDescription = null,
+      modifier = Modifier.size(14.dp),
+      tint = MaterialTheme.colors.onSurfaceVariant,
+    )
+    Spacer(modifier = Modifier.width(4.dp))
+    Text(
+      text = startsAt.time.toString(),
+      style = MaterialTheme.typography.caption1,
+      color = MaterialTheme.colors.onSurfaceVariant,
+    )
+    Text(
+      text = " \u2022 ",
+      style = MaterialTheme.typography.caption1,
+      color = MaterialTheme.colors.onSurfaceVariant,
+    )
+    Icon(
+      imageVector = Icons.Rounded.Place,
+      contentDescription = null,
+      modifier = Modifier.size(14.dp),
+      tint = MaterialTheme.colors.onSurfaceVariant,
+    )
+    Spacer(modifier = Modifier.width(4.dp))
+    Text(
+      text = roomName,
+      style = MaterialTheme.typography.caption1,
+      color = MaterialTheme.colors.onSurfaceVariant,
+    )
+  }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun SessionTagsFlowRow(
+  tags: List<String>,
+  complexity: Complexity?,
+) {
+  FlowRow(
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(horizontal = 8.dp, vertical = 8.dp),
+    horizontalArrangement = Arrangement.spacedBy(6.dp),
+    verticalArrangement = Arrangement.spacedBy(6.dp),
+  ) {
+    tags.forEach { tag ->
+      Text(
+        text = tag,
+        style = MaterialTheme.typography.caption2,
+        color = amChipText,
+        modifier = Modifier
+          .background(
+            color = amChipBackground,
+            shape = RoundedCornerShape(8.dp)
+          )
+          .padding(horizontal = 8.dp, vertical = 4.dp),
+      )
+    }
+    complexity?.let {
+      Text(
+        text = it.name.lowercase().replaceFirstChar { c -> c.uppercase() },
+        style = MaterialTheme.typography.caption2,
+        color = amChipText,
+        modifier = Modifier
+          .background(
+            color = amChipBackground,
+            shape = RoundedCornerShape(8.dp)
+          )
+          .padding(horizontal = 8.dp, vertical = 4.dp),
+      )
+    }
+  }
+}
+
+private fun ScalingLazyListScope.sessionDescriptionSection(description: String) {
+  item {
+    Box(
+      modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 16.dp, vertical = 8.dp)
+        .height(1.dp)
+        .background(amSeparator)
+    )
+  }
+
+  item {
+    ResponsiveListHeader {
+      Text(text = stringResource(R.string.session_detail_about))
+    }
+  }
+
+  item {
+    Text(
+      modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 8.dp),
+      text = description,
+      style = MaterialTheme.typography.body2.copy(
+        hyphens = Hyphens.Auto,
+        lineBreak = LineBreak.Paragraph,
+      ),
+      color = MaterialTheme.colors.onSurfaceVariant,
+    )
+  }
+}
+
+private fun ScalingLazyListScope.sessionSpeakersSection(
+  speakers: List<Speaker>,
+) {
+  item {
+    Box(
+      modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 16.dp, vertical = 8.dp)
+        .height(1.dp)
+        .background(amSeparator)
+    )
+  }
+
+  item {
+    ResponsiveListHeader {
+      Text(text = stringResource(R.string.session_detail_speakers))
+    }
+  }
+
+  for (speaker in speakers) {
+    item {
+      TitleCard(
+        modifier = Modifier.fillMaxWidth(),
+        backgroundPainter = ColorPainter(amGreenLight.copy(alpha = 0.15f)),
+        title = {
+          Text(
+            text = speaker.name ?: "",
+            fontWeight = FontWeight.Bold,
+          )
+        },
+        onClick = {},
+      ) {
+        Column {
+          if (!speaker.company.isNullOrBlank()) {
+            Text(
+              text = speaker.company!!,
+              style = MaterialTheme.typography.caption2,
+              color = MaterialTheme.colors.onSurfaceVariant,
+            )
+          }
+          speaker.bio?.let { bio ->
+            Text(
+              text = bio,
+              style = MaterialTheme.typography.body2,
+              color = MaterialTheme.colors.onSurfaceVariant,
+              maxLines = 4,
+              overflow = TextOverflow.Ellipsis,
+            )
+          }
+        }
+      }
+    }
+  }
+}
+
+@Composable
+private fun SessionBookmarkChip(
+  isBookmarked: Boolean,
+  onBookmarkToggle: (Boolean) -> Unit,
+) {
+  Chip(
+    modifier = Modifier.fillMaxWidth(),
+    label = {
+      Text(
+        text = stringResource(
+          if (isBookmarked) R.string.session_detail_removeBookmark
+          else R.string.session_detail_addBookmark
+        ),
+      )
+    },
+    icon = {
+      Icon(
+        imageVector = if (isBookmarked) Icons.Rounded.BookmarkRemove
+        else Icons.Rounded.BookmarkAdd,
+        contentDescription = null,
+        modifier = Modifier.size(18.dp),
+      )
+    },
+    colors = ChipDefaults.chipColors(
+      backgroundColor = if (isBookmarked) amRed.copy(alpha = 0.8f) else amGreen,
+      contentColor = Color.White,
+      iconColor = Color.White,
+    ),
+    onClick = { onBookmarkToggle(!isBookmarked) },
+  )
 }
 
 private fun languageWithFlag(language: String): String? {

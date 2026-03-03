@@ -28,6 +28,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.navigation3.ListDetailSceneStrategy
@@ -60,6 +61,7 @@ import com.androidmakers.ui.speakers.SpeakerDetailsRoute
 import com.androidmakers.ui.speakers.SpeakerScreen
 import com.androidmakers.ui.sponsors.SponsorsScreen
 import com.androidmakers.ui.venue.VenuePager
+import fr.androidmakers.domain.model.User
 import fr.androidmakers.domain.repo.UserRepository
 import fr.androidmakers.domain.utils.FeatureFlags
 import fr.paug.androidmakers.ui.Res
@@ -116,103 +118,23 @@ fun AVALayout(
       modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
       topBar = {
         if (showBottomBar) {
-          TopAppBar(
-              scrollBehavior = scrollBehavior,
-              colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = MaterialTheme.colorScheme.background,
-                scrolledContainerColor = MaterialTheme.colorScheme.background,
-                  actionIconContentColor = MaterialTheme.colorScheme.onSurface,
-              ),
-              navigationIcon = {
-                Box(modifier = Modifier.padding(12.dp)) {
-                  Image(
-                      modifier = Modifier.size(32.dp),
-                      painter = painterResource(Res.drawable.notification),
-                      contentDescription = "logo"
-                  )
-                }
-              },
-              title = {
-                Text(
-                    text = stringResource(Res.string.app_name),
-                    style = MaterialTheme.typography.titleMedium,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-              },
-              actions = {
-                if (navigationState.topLevelRoute is AgendaKey) {
-                  BackHandlerCompat(enabled = showAgendaFilterBottomSheet) {
-                    showAgendaFilterBottomSheet = false
-                  }
-                  IconButton(
-                      onClick = { showAgendaFilterBottomSheet = !showAgendaFilterBottomSheet }
-                  ) {
-                    Icon(
-                        imageVector = Icons.Rounded.FilterList,
-                        contentDescription = stringResource(Res.string.filter),
-                    )
-                  }
-                }
-                SigninButton(user, signinCallbacks)
-              }
+          AVATopAppBar(
+            scrollBehavior = scrollBehavior,
+            isAgendaRoute = navigationState.topLevelRoute is AgendaKey,
+            showAgendaFilterBottomSheet = showAgendaFilterBottomSheet,
+            onToggleFilter = { showAgendaFilterBottomSheet = !showAgendaFilterBottomSheet },
+            onDismissFilter = { showAgendaFilterBottomSheet = false },
+            user = user,
+            signinCallbacks = signinCallbacks,
           )
         }
       },
-
       bottomBar = {
         if (showBottomBar) {
-          Column {
-            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-            NavigationBar(containerColor = MaterialTheme.colorScheme.surfaceContainer) {
-            if (FeatureFlags.isFeedEnabled) {
-              NavigationBarItem(
-                  navigator = navigator,
-                  navigationState = navigationState,
-                  imageVector = Icons.Rounded.DynamicFeed,
-                  label = stringResource(Res.string.feed),
-                  destinationRoute = FeedKey
-              )
-            }
-            NavigationBarItem(
-                navigator = navigator,
-                navigationState = navigationState,
-                imageVector = Icons.Rounded.CalendarMonth,
-                label = stringResource(Res.string.agenda),
-                destinationRoute = AgendaKey
-            )
-            if (!FeatureFlags.isFeedEnabled) {
-              NavigationBarItem(
-                  navigator = navigator,
-                  navigationState = navigationState,
-                  imageVector = Icons.Rounded.LocationCity,
-                  label = stringResource(Res.string.venue),
-                  destinationRoute = VenueKey
-              )
-            }
-            NavigationBarItem(
-                navigator = navigator,
-                navigationState = navigationState,
-                imageVector = Icons.Rounded.Groups,
-                label = stringResource(Res.string.speakers),
-                destinationRoute = SpeakersKey
-            )
-            NavigationBarItem(
-                navigator = navigator,
-                navigationState = navigationState,
-                imageVector = Icons.Rounded.Diamond,
-                label = stringResource(Res.string.sponsors),
-                destinationRoute = SponsorsKey
-            )
-            NavigationBarItem(
-                navigator = navigator,
-                navigationState = navigationState,
-                imageVector = Icons.Rounded.Info,
-                label = stringResource(Res.string.about),
-                destinationRoute = AboutKey
-            )
-            }
-          }
+          AVABottomBar(
+            navigator = navigator,
+            navigationState = navigationState,
+          )
         }
       },
   ) { innerPadding ->
@@ -220,84 +142,218 @@ fun AVALayout(
       Modifier.padding(innerPadding)
         .consumeWindowInsets(innerPadding)
     ) {
-      SharedTransitionLayout {
-        val sharedTransitionScope = this
+      AVANavDisplay(
+        versionCode = versionCode,
+        versionName = versionName,
+        navigationState = navigationState,
+        navigator = navigator,
+        showAgendaFilterBottomSheet = showAgendaFilterBottomSheet,
+        onDismissAgendaFilter = { showAgendaFilterBottomSheet = false },
+        isWideScreen = isWideScreen,
+      )
+    }
+  }
+}
 
-        val entryProvider = entryProvider {
-          // Tab entries
-          entry<FeedKey> {
-            FeedScreen()
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun AVATopAppBar(
+    scrollBehavior: TopAppBarScrollBehavior,
+    isAgendaRoute: Boolean,
+    showAgendaFilterBottomSheet: Boolean,
+    onToggleFilter: () -> Unit,
+    onDismissFilter: () -> Unit,
+    user: User?,
+    signinCallbacks: SigninCallbacks,
+) {
+  TopAppBar(
+      scrollBehavior = scrollBehavior,
+      colors = TopAppBarDefaults.topAppBarColors(
+        containerColor = MaterialTheme.colorScheme.background,
+        scrolledContainerColor = MaterialTheme.colorScheme.background,
+          actionIconContentColor = MaterialTheme.colorScheme.onSurface,
+      ),
+      navigationIcon = {
+        Box(modifier = Modifier.padding(12.dp)) {
+          Image(
+              modifier = Modifier.size(32.dp),
+              painter = painterResource(Res.drawable.notification),
+              contentDescription = "logo"
+          )
+        }
+      },
+      title = {
+        Text(
+            text = stringResource(Res.string.app_name),
+            style = MaterialTheme.typography.titleMedium,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+      },
+      actions = {
+        if (isAgendaRoute) {
+          BackHandlerCompat(enabled = showAgendaFilterBottomSheet) {
+            onDismissFilter()
           }
-
-          entry<AgendaKey>(
-            metadata = ListDetailSceneStrategy.listPane(
-              detailPlaceholder = {}
-            )
+          IconButton(
+              onClick = onToggleFilter
           ) {
-            AgendaLayout(
-              showFilterBottomSheet = showAgendaFilterBottomSheet,
-              onFilterBottomSheetDismiss = { showAgendaFilterBottomSheet = false },
-              onSessionClick = { sessionId -> navigator.navigateToSessionDetail(sessionId) }
-            )
-          }
-
-          entry<VenueKey> {
-            VenuePager()
-          }
-
-          entry<SpeakersKey> {
-            SpeakerScreen(
-              viewModel = koinViewModel(),
-              navigateToSpeakerDetails = { speakerId -> navigator.navigate(SpeakerDetailKey(speakerId)) },
-              sharedTransitionScope = sharedTransitionScope,
-              animatedVisibilityScope = LocalNavAnimatedContentScope.current,
-            )
-          }
-
-          entry<SponsorsKey> {
-            SponsorsScreen()
-          }
-
-          entry<AboutKey> {
-            AboutScreen(
-              versionCode = versionCode,
-              versionName = versionName
-            )
-          }
-
-          // Detail entries
-          entry<SessionDetailKey>(
-            metadata = ListDetailSceneStrategy.detailPane()
-          ) { key ->
-            SessionDetailScreen(
-              viewModel = koinViewModel(key = key.sessionId) { parametersOf(key.sessionId) },
-              onBackClick = { navigator.goBack() },
-              onSpeakerClick = { speakerId -> navigator.navigate(SpeakerDetailKey(speakerId)) },
-              showBackButton = !isWideScreen,
-              sharedTransitionScope = sharedTransitionScope,
-              animatedVisibilityScope = LocalNavAnimatedContentScope.current,
-            )
-          }
-
-          entry<SpeakerDetailKey> { key ->
-            SpeakerDetailsRoute(
-              speakerDetailsViewModel = koinViewModel(key = key.speakerId) { parametersOf(key.speakerId) },
-              onBackClick = { navigator.goBack() },
-              sharedTransitionScope = sharedTransitionScope,
-              animatedVisibilityScope = LocalNavAnimatedContentScope.current,
+            Icon(
+                imageVector = Icons.Rounded.FilterList,
+                contentDescription = stringResource(Res.string.filter),
             )
           }
         }
+        SigninButton(user, signinCallbacks)
+      }
+  )
+}
 
-        val listDetailStrategy = rememberListDetailSceneStrategy<NavKey>()
+@Composable
+private fun AVABottomBar(
+    navigator: Navigator,
+    navigationState: NavigationState,
+) {
+  Column {
+    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+    NavigationBar(containerColor = MaterialTheme.colorScheme.surfaceContainer) {
+      if (FeatureFlags.isFeedEnabled) {
+        NavigationBarItem(
+            navigator = navigator,
+            navigationState = navigationState,
+            imageVector = Icons.Rounded.DynamicFeed,
+            label = stringResource(Res.string.feed),
+            destinationRoute = FeedKey
+        )
+      }
+      NavigationBarItem(
+          navigator = navigator,
+          navigationState = navigationState,
+          imageVector = Icons.Rounded.CalendarMonth,
+          label = stringResource(Res.string.agenda),
+          destinationRoute = AgendaKey
+      )
+      if (!FeatureFlags.isFeedEnabled) {
+        NavigationBarItem(
+            navigator = navigator,
+            navigationState = navigationState,
+            imageVector = Icons.Rounded.LocationCity,
+            label = stringResource(Res.string.venue),
+            destinationRoute = VenueKey
+        )
+      }
+      NavigationBarItem(
+          navigator = navigator,
+          navigationState = navigationState,
+          imageVector = Icons.Rounded.Groups,
+          label = stringResource(Res.string.speakers),
+          destinationRoute = SpeakersKey
+      )
+      NavigationBarItem(
+          navigator = navigator,
+          navigationState = navigationState,
+          imageVector = Icons.Rounded.Diamond,
+          label = stringResource(Res.string.sponsors),
+          destinationRoute = SponsorsKey
+      )
+      NavigationBarItem(
+          navigator = navigator,
+          navigationState = navigationState,
+          imageVector = Icons.Rounded.Info,
+          label = stringResource(Res.string.about),
+          destinationRoute = AboutKey
+      )
+    }
+  }
+}
 
-        NavDisplay(
-          entries = navigationState.toDecoratedEntries(entryProvider),
-          sceneStrategy = listDetailStrategy,
-          onBack = { navigator.goBack() }
+@OptIn(ExperimentalMaterial3AdaptiveApi::class)
+@Composable
+private fun AVANavDisplay(
+    versionCode: String,
+    versionName: String,
+    navigationState: NavigationState,
+    navigator: Navigator,
+    showAgendaFilterBottomSheet: Boolean,
+    onDismissAgendaFilter: () -> Unit,
+    isWideScreen: Boolean,
+) {
+  SharedTransitionLayout {
+    val sharedTransitionScope = this
+
+    val entryProvider = entryProvider {
+      // Tab entries
+      entry<FeedKey> {
+        FeedScreen()
+      }
+
+      entry<AgendaKey>(
+        metadata = ListDetailSceneStrategy.listPane(
+          detailPlaceholder = {}
+        )
+      ) {
+        AgendaLayout(
+          showFilterBottomSheet = showAgendaFilterBottomSheet,
+          onFilterBottomSheetDismiss = onDismissAgendaFilter,
+          onSessionClick = { sessionId -> navigator.navigateToSessionDetail(sessionId) }
+        )
+      }
+
+      entry<VenueKey> {
+        VenuePager()
+      }
+
+      entry<SpeakersKey> {
+        SpeakerScreen(
+          viewModel = koinViewModel(),
+          navigateToSpeakerDetails = { speakerId -> navigator.navigate(SpeakerDetailKey(speakerId)) },
+          sharedTransitionScope = sharedTransitionScope,
+          animatedVisibilityScope = LocalNavAnimatedContentScope.current,
+        )
+      }
+
+      entry<SponsorsKey> {
+        SponsorsScreen()
+      }
+
+      entry<AboutKey> {
+        AboutScreen(
+          versionCode = versionCode,
+          versionName = versionName
+        )
+      }
+
+      // Detail entries
+      entry<SessionDetailKey>(
+        metadata = ListDetailSceneStrategy.detailPane()
+      ) { key ->
+        SessionDetailScreen(
+          viewModel = koinViewModel(key = key.sessionId) { parametersOf(key.sessionId) },
+          onBackClick = { navigator.goBack() },
+          onSpeakerClick = { speakerId -> navigator.navigate(SpeakerDetailKey(speakerId)) },
+          showBackButton = !isWideScreen,
+          sharedTransitionScope = sharedTransitionScope,
+          animatedVisibilityScope = LocalNavAnimatedContentScope.current,
+        )
+      }
+
+      entry<SpeakerDetailKey> { key ->
+        SpeakerDetailsRoute(
+          speakerDetailsViewModel = koinViewModel(key = key.speakerId) { parametersOf(key.speakerId) },
+          onBackClick = { navigator.goBack() },
+          sharedTransitionScope = sharedTransitionScope,
+          animatedVisibilityScope = LocalNavAnimatedContentScope.current,
         )
       }
     }
+
+    val listDetailStrategy = rememberListDetailSceneStrategy<NavKey>()
+
+    NavDisplay(
+      entries = navigationState.toDecoratedEntries(entryProvider),
+      sceneStrategy = listDetailStrategy,
+      onBack = { navigator.goBack() }
+    )
   }
 }
 

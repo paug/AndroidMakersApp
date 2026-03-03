@@ -1,6 +1,3 @@
-import org.jetbrains.kotlin.gradle.plugin.mpp.Framework
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
-
 plugins {
   alias(libs.plugins.androidmakers.kmp.library)
   alias(libs.plugins.jetbrainsCompose)

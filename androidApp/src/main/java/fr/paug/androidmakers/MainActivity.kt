@@ -76,15 +76,15 @@ class MainActivity : ComponentActivity() {
     }
   }
 
+  @Suppress("TooGenericExceptionCaught")
   private fun logFCMToken() {
     lifecycleScope.launch {
       try {
         val token = FirebaseMessaging.getInstance().token.await()
         Log.d(TAG, "FCM registration token: $token")
+      } catch (e: CancellationException) {
+        throw e
       } catch (e: Exception) {
-        if (e is CancellationException) {
-          throw e
-        }
         Log.w(TAG, "Fetching FCM registration token failed", e)
       }
     }
@@ -109,7 +109,9 @@ class MainActivity : ComponentActivity() {
       try {
         val response = credentialManager.getCredential(this@MainActivity, request)
         val credential = response.credential
-        if (credential is CustomCredential && credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
+        val isGoogleIdToken = credential is CustomCredential &&
+          credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL
+        if (isGoogleIdToken) {
           try {
             handleGoogleIdTokenCredential(GoogleIdTokenCredential.createFrom(credential.data))
           } catch (e: GoogleIdTokenParsingException) {
@@ -146,6 +148,7 @@ class MainActivity : ComponentActivity() {
      * For some reason, trying to use the client ids from the google cloud console doesn't work 🤷‍♂️
      * See https://github.com/android/identity-samples/issues/53#issuecomment-2579235790
      */
-    private val SERVER_CLIENT_ID = "985196411897-r7edbi9jgo3hfupekcmdrg66inonj0o5.apps.googleusercontent.com"
+    private const val SERVER_CLIENT_ID =
+      "985196411897-r7edbi9jgo3hfupekcmdrg66inonj0o5.apps.googleusercontent.com"
   }
 }

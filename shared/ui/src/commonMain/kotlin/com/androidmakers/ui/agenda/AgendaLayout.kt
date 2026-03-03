@@ -22,12 +22,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.androidmakers.ui.common.EmojiUtils
 import com.androidmakers.ui.common.LceLayout
 import com.androidmakers.ui.common.SessionFilter
@@ -46,10 +46,10 @@ import fr.paug.androidmakers.ui.language
 import fr.paug.androidmakers.ui.rooms
 import fr.paug.androidmakers.ui.tags
 import kotlinx.datetime.todayIn
-import kotlin.time.Clock
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
+import kotlin.time.Clock
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -143,27 +143,10 @@ private fun AgendaFilterDrawer(
       .padding(horizontal = 16.dp)
       .padding(bottom = 24.dp)
   ) {
-    // Title row
-    Row(
-      modifier = Modifier.fillMaxWidth(),
-      verticalAlignment = Alignment.CenterVertically,
-    ) {
-      Text(
-        text = stringResource(Res.string.filter),
-        style = MaterialTheme.typography.titleLarge,
-        modifier = Modifier.weight(1f),
-      )
-      if (sessionFilters.isNotEmpty()) {
-        TextButton(onClick = { onFiltersChanged(emptySet()) }) {
-          Icon(
-            imageVector = Icons.Rounded.Close,
-            contentDescription = null,
-            modifier = Modifier.padding(end = 4.dp),
-          )
-          Text("Clear")
-        }
-      }
-    }
+    FilterDrawerHeader(
+      hasActiveFilters = sessionFilters.isNotEmpty(),
+      onClearFilters = { onFiltersChanged(emptySet()) },
+    )
 
     // Bookmark
     FilterSection(title = null) {
@@ -180,25 +163,10 @@ private fun AgendaFilterDrawer(
       )
     }
 
-    // Language
-    FilterSection(title = stringResource(Res.string.language)) {
-      val french = SessionFilter.Language(SessionFilter.Language.FRENCH)
-      FilterChip(
-        selected = french in sessionFilters,
-        onClick = { onFiltersChanged(sessionFilters.toggle(french)) },
-        label = {
-          Text("${EmojiUtils.getLanguageInEmoji(SessionFilter.Language.FRENCH)} ${stringResource(Res.string.french)}")
-        },
-      )
-      val english = SessionFilter.Language(SessionFilter.Language.ENGLISH)
-      FilterChip(
-        selected = english in sessionFilters,
-        onClick = { onFiltersChanged(sessionFilters.toggle(english)) },
-        label = {
-          Text("${EmojiUtils.getLanguageInEmoji(SessionFilter.Language.ENGLISH)} ${stringResource(Res.string.english)}")
-        },
-      )
-    }
+    LanguageFilterSection(
+      sessionFilters = sessionFilters,
+      onFiltersChanged = onFiltersChanged,
+    )
 
     // Rooms
     FilterSection(title = stringResource(Res.string.rooms)) {
@@ -225,6 +193,64 @@ private fun AgendaFilterDrawer(
         }
       }
     }
+  }
+}
+
+@Composable
+private fun FilterDrawerHeader(
+  hasActiveFilters: Boolean,
+  onClearFilters: () -> Unit,
+) {
+  Row(
+    modifier = Modifier.fillMaxWidth(),
+    verticalAlignment = Alignment.CenterVertically,
+  ) {
+    Text(
+      text = stringResource(Res.string.filter),
+      style = MaterialTheme.typography.titleLarge,
+      modifier = Modifier.weight(1f),
+    )
+    if (hasActiveFilters) {
+      TextButton(onClick = onClearFilters) {
+        Icon(
+          imageVector = Icons.Rounded.Close,
+          contentDescription = null,
+          modifier = Modifier.padding(end = 4.dp),
+        )
+        Text("Clear")
+      }
+    }
+  }
+}
+
+@Composable
+private fun LanguageFilterSection(
+  sessionFilters: Set<SessionFilter>,
+  onFiltersChanged: (Set<SessionFilter>) -> Unit,
+) {
+  FilterSection(title = stringResource(Res.string.language)) {
+    val french = SessionFilter.Language(SessionFilter.Language.FRENCH)
+    FilterChip(
+      selected = french in sessionFilters,
+      onClick = { onFiltersChanged(sessionFilters.toggle(french)) },
+      label = {
+        Text(
+          "${EmojiUtils.getLanguageInEmoji(SessionFilter.Language.FRENCH)} " +
+            stringResource(Res.string.french)
+        )
+      },
+    )
+    val english = SessionFilter.Language(SessionFilter.Language.ENGLISH)
+    FilterChip(
+      selected = english in sessionFilters,
+      onClick = { onFiltersChanged(sessionFilters.toggle(english)) },
+      label = {
+        Text(
+          "${EmojiUtils.getLanguageInEmoji(SessionFilter.Language.ENGLISH)} " +
+            stringResource(Res.string.english)
+        )
+      },
+    )
   }
 }
 

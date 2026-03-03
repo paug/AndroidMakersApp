@@ -5,7 +5,6 @@ import androidx.savedstate.serialization.SavedStateConfiguration
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
-import kotlinx.serialization.modules.subclass
 
 // Top-level tab routes (bottom nav)
 @Serializable data object FeedKey : NavKey

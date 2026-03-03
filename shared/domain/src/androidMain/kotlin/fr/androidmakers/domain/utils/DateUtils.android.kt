@@ -63,6 +63,7 @@ actual fun formatTimeInterval(startDate: LocalDateTime, endDate: LocalDateTime):
   return if (startDate.date == endDate.date) {
     "${startDate.date.formatMediumDate()}, ${startDate.formatShortTime()} - ${endDate.formatShortTime()}"
   } else {
-    "${startDate.date.formatMediumDate()}, ${startDate.formatShortTime()} - ${endDate.date.formatMediumDate()}, ${endDate.formatShortTime()}"
+    "${startDate.date.formatMediumDate()}, ${startDate.formatShortTime()} - " +
+      "${endDate.date.formatMediumDate()}, ${endDate.formatShortTime()}"
   }
 }
