@@ -15,6 +15,7 @@ import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.exceptions.GetCredentialException
+import androidx.credentials.exceptions.NoCredentialException
 import androidx.lifecycle.lifecycleScope
 import com.androidmakers.ui.MainLayout
 import com.androidmakers.ui.common.SigninCallbacks
@@ -31,7 +32,6 @@ import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import org.koin.android.ext.android.inject
-import org.koin.compose.KoinContext
 
 class MainActivity : ComponentActivity() {
 
@@ -52,27 +52,25 @@ class MainActivity : ComponentActivity() {
     val initialDeepLink: String? = if (savedInstanceState == null) intent.dataString else null
 
     setContent {
-      KoinContext {
-        val deeplink: String? by produceState(initialDeepLink) {
-          val listener = Consumer<Intent> { newIntent ->
-            newIntent.dataString?.let {
-              value = it
-            }
+      val deeplink: String? by produceState(initialDeepLink) {
+        val listener = Consumer<Intent> { newIntent ->
+          newIntent.dataString?.let {
+            value = it
           }
-          addOnNewIntentListener(listener)
-          awaitDispose { removeOnNewIntentListener(listener) }
         }
-
-        MainLayout(
-          versionName = BuildConfig.VERSION_NAME,
-          versionCode = BuildConfig.VERSION_CODE.toString(),
-          deeplink = deeplink,
-          signinCallbacks = SigninCallbacks(
-            signin = ::signIn,
-            signout = ::signOut,
-          )
-        )
+        addOnNewIntentListener(listener)
+        awaitDispose { removeOnNewIntentListener(listener) }
       }
+
+      MainLayout(
+        versionName = BuildConfig.VERSION_NAME,
+        versionCode = BuildConfig.VERSION_CODE.toString(),
+        deeplink = deeplink,
+        signinCallbacks = SigninCallbacks(
+          signin = ::signIn,
+          signout = ::signOut,
+        )
+      )
     }
   }
 
@@ -120,6 +118,8 @@ class MainActivity : ComponentActivity() {
         } else {
           Log.e(TAG, "Unexpected type of credential")
         }
+      } catch (e: NoCredentialException) {
+        Log.d(TAG, "No credentials available", e)
       } catch (e: GetCredentialException) {
         Log.e(TAG, "Retrieving of credential failed", e)
       }

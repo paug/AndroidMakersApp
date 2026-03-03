@@ -37,15 +37,13 @@
             android:exported="true"
             android:launchMode="singleTask"
             android:name=".MainActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AndroidMakers.Starting"
-            tools:ignore="LockedOrientationActivity">
+            android:theme="@style/Theme.AndroidMakers.Starting">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <intent-filter>
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.BROWSABLE" />
