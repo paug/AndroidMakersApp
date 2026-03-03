@@ -375,6 +375,10 @@
 				OTHER_LDFLAGS = (
 					"-framework",
 					shared,
+					"-framework",
+					CoreLocation,
+					"-framework",
+					MapKit,
 					"-lsqlite3",
 					"-ObjC",
 					"-ld_classic",
@@ -410,6 +414,10 @@
 				OTHER_LDFLAGS = (
 					"-framework",
 					shared,
+					"-framework",
+					CoreLocation,
+					"-framework",
+					MapKit,
 					"-lsqlite3",
 					"-ObjC",
 					"-ld_classic",

@@ -17,7 +17,10 @@ kotlin {
       // https://youtrack.jetbrains.com/issue/KT-70202/Xcode-16-Linker-fails-with-SIGBUS
       linkerOpts("-ld_classic")
       linkerOpts("-ObjC")
+      linkerOpts("-framework", "CoreLocation")
+      linkerOpts("-framework", "MapKit")
 
+      export(libs.kotlinx.datetime)
       export(project(":shared:ui"))
       export(project(":shared:domain"))
       export(project(":shared:di"))
