@@ -29,8 +29,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.text.style.Hyphens
+import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.androidmakers.ui.common.LoadingLayout
@@ -147,7 +150,11 @@ fun SpeakerDetailsScreen(
         Text(
             text = speaker.bio.orEmpty(),
             textAlign = TextAlign.Start,
-            style = MaterialTheme.typography.bodyLarge,
+          style = MaterialTheme.typography.bodyMedium.copy(
+            lineHeight = 22.75.sp,
+            hyphens = Hyphens.Auto,
+            lineBreak = LineBreak.Paragraph,
+          )
         )
       }
 
