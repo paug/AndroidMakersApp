@@ -99,6 +99,7 @@ import fr.paug.androidmakers.ui.talk_details
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.time.Clock
@@ -403,7 +404,7 @@ private fun SessionDetails(
     }
 
     // Bottom spacer to account for the FAB
-    Spacer(modifier = Modifier.height(64.dp))
+    Spacer(modifier = Modifier.height(96.dp))
   }
 }
 
@@ -708,7 +709,7 @@ private fun SpeakersSection(
   Column(modifier = Modifier.padding(horizontal = 16.dp)) {
     SectionHeader(
       icon = Icons.Rounded.Person,
-      title = stringResource(Res.string.speaker_section)
+      title = pluralStringResource(Res.plurals.speaker_section, speakers.size)
     )
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
       for (speaker in speakers) {
