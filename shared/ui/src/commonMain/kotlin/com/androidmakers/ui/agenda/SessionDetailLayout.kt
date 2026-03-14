@@ -299,7 +299,7 @@ private fun SessionDetailFab(
   onBookmarkClick: (Boolean) -> Unit,
 ) {
   val backgroundColor by animateColorAsState(
-    if (isBookmarked) AMColor.amRed else Color.White
+    if (isBookmarked) AMColor.amRed else MaterialTheme.colorScheme.surfaceContainerHighest
   )
   FloatingActionButton(
     modifier = Modifier.neoBrutalElevation(shadowOffset = 2.dp),
