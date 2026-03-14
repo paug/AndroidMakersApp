@@ -61,6 +61,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.Hyphens
+import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -690,8 +692,12 @@ private fun DescriptionSection(description: String) {
         Text(
           text = description,
           modifier = Modifier.padding(25.dp),
-          style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 22.75.sp),
-          color = MaterialTheme.colorScheme.onSurfaceVariant,
+          style = MaterialTheme.typography.bodyMedium.copy(
+            lineHeight = 22.75.sp,
+            hyphens = Hyphens.Auto,
+            lineBreak = LineBreak.Paragraph,
+          ),
+          color = MaterialTheme.colorScheme.onSurface,
           textAlign = TextAlign.Start
         )
       }
