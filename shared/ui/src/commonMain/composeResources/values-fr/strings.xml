@@ -1,79 +1,77 @@
 <resources>
-    <string name="app_name">Android Makers by droidcon</string>
+  <string name="version">Version %1$s (%2$s)</string>
 
-    <string name="version">Version %1$s (%2$s)</string>
+  <string name="agenda">Agenda</string>
+  <string name="venue">Lieu</string>
+  <string name="about">À propos</string>
+  <string name="sponsors">Sponsors</string>
+  <string name="speakers">Speakers</string>
 
-    <string name="agenda">Agenda</string>
-    <string name="venue">Lieu</string>
-    <string name="about">À propos</string>
-    <string name="sponsors">Sponsors</string>
-    <string name="speakers">Speakers</string>
+  <string name="language">Langues</string>
+  <string name="language_all">Toutes</string>
 
-    <string name="language">Langues</string>
-    <string name="language_all">Toutes</string>
-
-    <string name="filter">Filtres</string>
-    <string name="bookmarked">Favoris</string>
-    <string name="room">Salle</string>
-    <string name="rooms">Salles</string>
+  <string name="filter">Filtres</string>
+  <string name="bookmarked">Favoris</string>
+  <string name="room">Salle</string>
+  <string name="rooms">Salles</string>
   <string name="tags">Tags</string>
-    <string name="empty_events">Désolé, aucune conférence n‘est disponible pour les filtres actuellement sélectionnés.</string>
+  <string name="empty_events">Désolé, aucune conférence n‘est disponible pour les filtres actuellement sélectionnés.</string>
 
-    <string name="english">Anglais</string>
-    <string name="french">Français</string>
+  <string name="english">Anglais</string>
+  <string name="french">Français</string>
 
-    <string name="locate_on_map">Localiser sur la carte</string>
-    <string name="venue_afterparty_tab">After Party</string>
-    <string name="venue_conference_tab">Conférence</string>
-    <string name="venue_floor_plan_tab">Plan</string>
+  <string name="locate_on_map">Localiser sur la carte</string>
+  <string name="venue_afterparty_tab">After Party</string>
+  <string name="venue_conference_tab">Conférence</string>
+  <string name="venue_floor_plan_tab">Plan</string>
 
-    <string name="back">Retour</string>
-    <string name="ohno">Oh no !\nC‘est tout cassé\n😕 …</string>
-    <string name="retry">Réessayer</string>
+  <string name="back">Retour</string>
+  <string name="ohno">Oh no !\nC‘est tout cassé\n😕 …</string>
+  <string name="retry">Réessayer</string>
 
-    <string name="signin">Connexion</string>
-    <string name="signout">Déconnexion</string>
+  <string name="signin">Connexion</string>
+  <string name="signout">Déconnexion</string>
 
-    <string name="faq">FAQ</string>
-    <string name="code_of_conduct">Code de conduite</string>
-    <string name="github_repo">Dépôt GitHub</string>
-    <string name="social">Social</string>
+  <string name="faq">FAQ</string>
+  <string name="code_of_conduct">Code de conduite</string>
+  <string name="github_repo">Dépôt GitHub</string>
+  <string name="social">Social</string>
 
-    <string name="beginner">Débutant</string>
-    <string name="intermediate">Intermédiaire</string>
-    <string name="expert">Expert</string>
+  <string name="beginner">Débutant</string>
+  <string name="intermediate">Intermédiaire</string>
+  <string name="expert">Expert</string>
 
   <string name="about_android_makers">AndroidMakers by droidcon est un événement de deux jours qui se tiendra les 10 et 11 Avril 2025. Rejoignez-nous pour aborder le présent et futur d‘Android avec les meilleurs experts du domaine. Il y aura des sessions techniques, des ateliers et des rencontres avec vos speakers préférés. Tous les talks seront enregistrées, et mis sur la chaîne YouTube.</string>
 
-    <string name="open_slides">Voir les slides</string>
-    <string name="feedback_not_available">Cette présentation ne peut pas être commentée pour l\'instant.\nVeuillez revenir après y avoir assisté.</string>
-    <string name="watch_youtube">Regarder sur Youtube</string>
-    <string name="ask_speaker">Posez une question au speaker sur Slido</string>
+  <string name="open_slides">Voir les slides</string>
+  <string name="feedback_not_available">Cette présentation ne peut pas être commentée pour l\'instant.\nVeuillez revenir après y avoir assisté.</string>
+  <string name="watch_youtube">Regarder sur Youtube</string>
+  <string name="ask_speaker">Posez une question au speaker sur Slido</string>
 
-    <!-- Info about the session. It is `date` at `start time` - `end time`-->
-    <string name="session_detail">%1$s à %2$s - %3$s</string>
+  <!-- Info about the session. It is `date` at `start time` - `end time`-->
+  <string name="session_detail">%1$s à %2$s - %3$s</string>
 
-    <string name="speaker_search_placeholder">Recherche</string>
+  <string name="speaker_search_placeholder">Recherche</string>
 
-    <string name="feedbackWaiting">Revenez plus tard pour donner votre retour.</string>
+  <string name="feedbackWaiting">Revenez plus tard pour donner votre retour.</string>
 
-    <string name="share">Partager la session</string>
-    <string name="session_date_with_room">%1$s, %2$s</string>
+  <string name="share">Partager la session</string>
+  <string name="session_date_with_room">%1$s, %2$s</string>
 
   <string name="x_hashtag">#AMxDC26</string>
   <string name="x_hashtag_for_query">AMxDC26</string>
-    <string name="x_user_name">AndroidMakersFR</string>
+  <string name="x_user_name">AndroidMakersFR</string>
 
-    <string name="session_app_clinic_apply">Proposer mon application</string>
+  <string name="session_app_clinic_apply">Proposer mon application</string>
 
-    <string name="talk_details">Détails du talk</string>
-    <string name="about_this_talk">À propos de ce talk</string>
-    <string name="speaker_section">Speaker</string>
-    <string name="add_to_my_agenda">Ajouter à mon agenda</string>
-    <string name="remove_from_my_agenda">Retirer de mon agenda</string>
+  <string name="talk_details">Détails du talk</string>
+  <string name="about_this_talk">À propos de ce talk</string>
+  <string name="speaker_section">Speaker</string>
+  <string name="add_to_my_agenda">Ajouter à mon agenda</string>
+  <string name="remove_from_my_agenda">Retirer de mon agenda</string>
 
-    <string name="feed">Fil</string>
-    <string name="feed_read_more">Lire la suite</string>
+  <string name="feed">Fil</string>
+  <string name="feed_read_more">Lire la suite</string>
 
   <string name="about_links">Liens</string>
   <string name="about_event_tagline">Deux jours dédiés à Android à Paris</string>
