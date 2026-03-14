@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.BookmarkAdd
-import androidx.compose.material.icons.rounded.BookmarkRemove
+import androidx.compose.material.icons.rounded.BookmarkAdded
 import androidx.compose.material.icons.rounded.LocationOn
 import androidx.compose.material.icons.rounded.Schedule
 import androidx.compose.material3.Button
@@ -86,7 +86,7 @@ internal fun SessionRow(
     color = MaterialTheme.colorScheme.surfaceContainerHigh,
   ) {
     val isBookmarked = uiSession.isFavorite
-    val imageVector = if (isBookmarked) Icons.Rounded.BookmarkRemove
+    val imageVector = if (isBookmarked) Icons.Rounded.BookmarkAdded
     else Icons.Rounded.BookmarkAdd
     val tint by animateColorAsState(
       if (isBookmarked) AMColor.bookmarked

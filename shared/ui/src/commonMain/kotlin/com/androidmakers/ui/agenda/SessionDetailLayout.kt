@@ -30,7 +30,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
 import androidx.compose.material.icons.rounded.BookmarkAdd
-import androidx.compose.material.icons.rounded.BookmarkRemove
+import androidx.compose.material.icons.rounded.BookmarkAdded
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.LocationOn
 import androidx.compose.material.icons.rounded.Person
@@ -308,7 +308,7 @@ private fun SessionDetailFab(
   ) {
     Crossfade(isBookmarked) { bookmarked ->
       Icon(
-        imageVector = if (bookmarked) Icons.Rounded.BookmarkRemove else Icons.Rounded.BookmarkAdd,
+        imageVector = if (bookmarked) Icons.Rounded.BookmarkAdded else Icons.Rounded.BookmarkAdd,
         contentDescription = stringResource(Res.string.bookmarked)
       )
     }
