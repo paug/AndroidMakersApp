@@ -482,40 +482,49 @@ private fun SessionHeaderDateRoomRow(
   formattedDate: String,
   roomName: String,
 ) {
-  Row(
+  FlowRow(
     modifier = Modifier.padding(top = 8.dp),
-    verticalAlignment = Alignment.CenterVertically,
-    horizontalArrangement = Arrangement.spacedBy(4.dp)
+    horizontalArrangement = Arrangement.spacedBy(8.dp)
   ) {
-    Icon(
-      imageVector = Icons.Rounded.Schedule,
-      contentDescription = null,
-      modifier = Modifier.size(16.dp),
-      tint = MaterialTheme.colorScheme.onSurfaceVariant
-    )
-    Text(
-      text = formattedDate,
-      style = MaterialTheme.typography.bodySmall,
-      color = MaterialTheme.colorScheme.onSurfaceVariant
-    )
-    if (roomName.isNotEmpty()) {
-      Text(
-        text = "\u2022",
-        style = MaterialTheme.typography.bodySmall,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
-        modifier = Modifier.padding(horizontal = 4.dp)
-      )
+    Row(
+      horizontalArrangement = Arrangement.spacedBy(4.dp),
+      verticalAlignment = Alignment.CenterVertically
+    ) {
       Icon(
-        imageVector = Icons.Rounded.LocationOn,
+        imageVector = Icons.Rounded.Schedule,
         contentDescription = null,
         modifier = Modifier.size(16.dp),
         tint = MaterialTheme.colorScheme.onSurfaceVariant
       )
       Text(
-        text = roomName,
+        text = formattedDate,
         style = MaterialTheme.typography.bodySmall,
         color = MaterialTheme.colorScheme.onSurfaceVariant
       )
+    }
+    if (roomName.isNotEmpty()) {
+      Text(
+        text = "\u2022",
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        modifier = Modifier.padding(horizontal = 2.dp)
+      )
+      Row(
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        verticalAlignment = Alignment.CenterVertically
+      ) {
+        Icon(
+          imageVector = Icons.Rounded.LocationOn,
+          contentDescription = null,
+          modifier = Modifier.size(16.dp),
+          tint = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        Text(
+          text = roomName,
+          style = MaterialTheme.typography.bodySmall,
+          color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+      }
     }
   }
 }
