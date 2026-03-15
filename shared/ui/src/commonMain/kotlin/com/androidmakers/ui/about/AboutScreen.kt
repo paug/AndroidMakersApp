@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3ExpressiveApi::class)
+
 package com.androidmakers.ui.about
 
 import androidx.compose.foundation.Image
@@ -14,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
@@ -25,6 +28,7 @@ import androidx.compose.material.icons.rounded.LightMode
 import androidx.compose.material.icons.rounded.QuestionAnswer
 import androidx.compose.material.icons.rounded.SettingsBrightness
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -35,13 +39,18 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -116,13 +125,45 @@ fun AboutScreen(
         onYouTubeLogoClick = { viewModel.openYoutube(urlOpener) }
     )
 
+    val showDebugInfo by viewModel.showDebugInfo.collectAsStateWithLifecycle()
+    var versionTapCount by remember { mutableIntStateOf(0) }
+
     Text(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+              if (!showDebugInfo) {
+                versionTapCount++
+                if (versionTapCount >= 3) {
+                    viewModel.setShowDebugInfo(true)
+                  }
+              }
+            }
+          .padding(8.dp)
+        ,
         textAlign = TextAlign.Center,
         text = stringResource(Res.string.version, versionName, versionCode),
         style = MaterialTheme.typography.bodySmall,
         color = MaterialTheme.colorScheme.onSurfaceVariant
     )
+
+    if (showDebugInfo) {
+      val uid = viewModel.userUid
+      Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+        Text(
+          text = "UID: ",
+          style = MaterialTheme.typography.bodySmallEmphasized,
+          color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        SelectionContainer {
+          Text(
+            text = if (uid != null) uid else "Not signed in",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+          )
+        }
+      }
+    }
   }
 }
 
