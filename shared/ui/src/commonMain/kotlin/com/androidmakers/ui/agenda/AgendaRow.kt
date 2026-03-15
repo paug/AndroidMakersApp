@@ -6,9 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -93,7 +91,10 @@ internal fun SessionRow(
       else MaterialTheme.colorScheme.outline
     )
 
-    Column(modifier = Modifier.padding(16.dp)) {
+    Column(
+      modifier = Modifier.padding(16.dp),
+      verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
       // 1. Title + Bookmark
       Row(verticalAlignment = Alignment.Top) {
         Text(
@@ -101,7 +102,6 @@ internal fun SessionRow(
           modifier = Modifier.weight(1f),
           style = MaterialTheme.typography.titleMedium,
           color = MaterialTheme.colorScheme.onSurface,
-          maxLines = 2,
           overflow = TextOverflow.Ellipsis,
         )
         IconToggleButton(
@@ -126,7 +126,6 @@ internal fun SessionRow(
           style = MaterialTheme.typography.bodySmall,
           color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-        Spacer(modifier = Modifier.height(8.dp))
       }
 
       // 3. MetaRow — room, duration, language
@@ -138,8 +137,8 @@ internal fun SessionRow(
 
       // 4. Tags
       if (uiSession.tags.isNotEmpty()) {
-        Spacer(modifier = Modifier.height(8.dp))
         FlowRow(
+          modifier = Modifier.padding(top = 2.dp),
           horizontalArrangement = Arrangement.spacedBy(6.dp),
           verticalArrangement = Arrangement.spacedBy(6.dp),
         ) {
@@ -151,7 +150,6 @@ internal fun SessionRow(
 
       // 5. App Clinic
       if (uiSession.isAppClinic) {
-        Spacer(modifier = Modifier.height(8.dp))
         Button(
           onClick = onApplyForAppClinicClick,
           modifier = Modifier.neoBrutalElevation(shadowOffset = 2.dp),
@@ -188,38 +186,49 @@ private fun MetaRow(
   duration: String,
   language: String?,
 ) {
-  Row(
-    verticalAlignment = Alignment.CenterVertically,
-    horizontalArrangement = Arrangement.spacedBy(4.dp),
+  FlowRow(
+    horizontalArrangement = Arrangement.spacedBy(8.dp),
   ) {
-    Icon(
-      imageVector = Icons.Rounded.LocationOn,
-      contentDescription = null,
-      modifier = Modifier.size(14.dp),
-      tint = MaterialTheme.colorScheme.onSurfaceVariant,
-    )
-    Text(
-      text = room,
-      style = MaterialTheme.typography.bodySmall,
-      color = MaterialTheme.colorScheme.onSurfaceVariant,
-    )
+    Row(
+      horizontalArrangement = Arrangement.spacedBy(4.dp),
+      verticalAlignment = Alignment.CenterVertically
+    ) {
+      Icon(
+        imageVector = Icons.Rounded.LocationOn,
+        contentDescription = null,
+        modifier = Modifier.size(14.dp),
+        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+      )
+      Text(
+        text = room,
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+      )
+    }
+
     Text(
       text = "\u2022",
       style = MaterialTheme.typography.bodySmall,
       color = MaterialTheme.colorScheme.onSurfaceVariant,
       modifier = Modifier.padding(horizontal = 2.dp),
     )
-    Icon(
-      imageVector = Icons.Rounded.Schedule,
-      contentDescription = null,
-      modifier = Modifier.size(14.dp),
-      tint = MaterialTheme.colorScheme.onSurfaceVariant,
-    )
-    Text(
-      text = duration,
-      style = MaterialTheme.typography.bodySmall,
-      color = MaterialTheme.colorScheme.onSurfaceVariant,
-    )
+
+    Row(
+      horizontalArrangement = Arrangement.spacedBy(4.dp),
+      verticalAlignment = Alignment.CenterVertically
+    ) {
+      Icon(
+        imageVector = Icons.Rounded.Schedule,
+        contentDescription = null,
+        modifier = Modifier.size(14.dp),
+        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+      )
+      Text(
+        text = duration,
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+      )
+    }
     val emoji = EmojiUtils.getLanguageInEmoji(language)
     if (emoji != null) {
       Text(
