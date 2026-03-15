@@ -30,7 +30,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
 import androidx.compose.material.icons.rounded.BookmarkAdd
-import androidx.compose.material.icons.rounded.BookmarkRemove
+import androidx.compose.material.icons.rounded.BookmarkAdded
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.LocationOn
 import androidx.compose.material.icons.rounded.Person
@@ -61,6 +61,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.Hyphens
+import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -99,6 +101,7 @@ import fr.paug.androidmakers.ui.talk_details
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.time.Clock
@@ -299,7 +302,7 @@ private fun SessionDetailFab(
   onBookmarkClick: (Boolean) -> Unit,
 ) {
   val backgroundColor by animateColorAsState(
-    if (isBookmarked) AMColor.amRed else Color.White
+    if (isBookmarked) AMColor.amRed else MaterialTheme.colorScheme.surfaceContainerHighest
   )
   FloatingActionButton(
     modifier = Modifier.neoBrutalElevation(shadowOffset = 2.dp),
@@ -308,7 +311,7 @@ private fun SessionDetailFab(
   ) {
     Crossfade(isBookmarked) { bookmarked ->
       Icon(
-        imageVector = if (bookmarked) Icons.Rounded.BookmarkRemove else Icons.Rounded.BookmarkAdd,
+        imageVector = if (bookmarked) Icons.Rounded.BookmarkAdded else Icons.Rounded.BookmarkAdd,
         contentDescription = stringResource(Res.string.bookmarked)
       )
     }
@@ -403,7 +406,7 @@ private fun SessionDetails(
     }
 
     // Bottom spacer to account for the FAB
-    Spacer(modifier = Modifier.height(64.dp))
+    Spacer(modifier = Modifier.height(96.dp))
   }
 }
 
@@ -479,40 +482,49 @@ private fun SessionHeaderDateRoomRow(
   formattedDate: String,
   roomName: String,
 ) {
-  Row(
+  FlowRow(
     modifier = Modifier.padding(top = 8.dp),
-    verticalAlignment = Alignment.CenterVertically,
-    horizontalArrangement = Arrangement.spacedBy(4.dp)
+    horizontalArrangement = Arrangement.spacedBy(8.dp)
   ) {
-    Icon(
-      imageVector = Icons.Rounded.Schedule,
-      contentDescription = null,
-      modifier = Modifier.size(16.dp),
-      tint = MaterialTheme.colorScheme.onSurfaceVariant
-    )
-    Text(
-      text = formattedDate,
-      style = MaterialTheme.typography.bodySmall,
-      color = MaterialTheme.colorScheme.onSurfaceVariant
-    )
-    if (roomName.isNotEmpty()) {
-      Text(
-        text = "\u2022",
-        style = MaterialTheme.typography.bodySmall,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
-        modifier = Modifier.padding(horizontal = 4.dp)
-      )
+    Row(
+      horizontalArrangement = Arrangement.spacedBy(4.dp),
+      verticalAlignment = Alignment.CenterVertically
+    ) {
       Icon(
-        imageVector = Icons.Rounded.LocationOn,
+        imageVector = Icons.Rounded.Schedule,
         contentDescription = null,
         modifier = Modifier.size(16.dp),
         tint = MaterialTheme.colorScheme.onSurfaceVariant
       )
       Text(
-        text = roomName,
+        text = formattedDate,
         style = MaterialTheme.typography.bodySmall,
         color = MaterialTheme.colorScheme.onSurfaceVariant
       )
+    }
+    if (roomName.isNotEmpty()) {
+      Text(
+        text = "\u2022",
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        modifier = Modifier.padding(horizontal = 2.dp)
+      )
+      Row(
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        verticalAlignment = Alignment.CenterVertically
+      ) {
+        Icon(
+          imageVector = Icons.Rounded.LocationOn,
+          contentDescription = null,
+          modifier = Modifier.size(16.dp),
+          tint = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        Text(
+          text = roomName,
+          style = MaterialTheme.typography.bodySmall,
+          color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+      }
     }
   }
 }
@@ -689,8 +701,12 @@ private fun DescriptionSection(description: String) {
         Text(
           text = description,
           modifier = Modifier.padding(25.dp),
-          style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 22.75.sp),
-          color = MaterialTheme.colorScheme.onSurfaceVariant,
+          style = MaterialTheme.typography.bodyMedium.copy(
+            lineHeight = 22.75.sp,
+            hyphens = Hyphens.Auto,
+            lineBreak = LineBreak.Paragraph,
+          ),
+          color = MaterialTheme.colorScheme.onSurface,
           textAlign = TextAlign.Start
         )
       }
@@ -708,7 +724,7 @@ private fun SpeakersSection(
   Column(modifier = Modifier.padding(horizontal = 16.dp)) {
     SectionHeader(
       icon = Icons.Rounded.Person,
-      title = stringResource(Res.string.speaker_section)
+      title = pluralStringResource(Res.plurals.speaker_section, speakers.size)
     )
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
       for (speaker in speakers) {
