@@ -1,4 +1,5 @@
 <resources>
+
   <string name="app_name">Android Makers by droidcon</string>
 
   <string name="version">Version %1$s (%2$s)</string>
@@ -11,7 +12,6 @@
 
   <string name="language">Langues</string>
   <string name="language_all">Toutes</string>
-
   <string name="filter">Filtres</string>
   <string name="bookmarked">Favoris</string>
   <string name="room">Salle</string>

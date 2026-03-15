@@ -1,6 +1,8 @@
 <resources>
-
   <string name="app_name">Android Makers by droidcon</string>
+
+  <string name="top_bar_title">Android Makers</string>
+  <string name="top_bar_subtitle">by droidcon</string>
 
   <string name="version">Version %1$s (%2$s)</string>
 
