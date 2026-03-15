@@ -1,4 +1,7 @@
 <resources>
+
+  <string name="app_name">Android Makers by droidcon</string>
+
   <string name="version">Version %1$s (%2$s)</string>
 
   <string name="agenda">Agenda</string>
@@ -9,7 +12,6 @@
 
   <string name="language">Langues</string>
   <string name="language_all">Toutes</string>
-
   <string name="filter">Filtres</string>
   <string name="bookmarked">Favoris</string>
   <string name="room">Salle</string>
@@ -66,7 +68,10 @@
 
   <string name="talk_details">Détails du talk</string>
   <string name="about_this_talk">À propos de ce talk</string>
-  <string name="speaker_section">Speaker</string>
+  <plurals name="speaker_section">
+    <item quantity="one">Speaker</item>
+    <item quantity="other">Speakers</item>
+  </plurals>
   <string name="add_to_my_agenda">Ajouter à mon agenda</string>
   <string name="remove_from_my_agenda">Retirer de mon agenda</string>
 

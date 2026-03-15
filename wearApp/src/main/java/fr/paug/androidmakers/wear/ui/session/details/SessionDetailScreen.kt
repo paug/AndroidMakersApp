@@ -19,7 +19,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.BookmarkAdd
-import androidx.compose.material.icons.rounded.BookmarkRemove
+import androidx.compose.material.icons.rounded.BookmarkAdded
 import androidx.compose.material.icons.rounded.Place
 import androidx.compose.material.icons.rounded.Schedule
 import androidx.compose.runtime.Composable
@@ -36,16 +36,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.wear.compose.foundation.lazy.ScalingLazyListScope
 import androidx.wear.compose.material.Chip
 import androidx.wear.compose.material.ChipDefaults
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.MaterialTheme
 import androidx.wear.compose.material.Text
 import androidx.wear.compose.material.TitleCard
-import androidx.wear.compose.foundation.lazy.ScalingLazyListScope
 import androidx.wear.compose.ui.tooling.preview.WearPreviewDevices
 import androidx.wear.compose.ui.tooling.preview.WearPreviewFontScales
-import kotlinx.datetime.LocalDateTime
 import com.google.android.horologist.annotations.ExperimentalHorologistApi
 import com.google.android.horologist.compose.layout.ScalingLazyColumn
 import com.google.android.horologist.compose.layout.ScalingLazyColumnDefaults
@@ -68,6 +67,7 @@ import fr.paug.androidmakers.wear.ui.theme.amRed
 import fr.paug.androidmakers.wear.ui.theme.amRedDark
 import fr.paug.androidmakers.wear.ui.theme.amRedLight
 import fr.paug.androidmakers.wear.ui.theme.amSeparator
+import kotlinx.datetime.LocalDateTime
 
 @Composable
 fun SessionDetailScreen(viewModel: SessionDetailViewModel) {
@@ -388,7 +388,7 @@ private fun SessionBookmarkChip(
     },
     icon = {
       Icon(
-        imageVector = if (isBookmarked) Icons.Rounded.BookmarkRemove
+        imageVector = if (isBookmarked) Icons.Rounded.BookmarkAdded
         else Icons.Rounded.BookmarkAdd,
         contentDescription = null,
         modifier = Modifier.size(18.dp),
