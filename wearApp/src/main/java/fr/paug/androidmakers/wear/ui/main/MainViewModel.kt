@@ -36,9 +36,12 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.datetime.DateTimeUnit
 import kotlin.time.Clock
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.Month
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.plus
 import kotlinx.datetime.todayIn
 
 private val TAG = MainViewModel::class.java.simpleName
@@ -123,6 +126,18 @@ class MainViewModel(
       initialValue = null
     )
 
+  val sessionsDay1: Flow<List<UISession>?> =
+    sessions.map { sessions -> sessions?.filter { it.session.startsAt.date == DAY_1_DATE } }
+      .stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = null
+      )
+
+  val sessionsDay2: Flow<List<UISession>?> =
+    sessions.map { sessions -> sessions?.filter { it.session.startsAt.date == DAY_2_DATE } }
+
+
   val days: StateFlow<List<WearDaySchedule>?> =
     sessions.map { sessions ->
       sessions
@@ -168,6 +183,8 @@ class MainViewModel(
 
   companion object {
     private const val MESSAGE_SYNC_BOOKMARKS = "syncBookmarks"
+    val DAY_1_DATE = LocalDate(year = 2026, month = Month.APRIL, day = 9)
+    val DAY_2_DATE = DAY_1_DATE.plus(1, DateTimeUnit.DAY)
   }
 }
 

@@ -8,12 +8,14 @@ import androidx.wear.compose.foundation.pager.PagerState
 import androidx.wear.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.core.app.ActivityCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.Lifecycle
@@ -32,6 +34,8 @@ import androidx.wear.compose.navigation.rememberSwipeDismissableNavHostState
 import com.google.android.horologist.compose.layout.AppScaffold
 import com.google.android.horologist.compose.pager.PagerScreen
 import fr.androidmakers.domain.model.User
+import fr.paug.androidmakers.wear.R
+import fr.paug.androidmakers.wear.ui.session.UISession
 import fr.paug.androidmakers.wear.ui.session.details.SessionDetailScreen
 import fr.paug.androidmakers.wear.ui.session.details.SessionDetailViewModel
 import fr.paug.androidmakers.wear.ui.session.list.SessionListScreen
@@ -137,6 +141,8 @@ fun MainScreen(
 ) {
   val user: User? by viewModel.user.collectAsStateWithLifecycle()
   val days: List<WearDaySchedule>? by viewModel.days.collectAsStateWithLifecycle()
+  val sessionsDay1: List<UISession>? by viewModel.sessionsDay1.collectAsState(initial = null)
+  val sessionsDay2: List<UISession>? by viewModel.sessionsDay2.collectAsState(initial = null)
 
   val pagerState: PagerState = rememberPagerState(
     initialPage = 0,

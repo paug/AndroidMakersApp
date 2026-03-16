@@ -8,6 +8,8 @@
     <string name="settings_showBookmarksOnly">Show favorites only</string>
     <string name="settings_signOutConfirm">Sign out?</string>
     <string name="settings_refresh">Refresh</string>
+    <string name="main_day1">Day 1</string>
+    <string name="main_day2">Day 2</string>
 
     <string name="session_detail_about">About this talk</string>
     <string name="session_detail_speakers">Speakers</string>
