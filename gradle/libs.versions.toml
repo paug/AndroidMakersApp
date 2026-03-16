@@ -1,41 +1,43 @@
 [versions]
-version-code = "1471"
-sdk-compile = "35"
+version-code = "1500"
+sdk-compile = "36"
 sdk-min = "24"
 androidDesugarJdkLibs = "2.1.5"
-androidGradlePlugin = "8.9.1"
-androidx-activity = "1.10.1"
-androidx-core = "1.15.0"
-androidx-core-splashscreen = "1.2.0-beta01"
+detekt = "1.23.8"
+androidGradlePlugin = "9.0.1"
+androidx-activity = "1.12.4"
+androidx-core = "1.17.0"
+androidx-core-splashscreen = "1.2.0"
 androidx-credentials = "1.5.0"
-androidx-datastore = "1.1.4"
+androidx-datastore = "1.2.0"
 androidx-lifecycle = "2.8.7"    # Used by the Wear OS app only
 androidx-wear-compose = "1.4.1"
 apollo = "4.1.1"
 apollo-adapters = "0.0.4"
 coil = "3.1.0"
-compose = "1.7.8"               # Used by the Wear OS app only
-crashlytics-plugin = "3.0.3"
-firebase-auth = "2.1.0"        # Do not upgrade until openfeedback upgrades the same dependency
-firebase-bom = "33.11.0"
-google-services-plugin = "4.4.2"
-googleid = "1.1.1"
-horologist = "0.6.23"
-jetbrainsCompose = "1.7.3"
-jetbrainsLifecycle = "2.8.4"
+compose = "1.7.8"                # Used by the Wear OS app only
+crashlytics-plugin = "3.0.6"
+firebase-auth = "2.4.0"
+firebase-bom = "34.10.0"
+google-services-plugin = "4.4.4"
+googleid = "1.2.0"
+horologist = "0.7.15"
+jetbrainsCompose = "1.11.0-alpha03"
+jetbrainsLifecycle = "2.10.0-alpha08"
 # if you update this, you probably need to update all other compose dependencies
 # see https://youtrack.jetbrains.com/issue/CMP-7571
-jetbrainsNavigation = "2.8.0-alpha12"
+material3-adaptive-nav3 = "1.3.0-alpha05"
+nav3-ui = "1.1.0-alpha03"
 junit = "4.13.2"
-koin = "4.0.3"
-kotlin = "2.1.20"
-kotlinx-coroutines = "1.10.1"
-kotlinx-datetime = "0.6.2"
-ktor = "3.1.1"
-okhttp = "4.12.0"
-okio = "3.10.2"
-openfeedback = "1.0.0-alpha.4"
-playServices-auth = "21.3.0"
+koin = "4.1.1"
+kotlin = "2.3.10"
+kotlinx-coroutines = "1.10.2"
+kotlinx-datetime = "0.7.1"
+ktor = "3.4.1"
+okhttp = "5.3.2"
+okio = "3.16.4"
+openfeedback = "1.0.0-alpha.6"
+playServices-auth = "21.5.1"
 playServices-wearable = "19.0.0"
 
 [libraries]
@@ -45,6 +47,7 @@ androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscree
 androidx-credentials = { group = "androidx.credentials", name = "credentials", version.ref = "androidx-credentials" }
 androidx-credentials-playServicesAuth = { group = "androidx.credentials", name = "credentials-play-services-auth", version.ref = "androidx-credentials" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "androidx-datastore" }
+androidx-datastore-preferences-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "androidx-datastore" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
 apollo-adapters-kotlinx-datetime = { module = "com.apollographql.adapters:apollo-adapters-kotlinx-datetime", version.ref = "apollo-adapters" }
 apollo-normalized-cache = { module = "com.apollographql.apollo:apollo-normalized-cache", version.ref = "apollo" }
@@ -57,19 +60,24 @@ compose-material-icons-extended = { group = "androidx.compose.material", name = 
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 firebase-auth = { module = "dev.gitlive:firebase-auth", version.ref = "firebase-auth" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
-firebase-crashlytics-ktx = { module = "com.google.firebase:firebase-crashlytics-ktx" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
 googleid = { group = "com.google.android.libraries.identity.googleid", name = "googleid", version.ref = "googleid" }
 jetbrains-lifecycle-runtime = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime", version.ref = "jetbrainsLifecycle" }
 jetbrains-lifecycle-runtime-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "jetbrainsLifecycle" }
 jetbrains-lifecycle-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "jetbrainsLifecycle" }
-jetbrains-navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "jetbrainsNavigation" }
+jetbrains-material3-adaptive-navigation3 = { module = "org.jetbrains.compose.material3.adaptive:adaptive-navigation3", version.ref = "material3-adaptive-nav3" }
+jetbrains-navigation3-ui = { module = "org.jetbrains.androidx.navigation3:navigation3-ui", version.ref = "nav3-ui" }
 junit = { module = "junit:junit", version.ref = "junit" }
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
+ktor-client-java = { module = "io.ktor:ktor-client-java", version.ref = "ktor" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 okio = { group = "com.squareup.okio", name = "okio", version.ref = "okio" }
 openfeedback-m3 = { module = "io.openfeedback:openfeedback-m3", version.ref = "openfeedback" }
@@ -102,6 +110,7 @@ horologist-auth-ui = { module = "com.google.android.horologist:horologist-auth-u
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+android-kotlin-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "androidGradlePlugin" }
 apollo = { id = "com.apollographql.apollo", version.ref = "apollo" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlytics-plugin" }
@@ -109,6 +118,8 @@ google-services = { id = "com.google.gms.google-services", version.ref = "google
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "jetbrainsCompose" }
 kmp = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 
 ## Custom plugins
 androidmakers-android-application = { id = "fr.androidmakers.android.application" }

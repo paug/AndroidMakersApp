@@ -361,7 +361,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1470;
 				DEVELOPMENT_ASSET_PATHS = "\"AndroidMakers/Preview Content\"";
-				DEVELOPMENT_TEAM = 57MV6634WZ;
+				DEVELOPMENT_TEAM = BCF2BZQY9X;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)";
@@ -375,6 +375,10 @@
 				OTHER_LDFLAGS = (
 					"-framework",
 					shared,
+					"-framework",
+					CoreLocation,
+					"-framework",
+					MapKit,
 					"-lsqlite3",
 					"-ObjC",
 					"-ld_classic",
@@ -396,7 +400,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1470;
 				DEVELOPMENT_ASSET_PATHS = "\"AndroidMakers/Preview Content\"";
-				DEVELOPMENT_TEAM = 57MV6634WZ;
+				DEVELOPMENT_TEAM = BCF2BZQY9X;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)";
@@ -410,6 +414,10 @@
 				OTHER_LDFLAGS = (
 					"-framework",
 					shared,
+					"-framework",
+					CoreLocation,
+					"-framework",
+					MapKit,
 					"-lsqlite3",
 					"-ObjC",
 					"-ld_classic",

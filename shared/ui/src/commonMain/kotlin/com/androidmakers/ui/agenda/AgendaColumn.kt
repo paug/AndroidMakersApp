@@ -7,28 +7,18 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Schedule
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.androidmakers.ui.model.UISession
-import fr.paug.androidmakers.ui.Res
-import fr.paug.androidmakers.ui.filter
-import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -47,7 +37,6 @@ fun AgendaColumn(
     contentPadding = PaddingValues(8.dp),
     verticalArrangement = Arrangement.spacedBy(12.dp),
     horizontalAlignment = Alignment.CenterHorizontally
-
   ) {
     sessionsPerStartTime.forEach { (key, sessions) ->
 
@@ -55,53 +44,21 @@ fun AgendaColumn(
         TimeSeparator(key)
       }
 
-      item {
-        Card(
-          modifier = Modifier.padding(horizontal = 16.dp),
-          colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-            contentColor = MaterialTheme.colorScheme.onSurface
-          ),
-          shape = RoundedCornerShape(16.dp),
-        ) {
-          sessions.forEachIndexed { index, uiSession ->
-            val sessionBeforeIsServiceSession = remember {
-              derivedStateOf {
-                if (index > 0) {
-                  sessions[index - 1].isServiceSession
-                } else {
-                  false
-                }
-              }
-            }
-
-            val sessionAfterIsServiceSession = remember {
-              derivedStateOf {
-                if (index < sessions.lastIndex) {
-                  sessions[sessions.lastIndex].isServiceSession
-                } else {
-                  false
-                }
-              }
-            }
-
-            if (uiSession.isServiceSession) {
-              ServiceSessionRow(
-                uiSession,
-                modifier = Modifier.animateItem()
-              )
-            } else {
-              SessionRow(
-                modifier = Modifier.animateItem(),
-                uiSession = uiSession,
-                onSessionClick = onSessionClick,
-                onSessionBookmark = onSessionBookmark,
-                onApplyForAppClinicClick = onApplyForAppClinicClick,
-                sessionBeforeIsServiceSession = sessionBeforeIsServiceSession.value,
-                sessionAfterIsServiceSession = sessionAfterIsServiceSession.value
-              )
-            }
-          }
+      items(count = sessions.size, key = { sessions[it].id }) { index ->
+        val uiSession = sessions[index]
+        if (uiSession.isServiceSession) {
+          ServiceSessionRow(
+            uiSession,
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp).animateItem()
+          )
+        } else {
+          SessionRow(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp).animateItem(),
+            uiSession = uiSession,
+            onSessionClick = onSessionClick,
+            onSessionBookmark = onSessionBookmark,
+            onApplyForAppClinicClick = onApplyForAppClinicClick,
+          )
         }
       }
     }
@@ -115,21 +72,21 @@ fun TimeSeparator(prettyTime: String) {
   ) {
     Row(
       modifier = Modifier
-        .padding(horizontal = 16.dp, vertical = 8.dp)
+        .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 4.dp)
         .fillMaxWidth(),
       verticalAlignment = Alignment.CenterVertically,
-      horizontalArrangement = Arrangement.spacedBy(8.dp)
+      horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-      Icon(
-        modifier = Modifier.size(24.dp),
-        imageVector = Icons.Rounded.Schedule,
-        tint = MaterialTheme.colorScheme.primary,
-        contentDescription = stringResource(Res.string.filter),
-      )
       Text(
         text = prettyTime,
         color = MaterialTheme.colorScheme.primary,
-        style = MaterialTheme.typography.titleSmall
+        style = MaterialTheme.typography.titleMedium,
+        fontWeight = FontWeight.Bold,
+      )
+      HorizontalDivider(
+        modifier = Modifier.weight(1f),
+        thickness = 1.dp,
+        color = MaterialTheme.colorScheme.outlineVariant,
       )
     }
   }

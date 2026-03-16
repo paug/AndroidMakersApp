@@ -1,85 +1,101 @@
 <resources>
+  <string name="app_name">Android Makers by droidcon</string>
 
-    <string name="app_name">Android Makers by droidcon</string>
+  <string name="top_bar_title">Android Makers</string>
+  <string name="top_bar_subtitle">by droidcon</string>
 
-    <string name="version">Version %1$s (%2$s)</string>
+  <string name="version">Version %1$s (%2$s)</string>
 
-    <string name="agenda">Agenda</string>
-    <string name="venue">Venue</string>
-    <string name="about">About</string>
+  <string name="agenda">Agenda</string>
+  <string name="venue">Venue</string>
+  <string name="about">About</string>
 
-    <string name="sponsors">Sponsors</string>
-    <string name="speakers">Speakers</string>
+  <string name="sponsors">Sponsors</string>
+  <string name="speakers">Speakers</string>
 
-    <string name="language">Language</string>
-    <string name="language_all">All</string>
+  <string name="language">Language</string>
+  <string name="language_all">All</string>
 
-    <string name="filter">Filter</string>
-    <string name="bookmarked">Favorite</string>
-    <string name="room">Room</string>
-    <string name="rooms">Rooms</string>
-    <string name="empty_events">Sorry, there is no session available for the currently selected filters.</string>
+  <string name="filter">Filter</string>
+  <string name="bookmarked">Favorite</string>
+  <string name="room">Room</string>
+  <string name="rooms">Rooms</string>
+  <string name="tags">Tags</string>
+  <string name="empty_events">Sorry, there is no session available for the currently selected filters.</string>
 
-    <string name="english">English</string>
-    <string name="french">French</string>
+  <string name="english">English</string>
+  <string name="french">French</string>
 
-    <string name="locate_on_map">Locate on map</string>
-    <string name="venue_afterparty_tab">Afterparty</string>
-    <string name="venue_conference_tab">Conference</string>
-    <string name="venue_floor_plan_tab">Floor Plan</string>
+  <string name="locate_on_map">Locate on map</string>
+  <string name="venue_afterparty_tab">Afterparty</string>
+  <string name="venue_conference_tab">Conference</string>
+  <string name="venue_floor_plan_tab">Floor Plan</string>
 
-    <string name="back">Back</string>
-    <string name="ohno">Oh no! 😕 \nSomething wrong happened…</string>
-    <string name="retry">Retry</string>
+  <string name="back">Back</string>
+  <string name="ohno">Oh no! 😕 \nSomething wrong happened…</string>
+  <string name="retry">Retry</string>
 
-    <string name="signin">Sign in</string>
-    <string name="signout">Sign out</string>
+  <string name="signin">Sign in</string>
+  <string name="signout">Sign out</string>
 
-    <string name="faq">FAQ</string>
-    <string name="code_of_conduct">Code of conduct</string>
-    <string name="github_repo">GitHub repository</string>
-    <string name="social">Social</string>
+  <string name="faq">FAQ</string>
+  <string name="code_of_conduct">Code of conduct</string>
+  <string name="github_repo">GitHub repository</string>
+  <string name="social">Social</string>
 
-    <string name="beginner">Beginner</string>
-    <string name="intermediate">Intermediate</string>
-    <string name="expert">Expert</string>
+  <string name="beginner">Beginner</string>
+  <string name="intermediate">Intermediate</string>
+  <string name="expert">Expert</string>
 
-    <!--About-->
-    <string name="about_android_makers">Android Makers by droidcon is a two days event held in Paris on April 10th and 11th 2025.
-        \n\nJoin us in tackling the present and future of Android with the hottest experts of the domain.
-        There\'ll be technical sessions, workshops and opportunities to meet your favorites speakers.
-        \n\nAll the Talks will be recorded, and uploaded on the Youtube channel.</string>
+  <!--About-->
+  <string name="about_android_makers">Android Makers by droidcon is a two days event held in Paris on April 10th and 11th 2025. Join us in tackling the present and future of Android with the hottest experts of the domain. There will be technical sessions, workshops and opportunities to meet your favorites speakers. All the Talks will be recorded, and uploaded on the Youtube channel.</string>
 
-    <string name="current_session">Current</string>
-    <string name="upcoming_session">Upcoming</string>
+  <string name="open_slides">Open the slides</string>
 
-    <string name="about_am">About AM 24</string>
-    <string name="locations">Locations</string>
-    <string name="directions">Directions</string>
+  <string name="feedback_not_available">This talk cannot be reviewed now.\nPlease come back after attending it.</string>
+  <string name="watch_youtube">Watch this talk on Youtube</string>
+  <string name="ask_speaker">Ask a question to the speaker on Slido</string>
 
-    <string name="open_slides">Open the slides</string>
+  <!-- Info about the session. It is `date` at `start time` - `end time`-->
+  <string name="session_detail">%1$s at %2$s - %3$s</string>
 
-    <string name="feedback_not_available">This talk cannot be reviewed now.\nPlease come back after attending it.</string>
-    <string name="watch_youtube">Watch this talk on Youtube</string>
-    <string name="ask_speaker">Ask a question to the speaker on Slido</string>
+  <string name="x_hashtag" translatable="false">#AMxDC26</string>
+  <string name="x_hashtag_for_query" translatable="false">AMxDC26</string>
+  <string name="x_user_name" translatable="false">AndroidMakersFR</string>
 
-    <!-- Info about the session. It is `date` at `start time` - `end time`-->
-    <string name="session_detail">%1$s at %2$s - %3$s</string>
+  <string name="speaker_search_placeholder">Search</string>
+  <string name="feedbackWaiting">This talk cannot be reviewed yet. Please come back after attending it.</string>
 
-    <string name="x_hashtag" translatable="false">#AMxDC25</string>
-    <string name="x_hashtag_for_query" translatable="false">AMxDC25</string>
-    <string name="x_user_name" translatable="false">AndroidMakersFR</string>
+  <string name="share">Share the session</string>
 
-    <string name="speaker_search_placeholder">Search</string>
-    <string name="feedbackWaiting">This talk cannot be reviewed yet. Please come back after attending it.</string>
+  <string name="session_description_placeholder_with_language" translatable="false">%1$s / %2$s / %3$s</string>
+  <string name="session_description_placeholder" translatable="false">%1$s / %2$s</string>
+  <string name="session_date_with_room">%1$s, %2$s</string>
+  <string name="session_app_clinic_apply">Apply for App-Clinic</string>
 
-    <string name="info">infos</string>
+  <string name="talk_details">Talk Details</string>
+  <string name="about_this_talk">About this talk</string>
+  <plurals name="speaker_section">
+    <item quantity="one">Speaker</item>
+    <item quantity="other">Speakers</item>
+  </plurals>
+  <string name="add_to_my_agenda">Add to My Agenda</string>
+  <string name="remove_from_my_agenda">Remove from My Agenda</string>
 
-    <string name="share">Share the session</string>
+  <string name="feed">Feed</string>
+  <string name="feed_read_more">Read More</string>
+  <string name="feed_category_venue">VENUE</string>
+  <string name="feed_category_event">EVENT</string>
+  <string name="feed_floor_plan">Floor Plan</string>
 
-    <string name="session_description_placeholder_with_language" translatable="false">%1$s / %2$s / %3$s</string>
-    <string name="session_description_placeholder" translatable="false">%1$s / %2$s</string>
-    <string name="session_date_with_room">%1$s, %2$s</string>
-    <string name="session_app_clinic_apply">Apply for App-Clinic</string>
+  <string name="about_links">Links</string>
+  <string name="about_event_tagline">Two days of Android awesomeness in Paris</string>
+
+  <string name="settings">Settings</string>
+  <string name="theme">Theme</string>
+  <string name="theme_system">System</string>
+  <string name="theme_light">Light</string>
+  <string name="theme_dark">Dark</string>
+  <string name="theme_neobrutalism">Neobrutal</string>
 
 </resources>

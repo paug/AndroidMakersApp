@@ -1,7 +1,6 @@
 package fr.androidmakers.plugin
 
 import com.android.build.api.dsl.ApplicationExtension
-import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -17,38 +16,33 @@ class AndroidApplicationPlugin : Plugin<Project> {
     with(target) {
       with(pluginManager) {
         apply("com.android.application")
-        apply("org.jetbrains.kotlin.android")
         apply("com.google.gms.google-services")
         apply("com.google.firebase.crashlytics")
       }
 
       val extension = extensions.getByType<ApplicationExtension>()
       extension.defaultConfig.targetSdk = libs.findVersion("sdk.compile").get().displayName.toInt()
-      configureKotlinAndroid(extension)
+      configureAndroid(extension)
+      configureKotlin()
     }
   }
 }
 
-internal fun Project.configureKotlinAndroid(
-    commonExtension: CommonExtension<*, *, *, *, *, *>,
-) {
-  commonExtension.apply {
-    compileSdk = libs.findVersion("sdk.compile").get().displayName.toInt()
-
-    defaultConfig {
-      minSdk = libs.findVersion("sdk.min").get().displayName.toInt()
-    }
-
-    compileOptions {
-      sourceCompatibility = JavaVersion.VERSION_17
-      targetCompatibility = JavaVersion.VERSION_17
-    }
-  }
-
-  configureKotlin()
+internal fun Project.configureAndroid(extension: ApplicationExtension) {
+  extension.compileSdk = libs.findVersion("sdk.compile").get().displayName.toInt()
+  extension.defaultConfig.minSdk = libs.findVersion("sdk.min").get().displayName.toInt()
+  extension.compileOptions.sourceCompatibility = JavaVersion.VERSION_17
+  extension.compileOptions.targetCompatibility = JavaVersion.VERSION_17
 }
 
-private fun Project.configureKotlin() {
+internal fun Project.configureAndroid(extension: com.android.build.api.dsl.LibraryExtension) {
+  extension.compileSdk = libs.findVersion("sdk.compile").get().displayName.toInt()
+  extension.defaultConfig.minSdk = libs.findVersion("sdk.min").get().displayName.toInt()
+  extension.compileOptions.sourceCompatibility = JavaVersion.VERSION_17
+  extension.compileOptions.targetCompatibility = JavaVersion.VERSION_17
+}
+
+internal fun Project.configureKotlin() {
   tasks.withType<KotlinCompile>().configureEach {
     compilerOptions {
       jvmTarget = JvmTarget.JVM_17

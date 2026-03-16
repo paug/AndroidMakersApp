@@ -2,7 +2,6 @@ package com.androidmakers.ui
 
 import androidx.compose.ui.window.ComposeUIViewController
 import com.androidmakers.ui.common.SigninCallbacks
-import com.androidmakers.ui.theme.AndroidMakersTheme
 import org.koin.compose.KoinContext
 import platform.Foundation.NSBundle
 import platform.UIKit.UIViewController
@@ -14,15 +13,13 @@ fun MainLayoutViewController(): UIViewController =
       val versionCode = NSBundle.mainBundle.objectForInfoDictionaryKey("CFBundleVersion")
 
       KoinContext {
-        AndroidMakersTheme {
-          MainLayout(
-            versionName = versionName.toString(),
-            versionCode = versionCode.toString(),
-            signinCallbacks = SigninCallbacks(
-              signin = {},
-              signout = {}
-            )
+        MainLayout(
+          versionName = versionName.toString(),
+          versionCode = versionCode.toString(),
+          signinCallbacks = SigninCallbacks(
+            signin = {},
+            signout = {}
           )
-        }
+        )
       }
     }

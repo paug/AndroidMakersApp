@@ -14,6 +14,7 @@ class UISession(
     val isServiceSession: Boolean,
     val isFavorite: Boolean,
     val isAppClinic: Boolean = false,
+    val tags: List<String> = emptyList(),
 ) {
   class Speaker(val name: String)
 }

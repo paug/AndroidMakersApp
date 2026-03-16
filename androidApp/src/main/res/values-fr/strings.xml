@@ -1,35 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="no_maps_app_found">Erreur: Pas d‘application de carte trouvée</string>
-
-    <string name="many_minutes">Beaucoup de minutes</string>
-
-    <string name="Detail_sessionNotFound">Impossible de récuperer les informations sur cette
-        session.
-    </string>
-    <string name="agenda_empty_screen">Impossible de charger l‘agenda.\nVérifiez votre connexion et
-        attendez que cette vue se rafraîchit.
-    </string>
-
-    <string name="ImageDesc_speaker_avatar">Photo du speaker</string>
-    <string name="ImageDesc_social_network_image">réseau social</string>
-
-    <string name="session_selected">Session ajoutée en favori</string>
-    <string name="session_deselected">Session enlevée des favoris</string>
-
-    <string name="unable_to_launch_video_intent">Désolé, la vidéo ne peut pas être lancée pour le moment :(</string>
-
-    <string name="sponsors">Sponsors</string>
-    <string name="gold_sponsor">Sponsor Gold</string>
-    <string name="silver_sponsor">Sponsor Silver</string>
-    <string name="media_sponsor">Média</string>
-    <string name="other_sponsor">Autre Sponsor</string>
-    <string name="virtual_sponsor">Sponsor virtuel</string>
-    <string name="speaker_sponsor">Sponsor Speaker</string>
-    <string name="location_sponsor">Salle</string>
-    <string name="specialthanks_sponsor">Remerciement spécial</string>
-
-    <string name="permission_notifications_rationale_title">Permission refusée</string>
-    <string name="permission_notifications_rationale_text">Sans cette autorisation, l‘application ne peut pas vous envoyer de notifications. Voulez-vous vraiment refuser cette autorisation ?</string>
-    <string name="permission_notifications_rationale_positive">Aller dans les préférences</string>
 </resources>

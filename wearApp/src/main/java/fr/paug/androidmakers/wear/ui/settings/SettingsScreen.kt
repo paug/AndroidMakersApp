@@ -76,9 +76,7 @@ fun SettingsScreen(
       }
 
       item {
-        val showOnlyBookmarkedSessions: Boolean by viewModel.showOnlyBookmarkedSessions.collectAsStateWithLifecycle(
-          false
-        )
+        val showOnlyBookmarkedSessions: Boolean by viewModel.showOnlyBookmarkedSessions.collectAsStateWithLifecycle()
         ToggleChip(
           modifier = Modifier.fillMaxWidth(),
           checked = showOnlyBookmarkedSessions,

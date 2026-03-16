@@ -1,6 +1,5 @@
 plugins {
   alias(libs.plugins.android.application)
-  alias(libs.plugins.kotlin.android)
   alias(libs.plugins.google.services)
   alias(libs.plugins.androidmakers.android.signing)
   alias(libs.plugins.jetbrainsCompose)
@@ -9,7 +8,7 @@ plugins {
 
 android {
   namespace = "fr.paug.androidmakers.wear"
-  compileSdk = 35
+  compileSdk = 36
 
   defaultConfig {
     applicationId = "fr.paug.androidmakers"
@@ -24,10 +23,6 @@ android {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
     isCoreLibraryDesugaringEnabled = true
-  }
-
-  kotlinOptions {
-    jvmTarget = "17"
   }
 
   buildTypes {

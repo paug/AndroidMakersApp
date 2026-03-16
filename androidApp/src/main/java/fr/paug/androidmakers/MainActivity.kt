@@ -15,10 +15,10 @@ import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.exceptions.GetCredentialException
+import androidx.credentials.exceptions.NoCredentialException
 import androidx.lifecycle.lifecycleScope
 import com.androidmakers.ui.MainLayout
 import com.androidmakers.ui.common.SigninCallbacks
-import com.androidmakers.ui.theme.AndroidMakersTheme
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
@@ -32,7 +32,6 @@ import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import org.koin.android.ext.android.inject
-import org.koin.compose.KoinContext
 
 class MainActivity : ComponentActivity() {
 
@@ -53,41 +52,37 @@ class MainActivity : ComponentActivity() {
     val initialDeepLink: String? = if (savedInstanceState == null) intent.dataString else null
 
     setContent {
-      KoinContext {
-        AndroidMakersTheme {
-          val deeplink: String? by produceState(initialDeepLink) {
-            val listener = Consumer<Intent> { newIntent ->
-              newIntent.dataString?.let {
-                value = it
-              }
-            }
-            addOnNewIntentListener(listener)
-            awaitDispose { removeOnNewIntentListener(listener) }
+      val deeplink: String? by produceState(initialDeepLink) {
+        val listener = Consumer<Intent> { newIntent ->
+          newIntent.dataString?.let {
+            value = it
           }
-
-          MainLayout(
-            versionName = BuildConfig.VERSION_NAME,
-            versionCode = BuildConfig.VERSION_CODE.toString(),
-            deeplink = deeplink,
-            signinCallbacks = SigninCallbacks(
-              signin = ::signIn,
-              signout = ::signOut,
-            )
-          )
         }
+        addOnNewIntentListener(listener)
+        awaitDispose { removeOnNewIntentListener(listener) }
       }
+
+      MainLayout(
+        versionName = BuildConfig.VERSION_NAME,
+        versionCode = BuildConfig.VERSION_CODE.toString(),
+        deeplink = deeplink,
+        signinCallbacks = SigninCallbacks(
+          signin = ::signIn,
+          signout = ::signOut,
+        )
+      )
     }
   }
 
+  @Suppress("TooGenericExceptionCaught")
   private fun logFCMToken() {
     lifecycleScope.launch {
       try {
         val token = FirebaseMessaging.getInstance().token.await()
         Log.d(TAG, "FCM registration token: $token")
+      } catch (e: CancellationException) {
+        throw e
       } catch (e: Exception) {
-        if (e is CancellationException) {
-          throw e
-        }
         Log.w(TAG, "Fetching FCM registration token failed", e)
       }
     }
@@ -112,7 +107,9 @@ class MainActivity : ComponentActivity() {
       try {
         val response = credentialManager.getCredential(this@MainActivity, request)
         val credential = response.credential
-        if (credential is CustomCredential && credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
+        val isGoogleIdToken = credential is CustomCredential &&
+          credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL
+        if (isGoogleIdToken) {
           try {
             handleGoogleIdTokenCredential(GoogleIdTokenCredential.createFrom(credential.data))
           } catch (e: GoogleIdTokenParsingException) {
@@ -121,6 +118,8 @@ class MainActivity : ComponentActivity() {
         } else {
           Log.e(TAG, "Unexpected type of credential")
         }
+      } catch (e: NoCredentialException) {
+        Log.d(TAG, "No credentials available", e)
       } catch (e: GetCredentialException) {
         Log.e(TAG, "Retrieving of credential failed", e)
       }
@@ -149,6 +148,7 @@ class MainActivity : ComponentActivity() {
      * For some reason, trying to use the client ids from the google cloud console doesn't work 🤷‍♂️
      * See https://github.com/android/identity-samples/issues/53#issuecomment-2579235790
      */
-    private val SERVER_CLIENT_ID = "985196411897-r7edbi9jgo3hfupekcmdrg66inonj0o5.apps.googleusercontent.com"
+    private const val SERVER_CLIENT_ID =
+      "985196411897-r7edbi9jgo3hfupekcmdrg66inonj0o5.apps.googleusercontent.com"
   }
 }

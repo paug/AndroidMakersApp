@@ -1,11 +1,13 @@
+@file:OptIn(ExperimentalMaterial3ExpressiveApi::class)
+
 package com.androidmakers.ui.about
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,23 +16,57 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
+import androidx.compose.material.icons.rounded.AutoAwesome
+import androidx.compose.material.icons.rounded.Code
+import androidx.compose.material.icons.rounded.DarkMode
+import androidx.compose.material.icons.rounded.Gavel
+import androidx.compose.material.icons.rounded.LightMode
+import androidx.compose.material.icons.rounded.QuestionAnswer
+import androidx.compose.material.icons.rounded.SettingsBrightness
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.androidmakers.ui.common.toUrlOpener
+import com.androidmakers.ui.theme.LocalIsDarkTheme
+import com.androidmakers.ui.theme.LocalIsNeobrutalism
+import com.androidmakers.ui.theme.neoBrutalBorder
+import com.androidmakers.ui.theme.neoBrutalElevation
+import fr.androidmakers.domain.model.ThemePreference
 import fr.paug.androidmakers.ui.Res
+import fr.paug.androidmakers.ui.about
 import fr.paug.androidmakers.ui.about_android_makers
+import fr.paug.androidmakers.ui.about_event_tagline
+import fr.paug.androidmakers.ui.about_links
 import fr.paug.androidmakers.ui.code_of_conduct
 import fr.paug.androidmakers.ui.faq
 import fr.paug.androidmakers.ui.github_repo
@@ -38,6 +74,13 @@ import fr.paug.androidmakers.ui.ic_network_bluesky
 import fr.paug.androidmakers.ui.ic_network_x
 import fr.paug.androidmakers.ui.ic_network_youtube
 import fr.paug.androidmakers.ui.logo_android_makers
+import fr.paug.androidmakers.ui.settings
+import fr.paug.androidmakers.ui.social
+import fr.paug.androidmakers.ui.theme
+import fr.paug.androidmakers.ui.theme_dark
+import fr.paug.androidmakers.ui.theme_light
+import fr.paug.androidmakers.ui.theme_neobrutalism
+import fr.paug.androidmakers.ui.theme_system
 import fr.paug.androidmakers.ui.version
 import fr.paug.androidmakers.ui.x_hashtag
 import org.jetbrains.compose.resources.painterResource
@@ -50,73 +93,161 @@ fun AboutScreen(
     versionCode: String,
 ) {
   val viewModel = koinViewModel<AboutViewModel>()
+  val urlOpener = LocalUriHandler.current.toUrlOpener()
+  val themePreference by viewModel.themePreference.collectAsStateWithLifecycle()
+
   Column(
       modifier = Modifier
           .fillMaxSize()
           .verticalScroll(state = rememberScrollState())
           .padding(16.dp),
-      verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically)
+      verticalArrangement = Arrangement.spacedBy(16.dp)
   ) {
-    val urlOpener = LocalUriHandler.current.toUrlOpener()
+    HeroSection()
 
-    IntroCard(
+    AboutCard()
+
+    LinksCard(
         onFaqClick = { viewModel.openFaq(urlOpener) },
         onCocClick = { viewModel.openCoc(urlOpener) },
         onGithubRepoClick = { viewModel.openGithubRepo(urlOpener) }
     )
 
-    SocialCard(
-        { viewModel.openXHashtag(urlOpener) },
-        { viewModel.openBlueSkyAccount(urlOpener) },
-        { viewModel.openXAccount(urlOpener) },
-        { viewModel.openYoutube(urlOpener) }
+    SettingsCard(
+      themePreference = themePreference,
+      onThemePreferenceChange = { viewModel.setThemePreference(it) }
     )
 
+    SocialCard(
+        onXHashtagClick = { viewModel.openXHashtag(urlOpener) },
+        onBlueskyLogoClick = { viewModel.openBlueSkyAccount(urlOpener) },
+        onXLogoClick = { viewModel.openXAccount(urlOpener) },
+        onYouTubeLogoClick = { viewModel.openYoutube(urlOpener) }
+    )
+
+    val showDebugInfo by viewModel.showDebugInfo.collectAsStateWithLifecycle()
+    var versionTapCount by remember { mutableIntStateOf(0) }
+
     Text(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+              if (!showDebugInfo) {
+                versionTapCount++
+                if (versionTapCount >= 3) {
+                    viewModel.setShowDebugInfo(true)
+                  }
+              }
+            }
+          .padding(8.dp)
+        ,
         textAlign = TextAlign.Center,
-        text = stringResource(
-            Res.string.version,
-            versionName,
-            versionCode
-        ),
+        text = stringResource(Res.string.version, versionName, versionCode),
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant
+    )
+
+    if (showDebugInfo) {
+      val uid = viewModel.userUid
+      Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+        Text(
+          text = "UID: ",
+          style = MaterialTheme.typography.bodySmallEmphasized,
+          color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        SelectionContainer {
+          Text(
+            text = if (uid != null) uid else "Not signed in",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+          )
+        }
+      }
+    }
+  }
+}
+
+@Composable
+private fun HeroSection() {
+  Column(
+      modifier = Modifier.fillMaxWidth(),
+      horizontalAlignment = Alignment.CenterHorizontally
+  ) {
+    Image(
+        modifier = Modifier
+            .heightIn(max = 96.dp)
+            .fillMaxWidth()
+            .padding(horizontal = 32.dp),
+        painter = painterResource(Res.drawable.logo_android_makers),
+        contentDescription = "Android Makers"
+    )
+    Text(
+        modifier = Modifier.padding(top = 8.dp),
+        text = stringResource(Res.string.about_event_tagline),
+        style = MaterialTheme.typography.headlineSmall,
+        color = MaterialTheme.colorScheme.onBackground,
+        textAlign = TextAlign.Center
     )
   }
 }
 
 @Composable
-private fun IntroCard(
+private fun SectionHeader(title: String) {
+  Text(
+      modifier = Modifier.padding(bottom = 8.dp),
+      text = title,
+      style = MaterialTheme.typography.titleMedium,
+      fontWeight = FontWeight.Bold,
+      color = MaterialTheme.colorScheme.onSurface
+  )
+}
+
+@Composable
+private fun AboutCard() {
+  Surface(
+      modifier = Modifier.fillMaxWidth().neoBrutalElevation(),
+      shape = MaterialTheme.shapes.large,
+      color = MaterialTheme.colorScheme.surfaceContainerHigh
+  ) {
+    Column(modifier = Modifier.padding(16.dp)) {
+      SectionHeader(title = stringResource(Res.string.about))
+      Text(
+          text = stringResource(Res.string.about_android_makers),
+          style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 22.sp),
+          color = MaterialTheme.colorScheme.onSurfaceVariant
+      )
+    }
+  }
+}
+
+@Composable
+private fun LinksCard(
     onFaqClick: () -> Unit,
     onCocClick: () -> Unit,
     onGithubRepoClick: () -> Unit
 ) {
-  Column(Modifier.padding(vertical = 8.dp)) {
-    Image(
-        modifier = Modifier
-            .heightIn(max = 128.dp)
-            .fillMaxWidth()
-            .padding(horizontal = 32.dp),
-        painter = painterResource(Res.drawable.logo_android_makers),
-        contentDescription = "Logo"
-    )
-    Text(
-        modifier = Modifier.padding(16.dp),
-        text = stringResource(Res.string.about_android_makers)
-    )
-    Row(
-        Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center
-    ) {
-      ClickableText(
-          text = stringResource(Res.string.faq),
+  Surface(
+      modifier = Modifier.fillMaxWidth().neoBrutalElevation(),
+      shape = MaterialTheme.shapes.large,
+      color = MaterialTheme.colorScheme.surfaceContainerHigh
+  ) {
+    Column(modifier = Modifier.padding(16.dp)) {
+      SectionHeader(title = stringResource(Res.string.about_links))
+      LinkRow(
+          icon = Icons.Rounded.QuestionAnswer,
+          label = stringResource(Res.string.faq),
           onClick = onFaqClick
       )
-      ClickableText(
-          text = stringResource(Res.string.code_of_conduct),
+      HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+      LinkRow(
+          icon = Icons.Rounded.Gavel,
+          label = stringResource(Res.string.code_of_conduct),
           onClick = onCocClick
       )
-      ClickableText(
-          text = stringResource(Res.string.github_repo),
+      HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+      LinkRow(
+          icon = Icons.Rounded.Code,
+          label = stringResource(Res.string.github_repo),
           onClick = onGithubRepoClick
       )
     }
@@ -124,58 +255,108 @@ private fun IntroCard(
 }
 
 @Composable
-private fun SocialCard(
-  onXHashtagClick: () -> Unit,
-  onBlueskyLogoClick: () -> Unit,
-  onXLogoClick: () -> Unit,
-  onYouTubeLogoClick: () -> Unit
+private fun LinkRow(
+    icon: ImageVector,
+    label: String,
+    onClick: () -> Unit
 ) {
-  val darkMode = isSystemInDarkTheme()
-  Card(Modifier.fillMaxWidth()) {
+  Row(
+      modifier = Modifier
+          .fillMaxWidth()
+          .clickable(onClick = onClick)
+          .padding(vertical = 12.dp),
+      verticalAlignment = Alignment.CenterVertically
+  ) {
+    Icon(
+        imageVector = icon,
+        contentDescription = null,
+        tint = MaterialTheme.colorScheme.primary,
+        modifier = Modifier.size(24.dp)
+    )
+    Text(
+        modifier = Modifier
+            .weight(1f)
+            .padding(horizontal = 16.dp),
+        text = label,
+        style = MaterialTheme.typography.bodyLarge,
+        color = MaterialTheme.colorScheme.onSurface
+    )
+    Icon(
+        imageVector = Icons.AutoMirrored.Rounded.KeyboardArrowRight,
+        contentDescription = null,
+        tint = MaterialTheme.colorScheme.onSurfaceVariant
+    )
+  }
+}
+
+@Composable
+private fun SocialCard(
+    onXHashtagClick: () -> Unit,
+    onBlueskyLogoClick: () -> Unit,
+    onXLogoClick: () -> Unit,
+    onYouTubeLogoClick: () -> Unit
+) {
+  val darkMode = LocalIsDarkTheme.current
+
+  Surface(
+      modifier = Modifier.fillMaxWidth().neoBrutalElevation(),
+      shape = MaterialTheme.shapes.large,
+      color = MaterialTheme.colorScheme.surfaceContainerHigh
+  ) {
     Column(
-      modifier = Modifier.padding(8.dp),
-      horizontalAlignment = Alignment.CenterHorizontally
+        modifier = Modifier.padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-      Row(
-          Modifier.fillMaxWidth(),
-          horizontalArrangement = Arrangement.Center
+      SectionHeader(title = stringResource(Res.string.social))
+
+      Box(
+          modifier = Modifier
+              .clip(MaterialTheme.shapes.small)
+              .background(MaterialTheme.colorScheme.primaryContainer)
+              .clickable(onClick = onXHashtagClick)
+              .padding(horizontal = 16.dp, vertical = 8.dp)
       ) {
-        ClickableText(stringResource(Res.string.x_hashtag), onXHashtagClick)
+        Text(
+            text = stringResource(Res.string.x_hashtag),
+            style = MaterialTheme.typography.labelLarge,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onPrimaryContainer
+        )
       }
+
       Row(
-          Modifier
-              .padding(top = 8.dp),
-          horizontalArrangement = Arrangement.spacedBy(16.dp),
+          modifier = Modifier.padding(top = 16.dp),
+          horizontalArrangement = Arrangement.spacedBy(24.dp)
       ) {
-        SocialIcon(
-          onClick = onBlueskyLogoClick,
+        SocialIconWithLabel(
+            onClick = onBlueskyLogoClick,
+            label = "Bluesky"
         ) {
           Icon(
-            modifier = Modifier.padding(12.dp),
-            painter = painterResource(Res.drawable.ic_network_bluesky),
-            contentDescription = "Bluesky"
+              modifier = Modifier.size(24.dp),
+              painter = painterResource(Res.drawable.ic_network_bluesky),
+              contentDescription = "Bluesky"
           )
         }
-        SocialIcon(
-          onClick = onXLogoClick,
+        SocialIconWithLabel(
+            onClick = onXLogoClick,
+            label = "X"
         ) {
           Icon(
-            modifier = Modifier.padding(12.dp),
-            painter = painterResource(Res.drawable.ic_network_x),
-            tint = if (darkMode) {
-              Color.White
-            } else {
-              Color.Black },
-            contentDescription = "X"
+              modifier = Modifier.size(24.dp),
+              painter = painterResource(Res.drawable.ic_network_x),
+              tint = if (darkMode) Color.White else Color.Black,
+              contentDescription = "X"
           )
         }
-        SocialIcon(
-          onClick = onYouTubeLogoClick
+        SocialIconWithLabel(
+            onClick = onYouTubeLogoClick,
+            label = "YouTube"
         ) {
           Image(
-            modifier = Modifier.padding(8.dp),
-            painter = painterResource(Res.drawable.ic_network_youtube),
-            contentDescription = "YouTube"
+              modifier = Modifier.size(24.dp),
+              painter = painterResource(Res.drawable.ic_network_youtube),
+              contentDescription = "YouTube"
           )
         }
       }
@@ -184,32 +365,82 @@ private fun SocialCard(
 }
 
 @Composable
-private fun SocialIcon(
-  onClick: () -> Unit,
-  content: @Composable () -> Unit,
+private fun SocialIconWithLabel(
+    onClick: () -> Unit,
+    label: String,
+    content: @Composable () -> Unit,
 ) {
-  Button(
-    modifier = Modifier.size(64.dp),
-    onClick = onClick,
-    shape = CircleShape,
-    contentPadding = PaddingValues(4.dp),
-    colors = ButtonDefaults.textButtonColors()
+  Column(
+      horizontalAlignment = Alignment.CenterHorizontally,
+      verticalArrangement = Arrangement.spacedBy(4.dp)
   ) {
-    content()
+    val circularShape = if (LocalIsNeobrutalism.current) RectangleShape else CircleShape
+    Surface(
+        modifier = Modifier.size(56.dp).neoBrutalBorder(),
+        shape = circularShape,
+        color = MaterialTheme.colorScheme.surfaceContainer,
+        onClick = onClick
+    ) {
+      Box(contentAlignment = Alignment.Center) {
+        content()
+      }
+    }
+    Text(
+        text = label,
+        style = MaterialTheme.typography.labelSmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant
+    )
   }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ClickableText(
-    text: String,
-    onClick: () -> Unit,
+private fun SettingsCard(
+    themePreference: ThemePreference,
+    onThemePreferenceChange: (ThemePreference) -> Unit
 ) {
-  Text(
-      modifier = Modifier
-          .clickable(onClick = onClick)
-          .padding(8.dp),
-      text = text,
-      style = MaterialTheme.typography.titleSmall,
-      color = MaterialTheme.colorScheme.primary
-  )
+  Surface(
+      modifier = Modifier.fillMaxWidth().neoBrutalElevation(),
+      shape = MaterialTheme.shapes.large,
+      color = MaterialTheme.colorScheme.surfaceContainerHigh
+  ) {
+    Column(modifier = Modifier.padding(16.dp)) {
+      SectionHeader(title = stringResource(Res.string.settings))
+      Text(
+          text = stringResource(Res.string.theme),
+          style = MaterialTheme.typography.bodyMedium,
+          color = MaterialTheme.colorScheme.onSurfaceVariant,
+          modifier = Modifier.padding(bottom = 8.dp)
+      )
+      val options = ThemePreference.entries
+      val icons = mapOf(
+          ThemePreference.System to Icons.Rounded.SettingsBrightness,
+          ThemePreference.Light to Icons.Rounded.LightMode,
+          ThemePreference.Dark to Icons.Rounded.DarkMode,
+          ThemePreference.Neobrutalism to Icons.Rounded.AutoAwesome,
+      )
+      val labels = mapOf(
+          ThemePreference.System to stringResource(Res.string.theme_system),
+          ThemePreference.Light to stringResource(Res.string.theme_light),
+          ThemePreference.Dark to stringResource(Res.string.theme_dark),
+          ThemePreference.Neobrutalism to stringResource(Res.string.theme_neobrutalism),
+      )
+      SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
+        options.forEachIndexed { index, option ->
+          SegmentedButton(
+              selected = themePreference == option,
+              onClick = { onThemePreferenceChange(option) },
+              shape = SegmentedButtonDefaults.itemShape(index = index, count = options.size),
+              icon = {},
+          ) {
+            Icon(
+                imageVector = icons[option]!!,
+                contentDescription = labels[option],
+                modifier = Modifier.size(20.dp),
+            )
+          }
+        }
+      }
+    }
+  }
 }

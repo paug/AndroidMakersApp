@@ -9,7 +9,7 @@ private class UriHandlerUrlOpener(private val uriHandler: UriHandler) : UrlOpene
       uriHandler.openUri(url)
       true
     } catch (e: IllegalArgumentException) {
-      e.printStackTrace()
+      println("Failed to open URL: ${e.message}")
       false
     }
   }

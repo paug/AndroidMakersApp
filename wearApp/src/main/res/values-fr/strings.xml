@@ -1,12 +1,17 @@
 <resources>
+    <string name="session_list_noSessions">Aucune session disponible</string>
     <string name="main_day1">Jour 1</string>
     <string name="main_day2">Jour 2</string>
-
-    <string name="session_list_noSessions">Aucune session favorite</string>
 
     <string name="settings_signIn">Connexion</string>
     <string name="settings_signOut">Déconnexion</string>
     <string name="settings_showBookmarksOnly">Sessions favorites seulement</string>
     <string name="settings_signOutConfirm">Se déconnecter ?</string>
     <string name="settings_refresh">Rafraîchir</string>
+
+    <string name="session_detail_about">À propos de cette conférence</string>
+    <string name="session_detail_speakers">Conférenciers</string>
+    <string name="session_detail_addBookmark">Ajouter aux favoris</string>
+    <string name="session_detail_removeBookmark">Retirer des favoris</string>
+    <string name="session_in_progress">Session en cours</string>
 </resources>

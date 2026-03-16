@@ -16,6 +16,10 @@ import fr.paug.androidmakers.R
 
 class AndroidMakersMessagingService : FirebaseMessagingService() {
 
+  override fun onNewToken(token: String) {
+    Log.d(TAG, "Refreshed token: $token")
+  }
+
   override fun onMessageReceived(remoteMessage: RemoteMessage) {
 
     Log.d(TAG, "From: ${remoteMessage.from}")

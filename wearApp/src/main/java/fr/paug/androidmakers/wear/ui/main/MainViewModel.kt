@@ -15,6 +15,7 @@ import fr.androidmakers.domain.model.User
 import fr.androidmakers.domain.repo.BookmarksRepository
 import fr.androidmakers.domain.repo.SessionsRepository
 import fr.androidmakers.domain.repo.UserRepository
+import fr.androidmakers.domain.utils.formatMediumDate
 import fr.paug.androidmakers.wear.data.LocalPreferencesRepository
 import fr.paug.androidmakers.wear.ui.session.UISession
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -25,26 +26,25 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
+import kotlin.time.Clock
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.Month
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.plus
 import kotlinx.datetime.todayIn
-import java.time.Month
 
 private val TAG = MainViewModel::class.java.simpleName
-
-private val DAY_1_DATE = LocalDate(year = 2025, month = Month.APRIL, dayOfMonth = 10)
-private val DAY_2_DATE = DAY_1_DATE.plus(1, DateTimeUnit.DAY)
 
 class MainViewModel(
   messageClient: MessageClient,
@@ -57,7 +57,7 @@ class MainViewModel(
 ) : ViewModel() {
   val user: StateFlow<User?> = userRepository.user.stateIn(
     scope = viewModelScope,
-    started = SharingStarted.Eagerly,
+    started = SharingStarted.WhileSubscribed(5_000),
     initialValue = userRepository.currentUser
   )
 
@@ -67,20 +67,23 @@ class MainViewModel(
   private val sessionsLoadingTrigger = MutableStateFlow(LoadingTrigger(refresh = false))
 
   init {
-    viewModelScope.launch {
-      // Sync bookmarks when the user changes or a refresh is requested
-      combine(user, bookmarksSyncTrigger) { currentUser, _ -> currentUser }
-        .collectLatest { currentUser -> maybeSyncBookmarks(currentUser) }
-    }
+    // Sync bookmarks when user changes or sync is triggered
+    @OptIn(ExperimentalCoroutinesApi::class)
+    combine(user, bookmarksSyncTrigger) { currentUser, _ -> currentUser }
+      .flatMapLatest { currentUser ->
+        flow { emit(maybeSyncBookmarks(currentUser)) }
+      }
+      .launchIn(viewModelScope)
 
-    viewModelScope.launch {
-      messageClient.getEventsFlow().collect { messageEvent ->
+    // Listen for sync messages from the phone app
+    messageClient.getEventsFlow()
+      .onEach { messageEvent ->
         if (messageEvent.path == MESSAGE_SYNC_BOOKMARKS) {
           Log.d(TAG, "Received syncBookmarks message")
           bookmarksSyncTrigger.value = LoadingTrigger(refresh = true)
         }
       }
-    }
+      .launchIn(viewModelScope)
   }
 
   private fun MessageClient.getEventsFlow(): Flow<MessageEvent> = callbackFlow<MessageEvent> {
@@ -103,7 +106,7 @@ class MainViewModel(
   }
 
   @OptIn(ExperimentalCoroutinesApi::class)
-  private val sessions: Flow<List<UISession>?> = combine(
+  private val sessions: StateFlow<List<UISession>?> = combine(
     sessionsLoadingTrigger
       .flatMapLatest { trigger -> getAgendaUseCase(trigger.refresh) }
       .mapNotNull { it.getOrNull() },
@@ -119,26 +122,50 @@ class MainViewModel(
   }
     .stateIn(
       scope = viewModelScope,
-      started = SharingStarted.Eagerly,
+      started = SharingStarted.WhileSubscribed(5_000),
       initialValue = null
     )
 
   val sessionsDay1: Flow<List<UISession>?> =
     sessions.map { sessions -> sessions?.filter { it.session.startsAt.date == DAY_1_DATE } }
+      .stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = null
+      )
 
   val sessionsDay2: Flow<List<UISession>?> =
     sessions.map { sessions -> sessions?.filter { it.session.startsAt.date == DAY_2_DATE } }
 
-  /**
-   * Get the day of the conference, based on the current date.
-   * If the date is the first day of the conference or earlier, returns 0, otherwise returns 1.
-   */
-  fun getConferenceDay(): Int {
-    return if (Clock.System.todayIn(TimeZone.currentSystemDefault()) <= DAY_1_DATE) {
-      0
-    } else {
-      1
+
+  val days: StateFlow<List<WearDaySchedule>?> =
+    sessions.map { sessions ->
+      sessions
+        ?.groupBy { it.session.startsAt.date }
+        ?.toSortedMap()
+        ?.map { (date, daySessions) ->
+          WearDaySchedule(
+            title = date.formatMediumDate(),
+            date = date,
+            sessions = daySessions
+          )
+        }
     }
+      .stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = null
+      )
+
+  /**
+   * Get the day of the conference to display initially, based on the current date.
+   * Returns the index of the first day that is today or in the future,
+   * or the last day index if all days are in the past.
+   */
+  fun getConferenceDay(days: List<WearDaySchedule>): Int {
+    val today = Clock.System.todayIn(TimeZone.currentSystemDefault())
+    val index = days.indexOfFirst { it.date >= today }
+    return if (index >= 0) index else days.lastIndex.coerceAtLeast(0)
   }
 
   fun signOut() {
@@ -156,8 +183,16 @@ class MainViewModel(
 
   companion object {
     private const val MESSAGE_SYNC_BOOKMARKS = "syncBookmarks"
+    val DAY_1_DATE = LocalDate(year = 2026, month = Month.APRIL, day = 9)
+    val DAY_2_DATE = DAY_1_DATE.plus(1, DateTimeUnit.DAY)
   }
 }
+
+data class WearDaySchedule(
+  val title: String,
+  val date: LocalDate,
+  val sessions: List<UISession>,
+)
 
 private fun Agenda.toUISessions(favoriteSessions: Set<String>): List<UISession> {
   val speakersById = speakers.associateBy { it.id }

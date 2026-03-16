@@ -1,5 +1,6 @@
 package fr.paug.androidmakers.wear.ui.session
 
+import fr.androidmakers.domain.model.Complexity
 import fr.androidmakers.domain.model.Room
 import fr.androidmakers.domain.model.Session
 import fr.androidmakers.domain.model.Speaker
@@ -10,9 +11,14 @@ val uiSession1 = UISession(
   session = Session(
     id = "1",
     title = "Android Graphics: the Path to [UI] Riches",
-    description = "Android's graphics APIs are extensive and powerful... but maybe a little complicated. This session will show ways to use the graphics APIs to achieve cool effects and improve the visual quality and richness of your applications.",
+    description = "Android's graphics APIs are extensive and powerful... but maybe a little " +
+      "complicated. This session will show ways to use the graphics APIs to achieve cool effects " +
+      "and improve the visual quality and richness of your applications.",
     roomId = "",
     speakers = emptyList(),
+    language = "English",
+    tags = listOf("UI", "Graphics"),
+    complexity = Complexity.INTERMEDIATE,
     startsAt = LocalDateTime(2023, Month.APRIL, 27, 9, 15),
     endsAt = LocalDateTime(2023, Month.APRIL, 27, 10, 0),
     isServiceSession = false,
@@ -41,9 +47,19 @@ val uiSession2 = UISession(
   session = Session(
     id = "2",
     title = "Using Compose Runtime to create a client library",
-    description = "Jetpack Compose (UI) is a powerful UI toolkit for Android. Have you ever wondered where this power comes from? The answer is Compose Runtime. \r\n\r\nIn this talk, we will see how we can use Compose Runtime to create client libraries. Firstly, we will talk about Compose nodes, Composition, Recomposer, and how they are orchestrated to create a slot table. Then, we will see how the changes in the slot table are applied with an Applier. Moreover, we will touch upon the Snapshot system and how the changes in the state objects trigger a recomposition. Finally, we will create a basic UI toolkit for PowerPoint using Compose Runtime.",
+    description = "Jetpack Compose (UI) is a powerful UI toolkit for Android. Have you ever " +
+      "wondered where this power comes from? The answer is Compose Runtime. \r\n\r\nIn this " +
+      "talk, we will see how we can use Compose Runtime to create client libraries. Firstly, " +
+      "we will talk about Compose nodes, Composition, Recomposer, and how they are " +
+      "orchestrated to create a slot table. Then, we will see how the changes in the slot " +
+      "table are applied with an Applier. Moreover, we will touch upon the Snapshot system " +
+      "and how the changes in the state objects trigger a recomposition. Finally, we will " +
+      "create a basic UI toolkit for PowerPoint using Compose Runtime.",
     roomId = "",
     speakers = emptyList(),
+    language = "French",
+    tags = listOf("Architecture", "Compose"),
+    complexity = Complexity.BEGINNER,
     startsAt = LocalDateTime(2023, Month.APRIL, 27, 10, 15),
     endsAt = LocalDateTime(2023, Month.APRIL, 27, 11, 0),
     isServiceSession = false,

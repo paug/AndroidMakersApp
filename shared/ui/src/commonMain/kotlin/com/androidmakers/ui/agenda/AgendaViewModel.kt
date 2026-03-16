@@ -49,6 +49,18 @@ class AgendaViewModel(
     }
   }.distinctUntilChanged()
 
+  val tags: Flow<List<String>> = values.map { stateLce ->
+    when (stateLce) {
+      is Lce.Content -> stateLce.content.days
+        .flatMap { day -> day.sessions }
+        .filter { !it.isServiceSession }
+        .flatMap { it.tags }
+        .distinct()
+        .sorted()
+      else -> emptyList()
+    }
+  }.distinctUntilChanged()
+
   fun onFiltersChanged(newSessionFilters: Set<SessionFilter>) {
     _sessionFilters.value = newSessionFilters
   }

@@ -1,6 +1,3 @@
-import org.jetbrains.kotlin.gradle.plugin.mpp.Framework
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
-
 plugins {
   alias(libs.plugins.androidmakers.kmp.library)
   alias(libs.plugins.jetbrainsCompose)
@@ -10,7 +7,6 @@ plugins {
 kotlin {
 
   listOf(
-      iosX64(),
       iosArm64(),
       iosSimulatorArm64()
   ).forEach {
@@ -21,7 +17,10 @@ kotlin {
       // https://youtrack.jetbrains.com/issue/KT-70202/Xcode-16-Linker-fails-with-SIGBUS
       linkerOpts("-ld_classic")
       linkerOpts("-ObjC")
+      linkerOpts("-framework", "CoreLocation")
+      linkerOpts("-framework", "MapKit")
 
+      export(libs.kotlinx.datetime)
       export(project(":shared:ui"))
       export(project(":shared:domain"))
       export(project(":shared:di"))
@@ -30,11 +29,16 @@ kotlin {
     }
   }
 
+  android {
+    namespace = "fr.paug.androidmakers.shared"
+  }
+
   sourceSets {
     commonMain.dependencies {
       api(project(":shared:ui"))
       api(project(":shared:domain"))
       api(project(":shared:di"))
+      implementation(compose.runtime)
     }
   }
 }
@@ -42,8 +46,4 @@ kotlin {
 configurations.configureEach {
   // Remove unnecessary transitive dependency
   exclude(group = "androidx.appcompat", module = "appcompat")
-}
-
-android {
-  namespace = "fr.paug.androidmakers.shared"
 }

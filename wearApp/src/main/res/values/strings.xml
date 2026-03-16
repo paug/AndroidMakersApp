@@ -1,14 +1,19 @@
 <resources>
     <string name="app_name" translatable="false">Android Makers by droidcon</string>
 
-    <string name="main_day1">Day 1</string>
-    <string name="main_day2">Day 2</string>
-
-    <string name="session_list_noSessions">No favorite sessions</string>
+    <string name="session_list_noSessions">No sessions available</string>
 
     <string name="settings_signIn">Sign in</string>
     <string name="settings_signOut">Sign out</string>
     <string name="settings_showBookmarksOnly">Show favorites only</string>
     <string name="settings_signOutConfirm">Sign out?</string>
     <string name="settings_refresh">Refresh</string>
+    <string name="main_day1">Day 1</string>
+    <string name="main_day2">Day 2</string>
+
+    <string name="session_detail_about">About this talk</string>
+    <string name="session_detail_speakers">Speakers</string>
+    <string name="session_detail_addBookmark">Add to favorites</string>
+    <string name="session_detail_removeBookmark">Remove from favorites</string>
+    <string name="session_in_progress">Session in progress</string>
 </resources>

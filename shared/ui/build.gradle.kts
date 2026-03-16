@@ -2,12 +2,12 @@ plugins {
   alias(libs.plugins.androidmakers.kmp.library)
   alias(libs.plugins.jetbrainsCompose)
   alias(libs.plugins.compose.compiler)
+  alias(libs.plugins.kotlin.serialization)
 }
 
 kotlin {
   applyDefaultHierarchyTemplate()
 
-  iosX64()
   iosArm64()
   iosSimulatorArm64()
 
@@ -16,17 +16,17 @@ kotlin {
       implementation(compose.runtime)
       implementation(compose.foundation)
       implementation(compose.ui)
-      implementation(compose.material3)
+      implementation("org.jetbrains.compose.material3:material3:1.11.0-alpha03")
       implementation(compose.materialIconsExtended)
       implementation(compose.components.resources)
       implementation(compose.components.uiToolingPreview)
       implementation(libs.coil.compose)
-      implementation(libs.jetbrains.navigation.compose)
+      implementation(libs.jetbrains.material3.adaptive.navigation3)
+      implementation(libs.jetbrains.navigation3.ui)
       implementation(libs.jetbrains.lifecycle.runtime.compose)
       implementation(libs.jetbrains.lifecycle.viewmodel.compose)
       implementation(libs.koin.compose)
       implementation(libs.koin.compose.viewmodel)
-      api(libs.openfeedback.viewmodel)
       implementation(libs.kotlinx.coroutines.core)
       implementation(libs.okio)   // Used by Openfeedback
 
@@ -35,11 +35,22 @@ kotlin {
     }
     androidMain.dependencies {
       implementation(libs.coil.network.okhttp)
+      api(libs.openfeedback.viewmodel)
     }
     iosMain.dependencies {
       implementation(libs.coil.network.ktor3)
       implementation(libs.ktor.client.darwin)
+      api(libs.openfeedback.viewmodel)
     }
+    jvmMain.dependencies {
+      implementation(libs.coil.network.ktor3)
+      implementation(libs.ktor.client.java)
+    }
+  }
+
+  android {
+    namespace = "fr.paug.androidmakers.ui"
+    androidResources.enable = true
   }
 }
 
@@ -48,10 +59,6 @@ configurations.configureEach {
   exclude(group = "androidx.appcompat", module = "appcompat")
   // Disable Android Drawable support in Coil
   exclude(group = "com.google.accompanist", module = "accompanist-drawablepainter")
-}
-
-android {
-  namespace = "fr.paug.androidmakers.ui"
 }
 
 compose.resources {

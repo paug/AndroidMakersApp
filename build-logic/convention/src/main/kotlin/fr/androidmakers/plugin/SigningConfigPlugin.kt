@@ -4,6 +4,7 @@ import com.android.build.api.dsl.ApplicationExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.getByType
+import java.io.File
 import java.util.Properties
 
 class SigningConfigPlugin : Plugin<Project> {
@@ -11,41 +12,48 @@ class SigningConfigPlugin : Plugin<Project> {
   override fun apply(target: Project) {
     with(target) {
       val extension = extensions.getByType<ApplicationExtension>()
+      val keystoreFile = project.rootProject.file("androidApp/keystore.properties")
       extension.apply {
-        val f = project.rootProject.file("androidApp/keystore.properties")
-        signingConfigs.apply {
-          val props = Properties()
-          if (f.exists()) {
-            props.load(f.reader())
-          }
-          create("release").apply {
-            keyAlias = props.getProperty("keyAlias")
-            keyPassword = props.getProperty("keyAliasPassword")
-            storeFile = project.rootProject.file("androidApp/keystore.release")
-            storePassword = props.getProperty("keyAliasPassword")
-          }
+        configureSigningConfigs(keystoreFile)
+        configureBuildTypes(keystoreFile)
+      }
+    }
+  }
+}
 
-          getByName("debug").apply {
-            keyAlias = "debug"
-            keyPassword = "androidmakers"
-            storeFile = project.rootProject.file("androidApp/keystore.debug")
-            storePassword = "androidmakers"
-          }
-        }
+private fun ApplicationExtension.configureSigningConfigs(keystoreFile: File) {
+  val props = Properties()
+  if (keystoreFile.exists()) {
+    props.load(keystoreFile.reader())
+  }
+  signingConfigs.apply {
+    create("release").apply {
+      keyAlias = props.getProperty("keyAlias")
+      keyPassword = props.getProperty("keyAliasPassword")
+      storeFile = keystoreFile.parentFile.resolve("keystore.release")
+      storePassword = props.getProperty("keyAliasPassword")
+    }
 
-        buildTypes.apply {
-          getByName("release").apply {
-            isMinifyEnabled = true
-            isShrinkResources = true
-            proguardFiles(
-                "proguard-defaults.txt",
-                "proguard-rules.pro"
-            )
-            if (f.exists()) {
-              signingConfig = signingConfigs.getByName("release")
-            }
-          }
-        }
+    getByName("debug").apply {
+      keyAlias = "debug"
+      keyPassword = "androidmakers"
+      storeFile = keystoreFile.parentFile.resolve("keystore.debug")
+      storePassword = "androidmakers"
+    }
+  }
+}
+
+private fun ApplicationExtension.configureBuildTypes(keystoreFile: File) {
+  buildTypes.apply {
+    getByName("release").apply {
+      isMinifyEnabled = true
+      isShrinkResources = true
+      proguardFiles(
+        "proguard-defaults.txt",
+        "proguard-rules.pro"
+      )
+      if (keystoreFile.exists()) {
+        signingConfig = signingConfigs.getByName("release")
       }
     }
   }

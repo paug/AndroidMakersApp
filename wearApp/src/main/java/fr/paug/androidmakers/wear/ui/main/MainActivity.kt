@@ -4,11 +4,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.pager.PagerState
-import androidx.compose.foundation.pager.rememberPagerState
+import androidx.wear.compose.foundation.pager.PagerState
+import androidx.wear.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,10 +49,9 @@ import org.koin.core.parameter.parametersOf
 class MainActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    installSplashScreen()
     setContent {
-      installSplashScreen()
       WearApp(onSwipeToDismissRootLevel = { ActivityCompat.finishAffinity(this) })
-      setTheme(android.R.style.Theme_DeviceDefault)
     }
   }
 }
@@ -117,7 +117,9 @@ fun WearApp(
           Navigation.sessionDetail,
           arguments = listOf(navArgument(Navigation.id) { type = NavType.StringType })
         ) {
-          val sessionId = it.arguments!!.getString(Navigation.id)!!
+          val sessionId = requireNotNull(it.arguments?.getString(Navigation.id)) {
+            "Session detail requires a '${Navigation.id}' argument"
+          }
           val sessionDetailViewModel: SessionDetailViewModel =
             koinViewModel { parametersOf(sessionId) }
 
@@ -137,11 +139,26 @@ fun MainScreen(
   onSignOutClick: () -> Unit,
   onSessionClick: (String) -> Unit,
 ) {
-  val pagerState: PagerState =
-    rememberPagerState(initialPage = viewModel.getConferenceDay() + 1, pageCount = { 3 })
-  val user: User? by viewModel.user.collectAsState()
+  val user: User? by viewModel.user.collectAsStateWithLifecycle()
+  val days: List<WearDaySchedule>? by viewModel.days.collectAsStateWithLifecycle()
   val sessionsDay1: List<UISession>? by viewModel.sessionsDay1.collectAsState(initial = null)
   val sessionsDay2: List<UISession>? by viewModel.sessionsDay2.collectAsState(initial = null)
+
+  val pagerState: PagerState = rememberPagerState(
+    initialPage = 0,
+    pageCount = { 1 + (days?.size ?: 0) }
+  )
+
+  // Scroll to the current conference day once days are loaded
+  LaunchedEffect(days) {
+    val loadedDays = days
+    if (loadedDays != null && loadedDays.isNotEmpty()) {
+      val targetPage = viewModel.getConferenceDay(loadedDays) + 1
+      if (pagerState.currentPage == 0) {
+        pagerState.scrollToPage(targetPage)
+      }
+    }
+  }
 
   PagerScreen(
     modifier = Modifier

@@ -1,5 +1,7 @@
 package com.androidmakers.ui.speakers
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.consumeWindowInsets
@@ -20,20 +22,25 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.text.style.Hyphens
+import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.androidmakers.ui.common.LoadingLayout
 import com.androidmakers.ui.common.SocialButtons
 import com.androidmakers.ui.common.toUrlOpener
 import com.androidmakers.ui.model.Lce
+import com.androidmakers.ui.theme.LocalIsNeobrutalism
 import fr.androidmakers.domain.model.SocialsItem
 import fr.paug.androidmakers.ui.Res
 import fr.paug.androidmakers.ui.back
@@ -45,11 +52,13 @@ import org.jetbrains.compose.resources.stringResource
 fun SpeakerDetailsRoute(
     speakerDetailsViewModel: SpeakerDetailsViewModel,
     onBackClick: () -> Unit,
+    sharedTransitionScope: SharedTransitionScope? = null,
+    animatedVisibilityScope: AnimatedVisibilityScope? = null,
 ) {
-  val uiState by speakerDetailsViewModel.uiState.collectAsState()
+  val uiState by speakerDetailsViewModel.uiState.collectAsStateWithLifecycle()
   when (val state = uiState) {
     Lce.Loading -> LoadingLayout()
-    Lce.Error -> {
+    is Lce.Error -> {
 
     }
 
@@ -58,7 +67,9 @@ fun SpeakerDetailsRoute(
       SpeakerDetailsScreen(
         uiState = state.content,
         onSocialItemClick = { speakerDetailsViewModel.openSpeakerLink(urlOpener, it) },
-        onBackClick = onBackClick
+        onBackClick = onBackClick,
+        sharedTransitionScope = sharedTransitionScope,
+        animatedVisibilityScope = animatedVisibilityScope,
       )
     }
   }
@@ -70,6 +81,8 @@ fun SpeakerDetailsScreen(
     uiState: SpeakerDetailsUiState,
     onSocialItemClick: (SocialsItem) -> Unit,
     onBackClick: () -> Unit,
+    sharedTransitionScope: SharedTransitionScope? = null,
+    animatedVisibilityScope: AnimatedVisibilityScope? = null,
 ) {
   val speaker = uiState.speaker
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
@@ -77,6 +90,10 @@ fun SpeakerDetailsScreen(
       modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
       topBar = {
         TopAppBar(
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = MaterialTheme.colorScheme.background,
+                scrolledContainerColor = MaterialTheme.colorScheme.background,
+            ),
             navigationIcon = {
               IconButton(onClick = onBackClick) {
                 Icon(
@@ -101,12 +118,23 @@ fun SpeakerDetailsScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically)
     ) {
 
+      val circularShape = if (LocalIsNeobrutalism.current) RectangleShape else CircleShape
       speaker.photoUrl?.let { photoUrl ->
+        val photoModifier = if (sharedTransitionScope != null && animatedVisibilityScope != null) {
+          with(sharedTransitionScope) {
+            Modifier.sharedElement(
+              sharedContentState = rememberSharedContentState(key = "speaker_photo_${speaker.id}"),
+              animatedVisibilityScope = animatedVisibilityScope,
+            )
+          }
+        } else {
+          Modifier
+        }
         AsyncImage(
             model = photoUrl,
-            modifier = Modifier
+            modifier = photoModifier
                 .size(64.dp)
-                .clip(CircleShape),
+                .clip(circularShape),
             contentDescription = stringResource(Res.string.speakers)
         )
       }
@@ -122,7 +150,11 @@ fun SpeakerDetailsScreen(
         Text(
             text = speaker.bio.orEmpty(),
             textAlign = TextAlign.Start,
-            style = MaterialTheme.typography.bodyLarge,
+          style = MaterialTheme.typography.bodyMedium.copy(
+            lineHeight = 22.75.sp,
+            hyphens = Hyphens.Auto,
+            lineBreak = LineBreak.Paragraph,
+          )
         )
       }
 
