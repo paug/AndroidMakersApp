@@ -359,9 +359,9 @@
 				CODE_SIGN_ENTITLEMENTS = AndroidMakers/AndroidMakers.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1470;
+				CURRENT_PROJECT_VERSION = 1500;
 				DEVELOPMENT_ASSET_PATHS = "\"AndroidMakers/Preview Content\"";
-				DEVELOPMENT_TEAM = BCF2BZQY9X;
+				DEVELOPMENT_TEAM = F9RAPYL9T3;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)";
@@ -371,7 +371,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1470;
+				MARKETING_VERSION = 1500;
 				OTHER_LDFLAGS = (
 					"-framework",
 					shared,
@@ -398,9 +398,9 @@
 				CODE_SIGN_ENTITLEMENTS = AndroidMakers/AndroidMakers.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1470;
+				CURRENT_PROJECT_VERSION = 1500;
 				DEVELOPMENT_ASSET_PATHS = "\"AndroidMakers/Preview Content\"";
-				DEVELOPMENT_TEAM = BCF2BZQY9X;
+				DEVELOPMENT_TEAM = F9RAPYL9T3;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)";
@@ -410,7 +410,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1470;
+				MARKETING_VERSION = 1500;
 				OTHER_LDFLAGS = (
 					"-framework",
 					shared,
