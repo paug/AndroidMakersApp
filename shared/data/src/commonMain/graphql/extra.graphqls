@@ -1,4 +1,5 @@
-# noinspection GraphQLUnresolvedReference,GraphQLMissingType
+extend schema
+@link(url: "https://specs.apollo.dev/cache/v0.4", import: ["@typePolicy", "@fieldPolicy"])
 
 extend type Room @typePolicy(keyFields: "id")
 
