@@ -31,7 +31,7 @@ jobs:
       - name: Build release APKs
         run: ./gradlew :androidApp:assembleRelease :wearApp:assembleRelease
       - name: Upload release APKs
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: release-apks
           path: |
