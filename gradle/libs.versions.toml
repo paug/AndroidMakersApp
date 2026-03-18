@@ -4,39 +4,39 @@ sdk-compile = "36"
 sdk-min = "24"
 androidDesugarJdkLibs = "2.1.5"
 detekt = "1.23.8"
-androidGradlePlugin = "9.0.1"
-androidx-activity = "1.12.4"
-androidx-core = "1.17.0"
+androidGradlePlugin = "9.1.0"
+androidx-activity = "1.13.0"
+androidx-core = "1.18.0"
 androidx-core-splashscreen = "1.2.0"
 androidx-credentials = "1.5.0"
-androidx-datastore = "1.2.0"
-androidx-lifecycle = "2.8.7"    # Used by the Wear OS app only
-androidx-wear-compose = "1.4.1"
+androidx-datastore = "1.2.1"
+androidx-lifecycle = "2.10.0"    # Used by the Wear OS app only
+androidx-wear-compose = "1.5.6"
 apollo = "4.4.2"
 apollo-adapters = "0.7.0"
 apollo-cache = "1.0.0"
-coil = "3.1.0"
-compose = "1.7.8"                # Used by the Wear OS app only
+coil = "3.4.0"
+compose = "1.10.5"                # Used by the Wear OS app only
+compose-material-icons-extended = "1.7.8"
 crashlytics-plugin = "3.0.6"
 firebase-auth = "2.4.0"
 firebase-bom = "34.10.0"
 google-services-plugin = "4.4.4"
 googleid = "1.2.0"
 horologist = "0.7.15"
-jetbrainsCompose = "1.11.0-alpha03"
-jetbrainsLifecycle = "2.10.0-alpha08"
-# if you update this, you probably need to update all other compose dependencies
-# see https://youtrack.jetbrains.com/issue/CMP-7571
-material3-adaptive-nav3 = "1.3.0-alpha05"
-nav3-ui = "1.1.0-alpha03"
+jetbrains-compose = "1.11.0-alpha04"
+jetbrains-lifecycle = "2.10.0-beta01"
+jetbrains-material3-adaptive-nav3 = "1.3.0-alpha06"
+jetbrains-compose-material-icons-extended = "1.7.3"
+nav3-ui = "1.1.0-alpha04"
 junit = "4.13.2"
 koin = "4.1.1"
-kotlin = "2.3.10"
+kotlin = "2.3.20"
 kotlinx-coroutines = "1.10.2"
 kotlinx-datetime = "0.7.1"
 ktor = "3.4.1"
 okhttp = "5.3.2"
-okio = "3.16.4"
+okio = "3.17.0"
 openfeedback = "1.0.0-alpha.6"
 playServices-auth = "21.5.1"
 playServices-wearable = "19.0.0"
@@ -56,17 +56,24 @@ apollo-runtime = { module = "com.apollographql.apollo:apollo-runtime", version.r
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil" }
 coil-network-ktor3 = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "compose" }
-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 firebase-auth = { module = "dev.gitlive:firebase-auth", version.ref = "firebase-auth" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
+
 googleid = { group = "com.google.android.libraries.identity.googleid", name = "googleid", version.ref = "googleid" }
-jetbrains-lifecycle-runtime = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime", version.ref = "jetbrainsLifecycle" }
-jetbrains-lifecycle-runtime-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "jetbrainsLifecycle" }
-jetbrains-lifecycle-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "jetbrainsLifecycle" }
-jetbrains-material3-adaptive-navigation3 = { module = "org.jetbrains.compose.material3.adaptive:adaptive-navigation3", version.ref = "material3-adaptive-nav3" }
+jetbrains-lifecycle-runtime = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime", version.ref = "jetbrains-lifecycle" }
+jetbrains-lifecycle-runtime-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "jetbrains-lifecycle" }
+jetbrains-lifecycle-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "jetbrains-lifecycle" }
+jetbrains-compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "jetbrains-compose" }
+jetbrains-compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "jetbrains-compose" }
+jetbrains-compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "jetbrains-compose" }
+jetbrains-compose-ui-tooling = { module = "org.jetbrains.compose.ui:ui-tooling", version.ref = "jetbrains-compose" }
+jetbrains-compose-ui-tooling-preview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "jetbrains-compose" }
+jetbrains-compose-components-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "jetbrains-compose" }
+jetbrains-compose-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "jetbrains-compose" }
+jetbrains-compose-material3-adaptive-navigation3 = { module = "org.jetbrains.compose.material3.adaptive:adaptive-navigation3", version.ref = "jetbrains-material3-adaptive-nav3" }
+jetbrains-compose-material-icons-extended = { module = "org.jetbrains.compose.material:material-icons-extended", version.ref = "jetbrains-compose-material-icons-extended" }
 jetbrains-navigation3-ui = { module = "org.jetbrains.androidx.navigation3:navigation3-ui", version.ref = "nav3-ui" }
 junit = { module = "junit:junit", version.ref = "junit" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -102,6 +109,8 @@ wear-compose-material = { module = "androidx.wear.compose:compose-material", ver
 wear-compose-foundation = { module = "androidx.wear.compose:compose-foundation", version.ref = "androidx-wear-compose" }
 wear-compose-ui-tooling = { module = "androidx.wear.compose:compose-ui-tooling", version.ref = "androidx-wear-compose" }
 wear-compose-navigation = { module = "androidx.wear.compose:compose-navigation", version.ref = "androidx-wear-compose" }
+compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "compose-material-icons-extended" }
+compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 horologist-composables = { module = "com.google.android.horologist:horologist-composables", version.ref = "horologist" }
 horologist-compose-layout = { module = "com.google.android.horologist:horologist-compose-layout", version.ref = "horologist" }
 horologist-compose-material = { module = "com.google.android.horologist:horologist-compose-material", version.ref = "horologist" }
@@ -115,9 +124,8 @@ apollo = { id = "com.apollographql.apollo", version.ref = "apollo" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlytics-plugin" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services-plugin" }
-jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "jetbrainsCompose" }
+jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "jetbrains-compose" }
 kmp = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 

@@ -1,7 +1,7 @@
 plugins {
   alias(libs.plugins.androidmakers.android.application)
   alias(libs.plugins.androidmakers.android.signing)
-  alias(libs.plugins.jetbrainsCompose)
+  alias(libs.plugins.jetbrains.compose)
   alias(libs.plugins.compose.compiler)
 }
 
@@ -49,9 +49,9 @@ dependencies {
   implementation(project(":shared:data"))
   testImplementation(libs.junit)
 
-  implementation(compose.material3)
-  implementation(compose.materialIconsExtended)
-  implementation(compose.uiTooling)
+  implementation(libs.jetbrains.compose.material3)
+  implementation(libs.jetbrains.compose.material.icons.extended)
+  implementation(libs.jetbrains.compose.ui.tooling)
   coreLibraryDesugaring(libs.desugar.jdk.libs)
 
   // Kotlin

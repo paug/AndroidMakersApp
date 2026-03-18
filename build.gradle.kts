@@ -5,7 +5,7 @@ plugins {
   alias(libs.plugins.google.services) apply false
   alias(libs.plugins.kmp) apply false
   alias(libs.plugins.crashlytics) apply false
-  alias(libs.plugins.jetbrainsCompose) apply false
+  alias(libs.plugins.jetbrains.compose) apply false
   alias(libs.plugins.compose.compiler) apply false
   alias(libs.plugins.kotlin.serialization) apply false
   alias(libs.plugins.detekt)

@@ -1,6 +1,6 @@
 plugins {
   alias(libs.plugins.androidmakers.kmp.library)
-  alias(libs.plugins.jetbrainsCompose)
+  alias(libs.plugins.jetbrains.compose)
   alias(libs.plugins.compose.compiler)
 }
 
@@ -38,7 +38,7 @@ kotlin {
       api(project(":shared:ui"))
       api(project(":shared:domain"))
       api(project(":shared:di"))
-      implementation(compose.runtime)
+      implementation(libs.jetbrains.compose.runtime)
     }
   }
 }

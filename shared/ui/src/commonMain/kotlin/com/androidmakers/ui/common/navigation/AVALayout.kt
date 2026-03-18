@@ -360,7 +360,7 @@ private fun AVANavDisplay(
 
     NavDisplay(
       entries = navigationState.toDecoratedEntries(entryProvider),
-      sceneStrategy = listDetailStrategy,
+      sceneStrategies = listOf(listDetailStrategy),
       onBack = { navigator.goBack() }
     )
   }
