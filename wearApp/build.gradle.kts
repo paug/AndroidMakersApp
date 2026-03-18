@@ -2,7 +2,7 @@ plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.google.services)
   alias(libs.plugins.androidmakers.android.signing)
-  alias(libs.plugins.jetbrainsCompose)
+  alias(libs.plugins.jetbrains.compose)
   alias(libs.plugins.compose.compiler)
 }
 

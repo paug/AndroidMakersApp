@@ -1,6 +1,6 @@
 plugins {
   alias(libs.plugins.androidmakers.kmp.library)
-  alias(libs.plugins.jetbrainsCompose)
+  alias(libs.plugins.jetbrains.compose)
   alias(libs.plugins.compose.compiler)
   alias(libs.plugins.kotlin.serialization)
 }
@@ -13,15 +13,15 @@ kotlin {
 
   sourceSets {
     commonMain.dependencies {
-      implementation(compose.runtime)
-      implementation(compose.foundation)
-      implementation(compose.ui)
-      implementation("org.jetbrains.compose.material3:material3:1.11.0-alpha03")
-      implementation(compose.materialIconsExtended)
-      implementation(compose.components.resources)
-      implementation(compose.components.uiToolingPreview)
+      implementation(libs.jetbrains.compose.runtime)
+      implementation(libs.jetbrains.compose.foundation)
+      implementation(libs.jetbrains.compose.ui)
+      implementation(libs.jetbrains.compose.material3)
+      implementation(libs.jetbrains.compose.material.icons.extended)
+      implementation(libs.jetbrains.compose.components.resources)
+      implementation(libs.jetbrains.compose.ui.tooling.preview)
       implementation(libs.coil.compose)
-      implementation(libs.jetbrains.material3.adaptive.navigation3)
+      implementation(libs.jetbrains.compose.material3.adaptive.navigation3)
       implementation(libs.jetbrains.navigation3.ui)
       implementation(libs.jetbrains.lifecycle.runtime.compose)
       implementation(libs.jetbrains.lifecycle.viewmodel.compose)

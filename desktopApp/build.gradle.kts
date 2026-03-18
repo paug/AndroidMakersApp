@@ -2,7 +2,7 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
   alias(libs.plugins.kmp)
-  alias(libs.plugins.jetbrainsCompose)
+  alias(libs.plugins.jetbrains.compose)
   alias(libs.plugins.compose.compiler)
 }
 
