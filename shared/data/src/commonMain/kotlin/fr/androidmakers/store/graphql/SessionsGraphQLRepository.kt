@@ -1,8 +1,8 @@
 package fr.androidmakers.store.graphql
 
 import com.apollographql.apollo.ApolloClient
-import com.apollographql.apollo.cache.normalized.FetchPolicy
-import com.apollographql.apollo.cache.normalized.fetchPolicy
+import com.apollographql.cache.normalized.FetchPolicy
+import com.apollographql.cache.normalized.fetchPolicy
 import fr.androidmakers.domain.model.Session
 import fr.androidmakers.domain.repo.SessionsRepository
 import kotlinx.coroutines.flow.Flow
@@ -31,7 +31,7 @@ class SessionsGraphQLRepository(private val apolloClient: ApolloClient) : Sessio
       }
   }
 
-  override fun getBookmarks(uid: String): Flow<Result<Set<String>>> {
+  override fun getBookmarks(userId: String): Flow<Result<Set<String>>> {
     return apolloClient.query(BookmarksQuery())
       .fetchPolicy(FetchPolicy.NetworkOnly)
       .toFlow()

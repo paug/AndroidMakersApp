@@ -1,3 +1,5 @@
+import com.apollographql.apollo.annotations.ApolloExperimental
+
 plugins {
   alias(libs.plugins.androidmakers.kmp.library)
   alias(libs.plugins.apollo)
@@ -19,7 +21,6 @@ kotlin {
         api(libs.apollo.runtime)
         implementation(libs.apollo.adapters.kotlinx.datetime)
         implementation(libs.apollo.normalized.cache.sqlite)
-        implementation(libs.apollo.normalized.cache)
 
         api(libs.androidx.datastore.preferences)
         api(libs.androidx.datastore.preferences.core)
@@ -47,8 +48,14 @@ kotlin {
 apollo {
   service("service") {
     packageName.set("fr.androidmakers.store.graphql")
+    @OptIn(ApolloExperimental::class)
     generateDataBuilders.set(true)
     mapScalar("GraphQLLocalDateTime", "kotlinx.datetime.LocalDateTime", "com.apollographql.adapter.datetime.KotlinxLocalDateTimeAdapter")
+
+    @OptIn(ApolloExperimental::class)
+    plugin("com.apollographql.cache:normalized-cache-apollo-compiler-plugin:${libs.versions.apollo.cache.get()}") {
+      argument("com.apollographql.cache.packageName", packageName.get())
+    }
 
     introspection {
       schemaFile.set(file("src/commonMain/graphql/schema.graphqls"))

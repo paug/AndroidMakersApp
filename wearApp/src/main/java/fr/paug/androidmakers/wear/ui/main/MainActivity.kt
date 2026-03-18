@@ -4,12 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.wear.compose.foundation.pager.PagerState
-import androidx.wear.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -20,11 +17,14 @@ import androidx.core.app.ActivityCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import androidx.wear.compose.foundation.SwipeToDismissBoxState
 import androidx.wear.compose.foundation.SwipeToDismissValue
 import androidx.wear.compose.foundation.edgeSwipeToDismiss
+import androidx.wear.compose.foundation.pager.PagerState
+import androidx.wear.compose.foundation.pager.rememberPagerState
 import androidx.wear.compose.foundation.rememberSwipeToDismissBoxState
 import androidx.wear.compose.navigation.SwipeDismissableNavHost
 import androidx.wear.compose.navigation.composable
@@ -42,7 +42,6 @@ import fr.paug.androidmakers.wear.ui.session.list.SessionListScreen
 import fr.paug.androidmakers.wear.ui.settings.SettingsScreen
 import fr.paug.androidmakers.wear.ui.signin.SignInScreen
 import fr.paug.androidmakers.wear.ui.theme.AndroidMakersWearTheme
-import kotlinx.coroutines.flow.map
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -89,8 +88,8 @@ fun WearApp(
 
   AndroidMakersWearTheme {
     AppScaffold {
-      val isResumed by LocalLifecycleOwner.current.lifecycle.currentStateFlow.map { it == Lifecycle.State.RESUMED }
-        .collectAsState(false)
+      val lifecycleState by LocalLifecycleOwner.current.lifecycle.currentStateFlow.collectAsState(false)
+      val isResumed = lifecycleState == Lifecycle.State.RESUMED
       SwipeDismissableNavHost(
         navController = navController,
         startDestination = Navigation.main,

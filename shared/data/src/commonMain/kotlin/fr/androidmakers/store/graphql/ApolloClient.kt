@@ -3,20 +3,19 @@ package fr.androidmakers.store.graphql
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.http.HttpRequest
 import com.apollographql.apollo.api.http.HttpResponse
-import com.apollographql.apollo.cache.normalized.api.MemoryCacheFactory
-import com.apollographql.apollo.cache.normalized.normalizedCache
-import com.apollographql.apollo.cache.normalized.sql.SqlNormalizedCacheFactory
 import com.apollographql.apollo.network.http.HttpInterceptor
 import com.apollographql.apollo.network.http.HttpInterceptorChain
+import com.apollographql.cache.normalized.api.NormalizedCacheFactory
+import com.apollographql.cache.normalized.memory.MemoryCacheFactory
 import fr.androidmakers.domain.repo.UserRepository
+import fr.androidmakers.store.graphql.cache.Cache.cache
 
 expect suspend fun getIdToken(userRepository: UserRepository): String?
 
 fun ApolloClient(
-  sqlNormalizedCacheFactory: SqlNormalizedCacheFactory,
+  sqlNormalizedCacheFactory: NormalizedCacheFactory,
   userRepository: UserRepository,
 ): ApolloClient {
-  val memoryCacheFactory = MemoryCacheFactory(20_000_000).chain(sqlNormalizedCacheFactory)
   return ApolloClient.Builder()
       .serverUrl("https://androidmakers.fr/graphql")
       .addHttpInterceptor(object : HttpInterceptor {
@@ -36,6 +35,6 @@ fun ApolloClient(
           )
         }
       })
-      .normalizedCache(memoryCacheFactory)
+    .cache(MemoryCacheFactory(20_000_000).chain(sqlNormalizedCacheFactory))
       .build()
 }

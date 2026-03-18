@@ -12,8 +12,9 @@ androidx-credentials = "1.5.0"
 androidx-datastore = "1.2.0"
 androidx-lifecycle = "2.8.7"    # Used by the Wear OS app only
 androidx-wear-compose = "1.4.1"
-apollo = "4.1.1"
-apollo-adapters = "0.0.4"
+apollo = "4.4.2"
+apollo-adapters = "0.7.0"
+apollo-cache = "1.0.0"
 coil = "3.1.0"
 compose = "1.7.8"                # Used by the Wear OS app only
 crashlytics-plugin = "3.0.6"
@@ -50,8 +51,7 @@ androidx-datastore-preferences = { module = "androidx.datastore:datastore-prefer
 androidx-datastore-preferences-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "androidx-datastore" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
 apollo-adapters-kotlinx-datetime = { module = "com.apollographql.adapters:apollo-adapters-kotlinx-datetime", version.ref = "apollo-adapters" }
-apollo-normalized-cache = { module = "com.apollographql.apollo:apollo-normalized-cache", version.ref = "apollo" }
-apollo-normalized-cache-sqlite = { module = "com.apollographql.apollo:apollo-normalized-cache-sqlite", version.ref = "apollo" }
+apollo-normalized-cache-sqlite = { module = "com.apollographql.cache:normalized-cache-sqlite", version.ref = "apollo-cache" }
 apollo-runtime = { module = "com.apollographql.apollo:apollo-runtime", version.ref = "apollo" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil" }

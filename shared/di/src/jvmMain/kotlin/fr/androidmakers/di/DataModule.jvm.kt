@@ -3,7 +3,7 @@ package fr.androidmakers.di
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
-import com.apollographql.apollo.cache.normalized.sql.SqlNormalizedCacheFactory
+import com.apollographql.cache.normalized.sql.SqlNormalizedCacheFactory
 import fr.androidmakers.domain.model.User
 import fr.androidmakers.domain.repo.UserRepository
 import fr.androidmakers.store.graphql.ApolloClient
