@@ -110,7 +110,7 @@ private fun Session(session: UISession, onBookmarkToggle: (Boolean) -> Unit) {
             .padding(horizontal = 8.dp)
             .padding(top = 8.dp),
           text = session.session.title,
-          textAlign = TextAlign.Start,
+          textAlign = TextAlign.Center,
           style = MaterialTheme.typography.title2.copy(
             fontWeight = FontWeight.Bold,
           ),
@@ -158,31 +158,36 @@ private fun SessionMetadataPills(
 ) {
   Row(
     verticalAlignment = Alignment.CenterVertically,
-    horizontalArrangement = Arrangement.SpaceBetween,
-    modifier = Modifier.fillMaxWidth(),
+    horizontalArrangement = Arrangement.Center,
   ) {
     Row(
       verticalAlignment = Alignment.CenterVertically,
       horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-      Text(
-        text = formattedDuration,
-        style = MaterialTheme.typography.caption1,
-        color = amGreen,
+      Row(
         modifier = Modifier
           .background(
-            color = amGreenLight,
+            color = MaterialTheme.colors.primary,
             shape = RoundedCornerShape(50)
           )
           .padding(horizontal = 10.dp, vertical = 4.dp),
-      )
+        verticalAlignment = Alignment.CenterVertically,
+      ) {
+        if (isOngoing) {
+          PulsatingRedDot()
+          Spacer(modifier = Modifier.width(4.dp))
+        }
 
-      if (isOngoing) {
-        PulsatingRedDot()
+        Text(
+          text = formattedDuration,
+          style = MaterialTheme.typography.caption1,
+          color = MaterialTheme.colors.onPrimary,
+        )
       }
     }
 
     languageWithFlag(language)?.let { langText ->
+      Spacer(modifier = Modifier.width(8.dp))
       Text(
         text = langText,
         style = MaterialTheme.typography.caption1,
@@ -203,42 +208,48 @@ private fun SessionTimeRoomRow(
   startsAt: LocalDateTime,
   roomName: String,
 ) {
-  Row(
-    verticalAlignment = Alignment.CenterVertically,
-    horizontalArrangement = Arrangement.Start,
+  FlowRow(
+    horizontalArrangement = Arrangement.spacedBy(space = 6.dp, alignment = Alignment.CenterHorizontally),
+    verticalArrangement = Arrangement.spacedBy(6.dp),
     modifier = Modifier
       .fillMaxWidth()
       .padding(top = 4.dp),
   ) {
-    Icon(
-      imageVector = Icons.Rounded.Schedule,
-      contentDescription = null,
-      modifier = Modifier.size(14.dp),
-      tint = MaterialTheme.colors.onSurfaceVariant,
-    )
-    Spacer(modifier = Modifier.width(4.dp))
-    Text(
-      text = startsAt.time.toString(),
-      style = MaterialTheme.typography.caption1,
-      color = MaterialTheme.colors.onSurfaceVariant,
-    )
-    Text(
-      text = " \u2022 ",
-      style = MaterialTheme.typography.caption1,
-      color = MaterialTheme.colors.onSurfaceVariant,
-    )
-    Icon(
-      imageVector = Icons.Rounded.Place,
-      contentDescription = null,
-      modifier = Modifier.size(14.dp),
-      tint = MaterialTheme.colors.onSurfaceVariant,
-    )
-    Spacer(modifier = Modifier.width(4.dp))
-    Text(
-      text = roomName,
-      style = MaterialTheme.typography.caption1,
-      color = MaterialTheme.colors.onSurfaceVariant,
-    )
+    Row(
+      verticalAlignment = Alignment.CenterVertically,
+      horizontalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+      Icon(
+        imageVector = Icons.Rounded.Schedule,
+        contentDescription = null,
+        modifier = Modifier.size(14.dp),
+        tint = MaterialTheme.colors.onSurfaceVariant,
+      )
+      Text(
+        text = startsAt.time.toString(),
+        style = MaterialTheme.typography.caption1,
+        color = MaterialTheme.colors.onSurfaceVariant,
+      )
+    }
+
+    Row(
+      verticalAlignment = Alignment.CenterVertically,
+      horizontalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+      Icon(
+        imageVector = Icons.Rounded.Place,
+        contentDescription = null,
+        modifier = Modifier.size(14.dp),
+        tint = MaterialTheme.colors.onSurfaceVariant,
+      )
+      Text(
+        text = roomName,
+        style = MaterialTheme.typography.caption1,
+        color = MaterialTheme.colors.onSurfaceVariant,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis,
+      )
+    }
   }
 }
 
@@ -307,7 +318,7 @@ private fun ScalingLazyListScope.sessionDescriptionSection(description: String) 
         .fillMaxWidth()
         .padding(horizontal = 8.dp),
       text = description,
-      style = MaterialTheme.typography.body2.copy(
+      style = MaterialTheme.typography.body1.copy(
         hyphens = Hyphens.Auto,
         lineBreak = LineBreak.Paragraph,
       ),
@@ -347,6 +358,7 @@ private fun ScalingLazyListScope.sessionSpeakersSection(
           )
         },
         onClick = {},
+        enabled = false,
       ) {
         Column {
           if (!speaker.company.isNullOrBlank()) {
@@ -361,8 +373,6 @@ private fun ScalingLazyListScope.sessionSpeakersSection(
               text = bio,
               style = MaterialTheme.typography.body2,
               color = MaterialTheme.colors.onSurfaceVariant,
-              maxLines = 4,
-              overflow = TextOverflow.Ellipsis,
             )
           }
         }
@@ -410,7 +420,7 @@ private fun languageWithFlag(language: String): String? {
     "french", "français" -> "\uD83C\uDDEB\uD83C\uDDF7"
     else -> null
   }
-  return if (flag != null) "$language $flag" else language
+  return if (flag != null) flag else language
 }
 
 @WearPreviewDevices
