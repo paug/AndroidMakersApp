@@ -83,8 +83,7 @@
   <string name="remove_from_my_agenda">Remove from My Agenda</string>
 
   <string name="feed">Feed</string>
-  <string name="feed_read_more">Read More</string>
-  <string name="feed_category_venue">VENUE</string>
+<string name="feed_category_venue">VENUE</string>
   <string name="feed_category_event">EVENT</string>
   <string name="feed_floor_plan">Floor Plan</string>
 

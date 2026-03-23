@@ -1,0 +1,19 @@
+query GetFeedMessages {
+    feedMessages {
+        ...FeedMessageDetails
+    }
+}
+
+subscription OnFeedMessageAdded {
+    feedMessageAdded {
+        ...FeedMessageDetails
+    }
+}
+
+fragment FeedMessageDetails on FeedMessage {
+    id
+    type
+    title
+    body
+    createdAt
+}

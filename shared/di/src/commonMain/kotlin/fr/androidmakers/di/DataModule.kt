@@ -13,6 +13,7 @@ import fr.androidmakers.domain.repo.UserRepository
 import fr.androidmakers.domain.repo.VenueRepository
 import fr.androidmakers.store.firebase.FirebaseUserRepository
 import fr.androidmakers.store.graphql.FeatureFlagsGraphQLRepository
+import fr.androidmakers.store.graphql.FeedGraphQLRepository
 import fr.androidmakers.store.graphql.PartnersGraphQLRepository
 import fr.androidmakers.store.graphql.RoomsGraphQLRepository
 import fr.androidmakers.store.graphql.SessionsGraphQLRepository
@@ -20,25 +21,24 @@ import fr.androidmakers.store.graphql.SpeakersGraphQLRepository
 import fr.androidmakers.store.graphql.VenueGraphQLRepository
 import fr.androidmakers.store.local.BookmarksDataStoreRepository
 import fr.androidmakers.store.local.ThemeDataStoreRepository
-import fr.androidmakers.store.mock.MockFeedRepository
 import fr.androidmakers.store.wear.WearMessagingRepository
 import org.koin.core.module.Module
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
-
 
 expect val dataPlatformModule: Module
 
 val dataModule = module {
-  single<PartnersRepository> { PartnersGraphQLRepository(get()) }
-  single<RoomsRepository> { RoomsGraphQLRepository(get()) }
-  single<SessionsRepository> { SessionsGraphQLRepository(get()) }
-  single<SpeakersRepository> { SpeakersGraphQLRepository(get()) }
-  single<UserRepository> { FirebaseUserRepository() }
-  single<VenueRepository> { VenueGraphQLRepository(get()) }
-  single<FeatureFlagsRepository> { FeatureFlagsGraphQLRepository(get()) }
-
-  single<BookmarksRepository> { BookmarksDataStoreRepository(get()) }
-  single<ThemeRepository> { ThemeDataStoreRepository(get()) }
-  single<MessagingRepository> { WearMessagingRepository(get()) }
-  single<FeedRepository> { MockFeedRepository() }
+  singleOf(::BookmarksDataStoreRepository) bind BookmarksRepository::class
+  singleOf(::FeedGraphQLRepository) bind FeedRepository::class
+  singleOf(::FirebaseUserRepository) bind UserRepository::class
+  singleOf(::PartnersGraphQLRepository) bind PartnersRepository::class
+  singleOf(::RoomsGraphQLRepository) bind RoomsRepository::class
+  singleOf(::SessionsGraphQLRepository) bind SessionsRepository::class
+  singleOf(::SpeakersGraphQLRepository) bind SpeakersRepository::class
+  singleOf(::ThemeDataStoreRepository) bind ThemeRepository::class
+  singleOf(::VenueGraphQLRepository) bind VenueRepository::class
+  singleOf(::WearMessagingRepository) bind MessagingRepository::class
+  singleOf(::FeatureFlagsGraphQLRepository) bind FeatureFlagsRepository::class
 }
