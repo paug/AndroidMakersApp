@@ -12,10 +12,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.CalendarMonth
 import androidx.compose.material.icons.rounded.Diamond
 import androidx.compose.material.icons.rounded.DynamicFeed
+import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.FilterList
 import androidx.compose.material.icons.rounded.Groups
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.LocationCity
+import androidx.compose.material.icons.rounded.Pin
+import androidx.compose.material.icons.rounded.PinDrop
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -61,9 +64,9 @@ import com.androidmakers.ui.speakers.SpeakerDetailsRoute
 import com.androidmakers.ui.speakers.SpeakerScreen
 import com.androidmakers.ui.sponsors.SponsorsScreen
 import com.androidmakers.ui.venue.VenuePager
+import fr.androidmakers.domain.model.FeatureFlags
 import fr.androidmakers.domain.model.User
 import fr.androidmakers.domain.repo.UserRepository
-import fr.androidmakers.domain.utils.FeatureFlags
 import fr.paug.androidmakers.ui.Res
 import fr.paug.androidmakers.ui.about
 import fr.paug.androidmakers.ui.agenda
@@ -95,6 +98,7 @@ fun AVALayout(
   navigator: Navigator,
   signinCallbacks: SigninCallbacks,
   userRepository: UserRepository = koinInject(),
+  featureFlags: FeatureFlags
 ) {
   var showAgendaFilterBottomSheet by remember { mutableStateOf(false) }
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -135,6 +139,7 @@ fun AVALayout(
         AVABottomBar(
           navigator = navigator,
           navigationState = navigationState,
+          featureFlags
         )
       }
     },
@@ -222,11 +227,12 @@ private fun AVATopAppBar(
 private fun AVABottomBar(
   navigator: Navigator,
   navigationState: NavigationState,
+  featureFlags: FeatureFlags
 ) {
   Column {
     HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
     NavigationBar(containerColor = MaterialTheme.colorScheme.surfaceContainer) {
-      if (FeatureFlags.isFeedEnabled) {
+      if (featureFlags.feed) {
         NavigationBarItem(
           navigator = navigator,
           navigationState = navigationState,
@@ -242,15 +248,6 @@ private fun AVABottomBar(
         label = stringResource(Res.string.agenda),
         destinationRoute = AgendaKey
       )
-      if (!FeatureFlags.isFeedEnabled) {
-        NavigationBarItem(
-          navigator = navigator,
-          navigationState = navigationState,
-          imageVector = Icons.Rounded.LocationCity,
-          label = stringResource(Res.string.venue),
-          destinationRoute = VenueKey
-        )
-      }
       NavigationBarItem(
         navigator = navigator,
         navigationState = navigationState,
@@ -261,10 +258,19 @@ private fun AVABottomBar(
       NavigationBarItem(
         navigator = navigator,
         navigationState = navigationState,
-        imageVector = Icons.Rounded.Diamond,
+        imageVector = Icons.Rounded.Favorite,
         label = stringResource(Res.string.sponsors),
         destinationRoute = SponsorsKey
       )
+      if (featureFlags.venue) {
+        NavigationBarItem(
+          navigator = navigator,
+          navigationState = navigationState,
+          imageVector = Icons.Rounded.PinDrop,
+          label = stringResource(Res.string.venue),
+          destinationRoute = VenueKey
+        )
+      }
       NavigationBarItem(
         navigator = navigator,
         navigationState = navigationState,
@@ -381,7 +387,7 @@ private fun RowScope.NavigationBarItem(
         contentDescription = label
       )
     },
-    label = { Text(label) },
+    label = { Text(label, maxLines = 1, overflow = TextOverflow.Ellipsis) },
     selected = navigationState.topLevelRoute == destinationRoute,
     colors = NavigationBarItemDefaults.colors(
       selectedIconColor = MaterialTheme.colorScheme.primary,

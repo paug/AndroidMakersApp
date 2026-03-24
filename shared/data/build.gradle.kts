@@ -60,6 +60,7 @@ apollo {
     introspection {
       schemaFile.set(file("src/commonMain/graphql/schema.graphqls"))
       endpointUrl.set("https://androidmakers.fr/graphql")
+      //endpointUrl.set("http://10.1.3.174:8080/graphql")
     }
   }
 }
