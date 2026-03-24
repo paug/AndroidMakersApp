@@ -86,3 +86,10 @@ query GetVenue($id: String!) {
         floorPlanUrl
     }
 }
+
+query GetFeatureFlags {
+  featureFlags {
+    feed
+    venue
+  }
+}

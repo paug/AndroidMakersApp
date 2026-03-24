@@ -1,6 +1,7 @@
 package fr.androidmakers.di
 
 import fr.androidmakers.domain.repo.BookmarksRepository
+import fr.androidmakers.domain.repo.FeatureFlagsRepository
 import fr.androidmakers.domain.repo.FeedRepository
 import fr.androidmakers.domain.repo.MessagingRepository
 import fr.androidmakers.domain.repo.PartnersRepository
@@ -11,6 +12,7 @@ import fr.androidmakers.domain.repo.ThemeRepository
 import fr.androidmakers.domain.repo.UserRepository
 import fr.androidmakers.domain.repo.VenueRepository
 import fr.androidmakers.store.firebase.FirebaseUserRepository
+import fr.androidmakers.store.graphql.FeatureFlagsGraphQLRepository
 import fr.androidmakers.store.graphql.PartnersGraphQLRepository
 import fr.androidmakers.store.graphql.RoomsGraphQLRepository
 import fr.androidmakers.store.graphql.SessionsGraphQLRepository
@@ -33,6 +35,7 @@ val dataModule = module {
   single<SpeakersRepository> { SpeakersGraphQLRepository(get()) }
   single<UserRepository> { FirebaseUserRepository() }
   single<VenueRepository> { VenueGraphQLRepository(get()) }
+  single<FeatureFlagsRepository> { FeatureFlagsGraphQLRepository(get()) }
 
   single<BookmarksRepository> { BookmarksDataStoreRepository(get()) }
   single<ThemeRepository> { ThemeDataStoreRepository(get()) }

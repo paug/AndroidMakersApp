@@ -1,12 +1,14 @@
 package com.androidmakers.ui.sponsors
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
@@ -44,39 +47,40 @@ fun SponsorsScreen() {
   val urlOpener = LocalUriHandler.current.toUrlOpener()
 
   SponsorsView(
-      partnerList = sponsors,
-      onSponsorClick = { viewModel.openPartnerLink(urlOpener, it) }
+    partnerList = sponsors,
+    onSponsorClick = { viewModel.openPartnerLink(urlOpener, it) }
   )
 }
 
 @Composable
 fun SponsorsView(
-    partnerList: Lce<List<PartnerGroup>>,
-    onSponsorClick: (partner: Partner) -> Unit
+  partnerList: Lce<List<PartnerGroup>>,
+  onSponsorClick: (partner: Partner) -> Unit
 ) {
   when (partnerList) {
     is Lce.Loading -> LoadingLayout()
     is Lce.Error -> ErrorLayout(enabled = true)
     is Lce.Content -> SponsorsContent(
-        partnerGroups = partnerList.content,
-        onSponsorClick = onSponsorClick
+      partnerGroups = partnerList.content,
+      onSponsorClick = onSponsorClick
     )
   }
 }
 
 @Composable
 private fun SponsorsContent(
-    partnerGroups: List<PartnerGroup>,
-    onSponsorClick: (Partner) -> Unit
+  partnerGroups: List<PartnerGroup>,
+  onSponsorClick: (Partner) -> Unit
 ) {
   LazyColumn(
-      contentPadding = PaddingValues(16.dp),
-      verticalArrangement = Arrangement.spacedBy(16.dp)
+    contentPadding = PaddingValues(16.dp),
+    verticalArrangement = Arrangement.spacedBy(16.dp),
+    modifier = Modifier.fillMaxWidth()
   ) {
     items(partnerGroups) { partnerGroup ->
       TierCard(
-          partnerGroup = partnerGroup,
-          onSponsorClick = onSponsorClick
+        partnerGroup = partnerGroup,
+        onSponsorClick = onSponsorClick
       )
     }
   }
@@ -85,29 +89,32 @@ private fun SponsorsContent(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun TierCard(
-    partnerGroup: PartnerGroup,
-    onSponsorClick: (Partner) -> Unit
+  partnerGroup: PartnerGroup,
+  onSponsorClick: (Partner) -> Unit
 ) {
   Surface(
-      modifier = Modifier.fillMaxWidth().neoBrutalElevation(),
-      shape = MaterialTheme.shapes.large,
-      color = MaterialTheme.colorScheme.surfaceContainerHigh
+    modifier = Modifier.fillMaxWidth().neoBrutalElevation(),
+    shape = MaterialTheme.shapes.large,
+    color = MaterialTheme.colorScheme.surfaceContainerHigh
   ) {
-    Column(modifier = Modifier.padding(16.dp)) {
+    Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
       SectionHeader(
-          title = partnerGroup.title.replaceFirstChar {
-            if (it.isLowerCase()) it.titlecase() else it.toString()
-          }
+        title = partnerGroup.title.replaceFirstChar {
+          if (it.isLowerCase()) it.titlecase() else it.toString()
+        }
       )
-      FlowRow(
-          horizontalArrangement = Arrangement.spacedBy(12.dp),
-          verticalArrangement = Arrangement.spacedBy(12.dp)
-      ) {
-        for (partner in partnerGroup.partners) {
-          PartnerLogo(
-              partner = partner,
-              onClick = { onSponsorClick(partner) }
-          )
+      partnerGroup.partners.chunked(2).forEach {
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+          it.forEach {
+            PartnerLogo(
+              modifier = Modifier.weight(1f),
+              partner = it,
+              onClick = { onSponsorClick(it) }
+            )
+          }
+          if (it.size == 1) {
+            Spacer(modifier = Modifier.weight(1f))
+          }
         }
       }
     }
@@ -117,18 +124,19 @@ private fun TierCard(
 @Composable
 private fun SectionHeader(title: String) {
   Text(
-      modifier = Modifier.padding(bottom = 8.dp),
-      text = title,
-      style = MaterialTheme.typography.titleMedium,
-      fontWeight = FontWeight.Bold,
-      color = MaterialTheme.colorScheme.onSurface
+    modifier = Modifier.padding(bottom = 8.dp),
+    text = title,
+    style = MaterialTheme.typography.titleMedium,
+    fontWeight = FontWeight.Bold,
+    color = MaterialTheme.colorScheme.onSurface
   )
 }
 
 @Composable
 private fun PartnerLogo(
-    partner: Partner,
-    onClick: () -> Unit
+  modifier: Modifier,
+  partner: Partner,
+  onClick: () -> Unit,
 ) {
   val logoUrl = if (LocalIsDarkTheme.current) {
     partner.logoUrlDark
@@ -137,33 +145,32 @@ private fun PartnerLogo(
   }
 
   Column(
-      modifier = Modifier.width(120.dp),
-      horizontalAlignment = Alignment.CenterHorizontally
+    modifier = modifier,
+    horizontalAlignment = Alignment.CenterHorizontally
   ) {
     Surface(
-        modifier = Modifier.neoBrutalBorder(),
-        onClick = onClick,
-        shape = MaterialTheme.shapes.medium,
-        color = MaterialTheme.colorScheme.surfaceContainer
+      modifier = Modifier.neoBrutalBorder(),
+      onClick = onClick,
+      shape = MaterialTheme.shapes.medium,
+      color = MaterialTheme.colorScheme.surfaceContainer
     ) {
       AsyncImage(
-          model = logoUrl,
-          contentDescription = partner.name,
-          modifier = Modifier
-              .width(120.dp)
-              .height(80.dp)
-              .padding(12.dp),
-          contentScale = ContentScale.Fit
+        model = logoUrl,
+        contentDescription = partner.name,
+        modifier = Modifier
+          .aspectRatio(120f/80f)
+          .padding(12.dp),
+        contentScale = ContentScale.Fit
       )
     }
     Text(
-        text = partner.name,
-        style = MaterialTheme.typography.labelSmall,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
-        textAlign = TextAlign.Center,
-        maxLines = 1,
-        overflow = TextOverflow.Ellipsis,
-        modifier = Modifier.padding(top = 4.dp)
+      text = partner.name,
+      style = MaterialTheme.typography.labelSmall,
+      color = MaterialTheme.colorScheme.onSurfaceVariant,
+      textAlign = TextAlign.Center,
+      maxLines = 1,
+      overflow = TextOverflow.Ellipsis,
+      modifier = Modifier.padding(top = 4.dp)
     )
   }
 }

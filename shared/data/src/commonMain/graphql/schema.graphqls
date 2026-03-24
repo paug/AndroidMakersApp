@@ -1,5 +1,3 @@
-# See https://github.com/JetBrains/js-graphql-intellij-plugin/issues/665
-# noinspection GraphQLTypeRedefinition
 type __Schema {
   description: String
 
@@ -14,8 +12,6 @@ type __Schema {
   directives: [__Directive!]!
 }
 
-# See https://github.com/JetBrains/js-graphql-intellij-plugin/issues/665
-# noinspection GraphQLTypeRedefinition
 type __Type {
   kind: __TypeKind!
 
@@ -38,8 +34,6 @@ type __Type {
   specifiedByURL: String
 }
 
-# See https://github.com/JetBrains/js-graphql-intellij-plugin/issues/665
-# noinspection GraphQLTypeRedefinition
 enum __TypeKind {
   SCALAR
 
@@ -58,8 +52,6 @@ enum __TypeKind {
   NON_NULL
 }
 
-# See https://github.com/JetBrains/js-graphql-intellij-plugin/issues/665
-# noinspection GraphQLTypeRedefinition
 type __Field {
   name: String!
 
@@ -74,8 +66,6 @@ type __Field {
   deprecationReason: String
 }
 
-# See https://github.com/JetBrains/js-graphql-intellij-plugin/issues/665
-# noinspection GraphQLTypeRedefinition
 type __InputValue {
   name: String!
 
@@ -90,8 +80,6 @@ type __InputValue {
   deprecationReason: String
 }
 
-# See https://github.com/JetBrains/js-graphql-intellij-plugin/issues/665
-# noinspection GraphQLTypeRedefinition
 type __EnumValue {
   name: String!
 
@@ -102,8 +90,6 @@ type __EnumValue {
   deprecationReason: String
 }
 
-# See https://github.com/JetBrains/js-graphql-intellij-plugin/issues/665
-# noinspection GraphQLTypeRedefinition
 type __Directive {
   name: String!
 
@@ -116,8 +102,6 @@ type __Directive {
   isRepeatable: Boolean!
 }
 
-# See https://github.com/JetBrains/js-graphql-intellij-plugin/issues/665
-# noinspection GraphQLTypeRedefinition
 enum __DirectiveLocation {
   QUERY
 
@@ -167,7 +151,138 @@ scalar GraphQLLocalDate
 
 scalar GraphQLLocalDateTime
 
+scalar ID
+
+"""
+ A Markdown string as described by https://spec.commonmark.org
+"""
+scalar Markdown
+
+enum ConferenceField {
+  DAYS
+}
+
+enum LinkType {
+  YouTube
+
+  Audio
+
+  AudioUncompressed
+
+  Other
+}
+
+enum OrderByDirection {
+  ASCENDING
+
+  DESCENDING
+}
+
+enum SessionField {
+  STARTS_AT
+}
+
+type BookmarkConnection {
+  nodes: [Session!]!
+}
+
+type Conference {
+  id: String!
+
+  name: String!
+
+  timezone: String!
+
+  days: [GraphQLLocalDate!]!
+
+  themeColor: String
+}
+
+type FeatureFlags {
+  feed: Boolean!
+
+  venue: Boolean!
+}
+
+type FeedItem {
+  id: ID!
+
+  createdAt: GraphQLInstant!
+
+  title: String!
+
+  markdown: Markdown!
+}
+
+type FeedItemFailure {
+  message: String!
+}
+
+type FeedItemSuccess {
+  feedItem: FeedItem!
+}
+
+type FeedItemsConnection {
+  nodes: [FeedItem!]!
+
+  pageInfo: PageInfo!
+}
+
+type Link {
+  type: LinkType!
+
+  url: String!
+}
+
+type PageInfo {
+  endCursor: String
+
+  hasNextPage: Boolean!
+}
+
+type Partner {
+  name: String!
+
+  """
+   @param dark returns the logo for use on a dark background or fallbacks to the light mode if none exist
+  """
+  logoUrl(dark: Boolean = false): String!
+
+  url: String!
+}
+
+type PartnerGroup {
+  title: String!
+
+  partners: [Partner!]!
+}
+
+type Room {
+  id: String!
+
+  name: String!
+
+  capacity: Int
+}
+
+type RootMutation {
+  updateFeedItem(id: ID!, feedItem: FeedItemInput!): FeedItemResult!
+
+  addFeedItem(feedItem: FeedItemInput!): FeedItemResult!
+
+  addBookmark(sessionId: String!): BookmarkConnection!
+
+  removeBookmark(sessionId: String!): BookmarkConnection!
+
+  """
+   Deletes the current user account, requires authentication
+  """
+  deleteAccount: Boolean!
+}
+
 type RootQuery {
+  featureFlags: FeatureFlags!
+
   rooms: [Room!]!
 
   sessions(first: Int! = 10, after: String = null, orderBy: SessionOrderBy! = {
@@ -176,7 +291,7 @@ type RootQuery {
   }
   ): SessionConnection!
 
-  speakers: [Speaker!]!
+  speakers: [Speaker!]! @deprecated(reason: "Use speakersPage instead")
 
   speakersPage(first: Int! = 10, after: String = null): SpeakerConnection!
 
@@ -195,103 +310,13 @@ type RootQuery {
   bookmarkConnection: BookmarkConnection!
 
   conferences(orderBy: ConferenceOrderBy = null): [Conference!]!
-}
 
-type RootMutation {
-  addBookmark(sessionId: String!): BookmarkConnection!
-
-  removeBookmark(sessionId: String!): BookmarkConnection!
+  feedItemsConnection(first: Int! = 10, after: String = null): FeedItemsConnection!
 
   """
-   Deletes the current user account, requires authentication
+   The current logged in user or null if the user is not logged in
   """
-  deleteAccount: Boolean!
-}
-
-type Room {
-  id: String!
-
-  name: String!
-
-  capacity: Int
-}
-
-type SessionConnection {
-  nodes: [Session!]!
-
-  pageInfo: PageInfo!
-}
-
-input SessionOrderBy {
-  field: SessionField!
-
-  direction: OrderByDirection!
-}
-
-type Speaker implements Node {
-  id: String!
-
-  name: String!
-
-  bio: String
-
-  tagline: String
-
-  company: String
-
-  companyLogoUrl: String
-
-  city: String
-
-  socials: [Social!]!
-
-  photoUrl: String
-
-  photoUrlThumbnail: String
-
-  sessions: [Session!]!
-}
-
-type SpeakerConnection {
-  nodes: [Speaker!]!
-
-  pageInfo: PageInfo!
-}
-
-"""
- @property floorPlanUrl the url to an image containing the floor plan
-"""
-type Venue {
-  id: String!
-
-  name: String!
-
-  latitude: Float
-
-  longitude: Float
-
-  address: String
-
-  imageUrl: String
-
-  floorPlanUrl: String
-
-  coordinates: String
-
-  descriptionFr: String!
-
-  """
-   The description of the venue. [description] may contain emojis and '\n' Chars but no markdown or HTML.
-
-   May be null if no description is available.
-  """
-  description(language: String = "en"): String!
-}
-
-type PartnerGroup {
-  title: String!
-
-  partners: [Partner!]!
+  user: User
 }
 
 type Session implements Node {
@@ -341,21 +366,93 @@ type Session implements Node {
   rooms: [Room!]!
 }
 
-type Conference {
+type SessionConnection {
+  nodes: [Session!]!
+
+  pageInfo: PageInfo!
+}
+
+type Social {
+  icon: String
+
+  link: String! @deprecated(reason: "use url instead")
+
+  name: String!
+
+  url: String!
+}
+
+type Speaker implements Node {
   id: String!
 
   name: String!
 
-  timezone: String!
+  bio: String
 
-  days: [GraphQLLocalDate!]!
+  tagline: String
 
-  themeColor: String
+  company: String
+
+  companyLogoUrl: String
+
+  city: String
+
+  socials: [Social!]!
+
+  photoUrl: String
+
+  photoUrlThumbnail: String
+
+  sessions: [Session!]!
 }
 
-type BookmarkConnection {
-  nodes: [Session!]!
+type SpeakerConnection {
+  nodes: [Speaker!]!
+
+  pageInfo: PageInfo!
 }
+
+type User {
+  id: String!
+
+  isAdmin: Boolean!
+}
+
+"""
+ @property floorPlanUrl the url to an image containing the floor plan
+"""
+type Venue {
+  id: String!
+
+  name: String!
+
+  latitude: Float
+
+  longitude: Float
+
+  address: String
+
+  imageUrl: String
+
+  floorPlanUrl: String
+
+  coordinates: String @deprecated(reason: "use latitude and longitude instead")
+
+  descriptionFr: String! @deprecated(reason: "use description(language: \"fr\") instead")
+
+  """
+   The description of the venue. [description] may contain emojis and '\n' Chars but no markdown or HTML.
+
+   May be null if no description is available.
+  """
+  description(language: String = "en"): String!
+}
+
+interface Node {
+  id: String!
+}
+
+union FeedItemResult = FeedItemFailure|FeedItemSuccess
 
 input ConferenceOrderBy {
   field: ConferenceField!
@@ -363,81 +460,46 @@ input ConferenceOrderBy {
   direction: OrderByDirection!
 }
 
-type PageInfo {
-  endCursor: String
+input FeedItemInput {
+  title: String
+
+  markdown: Markdown
 }
 
-enum SessionField {
-  STARTS_AT
+input SessionOrderBy {
+  field: SessionField!
+
+  direction: OrderByDirection!
 }
 
-enum OrderByDirection {
-  ASCENDING
+"""
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
+"""
+scalar Int
 
-  DESCENDING
-}
+"""
+The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](http://en.wikipedia.org/wiki/IEEE_floating_point).
+"""
+scalar Float
 
-type Social {
-  icon: String
+"""
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+"""
+scalar String
 
-  link: String!
+"""
+The `Boolean` scalar type represents `true` or `false`.
+"""
+scalar Boolean
 
-  name: String!
-
-  url: String!
-}
-
-interface Node {
-  id: String!
-}
-
-type Partner {
-  name: String!
-
-  url: String!
-
-  """
-   @param dark returns the logo for use on a dark background or fallbacks to the light mode if none exist
-  """
-  logoUrl(dark: Boolean = false): String!
-}
-
-type Link {
-  type: LinkType!
-
-  url: String!
-}
-
-enum ConferenceField {
-  DAYS
-}
-
-enum LinkType {
-  YouTube
-
-  Audio
-
-  AudioUncompressed
-
-  Other
-}
-
-# See https://github.com/JetBrains/js-graphql-intellij-plugin/issues/665
-# noinspection GraphQLTypeRedefinition
 directive @skip (if: Boolean!) on FIELD|FRAGMENT_SPREAD|INLINE_FRAGMENT
 
-# See https://github.com/JetBrains/js-graphql-intellij-plugin/issues/665
-# noinspection GraphQLTypeRedefinition
 directive @include (if: Boolean!) on FIELD|FRAGMENT_SPREAD|INLINE_FRAGMENT
 
-# See https://github.com/JetBrains/js-graphql-intellij-plugin/issues/665
-# noinspection GraphQLTypeRedefinition
-directive @deprecated (reason: String = "No longer supported") on FIELD_DEFINITION|ARGUMENT_DEFINITION|INPUT_FIELD_DEFINITION|ENUM_VALUE
+directive @deprecated (reason: String! = "No longer supported") on FIELD_DEFINITION|ARGUMENT_DEFINITION|INPUT_FIELD_DEFINITION|ENUM_VALUE
 
 directive @defer (label: String, if: Boolean! = true) on FRAGMENT_SPREAD|INLINE_FRAGMENT
 
-# See https://github.com/JetBrains/js-graphql-intellij-plugin/issues/665
-# noinspection GraphQLTypeRedefinition
 directive @specifiedBy (url: String!) on SCALAR
 
 schema {

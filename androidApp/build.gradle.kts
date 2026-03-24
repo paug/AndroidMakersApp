@@ -1,3 +1,6 @@
+import com.android.build.api.variant.HasHostTests
+import com.android.build.api.variant.HasUnitTest
+
 plugins {
   alias(libs.plugins.androidmakers.android.application)
   alias(libs.plugins.androidmakers.android.signing)

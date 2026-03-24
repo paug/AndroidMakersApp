@@ -17,7 +17,8 @@ fun ApolloClient(
   userRepository: UserRepository,
 ): ApolloClient {
   return ApolloClient.Builder()
-      .serverUrl("https://androidmakers.fr/graphql")
+//      .serverUrl("https://androidmakers.fr/graphql")
+      .serverUrl("http://10.1.3.174:8080/graphql")
       .addHttpInterceptor(object : HttpInterceptor {
         override suspend fun intercept(request: HttpRequest, chain: HttpInterceptorChain): HttpResponse {
           return chain.proceed(
