@@ -28,7 +28,6 @@ import fr.androidmakers.domain.PlatformContext
 import fr.androidmakers.domain.model.ThemePreference
 import fr.androidmakers.domain.repo.FeatureFlagsRepository
 import fr.androidmakers.domain.repo.ThemeRepository
-import fr.androidmakers.domain.utils.FeatureFlags
 import org.koin.compose.koinInject
 
 
