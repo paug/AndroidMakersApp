@@ -25,7 +25,10 @@ class FeatureFlagsGraphQLRepository(private val apolloClient: ApolloClient): Fea
       response.data!!.featureFlags.toFeatureFlags()
     } else {
       // first time: get from the network, if network fails, use hardcoded defaults.
-      apolloClient.query(GetFeatureFlagsQuery()).fetchPolicy(FetchPolicy.NetworkOnly).execute().data?.featureFlags?.toFeatureFlags() ?: FeatureFlags(false, true)
+      apolloClient.query(GetFeatureFlagsQuery())
+        .fetchPolicy(FetchPolicy.NetworkOnly)
+        .execute().data?.featureFlags?.toFeatureFlags()
+        ?: FeatureFlags(false, true)
     }
   }
 }
