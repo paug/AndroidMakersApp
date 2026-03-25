@@ -5,9 +5,10 @@ extend type Room @typePolicy(keyFields: "id")
 
 extend type Session @typePolicy(keyFields: "id")
 extend type RootQuery @fieldPolicy(forField: "session", keyArgs: "id")
+extend type RootQuery @fieldPolicy(forField: "feedback", keyArgs: "id")
 
 extend type Speaker @typePolicy(keyFields: "id")
 
 extend type Venue @typePolicy(keyFields: "name")
 
-extend type Review @typePolicy(keyFields: "id")
+extend type Feedback @typePolicy(keyFields: "id")

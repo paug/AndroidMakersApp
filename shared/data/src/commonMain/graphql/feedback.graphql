@@ -1,0 +1,22 @@
+query GetFeedback($id: ID!) {
+    feedback(id: $id) {
+        id
+        rating
+        comment
+    }
+}
+
+mutation UpsertFeedback($feedback: FeedbackInput!) {
+    upsertFeedback(feedback: $feedback) {
+        ... on FeedbackSuccess {
+            feedback {
+                id
+                rating
+                comment
+            }
+        }
+        ... on FeedbackFailure {
+            message
+        }
+    }
+}

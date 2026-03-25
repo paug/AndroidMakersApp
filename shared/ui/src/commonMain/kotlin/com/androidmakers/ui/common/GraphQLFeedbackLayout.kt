@@ -88,7 +88,7 @@ fun GraphQLFeedbackLayout(
         isSending = true
         errorMessage = null
         scope.launch {
-          reviewRepository.upsertReview(id, rating, comment)
+          reviewRepository.upsertFeedback(id, rating, comment)
             .onSuccess { submitted = true }
             .onFailure { errorMessage = fallbackError }
           isSending = false
