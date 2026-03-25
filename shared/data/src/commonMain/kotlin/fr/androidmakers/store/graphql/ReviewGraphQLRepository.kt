@@ -1,11 +1,16 @@
 package fr.androidmakers.store.graphql
 
 import com.apollographql.apollo.ApolloClient
+import com.apollographql.cache.normalized.FetchPolicy
+import com.apollographql.cache.normalized.fetchPolicy
+import com.apollographql.cache.normalized.isFromCache
 import fr.androidmakers.domain.model.Review
 import fr.androidmakers.domain.model.ReviewRating
 import fr.androidmakers.domain.repo.ReviewRepository
 import fr.androidmakers.store.graphql.type.Rating
 import fr.androidmakers.store.graphql.type.ReviewInput
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class ReviewGraphQLRepository(private val apolloClient: ApolloClient) : ReviewRepository {
 
@@ -15,7 +20,14 @@ class ReviewGraphQLRepository(private val apolloClient: ApolloClient) : ReviewRe
       if (response.exception != null) {
         Result.failure(response.exception!!)
       } else {
-        Result.success(response.data?.review?.toDomain())
+        Result.success(response.data?.review?.toDomain()).also {
+          if (response.isFromCache) {
+            // Update from the network in the background
+            GlobalScope.launch {
+              apolloClient.query(GetReviewQuery(id)).fetchPolicy(FetchPolicy.NetworkOnly).execute()
+            }
+          }
+        }
       }
     } catch (e: Exception) {
       Result.failure(e)

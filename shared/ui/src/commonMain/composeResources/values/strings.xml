@@ -98,4 +98,11 @@
   <string name="theme_dark">Dark</string>
   <string name="theme_neobrutalism">Neobrutal</string>
 
+  <string name="feedback_title">How was this talk?</string>
+  <string name="feedback_comment_label">Add a comment (optional)</string>
+  <string name="feedback_sending">Sending…</string>
+  <string name="feedback_submit">Submit feedback</string>
+  <string name="feedback_thanks">Thank you for your feedback!</string>
+  <string name="feedback_error">Something went wrong.</string>
+
 </resources>

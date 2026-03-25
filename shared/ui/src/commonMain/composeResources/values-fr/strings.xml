@@ -88,4 +88,11 @@
   <string name="theme_dark">Sombre</string>
   <string name="theme_neobrutalism">Néobrutal</string>
 
+  <string name="feedback_title">Comment était ce talk ?</string>
+  <string name="feedback_comment_label">Ajouter un commentaire (facultatif)</string>
+  <string name="feedback_sending">Envoi en cours…</string>
+  <string name="feedback_submit">Envoyer mon avis</string>
+  <string name="feedback_thanks">Merci pour votre retour !</string>
+  <string name="feedback_error">Une erreur est survenue.</string>
+
 </resources>

@@ -24,14 +24,21 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.androidmakers.ui.theme.neoBrutalElevation
 import fr.androidmakers.domain.model.ReviewRating
 import fr.androidmakers.domain.repo.ReviewRepository
 import fr.androidmakers.domain.repo.UserRepository
+import fr.paug.androidmakers.ui.Res
+import fr.paug.androidmakers.ui.feedback_comment_label
+import fr.paug.androidmakers.ui.feedback_error
+import fr.paug.androidmakers.ui.feedback_sending
+import fr.paug.androidmakers.ui.feedback_submit
+import fr.paug.androidmakers.ui.feedback_thanks
+import fr.paug.androidmakers.ui.feedback_title
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 
 @Composable
@@ -47,11 +54,12 @@ fun GraphQLFeedbackLayout(
   var errorMessage by remember { mutableStateOf<String?>(null) }
   var reviewId by remember { mutableStateOf<String?>(null) }
   val scope = rememberCoroutineScope()
+  val fallbackError = stringResource(Res.string.feedback_error)
 
   // Compute review ID and load existing review
   LaunchedEffect(sessionId) {
     val userId = userRepository.getInstallationId()
-    val id = "$userId-$sessionId"
+    val id = "$sessionId-$userId"
     reviewId = id
     reviewRepository.getReview(id)
       .onSuccess { review ->
@@ -72,7 +80,7 @@ fun GraphQLFeedbackLayout(
       horizontalAlignment = Alignment.CenterHorizontally,
     ) {
       Text(
-        text = "How was this talk?",
+        text = stringResource(Res.string.feedback_title),
         style = MaterialTheme.typography.titleMedium,
         fontWeight = FontWeight.Bold,
       )
@@ -86,19 +94,16 @@ fun GraphQLFeedbackLayout(
       ) {
         SentimentButton(
           emoji = "\uD83D\uDE1E",
-          label = "Disappointed",
           isSelected = selectedRating == ReviewRating.Disappointed,
           onClick = { selectedRating = ReviewRating.Disappointed; submitted = false },
         )
         SentimentButton(
           emoji = "\uD83D\uDE10",
-          label = "Neutral",
           isSelected = selectedRating == ReviewRating.Neutral,
           onClick = { selectedRating = ReviewRating.Neutral; submitted = false },
         )
         SentimentButton(
           emoji = "\uD83D\uDE0A",
-          label = "Happy",
           isSelected = selectedRating == ReviewRating.Happy,
           onClick = { selectedRating = ReviewRating.Happy; submitted = false },
         )
@@ -111,7 +116,7 @@ fun GraphQLFeedbackLayout(
         value = comment,
         onValueChange = { comment = it; submitted = false },
         modifier = Modifier.fillMaxWidth(),
-        label = { Text("Add a comment (optional)") },
+        label = { Text(stringResource(Res.string.feedback_comment_label)) },
         minLines = 3,
         maxLines = 5,
       )
@@ -128,20 +133,23 @@ fun GraphQLFeedbackLayout(
           scope.launch {
             reviewRepository.upsertReview(id, rating, comment)
               .onSuccess { submitted = true }
-              .onFailure { errorMessage = it.message ?: "Something went wrong." }
+              .onFailure { errorMessage = fallbackError }
             isSending = false
           }
         },
         enabled = selectedRating != null && reviewId != null && !isSending,
         modifier = Modifier.neoBrutalElevation(shadowOffset = 2.dp),
       ) {
-        Text(if (isSending) "Sending..." else "Submit feedback")
+        Text(
+          if (isSending) stringResource(Res.string.feedback_sending)
+          else stringResource(Res.string.feedback_submit)
+        )
       }
 
       if (submitted) {
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-          text = "Thank you for your feedback!",
+          text = stringResource(Res.string.feedback_thanks),
           style = MaterialTheme.typography.bodyMedium,
           color = MaterialTheme.colorScheme.primary,
         )
@@ -162,7 +170,6 @@ fun GraphQLFeedbackLayout(
 @Composable
 private fun SentimentButton(
   emoji: String,
-  label: String,
   isSelected: Boolean,
   onClick: () -> Unit,
 ) {
@@ -182,21 +189,10 @@ private fun SentimentButton(
     border = BorderStroke(if (isSelected) 2.dp else 1.dp, borderColor),
     modifier = Modifier.neoBrutalElevation(shadowOffset = if (isSelected) 3.dp else 1.dp),
   ) {
-    Column(
+    Text(
+      text = emoji,
+      fontSize = 32.sp,
       modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
-      horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-      Text(
-        text = emoji,
-        fontSize = 32.sp,
-      )
-      Spacer(modifier = Modifier.height(4.dp))
-      Text(
-        text = label,
-        style = MaterialTheme.typography.labelSmall,
-        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
-        textAlign = TextAlign.Center,
-      )
-    }
+    )
   }
 }
