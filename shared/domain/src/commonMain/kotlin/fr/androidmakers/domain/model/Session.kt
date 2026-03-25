@@ -26,4 +26,5 @@ data class Session(
     val roomId: String,
     val isServiceSession: Boolean,
     val type: String,
+    val feedbackId: String? = null,
 )

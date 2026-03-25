@@ -1,0 +1,22 @@
+query GetReview($id: ID!) {
+    review(id: $id) {
+        id
+        rating
+        comment
+    }
+}
+
+mutation UpsertReview($review: ReviewInput!) {
+    upsertReview(review: $review) {
+        ... on ReviewSuccess {
+            review {
+                id
+                rating
+                comment
+            }
+        }
+        ... on ReviewFailure {
+            message
+        }
+    }
+}

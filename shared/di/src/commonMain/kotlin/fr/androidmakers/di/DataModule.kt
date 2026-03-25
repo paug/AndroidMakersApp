@@ -5,6 +5,7 @@ import fr.androidmakers.domain.repo.FeatureFlagsRepository
 import fr.androidmakers.domain.repo.FeedRepository
 import fr.androidmakers.domain.repo.MessagingRepository
 import fr.androidmakers.domain.repo.PartnersRepository
+import fr.androidmakers.domain.repo.ReviewRepository
 import fr.androidmakers.domain.repo.RoomsRepository
 import fr.androidmakers.domain.repo.SessionsRepository
 import fr.androidmakers.domain.repo.SpeakersRepository
@@ -14,6 +15,7 @@ import fr.androidmakers.domain.repo.VenueRepository
 import fr.androidmakers.store.firebase.FirebaseUserRepository
 import fr.androidmakers.store.graphql.FeatureFlagsGraphQLRepository
 import fr.androidmakers.store.graphql.PartnersGraphQLRepository
+import fr.androidmakers.store.graphql.ReviewGraphQLRepository
 import fr.androidmakers.store.graphql.RoomsGraphQLRepository
 import fr.androidmakers.store.graphql.SessionsGraphQLRepository
 import fr.androidmakers.store.graphql.SpeakersGraphQLRepository
@@ -36,6 +38,7 @@ val dataModule = module {
   single<UserRepository> { FirebaseUserRepository() }
   single<VenueRepository> { VenueGraphQLRepository(get()) }
   single<FeatureFlagsRepository> { FeatureFlagsGraphQLRepository(get()) }
+  single<ReviewRepository> { ReviewGraphQLRepository(get()) }
 
   single<BookmarksRepository> { BookmarksDataStoreRepository(get()) }
   single<ThemeRepository> { ThemeDataStoreRepository(get()) }

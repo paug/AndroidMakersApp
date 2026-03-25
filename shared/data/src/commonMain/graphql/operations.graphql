@@ -28,6 +28,7 @@ fragment SessionDetails on Session {
     }
     tags
     type
+    feedbackId
 }
 
 

@@ -71,7 +71,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.androidmakers.ui.common.EmojiUtils
 import com.androidmakers.ui.common.LoadingLayout
-import com.androidmakers.ui.common.OpenFeedbackLayout
+import com.androidmakers.ui.common.GraphQLFeedbackLayout
 import com.androidmakers.ui.common.separatorColor
 import com.androidmakers.ui.common.toUrlOpener
 import com.androidmakers.ui.getPlatformContext
@@ -379,15 +379,13 @@ private fun SessionDetails(
       )
     }
 
-    // 6. OpenFeedback / feedback waiting
+    // 6. Feedback section
     if (sessionDetails.session.type == "talk") {
       Spacer(modifier = Modifier.height(16.dp))
       Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-        if (Clock.System.now() > sessionDetails.startTimestamp) {
-          OpenFeedbackLayout(
-            projectId = "v6kx3QuQkDU4fX0Ta989",
-            sessionId = sessionDetails.session.id,
-          )
+        val feedbackId = sessionDetails.session.feedbackId
+        if (Clock.System.now() > sessionDetails.startTimestamp && feedbackId != null) {
+          GraphQLFeedbackLayout(feedbackId = feedbackId)
         } else {
           Surface(
             shape = MaterialTheme.shapes.large,
