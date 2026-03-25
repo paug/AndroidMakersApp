@@ -35,6 +35,9 @@ fun FeedScreen() {
               onDismiss = { viewModel.dismissAlert(item.id) },
             )
           }
+          is FeedItem.Message -> {
+            MessageCard(message = item)
+          }
           is FeedItem.Article -> {
             when {
               item.imageUrl != null -> ArticleCardWithImage(article = item)

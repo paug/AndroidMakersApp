@@ -162,6 +162,14 @@ enum ConferenceField {
   DAYS
 }
 
+enum FeedItemType {
+  INFO
+
+  ALERT
+
+  ANNOUNCEMENT
+}
+
 enum LinkType {
   YouTube
 
@@ -207,11 +215,13 @@ type FeatureFlags {
 type FeedItem {
   id: ID!
 
+  type: FeedItemType!
+
   createdAt: GraphQLInstant!
 
   title: String!
 
-  markdown: Markdown!
+  body: Markdown!
 }
 
 type FeedItemFailure {
@@ -463,7 +473,7 @@ input ConferenceOrderBy {
 input FeedItemInput {
   title: String
 
-  markdown: Markdown
+  body: Markdown
 }
 
 input SessionOrderBy {

@@ -5,6 +5,7 @@ import com.apollographql.apollo.api.http.HttpRequest
 import com.apollographql.apollo.api.http.HttpResponse
 import com.apollographql.apollo.network.http.HttpInterceptor
 import com.apollographql.apollo.network.http.HttpInterceptorChain
+import com.apollographql.apollo.network.ws.WebSocketNetworkTransport
 import com.apollographql.cache.normalized.api.NormalizedCacheFactory
 import com.apollographql.cache.normalized.memory.MemoryCacheFactory
 import fr.androidmakers.domain.repo.UserRepository
@@ -24,9 +25,6 @@ fun ApolloClient(
           return chain.proceed(
             request.newBuilder()
               .apply {
-                /**
-                 *
-                 */
                 val token = getIdToken(userRepository)
                 if (token != null) {
                   addHeader("Authorization", "Bearer $token")

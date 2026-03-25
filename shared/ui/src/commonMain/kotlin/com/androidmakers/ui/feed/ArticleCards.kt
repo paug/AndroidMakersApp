@@ -1,18 +1,15 @@
 package com.androidmakers.ui.feed
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.LocationOn
@@ -20,7 +17,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,9 +32,6 @@ import com.androidmakers.ui.theme.LocalIsNeobrutalism
 import com.androidmakers.ui.theme.neoBrutalBorder
 import com.androidmakers.ui.theme.neoBrutalElevation
 import fr.androidmakers.domain.model.FeedItem
-import fr.paug.androidmakers.ui.Res
-import fr.paug.androidmakers.ui.feed_read_more
-import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun CategoryTimeRow(
@@ -65,27 +58,6 @@ fun CategoryTimeRow(
         text = timeAgo,
         color = color,
         fontSize = 11.sp,
-      )
-    }
-  }
-}
-
-@Composable
-fun OverlappingAvatars(
-  avatarUrls: List<String>,
-  modifier: Modifier = Modifier,
-) {
-  val circularShape = if (LocalIsNeobrutalism.current) RectangleShape else CircleShape
-  Row(modifier = modifier) {
-    avatarUrls.forEachIndexed { index, url ->
-      AsyncImage(
-        model = url,
-        contentDescription = null,
-        contentScale = ContentScale.Crop,
-        modifier = Modifier
-          .size(28.dp)
-          .offset(x = (-8 * index).dp)
-          .clip(circularShape),
       )
     }
   }
@@ -122,10 +94,6 @@ fun ArticleCardWithImage(
           maxLines = 3,
           overflow = TextOverflow.Ellipsis,
           modifier = Modifier.padding(top = 4.dp),
-        )
-        ArticleCardFooter(
-          avatarUrls = article.avatarUrls,
-          readMoreUrl = article.readMoreUrl,
         )
       }
     }
@@ -165,35 +133,6 @@ private fun ArticleHeroImage(
           )
           .padding(horizontal = 8.dp, vertical = 4.dp),
       )
-    }
-  }
-}
-
-@Composable
-private fun ArticleCardFooter(
-  avatarUrls: List<String>,
-  readMoreUrl: String?,
-) {
-  Row(
-    modifier = Modifier
-      .fillMaxWidth()
-      .padding(top = 12.dp),
-    horizontalArrangement = Arrangement.SpaceBetween,
-    verticalAlignment = Alignment.CenterVertically,
-  ) {
-    if (avatarUrls.isNotEmpty()) {
-      OverlappingAvatars(avatarUrls)
-    } else {
-      Spacer(Modifier)
-    }
-    if (readMoreUrl != null) {
-      TextButton(onClick = { }) {
-        Text(
-          text = stringResource(Res.string.feed_read_more),
-          color = MaterialTheme.colorScheme.primary,
-          fontWeight = FontWeight.SemiBold,
-        )
-      }
     }
   }
 }

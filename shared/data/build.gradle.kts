@@ -51,6 +51,8 @@ apollo {
     @OptIn(ApolloExperimental::class)
     generateDataBuilders.set(true)
     mapScalar("GraphQLLocalDateTime", "kotlinx.datetime.LocalDateTime", "com.apollographql.adapter.datetime.KotlinxLocalDateTimeAdapter")
+    mapScalar("GraphQLInstant", "kotlinx.datetime.Instant", "fr.androidmakers.store.graphql.KotlinxInstantAdapter")
+    mapScalarToKotlinString("Markdown")
 
     @OptIn(ApolloExperimental::class)
     plugin("com.apollographql.cache:normalized-cache-apollo-compiler-plugin:${libs.versions.apollo.cache.get()}") {

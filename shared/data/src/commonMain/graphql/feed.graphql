@@ -1,0 +1,15 @@
+query GetFeedMessages {
+  feedItemsConnection(first: 1000) {
+    nodes {
+      ...FeedMessageDetails
+    }
+  }
+}
+
+fragment FeedMessageDetails on FeedItem {
+    id
+    type
+    title
+    body
+    createdAt
+}
