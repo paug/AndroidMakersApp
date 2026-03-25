@@ -56,7 +56,6 @@ fun GraphQLFeedbackLayout(
   val scope = rememberCoroutineScope()
   val fallbackError = stringResource(Res.string.feedback_error)
 
-  // Compute review ID and load existing review
   LaunchedEffect(sessionId) {
     val userId = userRepository.getInstallationId()
     val id = "$sessionId-$userId"
@@ -75,95 +74,126 @@ fun GraphQLFeedbackLayout(
     border = BorderStroke(1.dp, separatorColor()),
     modifier = Modifier.fillMaxWidth().neoBrutalElevation()
   ) {
-    Column(
-      modifier = Modifier.padding(20.dp),
-      horizontalAlignment = Alignment.CenterHorizontally,
+    FeedbackContent(
+      selectedRating = selectedRating,
+      comment = comment,
+      isSending = isSending,
+      submitted = submitted,
+      errorMessage = errorMessage,
+      onRatingSelected = { selectedRating = it; submitted = false },
+      onCommentChanged = { comment = it; submitted = false },
+      onSubmit = {
+        val rating = selectedRating ?: return@FeedbackContent
+        val id = reviewId ?: return@FeedbackContent
+        isSending = true
+        errorMessage = null
+        scope.launch {
+          reviewRepository.upsertReview(id, rating, comment)
+            .onSuccess { submitted = true }
+            .onFailure { errorMessage = fallbackError }
+          isSending = false
+        }
+      },
+      submitEnabled = selectedRating != null && reviewId != null && !isSending,
+    )
+  }
+}
+
+@Suppress("LongParameterList")
+@Composable
+private fun FeedbackContent(
+  selectedRating: ReviewRating?,
+  comment: String,
+  isSending: Boolean,
+  submitted: Boolean,
+  errorMessage: String?,
+  onRatingSelected: (ReviewRating) -> Unit,
+  onCommentChanged: (String) -> Unit,
+  onSubmit: () -> Unit,
+  submitEnabled: Boolean,
+) {
+  Column(
+    modifier = Modifier.padding(20.dp),
+    horizontalAlignment = Alignment.CenterHorizontally,
+  ) {
+    Text(
+      text = stringResource(Res.string.feedback_title),
+      style = MaterialTheme.typography.titleMedium,
+      fontWeight = FontWeight.Bold,
+    )
+
+    Spacer(modifier = Modifier.height(16.dp))
+
+    SentimentRow(selectedRating = selectedRating, onRatingSelected = onRatingSelected)
+
+    Spacer(modifier = Modifier.height(16.dp))
+
+    OutlinedTextField(
+      value = comment,
+      onValueChange = onCommentChanged,
+      modifier = Modifier.fillMaxWidth(),
+      label = { Text(stringResource(Res.string.feedback_comment_label)) },
+      minLines = 3,
+      maxLines = 5,
+    )
+
+    Spacer(modifier = Modifier.height(12.dp))
+
+    Button(
+      onClick = onSubmit,
+      enabled = submitEnabled,
+      modifier = Modifier.neoBrutalElevation(shadowOffset = 2.dp),
     ) {
       Text(
-        text = stringResource(Res.string.feedback_title),
-        style = MaterialTheme.typography.titleMedium,
-        fontWeight = FontWeight.Bold,
+        if (isSending) stringResource(Res.string.feedback_sending)
+        else stringResource(Res.string.feedback_submit)
       )
-
-      Spacer(modifier = Modifier.height(16.dp))
-
-      // Sentiment buttons
-      Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceEvenly,
-      ) {
-        SentimentButton(
-          emoji = "\uD83D\uDE1E",
-          isSelected = selectedRating == ReviewRating.Disappointed,
-          onClick = { selectedRating = ReviewRating.Disappointed; submitted = false },
-        )
-        SentimentButton(
-          emoji = "\uD83D\uDE10",
-          isSelected = selectedRating == ReviewRating.Neutral,
-          onClick = { selectedRating = ReviewRating.Neutral; submitted = false },
-        )
-        SentimentButton(
-          emoji = "\uD83D\uDE0A",
-          isSelected = selectedRating == ReviewRating.Happy,
-          onClick = { selectedRating = ReviewRating.Happy; submitted = false },
-        )
-      }
-
-      Spacer(modifier = Modifier.height(16.dp))
-
-      // Comment input
-      OutlinedTextField(
-        value = comment,
-        onValueChange = { comment = it; submitted = false },
-        modifier = Modifier.fillMaxWidth(),
-        label = { Text(stringResource(Res.string.feedback_comment_label)) },
-        minLines = 3,
-        maxLines = 5,
-      )
-
-      Spacer(modifier = Modifier.height(12.dp))
-
-      // Submit button
-      Button(
-        onClick = {
-          val rating = selectedRating ?: return@Button
-          val id = reviewId ?: return@Button
-          isSending = true
-          errorMessage = null
-          scope.launch {
-            reviewRepository.upsertReview(id, rating, comment)
-              .onSuccess { submitted = true }
-              .onFailure { errorMessage = fallbackError }
-            isSending = false
-          }
-        },
-        enabled = selectedRating != null && reviewId != null && !isSending,
-        modifier = Modifier.neoBrutalElevation(shadowOffset = 2.dp),
-      ) {
-        Text(
-          if (isSending) stringResource(Res.string.feedback_sending)
-          else stringResource(Res.string.feedback_submit)
-        )
-      }
-
-      if (submitted) {
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-          text = stringResource(Res.string.feedback_thanks),
-          style = MaterialTheme.typography.bodyMedium,
-          color = MaterialTheme.colorScheme.primary,
-        )
-      }
-
-      errorMessage?.let {
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-          text = it,
-          style = MaterialTheme.typography.bodyMedium,
-          color = MaterialTheme.colorScheme.error,
-        )
-      }
     }
+
+    if (submitted) {
+      Spacer(modifier = Modifier.height(8.dp))
+      Text(
+        text = stringResource(Res.string.feedback_thanks),
+        style = MaterialTheme.typography.bodyMedium,
+        color = MaterialTheme.colorScheme.primary,
+      )
+    }
+
+    errorMessage?.let {
+      Spacer(modifier = Modifier.height(8.dp))
+      Text(
+        text = it,
+        style = MaterialTheme.typography.bodyMedium,
+        color = MaterialTheme.colorScheme.error,
+      )
+    }
+  }
+}
+
+@Composable
+private fun SentimentRow(
+  selectedRating: ReviewRating?,
+  onRatingSelected: (ReviewRating) -> Unit,
+) {
+  Row(
+    modifier = Modifier.fillMaxWidth(),
+    horizontalArrangement = Arrangement.SpaceEvenly,
+  ) {
+    SentimentButton(
+      emoji = "\uD83D\uDE1E",
+      isSelected = selectedRating == ReviewRating.Disappointed,
+      onClick = { onRatingSelected(ReviewRating.Disappointed) },
+    )
+    SentimentButton(
+      emoji = "\uD83D\uDE10",
+      isSelected = selectedRating == ReviewRating.Neutral,
+      onClick = { onRatingSelected(ReviewRating.Neutral) },
+    )
+    SentimentButton(
+      emoji = "\uD83D\uDE0A",
+      isSelected = selectedRating == ReviewRating.Happy,
+      onClick = { onRatingSelected(ReviewRating.Happy) },
+    )
   }
 }
 
