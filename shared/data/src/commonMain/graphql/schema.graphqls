@@ -162,6 +162,14 @@ enum ConferenceField {
   DAYS
 }
 
+enum FeedItemType {
+  INFO
+
+  ALERT
+
+  ANNOUNCEMENT
+}
+
 enum LinkType {
   YouTube
 
@@ -207,11 +215,13 @@ type FeatureFlags {
 type FeedItem {
   id: ID!
 
+  type: FeedItemType!
+
   createdAt: GraphQLInstant!
 
   title: String!
 
-  markdown: Markdown!
+  body: Markdown!
 }
 
 type FeedItemFailure {
@@ -463,7 +473,7 @@ input ConferenceOrderBy {
 input FeedItemInput {
   title: String
 
-  markdown: Markdown
+  body: Markdown
 }
 
 input SessionOrderBy {
@@ -502,32 +512,7 @@ directive @defer (label: String, if: Boolean! = true) on FRAGMENT_SPREAD|INLINE_
 
 directive @specifiedBy (url: String!) on SCALAR
 
-enum FeedMessageType {
-  INFO
-
-  ALERT
-
-  ANNOUNCEMENT
-}
-
-type FeedMessage {
-  id: String!
-
-  type: FeedMessageType!
-
-  title: String!
-
-  body: String!
-
-  createdAt: GraphQLInstant!
-}
-
-type RootSubscription {
-  feedMessageAdded: FeedMessage!
-}
-
 schema {
   query: RootQuery
   mutation: RootMutation
-  subscription: RootSubscription
 }

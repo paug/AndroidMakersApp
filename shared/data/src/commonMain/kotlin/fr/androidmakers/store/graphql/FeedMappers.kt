@@ -3,11 +3,11 @@ package fr.androidmakers.store.graphql
 import fr.androidmakers.domain.model.FeedItem
 import fr.androidmakers.domain.model.MessageType
 import fr.androidmakers.store.graphql.fragment.FeedMessageDetails
-import fr.androidmakers.store.graphql.type.FeedMessageType
+import fr.androidmakers.store.graphql.type.FeedItemType
 
 fun FeedMessageDetails.toFeedItem(): FeedItem {
   return when (type) {
-    FeedMessageType.ALERT -> FeedItem.Alert(
+    FeedItemType.ALERT -> FeedItem.Alert(
       id = id,
       title = title,
       message = body,
@@ -15,7 +15,7 @@ fun FeedMessageDetails.toFeedItem(): FeedItem {
     else -> FeedItem.Message(
       id = id,
       type = when (type) {
-        FeedMessageType.ANNOUNCEMENT -> MessageType.ANNOUNCEMENT
+        FeedItemType.ANNOUNCEMENT -> MessageType.ANNOUNCEMENT
         else -> MessageType.INFO
       },
       title = title,

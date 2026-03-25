@@ -1,16 +1,12 @@
 query GetFeedMessages {
-    feedMessages {
-        ...FeedMessageDetails
+  feedItemsConnection(first: 1000) {
+    nodes {
+      ...FeedMessageDetails
     }
+  }
 }
 
-subscription OnFeedMessageAdded {
-    feedMessageAdded {
-        ...FeedMessageDetails
-    }
-}
-
-fragment FeedMessageDetails on FeedMessage {
+fragment FeedMessageDetails on FeedItem {
     id
     type
     title
