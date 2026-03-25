@@ -383,9 +383,8 @@ private fun SessionDetails(
     if (sessionDetails.session.type == "talk") {
       Spacer(modifier = Modifier.height(16.dp))
       Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-        val feedbackId = sessionDetails.session.feedbackId
-        if (Clock.System.now() > sessionDetails.startTimestamp && feedbackId != null) {
-          GraphQLFeedbackLayout(feedbackId = feedbackId)
+        if (Clock.System.now() > sessionDetails.startTimestamp) {
+          GraphQLFeedbackLayout(sessionId = sessionDetails.session.id)
         } else {
           Surface(
             shape = MaterialTheme.shapes.large,

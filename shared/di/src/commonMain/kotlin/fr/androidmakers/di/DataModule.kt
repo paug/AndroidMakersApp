@@ -35,7 +35,7 @@ val dataModule = module {
   single<RoomsRepository> { RoomsGraphQLRepository(get()) }
   single<SessionsRepository> { SessionsGraphQLRepository(get()) }
   single<SpeakersRepository> { SpeakersGraphQLRepository(get()) }
-  single<UserRepository> { FirebaseUserRepository() }
+  single<UserRepository> { FirebaseUserRepository(get()) }
   single<VenueRepository> { VenueGraphQLRepository(get()) }
   single<FeatureFlagsRepository> { FeatureFlagsGraphQLRepository(get()) }
   single<ReviewRepository> { ReviewGraphQLRepository(get()) }

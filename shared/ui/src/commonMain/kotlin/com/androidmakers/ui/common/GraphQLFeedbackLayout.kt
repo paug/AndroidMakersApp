@@ -30,24 +30,30 @@ import androidx.compose.ui.unit.sp
 import com.androidmakers.ui.theme.neoBrutalElevation
 import fr.androidmakers.domain.model.ReviewRating
 import fr.androidmakers.domain.repo.ReviewRepository
+import fr.androidmakers.domain.repo.UserRepository
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 
 @Composable
 fun GraphQLFeedbackLayout(
-  feedbackId: String,
+  sessionId: String,
   reviewRepository: ReviewRepository = koinInject(),
+  userRepository: UserRepository = koinInject(),
 ) {
   var selectedRating by remember { mutableStateOf<ReviewRating?>(null) }
   var comment by remember { mutableStateOf("") }
   var isSending by remember { mutableStateOf(false) }
   var submitted by remember { mutableStateOf(false) }
   var errorMessage by remember { mutableStateOf<String?>(null) }
+  var reviewId by remember { mutableStateOf<String?>(null) }
   val scope = rememberCoroutineScope()
 
-  // Load existing review
-  LaunchedEffect(feedbackId) {
-    reviewRepository.getReview(feedbackId)
+  // Compute review ID and load existing review
+  LaunchedEffect(sessionId) {
+    val userId = userRepository.getInstallationId()
+    val id = "$userId-$sessionId"
+    reviewId = id
+    reviewRepository.getReview(id)
       .onSuccess { review ->
         if (review != null) {
           selectedRating = review.rating
@@ -116,16 +122,17 @@ fun GraphQLFeedbackLayout(
       Button(
         onClick = {
           val rating = selectedRating ?: return@Button
+          val id = reviewId ?: return@Button
           isSending = true
           errorMessage = null
           scope.launch {
-            reviewRepository.upsertReview(feedbackId, rating, comment)
+            reviewRepository.upsertReview(id, rating, comment)
               .onSuccess { submitted = true }
               .onFailure { errorMessage = it.message ?: "Something went wrong." }
             isSending = false
           }
         },
-        enabled = selectedRating != null && !isSending,
+        enabled = selectedRating != null && reviewId != null && !isSending,
         modifier = Modifier.neoBrutalElevation(shadowOffset = 2.dp),
       ) {
         Text(if (isSending) "Sending..." else "Submit feedback")

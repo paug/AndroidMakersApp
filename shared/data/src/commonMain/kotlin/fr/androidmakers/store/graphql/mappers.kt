@@ -58,7 +58,6 @@ fun SessionDetails.toSession(): Session {
       startsAt = this.startsAt,
       isServiceSession = this.type == "service",
       type = type,
-      feedbackId = feedbackId,
   )
 }
 
