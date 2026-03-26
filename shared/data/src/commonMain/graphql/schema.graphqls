@@ -142,16 +142,16 @@ enum __DirectiveLocation {
   INPUT_FIELD_DEFINITION
 }
 
+scalar ID
+
 """
  A type representing a formatted kotlinx.datetime.Instant
 """
-scalar GraphQLInstant
+scalar Instant
 
-scalar GraphQLLocalDate
+scalar LocalDate
 
-scalar GraphQLLocalDateTime
-
-scalar ID
+scalar LocalDateTime
 
 """
  A Markdown string as described by https://spec.commonmark.org
@@ -160,6 +160,14 @@ scalar Markdown
 
 enum ConferenceField {
   DAYS
+}
+
+enum FeedItemType {
+  INFO
+
+  ALERT
+
+  ANNOUNCEMENT
 }
 
 enum LinkType {
@@ -178,6 +186,14 @@ enum OrderByDirection {
   DESCENDING
 }
 
+enum Rating {
+  Disappointed
+
+  Neutral
+
+  Happy
+}
+
 enum SessionField {
   STARTS_AT
 }
@@ -193,7 +209,7 @@ type Conference {
 
   timezone: String!
 
-  days: [GraphQLLocalDate!]!
+  days: [LocalDate!]!
 
   themeColor: String
 }
@@ -207,11 +223,13 @@ type FeatureFlags {
 type FeedItem {
   id: ID!
 
-  createdAt: GraphQLInstant!
+  type: FeedItemType!
+
+  createdAt: Instant!
 
   title: String!
 
-  markdown: Markdown!
+  body: Markdown!
 }
 
 type FeedItemFailure {
@@ -226,6 +244,22 @@ type FeedItemsConnection {
   nodes: [FeedItem!]!
 
   pageInfo: PageInfo!
+}
+
+type Feedback {
+  id: ID!
+
+  rating: Rating!
+
+  comment: Markdown!
+}
+
+type FeedbackFailure {
+  message: String!
+}
+
+type FeedbackSuccess {
+  feedback: Feedback!
 }
 
 type Link {
@@ -266,6 +300,8 @@ type Room {
 }
 
 type RootMutation {
+  upsertFeedback(feedback: FeedbackInput!): FeedbackResult!
+
   updateFeedItem(id: ID!, feedItem: FeedItemInput!): FeedItemResult!
 
   addFeedItem(feedItem: FeedItemInput!): FeedItemResult!
@@ -282,6 +318,11 @@ type RootMutation {
 
 type RootQuery {
   featureFlags: FeatureFlags!
+
+  """
+   @return null if the Feedback isn't found.
+  """
+  feedback(id: ID!): Feedback
 
   rooms: [Room!]!
 
@@ -344,9 +385,9 @@ type Session implements Node {
 
   tags: [String!]!
 
-  startsAt: GraphQLLocalDateTime!
+  startsAt: LocalDateTime!
 
-  endsAt: GraphQLLocalDateTime!
+  endsAt: LocalDateTime!
 
   complexity: String
 
@@ -454,6 +495,8 @@ interface Node {
 
 union FeedItemResult = FeedItemFailure|FeedItemSuccess
 
+union FeedbackResult = FeedbackFailure|FeedbackSuccess
+
 input ConferenceOrderBy {
   field: ConferenceField!
 
@@ -463,7 +506,15 @@ input ConferenceOrderBy {
 input FeedItemInput {
   title: String
 
-  markdown: Markdown
+  body: Markdown
+}
+
+input FeedbackInput {
+  id: ID!
+
+  rating: Rating!
+
+  comment: Markdown!
 }
 
 input SessionOrderBy {

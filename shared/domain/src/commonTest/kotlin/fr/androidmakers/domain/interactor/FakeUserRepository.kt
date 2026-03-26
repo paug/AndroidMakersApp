@@ -9,4 +9,7 @@ class FakeUserRepository : UserRepository {
     override var currentUser: User? = User(id = "test-user", photoUrl = null)
     override val user: Flow<User?> = MutableStateFlow(currentUser)
     override suspend fun getIdToken(): String? = "fake-token"
+  override suspend fun getInstallationId(): String {
+    return "foo"
+  }
 }

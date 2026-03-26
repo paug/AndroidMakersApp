@@ -7,4 +7,5 @@ interface UserRepository {
   val currentUser: User?
   val user: Flow<User?>
   suspend fun getIdToken(): String?
+  suspend fun getInstallationId(): String
 }
