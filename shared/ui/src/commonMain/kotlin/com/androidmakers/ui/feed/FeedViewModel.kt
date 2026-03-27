@@ -6,6 +6,7 @@ import fr.androidmakers.domain.model.FeedItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 
 class FeedViewModel(
   getFeedUseCase: GetFeedUseCase,
@@ -16,6 +17,6 @@ class FeedViewModel(
   val dismissedAlertIds: StateFlow<Set<String>> = _dismissedAlertIds.asStateFlow()
 
   fun dismissAlert(alertId: String) {
-    _dismissedAlertIds.value = _dismissedAlertIds.value + alertId
+    _dismissedAlertIds.update { _dismissedAlertIds.value + alertId }
   }
 }

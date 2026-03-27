@@ -10,14 +10,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.CalendarMonth
-import androidx.compose.material.icons.rounded.Diamond
 import androidx.compose.material.icons.rounded.DynamicFeed
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.FilterList
 import androidx.compose.material.icons.rounded.Groups
 import androidx.compose.material.icons.rounded.Info
-import androidx.compose.material.icons.rounded.LocationCity
-import androidx.compose.material.icons.rounded.Pin
 import androidx.compose.material.icons.rounded.PinDrop
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -139,7 +136,7 @@ fun AVALayout(
         AVABottomBar(
           navigator = navigator,
           navigationState = navigationState,
-          featureFlags
+          featureFlags = featureFlags
         )
       }
     },
@@ -232,7 +229,7 @@ private fun AVABottomBar(
   Column {
     HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
     NavigationBar(containerColor = MaterialTheme.colorScheme.surfaceContainer) {
-      if (featureFlags.feed) {
+      //if (featureFlags.feed) {
         NavigationBarItem(
           navigator = navigator,
           navigationState = navigationState,
@@ -240,7 +237,7 @@ private fun AVABottomBar(
           label = stringResource(Res.string.feed),
           destinationRoute = FeedKey
         )
-      }
+      //}
       NavigationBarItem(
         navigator = navigator,
         navigationState = navigationState,

@@ -135,15 +135,21 @@ internal fun SessionRow(
         language = uiSession.language,
       )
 
-      // 4. Tags
+      // 4. Tags (max 3 visible + overflow indicator)
       if (uiSession.tags.isNotEmpty()) {
+        val maxVisible = 3
+        val visibleTags = uiSession.tags.take(maxVisible)
+        val overflow = uiSession.tags.size - maxVisible
         FlowRow(
           modifier = Modifier.padding(top = 2.dp),
           horizontalArrangement = Arrangement.spacedBy(6.dp),
           verticalArrangement = Arrangement.spacedBy(6.dp),
         ) {
-          uiSession.tags.forEach { tag ->
+          visibleTags.forEach { tag ->
             TagChip(tag)
+          }
+          if (overflow > 0) {
+            TagChip("+$overflow")
           }
         }
       }
@@ -169,13 +175,13 @@ private fun TagChip(tag: String) {
   Surface(
     modifier = Modifier.neoBrutalBorder(),
     shape = MaterialTheme.shapes.small,
-    color = MaterialTheme.colorScheme.secondaryContainer,
+    color = MaterialTheme.colorScheme.surfaceContainerHighest,
   ) {
     Text(
       text = tag,
       modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
       style = MaterialTheme.typography.labelSmall,
-      color = MaterialTheme.colorScheme.onSecondaryContainer,
+      color = MaterialTheme.colorScheme.onSurfaceVariant,
     )
   }
 }

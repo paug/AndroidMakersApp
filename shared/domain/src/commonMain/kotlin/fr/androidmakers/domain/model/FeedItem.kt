@@ -1,5 +1,7 @@
 package fr.androidmakers.domain.model
 
+import kotlinx.datetime.Instant
+
 sealed interface FeedItem {
   val id: String
 
@@ -7,6 +9,14 @@ sealed interface FeedItem {
     override val id: String,
     val title: String,
     val message: String,
+  ) : FeedItem
+
+  data class Message(
+    override val id: String,
+    val type: MessageType,
+    val title: String,
+    val body: String,
+    val createdAt: Instant,
   ) : FeedItem
 
   data class Article(
@@ -22,6 +32,12 @@ sealed interface FeedItem {
     val avatarUrls: List<String> = emptyList(),
     val readMoreUrl: String? = null,
   ) : FeedItem
+}
+
+enum class MessageType {
+  INFO,
+  ALERT,
+  ANNOUNCEMENT,
 }
 
 data class LocationInfo(

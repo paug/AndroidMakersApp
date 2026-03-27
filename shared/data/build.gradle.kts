@@ -3,6 +3,7 @@ import com.apollographql.apollo.annotations.ApolloExperimental
 plugins {
   alias(libs.plugins.androidmakers.kmp.library)
   alias(libs.plugins.apollo)
+  alias(libs.plugins.kotlin.serialization)
 }
 
 kotlin {
@@ -21,6 +22,7 @@ kotlin {
         api(libs.apollo.runtime)
         implementation(libs.apollo.adapters.kotlinx.datetime)
         implementation(libs.apollo.normalized.cache.sqlite)
+        implementation(libs.kotlinx.serialization.json)
 
         api(libs.androidx.datastore.preferences)
         api(libs.androidx.datastore.preferences.core)

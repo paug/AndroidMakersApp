@@ -1,11 +1,16 @@
 package fr.paug.androidmakers
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -41,12 +46,18 @@ class MainActivity : ComponentActivity() {
 
   private val mergeBookmarksUseCase: MergeBookmarksUseCase by inject(mode = LazyThreadSafetyMode.NONE)
 
+  private val notificationPermissionLauncher = registerForActivityResult(
+    ActivityResultContracts.RequestPermission()
+  ) { granted ->
+    Log.d(TAG, "POST_NOTIFICATIONS permission ${if (granted) "granted" else "denied"}")
+  }
+
   override fun onCreate(savedInstanceState: Bundle?) {
     installSplashScreen()
     super.onCreate(savedInstanceState)
 
     enableEdgeToEdge()
-
+    requestNotificationPermission()
     logFCMToken()
 
     val initialDeepLink: String? = if (savedInstanceState == null) intent.dataString else null
@@ -71,6 +82,16 @@ class MainActivity : ComponentActivity() {
           signout = ::signOut,
         )
       )
+    }
+  }
+
+  private fun requestNotificationPermission() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+      if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+        != PackageManager.PERMISSION_GRANTED
+      ) {
+        notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+      }
     }
   }
 
