@@ -138,26 +138,13 @@ fun MainScreen(
   onSignOutClick: () -> Unit,
   onSessionClick: (String) -> Unit,
 ) {
-  val user: User? by viewModel.user.collectAsStateWithLifecycle()
-  val days: List<WearDaySchedule>? by viewModel.days.collectAsStateWithLifecycle()
-  val sessionsDay1: List<UISession>? by viewModel.sessionsDay1.collectAsState(initial = null)
-  val sessionsDay2: List<UISession>? by viewModel.sessionsDay2.collectAsState(initial = null)
-
   val pagerState: PagerState = rememberPagerState(
-    initialPage = 0,
-    pageCount = { 1 + (days?.size ?: 0) }
+    initialPage = viewModel.getConferenceDay() + 1,
+    pageCount = { 3 },
   )
-
-  // Scroll to the current conference day once days are loaded
-  LaunchedEffect(days) {
-    val loadedDays = days
-    if (loadedDays != null && loadedDays.isNotEmpty()) {
-      val targetPage = viewModel.getConferenceDay(loadedDays) + 1
-      if (pagerState.currentPage == 0) {
-        pagerState.scrollToPage(targetPage)
-      }
-    }
-  }
+  val user: User? by viewModel.user.collectAsStateWithLifecycle()
+  val sessionsDay1: List<UISession>? by viewModel.sessionsDay1.collectAsStateWithLifecycle()
+  val sessionsDay2: List<UISession>? by viewModel.sessionsDay2.collectAsStateWithLifecycle()
 
   PagerScreen(
     modifier = Modifier
