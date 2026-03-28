@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3ExpressiveApi::class)
+
 package com.androidmakers.ui.agenda
 
 import androidx.compose.animation.AnimatedVisibilityScope
@@ -26,24 +28,20 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
-import androidx.compose.material.icons.rounded.BookmarkAdd
-import androidx.compose.material.icons.rounded.BookmarkAdded
-import androidx.compose.material.icons.rounded.Info
-import androidx.compose.material.icons.rounded.LocationOn
-import androidx.compose.material.icons.rounded.Person
-import androidx.compose.material.icons.rounded.PlayArrow
-import androidx.compose.material.icons.rounded.Schedule
-import androidx.compose.material.icons.rounded.Share
-import androidx.compose.material3.Button
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SuggestionChip
+import androidx.compose.material3.SuggestionChipDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -57,7 +55,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
@@ -87,6 +84,16 @@ import fr.androidmakers.domain.model.Speaker
 import fr.androidmakers.domain.model.isAppClinic
 import fr.androidmakers.domain.utils.formatTimeInterval
 import fr.paug.androidmakers.ui.Res
+import fr.paug.androidmakers.ui.ic_arrow_back
+import fr.paug.androidmakers.ui.ic_bookmark_add
+import fr.paug.androidmakers.ui.ic_bookmark_added
+import fr.paug.androidmakers.ui.ic_info
+import fr.paug.androidmakers.ui.ic_keyboard_arrow_right
+import fr.paug.androidmakers.ui.ic_location_on
+import fr.paug.androidmakers.ui.ic_person
+import fr.paug.androidmakers.ui.ic_play_arrow
+import fr.paug.androidmakers.ui.ic_schedule
+import fr.paug.androidmakers.ui.ic_share
 import fr.paug.androidmakers.ui.about_this_talk
 import fr.paug.androidmakers.ui.back
 import fr.paug.androidmakers.ui.bookmarked
@@ -260,7 +267,7 @@ private fun SessionDetailTopAppBar(
       if (showBackButton) {
         IconButton(onClick = onBackClick) {
           Icon(
-            Icons.AutoMirrored.Rounded.ArrowBack,
+            painter = painterResource(Res.drawable.ic_arrow_back),
             contentDescription = stringResource(Res.string.back)
           )
         }
@@ -286,7 +293,7 @@ private fun SessionDetailTopAppBar(
       if (hasContent) {
         IconButton(onClick = onShareSession) {
           Icon(
-            Icons.Rounded.Share,
+            painter = painterResource(Res.drawable.ic_share),
             contentDescription = stringResource(Res.string.share)
           )
         }
@@ -311,7 +318,7 @@ private fun SessionDetailFab(
   ) {
     Crossfade(isBookmarked) { bookmarked ->
       Icon(
-        imageVector = if (bookmarked) Icons.Rounded.BookmarkAdded else Icons.Rounded.BookmarkAdd,
+        painter = painterResource(if (bookmarked) Res.drawable.ic_bookmark_added else Res.drawable.ic_bookmark_add),
         contentDescription = stringResource(Res.string.bookmarked)
       )
     }
@@ -352,7 +359,7 @@ private fun SessionDetails(
 
     // 4. App Clinic apply button
     if (sessionDetails.session.isAppClinic()) {
-      Button(
+      FilledTonalButton(
         onClick = onApplyForAppClinic,
         modifier = Modifier
           .padding(horizontal = 16.dp)
@@ -362,8 +369,7 @@ private fun SessionDetails(
       ) {
         Text(
           text = stringResource(Res.string.session_app_clinic_apply),
-          style = MaterialTheme.typography.bodyLarge,
-          fontWeight = FontWeight.Bold,
+          style = MaterialTheme.typography.bodyLargeEmphasized,
         )
       }
     }
@@ -386,7 +392,7 @@ private fun SessionDetails(
         if (Clock.System.now() > sessionDetails.startTimestamp) {
           GraphQLFeedbackLayout(sessionId = sessionDetails.session.id)
         } else {
-          Surface(
+          OutlinedCard(
             shape = MaterialTheme.shapes.large,
             border = BorderStroke(1.dp, separatorColor()),
             modifier = Modifier.fillMaxWidth().neoBrutalElevation()
@@ -411,13 +417,15 @@ private fun SessionDetails(
 private fun HeaderCard(sessionDetails: SessionDetailState) {
   val session = sessionDetails.session
 
-  Surface(
+  ElevatedCard(
     modifier = Modifier
       .fillMaxWidth()
       .padding(horizontal = 16.dp)
       .neoBrutalElevation(),
     shape = MaterialTheme.shapes.large,
-    color = MaterialTheme.colorScheme.surfaceContainerHigh
+    colors = CardDefaults.elevatedCardColors(
+      containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+    ),
   ) {
     Column(modifier = Modifier.padding(25.dp)) {
       SessionHeaderBadgesRow(
@@ -429,8 +437,7 @@ private fun HeaderCard(sessionDetails: SessionDetailState) {
       SelectionContainer {
         Text(
           text = session.title,
-          style = MaterialTheme.typography.headlineSmall,
-          fontWeight = FontWeight.Bold,
+          style = MaterialTheme.typography.headlineSmallEmphasized,
           color = MaterialTheme.colorScheme.onSurface,
           modifier = Modifier.padding(top = 16.dp)
         )
@@ -488,7 +495,7 @@ private fun SessionHeaderDateRoomRow(
       verticalAlignment = Alignment.CenterVertically
     ) {
       Icon(
-        imageVector = Icons.Rounded.Schedule,
+        painter = painterResource(Res.drawable.ic_schedule),
         contentDescription = null,
         modifier = Modifier.size(16.dp),
         tint = MaterialTheme.colorScheme.onSurfaceVariant
@@ -511,7 +518,7 @@ private fun SessionHeaderDateRoomRow(
         verticalAlignment = Alignment.CenterVertically
       ) {
         Icon(
-          imageVector = Icons.Rounded.LocationOn,
+          painter = painterResource(Res.drawable.ic_location_on),
           contentDescription = null,
           modifier = Modifier.size(16.dp),
           tint = MaterialTheme.colorScheme.onSurfaceVariant
@@ -550,25 +557,24 @@ private fun SessionHeaderTagsRow(
 
 @Composable
 private fun TagChip(text: String) {
-  val chipShape = MaterialTheme.shapes.small
-  Surface(
-    shape = chipShape,
-    color = MaterialTheme.colorScheme.surfaceContainerHigh,
-    modifier = Modifier
-      .border(1.dp, MaterialTheme.colorScheme.outlineVariant, chipShape)
-      .neoBrutalBorder()
-  ) {
-    Text(
-      text = text.uppercase(),
-      modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-      style = MaterialTheme.typography.labelMedium.copy(
-        fontWeight = FontWeight.Medium,
-        fontSize = 12.sp,
-        letterSpacing = 0.6.sp
-      ),
-      color = MaterialTheme.colorScheme.onSurfaceVariant
-    )
-  }
+  SuggestionChip(
+    onClick = {},
+    label = {
+      Text(
+        text = text.uppercase(),
+        style = MaterialTheme.typography.labelMedium.copy(
+          letterSpacing = 0.6.sp
+        ),
+      )
+    },
+    shape = MaterialTheme.shapes.small,
+    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+    modifier = Modifier.neoBrutalBorder(),
+    colors = SuggestionChipDefaults.suggestionChipColors(
+      containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+      labelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+    ),
+  )
 }
 
 @Composable
@@ -647,7 +653,7 @@ private fun VideoSection(
     ) {
       Box(contentAlignment = Alignment.Center) {
         Icon(
-          imageVector = Icons.Rounded.PlayArrow,
+          painter = painterResource(Res.drawable.ic_play_arrow),
           contentDescription = null,
           modifier = Modifier.size(32.dp),
           tint = MaterialTheme.colorScheme.onSurface
@@ -658,23 +664,21 @@ private fun VideoSection(
 }
 
 @Composable
-private fun SectionHeader(icon: ImageVector, title: String) {
+private fun SectionHeader(icon: Painter, title: String) {
   Row(
     verticalAlignment = Alignment.CenterVertically,
     horizontalArrangement = Arrangement.spacedBy(6.dp),
     modifier = Modifier.padding(bottom = 12.dp)
   ) {
     Icon(
-      imageVector = icon,
+      painter = icon,
       contentDescription = null,
       modifier = Modifier.size(16.dp),
       tint = MaterialTheme.colorScheme.onSurfaceVariant
     )
     Text(
       text = title.uppercase(),
-      style = MaterialTheme.typography.labelMedium.copy(
-        fontWeight = FontWeight.Bold,
-        fontSize = 12.sp,
+      style = MaterialTheme.typography.labelMediumEmphasized.copy(
         letterSpacing = 0.6.sp
       ),
       color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -686,13 +690,15 @@ private fun SectionHeader(icon: ImageVector, title: String) {
 private fun DescriptionSection(description: String) {
   Column(modifier = Modifier.padding(horizontal = 16.dp)) {
     SectionHeader(
-      icon = Icons.Rounded.Info,
+      icon = painterResource(Res.drawable.ic_info),
       title = stringResource(Res.string.about_this_talk)
     )
-    Surface(
+    ElevatedCard(
       modifier = Modifier.neoBrutalElevation(),
       shape = MaterialTheme.shapes.large,
-      color = MaterialTheme.colorScheme.surfaceContainerHigh
+      colors = CardDefaults.elevatedCardColors(
+        containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+      ),
     ) {
       SelectionContainer {
         Text(
@@ -720,7 +726,7 @@ private fun SpeakersSection(
 ) {
   Column(modifier = Modifier.padding(horizontal = 16.dp)) {
     SectionHeader(
-      icon = Icons.Rounded.Person,
+      icon = painterResource(Res.drawable.ic_person),
       title = pluralStringResource(Res.plurals.speaker_section, speakers.size)
     )
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -743,11 +749,13 @@ private fun SpeakerCard(
   sharedTransitionScope: SharedTransitionScope?,
   animatedVisibilityScope: AnimatedVisibilityScope?,
 ) {
-  Surface(
+  ElevatedCard(
     modifier = Modifier.neoBrutalElevation(),
     onClick = onClick,
     shape = MaterialTheme.shapes.large,
-    color = MaterialTheme.colorScheme.surfaceContainerHigh
+    colors = CardDefaults.elevatedCardColors(
+      containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+    ),
   ) {
     Row(
       modifier = Modifier
@@ -772,7 +780,7 @@ private fun SpeakerCard(
 
       // Chevron
       Icon(
-        imageVector = Icons.AutoMirrored.Rounded.KeyboardArrowRight,
+        painter = painterResource(Res.drawable.ic_keyboard_arrow_right),
         contentDescription = null,
         tint = MaterialTheme.colorScheme.onSurfaceVariant
       )
@@ -829,8 +837,7 @@ private fun SpeakerTextInfo(
     speaker.name?.let { name ->
       Text(
         text = name,
-        style = MaterialTheme.typography.bodyLarge.copy(fontSize = 16.sp),
-        fontWeight = FontWeight.Bold,
+        style = MaterialTheme.typography.bodyLargeEmphasized,
         color = MaterialTheme.colorScheme.onSurface
       )
     }

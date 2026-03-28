@@ -17,16 +17,12 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
-import androidx.compose.material.icons.rounded.AutoAwesome
-import androidx.compose.material.icons.rounded.Code
-import androidx.compose.material.icons.rounded.DarkMode
-import androidx.compose.material.icons.rounded.Gavel
-import androidx.compose.material.icons.rounded.LightMode
-import androidx.compose.material.icons.rounded.QuestionAnswer
-import androidx.compose.material.icons.rounded.SettingsBrightness
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -46,9 +42,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -67,9 +61,17 @@ import fr.paug.androidmakers.ui.about_links
 import fr.paug.androidmakers.ui.code_of_conduct
 import fr.paug.androidmakers.ui.faq
 import fr.paug.androidmakers.ui.github_repo
+import fr.paug.androidmakers.ui.ic_auto_awesome
+import fr.paug.androidmakers.ui.ic_code
+import fr.paug.androidmakers.ui.ic_dark_mode
+import fr.paug.androidmakers.ui.ic_gavel
+import fr.paug.androidmakers.ui.ic_keyboard_arrow_right
+import fr.paug.androidmakers.ui.ic_light_mode
 import fr.paug.androidmakers.ui.ic_network_bluesky
 import fr.paug.androidmakers.ui.ic_network_x
 import fr.paug.androidmakers.ui.ic_network_youtube
+import fr.paug.androidmakers.ui.ic_question_answer
+import fr.paug.androidmakers.ui.ic_settings_brightness
 import fr.paug.androidmakers.ui.settings
 import fr.paug.androidmakers.ui.social
 import fr.paug.androidmakers.ui.theme
@@ -192,18 +194,19 @@ internal fun SectionHeader(title: String) {
   Text(
     modifier = Modifier.padding(bottom = 8.dp),
     text = title,
-    style = MaterialTheme.typography.titleMedium,
-    fontWeight = FontWeight.Bold,
+    style = MaterialTheme.typography.titleMediumEmphasized,
     color = MaterialTheme.colorScheme.onSurface
   )
 }
 
 @Composable
 internal fun AboutCard() {
-  Surface(
+  ElevatedCard(
     modifier = Modifier.fillMaxWidth().neoBrutalElevation(),
     shape = MaterialTheme.shapes.large,
-    color = MaterialTheme.colorScheme.surfaceContainerHigh
+    colors = CardDefaults.elevatedCardColors(
+      containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+    ),
   ) {
     Column(modifier = Modifier.padding(16.dp)) {
       SectionHeader(title = stringResource(Res.string.about))
@@ -222,27 +225,29 @@ internal fun LinksCard(
   onCocClick: () -> Unit,
   onGithubRepoClick: () -> Unit
 ) {
-  Surface(
+  ElevatedCard(
     modifier = Modifier.fillMaxWidth().neoBrutalElevation(),
     shape = MaterialTheme.shapes.large,
-    color = MaterialTheme.colorScheme.surfaceContainerHigh
+    colors = CardDefaults.elevatedCardColors(
+      containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+    ),
   ) {
     Column(modifier = Modifier.padding(16.dp)) {
       SectionHeader(title = stringResource(Res.string.about_links))
       LinkRow(
-        icon = Icons.Rounded.QuestionAnswer,
+        icon = painterResource(Res.drawable.ic_question_answer),
         label = stringResource(Res.string.faq),
         onClick = onFaqClick
       )
       HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
       LinkRow(
-        icon = Icons.Rounded.Gavel,
+        icon = painterResource(Res.drawable.ic_gavel),
         label = stringResource(Res.string.code_of_conduct),
         onClick = onCocClick
       )
       HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
       LinkRow(
-        icon = Icons.Rounded.Code,
+        icon = painterResource(Res.drawable.ic_code),
         label = stringResource(Res.string.github_repo),
         onClick = onGithubRepoClick
       )
@@ -252,37 +257,36 @@ internal fun LinksCard(
 
 @Composable
 internal fun LinkRow(
-  icon: ImageVector,
+  icon: Painter,
   label: String,
   onClick: () -> Unit
 ) {
-  Row(
-    modifier = Modifier
-      .fillMaxWidth()
-      .clickable(onClick = onClick)
-      .padding(vertical = 12.dp),
-    verticalAlignment = Alignment.CenterVertically
-  ) {
-    Icon(
-      imageVector = icon,
-      contentDescription = null,
-      tint = MaterialTheme.colorScheme.primary,
-      modifier = Modifier.size(24.dp)
-    )
-    Text(
-      modifier = Modifier
-        .weight(1f)
-        .padding(horizontal = 16.dp),
-      text = label,
-      style = MaterialTheme.typography.bodyLarge,
-      color = MaterialTheme.colorScheme.onSurface
-    )
-    Icon(
-      imageVector = Icons.AutoMirrored.Rounded.KeyboardArrowRight,
-      contentDescription = null,
-      tint = MaterialTheme.colorScheme.onSurfaceVariant
-    )
-  }
+  ListItem(
+    modifier = Modifier.clickable(onClick = onClick),
+    headlineContent = {
+      Text(
+        text = label,
+        style = MaterialTheme.typography.bodyLarge,
+      )
+    },
+    leadingContent = {
+      Icon(
+        painter = icon,
+        contentDescription = null,
+        tint = MaterialTheme.colorScheme.primary,
+      )
+    },
+    trailingContent = {
+      Icon(
+        painter = painterResource(Res.drawable.ic_keyboard_arrow_right),
+        contentDescription = null,
+        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+      )
+    },
+    colors = ListItemDefaults.colors(
+      containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+    ),
+  )
 }
 
 @Composable
@@ -294,10 +298,12 @@ internal fun SocialCard(
 ) {
   val darkMode = LocalIsDarkTheme.current
 
-  Surface(
+  ElevatedCard(
     modifier = Modifier.fillMaxWidth().neoBrutalElevation(),
     shape = MaterialTheme.shapes.large,
-    color = MaterialTheme.colorScheme.surfaceContainerHigh
+    colors = CardDefaults.elevatedCardColors(
+      containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+    ),
   ) {
     Column(
       modifier = Modifier.padding(16.dp),
@@ -314,8 +320,7 @@ internal fun SocialCard(
       ) {
         Text(
           text = stringResource(Res.string.x_hashtag),
-          style = MaterialTheme.typography.labelLarge,
-          fontWeight = FontWeight.Bold,
+          style = MaterialTheme.typography.labelLargeEmphasized,
           color = MaterialTheme.colorScheme.onPrimaryContainer
         )
       }
@@ -395,10 +400,12 @@ internal fun SettingsCard(
   themePreference: ThemePreference,
   onThemePreferenceChange: (ThemePreference) -> Unit
 ) {
-  Surface(
+  ElevatedCard(
     modifier = Modifier.fillMaxWidth().neoBrutalElevation(),
     shape = MaterialTheme.shapes.large,
-    color = MaterialTheme.colorScheme.surfaceContainerHigh
+    colors = CardDefaults.elevatedCardColors(
+      containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+    ),
   ) {
     Column(modifier = Modifier.padding(16.dp)) {
       SectionHeader(title = stringResource(Res.string.settings))
@@ -410,10 +417,10 @@ internal fun SettingsCard(
       )
       val options = ThemePreference.entries
       val icons = mapOf(
-        ThemePreference.System to Icons.Rounded.SettingsBrightness,
-        ThemePreference.Light to Icons.Rounded.LightMode,
-        ThemePreference.Dark to Icons.Rounded.DarkMode,
-        ThemePreference.Neobrutalism to Icons.Rounded.AutoAwesome,
+        ThemePreference.System to painterResource(Res.drawable.ic_settings_brightness),
+        ThemePreference.Light to painterResource(Res.drawable.ic_light_mode),
+        ThemePreference.Dark to painterResource(Res.drawable.ic_dark_mode),
+        ThemePreference.Neobrutalism to painterResource(Res.drawable.ic_auto_awesome),
       )
       val labels = mapOf(
         ThemePreference.System to stringResource(Res.string.theme_system),
@@ -430,7 +437,7 @@ internal fun SettingsCard(
             icon = {},
           ) {
             Icon(
-              imageVector = icons[option]!!,
+              painter = icons[option]!!,
               contentDescription = labels[option],
               modifier = Modifier.size(20.dp),
             )

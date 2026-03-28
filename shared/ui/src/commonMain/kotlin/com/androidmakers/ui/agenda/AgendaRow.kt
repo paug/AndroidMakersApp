@@ -9,16 +9,15 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.BookmarkAdd
-import androidx.compose.material.icons.rounded.BookmarkAdded
-import androidx.compose.material.icons.rounded.LocationOn
-import androidx.compose.material.icons.rounded.Schedule
-import androidx.compose.material3.Button
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.material3.SuggestionChip
+import androidx.compose.material3.SuggestionChipDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -33,8 +32,13 @@ import com.androidmakers.ui.theme.AMColor
 import com.androidmakers.ui.theme.neoBrutalBorder
 import com.androidmakers.ui.theme.neoBrutalElevation
 import fr.paug.androidmakers.ui.Res
+import fr.paug.androidmakers.ui.ic_bookmark_add
+import fr.paug.androidmakers.ui.ic_bookmark_added
+import fr.paug.androidmakers.ui.ic_location_on
+import fr.paug.androidmakers.ui.ic_schedule
 import fr.paug.androidmakers.ui.session_app_clinic_apply
 import kotlinx.datetime.Instant
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import kotlin.time.Duration.Companion.hours
 
@@ -43,10 +47,12 @@ internal fun ServiceSessionRow(
   session: UISession,
   modifier: Modifier = Modifier,
 ) {
-  Surface(
+  Card(
     modifier = modifier.neoBrutalElevation(),
     shape = MaterialTheme.shapes.large,
-    color = MaterialTheme.colorScheme.surfaceContainer,
+    colors = CardDefaults.cardColors(
+      containerColor = MaterialTheme.colorScheme.surfaceContainer,
+    ),
   ) {
     Column(
       modifier = Modifier
@@ -77,15 +83,15 @@ internal fun SessionRow(
   onSessionBookmark: (UISession, Boolean) -> Unit,
   onApplyForAppClinicClick: () -> Unit,
 ) {
-  Surface(
+  ElevatedCard(
     modifier = modifier.neoBrutalElevation(),
     onClick = { onSessionClick(uiSession) },
     shape = MaterialTheme.shapes.large,
-    color = MaterialTheme.colorScheme.surfaceContainerHigh,
+    colors = CardDefaults.elevatedCardColors(
+      containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+    ),
   ) {
     val isBookmarked = uiSession.isFavorite
-    val imageVector = if (isBookmarked) Icons.Rounded.BookmarkAdded
-    else Icons.Rounded.BookmarkAdd
     val tint by animateColorAsState(
       if (isBookmarked) AMColor.bookmarked
       else MaterialTheme.colorScheme.outline
@@ -110,7 +116,7 @@ internal fun SessionRow(
           onCheckedChange = { onSessionBookmark(uiSession, it) },
         ) {
           Icon(
-            imageVector = imageVector,
+            painter = painterResource(if (isBookmarked) Res.drawable.ic_bookmark_added else Res.drawable.ic_bookmark_add),
             contentDescription = "favorite",
             tint = tint,
             modifier = Modifier.size(24.dp),
@@ -156,7 +162,7 @@ internal fun SessionRow(
 
       // 5. App Clinic
       if (uiSession.isAppClinic) {
-        Button(
+        FilledTonalButton(
           onClick = onApplyForAppClinicClick,
           modifier = Modifier.neoBrutalElevation(shadowOffset = 2.dp),
         ) {
@@ -172,18 +178,21 @@ internal fun SessionRow(
 
 @Composable
 private fun TagChip(tag: String) {
-  Surface(
+  SuggestionChip(
     modifier = Modifier.neoBrutalBorder(),
+    onClick = {},
+    label = {
+      Text(
+        text = tag,
+        style = MaterialTheme.typography.labelSmall,
+      )
+    },
     shape = MaterialTheme.shapes.small,
-    color = MaterialTheme.colorScheme.surfaceContainerHighest,
-  ) {
-    Text(
-      text = tag,
-      modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
-      style = MaterialTheme.typography.labelSmall,
-      color = MaterialTheme.colorScheme.onSurfaceVariant,
-    )
-  }
+    colors = SuggestionChipDefaults.suggestionChipColors(
+      containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+      labelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+    ),
+  )
 }
 
 @Composable
@@ -200,7 +209,7 @@ private fun MetaRow(
       verticalAlignment = Alignment.CenterVertically
     ) {
       Icon(
-        imageVector = Icons.Rounded.LocationOn,
+        painter = painterResource(Res.drawable.ic_location_on),
         contentDescription = null,
         modifier = Modifier.size(14.dp),
         tint = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -224,7 +233,7 @@ private fun MetaRow(
       verticalAlignment = Alignment.CenterVertically
     ) {
       Icon(
-        imageVector = Icons.Rounded.Schedule,
+        painter = painterResource(Res.drawable.ic_schedule),
         contentDescription = null,
         modifier = Modifier.size(14.dp),
         tint = MaterialTheme.colorScheme.onSurfaceVariant,

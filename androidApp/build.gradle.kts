@@ -50,7 +50,6 @@ dependencies {
   testImplementation(libs.junit)
 
   implementation(libs.jetbrains.compose.material3)
-  implementation(libs.jetbrains.compose.material.icons.extended)
   implementation(libs.jetbrains.compose.ui.tooling)
   coreLibraryDesugaring(libs.desugar.jdk.libs)
 

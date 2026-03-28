@@ -11,8 +11,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -43,8 +41,10 @@ import com.androidmakers.ui.model.Lce
 import com.androidmakers.ui.theme.LocalIsNeobrutalism
 import fr.androidmakers.domain.model.SocialsItem
 import fr.paug.androidmakers.ui.Res
+import fr.paug.androidmakers.ui.ic_arrow_back
 import fr.paug.androidmakers.ui.back
 import fr.paug.androidmakers.ui.speakers
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 
@@ -97,7 +97,7 @@ fun SpeakerDetailsScreen(
             navigationIcon = {
               IconButton(onClick = onBackClick) {
                 Icon(
-                    Icons.AutoMirrored.Rounded.ArrowBack,
+                    painter = painterResource(Res.drawable.ic_arrow_back),
                     contentDescription = stringResource(Res.string.back)
                 )
               }

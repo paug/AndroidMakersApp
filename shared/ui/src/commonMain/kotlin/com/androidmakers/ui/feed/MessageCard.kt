@@ -1,14 +1,17 @@
+@file:OptIn(ExperimentalMaterial3ExpressiveApi::class)
+
 package com.androidmakers.ui.feed
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -23,10 +26,12 @@ fun MessageCard(
   message: FeedItem.Message,
   modifier: Modifier = Modifier,
 ) {
-  Surface(
+  ElevatedCard(
     modifier = modifier.fillMaxWidth().neoBrutalElevation(),
     shape = MaterialTheme.shapes.large,
-    color = MaterialTheme.colorScheme.surfaceContainerHigh,
+    colors = CardDefaults.elevatedCardColors(
+      containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+    ),
   ) {
     Column(modifier = Modifier.padding(16.dp)) {
       CategoryTimeRow(
@@ -36,8 +41,7 @@ fun MessageCard(
       Text(
         text = message.title,
         color = MaterialTheme.colorScheme.onSurface,
-        fontWeight = FontWeight.Bold,
-        fontSize = 16.sp,
+        style = MaterialTheme.typography.titleSmallEmphasized,
         modifier = Modifier.padding(top = 8.dp),
       )
       Text(

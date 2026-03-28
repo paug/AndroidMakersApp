@@ -10,9 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Bookmark
-import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
@@ -39,6 +36,8 @@ import com.androidmakers.ui.model.UISession
 import fr.androidmakers.domain.model.Room
 import fr.androidmakers.domain.utils.eventTimeZone
 import fr.paug.androidmakers.ui.Res
+import fr.paug.androidmakers.ui.ic_bookmark
+import fr.paug.androidmakers.ui.ic_close
 import fr.paug.androidmakers.ui.bookmarked
 import fr.paug.androidmakers.ui.english
 import fr.paug.androidmakers.ui.filter
@@ -47,6 +46,7 @@ import fr.paug.androidmakers.ui.language
 import fr.paug.androidmakers.ui.rooms
 import fr.paug.androidmakers.ui.tags
 import kotlinx.datetime.todayIn
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import kotlin.time.Clock
@@ -156,7 +156,7 @@ private fun AgendaFilterDrawer(
         label = { Text(stringResource(Res.string.bookmarked)) },
         leadingIcon = {
           Icon(
-            imageVector = Icons.Rounded.Bookmark,
+            painter = painterResource(Res.drawable.ic_bookmark),
             contentDescription = null,
           )
         },
@@ -213,7 +213,7 @@ private fun FilterDrawerHeader(
     if (hasActiveFilters) {
       TextButton(onClick = onClearFilters) {
         Icon(
-          imageVector = Icons.Rounded.Close,
+          painter = painterResource(Res.drawable.ic_close),
           contentDescription = null,
           modifier = Modifier.padding(end = 4.dp),
         )

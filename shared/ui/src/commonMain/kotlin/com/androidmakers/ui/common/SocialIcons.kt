@@ -3,8 +3,6 @@ package com.androidmakers.ui.common
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Public
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -13,6 +11,7 @@ import androidx.compose.ui.unit.dp
 import fr.androidmakers.domain.model.SocialsItem
 import fr.androidmakers.domain.model.Speaker
 import fr.paug.androidmakers.ui.Res
+import fr.paug.androidmakers.ui.ic_public
 import fr.paug.androidmakers.ui.ic_network_blog
 import fr.paug.androidmakers.ui.ic_network_linkedin
 import fr.paug.androidmakers.ui.ic_network_x
@@ -59,7 +58,7 @@ fun SocialButtons(
 
           else -> {
             Icon(
-                imageVector = Icons.Rounded.Public,
+                painter = painterResource(Res.drawable.ic_public),
                 contentDescription = socialsItem.name
             )
           }
