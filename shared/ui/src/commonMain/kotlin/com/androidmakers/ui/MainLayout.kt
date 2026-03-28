@@ -16,13 +16,12 @@ import coil3.compose.setSingletonImageLoaderFactory
 import coil3.request.crossfade
 import com.androidmakers.ui.common.SigninCallbacks
 import com.androidmakers.ui.common.navigation.AVALayout
-import com.androidmakers.ui.common.navigation.AboutKey
 import com.androidmakers.ui.common.navigation.AgendaKey
 import com.androidmakers.ui.common.navigation.FeedKey
+import com.androidmakers.ui.common.navigation.InfoKey
 import com.androidmakers.ui.common.navigation.Navigator
 import com.androidmakers.ui.common.navigation.SpeakersKey
 import com.androidmakers.ui.common.navigation.SponsorsKey
-import com.androidmakers.ui.common.navigation.VenueKey
 import com.androidmakers.ui.common.navigation.parseDeepLink
 import com.androidmakers.ui.common.navigation.rememberNavigationState
 import com.androidmakers.ui.theme.AndroidMakersTheme
@@ -60,10 +59,9 @@ fun MainLayout(
     val topLevelRoutes = buildSet {
       add(FeedKey)
       add(AgendaKey)
-      add(VenueKey)
       add(SpeakersKey)
       add(SponsorsKey)
-      add(AboutKey)
+      add(InfoKey)
     }
 
     val navigationState = rememberNavigationState(

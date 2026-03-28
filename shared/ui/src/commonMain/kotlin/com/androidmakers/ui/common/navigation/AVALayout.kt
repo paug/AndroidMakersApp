@@ -15,7 +15,6 @@ import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.FilterList
 import androidx.compose.material.icons.rounded.Groups
 import androidx.compose.material.icons.rounded.Info
-import androidx.compose.material.icons.rounded.PinDrop
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -50,31 +49,29 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import androidx.navigation3.ui.NavDisplay
 import androidx.window.core.layout.WindowSizeClass.Companion.WIDTH_DP_MEDIUM_LOWER_BOUND
-import com.androidmakers.ui.about.AboutScreen
 import com.androidmakers.ui.agenda.AgendaLayout
 import com.androidmakers.ui.agenda.SessionDetailScreen
 import com.androidmakers.ui.common.BackHandlerCompat
 import com.androidmakers.ui.common.SigninButton
 import com.androidmakers.ui.common.SigninCallbacks
 import com.androidmakers.ui.feed.FeedScreen
+import com.androidmakers.ui.info.InfoScreen
 import com.androidmakers.ui.speakers.SpeakerDetailsRoute
 import com.androidmakers.ui.speakers.SpeakerScreen
 import com.androidmakers.ui.sponsors.SponsorsScreen
-import com.androidmakers.ui.venue.VenuePager
 import fr.androidmakers.domain.model.FeatureFlags
 import fr.androidmakers.domain.model.User
 import fr.androidmakers.domain.repo.UserRepository
 import fr.paug.androidmakers.ui.Res
-import fr.paug.androidmakers.ui.about
 import fr.paug.androidmakers.ui.agenda
 import fr.paug.androidmakers.ui.feed
 import fr.paug.androidmakers.ui.filter
+import fr.paug.androidmakers.ui.info
 import fr.paug.androidmakers.ui.notification
 import fr.paug.androidmakers.ui.speakers
 import fr.paug.androidmakers.ui.sponsors
 import fr.paug.androidmakers.ui.top_bar_subtitle
 import fr.paug.androidmakers.ui.top_bar_title
-import fr.paug.androidmakers.ui.venue
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
@@ -153,6 +150,7 @@ fun AVALayout(
         showAgendaFilterBottomSheet = showAgendaFilterBottomSheet,
         onDismissAgendaFilter = { showAgendaFilterBottomSheet = false },
         isWideScreen = isWideScreen,
+        featureFlags = featureFlags,
       )
     }
   }
@@ -229,15 +227,7 @@ private fun AVABottomBar(
   Column {
     HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
     NavigationBar(containerColor = MaterialTheme.colorScheme.surfaceContainer) {
-      //if (featureFlags.feed) {
-        NavigationBarItem(
-          navigator = navigator,
-          navigationState = navigationState,
-          imageVector = Icons.Rounded.DynamicFeed,
-          label = stringResource(Res.string.feed),
-          destinationRoute = FeedKey
-        )
-      //}
+
       NavigationBarItem(
         navigator = navigator,
         navigationState = navigationState,
@@ -245,6 +235,7 @@ private fun AVABottomBar(
         label = stringResource(Res.string.agenda),
         destinationRoute = AgendaKey
       )
+
       NavigationBarItem(
         navigator = navigator,
         navigationState = navigationState,
@@ -252,6 +243,17 @@ private fun AVABottomBar(
         label = stringResource(Res.string.speakers),
         destinationRoute = SpeakersKey
       )
+
+      if (featureFlags.feed) {
+        NavigationBarItem(
+          navigator = navigator,
+          navigationState = navigationState,
+          imageVector = Icons.Rounded.DynamicFeed,
+          label = stringResource(Res.string.feed),
+          destinationRoute = FeedKey
+        )
+      }
+      
       NavigationBarItem(
         navigator = navigator,
         navigationState = navigationState,
@@ -259,22 +261,15 @@ private fun AVABottomBar(
         label = stringResource(Res.string.sponsors),
         destinationRoute = SponsorsKey
       )
-      if (featureFlags.venue) {
-        NavigationBarItem(
-          navigator = navigator,
-          navigationState = navigationState,
-          imageVector = Icons.Rounded.PinDrop,
-          label = stringResource(Res.string.venue),
-          destinationRoute = VenueKey
-        )
-      }
+
       NavigationBarItem(
         navigator = navigator,
         navigationState = navigationState,
         imageVector = Icons.Rounded.Info,
-        label = stringResource(Res.string.about),
-        destinationRoute = AboutKey
+        label = stringResource(Res.string.info),
+        destinationRoute = InfoKey
       )
+
     }
   }
 }
@@ -289,6 +284,7 @@ private fun AVANavDisplay(
   showAgendaFilterBottomSheet: Boolean,
   onDismissAgendaFilter: () -> Unit,
   isWideScreen: Boolean,
+  featureFlags: FeatureFlags,
 ) {
   SharedTransitionLayout {
     val sharedTransitionScope = this
@@ -311,10 +307,6 @@ private fun AVANavDisplay(
         )
       }
 
-      entry<VenueKey> {
-        VenuePager()
-      }
-
       entry<SpeakersKey> {
         SpeakerScreen(
           viewModel = koinViewModel(),
@@ -328,10 +320,11 @@ private fun AVANavDisplay(
         SponsorsScreen()
       }
 
-      entry<AboutKey> {
-        AboutScreen(
+      entry<InfoKey> {
+        InfoScreen(
           versionCode = versionCode,
-          versionName = versionName
+          versionName = versionName,
+          featureFlags = featureFlags,
         )
       }
 

@@ -2,6 +2,7 @@ package com.androidmakers.ui.venue
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
@@ -13,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.androidmakers.ui.common.LceLayout
 import com.androidmakers.ui.getPlatformContext
@@ -29,10 +31,14 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun VenuePager() {
+fun VenuePager(modifier: Modifier = Modifier) {
   val viewModel = koinViewModel<VenueViewModel>()
 
-  Column(modifier = Modifier.fillMaxWidth()) {
+  Column(
+    modifier = modifier
+      .fillMaxWidth()
+      .padding(16.dp)
+  ) {
     val titles = listOf(
       Res.string.venue_conference_tab,
       Res.string.venue_afterparty_tab,
@@ -58,8 +64,8 @@ private fun VenueTabRow(
 ) {
   TabRow(
     selectedTabIndex = pagerState.currentPage,
-    containerColor = MaterialTheme.colorScheme.background,
-    contentColor = MaterialTheme.colorScheme.onBackground
+    containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+    contentColor = MaterialTheme.colorScheme.onSurface
   ) {
     repeat(titles.size) {
       val coroutineScope = rememberCoroutineScope()
