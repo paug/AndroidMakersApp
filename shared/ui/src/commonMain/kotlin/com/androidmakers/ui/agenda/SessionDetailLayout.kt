@@ -161,6 +161,7 @@ fun SessionDetailScreen(
   onBackClick: () -> Unit,
   onSpeakerClick: (speakerId: String) -> Unit,
   showBackButton: Boolean = true,
+  showTopBar: Boolean = true,
   sharedTransitionScope: SharedTransitionScope? = null,
   animatedVisibilityScope: AnimatedVisibilityScope? = null,
 ) {
@@ -185,6 +186,7 @@ fun SessionDetailScreen(
     },
     onSpeakerClick = onSpeakerClick,
     showBackButton = showBackButton,
+    showTopBar = showTopBar,
     sharedTransitionScope = sharedTransitionScope,
     animatedVisibilityScope = animatedVisibilityScope,
   )
@@ -202,6 +204,7 @@ fun SessionDetailLayout(
   onApplyForAppClinic: () -> Unit,
   onSpeakerClick: (speakerId: String) -> Unit,
   showBackButton: Boolean = true,
+  showTopBar: Boolean = true,
   sharedTransitionScope: SharedTransitionScope? = null,
   animatedVisibilityScope: AnimatedVisibilityScope? = null,
 ) {
@@ -210,13 +213,15 @@ fun SessionDetailLayout(
     modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     containerColor = MaterialTheme.colorScheme.background,
     topBar = {
-      SessionDetailTopAppBar(
-        scrollBehavior = scrollBehavior,
-        showBackButton = showBackButton,
-        onBackClick = onBackClick,
-        hasContent = sessionDetailState is Lce.Content,
-        onShareSession = onShareSession,
-      )
+      if (showTopBar) {
+        SessionDetailTopAppBar(
+          scrollBehavior = scrollBehavior,
+          showBackButton = showBackButton,
+          onBackClick = onBackClick,
+          hasContent = sessionDetailState is Lce.Content,
+          onShareSession = onShareSession,
+        )
+      }
     },
     floatingActionButton = {
       if (sessionDetailState is Lce.Content) {

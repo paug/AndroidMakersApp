@@ -115,8 +115,13 @@ internal fun SessionRow(
           checked = isBookmarked,
           onCheckedChange = { onSessionBookmark(uiSession, it) },
         ) {
+          val bookmarkIcon = if (isBookmarked) {
+            Res.drawable.ic_bookmark_added
+          } else {
+            Res.drawable.ic_bookmark_add
+          }
           Icon(
-            painter = painterResource(if (isBookmarked) Res.drawable.ic_bookmark_added else Res.drawable.ic_bookmark_add),
+            painter = painterResource(bookmarkIcon),
             contentDescription = "favorite",
             tint = tint,
             modifier = Modifier.size(24.dp),

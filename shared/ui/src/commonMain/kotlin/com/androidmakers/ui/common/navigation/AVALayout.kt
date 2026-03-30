@@ -279,7 +279,7 @@ private fun AVABottomBar(
   }
 }
 
-@OptIn(ExperimentalMaterial3AdaptiveApi::class)
+@OptIn(ExperimentalMaterial3AdaptiveApi::class, ExperimentalMaterial3Api::class)
 @Composable
 private fun AVANavDisplay(
   versionCode: String,
@@ -335,15 +335,25 @@ private fun AVANavDisplay(
 
       // Detail entries
       entry<SessionDetailKey>(
-        metadata = ListDetailSceneStrategy.detailPane()
+        metadata = if (isWideScreen) {
+          ListDetailSceneStrategy.detailPane()
+        } else {
+          BottomSheetSceneStrategy.bottomSheet()
+        }
       ) { key ->
         SessionDetailScreen(
           viewModel = koinViewModel(key = key.sessionId) { parametersOf(key.sessionId) },
           onBackClick = { navigator.goBack() },
           onSpeakerClick = { speakerId -> navigator.navigate(SpeakerDetailKey(speakerId)) },
-          showBackButton = !isWideScreen,
+          showBackButton = isWideScreen,
+          showTopBar = isWideScreen,
           sharedTransitionScope = sharedTransitionScope,
-          animatedVisibilityScope = LocalNavAnimatedContentScope.current,
+          // LocalNavAnimatedContentScope is unavailable in OverlayScene (bottom sheet)
+          animatedVisibilityScope = if (isWideScreen) {
+            LocalNavAnimatedContentScope.current
+          } else {
+            null
+          },
         )
       }
 
@@ -357,11 +367,12 @@ private fun AVANavDisplay(
       }
     }
 
+    val bottomSheetStrategy = remember { BottomSheetSceneStrategy<NavKey>() }
     val listDetailStrategy = rememberListDetailSceneStrategy<NavKey>()
 
     NavDisplay(
       entries = navigationState.toDecoratedEntries(entryProvider),
-      sceneStrategies = listOf(listDetailStrategy),
+      sceneStrategies = listOf(bottomSheetStrategy, listDetailStrategy),
       onBack = { navigator.goBack() }
     )
   }
