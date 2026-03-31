@@ -38,6 +38,7 @@ class FeedLocalRepository(
       title = message.title,
       body = message.body,
       createdAtEpochMillis = message.createdAt.toEpochMilliseconds(),
+      imageUrl = message.imageUrl,
     )
     dataStore.edit { prefs ->
       val raw = prefs[PREF_KEY_FEED_ITEMS] ?: "[]"
@@ -68,6 +69,7 @@ private data class StoredFeedItem(
   val title: String,
   val body: String,
   val createdAtEpochMillis: Long,
+  val imageUrl: String? = null,
 ) {
   fun toFeedItem(): FeedItem.Message = FeedItem.Message(
     id = id,
@@ -75,5 +77,6 @@ private data class StoredFeedItem(
     title = title,
     body = body,
     createdAt = Instant.fromEpochMilliseconds(createdAtEpochMillis),
+    imageUrl = imageUrl,
   )
 }

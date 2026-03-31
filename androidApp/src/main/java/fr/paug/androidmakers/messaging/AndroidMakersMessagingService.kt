@@ -63,12 +63,15 @@ class AndroidMakersMessagingService : FirebaseMessagingService() {
       MessageType.entries.firstOrNull { it.name == typeName }
     } ?: MessageType.INFO
 
+    val imageUrl = data["feed_image_url"]
+
     val feedItem = FeedItem.Message(
       id = id,
       type = type,
       title = title,
       body = body,
       createdAt = Instant.fromEpochMilliseconds(System.currentTimeMillis()),
+      imageUrl = imageUrl,
     )
     serviceScope.launch {
       feedRepository.addFeedItem(feedItem)

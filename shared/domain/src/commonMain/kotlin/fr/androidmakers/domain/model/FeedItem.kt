@@ -17,6 +17,7 @@ sealed interface FeedItem {
     val title: String,
     val body: String,
     val createdAt: Instant,
+    val imageUrl: String? = null,
   ) : FeedItem
 
   data class Article(
