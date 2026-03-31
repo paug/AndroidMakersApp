@@ -25,7 +25,9 @@ import fr.androidmakers.domain.model.FeedItem
 import fr.paug.androidmakers.ui.Res
 import fr.paug.androidmakers.ui.ic_close
 import fr.paug.androidmakers.ui.ic_warning
+import fr.paug.androidmakers.ui.dismiss
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun AlertBannerCard(
@@ -77,7 +79,7 @@ fun AlertBannerCard(
     ) {
       Icon(
         painter = painterResource(Res.drawable.ic_close),
-        contentDescription = "Dismiss",
+        contentDescription = stringResource(Res.string.dismiss),
         tint = contentColor,
         modifier = Modifier.size(18.dp),
       )
