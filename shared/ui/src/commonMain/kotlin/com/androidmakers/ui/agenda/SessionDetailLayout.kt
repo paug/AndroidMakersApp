@@ -40,8 +40,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SuggestionChip
-import androidx.compose.material3.SuggestionChipDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -562,24 +560,19 @@ private fun SessionHeaderTagsRow(
 
 @Composable
 private fun TagChip(text: String) {
-  SuggestionChip(
-    onClick = {},
-    label = {
-      Text(
-        text = text.uppercase(),
-        style = MaterialTheme.typography.labelMedium.copy(
-          letterSpacing = 0.6.sp
-        ),
-      )
-    },
+  Surface(
+    modifier = Modifier.neoBrutalBorder(),
     shape = MaterialTheme.shapes.small,
     border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
-    modifier = Modifier.neoBrutalBorder(),
-    colors = SuggestionChipDefaults.suggestionChipColors(
-      containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-      labelColor = MaterialTheme.colorScheme.onSurfaceVariant,
-    ),
-  )
+    color = MaterialTheme.colorScheme.surfaceContainerHigh,
+  ) {
+    Text(
+      text = text.uppercase(),
+      modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
+      style = MaterialTheme.typography.labelMedium.copy(letterSpacing = 0.6.sp),
+      color = MaterialTheme.colorScheme.onSurfaceVariant,
+    )
+  }
 }
 
 @Composable

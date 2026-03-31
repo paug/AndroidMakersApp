@@ -16,8 +16,7 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SuggestionChip
-import androidx.compose.material3.SuggestionChipDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -183,21 +182,18 @@ internal fun SessionRow(
 
 @Composable
 private fun TagChip(tag: String) {
-  SuggestionChip(
+  Surface(
     modifier = Modifier.neoBrutalBorder(),
-    onClick = {},
-    label = {
-      Text(
-        text = tag,
-        style = MaterialTheme.typography.labelSmall,
-      )
-    },
     shape = MaterialTheme.shapes.small,
-    colors = SuggestionChipDefaults.suggestionChipColors(
-      containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
-      labelColor = MaterialTheme.colorScheme.onSurfaceVariant,
-    ),
-  )
+    color = MaterialTheme.colorScheme.surfaceContainerHighest,
+  ) {
+    Text(
+      text = tag,
+      modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
+      style = MaterialTheme.typography.labelSmall,
+      color = MaterialTheme.colorScheme.onSurfaceVariant,
+    )
+  }
 }
 
 @Composable

@@ -17,6 +17,6 @@ class FeedViewModel(
   val dismissedAlertIds: StateFlow<Set<String>> = _dismissedAlertIds.asStateFlow()
 
   fun dismissAlert(alertId: String) {
-    _dismissedAlertIds.update { _dismissedAlertIds.value + alertId }
+    _dismissedAlertIds.update { it + alertId }
   }
 }
