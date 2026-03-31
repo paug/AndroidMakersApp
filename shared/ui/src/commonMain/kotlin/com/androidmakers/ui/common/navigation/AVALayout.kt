@@ -8,19 +8,7 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.CalendarMonth
-import androidx.compose.material.icons.rounded.Diamond
-import androidx.compose.material.icons.rounded.DynamicFeed
-import androidx.compose.material.icons.rounded.Favorite
-import androidx.compose.material.icons.rounded.FilterList
-import androidx.compose.material.icons.rounded.Groups
-import androidx.compose.material.icons.rounded.Info
-import androidx.compose.material.icons.rounded.LocationCity
-import androidx.compose.material.icons.rounded.Pin
-import androidx.compose.material.icons.rounded.PinDrop
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -43,7 +31,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -53,31 +41,40 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import androidx.navigation3.ui.NavDisplay
 import androidx.window.core.layout.WindowSizeClass.Companion.WIDTH_DP_MEDIUM_LOWER_BOUND
-import com.androidmakers.ui.about.AboutScreen
 import com.androidmakers.ui.agenda.AgendaLayout
 import com.androidmakers.ui.agenda.SessionDetailScreen
 import com.androidmakers.ui.common.BackHandlerCompat
 import com.androidmakers.ui.common.SigninButton
 import com.androidmakers.ui.common.SigninCallbacks
 import com.androidmakers.ui.feed.FeedScreen
+import com.androidmakers.ui.info.InfoScreen
 import com.androidmakers.ui.speakers.SpeakerDetailsRoute
 import com.androidmakers.ui.speakers.SpeakerScreen
 import com.androidmakers.ui.sponsors.SponsorsScreen
-import com.androidmakers.ui.venue.VenuePager
 import fr.androidmakers.domain.model.FeatureFlags
 import fr.androidmakers.domain.model.User
 import fr.androidmakers.domain.repo.UserRepository
 import fr.paug.androidmakers.ui.Res
-import fr.paug.androidmakers.ui.about
 import fr.paug.androidmakers.ui.agenda
 import fr.paug.androidmakers.ui.feed
 import fr.paug.androidmakers.ui.filter
+import fr.paug.androidmakers.ui.ic_calendar_month
+import fr.paug.androidmakers.ui.ic_calendar_month_outlined
+import fr.paug.androidmakers.ui.ic_dynamic_feed
+import fr.paug.androidmakers.ui.ic_dynamic_feed_outlined
+import fr.paug.androidmakers.ui.ic_favorite
+import fr.paug.androidmakers.ui.ic_favorite_border
+import fr.paug.androidmakers.ui.ic_filter_list
+import fr.paug.androidmakers.ui.ic_groups
+import fr.paug.androidmakers.ui.ic_groups_outlined
+import fr.paug.androidmakers.ui.ic_info
+import fr.paug.androidmakers.ui.ic_info_outlined
+import fr.paug.androidmakers.ui.info
 import fr.paug.androidmakers.ui.notification
 import fr.paug.androidmakers.ui.speakers
 import fr.paug.androidmakers.ui.sponsors
 import fr.paug.androidmakers.ui.top_bar_subtitle
 import fr.paug.androidmakers.ui.top_bar_title
-import fr.paug.androidmakers.ui.venue
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
@@ -139,7 +136,7 @@ fun AVALayout(
         AVABottomBar(
           navigator = navigator,
           navigationState = navigationState,
-          featureFlags
+          featureFlags = featureFlags
         )
       }
     },
@@ -156,6 +153,7 @@ fun AVALayout(
         showAgendaFilterBottomSheet = showAgendaFilterBottomSheet,
         onDismissAgendaFilter = { showAgendaFilterBottomSheet = false },
         isWideScreen = isWideScreen,
+        featureFlags = featureFlags,
       )
     }
   }
@@ -213,7 +211,7 @@ private fun AVATopAppBar(
           onClick = onToggleFilter
         ) {
           Icon(
-            imageVector = Icons.Rounded.FilterList,
+            painter = painterResource(Res.drawable.ic_filter_list),
             contentDescription = stringResource(Res.string.filter),
           )
         }
@@ -229,60 +227,59 @@ private fun AVABottomBar(
   navigationState: NavigationState,
   featureFlags: FeatureFlags
 ) {
-  Column {
-    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-    NavigationBar(containerColor = MaterialTheme.colorScheme.surfaceContainer) {
-      if (featureFlags.feed) {
-        NavigationBarItem(
-          navigator = navigator,
-          navigationState = navigationState,
-          imageVector = Icons.Rounded.DynamicFeed,
-          label = stringResource(Res.string.feed),
-          destinationRoute = FeedKey
-        )
-      }
+  NavigationBar(containerColor = MaterialTheme.colorScheme.surfaceContainer) {
+
+    NavigationBarItem(
+      navigator = navigator,
+      navigationState = navigationState,
+      selectedIcon = painterResource(Res.drawable.ic_calendar_month),
+      unselectedIcon = painterResource(Res.drawable.ic_calendar_month_outlined),
+      label = stringResource(Res.string.agenda),
+      destinationRoute = AgendaKey
+    )
+
+    NavigationBarItem(
+      navigator = navigator,
+      navigationState = navigationState,
+      selectedIcon = painterResource(Res.drawable.ic_groups),
+      unselectedIcon = painterResource(Res.drawable.ic_groups_outlined),
+      label = stringResource(Res.string.speakers),
+      destinationRoute = SpeakersKey
+    )
+
+    if (featureFlags.feed) {
       NavigationBarItem(
         navigator = navigator,
         navigationState = navigationState,
-        imageVector = Icons.Rounded.CalendarMonth,
-        label = stringResource(Res.string.agenda),
-        destinationRoute = AgendaKey
-      )
-      NavigationBarItem(
-        navigator = navigator,
-        navigationState = navigationState,
-        imageVector = Icons.Rounded.Groups,
-        label = stringResource(Res.string.speakers),
-        destinationRoute = SpeakersKey
-      )
-      NavigationBarItem(
-        navigator = navigator,
-        navigationState = navigationState,
-        imageVector = Icons.Rounded.Favorite,
-        label = stringResource(Res.string.sponsors),
-        destinationRoute = SponsorsKey
-      )
-      if (featureFlags.venue) {
-        NavigationBarItem(
-          navigator = navigator,
-          navigationState = navigationState,
-          imageVector = Icons.Rounded.PinDrop,
-          label = stringResource(Res.string.venue),
-          destinationRoute = VenueKey
-        )
-      }
-      NavigationBarItem(
-        navigator = navigator,
-        navigationState = navigationState,
-        imageVector = Icons.Rounded.Info,
-        label = stringResource(Res.string.about),
-        destinationRoute = AboutKey
+        selectedIcon = painterResource(Res.drawable.ic_dynamic_feed),
+        unselectedIcon = painterResource(Res.drawable.ic_dynamic_feed_outlined),
+        label = stringResource(Res.string.feed),
+        destinationRoute = FeedKey
       )
     }
+
+    NavigationBarItem(
+      navigator = navigator,
+      navigationState = navigationState,
+      selectedIcon = painterResource(Res.drawable.ic_favorite),
+      unselectedIcon = painterResource(Res.drawable.ic_favorite_border),
+      label = stringResource(Res.string.sponsors),
+      destinationRoute = SponsorsKey
+    )
+
+    NavigationBarItem(
+      navigator = navigator,
+      navigationState = navigationState,
+      selectedIcon = painterResource(Res.drawable.ic_info),
+      unselectedIcon = painterResource(Res.drawable.ic_info_outlined),
+      label = stringResource(Res.string.info),
+      destinationRoute = InfoKey
+    )
+
   }
 }
 
-@OptIn(ExperimentalMaterial3AdaptiveApi::class)
+@OptIn(ExperimentalMaterial3AdaptiveApi::class, ExperimentalMaterial3Api::class)
 @Composable
 private fun AVANavDisplay(
   versionCode: String,
@@ -292,6 +289,7 @@ private fun AVANavDisplay(
   showAgendaFilterBottomSheet: Boolean,
   onDismissAgendaFilter: () -> Unit,
   isWideScreen: Boolean,
+  featureFlags: FeatureFlags,
 ) {
   SharedTransitionLayout {
     val sharedTransitionScope = this
@@ -314,10 +312,6 @@ private fun AVANavDisplay(
         )
       }
 
-      entry<VenueKey> {
-        VenuePager()
-      }
-
       entry<SpeakersKey> {
         SpeakerScreen(
           viewModel = koinViewModel(),
@@ -331,24 +325,35 @@ private fun AVANavDisplay(
         SponsorsScreen()
       }
 
-      entry<AboutKey> {
-        AboutScreen(
+      entry<InfoKey> {
+        InfoScreen(
           versionCode = versionCode,
-          versionName = versionName
+          versionName = versionName,
+          featureFlags = featureFlags,
         )
       }
 
       // Detail entries
       entry<SessionDetailKey>(
-        metadata = ListDetailSceneStrategy.detailPane()
+        metadata = if (isWideScreen) {
+          ListDetailSceneStrategy.detailPane()
+        } else {
+          BottomSheetSceneStrategy.bottomSheet()
+        }
       ) { key ->
         SessionDetailScreen(
           viewModel = koinViewModel(key = key.sessionId) { parametersOf(key.sessionId) },
           onBackClick = { navigator.goBack() },
           onSpeakerClick = { speakerId -> navigator.navigate(SpeakerDetailKey(speakerId)) },
-          showBackButton = !isWideScreen,
+          showBackButton = isWideScreen,
+          showTopBar = isWideScreen,
           sharedTransitionScope = sharedTransitionScope,
-          animatedVisibilityScope = LocalNavAnimatedContentScope.current,
+          // LocalNavAnimatedContentScope is unavailable in OverlayScene (bottom sheet)
+          animatedVisibilityScope = if (isWideScreen) {
+            LocalNavAnimatedContentScope.current
+          } else {
+            null
+          },
         )
       }
 
@@ -362,11 +367,12 @@ private fun AVANavDisplay(
       }
     }
 
+    val bottomSheetStrategy = remember { BottomSheetSceneStrategy<NavKey>() }
     val listDetailStrategy = rememberListDetailSceneStrategy<NavKey>()
 
     NavDisplay(
       entries = navigationState.toDecoratedEntries(entryProvider),
-      sceneStrategies = listOf(listDetailStrategy),
+      sceneStrategies = listOf(bottomSheetStrategy, listDetailStrategy),
       onBack = { navigator.goBack() }
     )
   }
@@ -376,19 +382,21 @@ private fun AVANavDisplay(
 private fun RowScope.NavigationBarItem(
   navigator: Navigator,
   navigationState: NavigationState,
-  imageVector: ImageVector,
+  selectedIcon: Painter,
+  unselectedIcon: Painter,
   label: String,
   destinationRoute: NavKey,
 ) {
+  val isSelected = navigationState.topLevelRoute == destinationRoute
   NavigationBarItem(
     icon = {
       Icon(
-        imageVector = imageVector,
+        painter = if (isSelected) selectedIcon else unselectedIcon,
         contentDescription = label
       )
     },
     label = { Text(label, maxLines = 1, overflow = TextOverflow.Ellipsis) },
-    selected = navigationState.topLevelRoute == destinationRoute,
+    selected = isSelected,
     colors = NavigationBarItemDefaults.colors(
       selectedIconColor = MaterialTheme.colorScheme.primary,
       selectedTextColor = MaterialTheme.colorScheme.primary,

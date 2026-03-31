@@ -6,7 +6,9 @@ import fr.androidmakers.domain.repo.VenueRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class VenueGraphQLRepository(private val apolloClient: ApolloClient) : VenueRepository {
+class VenueGraphQLRepository(
+  private val apolloClient: ApolloClient
+) : VenueRepository {
   override fun getVenue(id: String): Flow<Result<Venue>> {
     return apolloClient.query(GetVenueQuery(id))
       .cacheAndNetwork()

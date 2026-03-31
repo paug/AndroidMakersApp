@@ -22,7 +22,7 @@ import fr.androidmakers.store.graphql.SpeakersGraphQLRepository
 import fr.androidmakers.store.graphql.VenueGraphQLRepository
 import fr.androidmakers.store.local.BookmarksDataStoreRepository
 import fr.androidmakers.store.local.ThemeDataStoreRepository
-import fr.androidmakers.store.mock.MockFeedRepository
+import fr.androidmakers.store.local.FeedLocalRepository
 import fr.androidmakers.store.wear.WearMessagingRepository
 import org.koin.core.module.Module
 import org.koin.dsl.module
@@ -43,5 +43,5 @@ val dataModule = module {
   single<BookmarksRepository> { BookmarksDataStoreRepository(get()) }
   single<ThemeRepository> { ThemeDataStoreRepository(get()) }
   single<MessagingRepository> { WearMessagingRepository(get()) }
-  single<FeedRepository> { MockFeedRepository() }
+  single<FeedRepository> { FeedLocalRepository(get()) }
 }

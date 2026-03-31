@@ -9,9 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material.icons.rounded.Warning
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -25,6 +22,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.androidmakers.ui.theme.neoBrutalBorder
 import fr.androidmakers.domain.model.FeedItem
+import fr.paug.androidmakers.ui.Res
+import fr.paug.androidmakers.ui.ic_close
+import fr.paug.androidmakers.ui.ic_warning
+import fr.paug.androidmakers.ui.dismiss
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun AlertBannerCard(
@@ -48,7 +51,7 @@ fun AlertBannerCard(
     verticalAlignment = Alignment.Top,
   ) {
     Icon(
-      imageVector = Icons.Rounded.Warning,
+      painter = painterResource(Res.drawable.ic_warning),
       contentDescription = null,
       tint = MaterialTheme.colorScheme.error,
       modifier = Modifier.size(24.dp),
@@ -75,8 +78,8 @@ fun AlertBannerCard(
       modifier = Modifier.size(32.dp),
     ) {
       Icon(
-        imageVector = Icons.Rounded.Close,
-        contentDescription = "Dismiss",
+        painter = painterResource(Res.drawable.ic_close),
+        contentDescription = stringResource(Res.string.dismiss),
         tint = contentColor,
         modifier = Modifier.size(18.dp),
       )

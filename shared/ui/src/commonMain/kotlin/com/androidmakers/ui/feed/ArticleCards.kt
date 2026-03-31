@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3ExpressiveApi::class)
+
 package com.androidmakers.ui.feed
 
 import androidx.compose.foundation.background
@@ -14,11 +16,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.LocationOn
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -37,6 +39,8 @@ import com.androidmakers.ui.theme.neoBrutalBorder
 import com.androidmakers.ui.theme.neoBrutalElevation
 import fr.androidmakers.domain.model.FeedItem
 import fr.paug.androidmakers.ui.Res
+import fr.paug.androidmakers.ui.ic_location_on
+import org.jetbrains.compose.resources.painterResource
 import fr.paug.androidmakers.ui.feed_read_more
 import org.jetbrains.compose.resources.stringResource
 
@@ -96,10 +100,12 @@ fun ArticleCardWithImage(
   article: FeedItem.Article,
   modifier: Modifier = Modifier,
 ) {
-  Surface(
+  ElevatedCard(
     modifier = modifier.fillMaxWidth().neoBrutalElevation(),
     shape = MaterialTheme.shapes.extraLarge,
-    color = MaterialTheme.colorScheme.surfaceContainerHigh,
+    colors = CardDefaults.elevatedCardColors(
+      containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+    ),
   ) {
     Column {
       ArticleHeroImage(
@@ -111,8 +117,7 @@ fun ArticleCardWithImage(
         Text(
           text = article.title,
           color = MaterialTheme.colorScheme.onSurface,
-          fontWeight = FontWeight.Bold,
-          fontSize = 18.sp,
+          style = MaterialTheme.typography.titleMediumEmphasized,
           modifier = Modifier.padding(top = 8.dp),
         )
         Text(
@@ -153,8 +158,7 @@ private fun ArticleHeroImage(
       Text(
         text = categoryBadge,
         color = MaterialTheme.colorScheme.onPrimary,
-        fontSize = 11.sp,
-        fontWeight = FontWeight.Bold,
+        style = MaterialTheme.typography.labelSmallEmphasized,
         letterSpacing = 0.5.sp,
         modifier = Modifier
           .padding(12.dp)
@@ -203,18 +207,19 @@ fun ArticleCardWithLocation(
   article: FeedItem.Article,
   modifier: Modifier = Modifier,
 ) {
-  Surface(
+  ElevatedCard(
     modifier = modifier.fillMaxWidth().neoBrutalElevation(),
     shape = MaterialTheme.shapes.large,
-    color = MaterialTheme.colorScheme.surfaceContainerHigh,
+    colors = CardDefaults.elevatedCardColors(
+      containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+    ),
   ) {
     Column(modifier = Modifier.padding(16.dp)) {
       CategoryTimeRow(article.category, article.timeAgo)
       Text(
         text = article.title,
         color = MaterialTheme.colorScheme.onSurface,
-        fontWeight = FontWeight.Bold,
-        fontSize = 16.sp,
+        style = MaterialTheme.typography.titleSmallEmphasized,
         modifier = Modifier.padding(top = 8.dp),
       )
       Text(
@@ -239,7 +244,7 @@ fun ArticleCardWithLocation(
           verticalAlignment = Alignment.CenterVertically,
         ) {
           Icon(
-            imageVector = Icons.Rounded.LocationOn,
+            painter = painterResource(Res.drawable.ic_location_on),
             contentDescription = null,
             tint = MaterialTheme.colorScheme.primary,
             modifier = Modifier.size(20.dp),
@@ -272,10 +277,12 @@ fun ArticleCardWithThumbnail(
   article: FeedItem.Article,
   modifier: Modifier = Modifier,
 ) {
-  Surface(
+  ElevatedCard(
     modifier = modifier.fillMaxWidth().neoBrutalElevation(),
     shape = MaterialTheme.shapes.large,
-    color = MaterialTheme.colorScheme.surfaceContainerHigh,
+    colors = CardDefaults.elevatedCardColors(
+      containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+    ),
   ) {
     Row(
       modifier = Modifier.padding(16.dp),
@@ -286,8 +293,7 @@ fun ArticleCardWithThumbnail(
         Text(
           text = article.title,
           color = MaterialTheme.colorScheme.onSurface,
-          fontWeight = FontWeight.Bold,
-          fontSize = 16.sp,
+          style = MaterialTheme.typography.titleSmallEmphasized,
           modifier = Modifier.padding(top = 8.dp),
         )
         Text(

@@ -5,4 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface FeedRepository {
   fun getFeedItems(): Flow<Result<List<FeedItem>>>
+  suspend fun addFeedItem(item: FeedItem)
 }

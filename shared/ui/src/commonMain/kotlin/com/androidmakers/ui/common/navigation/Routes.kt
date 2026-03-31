@@ -9,9 +9,12 @@ import kotlinx.serialization.modules.polymorphic
 // Top-level tab routes (bottom nav)
 @Serializable data object FeedKey : NavKey
 @Serializable data object AgendaKey : NavKey
-@Serializable data object VenueKey : NavKey
 @Serializable data object SpeakersKey : NavKey
 @Serializable data object SponsorsKey : NavKey
+@Serializable data object InfoKey : NavKey
+
+// Legacy keys kept for serialization backward compat
+@Serializable data object VenueKey : NavKey
 @Serializable data object AboutKey : NavKey
 
 // Detail routes (full-screen, no bottom nav)
@@ -23,9 +26,10 @@ val navKeySavedStateConfig = SavedStateConfiguration {
         polymorphic(NavKey::class) {
             subclass(FeedKey::class, FeedKey.serializer())
             subclass(AgendaKey::class, AgendaKey.serializer())
-            subclass(VenueKey::class, VenueKey.serializer())
             subclass(SpeakersKey::class, SpeakersKey.serializer())
             subclass(SponsorsKey::class, SponsorsKey.serializer())
+            subclass(InfoKey::class, InfoKey.serializer())
+            subclass(VenueKey::class, VenueKey.serializer())
             subclass(AboutKey::class, AboutKey.serializer())
             subclass(SessionDetailKey::class, SessionDetailKey.serializer())
             subclass(SpeakerDetailKey::class, SpeakerDetailKey.serializer())
@@ -34,5 +38,5 @@ val navKeySavedStateConfig = SavedStateConfiguration {
 }
 
 fun NavKey.isTabKey(): Boolean =
-    this is FeedKey || this is AgendaKey || this is VenueKey ||
-        this is SpeakersKey || this is SponsorsKey || this is AboutKey
+    this is FeedKey || this is AgendaKey ||
+        this is SpeakersKey || this is SponsorsKey || this is InfoKey

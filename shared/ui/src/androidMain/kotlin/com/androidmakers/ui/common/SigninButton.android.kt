@@ -1,8 +1,6 @@
 package com.androidmakers.ui.common
 
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -16,6 +14,8 @@ import androidx.compose.ui.draw.clip
 import coil3.compose.AsyncImage
 import fr.androidmakers.domain.model.User
 import fr.paug.androidmakers.ui.Res
+import fr.paug.androidmakers.ui.ic_account_circle
+import org.jetbrains.compose.resources.painterResource
 import fr.paug.androidmakers.ui.signin
 import fr.paug.androidmakers.ui.signout
 import org.jetbrains.compose.resources.stringResource
@@ -34,7 +34,7 @@ actual fun SigninButton(
   ) {
     if (user == null) {
       Icon(
-        imageVector = Icons.Rounded.AccountCircle,
+        painter = painterResource(Res.drawable.ic_account_circle),
         contentDescription = stringResource(Res.string.signin)
       )
     } else {

@@ -1,11 +1,20 @@
 package fr.paug.androidmakers
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -19,6 +28,8 @@ import androidx.credentials.exceptions.NoCredentialException
 import androidx.lifecycle.lifecycleScope
 import com.androidmakers.ui.MainLayout
 import com.androidmakers.ui.common.SigninCallbacks
+import fr.androidmakers.domain.model.ThemePreference
+import fr.androidmakers.domain.repo.ThemeRepository
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
@@ -41,17 +52,47 @@ class MainActivity : ComponentActivity() {
 
   private val mergeBookmarksUseCase: MergeBookmarksUseCase by inject(mode = LazyThreadSafetyMode.NONE)
 
+  private val notificationPermissionLauncher = registerForActivityResult(
+    ActivityResultContracts.RequestPermission()
+  ) { granted ->
+    Log.d(TAG, "POST_NOTIFICATIONS permission ${if (granted) "granted" else "denied"}")
+  }
+
   override fun onCreate(savedInstanceState: Bundle?) {
     installSplashScreen()
     super.onCreate(savedInstanceState)
 
-    enableEdgeToEdge()
-
+    requestNotificationPermission()
     logFCMToken()
 
     val initialDeepLink: String? = if (savedInstanceState == null) intent.dataString else null
 
     setContent {
+      val themeRepository: ThemeRepository = org.koin.compose.koinInject()
+      val themePreference by themeRepository.themePreference.collectAsState(ThemePreference.System)
+      val isDark = when (themePreference) {
+        ThemePreference.System -> isSystemInDarkTheme()
+        ThemePreference.Light -> false
+        ThemePreference.Dark -> true
+        ThemePreference.Neobrutalism -> false
+      }
+
+      DisposableEffect(isDark) {
+        enableEdgeToEdge(
+          statusBarStyle = if (isDark) {
+            SystemBarStyle.dark(android.graphics.Color.TRANSPARENT)
+          } else {
+            SystemBarStyle.light(android.graphics.Color.TRANSPARENT, android.graphics.Color.TRANSPARENT)
+          },
+          navigationBarStyle = if (isDark) {
+            SystemBarStyle.dark(android.graphics.Color.TRANSPARENT)
+          } else {
+            SystemBarStyle.light(android.graphics.Color.TRANSPARENT, android.graphics.Color.TRANSPARENT)
+          },
+        )
+        onDispose {}
+      }
+
       val deeplink: String? by produceState(initialDeepLink) {
         val listener = Consumer<Intent> { newIntent ->
           newIntent.dataString?.let {
@@ -71,6 +112,16 @@ class MainActivity : ComponentActivity() {
           signout = ::signOut,
         )
       )
+    }
+  }
+
+  private fun requestNotificationPermission() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+      if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+        != PackageManager.PERMISSION_GRANTED
+      ) {
+        notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+      }
     }
   }
 

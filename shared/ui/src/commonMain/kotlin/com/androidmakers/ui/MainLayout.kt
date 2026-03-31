@@ -2,7 +2,6 @@ package com.androidmakers.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -10,26 +9,24 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.ImageLoader
 import coil3.compose.setSingletonImageLoaderFactory
 import coil3.request.crossfade
 import com.androidmakers.ui.common.SigninCallbacks
 import com.androidmakers.ui.common.navigation.AVALayout
-import com.androidmakers.ui.common.navigation.AboutKey
 import com.androidmakers.ui.common.navigation.AgendaKey
 import com.androidmakers.ui.common.navigation.FeedKey
+import com.androidmakers.ui.common.navigation.InfoKey
 import com.androidmakers.ui.common.navigation.Navigator
 import com.androidmakers.ui.common.navigation.SpeakersKey
 import com.androidmakers.ui.common.navigation.SponsorsKey
-import com.androidmakers.ui.common.navigation.VenueKey
 import com.androidmakers.ui.common.navigation.parseDeepLink
 import com.androidmakers.ui.common.navigation.rememberNavigationState
 import com.androidmakers.ui.theme.AndroidMakersTheme
 import fr.androidmakers.domain.PlatformContext
+import fr.androidmakers.domain.model.FeatureFlags
 import fr.androidmakers.domain.model.ThemePreference
 import fr.androidmakers.domain.repo.FeatureFlagsRepository
 import fr.androidmakers.domain.repo.ThemeRepository
@@ -62,10 +59,9 @@ fun MainLayout(
     val topLevelRoutes = buildSet {
       add(FeedKey)
       add(AgendaKey)
-      add(VenueKey)
       add(SpeakersKey)
       add(SponsorsKey)
-      add(AboutKey)
+      add(InfoKey)
     }
 
     val navigationState = rememberNavigationState(
@@ -83,7 +79,7 @@ fun MainLayout(
       }
     }
 
-    val featureFlags = remember { mutableStateOf<fr.androidmakers.domain.model.FeatureFlags?>(null) }
+    val featureFlags = remember { mutableStateOf<FeatureFlags?>(null) }
     LaunchedEffect(Unit) {
       featureFlags.value = featureFlagsRepository.flags()
     }

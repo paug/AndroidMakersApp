@@ -27,7 +27,10 @@ fun FeedScreen() {
       contentPadding = PaddingValues(16.dp),
       verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-      items(visibleItems, key = { it.id }) { item ->
+      items(
+        items = visibleItems,
+        key = { it.id }
+      ) { item ->
         when (item) {
           is FeedItem.Alert -> {
             AlertBannerCard(
@@ -35,6 +38,11 @@ fun FeedScreen() {
               onDismiss = { viewModel.dismissAlert(item.id) },
             )
           }
+
+          is FeedItem.Message -> {
+            MessageCard(message = item)
+          }
+
           is FeedItem.Article -> {
             when {
               item.imageUrl != null -> ArticleCardWithImage(article = item)

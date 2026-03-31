@@ -19,10 +19,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.Clear
-import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -54,9 +50,13 @@ import com.androidmakers.ui.theme.LocalIsNeobrutalism
 import com.androidmakers.ui.theme.neoBrutalElevation
 import fr.androidmakers.domain.model.Speaker
 import fr.paug.androidmakers.ui.Res
+import fr.paug.androidmakers.ui.ic_arrow_back
+import fr.paug.androidmakers.ui.ic_clear
+import fr.paug.androidmakers.ui.ic_search
 import fr.paug.androidmakers.ui.back
 import fr.paug.androidmakers.ui.speaker_search_placeholder
 import fr.paug.androidmakers.ui.speakers
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -148,18 +148,18 @@ private fun SpeakerSearchBar(
           if (expanded) {
             IconButton(onClick = { onExpandedChange(false) }) {
               Icon(
-                Icons.AutoMirrored.Rounded.ArrowBack,
+                painter = painterResource(Res.drawable.ic_arrow_back),
                 contentDescription = stringResource(Res.string.back)
               )
             }
           } else {
-            Icon(Icons.Rounded.Search, contentDescription = null)
+            Icon(painter = painterResource(Res.drawable.ic_search), contentDescription = null)
           }
         },
         trailingIcon = {
           if (hasQuery) {
             IconButton(onClick = { onTextChange("") }) {
-              Icon(Icons.Rounded.Clear, contentDescription = null)
+              Icon(painter = painterResource(Res.drawable.ic_clear), contentDescription = null)
             }
           }
         }
