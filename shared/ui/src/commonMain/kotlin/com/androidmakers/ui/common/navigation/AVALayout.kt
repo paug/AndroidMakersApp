@@ -1,11 +1,18 @@
 package com.androidmakers.ui.common.navigation
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -16,6 +23,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -297,7 +305,13 @@ private fun AVANavDisplay(
     val entryProvider = entryProvider {
       // Tab entries
       entry<FeedKey> {
-        FeedScreen()
+        Surface(
+          modifier = Modifier.fillMaxSize(),
+          color = MaterialTheme.colorScheme.background,
+          contentColor = MaterialTheme.colorScheme.onBackground,
+        ) {
+          FeedScreen()
+        }
       }
 
       entry<AgendaKey>(
@@ -305,32 +319,56 @@ private fun AVANavDisplay(
           detailPlaceholder = {}
         )
       ) {
-        AgendaLayout(
-          showFilterBottomSheet = showAgendaFilterBottomSheet,
-          onFilterBottomSheetDismiss = onDismissAgendaFilter,
-          onSessionClick = { sessionId -> navigator.navigateToSessionDetail(sessionId) }
-        )
+        Surface(
+          modifier = Modifier.fillMaxSize(),
+          color = MaterialTheme.colorScheme.background,
+          contentColor = MaterialTheme.colorScheme.onBackground,
+        ) {
+          AgendaLayout(
+            showFilterBottomSheet = showAgendaFilterBottomSheet,
+            onFilterBottomSheetDismiss = onDismissAgendaFilter,
+            onSessionClick = { sessionId -> navigator.navigateToSessionDetail(sessionId) }
+          )
+        }
       }
 
       entry<SpeakersKey> {
-        SpeakerScreen(
-          viewModel = koinViewModel(),
-          navigateToSpeakerDetails = { speakerId -> navigator.navigate(SpeakerDetailKey(speakerId)) },
-          sharedTransitionScope = sharedTransitionScope,
-          animatedVisibilityScope = LocalNavAnimatedContentScope.current,
-        )
+        Surface(
+          modifier = Modifier.fillMaxSize(),
+          color = MaterialTheme.colorScheme.background,
+          contentColor = MaterialTheme.colorScheme.onBackground,
+        ) {
+          SpeakerScreen(
+            viewModel = koinViewModel(),
+            navigateToSpeakerDetails = { speakerId -> navigator.navigate(SpeakerDetailKey(speakerId)) },
+            sharedTransitionScope = sharedTransitionScope,
+            animatedVisibilityScope = LocalNavAnimatedContentScope.current,
+          )
+        }
       }
 
       entry<SponsorsKey> {
-        SponsorsScreen()
+        Surface(
+          modifier = Modifier.fillMaxSize(),
+          color = MaterialTheme.colorScheme.background,
+          contentColor = MaterialTheme.colorScheme.onBackground,
+        ) {
+          SponsorsScreen()
+        }
       }
 
       entry<InfoKey> {
-        InfoScreen(
-          versionCode = versionCode,
-          versionName = versionName,
-          featureFlags = featureFlags,
-        )
+        Surface(
+          modifier = Modifier.fillMaxSize(),
+          color = MaterialTheme.colorScheme.background,
+          contentColor = MaterialTheme.colorScheme.onBackground,
+        ) {
+          InfoScreen(
+            versionCode = versionCode,
+            versionName = versionName,
+            featureFlags = featureFlags,
+          )
+        }
       }
 
       // Detail entries
@@ -341,41 +379,61 @@ private fun AVANavDisplay(
           BottomSheetSceneStrategy.bottomSheet()
         }
       ) { key ->
-        SessionDetailScreen(
-          viewModel = koinViewModel(key = key.sessionId) { parametersOf(key.sessionId) },
-          onBackClick = { navigator.goBack() },
-          onSpeakerClick = { speakerId -> navigator.navigate(SpeakerDetailKey(speakerId)) },
-          showBackButton = isWideScreen,
-          showTopBar = isWideScreen,
-          sharedTransitionScope = sharedTransitionScope,
-          // LocalNavAnimatedContentScope is unavailable in OverlayScene (bottom sheet)
-          animatedVisibilityScope = if (isWideScreen) {
-            LocalNavAnimatedContentScope.current
-          } else {
-            null
-          },
-        )
+        Surface(
+          modifier = Modifier.fillMaxSize(),
+          color = MaterialTheme.colorScheme.background,
+          contentColor = MaterialTheme.colorScheme.onBackground,
+        ) {
+          SessionDetailScreen(
+            viewModel = koinViewModel(key = key.sessionId) { parametersOf(key.sessionId) },
+            onBackClick = { navigator.goBack() },
+            onSpeakerClick = { speakerId -> navigator.navigate(SpeakerDetailKey(speakerId)) },
+            showBackButton = isWideScreen,
+            showTopBar = isWideScreen,
+            sharedTransitionScope = sharedTransitionScope,
+            // LocalNavAnimatedContentScope is unavailable in OverlayScene (bottom sheet)
+            animatedVisibilityScope = if (isWideScreen) {
+              LocalNavAnimatedContentScope.current
+            } else {
+              null
+            },
+          )
+        }
       }
 
       entry<SpeakerDetailKey> { key ->
-        SpeakerDetailsRoute(
-          speakerDetailsViewModel = koinViewModel(key = key.speakerId) { parametersOf(key.speakerId) },
-          onBackClick = { navigator.goBack() },
-          sharedTransitionScope = sharedTransitionScope,
-          animatedVisibilityScope = LocalNavAnimatedContentScope.current,
-        )
+        Surface(
+          modifier = Modifier.fillMaxSize(),
+          color = MaterialTheme.colorScheme.background,
+          contentColor = MaterialTheme.colorScheme.onBackground,
+        ) {
+          SpeakerDetailsRoute(
+            speakerDetailsViewModel = koinViewModel(key = key.speakerId) { parametersOf(key.speakerId) },
+            onBackClick = { navigator.goBack() },
+            sharedTransitionScope = sharedTransitionScope,
+            animatedVisibilityScope = LocalNavAnimatedContentScope.current,
+          )
+        }
       }
     }
 
     val bottomSheetStrategy = remember { BottomSheetSceneStrategy<NavKey>() }
     val listDetailStrategy = rememberListDetailSceneStrategy<NavKey>()
 
+
     NavDisplay(
       entries = navigationState.toDecoratedEntries(entryProvider),
       sceneStrategies = listOf(bottomSheetStrategy, listDetailStrategy),
-      onBack = { navigator.goBack() }
+      onBack = navigator::goBack,
+      transitionSpec = {
+        fadeIn(tween(200)) togetherWith ExitTransition.None
+      },
+      popTransitionSpec = {
+        EnterTransition.None togetherWith fadeOut(tween(200))
+      },
     )
   }
+
 }
 
 @Composable

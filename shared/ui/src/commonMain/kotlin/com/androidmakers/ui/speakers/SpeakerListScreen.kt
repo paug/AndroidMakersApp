@@ -50,10 +50,10 @@ import com.androidmakers.ui.theme.LocalIsNeobrutalism
 import com.androidmakers.ui.theme.neoBrutalElevation
 import fr.androidmakers.domain.model.Speaker
 import fr.paug.androidmakers.ui.Res
+import fr.paug.androidmakers.ui.back
 import fr.paug.androidmakers.ui.ic_arrow_back
 import fr.paug.androidmakers.ui.ic_clear
 import fr.paug.androidmakers.ui.ic_search
-import fr.paug.androidmakers.ui.back
 import fr.paug.androidmakers.ui.speaker_search_placeholder
 import fr.paug.androidmakers.ui.speakers
 import org.jetbrains.compose.resources.painterResource
@@ -62,10 +62,10 @@ import org.jetbrains.compose.resources.stringResource
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SpeakerScreen(
-    viewModel: SpeakerListViewModel,
-    navigateToSpeakerDetails: (String) -> Unit,
-    sharedTransitionScope: SharedTransitionScope? = null,
-    animatedVisibilityScope: AnimatedVisibilityScope? = null,
+  viewModel: SpeakerListViewModel,
+  navigateToSpeakerDetails: (String) -> Unit,
+  sharedTransitionScope: SharedTransitionScope? = null,
+  animatedVisibilityScope: AnimatedVisibilityScope? = null,
 ) {
   val state by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -81,7 +81,7 @@ fun SpeakerScreen(
 
       val speakers = (state as Lce.Content<SpeakersUiState>).content.speakers
       val filteredSpeakers = remember(speakers, text) {
-          speakers.filter { it.name?.contains(text, ignoreCase = true) == true }
+        speakers.filter { it.name?.contains(text, ignoreCase = true) == true }
       }
 
       var searchHeight by remember { mutableStateOf(56.dp) }
@@ -112,7 +112,6 @@ fun SpeakerScreen(
     }
 
   }
-
 }
 
 @Suppress("LongParameterList")
@@ -232,11 +231,11 @@ private fun SpeakerListContent(
 
 @Composable
 fun SpeakerItem(
-    speaker: Speaker,
-    modifier: Modifier = Modifier,
-    navigateToSpeakerDetails: (String) -> Unit,
-    sharedTransitionScope: SharedTransitionScope? = null,
-    animatedVisibilityScope: AnimatedVisibilityScope? = null,
+  speaker: Speaker,
+  modifier: Modifier = Modifier,
+  navigateToSpeakerDetails: (String) -> Unit,
+  sharedTransitionScope: SharedTransitionScope? = null,
+  animatedVisibilityScope: AnimatedVisibilityScope? = null,
 ) {
 
   val circularShape = if (LocalIsNeobrutalism.current) RectangleShape else CircleShape
@@ -245,13 +244,13 @@ fun SpeakerItem(
       .fillMaxWidth()
       .neoBrutalElevation()
       .clickable(onClick = { navigateToSpeakerDetails(speaker.id) }),
-      shape = MaterialTheme.shapes.large,
-      color = MaterialTheme.colorScheme.surfaceContainerHigh,
+    shape = MaterialTheme.shapes.large,
+    color = MaterialTheme.colorScheme.surfaceContainerHigh,
   ) {
     Row(
-        modifier = Modifier.padding(16.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalAlignment = Alignment.CenterVertically,
+      modifier = Modifier.padding(16.dp),
+      horizontalArrangement = Arrangement.spacedBy(16.dp),
+      verticalAlignment = Alignment.CenterVertically,
     ) {
       speaker.photoUrl?.let { url ->
         val photoModifier = if (sharedTransitionScope != null && animatedVisibilityScope != null) {
@@ -265,23 +264,23 @@ fun SpeakerItem(
           Modifier
         }
         AsyncImage(
-            model = url,
-            modifier = photoModifier
-                .size(56.dp)
-                .clip(circularShape),
-            contentDescription = stringResource(Res.string.speakers)
+          model = url,
+          modifier = photoModifier
+            .size(56.dp)
+            .clip(circularShape),
+          contentDescription = stringResource(Res.string.speakers)
         )
       }
       Column {
         Text(
-            text = speaker.name.orEmpty(),
-            style = MaterialTheme.typography.titleMedium,
+          text = speaker.name.orEmpty(),
+          style = MaterialTheme.typography.titleMedium,
         )
         speaker.company?.let { company ->
           Text(
-              text = company,
-              style = MaterialTheme.typography.bodyMedium,
-              color = MaterialTheme.colorScheme.onSurfaceVariant,
+            text = company,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
           )
         }
       }
