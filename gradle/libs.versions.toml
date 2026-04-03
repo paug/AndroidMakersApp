@@ -1,5 +1,5 @@
 [versions]
-version-code = "1505"
+version-code = "1507"
 sdk-compile = "36"
 sdk-min = "24"
 androidDesugarJdkLibs = "2.1.5"
