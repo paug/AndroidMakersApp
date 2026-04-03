@@ -18,7 +18,10 @@ fun FeedScreen() {
   val lce by viewModel.values.collectAsStateWithLifecycle()
   val dismissedAlertIds by viewModel.dismissedAlertIds.collectAsStateWithLifecycle()
 
-  LceLayout(lce = lce, onRetry = { viewModel.refresh() }) { feedItems ->
+  LceLayout(
+    lce = lce,
+    onRetry = { viewModel.refresh() }
+  ) { feedItems ->
     val visibleItems = feedItems.filter { item ->
       item !is FeedItem.Alert || item.id !in dismissedAlertIds
     }

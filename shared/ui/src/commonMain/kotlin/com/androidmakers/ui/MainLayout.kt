@@ -100,7 +100,7 @@ fun MainLayout(
       )
     }
 
-  } // AndroidMakersTheme
+  }
 }
 
 @Composable

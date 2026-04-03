@@ -11,6 +11,7 @@
 		61C8A7672D8B199B0046C2CC /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 61C8A7662D8B199B0046C2CC /* FirebaseCore */; };
 		61C8A7692D8B199B0046C2CC /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 61C8A7682D8B199B0046C2CC /* FirebaseFirestore */; };
 		61C8A76B2D8B1C490046C2CC /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 61C8A76A2D8B1C490046C2CC /* FirebaseAuth */; };
+		61C8A76D2D8B1C490046C2CC /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 61C8A76C2D8B1C490046C2CC /* FirebaseMessaging */; };
 		B2CD272F234D06530016AA02 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CD272E234D06530016AA02 /* AppDelegate.swift */; };
 		B2CD2731234D06530016AA02 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CD2730234D06530016AA02 /* SceneDelegate.swift */; };
 		B2CD2733234D06530016AA02 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CD2732234D06530016AA02 /* ContentView.swift */; };
@@ -40,6 +41,7 @@
 				61C8A7672D8B199B0046C2CC /* FirebaseCore in Frameworks */,
 				61C8A76B2D8B1C490046C2CC /* FirebaseAuth in Frameworks */,
 				61C8A7692D8B199B0046C2CC /* FirebaseFirestore in Frameworks */,
+				61C8A76D2D8B1C490046C2CC /* FirebaseMessaging in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -131,6 +133,7 @@
 				61C8A7662D8B199B0046C2CC /* FirebaseCore */,
 				61C8A7682D8B199B0046C2CC /* FirebaseFirestore */,
 				61C8A76A2D8B1C490046C2CC /* FirebaseAuth */,
+				61C8A76C2D8B1C490046C2CC /* FirebaseMessaging */,
 			);
 			productName = RobotConf;
 			productReference = B2CD272B234D06530016AA02 /* Android Makers.app */;
@@ -205,7 +208,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"$SRCROOT/..\"\n./gradlew :shared:embedAndSignAppleFrameworkForXcode\n";
+			shellScript = "if [ \"YES\" = \"$OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED\" ]; then\n  echo \"Skipping Gradle build task invocation due to OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED environment variable set to \\\"YES\\\"\"\n  exit 0\nfi\ncd \"$SRCROOT/..\"\n./gradlew :shared:embedAndSignAppleFrameworkForXcode";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -479,6 +482,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 61C8A7632D8B199B0046C2CC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAuth;
+		};
+		61C8A76C2D8B1C490046C2CC /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 61C8A7632D8B199B0046C2CC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
