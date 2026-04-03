@@ -362,7 +362,7 @@
 				CODE_SIGN_ENTITLEMENTS = AndroidMakers/AndroidMakers.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1501;
+				CURRENT_PROJECT_VERSION = 1508;
 				DEVELOPMENT_ASSET_PATHS = "\"AndroidMakers/Preview Content\"";
 				DEVELOPMENT_TEAM = F9RAPYL9T3;
 				ENABLE_PREVIEWS = YES;
@@ -374,7 +374,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1501;
+				MARKETING_VERSION = 1508;
 				OTHER_LDFLAGS = (
 					"-framework",
 					shared,
@@ -401,7 +401,7 @@
 				CODE_SIGN_ENTITLEMENTS = AndroidMakers/AndroidMakers.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1501;
+				CURRENT_PROJECT_VERSION = 1508;
 				DEVELOPMENT_ASSET_PATHS = "\"AndroidMakers/Preview Content\"";
 				DEVELOPMENT_TEAM = F9RAPYL9T3;
 				ENABLE_PREVIEWS = YES;
@@ -413,7 +413,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1501;
+				MARKETING_VERSION = 1508;
 				OTHER_LDFLAGS = (
 					"-framework",
 					shared,
