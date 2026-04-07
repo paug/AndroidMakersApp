@@ -38,7 +38,7 @@ private val hardcodedItems = listOf(
     description = "Don't miss tonight's networking event with drinks and live music.",
     location = LocationInfo(
       name = "Café Oz Denfert",
-      time = "7:00 PM - 11:00 PM",
+      time = "6:00 PM - 11:00 PM",
     ),
   ),
   FeedItem.Article(
