@@ -376,7 +376,7 @@ private fun AVANavDisplay(
         metadata = if (isWideScreen) {
           ListDetailSceneStrategy.detailPane()
         } else {
-          BottomSheetSceneStrategy.bottomSheet()
+          emptyMap()
         }
       ) { key ->
         Surface(
@@ -388,15 +388,10 @@ private fun AVANavDisplay(
             viewModel = koinViewModel(key = key.sessionId) { parametersOf(key.sessionId) },
             onBackClick = { navigator.goBack() },
             onSpeakerClick = { speakerId -> navigator.navigate(SpeakerDetailKey(speakerId)) },
-            showBackButton = isWideScreen,
-            showTopBar = isWideScreen,
+            showBackButton = true,
+            showTopBar = true,
             sharedTransitionScope = sharedTransitionScope,
-            // LocalNavAnimatedContentScope is unavailable in OverlayScene (bottom sheet)
-            animatedVisibilityScope = if (isWideScreen) {
-              LocalNavAnimatedContentScope.current
-            } else {
-              null
-            },
+            animatedVisibilityScope = LocalNavAnimatedContentScope.current,
           )
         }
       }
@@ -417,13 +412,12 @@ private fun AVANavDisplay(
       }
     }
 
-    val bottomSheetStrategy = remember { BottomSheetSceneStrategy<NavKey>() }
     val listDetailStrategy = rememberListDetailSceneStrategy<NavKey>()
 
 
     NavDisplay(
       entries = navigationState.toDecoratedEntries(entryProvider),
-      sceneStrategies = listOf(bottomSheetStrategy, listDetailStrategy),
+      sceneStrategies = listOf(listDetailStrategy),
       onBack = navigator::goBack,
       transitionSpec = {
         fadeIn(tween(200)) togetherWith ExitTransition.None
