@@ -191,7 +191,7 @@ private fun SpeakerTalksSection(
       text = stringResource(Res.string.talks),
       style = MaterialTheme.typography.titleMedium,
     )
-    for (session in sessions) {
+    sessions.forEach { session ->
       ElevatedCard(
         modifier = Modifier.fillMaxWidth().neoBrutalElevation(),
         onClick = { onSessionClick(session.id) },
