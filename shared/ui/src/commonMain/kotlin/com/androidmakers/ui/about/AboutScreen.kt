@@ -306,7 +306,7 @@ internal fun SocialCard(
     ),
   ) {
     Column(
-      modifier = Modifier.padding(16.dp),
+      modifier = Modifier.fillMaxWidth().padding(16.dp),
       horizontalAlignment = Alignment.CenterHorizontally
     ) {
       SectionHeader(title = stringResource(Res.string.social))
