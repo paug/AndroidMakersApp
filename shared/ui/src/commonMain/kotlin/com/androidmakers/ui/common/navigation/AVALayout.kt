@@ -410,6 +410,7 @@ private fun AVANavDisplay(
           SpeakerDetailsRoute(
             speakerDetailsViewModel = koinViewModel(key = key.speakerId) { parametersOf(key.speakerId) },
             onBackClick = { navigator.goBack() },
+            onSessionClick = { sessionId -> navigator.navigateToSessionDetail(sessionId) },
             sharedTransitionScope = sharedTransitionScope,
             animatedVisibilityScope = LocalNavAnimatedContentScope.current,
           )

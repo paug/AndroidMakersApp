@@ -5,12 +5,14 @@ import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -39,11 +41,14 @@ import com.androidmakers.ui.common.SocialButtons
 import com.androidmakers.ui.common.toUrlOpener
 import com.androidmakers.ui.model.Lce
 import com.androidmakers.ui.theme.LocalIsNeobrutalism
+import com.androidmakers.ui.theme.neoBrutalElevation
+import fr.androidmakers.domain.model.Session
 import fr.androidmakers.domain.model.SocialsItem
 import fr.paug.androidmakers.ui.Res
 import fr.paug.androidmakers.ui.ic_arrow_back
 import fr.paug.androidmakers.ui.back
 import fr.paug.androidmakers.ui.speakers
+import fr.paug.androidmakers.ui.talks
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -52,6 +57,7 @@ import org.jetbrains.compose.resources.stringResource
 fun SpeakerDetailsRoute(
     speakerDetailsViewModel: SpeakerDetailsViewModel,
     onBackClick: () -> Unit,
+    onSessionClick: (sessionId: String) -> Unit = {},
     sharedTransitionScope: SharedTransitionScope? = null,
     animatedVisibilityScope: AnimatedVisibilityScope? = null,
 ) {
@@ -68,6 +74,7 @@ fun SpeakerDetailsRoute(
         uiState = state.content,
         onSocialItemClick = { speakerDetailsViewModel.openSpeakerLink(urlOpener, it) },
         onBackClick = onBackClick,
+        onSessionClick = onSessionClick,
         sharedTransitionScope = sharedTransitionScope,
         animatedVisibilityScope = animatedVisibilityScope,
       )
@@ -81,6 +88,7 @@ fun SpeakerDetailsScreen(
     uiState: SpeakerDetailsUiState,
     onSocialItemClick: (SocialsItem) -> Unit,
     onBackClick: () -> Unit,
+    onSessionClick: (sessionId: String) -> Unit = {},
     sharedTransitionScope: SharedTransitionScope? = null,
     animatedVisibilityScope: AnimatedVisibilityScope? = null,
 ) {
@@ -162,6 +170,39 @@ fun SpeakerDetailsScreen(
           speaker = speaker,
           onClickOnItem = onSocialItemClick
       )
+
+      if (uiState.sessions.isNotEmpty()) {
+        SpeakerTalksSection(
+          sessions = uiState.sessions,
+          onSessionClick = onSessionClick,
+        )
+      }
+    }
+  }
+}
+
+@Composable
+private fun SpeakerTalksSection(
+  sessions: List<Session>,
+  onSessionClick: (sessionId: String) -> Unit,
+) {
+  Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    Text(
+      text = stringResource(Res.string.talks),
+      style = MaterialTheme.typography.titleMedium,
+    )
+    for (session in sessions) {
+      ElevatedCard(
+        modifier = Modifier.fillMaxWidth().neoBrutalElevation(),
+        onClick = { onSessionClick(session.id) },
+        shape = MaterialTheme.shapes.large,
+      ) {
+        Text(
+          modifier = Modifier.padding(16.dp),
+          text = session.title,
+          style = MaterialTheme.typography.bodyLarge,
+        )
+      }
     }
   }
 }
