@@ -32,6 +32,7 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.style.Hyphens
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -44,11 +45,13 @@ import com.androidmakers.ui.theme.LocalIsNeobrutalism
 import com.androidmakers.ui.theme.neoBrutalElevation
 import fr.androidmakers.domain.model.Session
 import fr.androidmakers.domain.model.SocialsItem
+import fr.androidmakers.domain.model.Speaker
 import fr.paug.androidmakers.ui.Res
 import fr.paug.androidmakers.ui.ic_arrow_back
 import fr.paug.androidmakers.ui.back
 import fr.paug.androidmakers.ui.speakers
 import fr.paug.androidmakers.ui.talks
+import kotlinx.datetime.LocalDateTime
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -206,3 +209,69 @@ private fun SpeakerTalksSection(
     }
   }
 }
+
+// region Previews
+
+private val previewSpeaker = Speaker(
+  id = "speaker-1",
+  name = "Ada Lovelace",
+  company = "Babbage & Co.",
+  bio = "Mathematician and writer, chiefly known for her work on Charles Babbage's proposed mechanical general-purpose computer, the Analytical Engine.",
+  photoUrl = null,
+  socials = listOf(
+    SocialsItem(name = "Twitter", url = "https://twitter.com/ada"),
+  ),
+)
+
+private val previewSessions = listOf(
+  Session(
+    id = "session-1",
+    title = "The First Algorithm: A Deep Dive into Analytical Engine Programming",
+    speakers = listOf("speaker-1"),
+    startsAt = LocalDateTime(2026, 4, 9, 9, 0),
+    endsAt = LocalDateTime(2026, 4, 9, 9, 45),
+    roomId = "room-1",
+    isServiceSession = false,
+    type = "talk",
+  ),
+  Session(
+    id = "session-2",
+    title = "Beyond Numbers: Mathematical Imagination in the 19th Century",
+    speakers = listOf("speaker-1"),
+    startsAt = LocalDateTime(2026, 4, 10, 11, 0),
+    endsAt = LocalDateTime(2026, 4, 10, 11, 45),
+    roomId = "room-2",
+    isServiceSession = false,
+    type = "talk",
+  ),
+)
+
+@Preview
+@Composable
+private fun SpeakerDetailsScreenPreview() {
+  SpeakerDetailsScreen(
+    uiState = SpeakerDetailsUiState(
+      speaker = previewSpeaker,
+      sessions = previewSessions,
+    ),
+    onSocialItemClick = {},
+    onBackClick = {},
+    onSessionClick = {},
+  )
+}
+
+@Preview
+@Composable
+private fun SpeakerDetailsScreenNoTalksPreview() {
+  SpeakerDetailsScreen(
+    uiState = SpeakerDetailsUiState(
+      speaker = previewSpeaker,
+      sessions = emptyList(),
+    ),
+    onSocialItemClick = {},
+    onBackClick = {},
+    onSessionClick = {},
+  )
+}
+
+// endregion
