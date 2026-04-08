@@ -5,12 +5,14 @@ import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -30,6 +32,7 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.style.Hyphens
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -39,11 +42,16 @@ import com.androidmakers.ui.common.SocialButtons
 import com.androidmakers.ui.common.toUrlOpener
 import com.androidmakers.ui.model.Lce
 import com.androidmakers.ui.theme.LocalIsNeobrutalism
+import com.androidmakers.ui.theme.neoBrutalElevation
+import fr.androidmakers.domain.model.Session
 import fr.androidmakers.domain.model.SocialsItem
+import fr.androidmakers.domain.model.Speaker
 import fr.paug.androidmakers.ui.Res
 import fr.paug.androidmakers.ui.ic_arrow_back
 import fr.paug.androidmakers.ui.back
 import fr.paug.androidmakers.ui.speakers
+import fr.paug.androidmakers.ui.talks
+import kotlinx.datetime.LocalDateTime
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -52,6 +60,7 @@ import org.jetbrains.compose.resources.stringResource
 fun SpeakerDetailsRoute(
     speakerDetailsViewModel: SpeakerDetailsViewModel,
     onBackClick: () -> Unit,
+    onSessionClick: (sessionId: String) -> Unit = {},
     sharedTransitionScope: SharedTransitionScope? = null,
     animatedVisibilityScope: AnimatedVisibilityScope? = null,
 ) {
@@ -68,6 +77,7 @@ fun SpeakerDetailsRoute(
         uiState = state.content,
         onSocialItemClick = { speakerDetailsViewModel.openSpeakerLink(urlOpener, it) },
         onBackClick = onBackClick,
+        onSessionClick = onSessionClick,
         sharedTransitionScope = sharedTransitionScope,
         animatedVisibilityScope = animatedVisibilityScope,
       )
@@ -81,6 +91,7 @@ fun SpeakerDetailsScreen(
     uiState: SpeakerDetailsUiState,
     onSocialItemClick: (SocialsItem) -> Unit,
     onBackClick: () -> Unit,
+    onSessionClick: (sessionId: String) -> Unit = {},
     sharedTransitionScope: SharedTransitionScope? = null,
     animatedVisibilityScope: AnimatedVisibilityScope? = null,
 ) {
@@ -162,6 +173,105 @@ fun SpeakerDetailsScreen(
           speaker = speaker,
           onClickOnItem = onSocialItemClick
       )
+
+      if (uiState.sessions.isNotEmpty()) {
+        SpeakerTalksSection(
+          sessions = uiState.sessions,
+          onSessionClick = onSessionClick,
+        )
+      }
     }
   }
 }
+
+@Composable
+private fun SpeakerTalksSection(
+  sessions: List<Session>,
+  onSessionClick: (sessionId: String) -> Unit,
+) {
+  Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    Text(
+      text = stringResource(Res.string.talks),
+      style = MaterialTheme.typography.titleMedium,
+    )
+    sessions.forEach { session ->
+      ElevatedCard(
+        modifier = Modifier.fillMaxWidth().neoBrutalElevation(),
+        onClick = { onSessionClick(session.id) },
+        shape = MaterialTheme.shapes.large,
+      ) {
+        Text(
+          modifier = Modifier.padding(16.dp),
+          text = session.title,
+          style = MaterialTheme.typography.bodyLarge,
+        )
+      }
+    }
+  }
+}
+
+// region Previews
+
+private val previewSpeaker = Speaker(
+  id = "speaker-1",
+  name = "Ada Lovelace",
+  company = "Babbage & Co.",
+  bio = "Mathematician and writer, chiefly known for her work on Charles Babbage's proposed mechanical general-purpose computer, the Analytical Engine.",
+  photoUrl = null,
+  socials = listOf(
+    SocialsItem(name = "Twitter", url = "https://twitter.com/ada"),
+  ),
+)
+
+private val previewSessions = listOf(
+  Session(
+    id = "session-1",
+    title = "The First Algorithm: A Deep Dive into Analytical Engine Programming",
+    speakers = listOf("speaker-1"),
+    startsAt = LocalDateTime(2026, 4, 9, 9, 0),
+    endsAt = LocalDateTime(2026, 4, 9, 9, 45),
+    roomId = "room-1",
+    isServiceSession = false,
+    type = "talk",
+  ),
+  Session(
+    id = "session-2",
+    title = "Beyond Numbers: Mathematical Imagination in the 19th Century",
+    speakers = listOf("speaker-1"),
+    startsAt = LocalDateTime(2026, 4, 10, 11, 0),
+    endsAt = LocalDateTime(2026, 4, 10, 11, 45),
+    roomId = "room-2",
+    isServiceSession = false,
+    type = "talk",
+  ),
+)
+
+@Preview
+@Composable
+private fun SpeakerDetailsScreenPreview() {
+  SpeakerDetailsScreen(
+    uiState = SpeakerDetailsUiState(
+      speaker = previewSpeaker,
+      sessions = previewSessions,
+    ),
+    onSocialItemClick = {},
+    onBackClick = {},
+    onSessionClick = {},
+  )
+}
+
+@Preview
+@Composable
+private fun SpeakerDetailsScreenNoTalksPreview() {
+  SpeakerDetailsScreen(
+    uiState = SpeakerDetailsUiState(
+      speaker = previewSpeaker,
+      sessions = emptyList(),
+    ),
+    onSocialItemClick = {},
+    onBackClick = {},
+    onSessionClick = {},
+  )
+}
+
+// endregion

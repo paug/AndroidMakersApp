@@ -75,6 +75,7 @@
   <string name="session_app_clinic_apply">Apply for App-Clinic</string>
 
   <string name="talk_details">Talk Details</string>
+  <string name="talks">Talks</string>
   <string name="about_this_talk">About this talk</string>
   <plurals name="speaker_section">
     <item quantity="one">Speaker</item>
