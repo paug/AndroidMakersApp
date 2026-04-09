@@ -18,8 +18,11 @@ import androidx.compose.ui.Modifier
 import com.androidmakers.ui.common.EmptyLayout
 import com.androidmakers.ui.common.SessionFilter
 import com.androidmakers.ui.model.UISession
+import fr.androidmakers.domain.utils.eventTimeZone
 import fr.androidmakers.domain.utils.formatShortTime
+import kotlin.time.Clock
 import kotlinx.coroutines.launch
+import kotlinx.datetime.todayIn
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -81,11 +84,18 @@ fun AgendaPager(
         onRefresh = onRefresh,
         state = pullRefreshState
       ) {
+        val isToday = remember(page) {
+          days[page].date == Clock.System.todayIn(eventTimeZone)
+        }
+        val initialScrollIndex = remember(sessionsPerStartTime, isToday) {
+          if (isToday) sessionsPerStartTime.currentTimeScrollIndex() else 0
+        }
         if (sessionsPerStartTime.isEmpty()) {
           EmptyLayout()
         } else {
           AgendaColumn(
               sessionsPerStartTime = sessionsPerStartTime,
+              initialFirstVisibleItemIndex = initialScrollIndex,
               onSessionClick = onSessionClick,
               onApplyForAppClinicClick = onApplyForAppClinicClick,
               onSessionBookmark = onSessionBookmark
@@ -116,4 +126,29 @@ private fun List<UISession>.filter(
       filter.any { it.matches(session) }
     }
   }
+}
+
+/**
+ * Computes the lazy list item index of the sticky header for the last time slot
+ * that has already started (i.e., whose start time <= now). Returns 0 if all
+ * slots are in the future. The lazy list structure is:
+ *   index 0              : sticky header for slot 0
+ *   index 1..n           : sessions of slot 0
+ *   index n+1            : sticky header for slot 1
+ *   ...
+ */
+private fun Map<String, List<UISession>>.currentTimeScrollIndex(): Int {
+  val now = Clock.System.now()
+  var itemIndex = 0
+  var targetIndex = 0
+
+  for ((_, sessions) in this) {
+    val slotStart = sessions.firstOrNull()?.startDate
+    if (slotStart != null && slotStart <= now) {
+      targetIndex = itemIndex
+    }
+    itemIndex += 1 + sessions.size // 1 for sticky header + N for sessions
+  }
+
+  return targetIndex
 }

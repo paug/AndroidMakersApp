@@ -27,11 +27,12 @@ import com.androidmakers.ui.model.UISession
 @Composable
 fun AgendaColumn(
   sessionsPerStartTime: Map<String, List<UISession>>,
+  initialFirstVisibleItemIndex: Int = 0,
   onSessionClick: (UISession) -> Unit,
   onSessionBookmark: (UISession, Boolean) -> Unit,
   onApplyForAppClinicClick: () -> Unit,
 ) {
-  val listState = rememberLazyListState()
+  val listState = rememberLazyListState(initialFirstVisibleItemIndex = initialFirstVisibleItemIndex)
 
   LazyColumn(
     state = listState,
